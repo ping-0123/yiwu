@@ -1,0 +1,69 @@
+
+
+@media screen and (orientation: portrait) { 
+    
+  /*竖屏 css*/  
+  *{padding: 0; margin: 0; } 
+   body{background-color:lightgreen;}
+  .display_second{display: none;}
+  .display_first{ text-align: center;}
+  .display_first img{ width: 80%; height: auto;margin-top: 35%;}
+  .display_first p{ font-size: 20px;padding-top: 50px;font-weight: bold;}
+  .display_first p span{color:darkolivegreen;}
+}    
+@media screen and (orientation: landscape) {   
+  /*横屏 css*/   
+   *{padding: 0; margin: 0; color: white;}
+   .display_first{display: none;}
+   @font-face {
+    font-family: 'lcd_display_gridregular';
+    src: url('lcd_display_grid-webfont.woff2') format('woff2'),
+         url('lcd_display_grid-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    }
+    
+body{background-image: url(./images/back.jpg);background-repeat: no-repeat ;background-size: 100% 100%;}
+ 
+.huge{font-family: 'lcd_display_gridregular';}
+#location{margin-top: 20px;}
+.kecheng_type{margin-top: 20px;}
+#selecttion{ width: 100%;height:30px}
+#selecttion span { display: block; height:30px;float:left;line-height: 30px;}
+#selecttion span select{ width: 100px; height: 25px;border-radius: 2px;color: black;}
+#selecttion span select option{color:#000000}
+#dateweek{ display:block;  width: 100%;margin: 0 auto; margin-top: 20px;padding-bottom: 20px;}
+#dateweek input{ width: 100px; height: 25px;border-radius: 2px;color: black;line-height: 25px;}
+#currentDate{padding-top: 5px;}
+#lessonTable{  width: 100%;margin-top: 20px;}
+#lessonTable thead tr th{font-family: 'lcd_display_gridregular'; width: 14.2%; line-height: 20px;font-size: 12px;}
+
+#lessonTable tbody tr td{width: 14.2%;padding-top: 20px;}
+#lessonTable tbody tr{line-height: 20px;}
+
+.openType{ background-color: #FE007F;color: white;font-size: 12px; display:block; width:20px;text-align:center;padding: 3px 3px;}
+.closeType{background-color:#ffea2f;color:black;font-size: 12px; display:block; width:20px;text-align:center;padding: 3px 3px;}
+
+.lesson_time{font-size:0.5em;font-family: 'lcd_display_gridregular';
+     }
+.dance_type{ display: block;display:block; width:90%;text-align:center;
+    word-break:keep-all;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;}
+.teacher{display:block; width:90%;text-align:center;
+         word-break:keep-all;
+         white-space:nowrap;
+         overflow:hidden;
+         text-overflow:ellipsis;}
+.state{display:block; width:90%;text-align:center;font-size: 0.1em;
+     word-break:keep-all;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+       }
+@media screen and (max-width:321px ) {
+	#lessonTable tbody tr td span{display: block; width: 45.7px;}
+	#lessonTable tbody tr td small{ display: block;width: 45.7px;}
+  
+}  
