@@ -3,6 +3,7 @@ package com.yinzhiwu.springmvc3.dao.impl;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
 import javax.annotation.Resource;
 import org.hibernate.SessionFactory;
@@ -53,7 +54,13 @@ public class BaseDaoImpl<T,PK extends Serializable>
 	public PK save(T entity) {  
         Assert.notNull(entity, "entity is required");  
         return (PK) getSession().save(entity);  
-    }  
+    }
+
+	@Override
+	public List<T> findByProperty(String propertyName, Object value) {
+		// TODO Auto-generated method stub
+		return null;
+	}  
   
 }  
 
