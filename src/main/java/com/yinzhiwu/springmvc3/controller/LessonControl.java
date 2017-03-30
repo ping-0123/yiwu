@@ -2,7 +2,10 @@ package com.yinzhiwu.springmvc3.controller;
 
 import java.util.Date;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +31,7 @@ import com.yinzhiwu.springmvc3.service.LessonService;
 public class LessonControl {
 
 	@Autowired
+	@Qualifier(value="lessonServiceImplTwo")
 	private LessonService lessonService;
 	
 	

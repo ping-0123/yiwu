@@ -12,7 +12,7 @@ function loadLessonTable(v_url,v_param){
 			};
 	 */
 	var url = ajaxUrl + v_url;
-	var weekdayNames = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+	var weekdayNames = ["MON","TUE","WED","THU","FRI","SAT","SUN"];
 	$.ajax({ 
 			type: "POST", 	
 			url: url,

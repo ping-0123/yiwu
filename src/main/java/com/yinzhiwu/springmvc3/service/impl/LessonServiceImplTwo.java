@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.springmvc3.dao.AppointmentDao;
 import com.yinzhiwu.springmvc3.dao.ClassRoomDao;
@@ -21,8 +22,15 @@ import com.yinzhiwu.springmvc3.model.LessonList;
 import com.yinzhiwu.springmvc3.model.MiniLesson;
 import com.yinzhiwu.springmvc3.service.LessonService;
 
+
+/**
+ * 
+ * @author ping
+ *	星期一为第一天
+ */
+@Transactional
 @Service
-public class LessonServiceImpl implements LessonService {
+public class LessonServiceImplTwo implements LessonService {
 	
 	@Autowired
 	private LessonDao lessonDao;
@@ -50,11 +58,11 @@ public class LessonServiceImpl implements LessonService {
 		List<LessonList> list = new ArrayList<>();
 		Calendar ca = Calendar.getInstance();
 		ca.setTime(start);
-		for(int i = 1; i<=7; i++){
-//			list.add(new LessonList(ca.getTime(), i, new ArrayList<>()));
+		for(int i = 2; i<=8; i++){
 			list.add( new LessonList(
 						new java.sql.Date(ca.getTimeInMillis()),
-						i, new ArrayList<>()));
+						i<=7?i:i/7, 
+						new ArrayList<>()));
 			ca.add(Calendar.DAY_OF_MONTH, 1);
 		}
 		
@@ -82,11 +90,10 @@ public class LessonServiceImpl implements LessonService {
 		Calendar ca = Calendar.getInstance();
 		ca.setTime(date);
 		int weekday = ca.get(Calendar.DAY_OF_WEEK);
-		ca.add(Calendar.DAY_OF_WEEK, Calendar.SUNDAY-weekday);
+		ca.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY-weekday);
 		Date startDate = ca.getTime();
-		ca.add(Calendar.DAY_OF_WEEK, Calendar.SATURDAY-Calendar.SUNDAY);
+		ca.add(Calendar.DAY_OF_WEEK, 6);
 		Date endDate = ca.getTime();
-		
 		
 		List<Lesson> list = lessonDao.findLessonWeekList(
 				storeId, courseType, teacherName, danceCatagory, startDate, endDate);
