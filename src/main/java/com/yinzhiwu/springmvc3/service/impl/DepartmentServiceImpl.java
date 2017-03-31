@@ -73,4 +73,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 		return storeList;
 	}
 
+	@Override
+	public StoreInfo findStoreInfoById(int id) {
+		return storeInfoDao.get(id);
+	}
+
 }

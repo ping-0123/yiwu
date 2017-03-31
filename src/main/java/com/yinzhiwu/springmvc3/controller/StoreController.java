@@ -2,6 +2,7 @@ package com.yinzhiwu.springmvc3.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,12 @@ public class StoreController {
 	@ResponseBody
 	public Object getStoreList(@RequestParam int districtId){
 		return s.findStoreInfosByDistrictId(districtId);
+	}
+	
+	@RequestMapping(value="/id/{id}")
+	@ResponseBody
+	public Object getStore(@PathVariable int id){
+		return s.findStoreInfoById(id);
 	}
 	
 }

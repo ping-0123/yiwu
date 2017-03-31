@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 
 import org.hibernate.Session;
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
+import com.yinzhiwu.springmvc3.entity.Customer;
 
 
 
@@ -58,7 +59,8 @@ public class BaseDaoImpl<T,PK extends Serializable>
 
 	@Override
 	public List<T> findByProperty(String propertyName, Object value) {
-		// TODO Auto-generated method stub
+//		String className = "aa";
+//		String hql = "from Customer where " + propertyName + " =:value";
 		return null;
 	}  
   
