@@ -6,13 +6,13 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import javax.annotation.Resource;
+
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
 
-import org.hibernate.Session;
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
-import com.yinzhiwu.springmvc3.entity.Customer;
 
 
 
@@ -57,11 +57,12 @@ public class BaseDaoImpl<T,PK extends Serializable>
         return (PK) getSession().save(entity);  
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findByProperty(String propertyName, Object value) {
-//		String className = "aa";
-//		String hql = "from Customer where " + propertyName + " =:value";
-		return null;
+		String className = entityClass.getSimpleName();
+		String hql = "from " + className + " where " + propertyName + " =:value";
+		return (List<T>) getHibernateTemplate().findByNamedParam(hql, "value", value);
 	}  
   
 }  
