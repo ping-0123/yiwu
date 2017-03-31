@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.springmvc3.dao.AppointmentDao;
+import com.yinzhiwu.springmvc3.dao.CheckInsDao;
 import com.yinzhiwu.springmvc3.dao.ClassRoomDao;
 import com.yinzhiwu.springmvc3.dao.CourseDao;
 import com.yinzhiwu.springmvc3.dao.LessonDao;
@@ -46,6 +47,9 @@ public class LessonServiceImplTwo implements LessonService {
 	
 	@Autowired
 	private OrderDao orderDao;
+	
+	@Autowired
+	private CheckInsDao checkInsDao;
 	
 	@Override
 	public Lesson findById(int lessonId) {
@@ -125,6 +129,11 @@ public class LessonServiceImplTwo implements LessonService {
 				if("开放式".equals(l.getCourseType()))
 					ml.setAttendedStatus(appointedDao.findStatus(l.getLessonId(), c.getId()));
 			}
+			
+			// 添加签到人数
+			ml.setCheckedInsStudentCount(
+					checkInsDao.findCountByProperty("lessonId", l.getLessonId().toString()));
+			
 			lm.add(ml);
 			
 		}

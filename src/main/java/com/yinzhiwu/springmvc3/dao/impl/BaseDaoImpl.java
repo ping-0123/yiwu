@@ -63,6 +63,14 @@ public class BaseDaoImpl<T,PK extends Serializable>
 	public List<T> findByProperty(String propertyName, Object value) {
 		String hql = "from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
 		return (List<T>) getHibernateTemplate().findByNamedParam(hql, "value", value);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public int findCountByProperty(String propertyName, Object value) {
+		String hql = "select count(*) from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
+		List<Long> l = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "value", value);
+		return l.get(0).intValue();
 	}  
   
 }  

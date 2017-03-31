@@ -54,6 +54,8 @@ public class MiniLesson {
 	
 	private int attendedStudentCount;
 	
+	private int checkedInsStudentCount;
+	
 
 
 	public MiniLesson(Integer lessonId, String courseid, Date lessonDate, Time startTime, Time endTime,
@@ -269,6 +271,21 @@ public class MiniLesson {
 
 	public final void setAttendedStudentCount(int attendedStudentCount) {
 		this.attendedStudentCount = attendedStudentCount;
+	}
+
+
+	public final int getCheckedInsStudentCount() {
+		return checkedInsStudentCount;
+	}
+
+
+	public final void setCheckedInsStudentCount(int checkedInsStudentCount) {
+		this.checkedInsStudentCount = checkedInsStudentCount;
+	}
+
+
+	public final void setWeek(int week) {
+		this.week = week;
 	}
 
 	

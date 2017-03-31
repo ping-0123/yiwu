@@ -10,4 +10,6 @@ public interface IBaseDao<T ,PK extends Serializable> {
 		public PK save(T entity);
 		
 		public List<T> findByProperty(String propertyName, Object value);
+		
+		public int findCountByProperty(String propertyName, Object value);
 }
