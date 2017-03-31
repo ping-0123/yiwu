@@ -74,8 +74,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public StoreInfo findStoreInfoById(int id) {
-		return storeInfoDao.get(id);
+	public Store findStoreInfoById(int id) {
+		Department dept = departmentDao.findById(id);
+		StoreInfo sf = storeInfoDao.get(id);
+		Store s = new Store(sf);
+		s.setName(dept.getDeptName());
+		return s;
 	}
 
 }

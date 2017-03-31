@@ -1,8 +1,8 @@
 package com.yinzhiwu.springmvc3.model;
 
-import java.util.Date;
 import java.sql.Time;
 import java.util.Calendar;
+import java.util.Date;
 
 import com.yinzhiwu.springmvc3.entity.Lesson;
 
