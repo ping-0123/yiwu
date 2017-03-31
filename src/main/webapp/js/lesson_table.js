@@ -12,7 +12,7 @@ function loadLessonTable(v_url,v_param){
 			};
 	 */
 	var url = ajaxUrl + v_url;
-	var weekdayNames = ["MON","TUE","WED","THU","FRI","SAT","SUN"];
+	var weekdayNames = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 	$.ajax({ 
 			type: "POST", 	
 			url: url,
@@ -22,7 +22,7 @@ function loadLessonTable(v_url,v_param){
 				var t ="<thead><tr>";
 				var len = 0;
 				for(var i=0; i<7; i++){
-					t=t+"<th>" + weekdayNames[i] + "<br> <small>" 
+					t=t+"<th>" + weekdayNames[data[i].weekday-1] + "<br> <small>" 
 						+ data[i].date + "</small></th>";
 					if(len<data[i].list.length){
 						len=data[i].list.length;
