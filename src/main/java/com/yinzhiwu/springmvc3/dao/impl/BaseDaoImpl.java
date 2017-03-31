@@ -61,8 +61,7 @@ public class BaseDaoImpl<T,PK extends Serializable>
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findByProperty(String propertyName, Object value) {
-		String className = entityClass.getSimpleName();
-		String hql = "from " + className + " where " + propertyName + " =:value";
+		String hql = "from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
 		return (List<T>) getHibernateTemplate().findByNamedParam(hql, "value", value);
 	}  
   
