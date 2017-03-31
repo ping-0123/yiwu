@@ -6,6 +6,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

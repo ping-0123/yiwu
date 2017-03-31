@@ -39,7 +39,7 @@ public class TestCalendar {
 	
 	@Test
 	public void testGenericFindByProperty(){
-		List<StoreInfo> l= dao.findByProperty("address", "城东店");
+		List<StoreInfo> l= dao.findByProperty("", "");
 		System.out.println(l.get(0).getTelePhone());
 	}
 }
