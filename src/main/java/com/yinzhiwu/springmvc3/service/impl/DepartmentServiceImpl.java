@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.DepartmentDao;
+import com.yinzhiwu.springmvc3.dao.StoreInfoDao;
 import com.yinzhiwu.springmvc3.entity.Department;
+import com.yinzhiwu.springmvc3.entity.StoreInfo;
 import com.yinzhiwu.springmvc3.model.BriefDepartment;
+import com.yinzhiwu.springmvc3.model.Store;
 import com.yinzhiwu.springmvc3.service.DepartmentService;
 
 @Service
@@ -18,6 +21,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 	@Autowired
 	@Qualifier("departmentDaoImplTwo")
 	private DepartmentDao departmentDao;
+	
+	@Autowired
+	private StoreInfoDao storeInfoDao;
 
 	@Override
 	public List<BriefDepartment> findAllOperationDistricts() {
@@ -48,6 +54,23 @@ public class DepartmentServiceImpl implements DepartmentService {
 	@Override
 	public void show() {
 		departmentDao.show();
+	}
+
+	@Override
+	public List<Store> findStoreInfosByDistrictId(int districtId) {
+		List<Department> deptList = departmentDao.findStoresByDistrictId(districtId);
+		List<Store> storeList = new ArrayList<>();
+		for (Department d : deptList) {
+			Store s = new Store();
+			s.setId(d.getId());
+			s.setName(d.getDeptName());
+			StoreInfo sf = storeInfoDao.get(d.getId());
+			s.setAddress(sf.getAddress());
+			s.setTelePhone(sf.getTelePhone());
+			
+			storeList.add(s);
+		}
+		return storeList;
 	}
 
 }
