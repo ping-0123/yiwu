@@ -37,9 +37,4 @@ public class TestCalendar {
 //		System.out.println(clazz.getSimpleName());
 	}
 	
-	@Test
-	public void testGenericFindByProperty(){
-		List<StoreInfo> l= dao.findByProperty("", "");
-		System.out.println(l.get(0).getTelePhone());
-	}
 }
