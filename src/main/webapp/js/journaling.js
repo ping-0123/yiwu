@@ -1,6 +1,6 @@
 //var ajaxUrl = "http://192.168.0.115:8080/yiwu/";
-//var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/";
-var ajaxUrl = "";
+var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/";
+//var ajaxUrl = "";
 var currentDate = new Date();
 var year=currentDate.getFullYear();
 var month = currentDate.getMonth();
@@ -96,7 +96,7 @@ function loadRevenue(v_districtId,
 					for(var j=0; j<revenues[i].length; j++){
 						var v_amount = revenues[i][j].amount;
 						if(v_amount != 0){
-							t = t+"<li>" + thousandSignNumber(v_amount.toFixed(0)) + "</li>";
+							t = t+"<li><a href=\"map.html?store-Id="+revenues[i][j].storeId+"&date-id="+revenues[i][j].date+"\" store-Id='+revenues[i][j].storeId+' date-id='+revenues[i][j].date+'>" +thousandSignNumber(v_amount.toFixed(0)) + "</a></li>";
 						}else{
 							t = t+"<li></li>";
 						}
