@@ -55,22 +55,6 @@ public class LessonControl {
 		if (date == null){
 			date = new Date();
 		}
-		switch (courseType) {
-		case "1":
-			courseType="封闭式";
-			break;
-		case "2":
-			courseType = "开放式";
-			break;
-		default:
-			courseType ="";
-			break;
-		}
-//		courseType = courseType.replaceAll("\\s*", "");
-//		teacherName = teacherName.replaceAll("\\s*", "");
-//		danceCatagory = danceCatagory.replaceAll("\\s*", "");
-//		
-		
 		return lessonService.findLessonWeekList(
 				storeId, courseType, teacherName, danceCatagory, date, weChat);
 	}
