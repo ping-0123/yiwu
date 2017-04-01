@@ -1,0 +1,118 @@
+
+
+@media screen and (orientation: portrait) { 
+  /*竖屏 css*/  
+  *{padding: 0; margin: 0; } 
+   body{background-color:lightgreen;}
+  .display_second{display: none;}
+  .display_first{ text-align: center;}
+  .display_first img{ width: 80%; height: auto;margin-top: 35%;}
+  .display_first p{ font-size: 50px;padding-top: 20%;font-weight: bold;}
+  .display_first p span{color:darkolivegreen;}
+  .display_first p small{font-weight: 100;}
+  }    
+
+@media screen and (orientation: landscape) {   
+  /*横屏 css*/ 
+  *{padding: 0;margin:0;text-decoration: none;list-style: none;}  
+  .display_first{display: none;}
+         /*nav*/
+        .nav{ width: 100%; height: 100px;}
+        .logo{ float: left; width: 30%; height: 100px;}
+        .logo img{ width: 80%; height: auto; margin-left: 10%; margin-top: 15px;}
+        .menu{ width:70%;float: left;}
+        
+         .select{width:30%;height:100px;line-height:120px;float: left;}
+				 .text_left{display:block;width:45%;float:left; font-size: 20px;}
+				 
+				 .arrow_right{
+				 position: relative;
+				 display:block; 
+				 border-color:dimgray #FFFFFF #FFFFFF #FFFFFF;
+				 border-style: solid;
+				 border-width: 13px;
+				 display: block;
+				 font-size: 0;
+				 height: 0;
+				 line-height: 0;
+				 width: 0;
+				 float:left;
+				 margin-top:55px;
+				 cursor:pointer;
+				 }
+				 
+				 .list{position:absolute;border-top:0;display:none;top:75px;}
+				 .list li{display:block;line-height:30px; text-align: left; font-size: 20px;}
+				 .list li:hover{background:#F8F3F4;cursor:pointer;}
+     /*门店*/
+       
+         .select_store{width:40%;height:100px;line-height:120px;float: left;}
+				 .text_left_store{display:block;width:40%;margin-left:38%;float:left; font-size: 20px;}
+				 .arrow_right_store{
+				 position: relative;
+				 display:block; 
+				 border-color:dimgray #FFFFFF #FFFFFF #FFFFFF;
+				 border-style: solid;
+				 border-width: 13px;
+				 display: block;
+				 font-size: 0;
+				 height: 0;
+				 line-height: 0;
+				 width: 0;
+				 float:left;
+				 margin-top:55px;
+				 cursor:pointer;
+				 }
+				 .list_store{position:absolute;border-top:0;display:none;top:75px;left: 61.5%;}
+				 .list_store li{display:block;line-height:30px; text-align: left; font-size: 20px;}
+				 .list_store li:hover{background:#F8F3F4;cursor:pointer;}
+			/*类型*/	 
+			    .select_type{width:30%;height:100px;line-height:120px;float: left;}
+				 .text_left_type{display:block;width:51.6%;float:left; font-size: 20px;}
+				 .arrow_right_type{
+				 position: relative;
+				 display:block; 
+				 border-color:dimgray #FFFFFF #FFFFFF #FFFFFF;
+				 border-style: solid;
+				 border-width: 13px;
+				 display: block;
+				 font-size: 0;
+				 height: 0;
+				 line-height: 0;
+				 width: 0;
+				 float:left;
+				 margin-top:55px;
+				 cursor:pointer;
+				 }
+				 .list_type{position:absolute;border-top:0;display:none;top:75px;left:78.8%;}
+				 .list_type li{display:block;line-height:30px; text-align: left; font-size: 20px;}
+				 .list_type li:hover{background:#F8F3F4;cursor:pointer;}
+				 
+				 /*第二行*/
+				.address_week{ width: 100%;height: 100px;}
+				.first_line{ display: block; width: 100%; height: 40px; line-height: 40px;}
+			  .first_line span{ font-size: 20px;padding-left: 32px;}
+				.first_line span small{padding-left: 20px;}
+				.second_line{ display: block; width: 100%; height: 40px; line-height: 40px;}}
+        .second_line ul{ float: left;}
+        .address_week_1{ width: 70%;}
+        .address_week_2{ width: 20%;margin-left: 2.8%;}
+        .second_line ul li{ float: left; font-size: 20px;}
+        #address{padding-left: 32px;}
+        #phone{padding-left: 20px;}
+        .address_week_2 li{padding-left: 20px;}
+        
+        /*table*/
+        .table_lesson{ width: 100%;}
+        .table_lesson table{ width: 100%;border-collapse:collapse;}
+        .table_lesson table thead{border-top:1px dashed black;border-bottom: 1px dashed black;}
+        .table_lesson table thead tr th{height: 100px;}
+        .table_lesson table tbody tr td{height: 100px;}
+        .table_lesson table tbody tr td ul li{ text-align: center;}
+        
+        .open_type{background-color:#FE007F; width:86%;margin-left:7%;border-radius:5px;padding-left: 5px;}
+        .open_type li{color:white;}
+        .close_type{background-color:#ffea2f; width:86%;margin-left:7%;border-radius:5px;}
+        
+        
+}   
