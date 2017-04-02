@@ -14,7 +14,7 @@ public class Account {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@Column(length=32)
 	private String name;

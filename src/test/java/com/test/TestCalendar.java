@@ -15,8 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.springmvc3.dao.DepartmentDao;
 import com.yinzhiwu.springmvc3.dao.StoreInfoDao;
+import com.yinzhiwu.springmvc3.dao.StoreManCallRollDao;
+import com.yinzhiwu.springmvc3.dao.TeacherCallRollDao;
 import com.yinzhiwu.springmvc3.entity.Department;
 import com.yinzhiwu.springmvc3.entity.StoreInfo;
+import com.yinzhiwu.springmvc3.entity.StoreManCallRoll;
+import com.yinzhiwu.springmvc3.entity.TeacherCallRoll;
 import com.yinzhiwu.springmvc3.model.Store;
 
 @Transactional
@@ -83,4 +87,21 @@ public class TestCalendar {
 	}
 	
 	
+	@Autowired
+	private TeacherCallRollDao tcrDao;
+	
+	@Autowired
+	private StoreManCallRollDao scrDao;
+	
+	@Test
+	public void testEntity(){
+		TeacherCallRoll t = tcrDao.get(9);
+		System.out.println(t.getCourseType());
+		StoreManCallRoll s = scrDao.get(186);
+		System.out.println(s.getMemberCard());
+	}
+	
+	@Test
+	public void testSCRcount(){
+	}
 }
