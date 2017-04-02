@@ -20,16 +20,22 @@
         .nav{ width: 100%; height: 80px;}
         .logo{ float: left; width: 30%; height: 80px;}
         .logo img{ width: 80%; height: auto; margin-left: 10%; margin-top: 18px;}
-        .menu{ width:70%;float: left;height: 80px;}
-        .select_option ul li{ float: left;line-height: 80px;}
+        .menu{ width:70%;float: left;height: 60px;line-height: 105px;}
+        .select_option{ width: 100%;height:65px;}
+        .select_option ul li{ float: left;}
         .district{ width: 60%;}
-        .district select{ width: 50%;height: 30px;border-radius:6px; font-size: 16px;}
+        .district select{ width: 35%;height: 30px;border-radius:6px; font-size: 18px;padding-left: 5px;}
         .store{ width: 20%;}
-        .store select{width: 90%;height: 30px;border-radius:6px;font-size: 14px;}
+        .store select{width: 90%;height: 30px;border-radius:6px;font-size: 14px;padding-left: 5px;}
         .type{ width: 20%;}
-        .type select{width: 90%;height: 30px;border-radius:6px;font-size: 14px;padding-left: 10%;}
-        .select_option ul li select{border: none;background: transparent;-webkit-appearance: none;}
-        	 
+        .type select{width: 90%;height: 30px;border-radius:6px;font-size: 14px;padding-left: 10%;padding-left: 5px;}
+        .select_option ul li select{border: none;
+                                    background: transparent;
+                                    appearance:none;
+                                    -moz-appearance:none;
+                                    -webkit-appearance:none;}
+         .select_option ul li select:focus{background-color: transparent;}                          
+        .select_option ul li select:hover{background-color:transparent; ;} 
 				 /*第二行*/
 				.address_week{ width: 100%;height: 70px;}
 				.first_line{ display: block; width: 100%; height: 30px; line-height: 30px;}
@@ -43,8 +49,10 @@
         .address_week_2 li:last-child{ float: right;margin-right: 10%;}
         .address_week_2 li a{font-size: 18px;color: #000000;}
         .second_line ul li{ float: left; font-size: 12px;}
-        #address{padding-left: 18px;}
-        #phone{padding-left: 18px;}
+        #address{padding-left: 18px;background:url(../images/adress.png);background-repeat:no-repeat ;background-size:13px 13px;background-position:18px 0px ;}
+        #address span{padding-left: 16px;}
+        #phone{padding-left: 18px;background:url(../images/phone.png);background-repeat:no-repeat;background-size:11px 11px;background-position:20px 1px ;}
+        #phone span{padding-left: 16px;}
         #phone a{ display: block;}
       
         
