@@ -95,8 +95,6 @@ function loadDistrict(){
 				$('.address_week .first_line span').html(data.name);
 				$('#address span').html(data.address);
 				$('#phone span').html(data.telePhone);
-			
-//				$('#phone span').attr("onclick" "location.href='" + data.telePhone +"';");
 			}
 
 			})
@@ -115,8 +113,8 @@ function loadDistrict(){
 			};
 	 */
 	var url = ajaxUrl + v_url;
-	var weekdayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-	var weekdayNamesCN=["周 日","周 一","周 二","周 三","周 四","周 五","周 六"];
+	var weekdayNames = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+	var weekdayNamesCN=["周日","周一","周二","周三","周四","周五","周六"];
 	var v_data=v_param;
 	$.ajax({ 
 			type: "POST", 	
@@ -144,10 +142,10 @@ function loadDistrict(){
 						if (data[k].list.length>j) {
 							var lesson=data[k].list[j];
 							if(lesson.courseType=="封闭式"){
-								t=t+"<ul class=\"close_type\"><li>"+ "<small>" + lesson.danceName.replace("少儿","") + "</small>" +"</li><li><small>"+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"+lesson.dueTeacherName+"</small><li><li><small>预约:"+lesson.attendedStudentCount+"/"+lesson.checkedInsStudentCount+"</small></li></ul>";
+								t=t+"<ul class=\"close_type\"><li>"+lesson.danceName.replace("少儿","")+"</li><li><small>"+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"<small></li><li><small>"+lesson.dueTeacherName+"<small><li><li><small>预约:</small>"+lesson.attendedStudentCount+"/"+lesson.checkedInsStudentCount+"</li></ul>";
 							}
 						else if(lesson.courseType=="开放式"){
-							t=t+"<ul class=\"open_type\"><li>" + "<small>" + lesson.danceName.replace("少儿","") + "</small>" +"</li><li><small>"+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"+lesson.dueTeacherName+"</small><li><li><small>预约:"+lesson.appointedStudentCount+"/"+lesson.maxStudentCount+"/"+lesson.checkedInsStudentCount+"</small></li></ul>";
+							t=t+"<ul class=\"open_type\"><li>"+lesson.danceName.replace("少儿","")+"</li><li><small>"+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"+lesson.dueTeacherName+"</small><li><li><small>预约:</small>"+lesson.appointedStudentCount+"/"+lesson.maxStudentCount+"/"+lesson.checkedInsStudentCount+"</li></ul>";
 						}
 					}
 						t=t+"</td>";
@@ -156,12 +154,6 @@ function loadDistrict(){
 				}
 				t=t+"</tbody>";
 				$("#lesson_table").html(t);
-			$('.list_type li').click(function(){
-  				$('.text_left_type').text(($(this).text())); 
-  				v_data.courseType=$(this).val();
-  				alert(v_data.courseType);
-  				loadLessonTable("api/lesson/weeklist",v_data);
-  								}) 
 			},
 			error: function(jqXHR){     
 			   alert(" loadLessonTable 发生错误：" + jqXHR.status);  
