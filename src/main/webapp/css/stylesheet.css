@@ -81,9 +81,17 @@
         .close_type li:first-child small{font-size: 12px;}
         .open_type li:first-child small{font-size: 12px;}
         
-     
-        
-        
-        
-        
+        .open_A_type{background-color:#FE007F;
+                   width:86%;
+                   border-radius:5px;
+                   padding-top: 5px;padding-bottom: 5px;padding-left: 4px;padding-right: 4px;color: white;}
+        .open_B_type{background-color: cornflowerblue;
+                   width:86%;
+                   border-radius:5px;
+                   padding-top: 5px;padding-bottom: 5px;padding-left: 4px;padding-right: 4px;color: white;}
+         
+          .footer{min-height: 30px; width: 96%; margin-top:10px;border-top:1px dotted darkgray;margin-left:2% ;}
+          .open_tip{height: 60px;line-height: 60px;}
+          .open_tip img{ width: 65px; height: auto;float: left;margin-top: 18px;}
+          .open_tip p{float: left; padding-left: 10px;font-size: 12px;}
 }   
