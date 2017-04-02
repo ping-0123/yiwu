@@ -19,4 +19,6 @@ public interface DepartmentService {
 	public void show();
 
 	public Store findStoreInfoById(int id);
+
+	List<Store> findStoreByCities(String city);
 }
