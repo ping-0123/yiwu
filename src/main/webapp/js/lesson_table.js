@@ -171,10 +171,18 @@ function loadStores(v_districtId){
 						if (data[k].list.length>j) {
 							var lesson=data[k].list[j];
 							if(lesson.courseType=="封闭式"){
-								t=t+"<ul class=\"close_type\"><li>"+ "<small>" + lesson.danceName.replace("少儿","") + "</small>" +"</li><li><small>"+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"+lesson.dueTeacherName+"</small><li><li><small>预约:"+lesson.attendedStudentCount+"/"+lesson.checkedInsStudentCount+"</small></li></ul>";
+								t=t+"<ul class=\"close_type\">" 
+								+ "<li><small>" + lesson.danceName.replace("少儿","") + "</small>" +"</li><li><small>"
+								+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"
+								+lesson.dueTeacherName+"</small><li><li><small>预约:"
+								+lesson.attendedStudentCount+"</small></li></ul>";
 							}
 						else if(lesson.courseType=="开放式"){
-							t=t+"<ul class=\"open_type\"><li>" + "<small>" + lesson.danceName.replace("少儿","") + "</small>" +"</li><li><small>"+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"+lesson.dueTeacherName+"</small><li><li><small>预约:"+lesson.appointedStudentCount+"/"+lesson.maxStudentCount+"/"+lesson.checkedInsStudentCount+"</small></li></ul>";
+							t=t+"<ul class=\"open_type\">" 
+								+ "<li><small>" + lesson.danceName.replace("少儿","") + "</small>" +"</li><li><small>"
+								+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"
+								+lesson.dueTeacherName+"</small><li><li><small>预约:"
+								+lesson.appointedStudentCount+"/"+lesson.checkedInsStudentCount+"/"+lesson.maxStudentCount+"</small></li></ul>";
 						}
 					}
 						t=t+"</td>";
