@@ -91,7 +91,7 @@
                    padding-top: 5px;padding-bottom: 5px;padding-left: 4px;padding-right: 4px;color: white;}
          
           .footer{min-height: 30px; width: 96%; margin-top:10px;border-top:1px dotted darkgray;margin-left:2% ;}
-          .open_tip{height: 60px;line-height: 60px;}
-          .open_tip img{ width: 65px; height: auto;float: left;margin-top: 18px;}
-          .open_tip p{float: left; padding-left: 10px;font-size: 12px;}
+          .open_tip{height: 40px;line-height: 40px;}
+          .open_tip img{ width: 6px; height: auto;float: left;margin-top: 13px;margin-left: 5px;}
+          .open_tip p{float: left; padding-left: 6px;font-size: 12px;}
 }   
