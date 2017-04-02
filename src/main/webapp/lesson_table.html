@@ -163,7 +163,7 @@
 
 <script>
     //  var ajaxUrl = "http://192.168.0.115:8080/springmvc3/";
-    	var ajaxUrl = "http://192.168.0.115:9080/yiwu/"
+    	var ajaxUrl = "http://192.168.0.115:8080/yiwu/"
     //	var ajaxUrl = "";
 		var url =  "api/lesson/weeklist";
 		var selectDate;
@@ -208,7 +208,6 @@
 				requestDate.setDate(requestDate.getDate() -7);
 				curDate=format(requestDate,'yyyy-MM-dd');
 				 data.date = curDate;
-				//$("#currentDate").val(curDate);
 				loadLessonTable(url,data);
 			});
 			
@@ -216,7 +215,6 @@
 				requestDate.setDate(requestDate.getDate() + 7);
 				curDate=format(requestDate,'yyyy-MM-dd');
 				 data.date = curDate;
-				//$("#currentDate").val(curDate);
 				loadLessonTable(url,data);
 			});
 			
