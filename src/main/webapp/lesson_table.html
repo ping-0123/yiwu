@@ -1,74 +1,175 @@
-﻿<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, user-scalable=no">
-<meta name="description" content="" />
-<link href="css/stylesheet.css" rel="stylesheet">
-<title></title>
-
-</head>
-<body class="webpBack">  
-	
-	<div class="display_first">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, user-scalable=no">
+		<title></title>
+		<link href="css/stylesheet.css" rel="stylesheet">
+		<script src="js/jquery.min.js" type="text/javascript"></script>
+		<script src="js/lesson_table.js"></script>
+	</head>
+	<body>
+		<div class="display_first">
 		<img src="images/kebiao.png">
 		<p>为了更好的体验，请切换至<span>横屏</span>
 		<small style="display: block;margin-top: 20px;">(若您用安卓手机观看，请跳转至浏览器)</small>
 		<p>
-	</div>
-	
-	<div class="display_second">
-	<div id="print">
-		<div id="selecttion" align="center">
-			<span id = "location" >
-				<label>城市</label>
-				<select id="district">
-				</select>
-				<label>门店</label>
-				<select id="store_2">
-				</select>
-			</span>
-			
-			<span  class="kecheng_type" >
-				<label>类型</label>
-					<select id = "danceType">
-						<option value="0" style="font-family: 'lcd_display_gridregular';">全部</option>
-						<option value="1">封闭式</option>
-						<option value="2">开放式</option>
-					</select>
-			</span>
-			
-			</div>
-			
-		  <br>	<span id="dateweek" >
-				<input type="button" name="lastweek" value="上一周"  id="lastweek"/>
-				<input id = "currentDate" type="date" value="2017-03-14" />
-				<input type="button" name="nextweek" value="下一周"  id="nextweek"/>
-			</span>
-		
-	  <div id="print_lessonTable" style="z-index: -1000;">  
-	      <table id="lessonTable">
-	      </table>
-	   </div>  
-   </div>
-   </div>
- 				
-  <script src="js/jquery.js"></script>
-  <script src="js/lesson_table.js"></script>
+	   </div>
+	   
+	    <div class="display_second">	    	
+	            <div class="nav">
+						<div class="logo">
+							<img src="images/logo.png">
+						</div>						    	 	
+						<div class="menu">
+							
+								<!--<div class="select">
+								<span class="text_left"  id="m_district"></span>
+								<span class="arrow_right"></span>
+							        <ul class="list" id="list">
+							        <li class="k_district-id"></li>
+									<li></li>
+									<li></li>
+									</ul>
+								</div>
+											<div class="select_store">
+											<span class="text_left_store" store-id="" id="m_storeid"></span>
+											<span class="arrow_right_store" ></span>
+										        <ul class="list_store" id="k_storeid">
+										        <li>门店门店们</li>
+												<li>门店2</li>
+												<li>门店3</li>
+												</ul>
+											</div>
+											
+														
+								            <div class="select_type">
+											<span class="text_left_type" type-id="">开放式</span>
+											<span class="arrow_right_type"></span>
+										        <ul class="list_type">
+										        <li >开放式</li>
+												<li>封闭式</li>
+												</ul>
+											</div>	-->
+						        <div class="select_option">
+						        	<ul>
+						        	 <li class="district">
+									  <select>
+									  <option value ="volvo">杭州</option>
+									  <option value ="saab">宁绍</option>
+									  <option value="opel">苏州</option>
+									  </select>
+						        	 </li>
+						        	 <li class="store">
+						        	  <select>
+									  <option value ="volvo">万华店</option>
+									  <option value ="saab">庆春店</option>
+									 </select>
+						        	 </li>
+						        	 <li class="type">
+						        	 <select>
+									  <option value ="volvo">开放式</option>
+									  <option value ="saab">封闭式</option>
+									 
+									  </select>
+						        	 </li>
+						        	</ul>	
+						        </div>
+	                  
+						</div>
+				</div>	
+						<div class="address_week">
+							
+						    <div class="first_line">
+						    	<span>庆春店</span><small>课程安排</small>
+						    </div>
+						    <div class="second_line">
+						    	<ul class="address_week_1">
+						    	<li id="address">地址：<span></span></li>
+						    	<li id="phone">电话：<span></span></li>
+						    	</ul>
+						    	<ul class="address_week_2">
+						    	<li><a href="" id="lastweek">< 上一周</a></li>	
+						    	<li><a href="" id="nextweek">下一周 ></a></li>
+						    	</ul>
+						    </div>
+						</div>
+						
+						<div class="table_lesson">
+							
+							<table id="lesson_table">
+								<thead>
+								<tr>
+								<th>
+									Mon
+								<br>周一
+								<br>2017-01-01
+								</th>
+								<th>
+									Twe
+								<br>周二
+								<br>2017-01-01
+								</th>
+								<th>
+									Wed
+								<br>周三
+								<br>2017-01-01
+								</th>
+								<th class="current">
+									Thu
+								<br>周四
+								<br>2017-01-01
+								</th>
+								<th>
+									Fri
+								<br>周五
+								<br>2017-01-01
+								</th>
+								<th>
+									Sat
+								<br>周六
+								<br>2017-01-01
+								</th>
+								<th>
+									Sun
+								<br>周日
+								<br>2017-01-01
+								</th>
+								</tr>
+								</thead>
+							
+								<tbody>
+								<tr>
+								<td>
+								<ul class="close_type">
+								<li>中国舞一级</li>
+								<li>09:00-10:00</li>
+								<li>张小华</li>
+								<li>预约：15/16</li>
+								</ul>	
+								</td>
+								<td>
+								<ul class="open_type">
+								<li>中国舞一级</li>
+								<li>09:00~10:00</li>
+								<li>张小华</li>
+								<li>预约：15/16</li>
+								</ul>	
+								</td>							
+								</tbody>
+							</table>
+						</div>			
+	    </div>
 
-    
-    
-
-    
-    <script>
-      var ajaxUrl = "http://192.168.0.115:8080/yiwu/";
-    //	var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/"
+<script>
+    //  var ajaxUrl = "http://192.168.0.115:8080/springmvc3/";
+    	var ajaxUrl = "http://192.168.0.115:9080/yiwu/"
     //	var ajaxUrl = "";
 		var url =  "api/lesson/weeklist";
 		var selectDate;
 		var districtId =82;
 		var storeId = 61;
-		var courseType;
+		var courseType="开放式";
 		var danceCatagory;
 		var teacherName;
 		var requestDate = new Date
@@ -83,26 +184,31 @@
 				weChat: 'oqSnljhna3lMmHtKODoSvWQNfUTc'
 			};
 
-		$(document).ready(function(){
-			$("#currentDate").val(curDate)
+
+			/*$(function(){
+				$("#list li").bind("click",function(){
+					selectedItem(this);
+				});
+			});
+
+			function selectedItem(obj){
+				var $elemThis=$(obj);
+				$elemThis.addClass("selected");
+				$elemThis.siblings().removeClass("selected");
+				var txt_this=$elemThis.text();
+				$("#m_district").text(txt_this);
+				alert(txt_this);
+			}*/
+
+			$(document).ready(function(){
+			//$("#currentDate").val(curDate)
 			loadDistrict();
-		
-			
-			$("#district").change(function(){
-				districtId = $(this).val();
-				loadStores(districtId);
-			});
-			
-			$("#store_2").change(function(){
-				data.storeId = $(this).val();
-				loadLessonTable(url,data);
-			});
 			
 			$("#lastweek").click(function(){
 				requestDate.setDate(requestDate.getDate() -7);
 				curDate=format(requestDate,'yyyy-MM-dd');
 				 data.date = curDate;
-				$("#currentDate").val(curDate);
+				//$("#currentDate").val(curDate);
 				loadLessonTable(url,data);
 			});
 			
@@ -110,29 +216,27 @@
 				requestDate.setDate(requestDate.getDate() + 7);
 				curDate=format(requestDate,'yyyy-MM-dd');
 				 data.date = curDate;
-				$("#currentDate").val(curDate);
+				//$("#currentDate").val(curDate);
 				loadLessonTable(url,data);
 			});
 			
-			$("#danceType").change(function(){
+			/*$("#danceType").change(function(){
 				data.courseType = $(this). val();
 				loadLessonTable(url,data);
 			});
+*/
 			
-			$("#currentDate").change(function(){
-				var d = $(this).val();
-				data.date =$(this).val();
-				requestDate.setFullYear(d.substr(0,4), d.substr(5,2)-1, d.substr(8,2));
-				loadLessonTable(url,data);
-			});
-			
-
 		});
+
 		
+	
+
+
 		
 		
 
 	</script>
 
-</body>
+
+	</body>
 </html>
