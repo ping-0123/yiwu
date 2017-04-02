@@ -81,4 +81,6 @@ public class TestCalendar {
 		List<Department> deptL = deptDao.findByProperty("city", "杭州");
 		System.out.println(deptL.size());
 	}
+	
+	
 }

@@ -94,7 +94,10 @@ public class LessonServiceImplTwo implements LessonService {
 		Calendar ca = Calendar.getInstance();
 		ca.setTime(date);
 		int weekday = ca.get(Calendar.DAY_OF_WEEK);
-		ca.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY-weekday);
+		if(weekday>=Calendar.MONDAY)
+			ca.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY-weekday);
+		else
+			ca.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY-weekday-7);
 		Date startDate = ca.getTime();
 		ca.add(Calendar.DAY_OF_WEEK, 6);
 		Date endDate = ca.getTime();

@@ -1,7 +1,6 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
