@@ -68,8 +68,8 @@
 						        	 </li>
 						        	 <li class="type">
 						        	 <select>
-									  <option value ="volvo">开放式</option>
-									  <option value ="saab">封闭式</option>
+									  <option value ="开放式">开放式</option>
+									  <option value ="封闭式">封闭式</option>
 									 
 									  </select>
 						        	 </li>
@@ -89,8 +89,8 @@
 						    	<li id="phone"><span></span></li>
 						    	</ul>
 						    	<ul class="address_week_2">
-						    	<li><a href="" id="lastweek">< 上一周</a></li>	
-						    	<li><a href="" id="nextweek">下一周 ></a></li>
+						    	<li><a  id="lastweek">< 上一周</a></li>	
+						    	<li><a  id="nextweek">下一周 ></a></li>
 						    	</ul>
 						    </div>
 						</div>
@@ -177,7 +177,7 @@
 		
 		var data = {
 				storeId : storeId,
-				courseType: '',
+				courseType: courseType,
 				teacherName: '',
 				danceCatagory: '',
 				date: curDate,
@@ -218,6 +218,23 @@
 				loadLessonTable(url,data);
 			});
 			
+			$('.district select').change(function(){
+				districtId = $(this).val();
+				loadStores(districtId);
+			});
+
+			$('.store select').change(function(){
+				storeId = $(this).val();
+				loadStoreAddress(storeId);
+				data.storeId = storeId;
+				loadLessonTable(url,data)
+			});
+			
+			$('.type select').change(function(){
+				courseType = $(this).val();
+				data.courseType= courseType;
+				loadLessonTable(url,data);
+			});
 			/*$("#danceType").change(function(){
 				data.courseType = $(this). val();
 				loadLessonTable(url,data);

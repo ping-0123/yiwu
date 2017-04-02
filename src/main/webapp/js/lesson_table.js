@@ -24,37 +24,57 @@ function format(time, format){
         }
     })
 }
+
 function loadDistrict(){
-	var url=ajaxUrl +"api/district/list";
-	$.ajax({
-		url:url,
-		type:"GET",
-		dataType:"json",
-		success:function(data){
-			//alert(JSON.stringify(data));
-			var li='';
-			//var fir=data[0];
-			//var fragment = document.createDocumentFragment();
-			for (var i = data.length - 1; i >= 0; i--) {
-				//var div=$('<span class="text_left" district-id="'+data.id+'">'+data.name+'</span>')[0];
-				//fragment.appendChild(div);
-				li=li+"<li k_district-id=\""+data[i].id+"\">"+data[i].name.substring(0,2)+"</li>";
-			}
-			$('#list').html(li);
-			$('.text_left').html(data[1].name.substring(0,2));
-			loadStores(data[1].id);
-			$('.list li').click(function(){
-			//data.districtId
-			$('.text_left').text(($(this).text())); 
-			var districtId=$(this).attr("k_district-id");
-			//alert(districtId);
-			loadStores(districtId);
-             }) 
-		}
-	})
+	var url = ajaxUrl +"api/district/list";
+	$.ajax({ 
+			type: "Get", 	
+			url: url,
+			dataType: "json",
+			success: function(data) {
+				var district;
+				var t="";
+				for(var i=0; i<data.length; i++){
+					district = data[i];
+					t= t+ "<option value=\"" + district.id + "\">" + district.name.replace("区域","")+ "</option>";
+				}
+				$('.district select').html(t);
+				loadStores(data[0].id);
+			},
+			error: function(jqXHR){     
+			   alert("loadDistrict 发生错误：" + jqXHR.status); 
+			},  
+		});	
 }
 
-	function loadStores(v_districtId){
+
+function loadStores(v_districtId){
+	var url = ajaxUrl + "api/store/list?districtId=" + v_districtId;
+	var v_data = data;
+	$.ajax({ 
+			type: "GET", 	
+			url: url,
+			dataType: "json",
+			success: function(data) {
+				var store;
+				var ts="";
+				for(var i=0; i<data.length; i++){
+					store = data[i];
+					ts= ts+ "<option value=\"" + store.id + "\">" + store.name + "</option>";
+				}
+				$('.store select').html(ts);
+				v_data.storeId = data[0].id;
+				loadStoreAddress(v_data.storeId);
+				loadLessonTable("api/lesson/weeklist",v_data);
+			},
+			error: function(jqXHR){     
+			   alert("loadStores 发生错误：" + jqXHR.status); 
+			},  
+		});	
+}
+
+
+	function loadStores_v1_1_0(v_districtId){
 			var url = ajaxUrl + "api/store/list?districtId=" + v_districtId;
 			var v_data=data;
 			$.ajax({
@@ -90,8 +110,6 @@ function loadDistrict(){
 				type:"GET",
 				dataType:"json",
 				success:function(data){
-					//alert(JSON.stringify(data));
-					 //console.log(data);
 				$('.address_week .first_line span').html(data.name);
 				$('#address span').html(data.address);
 				$('#phone span').html(data.telePhone);
@@ -118,6 +136,7 @@ function loadDistrict(){
 	var weekdayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 	var weekdayNamesCN=["周 日","周 一","周 二","周 三","周 四","周 五","周 六"];
 	var v_data=v_param;
+	var v_curDate = format(new Date(), 'yyyy-MM-dd');
 	$.ajax({ 
 			type: "POST", 	
 			url: url,
@@ -127,8 +146,16 @@ function loadDistrict(){
 
 				var t ="<thead><tr>";
 				var len = 0;
+				var class_current="nonCurrent";
 				for(var i=0; i<7; i++){
-					t=t+"<th>" + weekdayNames[data[i].weekday-1] + "<br/>"+weekdayNamesCN[data[i].weekday-1]+"</br> <small>" 
+					if(v_curDate == data[i].date){
+						class_current="current";
+					}else{
+						class_current ="nonCurrent";
+					}
+					t=t+"<th class=\"" + class_current + "\">" 
+						+ weekdayNames[data[i].weekday-1] + "<br/>"
+						+weekdayNamesCN[data[i].weekday-1]+"</br> <small>"
 						+ data[i].date + "</small></th>";
 					if(len<data[i].list.length){
 						len=data[i].list.length;
@@ -168,4 +195,4 @@ function loadDistrict(){
 			},  
 		});	
 }
-				
+
