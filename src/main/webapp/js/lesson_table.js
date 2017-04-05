@@ -170,21 +170,41 @@ function loadStores(v_districtId){
 						t=t+"<td>";
 						if (data[k].list.length>j) {
 							var lesson=data[k].list[j];
+						
 							if(lesson.courseType=="封闭式"){
-								t=t+"<ul class=\"close_type\">" 
-								+ "<li><small>" + lesson.danceName.replace("少儿","") + "</small>" +"</li><li><small>"
-								+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"
-								+lesson.dueTeacherName+"</small><li><li><small>预约:"
-								+lesson.attendedStudentCount+"</small></li></ul>";
+								t=t+"<ul class=\"close_type\">" ;
 							}
-						else if(lesson.courseType=="开放式"){
-							t=t+"<ul class=\"open_type\">" 
-								+ "<li><small>" + lesson.danceName.replace("少儿","") + "</small>" +"</li><li><small>"
+							else if(lesson.courseType =="开放式"){
+								if(lesson.subCourseType == "开放式A"){
+									t = t +"<ul class=\"open_A_type\">" ;}
+								else if(lesson.subCourseType == "开放式B"){
+									t = t +"<ul class=\"open_B_type\">" ;}
+							}
+							
+							t= t+ "<li><small>" + lesson.danceName.replace("少儿","") + lesson.danceGrade  + "</small>" +"</li><li><small>"
 								+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"
-								+lesson.dueTeacherName+"</small><li><li><small>预约:"
-								+lesson.appointedStudentCount+"/"+lesson.checkedInsStudentCount+"/"+lesson.maxStudentCount+"</small></li></ul>";
+								+lesson.dueTeacherName+"</small><li>" ;
+								
+							if(lesson.courseType=="封闭式"){
+							//	封闭式的预约：门店点名人数|教师点名人数|班级人数
+								var classStudentCount =0;
+								if(lesson.lessonDate >=new Date()){
+									classStudentCount = lesson.attendedStudentCount;
+								}else{
+									classStudentCount = lesson.checkedInsStudentCount;
+								}
+								t= t+ "<li><small>预约:" + lesson.storeManCallRollCount
+									+ "/" + lesson.teacherCallRollCount 
+									+ "/" + classStudentCount + "</small></li></ul>";
+							}
+							else if(lesson.courseType =="开放式"){
+							//	开放式的预约： 预约人数/签到人数/容量
+								t= t+ "<li><small>预约:" + lesson.appointedStudentCount 
+									+ "/" +lesson.checkedInsStudentCount
+									+ "/" +lesson.maxStudentCount
+									+"</small></li></ul>";
+							}
 						}
-					}
 						t=t+"</td>";
 					}
 					t=t+"</tr>"
