@@ -259,6 +259,7 @@
 */
 			$('#address span').click(function(){
 				var address = $(this).text();
+				var start = null;
 				
 				// 百度地图API功能
 				var map = new BMap.Map("map");
@@ -269,20 +270,24 @@
 				// 将地址解析结果显示在地图上,并调整地图视野
 				myGeo.getPoint(address, function(point){
 					if (point) {
-						map.centerAndZoom(point, 16);
+						start = point;
+						map.centerAndZoom(point, 13);
 						map.addOverlay(new BMap.Marker(point));
 					}else{
 						alert("您选择地址没有解析到结果!");
 					}
-				}, "绍兴市");
+				}, "");
 				
 				var geolocation = new BMap.Geolocation();
 				geolocation.getCurrentPosition(function(r){
 					if(this.getStatus() == BMAP_STATUS_SUCCESS){
-						var mk = new BMap.Marker(r.point);
-						map.addOverlay(mk);
-						<!--map.panTo(r.point);-->
-						// alert('您的位置：'+r.point.lng+','+r.point.lat);
+						map.addOverlay(new BMap.Marker(r.point));
+						map.panTo(r.point);
+						var routePolicy = [BMAP_DRIVING_POLICY_LEAST_TIME,BMAP_DRIVING_POLICY_LEAST_DISTANCE,BMAP_DRIVING_POLICY_AVOID_HIGHWAYS];
+						var route = routePolicy[1];
+						var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true},policy: route});
+						driving.search(start, r.point);
+						<!--alert('您的位置：'+r.point.lng+','+r.point.lat);-->
 					}
 					else {
 						alert('failed'+this.getStatus());
