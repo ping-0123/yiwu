@@ -259,7 +259,7 @@
 */
 			$('#address span').click(function(){
 				var address = $(this).text();
-				var start = null;
+				var targetLocation = null;
 				
 				// 百度地图API功能
 				var map = new BMap.Map("map");
@@ -270,7 +270,7 @@
 				// 将地址解析结果显示在地图上,并调整地图视野
 				myGeo.getPoint(address, function(point){
 					if (point) {
-						start = point;
+						targetLocation = point;
 						map.centerAndZoom(point, 13);
 						map.addOverlay(new BMap.Marker(point));
 					}else{
@@ -286,7 +286,7 @@
 						var routePolicy = [BMAP_DRIVING_POLICY_LEAST_TIME,BMAP_DRIVING_POLICY_LEAST_DISTANCE,BMAP_DRIVING_POLICY_AVOID_HIGHWAYS];
 						var route = routePolicy[1];
 						var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true},policy: route});
-						driving.search(start, r.point);
+						driving.search(r.point,targetLocation);
 						<!--alert('您的位置：'+r.point.lng+','+r.point.lat);-->
 					}
 					else {
