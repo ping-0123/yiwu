@@ -168,7 +168,7 @@
     	  <img src="images/tip.png">
     	  <p>开放式课程到场人数不足3人则该节课取消。敬请谅解！</p>
     	</div>
-    	<div id="map" style="width: 1000px; height: 1000px;"></div>
+    	<div id="map" style="width: 100%; height: 500px;"></div>
     </div>	
     </div>
 	
@@ -216,6 +216,9 @@
 			$(document).ready(function(){
 			//$("#currentDate").val(curDate)
 			loadDistrict();
+			var map = new BMap.Map("map");
+			var point = new BMap.Point(116.331398,39.897445);
+			map.centerAndZoom("杭州",12);
 			
 			$("#lastweek").click(function(){
 				requestDate.setDate(requestDate.getDate() -7);
@@ -262,9 +265,7 @@
 				var targetLocation = null;
 				
 				// 百度地图API功能
-				var map = new BMap.Map("map");
-				var point = new BMap.Point(116.331398,39.897445);
-				map.centerAndZoom(point,12);
+			
 				// 创建地址解析器实例
 				var myGeo = new BMap.Geocoder();
 				// 将地址解析结果显示在地图上,并调整地图视野
