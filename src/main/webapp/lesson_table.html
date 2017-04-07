@@ -216,9 +216,7 @@
 			$(document).ready(function(){
 			//$("#currentDate").val(curDate)
 			loadDistrict();
-			var map = new BMap.Map("map");
-			var point = new BMap.Point(116.331398,39.897445);
-			map.centerAndZoom("杭州",12);
+
 			
 			$("#lastweek").click(function(){
 				requestDate.setDate(requestDate.getDate() -7);
@@ -264,7 +262,13 @@
 				var address = $(this).text();
 				var targetLocation = null;
 				
+				
 				// 百度地图API功能
+				var map = new BMap.Map("map");
+				<!--var point = new BMap.Point(116.331398,39.897445);-->
+				map.centerAndZoom("杭州",12);
+				
+				
 			
 				// 创建地址解析器实例
 				var myGeo = new BMap.Geocoder();

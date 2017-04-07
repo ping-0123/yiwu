@@ -92,6 +92,13 @@ public class BaseDaoImpl<T,PK extends Serializable>
 				v_map.values().toArray(new Object[] {}));
 
   
-}  
+}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findAll() {
+		String hql = "from "+  entityClass.getSimpleName();
+		return (List<T>) getHibernateTemplate().find(hql);
+	}  
 }
 

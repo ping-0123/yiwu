@@ -25,6 +25,7 @@ public class Account {
 	@Column(length = 32)
 	private String accountName;
 	
+	
 	@Column(length=40)
 	private String password;
 	
