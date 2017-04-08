@@ -81,8 +81,10 @@ public class BaseDaoImpl<T,PK extends Serializable>
 		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
 		for (String string : map.keySet()) {
 			if(null != string && !"".equals(string)){
-				hql.append(" and " + string + "=:" + string);
-				v_map.put(string, map.get(string));
+				String valString = string.replace(".", "");
+//				valString =valString.replace(".", "");
+				hql.append(" and " + string + "=:" + valString);
+				v_map.put(valString, map.get(string));
 			}
 		}
 		
@@ -99,6 +101,18 @@ public class BaseDaoImpl<T,PK extends Serializable>
 	public List<T> findAll() {
 		String hql = "from "+  entityClass.getSimpleName();
 		return (List<T>) getHibernateTemplate().find(hql);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public PK saveOrUpdate(T entity) {
+		return (PK) getHibernateTemplate().save(entity);
+	}
+
+	@Override
+	public void delete(T entity) {
+		getHibernateTemplate().delete(entity);
+		
 	}  
 }
 

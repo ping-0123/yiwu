@@ -1,6 +1,6 @@
 package com.yinzhiwu.springmvc3.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class RevenueModel {
 

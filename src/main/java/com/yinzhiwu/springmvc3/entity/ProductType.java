@@ -6,10 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+
+import org.hibernate.annotations.NaturalId;
 
 @Entity
-@Table(name="product_type", uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
+@Table(name="product_type")
 public class ProductType {
 
 	
@@ -17,7 +18,8 @@ public class ProductType {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column
+	@NaturalId
+	@Column(name="name", unique=true)
 	private String name;
 
 	public final Integer getId() {

@@ -8,24 +8,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.springmvc3.model.ReturnedJson;
-import com.yinzhiwu.springmvc3.service.RevenueService;
+import com.yinzhiwu.springmvc3.service.PlanRevenueService;
 
 @Controller
-@RequestMapping("/api/revenue")
-public class RevenueController {
+@RequestMapping(value="/api/planRevenue")
+public class PlanRevenueController {
 	
 	@Autowired
-	private RevenueService	revenueService;
-
+	private PlanRevenueService planRevenueService;
+	
 	@ResponseBody
-	@RequestMapping(value="/getMonthlyRevenue"
+	@RequestMapping(value="/getMonthlyPlanRevenue"
 			, method={RequestMethod.GET})
-	public ReturnedJson getMonthlyRevenue(@RequestParam int year,
-										@RequestParam int month,
-										@RequestParam int districtId,
-										@RequestParam int productTypeId){
+	public ReturnedJson getMonthlyPlanRevenue(@RequestParam int districtId,
+											@RequestParam int year,
+											@RequestParam int month,
+											@RequestParam int productTypeId){
 		
-		return new ReturnedJson( 
-				revenueService.getMonthlyRevenue(year,month, districtId, productTypeId));
+		return new ReturnedJson(
+				planRevenueService.getDistricMonthlyPlanRevenue(districtId, year, month, productTypeId));
 	}
 }

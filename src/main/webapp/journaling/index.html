@@ -36,11 +36,11 @@
 						<div class="time_choose">
 							<ul class="time_choose_1">
 								<li>营业汇总表</li>
-								<li>2017年4月</li>
+								<li class="year_month">2017年4月</li>
 							</ul>
 							<ul class="time_choose_2">
-								<li>< 上月</li>
-								<li>下月 ></li>
+								<li class="lastMonth">< 上月</li>
+								<li class="nextMonth">下月 ></li>
 							</ul>
 						</div>
 		    </div>
@@ -91,7 +91,7 @@
 			
 			
 			<div class="content">
-				                <ul class="title liveDiv">
+				                <ul id="head_stores" class="title liveDiv">
 								<li>庆春</li>
 								<li>万华</li>
 								<li>湖墅</li>
@@ -107,6 +107,7 @@
 								<li>下沙</li>	
 								<li>SUM</li>	
 								</ul>
+			<!--<div class="revenue_amount">-->
 <ul class="statistics"><li>200,01</li><li>20,000</li><li>20,000</li><li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li><li>30,000</li></ul>  
 <ul class="statistics"><li>200,02</li><li>20,000</li><li>20,000</li><li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li><li>30,000</li></ul> 
 <ul class="statistics"><li>200,03</li><li>20,000</li><li>20,000</li><li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li><li>30,000</li></ul> 
@@ -137,6 +138,7 @@
 <ul class="statistics"><li>200,28</li><li>20,000</li><li>20,000</li><li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li><li>30,000</li></ul> 
 <ul class="statistics"><li>200,29</li><li>20,000</li><li>20,000</li><li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li><li>30,000</li></ul> 
 <ul class="statistics"><li>200,30</li><li>20,000</li><li>20,000</li><li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li>	<li>20,000</li><li>30,000</li></ul> 
+			   
 			            <ul class="statistics bottom">
 						<li>200,000</li>
 						<li>20,000</li>
@@ -185,8 +187,10 @@
 						<li>20,000</li>
 						<li>10%</li>
 			       </ul>
+			 <!--</div>--> 
 			 </div>
 		 </div>
+<script src="js/journaling.js"></script>
 <script type="text/javascript">
 $(function () {
 var ie6 = document.all;
@@ -212,6 +216,8 @@ $(".content").each(function(){
     	$('.liveDiv').css('left',-sl+ldl);
     };
 })
-</script>	 	    
+</script>
+
+
 </body>
 </html>
