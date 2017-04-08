@@ -3,8 +3,10 @@ package com.yinzhiwu.springmvc3.service.impl;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import com.yinzhiwu.springmvc3.dao.DepartmentDao;
 import com.yinzhiwu.springmvc3.dao.OrderDao;
 import com.yinzhiwu.springmvc3.dao.PlanRevenueDao;
 import com.yinzhiwu.springmvc3.entity.Department;
+import com.yinzhiwu.springmvc3.entity.PlanRevenue;
 import com.yinzhiwu.springmvc3.model.RevenueList;
 import com.yinzhiwu.springmvc3.model.RevenueModel;
 import com.yinzhiwu.springmvc3.service.RevenueService;
@@ -31,14 +34,20 @@ public class RevenueServiceImpl implements RevenueService{
 	@Qualifier("departmentDaoImplTwo")
 	private DepartmentDao deptDao;
 	
+	@Autowired
+	private PlanRevenueDao prDao;
+	
 	
 	@Override
-	public Object[][] getMonthlyRevenue(int year, int month, int districtId, int productTypeId) {
+	public Object getMonthlyRevenue(int year, int month, int districtId, int productTypeId) {
 		//取出该区域下所有的门店
-		List<Department> storeList = deptDao.findStoresByDistrictId(districtId);
-//		for (Department department : storeList) {
-//			logger.info(department.getId() + department.getDeptName());
-//		}
+		List<Department> storeList = null;
+		if(districtId ==0){
+			storeList= deptDao.findAllStores();
+		}else{
+			storeList= deptDao.findStoresByDistrictId(districtId);
+		}
+		
 		int cols = storeList.size();
 		// 设置开始和结束时间
 		Calendar sc = Calendar.getInstance();
@@ -54,6 +63,7 @@ public class RevenueServiceImpl implements RevenueService{
 		int rows = 1 + (int) ((end.getTime()-start.getTime())/(1000*60*60*24));
 		
 		RevenueModel[][] revenue = new RevenueModel[rows][cols];
+	
 		sc.setTime(start);
 		for(int i=0; i<rows; i++){
 			for(int j=0; j<cols; j++){
@@ -69,9 +79,6 @@ public class RevenueServiceImpl implements RevenueService{
 		
 		//取出按天按店的营业额
 		List<Object[]> revenueList = orderDao.getMonthlyRevenue(districtId, productTypeId, start, end);
-//		for (Object[] objects : revenueList) {
-//			logger.info(objects[0] + " " + objects[1] + " " + objects[2]);
-//		}
 		
 		for (Object[] objs : revenueList) {
 			try {
@@ -84,7 +91,19 @@ public class RevenueServiceImpl implements RevenueService{
 			}
 		}
 		
-		return revenue;
+		Map<String, Object> map = new HashMap<>();
+		map.put("revenues" , revenue);
+		
+		PlanRevenue[]  plans = new PlanRevenue[cols];
+		for(int j=0; j<cols; j++){
+			PlanRevenue p = prDao.findStoreMonthlyPlanRevenue(
+					storeList.get(j).getId(), productTypeId, year, month);
+			plans[j] = p;
+		
+		}
+
+		map.put("plans", plans);
+		return map;
 	}
 	
 	private int getCloumnIndex(int storeId, List<Department> list) throws Exception{

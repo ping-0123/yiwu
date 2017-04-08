@@ -27,7 +27,7 @@ public class PlanRevenueDaoImpl extends BaseDaoImpl<PlanRevenue, Integer> implem
 			if (list.size()>0)
 				return list.get(0);
 			else
-				return null;
+				return new PlanRevenue(storeId,year, month,0.0);
 		}
 		
 		list = findByProperties(map);

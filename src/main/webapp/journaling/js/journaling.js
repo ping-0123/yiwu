@@ -2,16 +2,49 @@ var ajaxUrl = "http://192.168.0.115:8080/yiwu/";
 var currentDate = new Date();
 var year=currentDate.getFullYear();
 var month = currentDate.getMonth();
-var districtId;
-var productTypeId;
+var districtId =82;
+var productTypeId=0;
 
 
 loadDistrict();
 loadProductLines();
-loadRevenue(113,2017,3,0);
+loadYearMonth();
+loadRevenue(districtId,year,month,productTypeId);
+
+$('.all select').change(function(){
+	districtId = $(this).val();
+	loadRevenue(districtId,year,month,productTypeId);
+});
+
+$('#productLine').change(function(){
+	productTypeId = $(this).val();
+	loadRevenue(districtId,year,month,productTypeId);
+});
+
+$('#lastMonth').click(function(){
+	if(month>1){
+		month = month -1;
+	}else{
+		month=12;
+		year=year-1;
+	}
+		loadYearMonth();
+		loadRevenue(districtId,year,month,productTypeId);
+});
+
+$('#nextMonth').click(function(){
+	if(month<12){
+		month= month +1;
+	}else{
+		month=1;
+		year = year + 1;
+	}
+	loadYearMonth();
+	loadRevenue(districtId,year,month,productTypeId);
+});
 
 function loadYearMonth(){
-	$('.year_month').text(year + "年" + month + "月");
+	$('#year_month').text(year   + "年" + month + "月");
 }
 
 function loadRevenue(v_districtId,
@@ -28,38 +61,78 @@ function loadRevenue(v_districtId,
 		month:v_month,
 		productTypeId:v_productTypeId},
 		function(data){
-			writeLeftDate(data.data);
-//			writeHeadStores(data.data);
-			var arrayDayRevenueSum = new Array(data.data.length);
-			var arrayStoreRevenueSum = new Array(data.data[0].length + 1);
-			var arrayStorePlanSum = new Array(data.data[0].length +1);
-//			writeRevenue();
+			var revenues = data.data.revenues;
+			var plans = data.data.plans;
+			var rows = revenues.length;
+			var cols= revenues[0].length;
+			
+			var arrayDayRevenueSum = new Array(revenues.length);
+			for(var m=0; m<revenues.length; m++){
+				arrayDayRevenueSum[m]=0;
+			}
+			var arrayStoreRevenueSum = new Array(revenues[0].length + 1);
+			var arrayRate = new Array(revenues[0].length + 1);
+			var arrayStorePlanSum = new Array(revenues[0].length +1);
+			for(var k=0; k<arrayStoreRevenueSum.length; k++){
+				arrayStoreRevenueSum[k]=0;
+				arrayRate[k] =0
+				arrayStorePlanSum[k]=0
+			}
+			
+			
+//			alert(revenues[0][0].date);
+			writeLeftDate(revenues);
+			writeHeadStores(revenues);
+			writeRevenue();
 			
 			function writeRevenue(){
 				var t = "";
-				for(var i=0; i<data.data.length; i++){
+			
+				for(var i=0; i<revenues.length; i++){
 					t=t + "<ul class=\"statistics\">";
 					var sumDay = 0;
-					for(var j=0; j<data.data[i].length; j++){
-						var v_amount = data.data[i][j].amount;
-						if(v_amount>0){
+					for(var j=0; j<revenues[i].length; j++){
+						var v_amount = revenues[i][j].amount;
+						if(v_amount != 0){
 							t = t+"<li>" + v_amount + "</li>";
 						}else{
 							t = t+"<li></li>";
 						}
-						sumDay = sumDay + v_amount;
-//						arrayDayRevenueSum[i] =0 + arrayDayRevenueSum[i] + v_amount;
-//						arrayStoreRevenueSum[j] = arrayStoreRevenueSum[j] + v_amount;
+						arrayDayRevenueSum[i] =0 + arrayDayRevenueSum[i] + v_amount;
+						arrayStoreRevenueSum[j] =0 + arrayStoreRevenueSum[j] + v_amount;
 					}
-					t= t+"<li>" + sumDay + "</li>";
+					t= t+"<li>" + arrayDayRevenueSum[i] + "</li>";
 					t= t+ "</ul>";
-					arrayDayRevenueSum[i]= sumDay;
-//					arrayStoreRevenueSum[j+1]  = arrayStoreRevenueSum[j+1] +arrayDayRevenueSum[i];
+					arrayStoreRevenueSum[cols]  = 0 + arrayStoreRevenueSum[cols] +arrayDayRevenueSum[i];
 					
 				}
+				
+				//纵向求和
 				t=t+"<ul class=\"statistics bottom\">";
-				for(var j=0; j<data.data[0].length +1; j++){
-					t=t+"<li>" +0 +"</li>";
+				for(var j=0; j<arrayStoreRevenueSum.length; j++){
+					t=t+"<li>" +arrayStoreRevenueSum[j] +"</li>";
+				}
+				t=t+"</ul>"
+				
+				//营业计划
+				t=t+"<ul class=\"statistics bottom\">";
+				for(var j=0; j<cols; j++){
+					arrayStorePlanSum[cols] =arrayStorePlanSum[cols] + plans[j].amount;
+					arrayStorePlanSum[j] = plans[j].amount;
+					t = t + "<li>" + plans[j].amount +"</li>";
+				}
+				t = t + "<li>" + arrayStorePlanSum[cols] +"</li>";
+				t=t+"</ul>"
+				
+				//完成率
+				t=t+"<ul class=\"statistics bottom\">";
+				for(var j=0; j<=cols; j++){
+					if (arrayStorePlanSum[j]>0){
+						arrayRate[j] = arrayStoreRevenueSum[j]/arrayStorePlanSum[j];
+						t = t + "<li>" + (arrayRate[j] *100).toFixed(1) +"%</li>";
+					}else{
+						t = t + "<li></li>";
+					}
 				}
 				t=t+"</ul>"
 				
@@ -71,7 +144,7 @@ function loadRevenue(v_districtId,
 
 
 function writeLeftDate(v_data){
-	var t="<li class=\"posion_nav\"></li>";
+	var t="";
 	for(var i=0; i<v_data.length; i++){
 		t=t+ "<li>"+ v_data[i][0].date + "</li>";
 	}
@@ -79,7 +152,7 @@ function writeLeftDate(v_data){
 	t = t+"<li class=\"bottom\">Plan</li>";
 	t = t+"<li class=\"bottom\">Rate</li>";
 	
-	$('.left ul').html(t);
+	$('#left_date').html(t);
 }
 
 function writeHeadStores(v_data){
@@ -100,7 +173,7 @@ function loadDistrict(){
 			async:false,
 			success: function(data) {
 				var district;
-				var t="<option value=\"0\">城市</option>";
+				var t="<option value=\"82\">城市</option>";
 				for(var i=0; i<data.length; i++){
 					district = data[i];
 					t= t+ "<option value=\"" + district.id + "\">" + district.name.replace("区域","")+ "</option>";
