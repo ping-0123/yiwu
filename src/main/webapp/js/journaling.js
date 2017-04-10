@@ -1,6 +1,6 @@
-var ajaxUrl = "http://192.168.0.115:8080/yiwu/";
+//var ajaxUrl = "http://192.168.0.115:8080/yiwu/";
 //var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/";
-//var ajaxUrl = "";
+var ajaxUrl = "";
 var currentDate = new Date();
 var year=currentDate.getFullYear();
 var month = currentDate.getMonth();

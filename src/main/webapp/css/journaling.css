@@ -40,7 +40,7 @@
   .bottom li{background-color: gainsboro;}
   .left_position{ width: 75px;position: absolute;top:120px;}
   .left_position ul li{ width: 75px; height: 25px; line-height:25px;text-align:right;background-color: white;}
-  .left_position ul li:first-child{background-color: gainsboro;}
+  .posion_nav{background-color: gainsboro!important;}
 
 
 }
