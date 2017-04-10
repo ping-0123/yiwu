@@ -1,6 +1,7 @@
 package com.test;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +15,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.springmvc3.dao.DepartmentDao;
+import com.yinzhiwu.springmvc3.dao.OrderDao;
+import com.yinzhiwu.springmvc3.dao.PlanRevenueDao;
 import com.yinzhiwu.springmvc3.dao.StoreInfoDao;
 import com.yinzhiwu.springmvc3.dao.StoreManCallRollDao;
 import com.yinzhiwu.springmvc3.dao.TeacherCallRollDao;
 import com.yinzhiwu.springmvc3.entity.Department;
+import com.yinzhiwu.springmvc3.entity.PlanRevenue;
 import com.yinzhiwu.springmvc3.entity.StoreInfo;
 import com.yinzhiwu.springmvc3.entity.StoreManCallRoll;
 import com.yinzhiwu.springmvc3.entity.TeacherCallRoll;
@@ -103,5 +107,47 @@ public class TestCalendar {
 	
 	@Test
 	public void testSCRcount(){
+	}
+	
+	@Autowired
+	private OrderDao ordDao;
+	
+	@Test
+	public void testFindPerformace(){
+		Calendar ca = Calendar.getInstance();
+		Date end = ca.getTime();
+		ca.add(Calendar.DAY_OF_MONTH, -30);
+		Date start = ca.getTime();
+		List<Object[]> l = ordDao.getMonthlyRevenue(113,3 , start, end);
+		for (Object[] objs : l) {
+			for (Object object : objs) {
+				System.out.println(object + "  ");
+			}
+		}
+		System.out.println(l.size());
+	}
+	
+	@Test
+	public void testCalendarCompareTo(){
+		Calendar start =Calendar.getInstance();
+		start.set(Calendar.MONTH, 2);
+//		start.set(Calendar.YEAR,2015);
+		Calendar end = Calendar.getInstance();
+		int s = end.get(Calendar.DAY_OF_YEAR) - start.get(Calendar.DAY_OF_YEAR);
+		System.out.println(s);
+		System.out.println((end.getTimeInMillis()-start.getTimeInMillis())/(1000*60*60*24));
+	}
+	
+	@Autowired
+	private PlanRevenueDao prDao;
+	
+	
+	@Test
+	public void testPrDao(){
+		Map<String, Object> map = new HashMap<>();
+		map.put("aaa.aaa", "bbbb");
+		System.out.println(map.get("aaa.aaa"));
+		PlanRevenue p = (prDao.findStoreMonthlyPlanRevenue(63, 0, 2017, 3));
+		System.out.println(p.getAmount());
 	}
 }

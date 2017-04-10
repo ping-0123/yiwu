@@ -16,4 +16,6 @@ public interface DepartmentDao  extends IBaseDao<Department, Integer>{
 
 	List<String> findCities();
 
+	public List<Department> findAllStores();
+
 }

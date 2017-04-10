@@ -1,0 +1,90 @@
+
+/*竖屏*/
+@media screen and (orientation: portrait) { 
+  *{margin:0;padding:0;list-style: none;text-decoration: none;font-family: "微软雅黑";font-size: 12px;}
+  .logo{ height: 80px;float: left; width: 40%;}
+  .logo img{ width:auto; 
+             width:auto;height: 40px;
+             margin-top: 20px; margin-left:12%}
+  .menu{ float: left; width: 60%;}
+  .menu select{border: none; 
+              background: transparent; 
+              appearance:none;
+              -moz-appearance:none;
+              -webkit-appearance:none;
+              width: 100%;
+              margin-top: 40px;
+             }
+ 
+  .menu ul li{float: left;height: 80px;}
+  .menu ul li:first-child{ width: 25%;}
+  .menu ul li:last-child{ width: 35%;}
+  .all{background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:30px 43px;margin-left: 35%;}
+  .product{background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:55px 43px;}
+  .time_choose{clear: both; width: 100%; height: 40px;}
+  .time_choose ul{ width: 50%;float: left;}
+  .time_choose ul li{ float: left;}
+  .time_choose_1 li:first-child{ font-size: 16px;margin-left: 10%;}
+  .time_choose_1 li:last-child{ color: darkseagreen;padding-top: 4px;padding-left: 5px;}
+  .time_choose_2 li:first-child{font-size: 16px;margin-left: 20%;}
+  .time_choose_2 li:last-child{font-size: 16px;margin-left: 15%;}
+  .title{min-width:1500px;clear: both;}
+  .title li{background-color: gainsboro;float: left; width: 70px; text-align: center;height: 25px;line-height: 25px;}
+  .table{ width: 100%; margin: 0 auto;overflow: hidden;}
+  .left{ width: 20%; float: left;}
+
+  .left ul li{ width: 100%; height: 25px; line-height: 25px;text-align: center;}
+  .posion_nav{background-color: gainsboro;}
+  
+  .content{overflow-x:scroll; width:80%;float: left;}
+  .statistics{ min-width:1500px;clear: both;}
+  .statistics li{ float: left; width: 70px; text-align: center;height: 25px;line-height: 25px;}
+  .bottom{background-color: gainsboro;}
+  .bottom li{background-color: gainsboro;}
+
+}
+/*横屏*/
+@media screen and (orientation: landscape) { 
+*{margin:0;padding: 0;list-style: none;text-decoration: none;}
+  .logo{ height: 80px;float: left; width: 40%;}
+  .logo img{ width:auto; 
+             width:auto;height: 40px;
+             margin-top: 20px; margin-left:12%}
+  .menu{ float: left; width: 60%;}
+  .menu select{border: none; 
+              background: transparent; 
+              appearance:none;
+              -moz-appearance:none;
+              -webkit-appearance:none;
+              width: 100%;
+              margin-top: 40px;
+             }
+ 
+  .menu ul li{float: left;height: 80px;}
+  .menu ul li:first-child{ width: 25%;}
+  .menu ul li:last-child{ width: 30%;margin-left: 5%;}
+  .all{background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:30px 43px;margin-left: 35%;}
+  .product{background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:55px 43px;}
+  .time_choose{clear: both; width: 100%; height: 40px;}
+  .time_choose ul{ width: 50%;float: left;}
+  .time_choose ul li{ float: left;}
+  .time_choose_1 li:first-child{ font-size: 16px;margin-left: 10%;}
+  .time_choose_1 li:last-child{ color: darkseagreen;padding-top:2px;padding-left: 8px;}
+  .time_choose_2 li:first-child{font-size: 16px;margin-left: 20%;font-weight: bold;}
+  .time_choose_2 li:last-child{font-size: 16px;margin-left: 23%;font-weight: bold;}
+  .title{min-width:1500px;clear: both;}
+  .title li{background-color: gainsboro;float: left; width: 70px; text-align: center;height: 25px;line-height: 25px;}
+  .table{ width: 100%; margin: 0 auto;overflow: hidden;}
+  .left{ width: 20%; float: left;}
+ 
+  .left ul li{ width: 100%; height: 25px; line-height: 25px;text-align: center;}
+   .posion_nav{background-color: gainsboro;}
+  
+  .content{overflow-x:scroll; width:80%;float: left;}
+  .statistics{ min-width:1500px;clear: both;}
+  .statistics li{ float: left; width: 70px; text-align: center;height: 25px;line-height: 25px;}
+  .bottom{background-color: gainsboro;}
+  .bottom li{background-color: gainsboro;}
+
+
+}
