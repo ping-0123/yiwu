@@ -28,7 +28,7 @@
   .time_choose_1 li:last-child{ color: darkseagreen;padding-top: 4px;padding-left: 5px;}
   .time_choose_2 li:first-child{font-size: 16px;margin-left: 20%;}
   .time_choose_2 li:last-child{font-size: 16px;margin-left: 15%;}
-  .title{width:1000px;clear: both;}
+  .title{min-width:1500px;clear: both;}
   .title li{background-color: gainsboro;float: left; width: 70px; text-align: center;height: 25px;line-height: 25px;}
   .table{ width: 100%; margin: 0 auto;overflow: hidden;}
   .left{ width: 20%; float: left;}
@@ -37,7 +37,7 @@
   .posion_nav{background-color: gainsboro;}
   
   .content{overflow-x:scroll; width:80%;float: left;}
-  .statistics{ width:1000px;clear: both;}
+  .statistics{ min-width:1500px;clear: both;}
   .statistics li{ float: left; width: 70px; text-align: center;height: 25px;line-height: 25px;}
   .bottom{background-color: gainsboro;}
   .bottom li{background-color: gainsboro;}
@@ -72,7 +72,7 @@
   .time_choose_1 li:last-child{ color: darkseagreen;padding-top:2px;padding-left: 8px;}
   .time_choose_2 li:first-child{font-size: 16px;margin-left: 20%;font-weight: bold;}
   .time_choose_2 li:last-child{font-size: 16px;margin-left: 23%;font-weight: bold;}
-  .title{width:1000px;clear: both;}
+  .title{min-width:1500px;clear: both;}
   .title li{background-color: gainsboro;float: left; width: 70px; text-align: center;height: 25px;line-height: 25px;}
   .table{ width: 100%; margin: 0 auto;overflow: hidden;}
   .left{ width: 20%; float: left;}
@@ -81,7 +81,7 @@
    .posion_nav{background-color: gainsboro;}
   
   .content{overflow-x:scroll; width:80%;float: left;}
-  .statistics{ width:1000px;clear: both;}
+  .statistics{ min-width:1500px;clear: both;}
   .statistics li{ float: left; width: 70px; text-align: center;height: 25px;line-height: 25px;}
   .bottom{background-color: gainsboro;}
   .bottom li{background-color: gainsboro;}

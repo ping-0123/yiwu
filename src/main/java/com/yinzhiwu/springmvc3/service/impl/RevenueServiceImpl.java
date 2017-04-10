@@ -1,10 +1,8 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +16,6 @@ import com.yinzhiwu.springmvc3.dao.OrderDao;
 import com.yinzhiwu.springmvc3.dao.PlanRevenueDao;
 import com.yinzhiwu.springmvc3.entity.Department;
 import com.yinzhiwu.springmvc3.entity.PlanRevenue;
-import com.yinzhiwu.springmvc3.model.RevenueList;
 import com.yinzhiwu.springmvc3.model.RevenueModel;
 import com.yinzhiwu.springmvc3.service.RevenueService;
 
@@ -87,7 +84,6 @@ public class RevenueServiceImpl implements RevenueService{
 						.setAmount((double)objs[3]);
 			} catch (Exception e) {
 				logger.warn("storeId: " + objs[0] + " not found ");
-//				e.printStackTrace();
 			}
 		}
 		
@@ -106,6 +102,7 @@ public class RevenueServiceImpl implements RevenueService{
 		return map;
 	}
 	
+	
 	private int getCloumnIndex(int storeId, List<Department> list) throws Exception{
 		for(int i =0; i< list.size(); i++){
 			if(storeId == list.get(i).getId()){
@@ -120,57 +117,6 @@ public class RevenueServiceImpl implements RevenueService{
 		return date.getDate() -1;
 	}
 
-	public List<RevenueList> getMonthlyRevenue1(int year, int month, int districtId, int productTypeId) {
-		
-		//取出该区域下所有的门店
-		List<Department> storeList = deptDao.findStoresByDistrictId(districtId);
-		
-		// 设置开始和结束时间
-		Calendar ca = Calendar.getInstance();
-		ca.set(Calendar.YEAR, year);
-		ca.set(Calendar.MONTH, month-1);
-		ca.set(Calendar.DAY_OF_MONTH, 1);
-		Date start = ca.getTime();
-		ca.add(Calendar.MONTH, 1);
-		ca.add(Calendar.DAY_OF_MONTH, -1);
-		Date end = ca.getTime();
-		
-		//取出按天按店的营业额
-		List<Object[]> revenueList = orderDao.getMonthlyRevenue(districtId, productTypeId, start, end);
-		
-		
-//		Date date= start;
-		ca.setTime(start);
-		List<RevenueList> list = new ArrayList<>();
-		Iterator<Object[]> it = revenueList.iterator();
-		while(it.hasNext()){
-			Date date = ca.getTime();
-			List<RevenueModel> rmList = new ArrayList<>();
-			Object[] obj = it.next();
-			while (obj[2]==ca.getTime()){
-				 for(int i=0; i<storeList.size(); i++){
-					 RevenueModel rm = new RevenueModel();
-					 if(obj[0]==storeList.get(i).getId()){
-						 rm.setStoreId((int)obj[0]);
-						 rm.setStoreName((String)obj[1]);
-//						 rm.setDate((Date)obj[2]);
-						 rm.setAmount((Double)obj[3]);
-						 obj =it.next();
-					 }else{
-						 rm.setStoreId(storeList.get(i).getId());
-						 rm.setStoreName(storeList.get(i).getDeptName());
-//						 rm.setDate(ca.getTime());
-						 rm.setAmount(0.0);
-					 }
-					 rmList.add(rm);
-				 } 
-			}
-			
-			list.add(new RevenueList(date, rmList));
-			ca.add(Calendar.DAY_OF_MONTH, 1);
-		}
-		
-		return null;
-	}
+	
 	
 }

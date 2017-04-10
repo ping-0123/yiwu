@@ -173,7 +173,7 @@ function loadDistrict(){
 			async:false,
 			success: function(data) {
 				var district;
-				var t="<option value=\"82\">城市</option>";
+				var t="<option value=\"0\">城市</option>";
 				for(var i=0; i<data.length; i++){
 					district = data[i];
 					t= t+ "<option value=\"" + district.id + "\">" + district.name.replace("区域","")+ "</option>";
