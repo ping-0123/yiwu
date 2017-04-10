@@ -215,7 +215,7 @@ $(".content").each(function(){
 }).scroll(function(){
     var sl=this.scrollLeft,d=$(this).data('slt');
     if(sl!=d.sl){
-    	$('.liveDiv').css('left',-sl+ldl);
+    	$('.liveDiv').stop().css('left',-sl+ldl);
     };
 })
 </script>	 	    
