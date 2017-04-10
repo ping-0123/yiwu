@@ -1,14 +1,14 @@
 ﻿<!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8" />
+		<meta  http-equiv="Content-Type" content="text/html; charset="utf-8" />
 		<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, user-scalable=no">
 		<meta name="format-detection" content="telephone=no">
 		<title></title>
-		<link href="css/stylesheet.css" rel="stylesheet">
+		<link href="css/lesson_table.css" rel="stylesheet">
 		<script src="js/jquery.min.js" type="text/javascript"></script>
 		<script src="js/lesson_table.js"></script>
-	
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=aGmLXsUt66lDNYZyI6eEhcHQVmyY5aE2"></script>
 	</head>
 	<body>
 		<div class="display_first">
@@ -17,8 +17,8 @@
 		<small style="display: block;margin-top: 20px;">(若您用安卓手机观看，请跳转至浏览器)</small>
 		<p>
 	   </div>
-	   
-	    <div class="display_second">	    	
+	    <div class="display_second">
+	    	
 	            <div class="nav">
 						<div class="logo">
 							<img src="images/logo.png">
@@ -168,12 +168,17 @@
     	  <img src="images/tip.png">
     	  <p>开放式课程到场人数不足3人则该节课取消。敬请谅解！</p>
     	</div>
+    	<!--<div id="map" style="width: 100%; height: 500px;"></div>-->
     </div>	
     </div>
+	
+
 
 <script>
+
     	var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/"
 //    	var ajaxUrl = "";
+
 		var url =  "api/lesson/weeklist";
 		var selectDate;
 		var districtId =82;
@@ -212,6 +217,7 @@
 			$(document).ready(function(){
 			//$("#currentDate").val(curDate)
 			loadDistrict();
+
 			
 			$("#lastweek").click(function(){
 				requestDate.setDate(requestDate.getDate() -7);
@@ -253,16 +259,55 @@
 				loadLessonTable(url,data);
 			});
 */
+if(false){
+			$('#address span').click(function(){
+				var address = $(this).text();
+				var targetLocation = null;
+				
+				
+				// 百度地图API功能
+				var map = new BMap.Map("map");
+				<!--var point = new BMap.Point(116.331398,39.897445);-->
+				map.centerAndZoom("杭州",12);
+				
+				
+			
+				// 创建地址解析器实例
+				var myGeo = new BMap.Geocoder();
+				// 将地址解析结果显示在地图上,并调整地图视野
+				myGeo.getPoint(address, function(point){
+					if (point) {
+						targetLocation = point;
+						map.centerAndZoom(point, 13);
+						map.addOverlay(new BMap.Marker(point));
+					}else{
+						alert("您选择地址没有解析到结果!");
+					}
+				}, "");
+				
+				var geolocation = new BMap.Geolocation();
+				geolocation.getCurrentPosition(function(r){
+					if(this.getStatus() == BMAP_STATUS_SUCCESS){
+						map.addOverlay(new BMap.Marker(r.point));
+						map.panTo(r.point);
+						var routePolicy = [BMAP_DRIVING_POLICY_LEAST_TIME,BMAP_DRIVING_POLICY_LEAST_DISTANCE,BMAP_DRIVING_POLICY_AVOID_HIGHWAYS];
+						var route = routePolicy[1];
+						var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true},policy: route});
+						driving.search(r.point,targetLocation);
+						<!--alert('您的位置：'+r.point.lng+','+r.point.lat);-->
+					}
+					else {
+						alert('failed'+this.getStatus());
+					}        
+				},{enableHighAccuracy: true})
+				
+				
+			});
+			
+			}
+			
 			
 		});
-
-		
-	
-
-
-		
-		
-
 	</script>
 
 

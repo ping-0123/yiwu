@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -43,4 +44,16 @@ public class DepartmentDaoImpl
 		String hql ="select distinct city from Department where city <> '' and city is not null";
 		return (List<String>) getHibernateTemplate().find(hql);
 	}
+
+	@Override
+	public List<Department> findAllStores() {
+		List<Department> districts = findAllOperationDistricts();
+		List<Department> stores =new ArrayList<>();
+		for (Department district : districts) {
+			List<Department> s= findStoresByDistrictId(district.getId());
+			stores.addAll(s);
+		}
+		return stores;
+	}
+	
 }

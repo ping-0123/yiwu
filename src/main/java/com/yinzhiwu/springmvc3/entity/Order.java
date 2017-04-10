@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 @Table(name="vorder")
@@ -43,8 +45,9 @@ public class Order {
 	@Column(name="customer_id")
 	private Integer customerId;
 	
+//	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@Column(name="payed_date")
-	private Date payedDate;
+	private java.sql.Date payedDate;
 	
 	@Column(length=32)
 	private String courseId;
@@ -203,11 +206,11 @@ public class Order {
 		this.customerId = customerId;
 	}
 
-	public final Date getPayedDate() {
+	public final java.sql.Date getPayedDate() {
 		return payedDate;
 	}
 
-	public final void setPayedDate(Date payedDate) {
+	public final void setPayedDate(java.sql.Date payedDate) {
 		this.payedDate = payedDate;
 	}
 
