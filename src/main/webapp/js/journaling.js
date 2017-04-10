@@ -1,9 +1,10 @@
 //var ajaxUrl = "http://192.168.0.115:8080/yiwu/";
-var ajaxUrl = "";
+var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/";
+//var ajaxUrl = "";
 var currentDate = new Date();
 var year=currentDate.getFullYear();
 var month = currentDate.getMonth();
-var districtId =82;
+var districtId =0;
 var productTypeId=0;
 
 
@@ -95,14 +96,14 @@ function loadRevenue(v_districtId,
 					for(var j=0; j<revenues[i].length; j++){
 						var v_amount = revenues[i][j].amount;
 						if(v_amount != 0){
-							t = t+"<li>" + v_amount + "</li>";
+							t = t+"<li>" + thousandSignNumber(v_amount.toFixed(0)) + "</li>";
 						}else{
 							t = t+"<li></li>";
 						}
 						arrayDayRevenueSum[i] =0 + arrayDayRevenueSum[i] + v_amount;
 						arrayStoreRevenueSum[j] =0 + arrayStoreRevenueSum[j] + v_amount;
 					}
-					t= t+"<li>" + arrayDayRevenueSum[i] + "</li>";
+					t= t+"<li>" + thousandSignNumber(arrayDayRevenueSum[i].toFixed()) + "</li>";
 					t= t+ "</ul>";
 					arrayStoreRevenueSum[cols]  = 0 + arrayStoreRevenueSum[cols] +arrayDayRevenueSum[i];
 					
@@ -111,7 +112,7 @@ function loadRevenue(v_districtId,
 				//纵向求和
 				t=t+"<ul class=\"statistics bottom\">";
 				for(var j=0; j<arrayStoreRevenueSum.length; j++){
-					t=t+"<li>" +arrayStoreRevenueSum[j] +"</li>";
+					t=t+"<li>" +thousandSignNumber(arrayStoreRevenueSum[j].toFixed()) +"</li>";
 				}
 				t=t+"</ul>"
 				
@@ -120,9 +121,9 @@ function loadRevenue(v_districtId,
 				for(var j=0; j<cols; j++){
 					arrayStorePlanSum[cols] =arrayStorePlanSum[cols] + plans[j].amount;
 					arrayStorePlanSum[j] = plans[j].amount;
-					t = t + "<li>" + plans[j].amount +"</li>";
+					t = t + "<li>" + thousandSignNumber(plans[j].amount.toFixed(0)) +"</li>";
 				}
-				t = t + "<li>" + arrayStorePlanSum[cols] +"</li>";
+				t = t + "<li>" + thousandSignNumber(arrayStorePlanSum[cols].toFixed(0)) +"</li>";
 				t=t+"</ul>"
 				
 				//完成率
@@ -174,7 +175,7 @@ function loadDistrict(){
 			async:false,
 			success: function(data) {
 				var district;
-				var t="<option value=\"0\">城市</option>";
+				var t="<option value=\"0\">全部</option>";
 				for(var i=0; i<data.length; i++){
 					district = data[i];
 					t= t+ "<option value=\"" + district.id + "\">" + district.name.replace("区域","")+ "</option>";

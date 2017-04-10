@@ -38,7 +38,7 @@
   
   .content{overflow-x:scroll; width:80%;float: left;}
   .statistics{ min-width:1500px;clear: both;}
-  .statistics li{ float: left; width: 70px; text-align: center;height: 25px;line-height: 25px;}
+  .statistics li{ float: left; width: 70px; text-align: right;height: 25px;line-height: 25px;}
   .bottom{background-color: gainsboro;}
   .bottom li{background-color: gainsboro;}
 
@@ -73,7 +73,7 @@
   .time_choose_2 li:first-child{font-size: 16px;margin-left: 20%;font-weight: bold;}
   .time_choose_2 li:last-child{font-size: 16px;margin-left: 23%;font-weight: bold;}
   .title{min-width:1500px;clear: both;}
-  .title li{background-color: gainsboro;float: left; width: 70px; text-align: center;height: 25px;line-height: 25px;}
+  .title li{background-color: gainsboro;float: left; width: 70px; text-align: right;height: 25px;line-height: 25px;}
   .table{ width: 100%; margin: 0 auto;overflow: hidden;}
   .left{ width: 20%; float: left;}
  
@@ -82,7 +82,7 @@
   
   .content{overflow-x:scroll; width:80%;float: left;}
   .statistics{ min-width:1500px;clear: both;}
-  .statistics li{ float: left; width: 70px; text-align: center;height: 25px;line-height: 25px;}
+  .statistics li{ float: left; width: 70px; text-align: right;height: 25px;line-height: 25px;}
   .bottom{background-color: gainsboro;}
   .bottom li{background-color: gainsboro;}
 
