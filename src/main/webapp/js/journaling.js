@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 var ajaxUrl = "http://192.168.0.115:8080/yiwu/";
 //var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/";
+=======
+//var ajaxUrl = "http://192.168.0.115:8080/yiwu/";
+var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/";
+>>>>>>> coursetable-jin
 //var ajaxUrl = "";
 var currentDate = new Date();
 var year=currentDate.getFullYear();
@@ -98,7 +103,7 @@ function loadRevenue(v_districtId,
 						var v_stroeId = revenues[i][j].storeId;
 						var v_date = revenues[i][j].date;
 						if(v_amount != 0){
-							t = t+"<li><a href="map.html?storeId='+ v_stroeId+'&date-id='+ v_date+' storeId='+v_stroeId+' date-id='+v_date+'">" +  thousandSignNumber(v_amount.toFixed(0)) + "</a></li>";
+							t = t+"<li><a href=\"map.html?store-Id="+revenues[i][j].storeId+"&date-id="+revenues[i][j].date+"\" store-Id='+revenues[i][j].storeId+' date-id='+revenues[i][j].date+'>" +thousandSignNumber(v_amount.toFixed(0)) + "</a></li>";
 						}else{
 							t = t+"<li></li>";
 						}
