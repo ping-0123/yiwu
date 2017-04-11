@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.yinzhiwu.springmvc3.dao.OrderDao;
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Order;
+import com.yinzhiwu.springmvc3.model.BriefOrder;
 import com.yinzhiwu.springmvc3.model.RevenueModel;
 
 
@@ -85,5 +87,44 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 				hql.toString(), 
 				new String[]{"start", "end"},
 				new Date[]{start, end});
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<BriefOrder> findDailyOrderByStore(int storeId, Date payedDate){
+		String hql = "select  t1.createTime, t2.name,t1.markedPrice,t1.count,t3.amount, t4.name, t5.name, t5.auditOrChild,t1.vipAttr, t6.name"
+				+"	from Order t1 left join Product t2 on(t1.productId=t2.id)"
+				+"		left join OrderPayedMethod t3 on(t1.id= t3.orderId)"
+				+"	    left join PayedMethod t4 on(t3.payedMethodId = t4.id)"
+				+"	    left join Customer t5 on (t1.customerId = t5.id)"
+				+"		left join Employee t6 on(t1.createUserId= t6.id)"
+				+"	 where t1.payedDate = :payedDate  and storeId=:storeId";
+		
+		List<BriefOrder> orders = new ArrayList<>();
+		List<Object[]> l = (List<Object[]>) getHibernateTemplate().findByNamedParam(
+					hql, 
+					new String[]{"payedDate", "storeId"}, 
+					new Object[]{payedDate , storeId});
+		
+		for (Object[] objs : l) {
+			BriefOrder o = new BriefOrder();
+			o.setRecordDate((java.sql.Date)objs[0]);
+			o.setProductName((String) objs[1]);
+			o.setMarckedPrice((float)objs[2]);
+			if (objs[3]  instanceof Integer) {
+				o.setCount((int)objs[3]);
+			}
+			o.setPayedAmount((float)objs[4]);
+			o.setPayedMethod((String) objs[5]);
+			o.setCustomerName((String) objs[6]);
+			o.setAuditOrChild((String) objs[7]);
+			o.setVipAttr((String) objs[8]);
+			o.setSalesmanName((String) objs[9]);
+			orders.add(o);
+			
+		}
+		
+		return orders;
 	}
 }
