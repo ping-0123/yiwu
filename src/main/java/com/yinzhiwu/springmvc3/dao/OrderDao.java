@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.yinzhiwu.springmvc3.entity.Customer;
@@ -12,4 +13,5 @@ public interface OrderDao {
 	int findInterestedStore(Customer c);
 	
 	int findAttendedStudentCount(String courseId);
+	List<Object[]> getMonthlyRevenue(int districtId, int productType, Date start, Date end);
 }
