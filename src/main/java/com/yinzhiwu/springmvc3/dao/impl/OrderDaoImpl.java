@@ -1,15 +1,14 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.yinzhiwu.springmvc3.dao.DepartmentDao;
 import com.yinzhiwu.springmvc3.dao.OrderDao;
-import com.yinzhiwu.springmvc3.entity.Course;
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Order;
+import com.yinzhiwu.springmvc3.model.RevenueModel;
 
 
 @Repository
@@ -53,4 +52,38 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 		return 0;
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Object[]> getMonthlyRevenue(int districtId, int productType, Date start, Date end){
+		StringBuilder hql= new StringBuilder();
+		String orginHql="SELECT "
+				+"	    t1.storeId, t3.deptName, t1.payedDate, SUM(t1.payedAmount)"
+				+"	FROM"
+				+"	    Order t1"
+				+"	        LEFT JOIN"
+				+"	    ProductTypeRelation t2 ON t1.productId = t2.productId"
+				+"	        LEFT JOIN"
+				+"	    Department t3 ON (t1.storeId = t3.id)"
+				+"	WHERE"
+				+"	    t1.payedDate BETWEEN :start AND :end";
+		hql.append(orginHql);
+		if(districtId >0){
+			hql.append(" AND t3.superiorId = " + districtId);
+		}
+		if(productType>0){
+			hql.append(" AND t2.type.id = " + productType);
+		}
+		
+		hql.append(" GROUP BY t1.storeId , t1.payedDate");
+		hql.append(" ORDER BY t1.payedDate,t3.deptName ");
+		/*
+				+"	        AND t3.superiorId = 113"
+				+"	GROUP BY t1.storeId , t1.payedDate"; */
+		
+		return (List<Object[]>) getHibernateTemplate().findByNamedParam(
+				hql.toString(), 
+				new String[]{"start", "end"},
+				new Date[]{start, end});
+	}
 }
