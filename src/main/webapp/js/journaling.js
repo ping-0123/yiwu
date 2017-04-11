@@ -1,5 +1,10 @@
+<<<<<<< HEAD
+var ajaxUrl = "http://192.168.0.115:8080/yiwu/";
+//var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/";
+=======
 //var ajaxUrl = "http://192.168.0.115:8080/yiwu/";
 var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/";
+>>>>>>> coursetable-jin
 //var ajaxUrl = "";
 var currentDate = new Date();
 var year=currentDate.getFullYear();
@@ -91,12 +96,14 @@ function loadRevenue(v_districtId,
 				var t = "";
 			
 				for(var i=0; i<revenues.length; i++){
-					t=t + "<ul class=\"statistics\">";
+					t=t + "<ul class=\"statistics\"><li></li>";
 					var sumDay = 0;
 					for(var j=0; j<revenues[i].length; j++){
 						var v_amount = revenues[i][j].amount;
+						var v_stroeId = revenues[i][j].storeId;
+						var v_date = revenues[i][j].date;
 						if(v_amount != 0){
-							t = t+"<li>" + thousandSignNumber(v_amount.toFixed(0)) + "</li>";
+							t = t+"<li><a href=\"map.html?store-Id="+revenues[i][j].storeId+"&date-id="+revenues[i][j].date+"\" store-Id='+revenues[i][j].storeId+' date-id='+revenues[i][j].date+'>" +thousandSignNumber(v_amount.toFixed(0)) + "</a></li>";
 						}else{
 							t = t+"<li></li>";
 						}
@@ -110,14 +117,14 @@ function loadRevenue(v_districtId,
 				}
 				
 				//纵向求和
-				t=t+"<ul class=\"statistics bottom\">";
+				t=t+"<ul class=\"statistics bottom\"><li></li>";
 				for(var j=0; j<arrayStoreRevenueSum.length; j++){
 					t=t+"<li>" +thousandSignNumber(arrayStoreRevenueSum[j].toFixed()) +"</li>";
 				}
 				t=t+"</ul>"
 				
 				//营业计划
-				t=t+"<ul class=\"statistics bottom\">";
+				t=t+"<ul class=\"statistics bottom\"><li></li>";
 				for(var j=0; j<cols; j++){
 					arrayStorePlanSum[cols] =arrayStorePlanSum[cols] + plans[j].amount;
 					arrayStorePlanSum[j] = plans[j].amount;
@@ -127,7 +134,7 @@ function loadRevenue(v_districtId,
 				t=t+"</ul>"
 				
 				//完成率
-				t=t+"<ul class=\"statistics bottom\">";
+				t=t+"<ul class=\"statistics bottom\"><li></li>";
 				for(var j=0; j<=cols; j++){
 					if (arrayStorePlanSum[j]>0){
 						arrayRate[j] = arrayStoreRevenueSum[j]/arrayStorePlanSum[j];
@@ -138,7 +145,7 @@ function loadRevenue(v_districtId,
 				}
 				t=t+"</ul>"
 				
-				$('.revenue_amount').html(t);
+				$('.content').html(t);
 			}
 
 	});
@@ -150,9 +157,9 @@ function writeLeftDate(v_data){
 	for(var i=0; i<v_data.length; i++){
 		t=t+ "<li>"+ v_data[i][0].date + "</li>";
 	}
-	t = t+"<li class=\"bottom\">Sub Total</li>";
-	t = t+"<li class=\"bottom\">Plan</li>";
-	t = t+"<li class=\"bottom\">Rate</li>";
+	t = t+"<li class=\"bottom_text\">Sub Total</li>";
+	t = t+"<li class=\"bottom_text\">Plan</li>";
+	t = t+"<li class=\"bottom_text\">Rate</li>";
 	
 	$('#left_date').html(t);
 }
