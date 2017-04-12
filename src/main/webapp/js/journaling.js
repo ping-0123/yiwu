@@ -98,7 +98,7 @@ function loadRevenue(v_districtId,
 						var v_stroeId = revenues[i][j].storeId;
 						var v_date = revenues[i][j].date;
 						if(v_amount != 0){
-							t = t+"<li><a href=\"map.html?store-Id="+revenues[i][j].storeId+"&date-id="+revenues[i][j].date+"\" store-Id='+revenues[i][j].storeId+' date-id='+revenues[i][j].date+'>" +thousandSignNumber(v_amount.toFixed(0)) + "</a></li>";
+							t = t+"<li><a href=\"daily.html?store-Id="+revenues[i][j].storeId+"&date-id="+revenues[i][j].date+"&store-Name="+revenues[i][j].storeName+"\" store-Id='+revenues[i][j].storeId+' date-id='+revenues[i][j].date+' store-Name='+revenues[i][j].storeName+'>" +thousandSignNumber(v_amount.toFixed(0)) + "</a></li>";
 						}else{
 							t = t+"<li></li>";
 						}

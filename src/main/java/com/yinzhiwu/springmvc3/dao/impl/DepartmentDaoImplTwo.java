@@ -65,5 +65,4 @@ public class DepartmentDaoImplTwo extends BaseDaoImpl<Department, Integer>
 		return stores;
 	}
 	
-
 }
