@@ -204,7 +204,7 @@ function loadStores(v_districtId){
 							t= t+ "<li><small>" + lesson.danceName.replace("少儿","") + lesson.danceGrade  + "</small>" +"</li><li><small>"
 								+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"
 								+lesson.dueTeacherName+"</small><li>" ;
-							
+							t = t+ "<li><small>   </small></li>";
 						}
 						t=t+"</td>";
 					}

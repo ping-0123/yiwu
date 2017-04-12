@@ -112,7 +112,7 @@ var storeName=getUrlParam('store-Name');
 var payedDate=getUrlParam('date-id');
 var requestDate = new Date(payedDate);
 var curDate =format(payedDate,'yyyy-MM-dd');
-var url="http://192.168.0.115:9080/yiwu/api/order/getDailyOrders";
+var url="api/order/getDailyOrders";
 /*var data={
 	storeId:storeId,
 	payedDate:payedDate
