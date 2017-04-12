@@ -57,5 +57,8 @@ public class LessonControl {
 				storeId, courseType, teacherName, danceCatagory, date, weChat);
 	}
 	
-	
+	@RequestMapping(value="arrangePriviteLesson", method={RequestMethod.POST})
+	public void arrangePriviteLesson(){
+		
+	}
 }
