@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hamcrest.core.IsInstanceOf;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.OrderDao;
@@ -110,11 +111,13 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 			BriefOrder o = new BriefOrder();
 			o.setRecordDate((java.sql.Date)objs[0]);
 			o.setProductName((String) objs[1]);
-			o.setMarckedPrice((float)objs[2]);
+			if(objs[2] instanceof Float)
+				o.setMarckedPrice((float)objs[2]);
 			if (objs[3]  instanceof Integer) {
 				o.setCount((int)objs[3]);
 			}
-			o.setPayedAmount((float)objs[4]);
+			if(objs[4] instanceof Float)
+				o.setPayedAmount((float)objs[4]);
 			o.setPayedMethod((String) objs[5]);
 			o.setCustomerName((String) objs[6]);
 			o.setAuditOrChild((String) objs[7]);
