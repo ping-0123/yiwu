@@ -26,6 +26,8 @@ function format(time, format){
 }
 
 function loadDistrict(){
+	var defaultDistrictId=82;
+	var existDefault=false;
 	var url = ajaxUrl +"api/district/list";
 	$.ajax({ 
 			type: "Get", 	
@@ -37,9 +39,17 @@ function loadDistrict(){
 				for(var i=0; i<data.length; i++){
 					district = data[i];
 					t= t+ "<option value=\"" + district.id + "\">" + district.name.replace("区域","")+ "</option>";
+					if (district.id==defaultDistrictId){
+						existDefault = true;
+					}
 				}
 				$('.district select').html(t);
-				loadStores(data[0].id);
+				if(existDefault){
+					$('.district select').val(defaultDistrictId);
+					loadStores(defaultDistrictId);
+				}else{
+					loadStores(data[0].id);
+				}
 			},
 			error: function(jqXHR){     
 			   alert("loadDistrict 发生错误：" + jqXHR.status); 
@@ -50,6 +60,8 @@ function loadDistrict(){
 
 function loadStores(v_districtId){
 	var url = ajaxUrl + "api/store/list?districtId=" + v_districtId;
+	var defaulStoreId=61;
+	var existDefault=false;
 	var v_data = data;
 	$.ajax({ 
 			type: "GET", 	
@@ -61,9 +73,17 @@ function loadStores(v_districtId){
 				for(var i=0; i<data.length; i++){
 					store = data[i];
 					ts= ts+ "<option value=\"" + store.id + "\">" + store.name + "</option>";
+					if(store.id==defaulStoreId){
+						existDefault = true;
+					}
 				}
 				$('.store select').html(ts);
-				v_data.storeId = data[0].id;
+				if(existDefault){
+					$('.store select').val(defaulStoreId);
+					v_data.storeId = defaulStoreId;
+				}else{
+					v_data.storeId = data[0].id;
+				}
 				loadStoreAddress(v_data.storeId);
 				loadLessonTable("api/lesson/weeklist",v_data);
 			},
