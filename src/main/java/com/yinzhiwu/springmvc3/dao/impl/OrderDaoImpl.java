@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hamcrest.core.IsInstanceOf;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.OrderDao;

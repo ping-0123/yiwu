@@ -204,7 +204,15 @@ function loadStores(v_districtId){
 							t= t+ "<li><small>" + lesson.danceName.replace("少儿","") + lesson.danceGrade  + "</small>" +"</li><li><small>"
 								+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"
 								+lesson.dueTeacherName+"</small><li>" ;
-							t = t+ "<li><small>   </small></li>";
+							if(lesson.courseType =="开放式"){
+							//	开放式的预约： 预约人数/签到人数/容量
+								t= t+ "<li><small>预约:" + lesson.appointedStudentCount 
+									+ "/" +lesson.checkedInsStudentCount
+									+ "/" +lesson.maxStudentCount
+									+"</small></li></ul>";
+							}else{
+								t = t+ "<li><small> <br />  </small></li>";
+							}
 						}
 						t=t+"</td>";
 					}
