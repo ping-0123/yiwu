@@ -9,18 +9,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.AppointmentDao;
+import com.yinzhiwu.springmvc3.dao.LessonDao;
+import com.yinzhiwu.springmvc3.dao.OrderDao;
 import com.yinzhiwu.springmvc3.entity.Appointment;
 import com.yinzhiwu.springmvc3.entity.Appointment.APPOINT_STATUS;
+import com.yinzhiwu.springmvc3.entity.Lesson;
+import com.yinzhiwu.springmvc3.entity.Order;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
 	
+	
 	@Autowired
 	private AppointmentDao appointmentDao;
+	
+	@Autowired
+	private OrderDao orderDao;
 
+	@Autowired
+	private LessonDao lessonDao;
+	
 	@Override
 	public boolean appoint(int customerId, int lessonId) {
-		if(getStatus(customerId, lessonId) == APPOINT_STATUS.APPONTED)
+		if(!isAppointable(customerId, lessonId) ||
+				getStatus(customerId, lessonId) == APPOINT_STATUS.APPONTED)
 			return false;
 		Appointment a = new Appointment();
 		a.setCoursehourId(lessonId);
@@ -49,6 +61,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 	}
 	
 	
+	
 	private Appointment getAppointed(int customerId, int lessonId){
 		Map<String, Object> map = new HashMap<>();
 		map.put("customerId", customerId);
@@ -58,6 +71,14 @@ public class AppointmentServiceImpl implements AppointmentService{
 		if (appointments.size()==0 || appointments.size()>1)
 			return null;
 		return appointments.get(0);
+	}
+	
+	private boolean isAppointable(int customerId, int lessonId){
+		Lesson l = lessonDao.get(lessonId);
+		List<Order> orders = orderDao.findValidOrders(customerId, l.getSubCourseType());
+		if(orders.size()>0){
+			return true;}
+		return false;
 	}
 
 }

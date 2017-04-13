@@ -8,4 +8,5 @@ public interface AppointmentDao extends IBaseDao<Appointment, Integer>{
 	public int getAppointedStudentCount(int lessonId);
 	
 	public MiniLesson.AttendedStatus findStatus(int lessonId, int customerId);
+	
 }

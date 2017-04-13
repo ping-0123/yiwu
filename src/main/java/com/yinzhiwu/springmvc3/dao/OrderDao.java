@@ -18,4 +18,7 @@ public interface OrderDao {
 	List<Object[]> getMonthlyRevenue(int districtId, int productType, Date start, Date end);
 	
 	List<BriefOrder> findDailyOrderByStore(int storeId, Date date);
+	
+	List<Order> findValidOrders(int customerId, String subType);
+		
 }

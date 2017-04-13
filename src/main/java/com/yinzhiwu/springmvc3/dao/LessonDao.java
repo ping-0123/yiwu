@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.yinzhiwu.springmvc3.entity.Lesson;
 
-public interface LessonDao {
+public interface LessonDao extends IBaseDao<Lesson, Integer> {
 	
 	public Lesson findById(int lessonId);
 	
