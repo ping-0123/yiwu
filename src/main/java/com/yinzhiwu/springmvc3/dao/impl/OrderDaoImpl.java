@@ -10,7 +10,6 @@ import com.yinzhiwu.springmvc3.dao.OrderDao;
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Order;
 import com.yinzhiwu.springmvc3.model.BriefOrder;
-import com.yinzhiwu.springmvc3.model.RevenueModel;
 
 
 @Repository

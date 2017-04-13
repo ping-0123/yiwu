@@ -19,7 +19,8 @@ public class DepartmentDaoImplTwo extends BaseDaoImpl<Department, Integer>
 	public List<Department> findAllOperationDistricts() {
 		String hql = "SELECT new Department(id,deptName)"
 				+ " FROM Department d "
-				+ "WHERE d.deptName LIKE '%区域' AND d.superiorId = 55 AND d.removed=0";
+				+ "WHERE d.deptName LIKE '%区域' AND d.superiorId = 55 AND d.removed=0"
+				+ " order by convert_gbk(d.deptName)";
 		return (List<Department>) getHibernateTemplate().find(hql);
 	}
 
@@ -29,7 +30,7 @@ public class DepartmentDaoImplTwo extends BaseDaoImpl<Department, Integer>
 		String hql = "SELECT new Department(id,deptName) "
 				+ "FROM Department "
 				+ "WHERE superiorId = :districtId AND removed = 0"
-				+ "ORDER by deptName";
+				+ "ORDER by convert_gbk(deptName)";
 		return (List<Department>) getHibernateTemplate()
 				.findByNamedParam(hql, "districtId", districtId);
 	}
@@ -64,5 +65,4 @@ public class DepartmentDaoImplTwo extends BaseDaoImpl<Department, Integer>
 		return stores;
 	}
 	
-
 }
