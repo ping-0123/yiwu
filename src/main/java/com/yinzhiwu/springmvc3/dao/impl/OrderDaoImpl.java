@@ -2,7 +2,9 @@ package com.yinzhiwu.springmvc3.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -38,8 +40,8 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 
 	@Override
 	public int findInterestedStore(Customer c){
-		String hql="FROM Order where checkedStatus IN ('已审核','未审核', '未通过','未确认')"
-				+ "AND customer_id = :customerId";
+//		String hql="FROM Order where checkedStatus IN ('已审核','未审核', '未通过','未确认')"
+//				+ "AND customer_id = :customerId";
 		return 0;
 	}
 
@@ -127,5 +129,14 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 		}
 		
 		return orders;
+	}
+
+	@Override
+	public List<Order> findValidOrders(int customerId, String subType) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("customerId", customerId);
+		map.put("productSubType", subType);
+		map.put("checkedStatus", "已审核");
+		return findByProperties(map) ;
 	}
 }

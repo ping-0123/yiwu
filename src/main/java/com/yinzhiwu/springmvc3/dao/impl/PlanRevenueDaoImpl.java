@@ -39,7 +39,7 @@ public class PlanRevenueDaoImpl extends BaseDaoImpl<PlanRevenue, Integer> implem
 
 	@Override
 	public List<PlanRevenue> findDistrictMonthlyPlanRevenue(int districtId, int year, int month, int productTypeId){
-		StringBuilder hql=new StringBuilder();
+//		StringBuilder hql=new StringBuilder();
 		
 		return null;
 	}
