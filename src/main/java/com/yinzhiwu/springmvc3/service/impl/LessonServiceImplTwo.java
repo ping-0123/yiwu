@@ -166,5 +166,11 @@ public class LessonServiceImplTwo implements LessonService {
 	}
 
 
+	@Override
+	public void save(Lesson lesson) {
+		lessonDao.save(lesson);
+	}
+
+
 	
 }

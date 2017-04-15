@@ -27,7 +27,6 @@ import com.yinzhiwu.springmvc3.entity.StoreManCallRoll;
 import com.yinzhiwu.springmvc3.entity.TeacherCallRoll;
 import com.yinzhiwu.springmvc3.model.Store;
 
-@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext_coursetable.xml")
 public class TestCalendar {
@@ -94,15 +93,9 @@ public class TestCalendar {
 	@Autowired
 	private TeacherCallRollDao tcrDao;
 	
-	@Autowired
-	private StoreManCallRollDao scrDao;
 	
 	@Test
 	public void testEntity(){
-		TeacherCallRoll t = tcrDao.get(9);
-		System.out.println(t.getCourseType());
-		StoreManCallRoll s = scrDao.get(186);
-		System.out.println(s.getMemberCard());
 	}
 	
 	@Test
