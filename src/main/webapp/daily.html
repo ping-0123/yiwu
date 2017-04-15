@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -13,8 +13,8 @@
 			            <div class="logo">
 						<img src="images/logo.png">
 						</div>
-						<div class="return">
-						<a href="void()" onclick="javascript:window.history.go(-1)">返回</a>
+						<div class="return" id="return">
+						<a href="">返回</a>
 						</div>
 						
 						<div class="store">
@@ -112,7 +112,7 @@ var storeName=getUrlParam('store-Name');
 var payedDate=getUrlParam('date-id');
 var requestDate = new Date(payedDate);
 var curDate =format(payedDate,'yyyy-MM-dd');
-var url="api/order/getDailyOrders";
+var url="http://yzw.chenksoft.com:8080/yiwu/api/order/getDailyOrders";
 /*var data={
 	storeId:storeId,
 	payedDate:payedDate

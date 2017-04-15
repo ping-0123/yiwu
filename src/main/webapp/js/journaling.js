@@ -34,6 +34,7 @@ $('#lastMonth').click(function(){
 		loadRevenue(districtId,year,month,productTypeId);
 });
 
+
 $('#nextMonth').click(function(){
 	if(month<12){
 		month= month +1;
@@ -45,10 +46,11 @@ $('#nextMonth').click(function(){
 	loadRevenue(districtId,year,month,productTypeId);
 });
 
+
 function loadYearMonth(){
 	$('#year_month').text(year   + "年" + month + "月");
 }
-
+        
 function loadRevenue(v_districtId,
 					v_year,
 					v_month,
@@ -59,9 +61,9 @@ function loadRevenue(v_districtId,
 	
 	$.get(url,
 		{districtId:v_districtId,
-		year:v_year,
-		month:v_month,
-		productTypeId:v_productTypeId},
+		 year:v_year,
+		 month:v_month,
+		 productTypeId:v_productTypeId},
 		function(data){
 			var revenues = data.data.revenues;
 			var plans = data.data.plans;
@@ -99,9 +101,9 @@ function loadRevenue(v_districtId,
 						var v_date = revenues[i][j].date;
 						if(v_amount != 0){
 							t = t+"<li><a href=\"daily.html?store-Id="+revenues[i][j].storeId+"&date-id="+revenues[i][j].date+"&store-Name="+revenues[i][j].storeName+"\" store-Id='+revenues[i][j].storeId+' date-id='+revenues[i][j].date+' store-Name='+revenues[i][j].storeName+'>" +thousandSignNumber(v_amount.toFixed(0)) + "</a></li>";
-						}else{
+						   }else{
 							t = t+"<li></li>";
-						}
+						  }
 						arrayDayRevenueSum[i] =0 + arrayDayRevenueSum[i] + v_amount;
 						arrayStoreRevenueSum[j] =0 + arrayStoreRevenueSum[j] + v_amount;
 					}
@@ -110,6 +112,11 @@ function loadRevenue(v_districtId,
 					arrayStoreRevenueSum[cols]  = 0 + arrayStoreRevenueSum[cols] +arrayDayRevenueSum[i];
 					
 				}
+				
+				
+				
+				
+				
 				
 				//纵向求和
 				t=t+"<ul class=\"statistics bottom\"><li></li>";

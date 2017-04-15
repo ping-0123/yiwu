@@ -31,7 +31,7 @@
   .table{width: 100%;overflow-x: scroll;position: relative;}
   .title{ min-width:1600px;}
   .title ul li{ display: block;float: left; width:65px; height:25px; line-height:25px;background-color: gainsboro;text-align: right;}
-  .title ul li:first-child{ width: 75px!important;}
+  .title ul li:first-child{width:71px;}
   .title ul li:last-child{ width: 65px!important;padding-right: 10px;}
   .statistics{ min-width:1600px;clear: both;}
   .statistics li{ float: left; width: 65px; text-align:right;height: 25px;line-height: 25px;}

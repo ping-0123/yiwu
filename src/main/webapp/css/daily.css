@@ -1,4 +1,4 @@
-@media screen and (orientation: portrait) {
+﻿@media screen and (orientation: portrait) {
 	*{margin:0;padding:0;list-style: none;text-decoration: none;font-family: "微软雅黑";font-size: 12px;}
   .logo{ height: 80px;float: left; width: 50%;}
   .logo img{ width:auto;height: 40px;
@@ -21,10 +21,11 @@
   .content_daily ul li:first-child{ width: 75px;} 
   .content_daily ul li:nth-child(2){ width: 200px;}
   
-  .bottom{ min-width:790px;clear: both;}
+  .bottom{ min-width:800px;clear: both;}
   .bottom ul li{ float: left; width: 65px; text-align:center;height: 25px;line-height: 25px;background-color: gainsboro;}
   .bottom ul li:first-child{ width: 75px;} 
   .bottom ul li:nth-child(2){ width: 200px;}
+  
 	 
 	 }
 
