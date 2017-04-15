@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.springmvc3.dao.DepartmentDao;
 import com.yinzhiwu.springmvc3.dao.OrderDao;
@@ -27,7 +26,6 @@ import com.yinzhiwu.springmvc3.entity.StoreManCallRoll;
 import com.yinzhiwu.springmvc3.entity.TeacherCallRoll;
 import com.yinzhiwu.springmvc3.model.Store;
 
-@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext_coursetable.xml")
 public class TestCalendar {
@@ -36,8 +34,14 @@ public class TestCalendar {
 	private StoreInfoDao dao;
 	
 	@Autowired
-	@Qualifier("departmentDaoImpl")
+	@Qualifier("departmentDaoImplTwo")
 	private DepartmentDao deptDao;
+	
+	@Test
+	private void testDepartmentDao(){
+		List<Department> depts =  deptDao.findAllOperationDistricts();
+		System.out.println(depts.size());
+	}
 	
 	@Test
 	public void testFirstDayOfWeek(){

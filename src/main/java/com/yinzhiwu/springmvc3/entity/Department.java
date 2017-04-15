@@ -48,7 +48,7 @@ public class Department {
 	private Date lastChangeTime;
 	
 	@Column
-	private boolean removed;
+	private Integer removed;
 	
 	@Column
 	private Integer flag;
@@ -182,11 +182,11 @@ public class Department {
 		this.lastChangeTime = lastChangeTime;
 	}
 
-	public final boolean isRemoved() {
+	public final int isRemoved() {
 		return removed;
 	}
 
-	public final void setRemoved(boolean removed) {
+	public final void setRemoved(int removed) {
 		this.removed = removed;
 	}
 

@@ -17,9 +17,9 @@ public class DepartmentDaoImplTwo extends BaseDaoImpl<Department, Integer>
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Department> findAllOperationDistricts() {
-		String hql = "SELECT new Department(id,deptName)"
-				+ " FROM Department d "
-				+ "WHERE d.deptName LIKE '%区域' AND d.superiorId = 55 AND d.removed=0";
+		String hql = "SELECT new Department(d.id,d.deptName)"
+				+ " FROM Department d"
+				+ " WHERE d.deptName LIKE '%区域' AND d.superiorId = 55 AND d.removed=0";
 		return (List<Department>) getHibernateTemplate().find(hql);
 	}
 

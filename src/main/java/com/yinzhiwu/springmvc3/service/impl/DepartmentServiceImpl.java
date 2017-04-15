@@ -1,7 +1,9 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,12 +29,15 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	@Override
 	public List<BriefDepartment> findAllOperationDistricts() {
-		List<Department> list = departmentDao.findAllOperationDistricts();
+//		List<Department> list = departmentDao.findAllOperationDistricts();
+		Map<String, Object> map = new HashMap<>();
+		map.put("superiorId", 55);
+		map.put("removed", 0);
+		List<Department> list = departmentDao.findByProperties(map);
 		List<BriefDepartment> l = new ArrayList<>();
 		for (Department d : list) {
 			l.add(new BriefDepartment(d));
 		}
-		
 		return l;
 	}
 
