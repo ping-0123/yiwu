@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yinzhiwu.springmvc3.entity.Employee;
+import com.yinzhiwu.springmvc3.model.EmployeeApiView;
 import com.yinzhiwu.springmvc3.service.EmployeeService;
 
 @Controller
@@ -21,7 +21,7 @@ public class EmployeeController {
 	
 	@ResponseBody
 	@RequestMapping(value="/getAllCoaches", method={RequestMethod.GET})
-	public List<Employee> getAllCoaches(){
+	public List<EmployeeApiView> getAllCoaches(){
 		return employeeService.getAllOnJobCoaches();
 	}
 }

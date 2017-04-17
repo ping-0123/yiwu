@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.EmployeeDao;
 import com.yinzhiwu.springmvc3.entity.Employee;
+import com.yinzhiwu.springmvc3.model.EmployeeApiView;
 import com.yinzhiwu.springmvc3.service.EmployeeService;
 
 
@@ -18,7 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeDao employeeDao;
 
 	@Override
-	public List<Employee> getAllOnJobCoaches() {
+	public List<EmployeeApiView> getAllOnJobCoaches() {
 		return employeeDao.findAllOnJobCoach();
 	}
 

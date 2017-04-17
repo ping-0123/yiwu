@@ -117,6 +117,19 @@ public class Employee {
 	
 	@Column(name="Last_Online_TimeStamp")
 	private Date lastOnlineTimeStamp;
+	
+	
+	
+
+	public Employee() {
+	}
+
+	
+	public Employee(Integer id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
 
 	public final Integer getId() {
 		return id;

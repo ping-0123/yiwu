@@ -36,4 +36,10 @@ public class StoreController {
 	public Object getStoresByCity(@RequestParam String city){
 		return departmentService.findStoreByCities(city);
 	}
+	
+	@RequestMapping(value="/getAllStores")
+	@ResponseBody
+	public Object getAllStores(){
+		return departmentService.getAllStores();
+	}
 }
