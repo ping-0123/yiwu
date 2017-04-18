@@ -7,14 +7,16 @@
 		<title></title>
 	</head>
 	<script src="js/jquery.min.js" type="text/javascript"></script>
-	<script type="text/javascript" scr="js/journaling.js"></script>
+	<script type="text/javascript" src="js/global.js"></script>
+	<script type="text/javascript" src="js/journaling.js"></script>
 	<body>
 		<div class="top_nav">
 			            <div class="logo">
 						<img src="images/logo.png">
 						</div>
 						<div class="return">
-						<a href="javascript:;" onClick="javascript:history.back(-1);">返回</a>
+
+						<a href="javascript:void(0);" onclick="window.location.href='journaling.html?districtId='+districtId+'&year='+year+'&productTypeId='+productTypeId+'&month='+month+''">返回</a>
 						</div>
 						
 						<div class="store">
@@ -73,6 +75,17 @@
 	</body>
 
 <script>
+
+/*function return(){
+		var currentDate = new Date(payedDate);
+		var year=currentDate.getFullYear();
+		var month = currentDate.getMonth();
+		window.location.href="journaling.html?districtId='+districtId+'&year='+year+'&month='+month+'&productTypeId='+productId+'";
+		/*<a href="journaling.html?districtId='+districtId+'&year='+year+'&month='+month+'&productTypeId='+productId+'"></a>;
+	}*/
+
+
+
 function getUrlParam(name){
 var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
 var r = window.location.search.substr(1).match(reg);
@@ -106,17 +119,18 @@ function format(time, format){
     })
 }
 
-//var count=getUrlParam('v-count');
 var storeId=getUrlParam('store-Id');
 var storeName=getUrlParam('store-Name');
 var payedDate=getUrlParam('date-id');
+var productTypeId=getUrlParam('product-id');
+var districtId=getUrlParam('district-id');
 var requestDate = new Date(payedDate);
 var curDate =format(payedDate,'yyyy-MM-dd');
-var url="api/order/getDailyOrders";
-/*var data={
-	storeId:storeId,
-	payedDate:payedDate
-};*/
+
+var year=requestDate.getFullYear();
+var month = requestDate.getMonth()+1;
+var url=baseApiUrl +  "api/order/getDailyOrders";
+
 
 	$(document).ready(function(){
 		daily(url,storeId,payedDate);
@@ -137,10 +151,6 @@ var url="api/order/getDailyOrders";
 		daily(url,storeId,curDate);
 
 	});
-
-
-
-
 	function daily(k_url,k_storeId,k_payedDate){
 		var k_data={
 		storeId:k_storeId,
@@ -167,17 +177,6 @@ var url="api/order/getDailyOrders";
 })
 	}
 
-
-
-
-
-
-
-
+	
 </script>
-
-
-
-
-
 </html>
