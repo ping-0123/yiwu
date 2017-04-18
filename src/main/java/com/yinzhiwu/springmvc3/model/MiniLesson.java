@@ -56,6 +56,10 @@ public class MiniLesson {
 	
 	private int checkedInsStudentCount;
 	
+	private int storeManCallRollCount;
+	
+	private int teacherCallRollCount;
+	
 
 
 	public MiniLesson(Integer lessonId, String courseid, Date lessonDate, Time startTime, Time endTime,
@@ -286,6 +290,26 @@ public class MiniLesson {
 
 	public final void setWeek(int week) {
 		this.week = week;
+	}
+
+
+	public final int getStoreManCallRollCount() {
+		return storeManCallRollCount;
+	}
+
+
+	public final void setStoreManCallRollCount(int storeManCallRollCount) {
+		this.storeManCallRollCount = storeManCallRollCount;
+	}
+
+
+	public final int getTeacherCallRollCount() {
+		return teacherCallRollCount;
+	}
+
+
+	public final void setTeacherCallRollCount(int teacherCallRollCount) {
+		this.teacherCallRollCount = teacherCallRollCount;
 	}
 
 	

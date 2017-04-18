@@ -81,5 +81,23 @@ public class DepartmentServiceImpl implements DepartmentService {
 		s.setName(dept.getDeptName());
 		return s;
 	}
+	
+	@Override
+	public List<Store> findStoreByCities(String city){
+		List<Department> deptList = departmentDao.findByProperty("city", city);
+		List<Store> storeList = new ArrayList<>();
+		for (Department d : deptList) {
+			Store s = new Store(d);
+//			s.setId(d.getId());
+//			s.setName(d.getDeptName());
+//			StoreInfo sf = storeInfoDao.get(d.getId());
+//			s.setAddress(sf.getAddress());
+//			s.setTelePhone(sf.getTelePhone());
+//			
+			storeList.add(s);
+		}
+		return storeList;
+		
+	}
 
 }

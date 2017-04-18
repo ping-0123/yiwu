@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.model;
 
+import com.yinzhiwu.springmvc3.entity.Department;
 import com.yinzhiwu.springmvc3.entity.StoreInfo;
 
 public class Store {
@@ -28,6 +29,11 @@ public class Store {
 		this.telePhone = si.getTelePhone();
 	}
 
+	public Store(Department d) {
+		this.id = d.getId();
+		this.name=d.getDeptName();
+	}
+	
 	public final int getId() {
 		return id;
 	}

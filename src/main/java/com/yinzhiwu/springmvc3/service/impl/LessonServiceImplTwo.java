@@ -15,6 +15,8 @@ import com.yinzhiwu.springmvc3.dao.ClassRoomDao;
 import com.yinzhiwu.springmvc3.dao.CourseDao;
 import com.yinzhiwu.springmvc3.dao.LessonDao;
 import com.yinzhiwu.springmvc3.dao.OrderDao;
+import com.yinzhiwu.springmvc3.dao.StoreManCallRollDao;
+import com.yinzhiwu.springmvc3.dao.TeacherCallRollDao;
 import com.yinzhiwu.springmvc3.entity.ClassRoom;
 import com.yinzhiwu.springmvc3.entity.Course;
 import com.yinzhiwu.springmvc3.entity.Customer;
@@ -50,6 +52,12 @@ public class LessonServiceImplTwo implements LessonService {
 	
 	@Autowired
 	private CheckInsDao checkInsDao;
+	
+	@Autowired
+	private StoreManCallRollDao scrDao;
+	
+	@Autowired
+	private TeacherCallRollDao tcrDao;
 	
 	@Override
 	public Lesson findById(int lessonId) {
@@ -94,7 +102,10 @@ public class LessonServiceImplTwo implements LessonService {
 		Calendar ca = Calendar.getInstance();
 		ca.setTime(date);
 		int weekday = ca.get(Calendar.DAY_OF_WEEK);
-		ca.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY-weekday);
+		if(weekday>=Calendar.MONDAY)
+			ca.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY-weekday);
+		else
+			ca.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY-weekday-7);
 		Date startDate = ca.getTime();
 		ca.add(Calendar.DAY_OF_WEEK, 6);
 		Date endDate = ca.getTime();
@@ -132,7 +143,20 @@ public class LessonServiceImplTwo implements LessonService {
 			
 			// 添加签到人数
 			ml.setCheckedInsStudentCount(
-					checkInsDao.findCountByProperty("lessonId", l.getLessonId().toString()));
+					checkInsDao.findCheckedInStudentCountByLessonId(l.getLessonId().toString()));
+					// checkInsDao.findCountByProperty("lessonId", l.getLessonId().toString()));
+			
+			
+			if ("封闭式".equals(l.getCourseType())){
+			//添加店员点名人数
+				ml.setStoreManCallRollCount(
+						scrDao.findCountByProperty("lessonId", l.getLessonId().toString()) );
+				
+			//添加老师点名人数
+				ml.setTeacherCallRollCount(
+						tcrDao.findCountByProperty("lessonId", l.getLessonId()));
+			}
+			
 			
 			lm.add(ml);
 			

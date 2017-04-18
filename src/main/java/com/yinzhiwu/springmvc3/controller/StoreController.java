@@ -16,18 +16,24 @@ import com.yinzhiwu.springmvc3.service.DepartmentService;
 public class StoreController {
 	
 	@Autowired
-	private DepartmentService s;
+	private DepartmentService departmentService;
 	
 	@RequestMapping(value="/list", method={RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Object getStoreList(@RequestParam int districtId){
-		return s.findStoreInfosByDistrictId(districtId);
+		return departmentService.findStoreInfosByDistrictId(districtId);
 	}
 	
 	@RequestMapping(value="/id/{id}")
 	@ResponseBody
 	public Object getStore(@PathVariable int id){
-		return s.findStoreInfoById(id);
+		return departmentService.findStoreInfoById(id);
 	}
 	
+	
+	@RequestMapping(value="/getStoresByCity", method={RequestMethod.GET})
+	@ResponseBody
+	public Object getStoresByCity(@RequestParam String city){
+		return departmentService.findStoreByCities(city);
+	}
 }

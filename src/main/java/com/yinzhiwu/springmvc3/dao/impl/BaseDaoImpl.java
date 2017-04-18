@@ -3,10 +3,11 @@ package com.yinzhiwu.springmvc3.dao.impl;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -71,8 +72,47 @@ public class BaseDaoImpl<T,PK extends Serializable>
 		String hql = "select count(*) from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
 		List<Long> l = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "value", value);
 		return l.get(0).intValue();
-	}  
-  
-}  
+	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findByProperties(Map<String, Object> map) {
+		Map<String, Object> v_map = new HashMap<>();
+		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
+		for (String string : map.keySet()) {
+			if(null != string && !"".equals(string)){
+				String valString = string.replace(".", "");
+//				valString =valString.replace(".", "");
+				hql.append(" and " + string + "=:" + valString);
+				v_map.put(valString, map.get(string));
+			}
+		}
+		
+		return (List<T>) getHibernateTemplate().findByNamedParam(
+				hql.toString(), 
+				v_map.keySet().toArray(new String[] {}),
+				v_map.values().toArray(new Object[] {}));
+
+  
+}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findAll() {
+		String hql = "from "+  entityClass.getSimpleName();
+		return (List<T>) getHibernateTemplate().find(hql);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public PK saveOrUpdate(T entity) {
+		return (PK) getHibernateTemplate().save(entity);
+	}
+
+	@Override
+	public void delete(T entity) {
+		getHibernateTemplate().delete(entity);
+		
+	}  
+}
 

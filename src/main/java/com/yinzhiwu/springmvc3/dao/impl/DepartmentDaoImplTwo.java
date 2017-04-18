@@ -1,23 +1,18 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.DepartmentDao;
 import com.yinzhiwu.springmvc3.entity.Department;
 
 @Repository
-public class DepartmentDaoImplTwo extends HibernateDaoSupport
+public class DepartmentDaoImplTwo extends BaseDaoImpl<Department, Integer>
 	implements DepartmentDao {
 
-    @Autowired  
-    public void setHibernateSessionFactory(SessionFactory sessionFactory) {  
-        super.setSessionFactory(sessionFactory);
-    }  
+
     
 	@SuppressWarnings("unchecked")
 	@Override
@@ -48,7 +43,26 @@ public class DepartmentDaoImplTwo extends HibernateDaoSupport
 	public void show() {
 		System.out.println("DepartmentDaoImplTwo show method");		
 	}
-	
+
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> findCities(){
+		String hql ="select distinct city from Department where city <> '' and city is not null";
+		return (List<String>) getHibernateTemplate().find(hql);
+	}
+
+	@Override
+	public List<Department> findAllStores() {
+		List<Department> districts = findAllOperationDistricts();
+		List<Department> stores =new ArrayList<>();
+		for (Department district : districts) {
+			List<Department> s= findStoresByDistrictId(district.getId());
+			stores.addAll(s);
+		}
+		return stores;
+	}
 	
 
 }
