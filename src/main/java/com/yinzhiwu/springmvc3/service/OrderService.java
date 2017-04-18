@@ -9,4 +9,6 @@ public interface OrderService {
 
 	List<BriefOrder> getDailyOrderByStore(int storeId, Date payedDate);
 
+	List<BriefOrder> getDailyOrderByStore(int storeId, Date payedDate, int productTypeId);
+
 }

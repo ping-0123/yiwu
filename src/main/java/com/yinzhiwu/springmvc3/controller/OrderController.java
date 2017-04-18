@@ -23,7 +23,12 @@ public class OrderController {
 	public ReturnedJson getDailyOrdersByStore(@RequestParam int storeId,
 											@RequestParam Date payedDate,
 											@RequestParam int productTypeId){
-		return new ReturnedJson(
-				orderService.getDailyOrderByStore(storeId, payedDate));
+		if (productTypeId==0){
+			return new ReturnedJson(
+					orderService.getDailyOrderByStore(storeId, payedDate));	
+		}else{
+			return new ReturnedJson(
+					orderService.getDailyOrderByStore(storeId, payedDate, productTypeId));
+		}
 	}
 }

@@ -19,11 +19,6 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 	
 
 	@Override
-	public List<Order> findByProperty(String propertyName, Object value) {
-		return null;
-	}
-
-	@Override
 	public List<Order> findByCustomer(Customer c) {
 		return null;
 	}
@@ -93,20 +88,21 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<BriefOrder> findDailyOrderByStore(int storeId, Date payedDate){
+	public List<BriefOrder> findDailyOrderByStore(int storeId, Date payedDate, int productTypeId){
 		String hql = "select  t1.createTime, t2.name,t1.markedPrice,t1.count,t3.amount, t4.name, t5.name, t5.auditOrChild,t1.vipAttr, t6.name"
 				+"	from Order t1 left join Product t2 on(t1.productId=t2.id)"
 				+"		left join OrderPayedMethod t3 on(t1.id= t3.orderId)"
 				+"	    left join PayedMethod t4 on(t3.payedMethodId = t4.id)"
 				+"	    left join Customer t5 on (t1.customerId = t5.id)"
 				+"		left join Employee t6 on(t1.createUserId= t6.id)"
-				+"	 where t1.payedDate = :payedDate  and storeId=:storeId";
+				+ "		left join ProductTypeRelation t7 on(t1.productId=t7.productId)"
+				+"	 where t1.payedDate = :payedDate  and t1.storeId=:storeId and t7.type.id=:productTypeId";
 		
 		List<BriefOrder> orders = new ArrayList<>();
 		List<Object[]> l = (List<Object[]>) getHibernateTemplate().findByNamedParam(
 					hql, 
-					new String[]{"payedDate", "storeId"}, 
-					new Object[]{payedDate , storeId});
+					new String[]{"payedDate", "storeId","productTypeId"}, 
+					new Object[]{payedDate , storeId, productTypeId});
 		
 		for (Object[] objs : l) {
 			BriefOrder o = new BriefOrder();
@@ -138,5 +134,45 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 		map.put("productSubType", subType);
 		map.put("checkedStatus", "已审核");
 		return findByProperties(map) ;
+	}
+
+	@Override
+	public List<BriefOrder> findDailyOrderByStore(int storeId, Date date) {
+		String hql = "select  t1.createTime, t2.name,t1.markedPrice,t1.count,t3.amount, t4.name, t5.name, t5.auditOrChild,t1.vipAttr, t6.name"
+				+"	from Order t1 left join Product t2 on(t1.productId=t2.id)"
+				+"		left join OrderPayedMethod t3 on(t1.id= t3.orderId)"
+				+"	    left join PayedMethod t4 on(t3.payedMethodId = t4.id)"
+				+"	    left join Customer t5 on (t1.customerId = t5.id)"
+				+"		left join Employee t6 on(t1.createUserId= t6.id)"
+				+"	 where t1.payedDate = :payedDate  and t1.storeId=:storeId";
+		
+		List<BriefOrder> orders = new ArrayList<>();
+		@SuppressWarnings("unchecked")
+		List<Object[]> l = (List<Object[]>) getHibernateTemplate().findByNamedParam(
+					hql, 
+					new String[]{"payedDate", "storeId"}, 
+					new Object[]{date , storeId});
+		
+		for (Object[] objs : l) {
+			BriefOrder o = new BriefOrder();
+			o.setRecordDate((java.sql.Date)objs[0]);
+			o.setProductName((String) objs[1]);
+			if(objs[2] instanceof Float)
+				o.setMarckedPrice((float)objs[2]);
+			if (objs[3]  instanceof Integer) {
+				o.setCount((int)objs[3]);
+			}
+			if(objs[4] instanceof Float)
+				o.setPayedAmount((float)objs[4]);
+			o.setPayedMethod((String) objs[5]);
+			o.setCustomerName((String) objs[6]);
+			o.setAuditOrChild((String) objs[7]);
+			o.setVipAttr((String) objs[8]);
+			o.setSalesmanName((String) objs[9]);
+			orders.add(o);
+			
+		}
+		
+		return orders;
 	}
 }
