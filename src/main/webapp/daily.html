@@ -129,18 +129,18 @@ var curDate =format(payedDate,'yyyy-MM-dd');
 
 var year=requestDate.getFullYear();
 var month = requestDate.getMonth()+1;
-var url=baseApiUrl +  "api/order/getDailyOrders";
+var url=baseApiUrl+"api/order/getDailyOrders";
 
 
 	$(document).ready(function(){
-		daily(url,storeId,payedDate);
+		daily(url,storeId,payedDate,productTypeId);
 	});
 
 	$("#lastday").click(function(){
 		requestDate.setDate(requestDate.getDate() -1);
 		curDate=format(requestDate,'yyyy-MM-dd');
 		//data.payedDate = curDate;
-		daily(url,storeId,curDate);
+		daily(url,storeId,curDate,productTypeId);
 
 	});
 
@@ -148,13 +148,14 @@ var url=baseApiUrl +  "api/order/getDailyOrders";
 		requestDate.setDate(requestDate.getDate() +1);
 		curDate=format(requestDate,'yyyy-MM-dd');
 		//data.payedDate = curDate;
-		daily(url,storeId,curDate);
+		daily(url,storeId,curDate,productTypeId);
 
 	});
-	function daily(k_url,k_storeId,k_payedDate){
+	function daily(k_url,k_storeId,k_payedDate,k_productTypeId){
 		var k_data={
 		storeId:k_storeId,
-		payedDate:k_payedDate
+		payedDate:k_payedDate,
+		productTypeId:k_productTypeId
 				};
 		$.ajax({
 			url:k_url,
