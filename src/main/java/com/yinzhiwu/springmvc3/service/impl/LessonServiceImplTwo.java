@@ -168,6 +168,8 @@ public class LessonServiceImplTwo implements LessonService {
 
 	@Override
 	public void save(Lesson lesson) {
+		lesson.setCreateTime(new Date());
+		lesson.setCreateUserId(lesson.getDueTeacherId());
 		lessonDao.save(lesson);
 	}
 

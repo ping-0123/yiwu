@@ -46,6 +46,6 @@ public class UserServiceImplOne implements UserService {
 
 	@Override
 	public Account findById(int id) {
-		return dao.findById(id);
+		return null;
 	}
 }

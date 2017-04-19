@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.DepartmentService;
 
 //@CrossOrigin
@@ -41,5 +42,11 @@ public class StoreController {
 	@ResponseBody
 	public Object getAllStores(){
 		return departmentService.getAllStores();
+	}
+	
+	@RequestMapping(value="/getAllApiStores")
+	@ResponseBody
+	public YiwuJson<?> getAllApiStores(){
+		return new YiwuJson<>(departmentService.getAllStores());
 	}
 }

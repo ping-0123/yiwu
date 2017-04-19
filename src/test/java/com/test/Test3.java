@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.yinzhiwu.springmvc3.dao.EmployeeDao;
-import com.yinzhiwu.springmvc3.entity.Employee;
+import com.yinzhiwu.springmvc3.model.EmployeeApiView;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext_coursetable.xml")
@@ -20,7 +20,7 @@ public class Test3 {
 	
 	@Test
 	public void testEmpDao(){
-		List<Employee> emps = empDao.findAllOnJobCoach();
+		List<EmployeeApiView> emps = empDao.findAllOnJobCoach();
 		System.out.println(emps.size());
 	}
 	 

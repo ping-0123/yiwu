@@ -19,7 +19,7 @@ public class Account {
 	@Column(name="employee_id", nullable=false, unique=true)
 	private int employeeId;
 	
-	@Column(length=32)
+	@Column(name="account",length=32, nullable=false, unique=true)
 	private String account;
 	
 	@Column(length=50)

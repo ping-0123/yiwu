@@ -1,52 +1,36 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import java.util.List;
+
+import org.hibernate.exception.DataNotFoundException;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
 
 import com.yinzhiwu.springmvc3.dao.AccountDao;
 import com.yinzhiwu.springmvc3.entity.Account;
 	
 @Repository
-public class AccountDaoImpl extends HibernateDaoSupport  implements AccountDao {
+public class AccountDaoImpl extends BaseDaoImpl<Account, Integer>  implements AccountDao {
 
-	@Autowired
-	public void setHibernateSessionFactory(SessionFactory sessionFactory){
-		super.setSessionFactory(sessionFactory);
-	}
-	
-	
+	@SuppressWarnings("unchecked")
 	@Override
-	public void update1(String name, double balance) {
-		;
-	}
-
-	@Override
-	public void inBalance(String in, double balance) {
-		String hql = "update Account set balance = balance + ? where name = ?";
-		getHibernateTemplate().bulkUpdate(hql, new Object[]{balance, in});
-	}
-
-	@Override
-	public void outBalance(String out, double balance) {
-		String hql = "update Account set balance = balance - ? where name = ?";
-		getHibernateTemplate().bulkUpdate(hql, new Object[]{balance, out});
-	}
-
-	@Override
-	public int save(Account account) {
-		Assert.notNull(account,"account is requried");
-		return (int) getHibernateTemplate().save(account);
+	public Account login(String account, String password) throws DataNotFoundException {
+		if(findCountByProperty("account", account)==0){
+			throw new DataNotFoundException("account " +  account + " is not registered");
+		}
 		
-	}
-
-
-	@Override
-	public Account findById(int id) {
-		return getHibernateTemplate().get(Account.class, 1);
+		String hql ="From Account t1 where t1.account=:account and t1.password = md5(:password)";
+		
+		List<Account> list = (List<Account>) getHibernateTemplate().findByNamedParam(
+				hql, 
+				new String[]{"account", "password"}, 
+				new Object[]{account, password});
+		
+		if(list.size()==0){
+			throw new DataNotFoundException("password is incorrect");
+		}
+		
+		return list.get(0);
 	}
 
 

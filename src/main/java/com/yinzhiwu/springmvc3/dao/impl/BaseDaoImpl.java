@@ -19,7 +19,6 @@ import com.yinzhiwu.springmvc3.dao.IBaseDao;
 
 
 
-//@Repository
 public class BaseDaoImpl<T,PK extends Serializable> 
 				extends HibernateDaoSupport 
 				implements IBaseDao<T, PK> {
@@ -82,7 +81,6 @@ public class BaseDaoImpl<T,PK extends Serializable>
 		for (String string : map.keySet()) {
 			if(null != string && !"".equals(string)){
 				String valString = string.replace(".", "");
-//				valString =valString.replace(".", "");
 				hql.append(" and " + string + "=:" + valString);
 				v_map.put(valString, map.get(string));
 			}
