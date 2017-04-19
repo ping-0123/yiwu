@@ -1,4 +1,3 @@
-
 var ajaxUrl = baseApiUrl;
 var productTypeId=0;
 if(getUrlParam('year')!=null&getUrlParam('month')!=null&getUrlParam('districtId')!=null){
@@ -118,7 +117,7 @@ function loadRevenue(v_districtId,
 						var v_stroeId = revenues[i][j].storeId;
 						var v_date = revenues[i][j].date;
 						if(v_amount != 0){
-							t = t+"<li><a href=\"daily.html?store-Id="+revenues[i][j].storeId+"&date-id="+revenues[i][j].date+"&store-Name="+revenues[i][j].storeName+"&product-id="+v_productTypeId+"&district-id="+v_districtId+"\"  store-Id='+revenues[i][j].storeId+' date-id='+revenues[i][j].date+' store-Name='+revenues[i][j].storeName+' district-id='+v_districtId+' product-id='+revenues[i][j].productTypeId+'>" +thousandSignNumber(v_amount.toFixed(0)) + "</a></li>";
+							t = t+"<li><a href=\"daily.html?store-Id="+revenues[i][j].storeId+"&date-id="+revenues[i][j].date+"&product-id="+v_productTypeId+"&district-id="+v_districtId+"&store-Name="+revenues[i][j].storeName+"\"  store-Id='+revenues[i][j].storeId+' date-id='+revenues[i][j].date+' store-Name='+revenues[i][j].storeName+' district-id='+v_districtId+' product-id='+v_productTypeId+'>" +thousandSignNumber(v_amount.toFixed(0)) + "</a></li>";
 						}else{
 							t = t+"<li></li>";
 						}
