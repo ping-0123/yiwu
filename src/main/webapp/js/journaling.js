@@ -206,7 +206,7 @@ function loadDistrict(){
 				$("#menu_all option[value='"+districtId+"']").attr("selected","selected");				
 			},
 			error: function(jqXHR){     
-			   alert("loadDistrict 发生错误：" + jqXHR.status); 
+//			   alert("loadDistrict 发生错误：" + jqXHR.status); 
 			},  
 		});	
 }
