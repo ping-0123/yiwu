@@ -111,6 +111,14 @@ public class BaseDaoImpl<T,PK extends Serializable>
 	public void delete(T entity) {
 		getHibernateTemplate().delete(entity);
 		
+	}
+
+	@Override
+	public void delete(PK id) {
+		T entity = get(id);
+		if (entity !=null){
+			delete(entity);
+		}
 	}  
 }
 

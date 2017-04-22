@@ -47,4 +47,28 @@ public class PlanRevenueServiceImpl implements PlanRevenueService {
 		return plans;
 	}
 
+
+	@Override
+	public PlanRevenue get(int id) {
+		return prDao.get(id);
+	}
+
+
+	@Override
+	public int save(PlanRevenue plan) {
+		return prDao.save(plan);
+	}
+
+
+	@Override
+	public int saveOrUpdate(PlanRevenue plan) {
+		return prDao.saveOrUpdate(plan);
+	}
+
+
+	@Override
+	public void delete(int id) {
+		 prDao.delete(id);
+	}
+
 }

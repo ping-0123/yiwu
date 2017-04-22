@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="plan_revenue", 
@@ -21,12 +24,16 @@ public class PlanRevenue {
 	private Integer id;
 	
 	@Column
+	@NotNull
 	private Integer storeId;
 	
 	@Column
+	@NotNull
 	private Integer year;
 	
 	@Column
+	@Min(1)
+	@Max(12)
 	private Integer month;
 	
 	@ManyToOne
