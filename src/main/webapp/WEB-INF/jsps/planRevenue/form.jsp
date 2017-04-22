@@ -10,11 +10,11 @@
 	</head>
 	<body>
 		<div id="global">
-		<form:form commandName="plan" action="/save" method="post">
+		<form:form commandName="plan" action="../planRevenue" method="post">
 			<fieldset>
 				<legend>Add an Monthly Operating Plan</legend>
 				<p>
-					<label for="storeId">StoreId: </label>
+					<label for="storeId">门店: </label>
 					<form:input path="storeId" tabindex="1"/>
 				</p>
 				<p>
@@ -26,7 +26,7 @@
 				</p>
 				<p>
 					<label for="month">Month: </label>
-					<form:input path="month" tabindex="3" />
+					<form:input type="Date" path="month" tabindex="3" />
 				</p>
 				<p>
 					<label for="productTypeId">productTypeId: </label>
@@ -42,6 +42,9 @@
 				</p>
 			</fieldset>
 		</form:form>
+		
+	
 		</div>
+			<p>${plan.year}</p>
 	</body>
 </html>
