@@ -1,50 +1,64 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8" isELIgnored="false"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <!DOCTYPE HTML>
 <html>
 	<head>
 		<title>Add Employee Form</title>
-		<style type="text/css">@import url("<c:url value="/css/main.css"/>");</style>
+		<style type="text/css">@import url("<c:url value="/css/planRevenue/main.css"/>");</style>
+		<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.9.1.min.js"></script>
 	</head>
 	<body>
 		<div id="global">
 		<form:form commandName="plan" action="../planRevenue" method="post">
 			<fieldset>
-				<legend>Add an Monthly Operating Plan</legend>
+				<legend>添加营业计划</legend>
+
 				<p>
 					<label for="storeId">门店: </label>
-					<form:input path="storeId" tabindex="1"/>
+					<form:select id="storeId" path="storeId" items="${stores}" itemLabel="name" itemValue="id"/>
 				</p>
-				<p>
-					<label for="year">Year: </label>
-					<form:input path="year" tabindex="2"/>
-				</p>
+
 				<p>
 					<form:errors path="month" cssClass="error"/>
 				</p>
 				<p>
-					<label for="month">Month: </label>
-					<form:input type="Date" path="month" tabindex="3" />
+					<label for="month">月份: </label>
+					<input id="input_month" type="month"  tabindex="3" />
+				</p>
+					<form:hidden  id="year" path="year"/>
+					<form:hidden id="month" path="month"/>
+				<p>
+					<label for="productTypeId">产品线: </label>
+					<form:select id="productType" path="productType.id" items="${productTypes}" itemLable="name" itemValue="id" />
 				</p>
 				<p>
-					<label for="productTypeId">productTypeId: </label>
-					<form:input path="productType.id" tabindex="4" />
-				</p>
-				<p>
-					<label for="amount">Amount: </label>
+					<label for="amount">营业额: </label>
 					<form:input path="amount" tabindex="5" />
 				</p>
 				<p id="buttons">
 					<input id="reset" type="reset" tabindex="4">
-					<input id="submit" type="submit" tabindex="5" value="Add Plan">
+					<input id="submit" type="submit" tabindex="5" value="添加">
 				</p>
 			</fieldset>
 		</form:form>
-		
 	
 		</div>
-			<p>${plan.year}</p>
+			
 	</body>
+	
+	<script type="text/javascript">
+		var v_Today = new Date;
+		document.getElementById('input_month').valueAsDate = v_Today;
+		$('#year').val(v_Today.getFullYear());
+		$('#month').val(v_Today.getMonth()+ 1);
+		
+		
+		$('#input_month').change(function(){
+			var v_date = new Date($(this).val());
+			$('#year').val(v_date.getFullYear());
+			$('#month').val(v_date.getMonth()+ 1);
+		});
+	</script>
 </html>
