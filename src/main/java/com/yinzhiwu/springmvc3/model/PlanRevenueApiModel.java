@@ -3,7 +3,6 @@ package com.yinzhiwu.springmvc3.model;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yinzhiwu.springmvc3.dao.DepartmentDao;
-import com.yinzhiwu.springmvc3.dao.PlanRevenueDao;
 import com.yinzhiwu.springmvc3.entity.PlanRevenue;
 
 public class PlanRevenueApiModel {

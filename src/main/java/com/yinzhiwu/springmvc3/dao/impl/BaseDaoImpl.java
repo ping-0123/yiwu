@@ -102,7 +102,6 @@ public class BaseDaoImpl<T,PK extends Serializable>
 		return (List<T>) getHibernateTemplate().find(hql);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void saveOrUpdate(T entity) {
 		 getHibernateTemplate().saveOrUpdate(entity);

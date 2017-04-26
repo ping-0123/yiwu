@@ -18,7 +18,7 @@
 		</p>
 		<p>
 			<label for="month">月份: </label>
-			<input id="input_month" type="month"  tabindex="3" value="${plan.year}-0${plan.month}" />
+			<input id="input_month" type="text"  tabindex="3" value="${plan.year}-0${plan.month}" />
 			<form:hidden  id="year" path="year"/>
 			<form:hidden id="month" path="month"/>
 		</p>
