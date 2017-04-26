@@ -22,5 +22,10 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		return productTypeDao.findAll();
 	}
 
+	@Override
+	public ProductType findById(Integer id) {
+		return productTypeDao.get(id);
+	}
+
 
 }

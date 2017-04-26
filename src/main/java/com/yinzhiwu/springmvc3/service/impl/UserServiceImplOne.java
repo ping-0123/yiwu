@@ -15,6 +15,7 @@ public class UserServiceImplOne implements UserService {
 //		System.out.println("UserServiceImplOne  afterPropertiesSet " );
 //	}
 	
+	@SuppressWarnings("unused")
 	@Autowired
 	private AccountDao dao;
 
