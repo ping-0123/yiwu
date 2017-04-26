@@ -1,7 +1,6 @@
 package com.yinzhiwu.springmvc3.controller;
 
 
-import javax.persistence.AttributeOverride;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
