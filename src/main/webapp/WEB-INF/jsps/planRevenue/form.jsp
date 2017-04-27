@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" isELIgnored="false"
+<%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" isELIgnored="false"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -25,7 +25,7 @@
 				</p>
 				<p>
 					<label for="month">月份: </label>
-					<input id="input_month" type="month"  tabindex="3" />
+					<input id="input_month" type="month"  tabindex="3" value=""/>
 				</p>
 					<form:hidden  id="year" path="year"/>
 					<form:hidden id="month" path="month"/>
@@ -49,10 +49,15 @@
 	</body>
 	
 	<script type="text/javascript">
-		var v_Today = new Date;
-		document.getElementById('input_month').valueAsDate = v_Today;
-		$('#year').val(v_Today.getFullYear());
-		$('#month').val(v_Today.getMonth()+ 1);
+		var v_defaultDate;
+		if ($('#input_month').val() == ""){
+			v_defaultDate = new Date();}
+		else{
+			v_defaultDate = new Date($('#input_month').val());
+		}
+	//	document.getElementById('input_month').valueAsDate = v_Today;
+		$('#year').val(v_defaultDate.getFullYear());
+		$('#month').val(v_defaultDate.getMonth()+ 1);
 		
 		
 		$('#input_month').change(function(){
