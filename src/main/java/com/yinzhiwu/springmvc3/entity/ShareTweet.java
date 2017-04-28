@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="share_style")
+@DiscriminatorColumn(name="share_style", length=32)
 @DiscriminatorValue("Share")
 @Table(name="share_tweet")
 public class ShareTweet extends BaseEntity {
@@ -33,6 +33,7 @@ public class ShareTweet extends BaseEntity {
 		return sharer;
 	}
 
+	@ManyToOne
 	public Tweet getTweet() {
 		return tweet;
 	}

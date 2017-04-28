@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="type")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="type_class")
+@DiscriminatorColumn(name="type_class", length=32)
 @DiscriminatorValue(value="abstractType")
 public class BaseType extends BaseEntity {
 	
