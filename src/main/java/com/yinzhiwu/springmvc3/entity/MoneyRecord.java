@@ -17,7 +17,7 @@ public class MoneyRecord extends AbstractRecord {
 	
 	private float currentFunds;
 	
-	@ManyToOne
+	
 	private Order order;
 
 	public float getCurrentMoney() {
@@ -34,6 +34,16 @@ public class MoneyRecord extends AbstractRecord {
 
 	public void setCurrentFunds(float currentFunds) {
 		this.currentFunds = currentFunds;
+	}
+
+
+	@ManyToOne
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 	
 	

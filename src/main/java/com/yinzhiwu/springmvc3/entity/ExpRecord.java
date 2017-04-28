@@ -15,7 +15,6 @@ public class ExpRecord extends AbstractRecord {
 
 	private  float currentExp;
 	
-	@ManyToOne
 	private ShareTweet shareTweet;
 
 	public float getCurrentExp() {
@@ -26,6 +25,7 @@ public class ExpRecord extends AbstractRecord {
 		this.currentExp = currentExp;
 	}
 
+	@ManyToOne
 	public ShareTweet getShareTweet() {
 		return shareTweet;
 	}

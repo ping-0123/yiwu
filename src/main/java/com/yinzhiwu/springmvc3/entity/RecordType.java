@@ -16,6 +16,8 @@ public class RecordType extends BaseType {
 	
 	private float factor;
 	
+	private String comments;
+	
 	private List<AbstractRecord> records = new ArrayList<>();
 
 	public RecordType() {
