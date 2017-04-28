@@ -13,15 +13,15 @@ public class AbstractRecord extends BaseEntity{
 	 */
 	private static final long serialVersionUID = 8102222572160379415L;
 	
-	@ManyToOne(targetEntity=Distrituter.class)
-	private Distrituter beneficiaty;
+	@ManyToOne(targetEntity=Distributer.class)
+	private Distributer beneficiaty;
 
 	@ManyToOne
 	private RecordType recordType;
 	
 	private float income;
 	
-	private Distrituter contributor;
+	private Distributer contributor;
 	
 	private float contributedValue;
 	
@@ -29,11 +29,11 @@ public class AbstractRecord extends BaseEntity{
 	
 	private Date contributedDate;
 
-	public Distrituter getBeneficiaty() {
+	public Distributer getBeneficiaty() {
 		return beneficiaty;
 	}
 
-	public void setBeneficiaty(Distrituter beneficiaty) {
+	public void setBeneficiaty(Distributer beneficiaty) {
 		this.beneficiaty = beneficiaty;
 	}
 
@@ -53,11 +53,11 @@ public class AbstractRecord extends BaseEntity{
 		this.income = income;
 	}
 
-	public Distrituter getContributor() {
+	public Distributer getContributor() {
 		return contributor;
 	}
 
-	public void setContributor(Distrituter contributor) {
+	public void setContributor(Distributer contributor) {
 		this.contributor = contributor;
 	}
 
