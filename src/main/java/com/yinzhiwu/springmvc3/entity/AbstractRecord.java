@@ -2,6 +2,7 @@ package com.yinzhiwu.springmvc3.entity;
 
 import java.util.Date;
 
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
@@ -13,10 +14,10 @@ public class AbstractRecord extends BaseEntity{
 	 */
 	private static final long serialVersionUID = 8102222572160379415L;
 	
-	@ManyToOne(targetEntity=Distributer.class)
+
 	private Distributer beneficiaty;
 
-	@ManyToOne
+
 	private RecordType recordType;
 	
 	private float income;
@@ -29,6 +30,9 @@ public class AbstractRecord extends BaseEntity{
 	
 	private Date contributedDate;
 
+	
+	@ManyToOne(targetEntity=Distributer.class)
+	@JoinColumn(name="beneficiaty_id")
 	public Distributer getBeneficiaty() {
 		return beneficiaty;
 	}
@@ -37,6 +41,8 @@ public class AbstractRecord extends BaseEntity{
 		this.beneficiaty = beneficiaty;
 	}
 
+	@ManyToOne
+	@JoinColumn(name="record_type_id")
 	public RecordType getRecordType() {
 		return recordType;
 	}
