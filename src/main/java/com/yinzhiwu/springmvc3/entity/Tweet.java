@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 
 @Entity
@@ -51,6 +52,7 @@ public class Tweet extends BaseEntity {
 		return author;
 	}
 
+	@OneToOne
 	public Content getContent() {
 		return content;
 	}
