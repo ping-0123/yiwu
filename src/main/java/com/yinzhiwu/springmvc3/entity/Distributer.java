@@ -50,6 +50,8 @@ public class Distributer extends BaseEntity{
 	private List<AbstractRecord> records = new ArrayList<>();
 	
 	private List<Message> messages = new ArrayList<>();
+	
+	private List<ShareTweet> shareTweets = new ArrayList<>();
 
 	public Distributer() {
 		super();
@@ -157,6 +159,16 @@ public class Distributer extends BaseEntity{
 
 	public void setMessages(List<Message> messages) {
 		this.messages = messages;
+	}
+
+	
+	@OneToMany(mappedBy="sharer")
+	public List<ShareTweet> getShareTweets() {
+		return shareTweets;
+	}
+
+	public void setShareTweets(List<ShareTweet> shareTweets) {
+		this.shareTweets = shareTweets;
 	}
 
 	

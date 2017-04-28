@@ -40,6 +40,14 @@ public class RecordType extends BaseType {
 	public void setRecords(List<AbstractRecord> records) {
 		this.records = records;
 	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
 	
 	
 	
