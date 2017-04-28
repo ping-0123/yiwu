@@ -53,11 +53,17 @@ public class PlanRevenueDaoImpl extends BaseDaoImpl<PlanRevenue, Integer> implem
 						new String[]{"year",  "month"},
 						new Object[]{year, month});
 			}
-			else
+			else{
 				return findByProperties(
 						new String[]{"year",  "month","productType.id"},
 						new Object[]{year, month,productTypeId});
+			}
 		}else
+			if(productTypeId==0){
+				return findByProperties(
+						new String[]{"storeId","year",  "month"},
+						new Object[]{storeId,year, month});
+			}
 			return findByProperties(
 					new String[]{"storeId", "year", "month", "productType.id"},
 					new Object[]{storeId, year, month, productTypeId});
