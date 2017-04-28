@@ -1,0 +1,43 @@
+package com.yinzhiwu.springmvc3.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table
+public class ExpRecord extends AbstractRecord {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5830294915459028999L;
+
+	private  float currentExp;
+	
+	@ManyToOne
+	private ShareTweet shareTweet;
+
+	public float getCurrentExp() {
+		return currentExp;
+	}
+
+	public void setCurrentExp(float currentExp) {
+		this.currentExp = currentExp;
+	}
+
+	public ShareTweet getShareTweet() {
+		return shareTweet;
+	}
+
+	public void setShareTweet(ShareTweet shareTweet) {
+		this.shareTweet = shareTweet;
+	}
+
+	public ExpRecord() {
+		super();
+	}
+	
+	
+	
+}
