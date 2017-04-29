@@ -1,11 +1,7 @@
 package com.yinzhiwu.springmvc3.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 
 @Entity
 public class RecordType extends BaseType {
