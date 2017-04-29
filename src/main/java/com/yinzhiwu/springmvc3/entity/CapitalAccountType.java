@@ -16,11 +16,11 @@ public class CapitalAccountType extends BaseType {
 	 */
 	private static final long serialVersionUID = 8530666072419354311L;
 	
-	
+	@OneToMany(mappedBy="capitalAccountType")
 	private List<CapitalAccount> capitalAccounts = new ArrayList<>();
 
 
-	@OneToMany(mappedBy="capitalAccountType")
+
 	public List<CapitalAccount> getCapitalAccounts() {
 		return capitalAccounts;
 	}

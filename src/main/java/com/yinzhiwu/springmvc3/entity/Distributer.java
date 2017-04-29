@@ -11,9 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.springframework.test.annotation.Commit;
 
 @Entity
 @Table
@@ -24,19 +23,23 @@ public class Distributer extends BaseEntity{
 	 */
 	private static final long serialVersionUID = -8400038437062433347L;
 	
-	
+	@Column(length=32,unique=true, nullable=false, updatable=false)
 	private String memberId;
 	
+	@Column(length=10, unique=true, updatable=false)
 	private String shareCode;
 	
-	
+	@ManyToOne(targetEntity=Distributer.class)
+	@JoinColumn(name="super_proxy_id")
 	private Distributer superProxy;
 	
+	@Column(length=32)
 	private String headIconName;
 	
 	private float exp;
 	
-	
+	@ManyToOne
+	@JoinColumn(name="exp_grade_id", referencedColumnName="id")
 	private ExpGrade expGrade;
 	
 	private float money;
@@ -45,18 +48,33 @@ public class Distributer extends BaseEntity{
 	
 	private Date registedTime;
 	
+	@OneToOne
+	@JoinColumn(name="id")
+	private Customer customer;
+	
+	@OneToMany(mappedBy="superProxy")
+	private List<Distributer> subordinates = new ArrayList<>();
+	
+	@OneToMany(mappedBy="distributer")
 	private Set<CapitalAccount> capitalAccounts = new HashSet<>();
 	
-	private List<AbstractRecord> records = new ArrayList<>();
+	@OneToMany(mappedBy="beneficiaty", targetEntity=MoneyRecord.class)
+	private List<MoneyRecord> moneyRecords = new ArrayList<>();
 	
+	@OneToMany(mappedBy="beneficiaty", targetEntity=ExpRecord.class)
+	private List<ExpRecord> expRecords = new ArrayList<>();
+	
+	@OneToMany(mappedBy="receiver")
 	private List<Message> messages = new ArrayList<>();
 	
+	@OneToMany(mappedBy="sharer")
 	private List<ShareTweet> shareTweets = new ArrayList<>();
 
 	public Distributer() {
 		super();
 		this.registedTime = getCreateDate();
 	}
+
 
 	public String getMemberId() {
 		return memberId;
@@ -66,6 +84,7 @@ public class Distributer extends BaseEntity{
 		this.memberId = memberId;
 	}
 
+
 	public String getShareCode() {
 		return shareCode;
 	}
@@ -74,8 +93,7 @@ public class Distributer extends BaseEntity{
 		this.shareCode = shareCode;
 	}
 
-	@ManyToOne(targetEntity=Distributer.class)
-	@JoinColumn(name="super_proxy_id")
+
 	public Distributer getSuperProxy() {
 		return superProxy;
 	}
@@ -83,6 +101,7 @@ public class Distributer extends BaseEntity{
 	public void setSuperProxy(Distributer superProxy) {
 		this.superProxy = superProxy;
 	}
+
 
 	public String getHeadIconName() {
 		return headIconName;
@@ -100,8 +119,7 @@ public class Distributer extends BaseEntity{
 		this.exp = exp;
 	}
 
-	@ManyToOne
-	@JoinColumn(name="exp_grade_id", referencedColumnName="id")
+
 	public ExpGrade getExpGrade() {
 		return expGrade;
 	}
@@ -122,15 +140,12 @@ public class Distributer extends BaseEntity{
 		return registedTime;
 	}
 
-	@OneToMany(mappedBy="distributer")
+
 	public Set<CapitalAccount> getCapitalAccounts() {
 		return capitalAccounts;
 	}
 
-	@OneToMany(mappedBy="beneficiaty")
-	public List<AbstractRecord> getRecords() {
-		return records;
-	}
+
 
 	public void setMoney(float money) {
 		this.money = money;
@@ -148,11 +163,8 @@ public class Distributer extends BaseEntity{
 		this.capitalAccounts = capitalAccounts;
 	}
 
-	public void setRecords(List<AbstractRecord> records) {
-		this.records = records;
-	}
 
-	@OneToMany(mappedBy="receiver")
+
 	public List<Message> getMessages() {
 		return messages;
 	}
@@ -162,13 +174,40 @@ public class Distributer extends BaseEntity{
 	}
 
 	
-	@OneToMany(mappedBy="sharer")
+
 	public List<ShareTweet> getShareTweets() {
 		return shareTweets;
 	}
 
 	public void setShareTweets(List<ShareTweet> shareTweets) {
 		this.shareTweets = shareTweets;
+	}
+
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+	
+
+	public List<MoneyRecord> getMoneyRecords() {
+		return moneyRecords;
+	}
+
+
+	public List<ExpRecord> getExpRecords() {
+		return expRecords;
+	}
+
+	public void setMoneyRecords(List<MoneyRecord> moneyRecords) {
+		this.moneyRecords = moneyRecords;
+	}
+
+	public void setExpRecords(List<ExpRecord> expRecords) {
+		this.expRecords = expRecords;
 	}
 
 	

@@ -15,16 +15,20 @@ public class CapitalAccount extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -7664170465208216472L;
 
+	@Column(length=50)
 	private String account;
 	
-
+	@ManyToOne
+	@JoinColumn(name="capital_account_id")
 	private CapitalAccountType capitalAccountType;
 	
 
+	@ManyToOne
+	@JoinColumn(name="distributer_id")
 	private Distributer distributer;
 
 	
-	@Column(length=50)
+
 	public String getAccount() {
 		return account;
 	}
@@ -35,8 +39,7 @@ public class CapitalAccount extends BaseEntity {
 
 
 
-	@ManyToOne
-	@JoinColumn(name="distributer_id")
+
 	public Distributer getDistributer() {
 		return distributer;
 	}
@@ -49,8 +52,7 @@ public class CapitalAccount extends BaseEntity {
 		super();
 	}
 
-	@ManyToOne
-	@JoinColumn(name="capital_account_id")
+
 	public CapitalAccountType getCapitalAccountType() {
 		return capitalAccountType;
 	}

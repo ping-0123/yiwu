@@ -3,6 +3,7 @@ package com.yinzhiwu.springmvc3.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -16,9 +17,9 @@ public class RecordType extends BaseType {
 	
 	private float factor;
 	
+	@Column(length=50)
 	private String comments;
 	
-	private List<AbstractRecord> records = new ArrayList<>();
 
 	public RecordType() {
 		super();
@@ -28,18 +29,13 @@ public class RecordType extends BaseType {
 		return factor;
 	}
 
-	@OneToMany(mappedBy="recordType")
-	public List<AbstractRecord> getRecords() {
-		return records;
-	}
+
 
 	public void setFactor(float factor) {
 		this.factor = factor;
 	}
 
-	public void setRecords(List<AbstractRecord> records) {
-		this.records = records;
-	}
+
 
 	public String getComments() {
 		return comments;

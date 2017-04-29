@@ -14,14 +14,18 @@ public class AbstractRecord extends BaseEntity{
 	 */
 	private static final long serialVersionUID = 8102222572160379415L;
 	
-
+	@ManyToOne(targetEntity=Distributer.class)
+	@JoinColumn(name="beneficiaty_id")
 	private Distributer beneficiaty;
 
-
+	@ManyToOne
+	@JoinColumn(name="record_type_id")
 	private RecordType recordType;
 	
 	private float income;
 	
+	@ManyToOne
+	@JoinColumn(name="contributor_id")
 	private Distributer contributor;
 	
 	private float contributedValue;
@@ -31,8 +35,7 @@ public class AbstractRecord extends BaseEntity{
 	private Date contributedDate;
 
 	
-	@ManyToOne(targetEntity=Distributer.class)
-	@JoinColumn(name="beneficiaty_id")
+
 	public Distributer getBeneficiaty() {
 		return beneficiaty;
 	}
@@ -41,8 +44,7 @@ public class AbstractRecord extends BaseEntity{
 		this.beneficiaty = beneficiaty;
 	}
 
-	@ManyToOne
-	@JoinColumn(name="record_type_id")
+
 	public RecordType getRecordType() {
 		return recordType;
 	}

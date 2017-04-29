@@ -1,6 +1,7 @@
 package com.yinzhiwu.springmvc3.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -15,6 +16,7 @@ public class ExpRecord extends AbstractRecord {
 
 	private  float currentExp;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
 	private ShareTweet shareTweet;
 
 	public float getCurrentExp() {
@@ -25,7 +27,7 @@ public class ExpRecord extends AbstractRecord {
 		this.currentExp = currentExp;
 	}
 
-	@ManyToOne
+
 	public ShareTweet getShareTweet() {
 		return shareTweet;
 	}

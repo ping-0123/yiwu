@@ -13,21 +13,24 @@ public class Message extends BaseEntity {
 	 */
 	private static final long serialVersionUID = 4309449622965840107L;
 
+	@ManyToOne
 	private Distributer receiver;
 	
+	@Column(length=10)
 	private String status;
 	
 	private String content;
 	
+	@ManyToOne
 	private MessageType messageType;
 
-	@ManyToOne
+
 	public Distributer getReceiver() {
 		return receiver;
 	}
 
 	
-	@Column(length=10)
+
 	public String getStatus() {
 		return status;
 	}
@@ -49,7 +52,7 @@ public class Message extends BaseEntity {
 	}
 
 
-	@ManyToOne
+
 	public MessageType getMessageType() {
 		return messageType;
 	}

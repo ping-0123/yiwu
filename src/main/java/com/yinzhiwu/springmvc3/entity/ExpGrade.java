@@ -29,8 +29,8 @@ public class ExpGrade extends BaseEntity {
 
 	private float increaseDiscont;
 	
-	
-	private List<Distributer> distributers = new ArrayList<>();
+	@OneToMany(mappedBy="expGrade")
+	private List<Distributer> owners = new ArrayList<>();
 	
 	public ExpGrade() {
 		super();
@@ -70,15 +70,16 @@ public class ExpGrade extends BaseEntity {
 	}
 
 
-	@OneToMany(mappedBy="expGrade")
-	public List<Distributer> getDistributers() {
-		return distributers;
+	public List<Distributer> getOwners() {
+		return owners;
 	}
 
-	public void setDistributers(List<Distributer> distributers) {
-		this.distributers = distributers;
+
+	public void setOwners(List<Distributer> owners) {
+		this.owners = owners;
 	}
-	
+
+
 	
 	
 }

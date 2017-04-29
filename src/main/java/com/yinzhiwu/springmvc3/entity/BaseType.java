@@ -20,6 +20,7 @@ public class BaseType extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -7200613894589888689L;
 	
+	@Column(length=32)
 	private String name;
 	
 	
@@ -28,7 +29,7 @@ public class BaseType extends BaseEntity {
 		super();
 	}
 
-	@Column(length=32)
+
 	public String getName() {
 		return name;
 	}

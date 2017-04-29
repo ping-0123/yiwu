@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="brokerage_funds", length=32)
-@DiscriminatorValue("Brokerage")
+@DiscriminatorValue("Money")
 public class MoneyRecord extends AbstractRecord {
 
 	/**
@@ -24,7 +24,7 @@ public class MoneyRecord extends AbstractRecord {
 	
 	private float currentFunds;
 	
-	
+	@ManyToOne
 	private Order order;
 
 	public float getCurrentBrokerage() {
@@ -44,7 +44,6 @@ public class MoneyRecord extends AbstractRecord {
 	}
 
 
-	@ManyToOne
 	public Order getOrder() {
 		return order;
 	}

@@ -27,6 +27,10 @@ public class BaseEntity implements Serializable{
 	/** 
      * ID 
      */  
+	
+	@Id  
+    @Column(nullable = false)  
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;  
     /** 
      * �������� 
@@ -34,7 +38,9 @@ public class BaseEntity implements Serializable{
     private Integer createUserId;
     
     
-    
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")  
+    @Column(updatable = false)  
     private Date createDate;  
     /** 
      * �޸����� 
@@ -43,6 +49,9 @@ public class BaseEntity implements Serializable{
     private Integer lastModifiedUserId;
     
     
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
+    @Column(insertable=true,updatable=true)
     protected Date lastModifiedDate;  
     
     
@@ -57,9 +66,7 @@ public class BaseEntity implements Serializable{
     	this.lastModifiedUserId=1;
 	}
 
-	@Id  
-    @Column(nullable = false)  
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+
 //    @GeneratedValue(generator = "uuid")  
 //    @GenericGenerator(name = "uuid", strategy = "uuid")  
     public Integer getId() {  
@@ -70,9 +77,7 @@ public class BaseEntity implements Serializable{
         this.id = id;  
     }  
   
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")  
-    @Column(updatable = false)  
+
     public Date getCreateDate() {  
         return createDate;  
     }  
@@ -82,9 +87,7 @@ public class BaseEntity implements Serializable{
         this.createDate = createDate;  
     }  
   
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
-    @Column(insertable=true,updatable=true)
+
     public Date getLastModifiedDate() {  
         return lastModifiedDate;  
     }  

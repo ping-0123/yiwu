@@ -1,11 +1,14 @@
 package com.yinzhiwu.springmvc3.entity;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
 @Table
+@Access(AccessType.PROPERTY)
 public class Test extends BaseEntity{
 	
 

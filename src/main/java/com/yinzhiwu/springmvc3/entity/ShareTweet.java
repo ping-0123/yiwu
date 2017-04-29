@@ -22,18 +22,20 @@ public class ShareTweet extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -2386938959605250662L;
 	
+	@ManyToOne
 	private Distributer sharer;
 	
+	@ManyToOne
 	private Tweet tweet;
 	
 	private Date shareDate;
 
-	@ManyToOne
+
 	public Distributer getSharer() {
 		return sharer;
 	}
 
-	@ManyToOne
+
 	public Tweet getTweet() {
 		return tweet;
 	}

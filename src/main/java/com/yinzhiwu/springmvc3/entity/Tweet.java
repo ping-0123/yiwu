@@ -24,16 +24,19 @@ public class Tweet extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -3058523074677494452L;
 
+	@Column(length=50)
 	private String title;
 	
+	@Column(length=32)
 	private String author;
 	
-	private Content content;
+	@OneToOne
+	private TweetContent content;
 	
-	
+	@OneToMany(mappedBy="tweet")
 	private List<ShareTweet> shareTweets = new ArrayList<>();
 
-	@OneToMany(mappedBy="tweet")
+
 	public List<ShareTweet> getShareTweets() {
 		return shareTweets;
 	}
@@ -42,20 +45,18 @@ public class Tweet extends BaseEntity {
 		this.shareTweets = shareTweets;
 	}
 
-	@Column(length=50)
+
 	public String getTitle() {
 		return title;
 	}
 
-	@Column(length=32)
+
 	public String getAuthor() {
 		return author;
 	}
 
-	@OneToOne
-	public Content getContent() {
-		return content;
-	}
+
+
 
 	public void setTitle(String title) {
 		this.title = title;
@@ -65,7 +66,12 @@ public class Tweet extends BaseEntity {
 		this.author = author;
 	}
 
-	public void setContent(Content content) {
+	public TweetContent getContent() {
+		return content;
+	}
+
+	public void setContent(TweetContent content) {
 		this.content = content;
 	}
+
 }
