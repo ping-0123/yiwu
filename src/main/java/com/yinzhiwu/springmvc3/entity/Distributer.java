@@ -8,13 +8,14 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Formula;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table
@@ -26,12 +27,32 @@ public class Distributer extends BaseEntity{
 	private static final long serialVersionUID = -8400038437062433347L;
 	
 	@Column(length=32,unique=true, nullable=false, updatable=false)
-	@Formula("concat('E5', lpad(id,8,'0'))")
+//	@Formula("concat('E5', lpad(id,8,'0'))")
+//	@ColumnDefault("concat('E5', lpad(id,8,'0'))")
 	private String memberId;
+	
+	@Column(length=32)  
+	private String nickName; //默认是会员Id
+	
+	@Column(length=32, unique=true, nullable=false, updatable=false)
+	private String account;  //默认是手机号
+	
+	@Column(length=32, nullable=false)
+	private String passwords;
+	
+	@Column(length=32, unique=true, nullable=false)
+	private String wechatNo;
+	
+	@Column(length=32, unique=true, nullable=false)
+	private String phoneNo;
+	
+	@Column
+	private Date birthday;
 	
 	@Column(length=10, unique=true, updatable=false)
 	private String shareCode;
 	
+	@JsonIgnore
 	@ManyToOne(targetEntity=Distributer.class)
 	@JoinColumn(name="super_proxy_id")
 	private Distributer superProxy;
@@ -41,6 +62,7 @@ public class Distributer extends BaseEntity{
 	
 	private float exp;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="exp_grade_id", referencedColumnName="id")
 	private ExpGrade expGrade;
@@ -51,37 +73,42 @@ public class Distributer extends BaseEntity{
 	
 	private Date registedTime;
 	
-//	@OneToOne
-//	@JoinColumn(name="id")
-//	private Customer customer;
+	@OneToOne
+	@JoinColumn(name="customer_id", unique=true, foreignKey=@ForeignKey(name="fk_distributer_customer"))
+	private Customer customer;  //根据手机号码 或者微信号做唯一性关联
 	
-	public Distributer() {
-		super();
-		this.registedTime = getCreateDate();
-		exp=0;
-		money =0;
-		funds=0;
-	}
-	
+
+	@JsonIgnore
 	@OneToMany(mappedBy="superProxy")
 	private List<Distributer> subordinates = new ArrayList<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="distributer")
 	private Set<CapitalAccount> capitalAccounts = new HashSet<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="beneficiaty", targetEntity=MoneyRecord.class)
 	private List<MoneyRecord> moneyRecords = new ArrayList<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="beneficiaty", targetEntity=ExpRecord.class)
 	private List<ExpRecord> expRecords = new ArrayList<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="receiver")
 	private List<Message> messages = new ArrayList<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="sharer")
 	private List<ShareTweet> shareTweets = new ArrayList<>();
 
 
+	
+	public Distributer() {
+		super();
+		this.registedTime = getCreateDate();
+	}
+	
 	
 	public String getMemberId() {
 		return memberId;
@@ -215,6 +242,16 @@ public class Distributer extends BaseEntity{
 
 	public void setExpRecords(List<ExpRecord> expRecords) {
 		this.expRecords = expRecords;
+	}
+
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	

@@ -2,6 +2,7 @@ package com.yinzhiwu.springmvc3.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,12 +24,14 @@ public class DistributerController {
 		Customer customer = new Customer();
 		customer.setId(21);
 		Distributer d = new Distributer();
-//		d.setCustomer(customer);
-		d.setId(21);
-		d.setShareCode(ShareCodeUtil.toSerialCode(d.getId()));
 		System.out.println(d.getCreateDate());
 		int id = distributerService.save(d);
 		
 		return distributerService.get(id).getMemberId();
+	}
+	
+	@GetMapping("/{id}")
+	public Object findById(@PathVariable int id){
+		return distributerService.get(id);
 	}
 }

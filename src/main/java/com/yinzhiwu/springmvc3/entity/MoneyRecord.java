@@ -3,8 +3,10 @@ package com.yinzhiwu.springmvc3.entity;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -25,6 +27,7 @@ public class MoneyRecord extends AbstractRecord {
 	private float currentFunds;
 	
 	@ManyToOne
+	@JoinColumn(name="order_id", foreignKey=@ForeignKey(name="fk_moneyrecord_order"))
 	private Order order;
 
 	public float getCurrentBrokerage() {

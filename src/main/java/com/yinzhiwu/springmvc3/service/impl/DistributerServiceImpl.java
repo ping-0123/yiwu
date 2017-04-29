@@ -15,4 +15,5 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	public void setBaseDao(DistributerDao distributerDao){
 		super.setBaseDao(distributerDao);
 	}
+	
 }

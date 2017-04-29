@@ -2,8 +2,6 @@ package com.test;
 
 import java.util.List;
 
-import org.hibernate.id.insert.IdentifierGeneratingInsert;
-import org.hibernate.mapping.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
