@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
+
 @Entity
 @Table
 public class Distributer extends BaseEntity{
@@ -24,6 +26,7 @@ public class Distributer extends BaseEntity{
 	private static final long serialVersionUID = -8400038437062433347L;
 	
 	@Column(length=32,unique=true, nullable=false, updatable=false)
+	@Formula("concat('E5', lpad(id,8,'0'))")
 	private String memberId;
 	
 	@Column(length=10, unique=true, updatable=false)
@@ -48,9 +51,17 @@ public class Distributer extends BaseEntity{
 	
 	private Date registedTime;
 	
-	@OneToOne
-	@JoinColumn(name="id")
-	private Customer customer;
+//	@OneToOne
+//	@JoinColumn(name="id")
+//	private Customer customer;
+	
+	public Distributer() {
+		super();
+		this.registedTime = getCreateDate();
+		exp=0;
+		money =0;
+		funds=0;
+	}
 	
 	@OneToMany(mappedBy="superProxy")
 	private List<Distributer> subordinates = new ArrayList<>();
@@ -70,12 +81,8 @@ public class Distributer extends BaseEntity{
 	@OneToMany(mappedBy="sharer")
 	private List<ShareTweet> shareTweets = new ArrayList<>();
 
-	public Distributer() {
-		super();
-		this.registedTime = getCreateDate();
-	}
 
-
+	
 	public String getMemberId() {
 		return memberId;
 	}
@@ -184,14 +191,14 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-	
+//	public Customer getCustomer() {
+//		return customer;
+//	}
+//
+//	public void setCustomer(Customer customer) {
+//		this.customer = customer;
+//	}
+//	
 
 	public List<MoneyRecord> getMoneyRecords() {
 		return moneyRecords;
@@ -210,6 +217,5 @@ public class Distributer extends BaseEntity{
 		this.expRecords = expRecords;
 	}
 
-	
 	
 }
