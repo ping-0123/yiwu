@@ -54,8 +54,9 @@ public class Distributer extends BaseEntity{
 	private String memberId;
 	
 	
-	@Size(min=2, max=32)
+
 	@Column(length=32)
+	@Size(min=2, max=32)
 	private String name;
 	
 	@Size(min=2,max=32)
@@ -63,7 +64,7 @@ public class Distributer extends BaseEntity{
 	private String nickName; //默认是会员Id
 	
 	@Pattern(regexp="(\\p{Alpha}|\\d|_){5,31}")
-	@NotNull
+//	@NotNull
 	@Column(length=32, unique=true, nullable=false, updatable=false)
 	private String account;  //默认是手机号
 	
@@ -310,7 +311,6 @@ public class Distributer extends BaseEntity{
 	}
 
 
-
 	public String getPhoneNo() {
 		return phoneNo;
 	}
@@ -355,7 +355,6 @@ public class Distributer extends BaseEntity{
 		this.wechatNo = wechatNo;
 	}
 
-
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
@@ -373,6 +372,16 @@ public class Distributer extends BaseEntity{
 
 	public void setSubordinates(List<Distributer> subordinates) {
 		this.subordinates = subordinates;
+	}
+
+
+	public Department getFollowedByStore() {
+		return followedByStore;
+	}
+
+
+	public void setFollowedByStore(Department followedByStore) {
+		this.followedByStore = followedByStore;
 	}
 
 	
