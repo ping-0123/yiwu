@@ -1,6 +1,5 @@
 package com.yinzhiwu.springmvc3.controller;
 
-import java.util.logging.Logger;
 
 import javax.validation.Valid;
 
