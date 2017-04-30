@@ -2,6 +2,7 @@ package com.yinzhiwu.springmvc3.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.service.DistributerService;
-import com.yinzhiwu.springmvc3.util.ShareCodeUtil;
 
 @RestController
 @RequestMapping("/distributer")
@@ -33,5 +33,10 @@ public class DistributerController {
 	@GetMapping("/{id}")
 	public Object findById(@PathVariable int id){
 		return distributerService.get(id);
+	}
+	
+	@GetMapping("/test2")
+	public Object testTransfer(@ModelAttribute Distributer distributer){
+		return distributer.getRegistedTime();
 	}
 }

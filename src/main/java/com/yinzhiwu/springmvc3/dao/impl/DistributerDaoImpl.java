@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.exception.DataNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
@@ -32,6 +33,33 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		List<?> ids = getHibernateTemplate().find(hql);
 //		logger.info(ids.size());
 		return (int) ids.get(0);
+	}
+
+	@Override
+	public Distributer findByShareCode(String shareCode) throws DataNotFoundException {
+		List<Distributer> distributers = findByProperty("shareCode", shareCode);
+		if(distributers.size()>0)
+			return distributers.get(0);
+		else
+			throw new DataNotFoundException(this.getClass(),"shareCode",shareCode);
+	}
+
+	@Override
+	public Distributer findByPhoneNo(String phoneNo) throws DataNotFoundException {
+		List<Distributer> distributers = findByProperty("phoneNo", phoneNo);
+		if(distributers.size()>0)
+			return distributers.get(0);
+		else
+			throw new DataNotFoundException(this.getClass(),"phoneNo",phoneNo);
+	}
+
+	@Override
+	public Distributer findByMemberId(String memeberId) throws DataNotFoundException {
+		List<Distributer> distributers = findByProperty("memeberId", memeberId);
+		if(distributers.size()>0)
+			return distributers.get(0);
+		else
+			throw new DataNotFoundException(this.getClass(),"memeberId",memeberId);
 	}
 
 	
