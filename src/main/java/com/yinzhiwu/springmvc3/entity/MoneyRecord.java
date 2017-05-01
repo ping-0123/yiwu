@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.entity;
 
+import javax.persistence.ConstraintMode;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -27,7 +28,8 @@ public class MoneyRecord extends AbstractRecord {
 	private float currentFunds;
 	
 	@ManyToOne
-	@JoinColumn(name="order_id", foreignKey=@ForeignKey(name="fk_moneyrecord_order_id"))  //
+	@JoinColumn(name="order_id", 
+		foreignKey=@ForeignKey(value = ConstraintMode.NO_CONSTRAINT, name="fk_moneyrecord_order_id"))  //
 	private Order order;
 
 	public float getCurrentBrokerage() {

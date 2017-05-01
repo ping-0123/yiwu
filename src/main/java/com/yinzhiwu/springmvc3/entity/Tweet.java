@@ -7,8 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -36,8 +39,12 @@ public class Tweet extends BaseEntity {
 	@OneToMany(mappedBy="tweet")
 	private List<ShareTweet> shareTweets = new ArrayList<>();
 
-
-	public List<ShareTweet> getShareTweets() {
+	
+	@ManyToOne
+	@JoinColumn(name="tweetType_id", foreignKey=@ForeignKey(name="fk_tweet_tweetType_id"))
+	private TweetType tweetType;
+  
+	public List<ShareTweet> getShareTweets() { 
 		return shareTweets;
 	}
 
