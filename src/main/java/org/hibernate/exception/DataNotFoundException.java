@@ -1,9 +1,5 @@
 package org.hibernate.exception;
 
-import java.sql.SQLException;
-
-import com.mysql.jdbc.Field;
-
 public class DataNotFoundException extends Exception {
 
 
