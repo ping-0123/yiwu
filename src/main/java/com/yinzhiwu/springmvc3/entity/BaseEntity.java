@@ -6,10 +6,13 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import org.hibernate.annotations.GenericGenerator;  
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;  
   
 /** 
  * ʵ���� - ���� 
@@ -24,43 +27,73 @@ public class BaseEntity implements Serializable{
 	/** 
      * ID 
      */  
-    private String id;  
+	
+	@Id  
+    @Column(nullable = false)  
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer id;  
     /** 
      * �������� 
      */  
+    private Integer createUserId;
+    
+    
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")  
+    @Column(updatable = false)  
     private Date createDate;  
     /** 
      * �޸����� 
      */  
-    private Date modifyDate;  
+    
+    private Integer lastModifiedUserId;
+    
+    
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
+    @Column(insertable=true,updatable=true)
+    protected Date lastModifiedDate;  
+    
+    
+    
+    
       
-    @Id  
-    @Column(length = 32, nullable = true)  
-    @GeneratedValue(generator = "uuid")  
-    @GenericGenerator(name = "uuid", strategy = "uuid")  
-    public String getId() {  
+    public BaseEntity() {
+    	Date date = new Date();
+    	this.createDate = date;
+    	this.lastModifiedDate=date;
+    	this.createUserId=1;
+    	this.lastModifiedUserId=1;
+	}
+
+
+//    @GeneratedValue(generator = "uuid")  
+//    @GenericGenerator(name = "uuid", strategy = "uuid")  
+    public Integer getId() {  
         return id;  
     }  
   
-    public void setId(String id) {  
+    public void setId(int id) {  
         this.id = id;  
     }  
   
-    @Column(updatable = false)  
+
     public Date getCreateDate() {  
         return createDate;  
     }  
   
+
     public void setCreateDate(Date createDate) {  
         this.createDate = createDate;  
     }  
   
-    public Date getModifyDate() {  
-        return modifyDate;  
+
+    public Date getLastModifiedDate() {  
+        return lastModifiedDate;  
     }  
   
-    public void setModifyDate(Date modifyDate) {  
-        this.modifyDate = modifyDate;  
+    public void setLastModifiedDate(Date modifyDate) {  
+        this.lastModifiedDate = modifyDate;  
     }  
   
     @Override  
@@ -88,5 +121,21 @@ public class BaseEntity implements Serializable{
             return false;  
         }  
         return true;  
-    }  
+    }
+
+	public  Integer getCreateUserId() {
+		return createUserId;
+	}
+
+	public  void setCreateUserId(int createUserId) {
+		this.createUserId = createUserId;
+	}
+
+	public  Integer getLastModifiedUserId() {
+		return lastModifiedUserId;
+	}
+
+	public  void setLastModifiedUserId(int moddifiedUserId) {
+		this.lastModifiedUserId = moddifiedUserId;
+	}  
 }  

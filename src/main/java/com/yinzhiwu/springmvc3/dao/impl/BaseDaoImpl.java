@@ -104,17 +104,20 @@ public class BaseDaoImpl<T,PK extends Serializable>
 
 	@Override
 	public void saveOrUpdate(T entity) {
+		Assert.notNull(entity, "entity is required");
 		 getHibernateTemplate().saveOrUpdate(entity);
 	}
 
 	@Override
 	public void delete(T entity) {
+		Assert.notNull(entity, "entity is required");
 		getHibernateTemplate().delete(entity);
 		
 	}
 
 	@Override
 	public void delete(PK id) {
+		Assert.notNull(id, "id is required");
 		T entity = get(id);
 		if (entity !=null){
 			delete(entity);
@@ -144,6 +147,7 @@ public class BaseDaoImpl<T,PK extends Serializable>
 
 	@Override
 	public List<T> findByExample(T entity) {
+		Assert.notNull(entity, "entity is required");
 		return getHibernateTemplate().findByExample(entity);
 	}  
 }

@@ -14,7 +14,7 @@
 	<form:form commandName="plan" action="./list" method="get">
 		<p>
 		<label for="storeId">门店: </label>
-		<form:select id="storeId" path="storeId" items="${stores}" itemLabel="name" itemValue="id"/>
+		<form:select id="storeId" path="storeId" items="${allStores}" itemLabel="name" itemValue="id"/>
 		</p>
 		<p>
 			<label for="month">月份: </label>
@@ -25,7 +25,7 @@
 		
 		<p>
 			<label for="productTypeId">产品线: </label>
-			<form:select id="productType" path="productType.id" items="${productTypes}" itemLable="name" itemValue="id" />
+			<form:select id="productType" path="productType.id" items="${allProductTypes}" itemLable="name" itemValue="id" />
 		</p>
 		<p id="buttons">
 			<input id="submit" type="submit" tabindex="5" value="查询">
@@ -61,10 +61,15 @@
 </body>
 
 <script type="text/javascript">
-		var v_Today = new Date;
-		document.getElementById('input_month').valueAsDate = v_Today;
-		$('#year').val(v_Today.getFullYear());
-		$('#month').val(v_Today.getMonth()+ 1);
+		var v_defaultDate;
+		if ($('#input_month').val() == ""){
+			v_defaultDate = new Date();}
+		else{
+			v_defaultDate = new Date($('#input_month').val());
+		}
+		//	document.getElementById('input_month').valueAsDate = v_Today;
+		$('#year').val(v_defaultDate.getFullYear());
+		$('#month').val(v_defaultDate.getMonth()+ 1);
 		
 		$('#input_month').change(function(){
 			var v_date = new Date($(this).val());

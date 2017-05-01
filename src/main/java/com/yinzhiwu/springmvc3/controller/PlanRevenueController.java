@@ -148,6 +148,22 @@ public class PlanRevenueController {
 		return "success";
 	}
 	
+	@ModelAttribute("allStores")
+	public List<Store> getAllStores2(){
+		List<Store> stores = new ArrayList<>();
+		stores.add(new Store(0, "所有", "", ""));
+		stores.addAll(departmentService.getAllStores());
+		return stores;
+	}
+	
+	@ModelAttribute("allProductTypes")
+	public List<ProductType> getAllProductTypes2(){
+		List<ProductType> productTypes = new ArrayList<>();
+		productTypes.add(new ProductType(0, "全部"));
+		productTypes.addAll(productTypeService.findAll());
+		return productTypes;
+	}
+	
 	
 	@ModelAttribute("stores")
 	public List<Store> getAllStores(){

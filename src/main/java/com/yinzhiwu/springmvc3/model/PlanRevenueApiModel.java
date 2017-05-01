@@ -1,3 +1,4 @@
+
 package com.yinzhiwu.springmvc3.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,3 +103,4 @@ public class PlanRevenueApiModel {
 	
 	
 }
+
