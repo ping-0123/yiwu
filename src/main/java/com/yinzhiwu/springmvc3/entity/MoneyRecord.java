@@ -27,7 +27,7 @@ public class MoneyRecord extends AbstractRecord {
 	private float currentFunds;
 	
 	@ManyToOne
-	@JoinColumn(name="order_id", foreignKey=@ForeignKey(name="fk_moneyrecord_order"))
+	@JoinColumn(name="order_id", foreignKey=@ForeignKey(name="fk_moneyrecord_order_id"))  //
 	private Order order;
 
 	public float getCurrentBrokerage() {

@@ -20,7 +20,7 @@ public class AbstractRecord extends BaseEntity{
 
 	@ManyToOne
 	@JoinColumn(name="record_type_id")
-	private RecordType recordType;
+	private RecordType recordType;	
 	
 	private float income;
 	
