@@ -8,6 +8,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,11 +22,11 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.aspectj.lang.annotation.After;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yinzhiwu.springmvc3.enums.Gender;
 
 /**
  * 
@@ -87,6 +89,10 @@ public class Distributer extends BaseEntity{
 	@Column
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date birthday;
+	
+	@NotNull
+	@Enumerated
+	private Gender gender;
 	
 	@Column(length=10, unique=true, updatable=false)
 	private String shareCode;
