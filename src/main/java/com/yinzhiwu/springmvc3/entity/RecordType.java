@@ -1,9 +1,11 @@
 package com.yinzhiwu.springmvc3.entity;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
+@DiscriminatorValue(value="recordType")
 public class RecordType extends BaseType {
 
 	/**

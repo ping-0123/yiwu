@@ -15,7 +15,7 @@ import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.model.EmployeeApiView;
 import com.yinzhiwu.springmvc3.service.DistributerService;
-import com.yinzhiwu.springmvc3.util.IdGeneratorUtil;
+import com.yinzhiwu.springmvc3.util.GeneratorUtil;
 import com.yinzhiwu.springmvc3.util.ShareCodeUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -105,6 +105,6 @@ Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No q
 	
 	@Test
 	public void testGenerateMemberId(){
-		System.out.println(IdGeneratorUtil.generateMemberId(10));
+		System.out.println(GeneratorUtil.generateMemberId(10));
 	}
 }

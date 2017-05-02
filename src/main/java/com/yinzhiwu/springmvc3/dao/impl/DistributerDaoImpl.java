@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.util.IdGeneratorUtil;
+import com.yinzhiwu.springmvc3.util.GeneratorUtil;
 import com.yinzhiwu.springmvc3.util.ShareCodeUtil;
 
 @Repository
@@ -23,7 +23,7 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		logger.info(id);
 //		entity.setId(id);
 		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
-		entity.setMemberId(IdGeneratorUtil.generateMemberId(id));
+		entity.setMemberId(GeneratorUtil.generateMemberId(id));
 		saveOrUpdate(entity);
 		return entity.getId();
 	}

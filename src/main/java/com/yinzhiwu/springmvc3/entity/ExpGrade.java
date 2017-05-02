@@ -3,15 +3,19 @@ package com.yinzhiwu.springmvc3.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 
 @Entity
-@Table
+@Table(uniqueConstraints={@UniqueConstraint(name="uk_expgrade_gradeNo", columnNames="gradeNo"),
+		@UniqueConstraint(name="uk_expgrade_name", columnNames="name")
+})
 public class ExpGrade extends BaseEntity {
 	
 	/**
@@ -19,6 +23,11 @@ public class ExpGrade extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -6432236461203601711L;
 
+	
+	@Column(unique=true, nullable=false)
+	private int gradeNo;
+	
+	@Column(length=32, unique=true, nullable=false)
 	private String name;
 	
 	private float upgradeExp;
@@ -28,6 +37,10 @@ public class ExpGrade extends BaseEntity {
 	private ExpGrade nextGrade;
 
 	private float increaseDiscont;
+	
+	private Boolean lowestGrade;
+	
+	private Boolean highesGrade;
 	
 	@OneToMany(mappedBy="expGrade")
 	private List<Distributer> owners = new ArrayList<>();
@@ -77,6 +90,36 @@ public class ExpGrade extends BaseEntity {
 
 	public void setOwners(List<Distributer> owners) {
 		this.owners = owners;
+	}
+
+
+	public int getGradeNo() {
+		return gradeNo;
+	}
+
+
+	public Boolean getLowestGrade() {
+		return lowestGrade;
+	}
+
+
+	public Boolean getHighesGrade() {
+		return highesGrade;
+	}
+
+
+	public void setGradeNo(int gradeNo) {
+		this.gradeNo = gradeNo;
+	}
+
+
+	public void setLowestGrade(Boolean lowestGrade) {
+		this.lowestGrade = lowestGrade;
+	}
+
+
+	public void setHighesGrade(Boolean highesGrade) {
+		this.highesGrade = highesGrade;
 	}
 
 

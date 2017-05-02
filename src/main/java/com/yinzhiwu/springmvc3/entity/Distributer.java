@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -70,6 +71,7 @@ public class Distributer extends BaseEntity{
 	@Column(length=32, nullable=false)
 	private String passwords;
 	
+	@NotNull
 	@Column(length=32, unique=true, nullable=false)
 	private String wechatNo;
 	
@@ -84,7 +86,6 @@ public class Distributer extends BaseEntity{
 	@Column(length=10, unique=true, updatable=false)
 	private String shareCode;
 	
-	@JsonIgnore
 	@ManyToOne(targetEntity=Distributer.class)
 	@JoinColumn(name="super_distributer_id", foreignKey=@ForeignKey(name="fk_distributer_superDistributer_id"))
 	private Distributer superDistributer;
@@ -94,14 +95,17 @@ public class Distributer extends BaseEntity{
 	
 	private float exp;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="expGrade_id", referencedColumnName="id", foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
 	private ExpGrade expGrade;
 	
-	private float money;
+	private float brokerage;
 	
 	private float funds;
+	
+	private float sumInComeBrokerage;
+	
+	private float sumInComeFunds;
 	
 
 	@JsonFormat(pattern="yyyy-MM-dd")
@@ -115,6 +119,8 @@ public class Distributer extends BaseEntity{
 	@ManyToOne
 	@JoinColumn(name="followedByStore_id", foreignKey=@ForeignKey(name="fk_distributer_followedByStore_id"))
 	private Department followedByStore;
+	
+	
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="superDistributer")
@@ -191,9 +197,6 @@ public class Distributer extends BaseEntity{
 		this.expGrade = expGrade;
 	}
 
-	public float getMoney() {
-		return money;
-	}
 
 	public float getFunds() {
 		return funds;
@@ -209,11 +212,6 @@ public class Distributer extends BaseEntity{
 		return capitalAccounts;
 	}
 
-
-
-	public void setMoney(float money) {
-		this.money = money;
-	}
 
 	public void setFunds(float funds) {
 		this.funds = funds;
@@ -248,14 +246,6 @@ public class Distributer extends BaseEntity{
 	}
 
 
-//	public Customer getCustomer() {
-//		return customer;
-//	}
-//
-//	public void setCustomer(Customer customer) {
-//		this.customer = customer;
-//	}
-//	
 
 	public List<MoneyRecord> getMoneyRecords() {
 		return moneyRecords;
@@ -381,6 +371,36 @@ public class Distributer extends BaseEntity{
 
 	public void setFollowedByStore(Department followedByStore) {
 		this.followedByStore = followedByStore;
+	}
+
+
+	public float getBrokerage() {
+		return brokerage;
+	}
+
+
+	public float getSumInComeBrokerage() {
+		return sumInComeBrokerage;
+	}
+
+
+	public float getSumInComeFunds() {
+		return sumInComeFunds;
+	}
+
+
+	public void setBrokerage(float brokerage) {
+		this.brokerage = brokerage;
+	}
+
+
+	public void setSumInComeBrokerage(float sumInComeBrokerage) {
+		this.sumInComeBrokerage = sumInComeBrokerage;
+	}
+
+
+	public void setSumInComeFunds(float sumInComeFunds) {
+		this.sumInComeFunds = sumInComeFunds;
 	}
 
 	

@@ -27,7 +27,6 @@ import com.yinzhiwu.springmvc3.service.DistributerService;
 public class DistributerController {
 	private static final Log logger = LogFactory.getLog(DistributerDaoImpl.class);
 	
-	//private static final Logger logger = LogFactory.getLog(DistributerController.class);
 	
 	@Autowired
 	private DistributerService  distributerService;
@@ -39,15 +38,11 @@ public class DistributerController {
 										Model model){
 		if(bindingResult.hasErrors()){
 			 FieldError field = bindingResult.getFieldError();
-			 System.out.println("Field: " + field.getField() +
-					 			"\nMessage: " + field.getDefaultMessage());
+			 logger.info("Field: " + field.getField() + ", Message: " + field.getDefaultMessage());
+			 return new YiwuJson<>(200,false,field.getDefaultMessage(),null,false);
 		}
 		
-		logger.error(invitationCode);
-		logger.info("this is info message");
-		logger.debug("this is debug message");
-		logger.warn("this is warn message");
-		return new YiwuJson<>(distributer);
+		return  distributerService.register(invitationCode, distributer);
 	}
 	
 	

@@ -23,7 +23,7 @@ public class ExpRecord extends AbstractRecord {
 		return currentExp;
 	}
 
-	public void setCurrentExp(float currentExp) {
+	public void setCurrentExp(float currentExp) { 
 		this.currentExp = currentExp;
 	}
 

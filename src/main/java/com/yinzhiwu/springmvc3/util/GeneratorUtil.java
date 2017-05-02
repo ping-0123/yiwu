@@ -1,6 +1,6 @@
 package com.yinzhiwu.springmvc3.util;
 
-public class IdGeneratorUtil {
+public class GeneratorUtil {
 
 	private static final String PREFIX= "E5";
 	
