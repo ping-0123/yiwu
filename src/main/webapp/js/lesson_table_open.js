@@ -53,7 +53,6 @@ function loadDistrict(){
 				}
 			},
 			error: function(jqXHR){     
-			   alert("loadDistrict 发生错误：" + jqXHR.status); 
 			},  
 		});	
 }
@@ -90,7 +89,6 @@ function loadStores(v_districtId){
 				loadLessonTable("api/lesson/weeklist",v_data);
 			},
 			error: function(jqXHR){     
-			   alert("loadStores 发生错误：" + jqXHR.status); 
 			},  
 		});	
 }
@@ -233,7 +231,6 @@ function loadStores(v_districtId){
   								}) 
 			},
 			error: function(jqXHR){     
-			   alert(" loadLessonTable 发生错误：" + jqXHR.status);  
 			},  
 		});	
 }

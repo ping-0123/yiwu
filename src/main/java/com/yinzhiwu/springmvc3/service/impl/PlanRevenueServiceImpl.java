@@ -11,6 +11,7 @@ import com.yinzhiwu.springmvc3.dao.DepartmentDao;
 import com.yinzhiwu.springmvc3.dao.PlanRevenueDao;
 import com.yinzhiwu.springmvc3.entity.Department;
 import com.yinzhiwu.springmvc3.entity.PlanRevenue;
+import com.yinzhiwu.springmvc3.model.PlanRevenueApiModel;
 import com.yinzhiwu.springmvc3.service.PlanRevenueService;
 
 
@@ -25,26 +26,84 @@ public class PlanRevenueServiceImpl implements PlanRevenueService {
 	private DepartmentDao departmentDao;
 
 	@Override
-	public PlanRevenue getStoreMonthlyPlanRevenue(int storeId, int productType, int year, int month) {
-		return prDao.findStoreMonthlyPlanRevenue(storeId, productType, year, month);
+	public PlanRevenueApiModel getStoreMonthlyPlanRevenue(int storeId, int productType, int year, int month) {
+		return new PlanRevenueApiModel(departmentDao,prDao.findStoreMonthlyPlanRevenue(storeId, productType, year, month));
 	}
 	
 	
 	@Override
-	public List<PlanRevenue> getDistricMonthlyPlanRevenue(int districtId, int year, int month, int productTypeId){
+	public List<PlanRevenueApiModel> getDistricMonthlyPlanRevenue(int districtId, int year, int month, int productTypeId){
 		
 		List<Department>  stores = null;
-		List<PlanRevenue> plans = new ArrayList<>();
+		List<PlanRevenueApiModel> plans = new ArrayList<>();
 		if (districtId>0)
 			stores = departmentDao.findStoresByDistrictId(districtId);
 		else
 			stores=departmentDao.findAllStores();
 		
 		for (Department store : stores) {
-			plans.add(prDao.findStoreMonthlyPlanRevenue(store.getId(), productTypeId, year, month));
+			plans.add(new PlanRevenueApiModel(
+					departmentDao,
+					prDao.findStoreMonthlyPlanRevenue(store.getId(), productTypeId, year, month)));
 		}
 		
 		return plans;
+	}
+
+
+	@Override
+	public PlanRevenueApiModel get(int id) {
+		return new PlanRevenueApiModel(
+				departmentDao,prDao.get(id));
+	}
+
+
+	@Override
+	public int save(PlanRevenue plan) {
+		return prDao.save(plan);
+	}
+
+
+	@Override
+	public void saveOrUpdate(PlanRevenue plan) {
+		prDao.saveOrUpdate(plan);
+	}
+
+
+	@Override
+	public void delete(int id) {
+		 prDao.delete(id);
+	}
+
+
+	@Override
+	public List<PlanRevenueApiModel> findAll() {
+		List<PlanRevenueApiModel> planModels = new ArrayList<>();
+		for (PlanRevenue plan : prDao.findAll()) {
+			planModels.add(new PlanRevenueApiModel(departmentDao,plan));
+		}
+		return planModels;
+	}
+
+
+	@Override
+	public List<PlanRevenueApiModel> findByExample(PlanRevenue plan) {
+		List<PlanRevenueApiModel> planModels = new ArrayList<>();
+		for (PlanRevenue p : prDao.findByExample(plan)) {
+			planModels.add(new PlanRevenueApiModel(departmentDao,p));
+		}
+		return planModels;
+	}
+	
+	
+	@Override
+	public List<PlanRevenueApiModel> findByProperties(
+			int storeId ,int year, int month, int productTypeId){
+		List<PlanRevenueApiModel> planModels = new ArrayList<>();
+		for (PlanRevenue p : prDao.findByProperties(storeId, year, month, productTypeId)) {
+			planModels.add(new PlanRevenueApiModel(departmentDao,p));
+		}
+		return planModels;
 	}
 
 }

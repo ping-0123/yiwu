@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+	</head>
+	<body>
+	
+		<p id="content"></p>
+	</body>
+	
+	<script type="text/javascript">
+		var v_baseUrl = "http://localhost:8080/yiwu/";
+		var v_url = "api/distributer/register";
+		var v_data = {"phoneNo":'183000012',
+						'password':'yzw123456',
+						'name':'Angelina Jolie',
+						'nickName':'Angelina',
+						'birthday':'2000-01-01',
+						'followedByStore.id':63,
+						'invitationCode':'aaaaa'
+					};
+		
+		$.ajax({ 
+			type: "Post", 	
+			url: v_baseUrl+v_url,
+			data:v_data,
+			dataType: "json",
+			timeout:50000,
+			success: function(data) {
+				$('#content').html(JSON.stringify(data));
+			},
+			error: function(jqXHR){     
+				alert("error");
+			},  
+		});	
+		
+	</script>
+</html>

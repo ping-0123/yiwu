@@ -13,6 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
 
@@ -52,7 +53,7 @@ public class BaseDaoImpl<T,PK extends Serializable>
         return (T) getSession().get(entityClass, id);  
     }  
   
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public PK save(T entity) {  
         Assert.notNull(entity, "entity is required");  
         return (PK) getSession().save(entity);  
@@ -101,16 +102,53 @@ public class BaseDaoImpl<T,PK extends Serializable>
 		return (List<T>) getHibernateTemplate().find(hql);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public PK saveOrUpdate(T entity) {
-		return (PK) getHibernateTemplate().save(entity);
+	public void saveOrUpdate(T entity) {
+		Assert.notNull(entity, "entity is required");
+		 getHibernateTemplate().saveOrUpdate(entity);
 	}
 
 	@Override
 	public void delete(T entity) {
+		Assert.notNull(entity, "entity is required");
 		getHibernateTemplate().delete(entity);
 		
+	}
+
+	@Override
+	public void delete(PK id) {
+		Assert.notNull(id, "id is required");
+		T entity = get(id);
+		if (entity !=null){
+			delete(entity);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findByProperties(String[] propertyNames, Object[] values) {
+		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
+		Map<String,Object> map = new HashMap<>();
+		for(int i = 0; i<propertyNames.length; i++){
+			if(StringUtils.hasLength(propertyNames[i])){
+				String valString = propertyNames[i].replace(".", "");
+				hql.append(" and " + propertyNames[i] + "=:" + valString);
+				map.put(valString, values[i]);
+			}
+		}
+		
+		return  (List<T>) getHibernateTemplate().findByNamedParam(
+				hql.toString(), 
+				map.keySet().toArray(new String[] {}),
+				map.values().toArray(new Object[] {}));
+		
+
+	}
+
+	@Override
+	public List<T> findByExample(T entity) {
+		Assert.notNull(entity, "entity is required");
+		return getHibernateTemplate().findByExample(entity);
 	}  
 }
 
