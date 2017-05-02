@@ -33,6 +33,7 @@ function loadDistrict(){
 			type: "Get", 	
 			url: url,
 			dataType: "json",
+			timeout:5000,
 			success: function(data) {
 				var district;
 				var t="";
@@ -52,7 +53,6 @@ function loadDistrict(){
 				}
 			},
 			error: function(jqXHR){     
-			   alert("loadDistrict 发生错误：" + jqXHR.status); 
 			},  
 		});	
 }
@@ -67,6 +67,7 @@ function loadStores(v_districtId){
 			type: "GET", 	
 			url: url,
 			dataType: "json",
+			timeout:5000,
 			success: function(data) {
 				var store;
 				var ts="";
@@ -88,7 +89,6 @@ function loadStores(v_districtId){
 				loadLessonTable("api/lesson/weeklist",v_data);
 			},
 			error: function(jqXHR){     
-			   alert("loadStores 发生错误：" + jqXHR.status); 
 			},  
 		});	
 }
@@ -101,6 +101,7 @@ function loadStores(v_districtId){
 				url:url,
 				type:"GET",
 				dataType:"json",
+				timeout:5000,
 				success:function(data){
 					//alert(JSON.stringify(data));
 					var li='';
@@ -129,6 +130,7 @@ function loadStores(v_districtId){
 				url:url,
 				type:"GET",
 				dataType:"json",
+				timeout:5000,
 				success:function(data){
 				$('.address_week .first_line span').html(data.name);
 				$('#address span').html(data.address);
@@ -162,6 +164,7 @@ function loadStores(v_districtId){
 			url: url,
 			dataType: "json",
 			data:v_data,
+			timeout:5000,
 			success: function(data) {
 
 				var t ="<thead><tr>";
@@ -204,7 +207,15 @@ function loadStores(v_districtId){
 							t= t+ "<li><small>" + lesson.danceName.replace("少儿","") + lesson.danceGrade  + "</small>" +"</li><li><small>"
 								+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"
 								+lesson.dueTeacherName+"</small><li>" ;
-							t = t+ "<li><small>   </small></li>";
+							if(lesson.courseType =="开放式"){
+							//	开放式的预约： 预约人数/签到人数/容量
+								t= t+ "<li><small>预约:" + lesson.appointedStudentCount 
+									+ "/" +lesson.checkedInsStudentCount
+									+ "/" +lesson.maxStudentCount
+									+"</small></li></ul>";
+							}else{
+								t = t+ "<li><small> <br />  </small></li>";
+							}
 						}
 						t=t+"</td>";
 					}
@@ -220,7 +231,6 @@ function loadStores(v_districtId){
   								}) 
 			},
 			error: function(jqXHR){     
-			   alert(" loadLessonTable 发生错误：" + jqXHR.status);  
 			},  
 		});	
 }

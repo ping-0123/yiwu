@@ -7,14 +7,13 @@
 		<title></title>
 	</head>
 	<script src="js/jquery.min.js" type="text/javascript"></script>
-	<script type="text/javascript" scr="js/journaling.js"></script>
+	<script type="text/javascript" src="js/global.js"></script>
 	<body>
 		<div class="top_nav">
 			            <div class="logo">
 						<img src="images/logo.png">
 						</div>
-						<div class="return" id="return">
-						<a href="">返回</a>
+
 						</div>
 						
 						<div class="store">
@@ -72,7 +71,18 @@
 		   </div>
 	</body>
 
+
 <script>
+/*function return(){
+		var currentDate = new Date(payedDate);
+		var year=currentDate.getFullYear();
+		var month = currentDate.getMonth();
+		window.location.href="journaling.html?districtId='+districtId+'&year='+year+'&month='+month+'&productTypeId='+productId+'";
+		/*<a href="journaling.html?districtId='+districtId+'&year='+year+'&month='+month+'&productTypeId='+productId+'"></a>;
+	}*/
+
+
+
 function getUrlParam(name){
 var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
 var r = window.location.search.substr(1).match(reg);
@@ -106,27 +116,24 @@ function format(time, format){
     })
 }
 
-//var count=getUrlParam('v-count');
 var storeId=getUrlParam('store-Id');
 var storeName=getUrlParam('store-Name');
 var payedDate=getUrlParam('date-id');
+var productTypeId=getUrlParam('product-id');
+var districtId=getUrlParam('district-id');
 var requestDate = new Date(payedDate);
 var curDate =format(payedDate,'yyyy-MM-dd');
-var url="http://yzw.chenksoft.com:8080/yiwu/api/order/getDailyOrders";
-/*var data={
-	storeId:storeId,
-	payedDate:payedDate
-};*/
+
 
 	$(document).ready(function(){
-		daily(url,storeId,payedDate);
+		daily(url,storeId,payedDate,productTypeId);
 	});
 
 	$("#lastday").click(function(){
 		requestDate.setDate(requestDate.getDate() -1);
 		curDate=format(requestDate,'yyyy-MM-dd');
 		//data.payedDate = curDate;
-		daily(url,storeId,curDate);
+		daily(url,storeId,curDate,productTypeId);
 
 	});
 
@@ -134,17 +141,14 @@ var url="http://yzw.chenksoft.com:8080/yiwu/api/order/getDailyOrders";
 		requestDate.setDate(requestDate.getDate() +1);
 		curDate=format(requestDate,'yyyy-MM-dd');
 		//data.payedDate = curDate;
-		daily(url,storeId,curDate);
+		daily(url,storeId,curDate,productTypeId);
 
 	});
-
-
-
-
-	function daily(k_url,k_storeId,k_payedDate){
+	function daily(k_url,k_storeId,k_payedDate,k_productTypeId){
 		var k_data={
 		storeId:k_storeId,
-		payedDate:k_payedDate
+		payedDate:k_payedDate,
+		productTypeId:k_productTypeId
 				};
 		$.ajax({
 			url:k_url,
@@ -167,17 +171,6 @@ var url="http://yzw.chenksoft.com:8080/yiwu/api/order/getDailyOrders";
 })
 	}
 
-
-
-
-
-
-
-
+	
 </script>
-
-
-
-
-
 </html>

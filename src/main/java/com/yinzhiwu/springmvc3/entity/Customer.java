@@ -112,6 +112,7 @@ public class Customer {
 	
 	@Column(name="sf_last_change_timestamp")
 	private Date lastChangeTimestamp;
+	
 
 	public final Integer getId() {
 		return id;
@@ -375,6 +376,14 @@ public class Customer {
 
 	public final void setLastChangeTimestamp(Date lastChangeTimestamp) {
 		this.lastChangeTimestamp = lastChangeTimestamp;
+	}
+
+	public Customer() {
+		super();
+	}
+	
+	public Customer(Distributer d){
+		this.auditOrChild="成人";
 	}
 	
 	

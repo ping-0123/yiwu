@@ -21,4 +21,6 @@ public interface DepartmentService {
 	public Store findStoreInfoById(int id);
 
 	List<Store> findStoreByCities(String city);
+
+	public List<Store> getAllStores();
 }

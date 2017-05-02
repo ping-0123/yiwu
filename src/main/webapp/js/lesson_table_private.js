@@ -33,6 +33,7 @@ function loadDistrict(){
 			type: "Get", 	
 			url: url,
 			dataType: "json",
+			timeout:5000,
 			success: function(data) {
 				var district;
 				var t="";
@@ -52,7 +53,6 @@ function loadDistrict(){
 				}
 			},
 			error: function(jqXHR){     
-			   alert("loadDistrict 发生错误：" + jqXHR.status); 
 			},  
 		});	
 }
@@ -67,6 +67,7 @@ function loadStores(v_districtId){
 			type: "GET", 	
 			url: url,
 			dataType: "json",
+			timeout: 5000,
 			success: function(data) {
 				var store;
 				var ts="";
@@ -88,7 +89,6 @@ function loadStores(v_districtId){
 				loadLessonTable("api/lesson/weeklist",v_data);
 			},
 			error: function(jqXHR){     
-			   alert("loadStores 发生错误：" + jqXHR.status); 
 			},  
 		});	
 }
@@ -101,6 +101,7 @@ function loadStores(v_districtId){
 				url:url,
 				type:"GET",
 				dataType:"json",
+				timeout:5000,
 				success:function(data){
 					//alert(JSON.stringify(data));
 					var li='';
@@ -129,12 +130,12 @@ function loadStores(v_districtId){
 				url:url,
 				type:"GET",
 				dataType:"json",
+				timeout:5000,
 				success:function(data){
 				$('.address_week .first_line span').html(data.name);
 				$('#address span').html(data.address);
 				$('#phone span').html(data.telePhone);
 			
-//				$('#phone span').attr("onclick" "location.href='" + data.telePhone +"';");
 			}
 
 			})
@@ -162,6 +163,7 @@ function loadStores(v_districtId){
 			url: url,
 			dataType: "json",
 			data:v_data,
+			timeout:5000,
 			success: function(data) {
 
 				var t ="<thead><tr>";
@@ -239,7 +241,6 @@ function loadStores(v_districtId){
   								}) 
 			},
 			error: function(jqXHR){     
-			   alert(" loadLessonTable 发生错误：" + jqXHR.status);  
 			},  
 		});	
 }

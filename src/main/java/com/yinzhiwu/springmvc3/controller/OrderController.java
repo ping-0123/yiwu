@@ -21,8 +21,14 @@ public class OrderController {
 	@ResponseBody
 	@RequestMapping(value="/getDailyOrders")
 	public ReturnedJson getDailyOrdersByStore(@RequestParam int storeId,
-											@RequestParam Date payedDate){
-		return new ReturnedJson(
-				orderService.getDailyOrderByStore(storeId, payedDate));
+											@RequestParam Date payedDate,
+											@RequestParam int productTypeId){
+		if (productTypeId==0){
+			return new ReturnedJson(
+					orderService.getDailyOrderByStore(storeId, payedDate));	
+		}else{
+			return new ReturnedJson(
+					orderService.getDailyOrderByStore(storeId, payedDate, productTypeId));
+		}
 	}
 }

@@ -10,7 +10,7 @@ public interface IBaseDao<T ,PK extends Serializable> {
 		
 		public PK save(T entity);
 		
-		public PK saveOrUpdate(T entity);
+		public void saveOrUpdate(T entity);
 		
 		
 		public List<T> findAll();
@@ -20,8 +20,16 @@ public interface IBaseDao<T ,PK extends Serializable> {
 		public int findCountByProperty(String propertyName, Object value);
 		
 		public List<T> findByProperties(Map<String, Object> param);
+		
+		public List<T> findByProperties(String[] propertyNames, Object[] values);
+		
+		public List<T> findByExample(T entity);
 
 		void delete(T entit);
+		
+		void delete(PK id);
+
+		void update(T entity);
 		
 
 }

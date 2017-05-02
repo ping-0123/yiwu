@@ -39,9 +39,33 @@ public class PlanRevenueDaoImpl extends BaseDaoImpl<PlanRevenue, Integer> implem
 
 	@Override
 	public List<PlanRevenue> findDistrictMonthlyPlanRevenue(int districtId, int year, int month, int productTypeId){
-		StringBuilder hql=new StringBuilder();
-		
+//		StringBuilder hql=new StringBuilder();
 		return null;
 	}
 
+	@Override
+	public List<PlanRevenue> findByProperties(
+			int storeId, int year, int month , int productTypeId)
+	{
+		if(storeId==0){
+			if(productTypeId==0){
+				return findByProperties(
+						new String[]{"year",  "month"},
+						new Object[]{year, month});
+			}
+			else{
+				return findByProperties(
+						new String[]{"year",  "month","productType.id"},
+						new Object[]{year, month,productTypeId});
+			}
+		}else
+			if(productTypeId==0){
+				return findByProperties(
+						new String[]{"storeId","year",  "month"},
+						new Object[]{storeId,year, month});
+			}
+			return findByProperties(
+					new String[]{"storeId", "year", "month", "productType.id"},
+					new Object[]{storeId, year, month, productTypeId});
+	}
 }

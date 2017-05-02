@@ -4,11 +4,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="plan_revenue", 
@@ -17,16 +21,20 @@ public class PlanRevenue {
 
 	
 	@Id
-	@GeneratedValue
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	
 	@Column
+	@NotNull
 	private Integer storeId;
 	
 	@Column
+	@NotNull
 	private Integer year;
 	
 	@Column
+	@Min(1)
+	@Max(12)
 	private Integer month;
 	
 	@ManyToOne

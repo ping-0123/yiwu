@@ -1,11 +1,19 @@
 ﻿
-var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/";
 
 var currentDate = new Date();
 var year=currentDate.getFullYear();
 var month = currentDate.getMonth() + 1;
 var districtId =0;
 var productTypeId=0;
+}
+
+
+
+function getUrlParam(name){
+var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+var r = window.location.search.substr(1).match(reg);
+if (r!=null) return decodeURI(r[2]); return null;
+}
 
 
 loadDistrict();
@@ -99,9 +107,7 @@ function loadRevenue(v_districtId,
 						var v_amount = revenues[i][j].amount;
 						var v_stroeId = revenues[i][j].storeId;
 						var v_date = revenues[i][j].date;
-						if(v_amount != 0){
-							t = t+"<li><a href=\"daily.html?store-Id="+revenues[i][j].storeId+"&date-id="+revenues[i][j].date+"&store-Name="+revenues[i][j].storeName+"\" store-Id='+revenues[i][j].storeId+' date-id='+revenues[i][j].date+' store-Name='+revenues[i][j].storeName+'>" +thousandSignNumber(v_amount.toFixed(0)) + "</a></li>";
-						   }else{
+
 							t = t+"<li></li>";
 						  }
 						arrayDayRevenueSum[i] =0 + arrayDayRevenueSum[i] + v_amount;
@@ -191,9 +197,10 @@ function loadDistrict(){
 				}
 				$('.all select').html(t);
 //				loadStores(data[0].id);
+				$("#menu_all option[value='"+districtId+"']").attr("selected","selected");				
 			},
 			error: function(jqXHR){     
-			   alert("loadDistrict 发生错误：" + jqXHR.status); 
+//			   alert("loadDistrict 发生错误：" + jqXHR.status); 
 			},  
 		});	
 }
@@ -214,6 +221,7 @@ function loadProductLines(){
 				t= t+ "<option value=\"" + productLine.id + "\">" + productLine.name+ "</option>";
 			}
 			$('.product select').html(t);
+			$("#productLine option[value='"+productTypeId+"']").attr("selected","selected");
 		},
 		async:true
 	});

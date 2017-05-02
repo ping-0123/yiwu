@@ -18,8 +18,14 @@ public class OrderServiceImpl implements OrderService {
 	private OrderDao orderDao;
 	
 	@Override
-	public List<BriefOrder> getDailyOrderByStore(int storeId, Date payedDate){
+	public List<BriefOrder> getDailyOrderByStore(int storeId, Date payedDate, int productTypeId){
 		
+		return orderDao.findDailyOrderByStore(storeId, payedDate, productTypeId);
+	}
+
+	@Override
+	public List<BriefOrder> getDailyOrderByStore(int storeId, Date payedDate) {
 		return orderDao.findDailyOrderByStore(storeId, payedDate);
 	}
+
 }

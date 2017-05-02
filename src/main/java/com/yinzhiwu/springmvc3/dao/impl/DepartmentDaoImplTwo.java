@@ -17,7 +17,11 @@ public class DepartmentDaoImplTwo extends BaseDaoImpl<Department, Integer>
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Department> findAllOperationDistricts() {
-		String hql = "SELECT new Department(id,deptName)"
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("superiorId", 55);
+//		map.put("removed", 0);
+//		return findByProperties(map);
+		String hql = "SELECT new Department(d.id,d.deptName)"
 				+ " FROM Department d "
 				+ "WHERE d.deptName LIKE '%区域' AND d.superiorId = 55 AND d.removed=0"
 				+ " order by convert_gbk(d.deptName)";

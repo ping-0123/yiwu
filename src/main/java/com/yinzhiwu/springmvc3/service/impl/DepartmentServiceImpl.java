@@ -100,4 +100,15 @@ public class DepartmentServiceImpl implements DepartmentService {
 		
 	}
 
+	@Override
+	public List<Store> getAllStores() {
+		List<Department> depts=  departmentDao.findAllStores();
+		List<Store> stores = new ArrayList<>();
+		for (Department dept : depts) {
+			stores.add(new Store(dept));
+		}
+		
+		return stores;
+	}
+
 }

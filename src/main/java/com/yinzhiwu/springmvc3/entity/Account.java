@@ -16,51 +16,47 @@ public class Account {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(length=32)
-	private String name;
+	@Column(name="employee_id", nullable=false, unique=true)
+	private int employeeId;
 	
-	@Column
-	private double balance;
+	@Column(name="account",length=32, nullable=false, unique=true)
+	private String account;
 	
-	@Column(length = 32)
-	private String accountName;
-	
-	
-	@Column(length=40)
+	@Column(length=50)
 	private String password;
-	
-	
-	
-	public Account(){};
-	
-	public Account(String name, double balance){
-		this.name = name;
-		this.balance = balance;
-	}
 
-	public int getId() {
+	public final Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public final void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public final int getEmployeeId() {
+		return employeeId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public final void setEmployeeId(int employeeId) {
+		this.employeeId = employeeId;
 	}
 
-	public double getBalance() {
-		return balance;
+	public final String getAccount() {
+		return account;
 	}
 
-	public void setBalance(double balance) {
-		this.balance = balance;
+	public final void setAccount(String account) {
+		this.account = account;
 	}
 
-		
+	public final String getPassword() {
+		return password;
+	}
+
+	public final void setPassword(String password) {
+		this.password = password;
+	}
+	
+	
+	
 }

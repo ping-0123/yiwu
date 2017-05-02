@@ -17,4 +17,6 @@ public interface LessonService {
 			String danceCatagory,
 			Date date,
 			Customer c);
+
+	public void save(Lesson lesson);
 }

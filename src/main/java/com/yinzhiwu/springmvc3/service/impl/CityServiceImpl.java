@@ -13,7 +13,7 @@ import com.yinzhiwu.springmvc3.service.CityService;
 public class CityServiceImpl implements CityService {
 
 	@Autowired
-	@Qualifier("departmentDaoImpl")
+	@Qualifier("departmentDaoImplTwo")
 	private DepartmentDao departmentDao;
 	
 	@Override
