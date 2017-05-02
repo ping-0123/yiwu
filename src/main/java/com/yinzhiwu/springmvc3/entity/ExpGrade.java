@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -24,16 +25,16 @@ public class ExpGrade extends BaseEntity {
 	private static final long serialVersionUID = -6432236461203601711L;
 
 	
-	@Column(unique=true, nullable=false)
+	@Column(unique=true, nullable=false)  //uk
 	private int gradeNo;
 	
-	@Column(length=32, unique=true, nullable=false)
+	@Column(length=32, nullable=false)  //uk
 	private String name;
 	
 	private float upgradeExp;
 	
 	@OneToOne
-	@JoinColumn(name="next_grade_id")
+	@JoinColumn(name="next_grade_id", foreignKey=@ForeignKey(name="fk_expGrade_nextGrade_id"))
 	private ExpGrade nextGrade;
 
 	private float increaseDiscont;
@@ -49,7 +50,8 @@ public class ExpGrade extends BaseEntity {
 		super();
 	}
 
-
+	
+	
 	public String getName() {
 		return name;
 	}
@@ -120,6 +122,17 @@ public class ExpGrade extends BaseEntity {
 
 	public void setHighesGrade(Boolean highesGrade) {
 		this.highesGrade = highesGrade;
+	}
+
+
+
+	public ExpGrade(int gradeNo, String name, float upgradeExp, ExpGrade nextGrade, float increaseDiscont) {
+		super();
+		this.gradeNo = gradeNo;
+		this.name = name;
+		this.upgradeExp = upgradeExp;
+		this.nextGrade = nextGrade;
+		this.increaseDiscont = increaseDiscont;
 	}
 
 

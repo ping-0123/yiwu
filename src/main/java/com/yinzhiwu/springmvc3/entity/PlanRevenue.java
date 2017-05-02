@@ -15,8 +15,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="plan_revenue", 
-		uniqueConstraints={@UniqueConstraint(columnNames={"storeId","year", "month", "productTypeId"})})
+@Table(name="plan_revenue", uniqueConstraints=
+	@UniqueConstraint(name="uk_PlanRevenue_storeId_year_month_productTypeId", 
+			columnNames={"storeId","year", "month", "productTypeId"}))
 public class PlanRevenue {
 
 	
@@ -39,7 +40,7 @@ public class PlanRevenue {
 	
 	@ManyToOne
 	@JoinColumn(name="productTypeId" ,
-		foreignKey=@ForeignKey(name="fk_op_productTypeId"))
+		foreignKey=@ForeignKey(name="fk_PlanRevenue_productType_id"))
 	private ProductType productType;
 	
 	@Column

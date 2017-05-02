@@ -5,8 +5,10 @@ import java.util.Date;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,9 +25,11 @@ public class ShareTweet extends BaseEntity {
 	private static final long serialVersionUID = -2386938959605250662L;
 	
 	@ManyToOne
+	@JoinColumn(foreignKey=@ForeignKey(name="fk_ShareTweet_sharer_id"))
 	private Distributer sharer;
 	
 	@ManyToOne
+	@JoinColumn(foreignKey=@ForeignKey(name="fk_ShareTweet_tweet_id"))
 	private Tweet tweet;
 	
 	private Date shareDate;

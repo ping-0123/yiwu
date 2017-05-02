@@ -70,8 +70,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			try {
 				customer = customerDao.findByWeChat(distributer.getWechatNo());
 			} catch (DataNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				customer = new Customer(distributer);
 			}
 		}
 		distributer.setCustomer(customer);

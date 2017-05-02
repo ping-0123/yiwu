@@ -80,4 +80,9 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		baseDao.delete(id);
 	}
 
+	@Override
+	public void update(T entity) {
+		baseDao.update(entity);
+	}
+
 }

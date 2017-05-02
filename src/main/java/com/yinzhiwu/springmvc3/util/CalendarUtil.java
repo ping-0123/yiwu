@@ -17,4 +17,12 @@ public class CalendarUtil {
 			return false;
 			
 	}
+	
+	public static long getAge(Date birthday){
+		Calendar today = Calendar.getInstance();
+		Calendar bir = Calendar.getInstance();
+		bir.setTime(birthday);
+		long age = (today.getTimeInMillis() - bir.getTimeInMillis())/(1000*3600*24*365);
+		return age;
+	}
 }

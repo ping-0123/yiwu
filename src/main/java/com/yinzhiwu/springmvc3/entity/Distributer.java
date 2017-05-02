@@ -75,7 +75,7 @@ public class Distributer extends BaseEntity{
 	private String account;  //默认是手机号
 	
 	@Column(length=32, nullable=false)
-	private String passwords;
+	private String password;
 	
 	@NotNull
 	@Column(length=32, unique=true, nullable=false)
@@ -90,8 +90,9 @@ public class Distributer extends BaseEntity{
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date birthday;
 	
-	@NotNull
-	@Enumerated
+//	@NotNull
+	@Column(length=10)
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
 	@Column(length=10, unique=true, updatable=false)
@@ -106,6 +107,7 @@ public class Distributer extends BaseEntity{
 	
 	private float exp;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="expGrade_id", referencedColumnName="id", foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
 	private ExpGrade expGrade;
@@ -306,9 +308,6 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public String getPasswords() {
-		return passwords;
-	}
 
 
 	public String getWechatNo() {
@@ -348,10 +347,6 @@ public class Distributer extends BaseEntity{
 
 	public void setAccount(String account) {
 		this.account = account;
-	}
-
-	public void setPasswords(String passwords) {
-		this.passwords = passwords;
 	}
 
 
@@ -416,6 +411,22 @@ public class Distributer extends BaseEntity{
 
 	public void setSumInComeFunds(float sumInComeFunds) {
 		this.sumInComeFunds = sumInComeFunds;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	

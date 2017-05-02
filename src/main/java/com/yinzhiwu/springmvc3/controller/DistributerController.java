@@ -38,8 +38,9 @@ public class DistributerController {
 										Model model){
 		if(bindingResult.hasErrors()){
 			 FieldError field = bindingResult.getFieldError();
-			 logger.info("Field: " + field.getField() + ", Message: " + field.getDefaultMessage());
-			 return new YiwuJson<>(200,false,field.getDefaultMessage(),null,false);
+			 String message =   field.getField() + " " + field.getDefaultMessage();
+			 logger.info(message);
+			 return new YiwuJson<>(200,false,message,null,false);
 		}
 		
 		return  distributerService.register(invitationCode, distributer);

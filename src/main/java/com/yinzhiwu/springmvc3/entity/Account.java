@@ -1,14 +1,21 @@
 package com.yinzhiwu.springmvc3.entity;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="account")
+@Table(name="account", uniqueConstraints={
+		@UniqueConstraint(name="uk_Account_employeeId", columnNames="employee_id"),
+		@UniqueConstraint(name="uk_Account_account", columnNames="account")})
 public class Account {
 	
 
@@ -16,10 +23,13 @@ public class Account {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="employee_id", nullable=false, unique=true)
-	private int employeeId;
+	//uk
+	@OneToOne
+	@JoinColumn(name="employee_id", nullable=false, foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))  
+	private Employee employee;
 	
-	@Column(name="account",length=32, nullable=false, unique=true)
+	//uk
+	@Column(name="account",length=32, nullable=false) 
 	private String account;
 	
 	@Column(length=50)
@@ -33,13 +43,6 @@ public class Account {
 		this.id = id;
 	}
 
-	public final int getEmployeeId() {
-		return employeeId;
-	}
-
-	public final void setEmployeeId(int employeeId) {
-		this.employeeId = employeeId;
-	}
 
 	public final String getAccount() {
 		return account;
@@ -55,6 +58,14 @@ public class Account {
 
 	public final void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 	
 	
