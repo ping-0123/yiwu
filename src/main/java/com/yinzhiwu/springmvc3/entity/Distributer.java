@@ -16,8 +16,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import org.aspectj.lang.annotation.After;
+import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -79,6 +83,7 @@ public class Distributer extends BaseEntity{
 	@Column(length=32, unique=true, nullable=false)
 	private String phoneNo;
 	
+	@Past
 	@Column
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date birthday;
@@ -153,6 +158,11 @@ public class Distributer extends BaseEntity{
 		this.registedTime = getCreateDate();
 	}
 	
+	public void initialize(){
+		if (StringUtils.isEmpty(this.account)){
+			this.account = this.phoneNo;
+		}
+	}
 	
 	public String getMemberId() {
 		return memberId;
@@ -333,7 +343,6 @@ public class Distributer extends BaseEntity{
 	public void setAccount(String account) {
 		this.account = account;
 	}
-
 
 	public void setPasswords(String passwords) {
 		this.passwords = passwords;

@@ -28,6 +28,8 @@ public interface IBaseDao<T ,PK extends Serializable> {
 		void delete(T entit);
 		
 		void delete(PK id);
+
+		void update(T entity);
 		
 
 }

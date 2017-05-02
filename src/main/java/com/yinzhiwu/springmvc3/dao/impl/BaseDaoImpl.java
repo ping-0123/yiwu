@@ -150,5 +150,11 @@ public class BaseDaoImpl<T,PK extends Serializable>
 		Assert.notNull(entity, "entity is required");
 		return getHibernateTemplate().findByExample(entity);
 	}  
+	
+	@Override
+	public void update(T entity){
+		Assert.notNull(entity, "entity is required");
+		getHibernateTemplate().update(entity);
+	}
 }
 

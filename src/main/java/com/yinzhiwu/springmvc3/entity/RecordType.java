@@ -22,6 +22,18 @@ public class RecordType extends BaseType {
 	public RecordType() {
 		super();
 	}
+	
+	public RecordType(String name){
+		super();
+		super.setName(name);
+	}
+	
+	public RecordType(String name, String comments, float factor){
+		super();
+		super.setName(name);
+		this.comments= comments;
+		this.factor= factor;
+	}
 
 	public float getFactor() {
 		return factor;

@@ -39,6 +39,11 @@ public class ExpRecord extends AbstractRecord {
 	public ExpRecord() {
 		super();
 	}
+
+	public ExpRecord(Distributer beneficiaty, Distributer contributor, float contributedValue, RecordType recordType) {
+		super(beneficiaty, contributor, contributedValue, recordType);
+		this.currentExp = beneficiaty.getExp() + getIncome();
+	}
 	
 	
 	

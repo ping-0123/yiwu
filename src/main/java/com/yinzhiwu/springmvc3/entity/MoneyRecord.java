@@ -15,8 +15,8 @@ import javax.persistence.Table;
 @Table
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="brokerage_funds", length=32)
-@DiscriminatorValue("Money")
-public class MoneyRecord extends AbstractRecord {
+@DiscriminatorValue("MoneyRecord")
+public abstract class MoneyRecord extends AbstractRecord {
 
 	/**
 	 * 
@@ -55,6 +55,17 @@ public class MoneyRecord extends AbstractRecord {
 
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+
+	public MoneyRecord(Distributer beneficiaty, Distributer contributor, float contributedValue,
+			RecordType recordType) {
+		super(beneficiaty, contributor, contributedValue, recordType);
+		this.currentBrokerage=beneficiaty.getBrokerage();
+		this.currentFunds = beneficiaty.getFunds();
+	}
+
+	public MoneyRecord() {
+		super();
 	}
 	
 	
