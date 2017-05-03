@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -92,7 +93,7 @@ public class Distributer extends BaseEntity{
 	
 //	@NotNull
 	@Column(length=10)
-	@Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.ORDINAL)
 	private Gender gender;
 	
 	@Column(length=10, unique=true, updatable=false)
@@ -108,7 +109,7 @@ public class Distributer extends BaseEntity{
 	private float exp;
 	
 	@JsonIgnore
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="expGrade_id", referencedColumnName="id", foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
 	private ExpGrade expGrade;
 	
@@ -116,20 +117,20 @@ public class Distributer extends BaseEntity{
 	
 	private float funds;
 	
-	private float sumInComeBrokerage;
+	private float accumulativeBrokerage;
 	
-	private float sumInComeFunds;
+	private float accumulativeFunds;
 	
 
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date registedTime;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="customer_id", unique=true, foreignKey=@ForeignKey(name="fk_distributer_customer_id"))
 	private Customer customer;  //根据手机号码 或者微信号做唯一性关联
 	
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="followedByStore_id", foreignKey=@ForeignKey(name="fk_distributer_followedByStore_id"))
 	private Department followedByStore;
 	
@@ -389,29 +390,12 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public float getSumInComeBrokerage() {
-		return sumInComeBrokerage;
-	}
-
-
-	public float getSumInComeFunds() {
-		return sumInComeFunds;
-	}
-
-
 	public void setBrokerage(float brokerage) {
 		this.brokerage = brokerage;
 	}
 
 
-	public void setSumInComeBrokerage(float sumInComeBrokerage) {
-		this.sumInComeBrokerage = sumInComeBrokerage;
-	}
-
-
-	public void setSumInComeFunds(float sumInComeFunds) {
-		this.sumInComeFunds = sumInComeFunds;
-	}
+	
 
 	public Gender getGender() {
 		return gender;
@@ -427,6 +411,22 @@ public class Distributer extends BaseEntity{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public float getAccumulativeBrokerage() {
+		return accumulativeBrokerage;
+	}
+
+	public float getAccumulativeFunds() {
+		return accumulativeFunds;
+	}
+
+	public void setAccumulativeBrokerage(float accumulativeBrokerage) {
+		this.accumulativeBrokerage = accumulativeBrokerage;
+	}
+
+	public void setAccumulativeFunds(float accumulativeFunds) {
+		this.accumulativeFunds = accumulativeFunds;
 	}
 
 	

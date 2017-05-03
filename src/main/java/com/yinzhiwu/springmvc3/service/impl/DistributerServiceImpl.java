@@ -11,10 +11,13 @@ import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.ExpGradeDao;
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.model.DistributerApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.service.ExpRecordService;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
+
+
 
 @Service
 public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer> implements DistributerService {
@@ -41,9 +44,11 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		super.setBaseDao(distributerDao);
 	}
 	
+	private YiwuJson<DistributerApiView> mYiwuJson = new YiwuJson<DistributerApiView>(); 
+	
 	@Override
-	public  YiwuJson<Distributer> register(String invitationCode, Distributer distributer){
-		YiwuJson<Distributer> yiwuJson = new YiwuJson<>();
+	public  YiwuJson<DistributerApiView> register(String invitationCode, Distributer distributer){
+		YiwuJson<DistributerApiView> yiwuJson = new YiwuJson<>();
 		
 		//设置默认帐号
 		distributer.initialize();
@@ -92,8 +97,32 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		}
 	
 		
-		yiwuJson.setData(distributer);
+		yiwuJson.setData(wrapToApiView(distributer));
 		return yiwuJson;
+	}
+
+	@Override
+	public YiwuJson<DistributerApiView> loginByWechat(String wechatNo) {
+		try {
+			Distributer distributer = distributerDao.findByWechat(wechatNo);
+			mYiwuJson.setData(wrapToApiView(distributer));
+		} catch (DataNotFoundException e) {
+			mYiwuJson.setMsg(e.getMessage());
+		}
+		return mYiwuJson;
+	}
+	
+	private DistributerApiView wrapToApiView(Distributer d){
+		DistributerApiView distributerApiView = new DistributerApiView(d);
+		distributerApiView.setBeatRate(distributerDao.getBeatRate(d.getExp()));
+		return distributerApiView;
+	}
+
+	@Override
+	public YiwuJson<DistributerApiView> loginByAccount(String account, String password) {
+		Distributer distributer = distributerDao.findByAccountPassword(account,password);
+		mYiwuJson.setData(wrapToApiView(distributer));
+		return mYiwuJson;
 	}
 	
 }

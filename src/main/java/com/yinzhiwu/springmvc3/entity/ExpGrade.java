@@ -3,8 +3,10 @@ package com.yinzhiwu.springmvc3.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -33,7 +35,7 @@ public class ExpGrade extends BaseEntity {
 	
 	private float upgradeExp;
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="next_grade_id", foreignKey=@ForeignKey(name="fk_expGrade_nextGrade_id"))
 	private ExpGrade nextGrade;
 

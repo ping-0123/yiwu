@@ -102,7 +102,7 @@
             <tx:method name="load*" propagation="SUPPORTS" />  
             <tx:method name="search*" propagation="SUPPORTS" />  
             <tx:method name="datagrid*" propagation="SUPPORTS" />  
-            <tx:method name="login"/>
+            <tx:method name="login*"/>
             <tx:method name="register"/>
   
             <tx:method name="*" propagation="SUPPORTS" />  
