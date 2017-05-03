@@ -110,13 +110,26 @@ public class Employee {
 	private String clusterServerIp;
 	
 	@Column
-	private Integer cluserServerPort;
+	private Integer clusterServerPort;
 	
 	@Column(length=32)
 	private String clusterToken;
 	
-	@Column
+	@Column(name="Last_Online_TimeStamp")
 	private Date lastOnlineTimeStamp;
+	
+	
+	
+
+	public Employee() {
+	}
+
+	
+	public Employee(Integer id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
 
 	public final Integer getId() {
 		return id;
@@ -366,12 +379,13 @@ public class Employee {
 		this.clusterServerIp = clusterServerIp;
 	}
 
-	public final Integer getCluserServerPort() {
-		return cluserServerPort;
+
+	public final Integer getClusterServerPort() {
+		return clusterServerPort;
 	}
 
-	public final void setCluserServerPort(Integer cluserServerPort) {
-		this.cluserServerPort = cluserServerPort;
+	public final void setClusterServerPort(Integer clusterServerPort) {
+		this.clusterServerPort = clusterServerPort;
 	}
 
 	public final String getClusterToken() {

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="  
+			http://www.springframework.org/schema/beans   
+			http://www.springframework.org/schema/beans/spring-beans.xsd  
+			http://www.springframework.org/schema/context   
+			http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/aop   
+			http://www.springframework.org/schema/aop/spring-aop.xsd
+			http://www.springframework.org/schema/tx 
+            http://www.springframework.org/schema/tx/spring-tx.xsd 
+			">  
+	<!-- 加载配置文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties,classpath:hibernate.properties,classpath:log4j.properties"/>
+	
+	    <!-- �Զ�ɨ��dao��service��(�Զ�ע��) -->  
+    <context:component-scan base-package="com.yinzhiwu.springmvc3">
+    	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>  
+    
+	<!-- c3p0连接池配置 -->  
+     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">  
+          <!-- 用户名-->  
+          <property name="user" value="${jdbc.username}"/>  
+          <!-- 用户密码-->  
+          <property name="password" value="${jdbc.password}"/>  
+          <property name="driverClass" value="${jdbc.driverClass}"/>  
+          <property name="jdbcUrl" value="${jdbc.url}"/>  
+  
+           <!--连接池中保留的最大连接数。默认值: 15 -->   
+          <property name="maxPoolSize" value="20"/>  
+          <!-- 连接池中保留的最小连接数，默认为：3-->  
+          <property name="minPoolSize" value="2"/>  
+          <!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3-->  
+          <property name="initialPoolSize" value="2"/>  
+  
+          <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
+          <property name="maxIdleTime"  value="0"/>  
+            
+          <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
+          <property name="checkoutTimeout" value="3000"/>  
+            
+          <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
+          <property name="acquireIncrement" value="5"/>  
+  
+         <!--定义在从数据库获取新连接失败后重复尝试的次数。默认值: 30 ；小于等于0表示无限次-->   
+          <property name="acquireRetryAttempts" value="30"/>  
+  
+          <!--重新尝试的时间间隔，默认为：1000毫秒-->   
+          <property name="acquireRetryDelay" value="1000" />  
+  
+     </bean>  
+     
+     <bean id="sessionFactory"  
+        class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource" />  
+        <property name="packagesToScan">  
+            <list>  
+                <value>com.yinzhiwu.springmvc3.entity</value>
+            </list>  
+        </property>  
+        <property name="hibernateProperties">  
+            <props>  
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>  
+                <prop key="hibernate.show_sql">${hibernate.showSql}</prop>  
+                <prop key="hibernate.format_sql">${hibernate.formatSql}</prop>  
+                <prop key="hibernate.use_sql_commants">${hibernate.useSqlComments}</prop>  
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop> 
+             <!--     <prop key="hibernate.current_session_context_class">thread</prop>  -->
+            </props>  
+        </property>  
+    </bean>  
+    
+    
+        <!-- 配置Hibernate 的事物管理器 -->  
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean>  
+	<!-- 配置事务异常封装 -->
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	<tx:annotation-driven transaction-manager="transactionManager" />   
+    <!-- 拦截器方式配置事物 -->  
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">  
+        <tx:attributes>  
+            <tx:method name="add*" />  
+            <tx:method name="save*" isolation="DEFAULT" propagation="REQUIRED" />  
+            <tx:method name="update*" />  
+            <tx:method name="modify*" />  
+            <tx:method name="edit*" />  
+            <tx:method name="delete*" />  
+            <tx:method name="remove*" />  
+            <tx:method name="repair" />  
+            <tx:method name="deleteAndRepair" />  
+  
+            <tx:method name="get*"  />  
+            <tx:method name="find*"  />  
+            <tx:method name="load*" propagation="SUPPORTS" />  
+            <tx:method name="search*" propagation="SUPPORTS" />  
+            <tx:method name="datagrid*" propagation="SUPPORTS" />  
+            <tx:method name="login*"/>
+            <tx:method name="register"/>
+  
+            <tx:method name="*" propagation="SUPPORTS" />  
+        </tx:attributes>  
+    </tx:advice>  
+    <aop:config>  
+        <aop:pointcut id="transactionPointcut" expression="execution(* com.yinzhiwu.springmvc3.service.impl.*Impl.*(..))" />  
+        <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />  
+    </aop:config>  
+  
+ </beans>

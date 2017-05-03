@@ -2,6 +2,7 @@ package com.yinzhiwu.springmvc3.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.exception.DataNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.CustomerDao;
@@ -18,11 +19,21 @@ public class CustomerDaoImp extends BaseDaoImpl<Customer, Integer> implements Cu
 	}
 
 	@Override
-	public Customer findByWeChat(String weChatNo) {
+	public Customer findByWeChat(String weChatNo) throws DataNotFoundException {
 		List<Customer> list = findByProperty("weChat", weChatNo);
 		if(list.size() > 0)
 			return list.get(0);
-		return null;
+		else
+			throw new DataNotFoundException(CustomerDaoImp.class, "weChat", weChatNo);
+	}
+
+	@Override
+	public Customer findByPhoneNo(String phoneNo) throws DataNotFoundException  {
+		List<Customer> list = findByProperty("mobilePhone", phoneNo);
+		if(list.size() > 0)
+			return list.get(0);
+		else
+			throw new DataNotFoundException(CustomerDaoImp.class, "mobilePhone", phoneNo);
 	}
 
 }

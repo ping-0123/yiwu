@@ -3,8 +3,10 @@ package com.yinzhiwu.springmvc3.controller;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +30,7 @@ import com.yinzhiwu.springmvc3.service.LessonService;
 public class LessonControl {
 
 	@Autowired
+	@Qualifier(value="lessonServiceImplTwo")
 	private LessonService lessonService;
 	
 	
@@ -51,25 +54,12 @@ public class LessonControl {
 		if (date == null){
 			date = new Date();
 		}
-		switch (courseType) {
-		case "1":
-			courseType="封闭式";
-			break;
-		case "2":
-			courseType = "开放式";
-			break;
-		default:
-			courseType ="";
-			break;
-		}
-//		courseType = courseType.replaceAll("\\s*", "");
-//		teacherName = teacherName.replaceAll("\\s*", "");
-//		danceCatagory = danceCatagory.replaceAll("\\s*", "");
-//		
-		
 		return lessonService.findLessonWeekList(
 				storeId, courseType, teacherName, danceCatagory, date, weChat);
 	}
 	
-	
+	@RequestMapping(value="arrangePriviteLesson", method={RequestMethod.POST})
+	public void arrangePriviteLesson(@ModelAttribute Lesson lesson){
+		lessonService.save(lesson);
+	}
 }

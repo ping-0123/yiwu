@@ -1,65 +1,73 @@
 package com.yinzhiwu.springmvc3.entity;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="account")
+@Table(name="account", uniqueConstraints={
+		@UniqueConstraint(name="uk_Account_employeeId", columnNames="employee_id"),
+		@UniqueConstraint(name="uk_Account_account", columnNames="account")})
 public class Account {
 	
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
-	@Column(length=32)
-	private String name;
+	//uk
+	@OneToOne
+	@JoinColumn(name="employee_id", nullable=false, foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))  
+	private Employee employee;
 	
-	@Column
-	private double balance;
+	//uk
+	@Column(name="account",length=32, nullable=false) 
+	private String account;
 	
-	@Column(length = 32)
-	private String accountName;
-	
-	@Column(length=40)
+	@Column(length=50)
 	private String password;
-	
-	
-	
-	public Account(){};
-	
-	public Account(String name, double balance){
-		this.name = name;
-		this.balance = balance;
-	}
 
-	public int getId() {
+	public final Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public final void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+
+	public final String getAccount() {
+		return account;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public final void setAccount(String account) {
+		this.account = account;
 	}
 
-	public double getBalance() {
-		return balance;
+	public final String getPassword() {
+		return password;
 	}
 
-	public void setBalance(double balance) {
-		this.balance = balance;
+	public final void setPassword(String password) {
+		this.password = password;
 	}
 
-		
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+	
+	
+	
 }

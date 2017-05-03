@@ -3,19 +3,23 @@ package com.yinzhiwu.springmvc3.dao.impl;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
-import org.hibernate.Session;
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
 
 
 
 
-//@Repository
 public class BaseDaoImpl<T,PK extends Serializable> 
 				extends HibernateDaoSupport 
 				implements IBaseDao<T, PK> {
@@ -49,12 +53,115 @@ public class BaseDaoImpl<T,PK extends Serializable>
         return (T) getSession().get(entityClass, id);  
     }  
   
-    @SuppressWarnings("unchecked")
-	public PK save(T entity) {  
+	@SuppressWarnings("unchecked")
+	public PK save(T entity)  {  
         Assert.notNull(entity, "entity is required");  
         return (PK) getSession().save(entity);  
-    }  
-  
-}  
+    }
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findByProperty(String propertyName, Object value) {
+		String hql = "from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
+		return (List<T>) getHibernateTemplate().findByNamedParam(hql, "value", value);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public int findCountByProperty(String propertyName, Object value) {
+		String hql = "select count(*) from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
+		List<Long> l = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "value", value);
+		return l.get(0).intValue();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findByProperties(Map<String, Object> map) {
+		Map<String, Object> v_map = new HashMap<>();
+		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
+		for (String string : map.keySet()) {
+			if(null != string && !"".equals(string)){
+				String valString = string.replace(".", "");
+				hql.append(" and " + string + "=:" + valString);
+				v_map.put(valString, map.get(string));
+			}
+		}
+		
+		return (List<T>) getHibernateTemplate().findByNamedParam(
+				hql.toString(), 
+				v_map.keySet().toArray(new String[] {}),
+				v_map.values().toArray(new Object[] {}));
+
+  
+}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findAll() {
+		String hql = "from "+  entityClass.getSimpleName();
+		return (List<T>) getHibernateTemplate().find(hql);
+	}
+
+	@Override
+	public void saveOrUpdate(T entity) {
+		Assert.notNull(entity, "entity is required");
+		 getHibernateTemplate().saveOrUpdate(entity);
+	}
+
+	@Override
+	public void delete(T entity) {
+		Assert.notNull(entity, "entity is required");
+		getHibernateTemplate().delete(entity);
+		
+	}
+
+	@Override
+	public void delete(PK id) {
+		Assert.notNull(id, "id is required");
+		T entity = get(id);
+		if (entity !=null){
+			delete(entity);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findByProperties(String[] propertyNames, Object[] values) {
+		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
+		Map<String,Object> map = new HashMap<>();
+		for(int i = 0; i<propertyNames.length; i++){
+			if(StringUtils.hasLength(propertyNames[i])){
+				String valString = propertyNames[i].replace(".", "");
+				hql.append(" and " + propertyNames[i] + "=:" + valString);
+				map.put(valString, values[i]);
+			}
+		}
+		
+		return  (List<T>) getHibernateTemplate().findByNamedParam(
+				hql.toString(), 
+				map.keySet().toArray(new String[] {}),
+				map.values().toArray(new Object[] {}));
+		
+
+	}
+
+	@Override
+	public List<T> findByExample(T entity) {
+		Assert.notNull(entity, "entity is required");
+		return getHibernateTemplate().findByExample(entity);
+	}  
+	
+	@Override
+	public void update(T entity){
+		Assert.notNull(entity, "entity is required");
+		getHibernateTemplate().update(entity);
+	}
+
+	@Override
+	public int findCount() {
+		String hql = "select count(*) from " + entityClass.getSimpleName();
+		List<Long> sums =   (List<Long>) getHibernateTemplate().find(hql);
+		return sums.get(0).intValue();
+	}
+}
 

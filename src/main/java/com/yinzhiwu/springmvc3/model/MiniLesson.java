@@ -1,8 +1,8 @@
 package com.yinzhiwu.springmvc3.model;
 
-import java.util.Date;
 import java.sql.Time;
 import java.util.Calendar;
+import java.util.Date;
 
 import com.yinzhiwu.springmvc3.entity.Lesson;
 
@@ -53,6 +53,12 @@ public class MiniLesson {
 	private String danceGrade;
 	
 	private int attendedStudentCount;
+	
+	private int checkedInsStudentCount;
+	
+	private int storeManCallRollCount;
+	
+	private int teacherCallRollCount;
 	
 
 
@@ -269,6 +275,41 @@ public class MiniLesson {
 
 	public final void setAttendedStudentCount(int attendedStudentCount) {
 		this.attendedStudentCount = attendedStudentCount;
+	}
+
+
+	public final int getCheckedInsStudentCount() {
+		return checkedInsStudentCount;
+	}
+
+
+	public final void setCheckedInsStudentCount(int checkedInsStudentCount) {
+		this.checkedInsStudentCount = checkedInsStudentCount;
+	}
+
+
+	public final void setWeek(int week) {
+		this.week = week;
+	}
+
+
+	public final int getStoreManCallRollCount() {
+		return storeManCallRollCount;
+	}
+
+
+	public final void setStoreManCallRollCount(int storeManCallRollCount) {
+		this.storeManCallRollCount = storeManCallRollCount;
+	}
+
+
+	public final int getTeacherCallRollCount() {
+		return teacherCallRollCount;
+	}
+
+
+	public final void setTeacherCallRollCount(int teacherCallRollCount) {
+		this.teacherCallRollCount = teacherCallRollCount;
 	}
 
 	

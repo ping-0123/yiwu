@@ -13,6 +13,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="vappointment")
 public class Appointment {
+	
+	public enum APPOINT_STATUS{APPONTED,UN_APOINTED}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

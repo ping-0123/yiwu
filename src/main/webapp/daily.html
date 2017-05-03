@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, user-scalable=no">
+		<link href="css/daily.css" rel="stylesheet">
+		<title></title>
+	</head>
+	<script src="js/jquery.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/global.js"></script>
+	<body>
+		<div class="top_nav">
+			            <div class="logo">
+						<img src="images/logo.png">
+						</div>
+						<div class="return">
+
+						<a href="javascript:void(0);" onclick="window.location.href='journaling.html?districtId='+districtId+'&year='+year+'&productTypeId='+productTypeId+'&month='+month+''">返回</a>
+						</div>
+						
+						<div class="store">
+					<p><span id="k_store">庆春店</span>-<span id="k_date">2017/04/03</span>-<span>营业日报</span></p>
+							<ul class="daily">
+								<li id="lastday">< 上一日</li>
+								<li id="nextday">下一日 ></li>
+							</ul>
+						</div>
+		   </div>
+		   
+		   <div class="table">
+		   	   <div class="title_daily">
+		   	    <ul>
+		   	   	<li>录入日期</li>
+		   	   	<li>产品名称</li>
+		   	   	<li>标准价格</li>
+		   	   	<li>数量</li>
+		   	   	<li>交易金额</li>
+		   	   	<li>付款方式</li>
+		   	   	<li>会员姓名</li>
+		   	   	<li>会员类型</li>
+		   	   	<li>新/续费</li>
+		   	   	<li>销售代表</li>	   	  
+		   	   	</ul>
+		   	   </div>
+		   	   <div class="content_daily" id="content_daily">
+		   	   <ul>
+		   	   <li>2017/04/03</li>	
+		   	   <li>教师少儿舞蹈表演定制班</li>
+		   	   <li>2,500</li>
+		   	   <li>1</li>
+		   	   <li>2,000</li>
+		   	   <li>银行转账</li>
+		   	   <li>张小华</li>
+		   	   <li>少儿</li>
+		   	   <li>新</li>
+		   	   <li>张小华</li>
+		   	   </ul>
+		   	   </div>
+		   	   <div class="bottom">
+		   	   	 <ul>
+		   	   	 <li>Total</li>
+		   	   	 <li></li>
+		   	   	 <li></li>
+		   	   	 <li></li>
+		   	   	 <li id="v-count"></li>
+		   	   	 <li></li>
+		   	   	 <li></li>
+		   	   	 <li></li>
+		   	   	 <li></li>
+		   	   	 <li></li>
+		   	   	 </ul>
+		   	   </div>
+		   </div>
+	</body>
+
+
+<script>
+/*function return(){
+		var currentDate = new Date(payedDate);
+		var year=currentDate.getFullYear();
+		var month = currentDate.getMonth();
+		window.location.href="journaling.html?districtId='+districtId+'&year='+year+'&month='+month+'&productTypeId='+productId+'";
+		/*<a href="journaling.html?districtId='+districtId+'&year='+year+'&month='+month+'&productTypeId='+productId+'"></a>;
+	}*/
+
+
+
+function getUrlParam(name){
+var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+var r = window.location.search.substr(1).match(reg);
+if (r!=null) return decodeURI(r[2]); return null;
+}
+
+function format(time, format){
+    var t = new Date(time);
+    var tf = function(i){return (i < 10 ? '0' : '') + i};
+    return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function(a){
+        switch(a){
+            case 'yyyy':
+                return tf(t.getFullYear());
+                break;
+            case 'MM':
+                return tf(t.getMonth() + 1);
+                break;
+            case 'mm':
+                return tf(t.getMinutes());
+                break;
+            case 'dd':
+                return tf(t.getDate());
+                break;
+            case 'HH':
+                return tf(t.getHours());
+                break;
+            case 'ss':
+                return tf(t.getSeconds());
+                break;
+        }
+    })
+}
+
+var storeId=getUrlParam('store-Id');
+var storeName=getUrlParam('store-Name');
+var payedDate=getUrlParam('date-id');
+var productTypeId=getUrlParam('product-id');
+var districtId=getUrlParam('district-id');
+var requestDate = new Date(payedDate);
+var curDate =format(payedDate,'yyyy-MM-dd');
+
+var year=requestDate.getFullYear();
+var month = requestDate.getMonth()+1;
+var url=baseApiUrl+"api/order/getDailyOrders";
+
+
+	$(document).ready(function(){
+		daily(url,storeId,payedDate,productTypeId);
+	});
+
+	$("#lastday").click(function(){
+		requestDate.setDate(requestDate.getDate() -1);
+		curDate=format(requestDate,'yyyy-MM-dd');
+		//data.payedDate = curDate;
+		daily(url,storeId,curDate,productTypeId);
+
+	});
+
+	$("#nextday").click(function(){
+		requestDate.setDate(requestDate.getDate() +1);
+		curDate=format(requestDate,'yyyy-MM-dd');
+		//data.payedDate = curDate;
+		daily(url,storeId,curDate,productTypeId);
+
+	});
+	function daily(k_url,k_storeId,k_payedDate,k_productTypeId){
+		var k_data={
+		storeId:k_storeId,
+		payedDate:k_payedDate,
+		productTypeId:k_productTypeId
+				};
+		$.ajax({
+			url:k_url,
+			type:"GET",
+			data:k_data,
+			success:function(data){
+				//alert(JSON.stringify(data));
+				var k='';
+				var v_data=data.data;
+				var count=0;
+				for(var i=0;i<v_data.length;i++) {					
+					k=k+"<ul><li>"+v_data[i].recordDate+"</li><li>"+v_data[i].productName+"</li><li>"+v_data[i].marckedPrice+"</li><li>"+v_data[i].count+"</li><li>"+v_data[i].payedAmount+"</li><li>"+v_data[i].payedMethod+"</li><li>"+v_data[i].customerName+"</li><li>"+v_data[i].auditOrChild+"</li><li>"+v_data[i].vipAttr+"</li><li>"+v_data[i].salesmanName+"</li></ul>";
+					count=count+v_data[i].payedAmount;				
+						}
+					$("#content_daily").html(k);
+					$("#k_store").html(storeName);
+					$("#k_date").html(k_payedDate);
+					$("#v-count").html(count);
+	}
+})
+	}
+
+	
+</script>
+</html>

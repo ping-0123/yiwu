@@ -68,6 +68,6 @@ public class UserServiceImplTwo implements
 
 	@Override
 	public Account findById(int id) {
-		return dao.findById(id);
+		return dao.get(id);
 	}
 }

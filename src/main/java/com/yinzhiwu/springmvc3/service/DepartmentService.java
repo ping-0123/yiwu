@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yinzhiwu.springmvc3.entity.Department;
 import com.yinzhiwu.springmvc3.model.BriefDepartment;
+import com.yinzhiwu.springmvc3.model.Store;
 
 public interface DepartmentService {
 	
@@ -11,7 +12,15 @@ public interface DepartmentService {
 	
 	public List<BriefDepartment> findStoresByDistrictId(int districtId);
 	
+	public List<Store> findStoreInfosByDistrictId(int districtId);
+	
 	public Department findById(int id);
 	
 	public void show();
+
+	public Store findStoreInfoById(int id);
+
+	List<Store> findStoreByCities(String city);
+
+	public List<Store> getAllStores();
 }
