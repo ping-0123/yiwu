@@ -126,8 +126,77 @@ footer .nav li:nth-child(5) a.active{
 /*我的生意主页*/
 .invite{ width: 100%;margin: 0 auto;margin-top: 45px;}
 .invite p:first-child{ width: 90%; height: 50px; line-height: 80px;padding-left: 10%;}
-.inub{ width: 100%; height: 60px; line-height: 60px;font-size: 25px;color:blueviolet;text-align: center;}
+.inub{ width: 100%; height: 60px; line-height: 60px;font-size: 25px;text-align: center;}
+.inub input{font-size: 25px;color:blueviolet;text-align: center;border: none;}
 .copy{width: 90%; height: 18px; text-align: right; padding-right: 10%;color: #8A2BE2;}
-.ruler{margin-top: 30px;}
+.ruler{height:40px;margin-top: 30px;}
 .ruler a{ display: block; width: 48%;height: 40px;background-color: #8A2BE2;float: left;color: white;text-align: center;line-height: 40px;}
 .ruler a:first-child{margin-right: 4%;}
+
+.result{ width: 85%;margin: 0 auto;margin-top: 30px;}
+.result p{display:block; width:90%;margin:0 auto;font-size: 14px;}
+.result table{margin-top: 20px;}
+.result table tr{ width: 80%;height: 30px; }
+.result table tr td{ width: 80px;text-align: center;}
+.wchat{ width: 100%; height: 40px;background-color: #8A2BE2;
+         color:white;text-align: center;line-height: 40px;position: fixed;left: 0; bottom:45px}
+@media screen and (max-width: 321px){
+	.result{margin-top: 20px;}
+	.result p{ width: 92%;}
+	.result table {
+           margin-top: 10px;
+                  }
+}
+
+
+/*top_three*/
+.rank_content{ width: 100%;height:180px;margin: 0 auto;border-bottom: 1px solid #E01C64;}
+.ranking{ width:95%;margin: 0 auto;}
+.left{float: left; display: block; width: 25%;height: 180px;line-height: 250px;}
+
+.left img{width: 60px; height: auto;}
+
+.mid{ display: block;float: left; width: 40%;height:180px;}
+.mid span{ display: block; width: 60px;height: 60px;border-radius:50%;margin:0 auto;overflow: hidden;margin-top: 40px;}
+.mid span img{ width: 60px; height: 60px;}
+.mid p{font-size: 10px;text-align: center;margin-top: 2px;}
+
+.right{display: block;float: right; width: 35%;height: 180px;}
+.right ul{margin-top: 45px;} 
+.right ul li{font-size: 10px;height: 25px;text-align: right;}
+
+.rank_content_third{width: 100%;height:140px;margin: 0 auto;}
+
+
+/*table*/
+  /*转发记录*/
+.title{ width:90%;height:30px;line-height:30px;margin:0 auto;margin-top: 45px;}
+.table_list{width: 95%;margin: 0 auto;}
+.table_list table{width: 100%;}
+.table_list ul{width: 100%;height:25px;line-height:25px;border-top:1px solid #999999 ;}
+.table_list ul li{font-size:8px;word-break: inherit;overflow: hidden;text-overflow:ellipsis;
+             white-space: nowrap;text-align: center;width: 18%;float: left;}
+.table_list ul:last-child{border-bottom:1px solid #999999;}
+.table_list ul li{border-left:1px solid #999999;}
+.table_list ul{border-right:1px solid #999999 ;}
+.t_length{ width: 25%!important;}
+/*会员记录*/
+
+.rege_list{width: 95%;margin: 0 auto;}
+.rege_list table{width: 100%;}
+.rege_list ul{width: 100%;height:25px;line-height:25px;border-top:1px solid #999999 ;}
+.rege_list ul li{font-size:8px;word-break: inherit;overflow: hidden;text-overflow:ellipsis;
+             white-space: nowrap;text-align: center;width: 19.5%;float: left;}
+.rege_list ul:last-child{border-bottom:1px solid #999999;}
+.rege_list ul li{border-left:1px solid #999999;}
+.rege_list ul{border-right:1px solid #999999 ;}
+
+/*成交记录*/
+.turn_list{width: 95%;margin: 0 auto;}
+.turn_list table{width: 100%;}
+.turn_list ul{width: 100%;height:25px;line-height:25px;border-top:1px solid #999999 ;}
+.turn_list ul li{font-size:8px;word-break: inherit;overflow: hidden;text-overflow:ellipsis;
+             white-space: nowrap;text-align: center;width: 16%;float: left;}
+.turn_list ul:last-child{border-bottom:1px solid #999999;}
+.turn_list ul li{border-left:1px solid #999999;}
+.turn_list ul{border-right:1px solid #999999 ;}

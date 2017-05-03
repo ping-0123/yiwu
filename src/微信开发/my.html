@@ -5,8 +5,30 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
 		<title>我的</title>
 		<link href="css/new_style.css" rel="stylesheet">
-		<script type="text/javascript" src="js/circle.js" ></script>
-		<script type="text/javascript" src="js/jquery-1.8.0.min.js" ></script>
+		<script type="text/javascript" src="js/jquery.js" ></script>
+		<script type="text/javascript" src="js/jquery.circliful.min.js" ></script>
+		    <style> 
+			.circliful { 
+			    position: relative;  
+			} 
+			.circle-text, .circle-info, .circle-text-half, .circle-info-half { 
+			    width: 100%; 
+			    position: absolute; 
+			    text-align: center; 
+			    display: inline-block; 
+			    display: block;
+			    
+			} 
+			.circle-info, .circle-info-half { 
+			    color: #999; 
+			} 
+			.circliful .fa { 
+			    margin: -10px 3px 0 3px; 
+			    position: relative; 
+			    bottom: 4px; 
+			} 
+		    .anyield{display: block;margin: 0 auto;padding-top: 8px;}
+			</style> 
 	</head>
 	<body>
 		
@@ -37,11 +59,12 @@
 			 </div>
 			 
 			<div class="right">
-				    <div class="anyield">
-			        <p><span>50</span>%</p>
+			
+            <div class="anyield" data-dimension="66" data-text="35%" 
+				    data-info="New Clients"  data-width="3" data-fontsize="16" 
+				    data-percent="35" data-fgcolor="#20b2aa"  data-bgcolor="#ddd" data-fill="white">	       
 			        </div>
-				
-			</div>
+		    </div>
 			</div>
 			
 			
@@ -63,7 +86,7 @@
 			
 		</div>
 		
-		   <footer>
+		<footer>
 		<div class="nav f-cb">
 			<ul>
 				<li>
@@ -84,7 +107,13 @@
 			</ul>
 		</div>
 	</footer>
-		
+		<script> 
+        $(document).ready(function() { 	
+		$('.anyield').attr("data-text","50%");
+		$('.anyield').attr("data-percent","50");
+        $('.anyield').circliful();
+        }); 
+        </script> 
 		
 	</body>
 </html>
