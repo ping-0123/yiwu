@@ -124,5 +124,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		mYiwuJson.setData(wrapToApiView(distributer));
 		return mYiwuJson;
 	}
+
+	@Override
+	public YiwuJson<DistributerApiView> findById(int id) {
+		Distributer distributer = distributerDao.get(id);
+		mYiwuJson.setData(wrapToApiView(distributer));
+		return mYiwuJson;
+	}
 	
 }

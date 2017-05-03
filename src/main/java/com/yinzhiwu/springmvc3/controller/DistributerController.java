@@ -51,7 +51,7 @@ public class DistributerController {
 	}
 	
 	
-	@RequestMapping(value="/loginByWechat", method={RequestMethod.POST})
+	@RequestMapping(value="/loginByWechat", method={RequestMethod.POST,RequestMethod.GET})
 	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String  wechatNo ){
 		return distributerService.loginByWechat(wechatNo);
 	}
@@ -63,31 +63,14 @@ public class DistributerController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	@GetMapping("/test")
-	public Object save(){
-		Customer customer = new Customer();
-		customer.setId(21);
-		Distributer d = new Distributer();
-		System.out.println(d.getCreateDate());
-		int id = distributerService.save(d);
-		
-		return distributerService.get(id).getMemberId();
+	@GetMapping(value="/{id}")
+	public YiwuJson<DistributerApiView> getDistributerInfo(@PathVariable int id){
+		return distributerService.findById(id);
 	}
 	
-	@GetMapping("/{id}")
-	public Object findById(@PathVariable int id){
-		return distributerService.get(id);
-	}
 	
-	@GetMapping("/test2")
-	public Object testTransfer(@ModelAttribute Distributer distributer){
-		return distributer.getRegistedTime();
-	}
+	
+	
+	
+
 }

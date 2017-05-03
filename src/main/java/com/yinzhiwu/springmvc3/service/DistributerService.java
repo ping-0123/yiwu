@@ -12,4 +12,6 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 
 	YiwuJson<DistributerApiView> loginByAccount(String account, String password);
 
+	YiwuJson<DistributerApiView> findById(int id);
+
 }
