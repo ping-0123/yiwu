@@ -54,7 +54,7 @@ public class BaseDaoImpl<T,PK extends Serializable>
     }  
   
 	@SuppressWarnings("unchecked")
-	public PK save(T entity) {  
+	public PK save(T entity)  {  
         Assert.notNull(entity, "entity is required");  
         return (PK) getSession().save(entity);  
     }

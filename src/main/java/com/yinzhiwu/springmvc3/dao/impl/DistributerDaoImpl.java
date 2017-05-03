@@ -19,23 +19,25 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	private static final Log logger = LogFactory.getLog(DistributerDaoImpl.class);
 
 	@Override
-	public Integer save(Distributer entity) {
+	public Integer saveBean(Distributer entity) throws Exception {
+		String password = SecurityUtil.encryptByMd5(entity.getPassword());
+		logger.info(password);
 		entity.setPassword(SecurityUtil.encryptByMd5(entity.getPassword()));
 		entity.setMemberId(ShareCodeUtil.toSerialCode(1));
-		int id = save(entity);
+		int id =(int) getHibernateTemplate().save(entity);
 		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
 		entity.setMemberId(GeneratorUtil.generateMemberId(id));
 		update(entity);
 		return entity.getId();
 	}
 
-	@SuppressWarnings("unused")
-	private int generateId() {
-		String hql = "select ifnull(max(id),0) + 1 from Distributer";
-		List<?> ids = getHibernateTemplate().find(hql);
-//		logger.info(ids.size());
-		return (int) ids.get(0);
-	}
+//	@SuppressWarnings("unused")
+//	private int generateId() {
+//		String hql = "select ifnull(max(id),0) + 1 from Distributer";
+//		List<?> ids = getHibernateTemplate().find(hql);
+////		logger.info(ids.size());
+//		return (int) ids.get(0);
+//	}
 
 	@Override
 	public Distributer findByShareCode(String shareCode) throws DataNotFoundException {
@@ -86,9 +88,21 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	}
 
 	@Override
-	public Distributer findByAccountPassword(String account, String password) {
-		// TODO Auto-generated method stub
-		return null;
+	public Distributer findByAccountPassword(String account, String password) throws Exception {
+		String encriptedPassword = SecurityUtil.encryptByMd5(password);
+		List<Distributer> distributers = findByProperties(
+				new String[]{"account", "password"}, 
+				new Object[]{account,encriptedPassword});
+		if (distributers.size()>0)
+			return distributers.get(0);
+		else{
+			List<Distributer> distributers2 = findByProperty("account", account);
+			if(distributers2.size()>0)
+				throw new Exception("password is Incorrect");
+			else
+				throw new Exception("account:" + account + " is not exist");
+		}
+		
 	}
 
 	

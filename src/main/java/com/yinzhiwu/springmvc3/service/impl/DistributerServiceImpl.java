@@ -48,7 +48,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	
 	@Override
 	public  YiwuJson<DistributerApiView> register(String invitationCode, Distributer distributer){
-		YiwuJson<DistributerApiView> yiwuJson = new YiwuJson<>();
 		
 		//设置默认帐号
 		distributer.initialize();
@@ -63,7 +62,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				superDistributer = distributerDao.findByShareCode(invitationCode);
 				distributer.setSuperDistributer(superDistributer);
 			} catch (DataNotFoundException e) {
-				yiwuJson.setMsg("无效的分享码");
+				mYiwuJson.setMsg("无效的分享码");
 			}
 		
 		
@@ -81,7 +80,13 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		distributer.setCustomer(customer);
 		
 		//注册成功
-		distributerDao.save(distributer);
+		try {
+			distributerDao.saveBean(distributer);
+		} catch (Exception e) {
+			mYiwuJson.setMsg(e.getMessage());
+			mYiwuJson.setResult(false);
+			return mYiwuJson;
+		}
 		
 		//注册产生收益
 		if(superDistributer != null) {
@@ -97,8 +102,8 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		}
 	
 		
-		yiwuJson.setData(wrapToApiView(distributer));
-		return yiwuJson;
+		mYiwuJson.setData(wrapToApiView(distributer));
+		return mYiwuJson;
 	}
 
 	@Override
@@ -108,6 +113,8 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			mYiwuJson.setData(wrapToApiView(distributer));
 		} catch (DataNotFoundException e) {
 			mYiwuJson.setMsg(e.getMessage());
+			mYiwuJson.setResult(false);
+			return mYiwuJson;
 		}
 		return mYiwuJson;
 	}
@@ -120,8 +127,15 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 
 	@Override
 	public YiwuJson<DistributerApiView> loginByAccount(String account, String password) {
-		Distributer distributer = distributerDao.findByAccountPassword(account,password);
-		mYiwuJson.setData(wrapToApiView(distributer));
+		Distributer distributer;
+		try {
+			distributer = distributerDao.findByAccountPassword(account,password);
+			mYiwuJson.setData(wrapToApiView(distributer));
+		} catch (Exception e) {
+			mYiwuJson.setMsg(e.getMessage());
+			mYiwuJson.setResult(false);
+			return mYiwuJson;
+		}
 		return mYiwuJson;
 	}
 

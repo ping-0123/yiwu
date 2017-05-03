@@ -159,7 +159,7 @@
 			        <source>1.8</source>  
 			        <target>1.8</target>
 			        <!-- 打包时跳过测试  -->
-			        <skipTests>true</skipTests>
+			        <skipTests>true</skipTests>  
 			</configuration>
     	</plugin>
     	
