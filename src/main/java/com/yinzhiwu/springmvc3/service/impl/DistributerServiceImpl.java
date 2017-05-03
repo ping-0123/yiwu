@@ -16,6 +16,9 @@ import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.service.ExpRecordService;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
+import com.yinzhiwu.springmvc3.util.GeneratorUtil;
+import com.yinzhiwu.springmvc3.util.SecurityUtil;
+import com.yinzhiwu.springmvc3.util.ShareCodeUtil;
 
 
 
@@ -45,6 +48,8 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	}
 	
 	private YiwuJson<DistributerApiView> mYiwuJson = new YiwuJson<DistributerApiView>(); 
+	
+	
 	
 	@Override
 	public  YiwuJson<DistributerApiView> register(String invitationCode, Distributer distributer){
@@ -145,5 +150,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		mYiwuJson.setData(wrapToApiView(distributer));
 		return mYiwuJson;
 	}
+
 	
 }

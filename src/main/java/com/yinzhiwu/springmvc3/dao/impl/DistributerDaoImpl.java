@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.exception.DataNotFoundException;
+import org.hibernate.type.LongType;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
@@ -20,24 +21,20 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 
 	@Override
 	public Integer saveBean(Distributer entity) throws Exception {
-		String password = SecurityUtil.encryptByMd5(entity.getPassword());
-		logger.info(password);
+		int id = getNextId();
+		logger.debug(id);
 		entity.setPassword(SecurityUtil.encryptByMd5(entity.getPassword()));
-		entity.setMemberId(ShareCodeUtil.toSerialCode(1));
-		int id =(int) getHibernateTemplate().save(entity);
-		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
 		entity.setMemberId(GeneratorUtil.generateMemberId(id));
-		update(entity);
-		return entity.getId();
+		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
+		return super.save(entity);
 	}
 
-//	@SuppressWarnings("unused")
-//	private int generateId() {
-//		String hql = "select ifnull(max(id),0) + 1 from Distributer";
-//		List<?> ids = getHibernateTemplate().find(hql);
-////		logger.info(ids.size());
-//		return (int) ids.get(0);
-//	}
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	private int getNextId() {
+		String sql = "select  AUTO_INCREMENT from information_schema.tables where table_name ='distributer'";
+		List<Long> list = getSession().createNativeQuery(sql).addScalar("AUTO_INCREMENT", LongType.INSTANCE) .list();
+		return list.get(0).intValue();
+	}
 
 	@Override
 	public Distributer findByShareCode(String shareCode) throws DataNotFoundException {

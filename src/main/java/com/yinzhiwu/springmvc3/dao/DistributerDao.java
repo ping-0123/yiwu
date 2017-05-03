@@ -20,4 +20,5 @@ public interface DistributerDao extends IBaseDao<Distributer, Integer> {
 
 	Integer saveBean(Distributer entity) throws Exception;
 
+
 }
