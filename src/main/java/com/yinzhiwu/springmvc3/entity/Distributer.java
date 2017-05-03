@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -126,12 +127,14 @@ public class Distributer extends BaseEntity{
 	private Date registedTime;
 	
 	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="customer_id", unique=true, foreignKey=@ForeignKey(name="fk_distributer_customer_id"))
+	@JoinColumn(name="customer_id", unique=true, 
+		foreignKey=@ForeignKey(name="fk_distributer_customer_id", value= ConstraintMode.NO_CONSTRAINT))
 	private Customer customer;  //根据手机号码 或者微信号做唯一性关联
 	
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="followedByStore_id", foreignKey=@ForeignKey(name="fk_distributer_followedByStore_id"))
+	@JoinColumn(name="followedByStore_id",
+		foreignKey=@ForeignKey(name="fk_distributer_followedByStore_id", value=ConstraintMode.NO_CONSTRAINT))
 	private Department followedByStore;
 	
 	
