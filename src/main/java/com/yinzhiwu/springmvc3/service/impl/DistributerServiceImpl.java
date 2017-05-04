@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.springmvc3.dao.CustomerDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
@@ -22,6 +23,7 @@ import com.yinzhiwu.springmvc3.util.ShareCodeUtil;
 
 
 
+//@Transactional
 @Service
 public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer> implements DistributerService {
 
@@ -86,7 +88,9 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		
 		//注册成功
 		try {
+			logger.debug("before save");;
 			distributerDao.saveBean(distributer);
+			logger.debug("after save");
 		} catch (Exception e) {
 			mYiwuJson.setMsg(e.getMessage());
 			mYiwuJson.setResult(false);
