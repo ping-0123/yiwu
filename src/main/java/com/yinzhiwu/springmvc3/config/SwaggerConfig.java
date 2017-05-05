@@ -38,8 +38,8 @@ public class SwaggerConfig {
         ApiInfo apiInfo = new ApiInfo(  
                 "ums接口文档",  
                 "这里是所有的ums接口，里边含有说明，请自行测试",  
-                "My Apps API terms of service",  
-                "My Apps API Contact Email",  
+                "http://192.168.0.115:8080/yiwu",  
+                "wild_ghost@yeah.net",  
                 "My Apps API Licence Type",  
                 "My Apps API License URL");  
         return apiInfo;  
