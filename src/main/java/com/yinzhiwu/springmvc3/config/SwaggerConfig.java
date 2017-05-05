@@ -31,7 +31,10 @@ public class SwaggerConfig {
      */  
     @Bean  
     public SwaggerSpringMvcPlugin customImplementation() {  
-        return new SwaggerSpringMvcPlugin(this.springSwaggerConfig).apiInfo(apiInfo()).includePatterns(".*?");  
+        return new SwaggerSpringMvcPlugin(this.springSwaggerConfig)
+        								.apiInfo(apiInfo())
+        								.includePatterns(".*")
+        								.apiVersion("v1");
     }  
   
     private ApiInfo apiInfo() {  
