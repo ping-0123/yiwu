@@ -26,6 +26,8 @@ public interface IBaseDao<T ,PK extends Serializable> {
 		
 		public List<T> findByProperties(String[] propertyNames, Object[] values);
 		
+		public int findCountByProperties(String[] propertyNames, Object[] values);
+		
 		public List<T> findByExample(T entity);
 
 		void delete(T entit);

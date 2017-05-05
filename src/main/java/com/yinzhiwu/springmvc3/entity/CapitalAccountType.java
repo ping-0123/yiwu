@@ -34,6 +34,11 @@ public class CapitalAccountType extends BaseType {
 	public CapitalAccountType() {
 		super();
 	}
+
+
+	public CapitalAccountType(String name) {
+		super(name);
+	}
 	
 	
 

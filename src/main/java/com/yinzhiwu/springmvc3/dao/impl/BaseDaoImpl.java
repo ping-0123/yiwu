@@ -124,26 +124,7 @@ public class BaseDaoImpl<T,PK extends Serializable>
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<T> findByProperties(String[] propertyNames, Object[] values) {
-		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
-		Map<String,Object> map = new HashMap<>();
-		for(int i = 0; i<propertyNames.length; i++){
-			if(StringUtils.hasLength(propertyNames[i])){
-				String valString = propertyNames[i].replace(".", "");
-				hql.append(" and " + propertyNames[i] + "=:" + valString);
-				map.put(valString, values[i]);
-			}
-		}
-		
-		return  (List<T>) getHibernateTemplate().findByNamedParam(
-				hql.toString(), 
-				map.keySet().toArray(new String[] {}),
-				map.values().toArray(new Object[] {}));
-		
 
-	}
 
 	@Override
 	public List<T> findByExample(T entity) {
@@ -162,6 +143,31 @@ public class BaseDaoImpl<T,PK extends Serializable>
 		String hql = "select count(*) from " + entityClass.getSimpleName();
 		List<Long> sums =   (List<Long>) getHibernateTemplate().find(hql);
 		return sums.get(0).intValue();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findByProperties(String[] propertyNames, Object[] values) {
+		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
+		Map<String,Object> map = new HashMap<>();
+		for(int i = 0; i<propertyNames.length; i++){
+			if(StringUtils.hasLength(propertyNames[i])){
+				String valString = propertyNames[i].replace(".", "");
+				hql.append(" and " + propertyNames[i] + "=:" + valString);
+				map.put(valString, values[i]);
+			}
+		}
+		
+		return  (List<T>) getHibernateTemplate().findByNamedParam(
+				hql.toString(), 
+				map.keySet().toArray(new String[] {}),
+				map.values().toArray(new Object[] {}));
+
+	}
+
+	@Override
+	public int findCountByProperties(String[] propertyNames, Object[] values) {
+		return findByProperties(propertyNames, values).size();
 	}
 }
 
