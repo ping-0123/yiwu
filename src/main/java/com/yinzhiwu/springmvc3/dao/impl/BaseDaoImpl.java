@@ -156,5 +156,12 @@ public class BaseDaoImpl<T,PK extends Serializable>
 		Assert.notNull(entity, "entity is required");
 		getHibernateTemplate().update(entity);
 	}
+
+	@Override
+	public int findCount() {
+		String hql = "select count(*) from " + entityClass.getSimpleName();
+		List<Long> sums =   (List<Long>) getHibernateTemplate().find(hql);
+		return sums.get(0).intValue();
+	}
 }
 

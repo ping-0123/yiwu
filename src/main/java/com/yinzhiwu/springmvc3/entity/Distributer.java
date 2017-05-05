@@ -8,6 +8,9 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,11 +23,11 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.aspectj.lang.annotation.After;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yinzhiwu.springmvc3.enums.Gender;
 
 /**
  * 
@@ -73,7 +76,7 @@ public class Distributer extends BaseEntity{
 	private String account;  //默认是手机号
 	
 	@Column(length=32, nullable=false)
-	private String passwords;
+	private String password;
 	
 	@NotNull
 	@Column(length=32, unique=true, nullable=false)
@@ -88,6 +91,11 @@ public class Distributer extends BaseEntity{
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date birthday;
 	
+//	@NotNull
+	@Column(length=10)
+	@Enumerated(EnumType.ORDINAL)
+	private Gender gender;
+	
 	@Column(length=10, unique=true, updatable=false)
 	private String shareCode;
 	
@@ -100,7 +108,8 @@ public class Distributer extends BaseEntity{
 	
 	private float exp;
 	
-	@ManyToOne
+	@JsonIgnore
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="expGrade_id", referencedColumnName="id", foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
 	private ExpGrade expGrade;
 	
@@ -108,20 +117,20 @@ public class Distributer extends BaseEntity{
 	
 	private float funds;
 	
-	private float sumInComeBrokerage;
+	private float accumulativeBrokerage;
 	
-	private float sumInComeFunds;
+	private float accumulativeFunds;
 	
 
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date registedTime;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="customer_id", unique=true, foreignKey=@ForeignKey(name="fk_distributer_customer_id"))
 	private Customer customer;  //根据手机号码 或者微信号做唯一性关联
 	
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="followedByStore_id", foreignKey=@ForeignKey(name="fk_distributer_followedByStore_id"))
 	private Department followedByStore;
 	
@@ -300,9 +309,6 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public String getPasswords() {
-		return passwords;
-	}
 
 
 	public String getWechatNo() {
@@ -342,10 +348,6 @@ public class Distributer extends BaseEntity{
 
 	public void setAccount(String account) {
 		this.account = account;
-	}
-
-	public void setPasswords(String passwords) {
-		this.passwords = passwords;
 	}
 
 
@@ -388,28 +390,43 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public float getSumInComeBrokerage() {
-		return sumInComeBrokerage;
-	}
-
-
-	public float getSumInComeFunds() {
-		return sumInComeFunds;
-	}
-
-
 	public void setBrokerage(float brokerage) {
 		this.brokerage = brokerage;
 	}
 
 
-	public void setSumInComeBrokerage(float sumInComeBrokerage) {
-		this.sumInComeBrokerage = sumInComeBrokerage;
+	
+
+	public Gender getGender() {
+		return gender;
 	}
 
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
 
-	public void setSumInComeFunds(float sumInComeFunds) {
-		this.sumInComeFunds = sumInComeFunds;
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public float getAccumulativeBrokerage() {
+		return accumulativeBrokerage;
+	}
+
+	public float getAccumulativeFunds() {
+		return accumulativeFunds;
+	}
+
+	public void setAccumulativeBrokerage(float accumulativeBrokerage) {
+		this.accumulativeBrokerage = accumulativeBrokerage;
+	}
+
+	public void setAccumulativeFunds(float accumulativeFunds) {
+		this.accumulativeFunds = accumulativeFunds;
 	}
 
 	

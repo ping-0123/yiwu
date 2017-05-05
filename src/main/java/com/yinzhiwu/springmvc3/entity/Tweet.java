@@ -34,16 +34,17 @@ public class Tweet extends BaseEntity {
 	private String author;
 	
 	@OneToOne
-	private TweetContent content;
+	@JoinColumn(foreignKey=@ForeignKey(name="fk_Tweet_tweetContent_id"))
+	private TweetContent tweetContent;
 	
-	@OneToMany(mappedBy="tweet")
-	private List<ShareTweet> shareTweets = new ArrayList<>();
-
 	
 	@ManyToOne
 	@JoinColumn(name="tweetType_id", foreignKey=@ForeignKey(name="fk_tweet_tweetType_id"))
 	private TweetType tweetType;
   
+	@OneToMany(mappedBy="tweet")
+	private List<ShareTweet> shareTweets = new ArrayList<>();
+	
 	public List<ShareTweet> getShareTweets() { 
 		return shareTweets;
 	}
@@ -64,7 +65,6 @@ public class Tweet extends BaseEntity {
 
 
 
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -73,12 +73,21 @@ public class Tweet extends BaseEntity {
 		this.author = author;
 	}
 
-	public TweetContent getContent() {
-		return content;
+	public TweetContent getTweetContent() {
+		return tweetContent;
 	}
 
-	public void setContent(TweetContent content) {
-		this.content = content;
+	public TweetType getTweetType() {
+		return tweetType;
 	}
+
+	public void setTweetContent(TweetContent tweetContent) {
+		this.tweetContent = tweetContent;
+	}
+
+	public void setTweetType(TweetType tweetType) {
+		this.tweetType = tweetType;
+	}
+
 
 }

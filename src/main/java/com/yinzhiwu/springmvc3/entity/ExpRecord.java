@@ -2,6 +2,8 @@ package com.yinzhiwu.springmvc3.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -17,6 +19,7 @@ public class ExpRecord extends AbstractRecord {
 	private  float currentExp;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(foreignKey=@ForeignKey(name="fk_ExpRecord_shareTweet_id"))
 	private ShareTweet shareTweet;
 
 	public float getCurrentExp() {

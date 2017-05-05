@@ -12,4 +12,10 @@ public interface DistributerDao extends IBaseDao<Distributer, Integer> {
 	
 	public Distributer findByMemberId(String memeberId) throws DataNotFoundException;
 
+	public float getBeatRate(float exp);
+
+	public Distributer findByWechat(String wechatNo) throws DataNotFoundException;
+
+	public Distributer findByAccountPassword(String account, String password);
+
 }
