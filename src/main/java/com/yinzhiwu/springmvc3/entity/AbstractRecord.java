@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class AbstractRecord extends BaseEntity{
+public abstract class AbstractRecord extends BaseEntity{
 
 	/**
 	 * 
@@ -35,7 +35,8 @@ public class AbstractRecord extends BaseEntity{
 	private Date contributedDate;
 
 	
-
+	
+	
 	public Distributer getBeneficiaty() {
 		return beneficiaty;
 	}
@@ -87,6 +88,7 @@ public class AbstractRecord extends BaseEntity{
 
 	public AbstractRecord() {
 		super();
+		this.contributedDate= super.getLastModifiedDate();
 	}
 
 	public float getIncomeFactor() {
@@ -95,6 +97,18 @@ public class AbstractRecord extends BaseEntity{
 
 	public void setIncomeFactor(float incomeFactor) {
 		this.incomeFactor = incomeFactor;
+	}
+
+	public AbstractRecord(Distributer beneficiaty,  Distributer contributor,
+			float contributedValue,RecordType recordType) {
+		super();
+		this.contributedDate= super.getLastModifiedDate();
+		this.beneficiaty = beneficiaty;
+		this.recordType = recordType;
+		this.contributor = contributor;
+		this.contributedValue = contributedValue;
+		this.incomeFactor=recordType.getFactor();
+		this.income = this.contributedValue * this.incomeFactor;
 	}
 	
 	

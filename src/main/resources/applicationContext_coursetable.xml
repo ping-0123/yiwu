@@ -60,7 +60,7 @@
         <property name="dataSource" ref="dataSource" />  
         <property name="packagesToScan">  
             <list>  
-                <value>com.yinzhiwu.springmvc3.entity</value>  
+                <value>com.yinzhiwu.springmvc3.entity</value>
             </list>  
         </property>  
         <property name="hibernateProperties">  

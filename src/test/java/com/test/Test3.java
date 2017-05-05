@@ -13,8 +13,12 @@ import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.EmployeeDao;
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.entity.ExpRecordType;
+import com.yinzhiwu.springmvc3.entity.MoneyRecord;
+import com.yinzhiwu.springmvc3.entity.MoneyRecordType;
 import com.yinzhiwu.springmvc3.model.EmployeeApiView;
 import com.yinzhiwu.springmvc3.service.DistributerService;
+import com.yinzhiwu.springmvc3.service.RecordTypeService;
 import com.yinzhiwu.springmvc3.util.GeneratorUtil;
 import com.yinzhiwu.springmvc3.util.ShareCodeUtil;
 
@@ -107,4 +111,22 @@ Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No q
 	public void testGenerateMemberId(){
 		System.out.println(GeneratorUtil.generateMemberId(10));
 	}
+	
+	@Autowired
+	private RecordTypeService recordTypeService;
+	
+//	@Test
+//	public void testRecordTypeService(){
+//		ExpRecordType recordType = new ExpRecordType("注册2", 10);
+//		recordType.setComments("二级客户注册获取经验值");
+//		recordTypeService.save(recordType);
+//	}
+	
+	@Test
+	public void saveMoneyRecordType(){
+		MoneyRecordType moneyRecordType =new MoneyRecordType("注册","一级客户注册获取基金", 50);
+		recordTypeService.save(moneyRecordType);
+	}
+	
+	
 }

@@ -19,11 +19,12 @@ public class CustomerDaoImp extends BaseDaoImpl<Customer, Integer> implements Cu
 	}
 
 	@Override
-	public Customer findByWeChat(String weChatNo) {
+	public Customer findByWeChat(String weChatNo) throws DataNotFoundException {
 		List<Customer> list = findByProperty("weChat", weChatNo);
 		if(list.size() > 0)
 			return list.get(0);
-		return null;
+		else
+			throw new DataNotFoundException(CustomerDaoImp.class, "weChat", weChatNo);
 	}
 
 	@Override
