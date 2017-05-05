@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
 		<link rel="stylesheet" href="css/studio.css" />
+		<script type="text/javascript" src="js/jquery.js" ></script>
 		<title>我的生意</title>
 	</head>
 	<body>
@@ -20,15 +21,55 @@
 	    
 	    <div class="invite">
 	    	<p>我的邀请码</p>
-	    	<div class="inub">156648412</div>
-	    	<p class="copy">复制邀请码</p>
+	    	<div class="inub">
+	    		
+	    		<input value="1516455" id="inub" readonly="readonly" type="text">
+	    	
+	    	</div>
+	    	
+	    	<p class="copy" id="copy">复制邀请码</p>
 	    	<div class="ruler">
 	    		<a href="rule.html">游戏规则</a>
-	    		<a href="">收入前三名</a>
+	    		<a href="top_three.html">收入前三名</a>
 	    	</div>
 	    </div>	
 
-	<footer>
+        <div class="result">
+        	<p>我的成绩单</p>
+        	<table>
+        	<tr>
+        	<td></td>
+        	<td>我</td>
+        	<td>一级客户</td>
+        	<td>二级客户</td>
+        	</tr>
+        	<tr>
+        	<td>转发次数</td>
+        	<td>83次</td>
+        	<td>642次</td>
+        	<td>-</td>	
+        	</tr>
+        	<tr>
+        	<td>注册会员</td>
+        	<td>-</td>
+        	<td>18个</td>
+        	<td>105次</td>	
+        	</tr>
+        	<tr>
+        	<td>成交单数</td>
+        	<td>-</td>
+        	<td>5单</td>
+        	<td>29单</td>	
+        	</tr>
+        	</table>
+        </div>
+        
+        <div class="wchat">
+        	转发微信
+        </div>	
+        
+       <footer>
+
 		<div class="nav f-cb">
 			<ul>
 				<li>
@@ -49,5 +90,16 @@
 			</ul>
 		</div>
 	</footer>
+<script type="text/javascript">
+  $(document).ready(function(){
+  	     $('#copy').click(function(){
+  	     $('#inub').trigger('select');
+         document.execCommand('copy');
+         alert('复制成功')
+  })
+  })
+ </script>
+ 
+ 
 	</body>
 </html>
