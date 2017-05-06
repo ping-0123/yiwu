@@ -1,7 +1,6 @@
 package com.yinzhiwu.springmvc3.entity;
 
-import java.sql.Date;
-import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yinzhiwu.springmvc3.enums.Gender;
 import com.yinzhiwu.springmvc3.util.CalendarUtil;
 
 @Entity
@@ -44,7 +45,9 @@ public class Customer {
 	@Column(length=32)
 	private String residentId;
 	
+
 	@Column
+	@JsonFormat(pattern ="yyyy-MM-dd")
 	private Date birthday;
 	
 	@Column
@@ -391,8 +394,21 @@ public class Customer {
 		else
 			this.auditOrChild="少儿";
 		this.isMember = "潜在";
-		name = d.getName();
-		
+		this.name = d.getName();
+		if(d.getGender()==Gender.FEMALE)
+			this.gender="女";
+		else
+			this.gender="男";
+		this.mobilePhone = d.getPhoneNo();
+		this.birthday = new java.sql.Date(d.getBirthday().getTime());
+		this.age = (int) CalendarUtil.getAge(d.getBirthday());
+		this.weChat = d.getWechatNo();
+		this.sourceOfCustomer = "微信";
+		this.createTime= d.getCreateDate();
+		this.lastChangeTime=(Date) d.getLastModifiedDate();
+		this.lastSyncTimeStamp=(Date) d.getLastModifiedDate();
+		this.lastChangeTimestamp = (Date) d.getLastModifiedDate();
+		this.createUserId =d.getId();
 	}
 	
 	

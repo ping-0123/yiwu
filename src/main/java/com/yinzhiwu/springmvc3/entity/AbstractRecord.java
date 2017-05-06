@@ -2,6 +2,8 @@ package com.yinzhiwu.springmvc3.entity;
 
 import java.util.Date;
 
+import javax.persistence.ConstraintMode;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
@@ -15,17 +17,17 @@ public abstract class AbstractRecord extends BaseEntity{
 	private static final long serialVersionUID = 8102222572160379415L;
 	
 	@ManyToOne(targetEntity=Distributer.class)
-	@JoinColumn(name="beneficiaty_id")
+	@JoinColumn(name="beneficiaty_id", foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Distributer beneficiaty;
 
 	@ManyToOne
-	@JoinColumn(name="record_type_id")
+	@JoinColumn(name="recordType_id",foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private RecordType recordType;	
 	
 	private float income;
 	
 	@ManyToOne
-	@JoinColumn(name="contributor_id")
+	@JoinColumn(name="contributor_id", foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Distributer contributor;
 	
 	private float contributedValue;

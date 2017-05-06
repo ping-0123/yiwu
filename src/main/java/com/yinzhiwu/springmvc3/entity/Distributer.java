@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -75,13 +77,13 @@ public class Distributer extends BaseEntity{
 	private String account;  //默认是手机号
 	
 	@Column(length=32, nullable=false)
-	private String passwords;
+	private String password;
 	
 	@NotNull
 	@Column(length=32, unique=true, nullable=false)
 	private String wechatNo;
 	
-	@Pattern(regexp="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$")
+	@Pattern(regexp="^1\\d{10}$")
 	@Column(length=32, unique=true, nullable=false)
 	private String phoneNo;
 	
@@ -90,15 +92,17 @@ public class Distributer extends BaseEntity{
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date birthday;
 	
-	@NotNull
-	@Enumerated
+//	@NotNull
+	@Column(length=10)
+	@Enumerated(EnumType.ORDINAL)
 	private Gender gender;
 	
 	@Column(length=10, unique=true, updatable=false)
 	private String shareCode;
 	
-	@ManyToOne(targetEntity=Distributer.class)
-	@JoinColumn(name="super_distributer_id", foreignKey=@ForeignKey(name="fk_distributer_superDistributer_id"))
+	@ManyToOne(targetEntity=Distributer.class, fetch=FetchType.LAZY)
+	@JoinColumn(name="super_distributer_id",
+		foreignKey=@ForeignKey(name="fk_distributer_superDistributer_id"))
 	private Distributer superDistributer;
 	
 	@Column(length=32, unique=true)
@@ -106,7 +110,8 @@ public class Distributer extends BaseEntity{
 	
 	private float exp;
 	
-	@ManyToOne
+	@JsonIgnore
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="expGrade_id", referencedColumnName="id", foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
 	private ExpGrade expGrade;
 	
@@ -114,20 +119,20 @@ public class Distributer extends BaseEntity{
 	
 	private float funds;
 	
-	private float sumInComeBrokerage;
+	private float accumulativeBrokerage;
 	
-	private float sumInComeFunds;
+	private float accumulativeFunds;
 	
 
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date registedTime;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="customer_id", unique=true, foreignKey=@ForeignKey(name="fk_distributer_customer_id"))
 	private Customer customer;  //根据手机号码 或者微信号做唯一性关联
 	
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="followedByStore_id", foreignKey=@ForeignKey(name="fk_distributer_followedByStore_id"))
 	private Department followedByStore;
 	
@@ -306,9 +311,6 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public String getPasswords() {
-		return passwords;
-	}
 
 
 	public String getWechatNo() {
@@ -348,10 +350,6 @@ public class Distributer extends BaseEntity{
 
 	public void setAccount(String account) {
 		this.account = account;
-	}
-
-	public void setPasswords(String passwords) {
-		this.passwords = passwords;
 	}
 
 
@@ -394,28 +392,43 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public float getSumInComeBrokerage() {
-		return sumInComeBrokerage;
-	}
-
-
-	public float getSumInComeFunds() {
-		return sumInComeFunds;
-	}
-
-
 	public void setBrokerage(float brokerage) {
 		this.brokerage = brokerage;
 	}
 
 
-	public void setSumInComeBrokerage(float sumInComeBrokerage) {
-		this.sumInComeBrokerage = sumInComeBrokerage;
+	
+
+	public Gender getGender() {
+		return gender;
 	}
 
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
 
-	public void setSumInComeFunds(float sumInComeFunds) {
-		this.sumInComeFunds = sumInComeFunds;
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public float getAccumulativeBrokerage() {
+		return accumulativeBrokerage;
+	}
+
+	public float getAccumulativeFunds() {
+		return accumulativeFunds;
+	}
+
+	public void setAccumulativeBrokerage(float accumulativeBrokerage) {
+		this.accumulativeBrokerage = accumulativeBrokerage;
+	}
+
+	public void setAccumulativeFunds(float accumulativeFunds) {
+		this.accumulativeFunds = accumulativeFunds;
 	}
 
 	

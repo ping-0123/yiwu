@@ -15,13 +15,18 @@ public interface IBaseDao<T ,PK extends Serializable> {
 		
 		public List<T> findAll();
 		
+		public int findCount();
+		
 		public List<T> findByProperty(String propertyName, Object value);
 		
 		public int findCountByProperty(String propertyName, Object value);
 		
+		
 		public List<T> findByProperties(Map<String, Object> param);
 		
 		public List<T> findByProperties(String[] propertyNames, Object[] values);
+		
+		public int findCountByProperties(String[] propertyNames, Object[] values);
 		
 		public List<T> findByExample(T entity);
 

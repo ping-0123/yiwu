@@ -8,10 +8,10 @@
   <display-name>Archetype Created Web Application</display-name>
 	<context-param>
     	<param-name>contextConfigLocation</param-name>
-    	<param-value>classpath:applicationContext_coursetable.xml</param-value>
+    	<param-value>classpath:applicationContext.xml</param-value>
     </context-param>
     
-    <!-- 延迟加载过滤器     -->
+    <!-- 延迟加载过滤器   
     <filter>
     	<filter-name>openSessionInViewFilter</filter-name>
     	<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
@@ -19,7 +19,7 @@
     <filter-mapping>
     	<filter-name>openSessionInViewFilter</filter-name>
     	<url-pattern>/</url-pattern>
-    </filter-mapping>
+    </filter-mapping>   -->
     
     <!--org.springframework.web.filter.HiddenHttpMethodFilter:可以把Post请求转变为put和delete请求 --> 
 	 <filter> 

@@ -80,10 +80,10 @@
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">  
         <property name="sessionFactory" ref="sessionFactory"></property>  
     </bean>  
-	<!-- 配置事务异常封装 -->
+	<!-- 配置事务异常封装 
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-	<tx:annotation-driven transaction-manager="transactionManager" />   
+	<tx:annotation-driven transaction-manager="transactionManager" />    -->
     <!-- 拦截器方式配置事物 -->  
     <tx:advice id="transactionAdvice" transaction-manager="transactionManager">  
         <tx:attributes>  
@@ -102,7 +102,8 @@
             <tx:method name="load*" propagation="SUPPORTS" />  
             <tx:method name="search*" propagation="SUPPORTS" />  
             <tx:method name="datagrid*" propagation="SUPPORTS" />  
-            <tx:method name="login"/>
+            <tx:method name="login*"/>
+            <tx:method name="register"/>
   
             <tx:method name="*" propagation="SUPPORTS" />  
         </tx:attributes>  

@@ -16,9 +16,9 @@ public class FundsRecord extends MoneyRecord {
 		super();
 	}
 
-	public FundsRecord(Distributer beneficiaty, Distributer contributor, float contributedValue,
+	public FundsRecord(Distributer beneficiary, Distributer contributor, float contributedValue,
 			RecordType recordType) {
-		super(beneficiaty, contributor, contributedValue, recordType);
+		super(beneficiary, contributor, contributedValue, recordType);
 		super.setCurrentFunds(getIncome() + getCurrentFunds());
 	}
 

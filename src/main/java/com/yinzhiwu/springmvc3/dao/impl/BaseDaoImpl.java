@@ -54,7 +54,7 @@ public class BaseDaoImpl<T,PK extends Serializable>
     }  
   
 	@SuppressWarnings("unchecked")
-	public PK save(T entity) {  
+	public PK save(T entity)  {  
         Assert.notNull(entity, "entity is required");  
         return (PK) getSession().save(entity);  
     }
@@ -124,6 +124,27 @@ public class BaseDaoImpl<T,PK extends Serializable>
 		}
 	}
 
+
+
+	@Override
+	public List<T> findByExample(T entity) {
+		Assert.notNull(entity, "entity is required");
+		return getHibernateTemplate().findByExample(entity);
+	}  
+	
+	@Override
+	public void update(T entity){
+		Assert.notNull(entity, "entity is required");
+		getHibernateTemplate().update(entity);
+	}
+
+	@Override
+	public int findCount() {
+		String hql = "select count(*) from " + entityClass.getSimpleName();
+		List<Long> sums =   (List<Long>) getHibernateTemplate().find(hql);
+		return sums.get(0).intValue();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findByProperties(String[] propertyNames, Object[] values) {
@@ -141,20 +162,12 @@ public class BaseDaoImpl<T,PK extends Serializable>
 				hql.toString(), 
 				map.keySet().toArray(new String[] {}),
 				map.values().toArray(new Object[] {}));
-		
 
 	}
 
 	@Override
-	public List<T> findByExample(T entity) {
-		Assert.notNull(entity, "entity is required");
-		return getHibernateTemplate().findByExample(entity);
-	}  
-	
-	@Override
-	public void update(T entity){
-		Assert.notNull(entity, "entity is required");
-		getHibernateTemplate().update(entity);
+	public int findCountByProperties(String[] propertyNames, Object[] values) {
+		return findByProperties(propertyNames, values).size();
 	}
 }
 

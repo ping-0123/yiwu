@@ -38,7 +38,7 @@ public class AccountServiceImpl implements AccountService {
 		YiwuJson<EmployeeApiView>  json = new YiwuJson<>();
 		try {
 			Account account = accountDao.login(accountName,password);
-			EmployeeApiView e = new EmployeeApiView(employeeDao.get(account.getEmployeeId()));
+			EmployeeApiView e = new EmployeeApiView(employeeDao.get(account.getEmployee().getId()));
 			json.setData(e);
 		} catch (DataNotFoundException e) {
 			json.setMsg(e.getMessage());

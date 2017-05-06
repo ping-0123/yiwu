@@ -1,21 +1,34 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.springmvc3.dao.CustomerDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.ExpGradeDao;
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.model.DistributerApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.service.ExpRecordService;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
+import com.yinzhiwu.springmvc3.util.GeneratorUtil;
+import com.yinzhiwu.springmvc3.util.SecurityUtil;
+import com.yinzhiwu.springmvc3.util.ShareCodeUtil;
+import com.yinzhiwu.springmvc3.util.UrlUtil;
 
+
+
+//@Transactional
 @Service
 public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer> implements DistributerService {
 
@@ -36,14 +49,18 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Autowired
 	private MoneyRecordService moneyRecordService;
 	
+	
 	@Autowired
 	public void setBaseDao(DistributerDao distributerDao){
 		super.setBaseDao(distributerDao);
 	}
 	
+	private YiwuJson<DistributerApiView> mYiwuJson = new YiwuJson<DistributerApiView>(); 
+	
+	
+	
 	@Override
-	public  YiwuJson<Distributer> register(String invitationCode, Distributer distributer){
-		YiwuJson<Distributer> yiwuJson = new YiwuJson<>();
+	public  YiwuJson<DistributerApiView> register(String invitationCode, Distributer distributer){
 		
 		//设置默认帐号
 		distributer.initialize();
@@ -58,7 +75,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				superDistributer = distributerDao.findByShareCode(invitationCode);
 				distributer.setSuperDistributer(superDistributer);
 			} catch (DataNotFoundException e) {
-				yiwuJson.setMsg("无效的分享码");
+				mYiwuJson.setMsg("无效的分享码");
 			}
 		
 		
@@ -70,14 +87,22 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			try {
 				customer = customerDao.findByWeChat(distributer.getWechatNo());
 			} catch (DataNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				customer = new Customer(distributer);
+				customerDao.save(customer);
 			}
 		}
 		distributer.setCustomer(customer);
 		
 		//注册成功
-		distributerDao.save(distributer);
+		try {
+			logger.info("before save");;
+			distributerDao.saveBean(distributer);
+			logger.info("after save");
+		} catch (Exception e) {
+			mYiwuJson.setMsg(e.getMessage());
+			mYiwuJson.setResult(false);
+			return mYiwuJson;
+		}
 		
 		//注册产生收益
 		if(superDistributer != null) {
@@ -93,8 +118,73 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		}
 	
 		
-		yiwuJson.setData(distributer);
-		return yiwuJson;
+		mYiwuJson.setData(wrapToApiView(distributer));
+		return mYiwuJson;
 	}
+
+	@Override
+	public YiwuJson<DistributerApiView> loginByWechat(String wechatNo) {
+		try {
+			Distributer distributer = distributerDao.findByWechat(wechatNo);
+			mYiwuJson.setData(wrapToApiView(distributer));
+		} catch (DataNotFoundException e) {
+			mYiwuJson.setMsg(e.getMessage());
+			mYiwuJson.setResult(false);
+			return mYiwuJson;
+		}
+		return mYiwuJson;
+	}
+	
+	private DistributerApiView wrapToApiView(Distributer d){
+		DistributerApiView distributerApiView = new DistributerApiView(d);
+		distributerApiView.setBeatRate(distributerDao.getBeatRate(d.getExp()));
+		return distributerApiView;
+	}
+
+	@Override
+	public YiwuJson<DistributerApiView> loginByAccount(String account, String password) {
+		Distributer distributer;
+		try {
+			distributer = distributerDao.findByAccountPassword(account,password);
+			mYiwuJson.setData(wrapToApiView(distributer));
+		} catch (Exception e) {
+			mYiwuJson.setMsg(e.getMessage());
+			mYiwuJson.setResult(false);
+			return mYiwuJson;
+		}
+		return mYiwuJson;
+	}
+
+	@Override
+	public YiwuJson<DistributerApiView> findById(int id) {
+		Distributer distributer = distributerDao.get(id);
+		mYiwuJson.setData(wrapToApiView(distributer));
+		return mYiwuJson;
+	}
+
+	@Override
+	public YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile, String fileSavePath) {
+		Distributer distributer = distributerDao.get(id);
+		String imageName = distributer.getMemberId() + ".jpg";
+		File imageFile = new File(fileSavePath, imageName);
+		try {
+			multipartFile.transferTo(imageFile);
+		} catch (IllegalStateException | IOException e) {
+			mYiwuJson.setMsg(e.getMessage());
+			mYiwuJson.setResult(false);
+			return mYiwuJson;
+		}
+		distributer.setHeadIconName(imageName);
+		distributerDao.update(distributer);
+		mYiwuJson.setData( wrapToApiView(distributer));
+		return mYiwuJson;
+	}
+
+	@Override
+	public YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }
