@@ -9,6 +9,8 @@ import com.yinzhiwu.springmvc3.entity.MoneyRecord;
 import com.yinzhiwu.springmvc3.enums.MoneyRecordCategory;
 import com.yinzhiwu.springmvc3.util.MoneyRecordCategoryUtil;
 
+
+
 public class MoneyRecordApiView {
 
 	@Min(0)
@@ -22,7 +24,7 @@ public class MoneyRecordApiView {
 	private float amount;
 	
 	private float currentBrockerage;
-	
+			
 	private float currentFunds;
 	
 	public MoneyRecordApiView(MoneyRecord m)
