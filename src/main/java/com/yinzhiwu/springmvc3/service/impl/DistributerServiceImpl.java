@@ -1,10 +1,14 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.springmvc3.dao.CustomerDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
@@ -16,12 +20,10 @@ import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.service.ExpRecordService;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
-import com.yinzhiwu.springmvc3.util.GeneratorUtil;
-import com.yinzhiwu.springmvc3.util.SecurityUtil;
-import com.yinzhiwu.springmvc3.util.ShareCodeUtil;
 
 
 
+//@Transactional
 @Service
 public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer> implements DistributerService {
 
@@ -41,6 +43,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	
 	@Autowired
 	private MoneyRecordService moneyRecordService;
+	
 	
 	@Autowired
 	public void setBaseDao(DistributerDao distributerDao){
@@ -80,13 +83,16 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				customer = customerDao.findByWeChat(distributer.getWechatNo());
 			} catch (DataNotFoundException e1) {
 				customer = new Customer(distributer);
+//				customerDao.save(customer);  ()
 			}
 		}
 		distributer.setCustomer(customer);
 		
 		//注册成功
 		try {
+			logger.info("before save");;
 			distributerDao.saveBean(distributer);
+			logger.info("after save");
 		} catch (Exception e) {
 			mYiwuJson.setMsg(e.getMessage());
 			mYiwuJson.setResult(false);
@@ -124,11 +130,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		return mYiwuJson;
 	}
 	
-	private DistributerApiView wrapToApiView(Distributer d){
-		DistributerApiView distributerApiView = new DistributerApiView(d);
-		distributerApiView.setBeatRate(distributerDao.getBeatRate(d.getExp()));
-		return distributerApiView;
-	}
 
 	@Override
 	public YiwuJson<DistributerApiView> loginByAccount(String account, String password) {
@@ -149,6 +150,36 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		Distributer distributer = distributerDao.get(id);
 		mYiwuJson.setData(wrapToApiView(distributer));
 		return mYiwuJson;
+	}
+
+	@Override
+	public YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile, String fileSavePath) {
+		Distributer distributer = distributerDao.get(id);
+		String imageName = distributer.getMemberId() + ".jpg";
+		File imageFile = new File(fileSavePath, imageName);
+		try {
+			multipartFile.transferTo(imageFile);
+		} catch (IllegalStateException | IOException e) {
+			mYiwuJson.setMsg(e.getMessage());
+			mYiwuJson.setResult(false);
+			return mYiwuJson;
+		}
+		distributer.setHeadIconName(imageName);
+		distributerDao.update(distributer);
+		mYiwuJson.setData( wrapToApiView(distributer));
+		return mYiwuJson;
+	}
+
+	@Override
+	public YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	private DistributerApiView wrapToApiView(Distributer d){
+		DistributerApiView distributerApiView = new DistributerApiView(d);
+		distributerApiView.setBeatRate(distributerDao.getBeatRate(d.getExp()));
+		return distributerApiView;
 	}
 
 	

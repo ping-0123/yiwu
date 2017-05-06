@@ -23,4 +23,8 @@ public class ExpRecordType  extends RecordType{
 		setName(name);
 		setFactor(factor);
 	}
+
+	public ExpRecordType(String name, String comments, float factor) {
+		super(name, comments, factor);
+	}
 }

@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.exception.DataNotFoundException;
 import org.hibernate.type.LongType;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
@@ -20,7 +21,7 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	private static final Log logger = LogFactory.getLog(DistributerDaoImpl.class);
 
 	@Override
-	public Integer saveBean(Distributer entity) throws Exception {
+	public Integer saveBean(Distributer entity) throws DataAccessException {
 		int id = getNextId();
 		logger.debug(id);
 		entity.setPassword(SecurityUtil.encryptByMd5(entity.getPassword()));
@@ -101,6 +102,14 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		}
 		
 	}
+
+	@Override
+	public List<Distributer> findTopThree() {
+		String sql = "select * from Distributer order by accumulativeBrokerage desc limit 3";
+		List<Distributer> distributers = getSession().createNativeQuery(sql, Distributer.class).list();
+		return distributers;
+	}
+
 
 	
 

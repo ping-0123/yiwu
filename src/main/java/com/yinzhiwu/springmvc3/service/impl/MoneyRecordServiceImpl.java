@@ -1,5 +1,10 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder.In;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -14,7 +19,11 @@ import com.yinzhiwu.springmvc3.entity.FundsRecord;
 import com.yinzhiwu.springmvc3.entity.FundsRecordType;
 import com.yinzhiwu.springmvc3.entity.MoneyRecord;
 import com.yinzhiwu.springmvc3.entity.MoneyRecordType;
+import com.yinzhiwu.springmvc3.enums.MoneyRecordCategory;
+import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
+import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
+import com.yinzhiwu.springmvc3.util.MoneyRecordCategoryUtil;
 
 @Service
 public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer> implements MoneyRecordService{
@@ -27,6 +36,7 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	
 	@Autowired
 	private DistributerDao distributerDao;
+	
 	
 	@Autowired
 	private void setMoneyRecordDao(MoneyRecordDao moneyRecordDao)
@@ -71,5 +81,22 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 			beneficiary.setAccumulativeFunds(beneficiary.getAccumulativeFunds() + fundsRecord.getIncome());
 		beneficiary.setFunds(fundsRecord.getCurrentFunds());
 		distributerDao.update(beneficiary);
+	}
+
+	@Override
+	public YiwuJson<Integer> findCountByDistributerid(int distributerId) {
+		int count =  moneyRecordDao.findCountByBeneficiatyId(distributerId);
+		return new YiwuJson<Integer>(count);
+	}
+
+	@Override
+	public YiwuJson<List<MoneyRecordApiView>> findList(int benificiaryId, MoneyRecordCategory category) {
+		List<Integer> typeIds  = MoneyRecordCategoryUtil.toMoneyRecordTypeIds(category);
+		List<MoneyRecord> moneyRecords = moneyRecordDao.findByTypesByBeneficiaryId(benificiaryId,typeIds);
+		List<MoneyRecordApiView> views = new ArrayList<MoneyRecordApiView>();
+		for (MoneyRecord m : moneyRecords) {
+			views.add(new MoneyRecordApiView(m));
+		}
+		return new YiwuJson<List<MoneyRecordApiView>>(views);
 	}
 }
