@@ -9,7 +9,7 @@ public class SumRecordApiView implements Serializable{
 	 */
 	private static final long serialVersionUID = 1893739499845022068L;
 
-	private int distributerId;
+	private DistributerApiView distributerApiView;
 	
 	private int myShareTweetTimes;
 	
@@ -23,9 +23,7 @@ public class SumRecordApiView implements Serializable{
 	
 	private int secondaryOrderCount;
 
-	public int getDistributerId() {
-		return distributerId;
-	}
+
 
 	public int getMyShareTweetTimes() {
 		return myShareTweetTimes;
@@ -51,9 +49,6 @@ public class SumRecordApiView implements Serializable{
 		return secondaryOrderCount;
 	}
 
-	public void setDistributerId(int distributerId) {
-		this.distributerId = distributerId;
-	}
 
 	public void setMyShareTweetTimes(int myShareTweetTimes) {
 		this.myShareTweetTimes = myShareTweetTimes;
@@ -78,6 +73,19 @@ public class SumRecordApiView implements Serializable{
 	public void setSecondaryOrderCount(int secondaryOrderCount) {
 		this.secondaryOrderCount = secondaryOrderCount;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public DistributerApiView getDistributerApiView() {
+		return distributerApiView;
+	}
+
+	public void setDistributerApiView(DistributerApiView distributerApiView) {
+		this.distributerApiView = distributerApiView;
+	}
+
 	
 	
 }

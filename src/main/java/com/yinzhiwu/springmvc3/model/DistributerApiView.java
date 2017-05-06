@@ -1,9 +1,11 @@
 package com.yinzhiwu.springmvc3.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.util.UrlUtil;
@@ -29,6 +31,9 @@ public class DistributerApiView implements Serializable{
 	
 	private String headIconUrl;
 	
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private Date registerDate;
+	
 	private float neededExpForUpdate;
 	
 	@JsonIgnore
@@ -40,6 +45,11 @@ public class DistributerApiView implements Serializable{
 	public DistributerApiView() {
 	}
 	
+	public DistributerApiView(int id) {
+		this.id = id;
+	}
+	
+	
 	public DistributerApiView(Distributer d){
 		this.id = d.getId();
 		this.expGradeNo = d.getExpGrade().getGradeNo();
@@ -48,6 +58,7 @@ public class DistributerApiView implements Serializable{
 		this.memeberId = d.getMemberId();
 		this.shareCode = d.getShareCode();
 		this.headIconUrl = UrlUtil.toHeadIcomUrl(d.getHeadIconName());
+		this.registerDate = d.getRegistedTime();
 		this.neededExpForUpdate = d.getExpGrade().getUpgradeExp()-d.getExp();
 	}
 

@@ -82,7 +82,7 @@ public class Distributer extends BaseEntity{
 	@Column(length=32, unique=true, nullable=false)
 	private String wechatNo;
 	
-	@Pattern(regexp="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$")
+	@Pattern(regexp="^1\\d{10}$")
 	@Column(length=32, unique=true, nullable=false)
 	private String phoneNo;
 	
