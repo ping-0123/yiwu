@@ -1,5 +1,7 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.MoneyRecordDao;
@@ -32,5 +34,17 @@ public class MoneyRecordDaoImpl extends BaseDaoImpl<MoneyRecord, Integer> implem
 
 		return count1 + count2;
 
+	}
+
+	@Override
+	public int findCountByBeneficiatyId(int beneficiatyId) {
+		return findCountByProperty("beneficiaty.id", beneficiatyId);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MoneyRecord> findByTypesByBeneficiaryId(int benificiaryId, List<Integer> typeIds) {
+		String hql = "from MoneyRecord where beneficiaty.id = " + benificiaryId + " and recordType.id in :typeIds";
+		return (List<MoneyRecord>) getHibernateTemplate().findByNamedParam(hql, "typeIds", typeIds);
 	}
 }

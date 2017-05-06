@@ -59,6 +59,14 @@ public class TypeTest {
 		recordTypeService.save(e2);
 	}
 	
+	@Test
+	public  void intertPayRecordType(){
+		BrokerageRecordType b1 = new BrokerageRecordType("支出" , "使用佣金支付定金" ,1);
+		FundsRecordType f1 = new FundsRecordType("支出", " 使用基金支付定金", 1);
+		recordTypeService.save(b1);
+		recordTypeService.save(f1);
+	}
+	
 //	@Test
 	public void insertOhtertypes(){
 		CapitalAccountType c1 = new CapitalAccountType("微信");

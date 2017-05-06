@@ -8,7 +8,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.springmvc3.dao.CustomerDao;
@@ -21,10 +20,6 @@ import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.service.ExpRecordService;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
-import com.yinzhiwu.springmvc3.util.GeneratorUtil;
-import com.yinzhiwu.springmvc3.util.SecurityUtil;
-import com.yinzhiwu.springmvc3.util.ShareCodeUtil;
-import com.yinzhiwu.springmvc3.util.UrlUtil;
 
 
 
@@ -88,7 +83,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				customer = customerDao.findByWeChat(distributer.getWechatNo());
 			} catch (DataNotFoundException e1) {
 				customer = new Customer(distributer);
-				customerDao.save(customer);
+//				customerDao.save(customer);  ()
 			}
 		}
 		distributer.setCustomer(customer);
@@ -135,11 +130,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		return mYiwuJson;
 	}
 	
-	private DistributerApiView wrapToApiView(Distributer d){
-		DistributerApiView distributerApiView = new DistributerApiView(d);
-		distributerApiView.setBeatRate(distributerDao.getBeatRate(d.getExp()));
-		return distributerApiView;
-	}
 
 	@Override
 	public YiwuJson<DistributerApiView> loginByAccount(String account, String password) {
@@ -184,6 +174,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	public YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private DistributerApiView wrapToApiView(Distributer d){
+		DistributerApiView distributerApiView = new DistributerApiView(d);
+		distributerApiView.setBeatRate(distributerDao.getBeatRate(d.getExp()));
+		return distributerApiView;
 	}
 
 	

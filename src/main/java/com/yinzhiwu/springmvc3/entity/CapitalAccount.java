@@ -31,6 +31,8 @@ public class CapitalAccount extends BaseEntity {
 	private Distributer distributer;
 
 	
+	private boolean isDefault;
+	
 
 	public String getAccount() {
 		return account;
@@ -62,6 +64,14 @@ public class CapitalAccount extends BaseEntity {
 
 	public void setCapitalAccountType(CapitalAccountType capitalAccountType) {
 		this.capitalAccountType = capitalAccountType;
+	}
+
+	public boolean isDefault() {
+		return isDefault;
+	}
+
+	public void setDefault(boolean isDefault) {
+		this.isDefault = isDefault;
 	}
 	
 	

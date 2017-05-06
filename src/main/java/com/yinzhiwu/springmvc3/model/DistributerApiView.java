@@ -36,6 +36,10 @@ public class DistributerApiView implements Serializable{
 	
 	private float neededExpForUpdate;
 	
+	private float brokerage;
+	
+	private float funds;
+	
 	@JsonIgnore
 	private MultipartFile image;
 	
@@ -60,6 +64,8 @@ public class DistributerApiView implements Serializable{
 		this.headIconUrl = UrlUtil.toHeadIcomUrl(d.getHeadIconName());
 		this.registerDate = d.getRegistedTime();
 		this.neededExpForUpdate = d.getExpGrade().getUpgradeExp()-d.getExp();
+		this.brokerage = d.getBrokerage();
+		this.funds = d.getFunds();
 	}
 
 	public float getBeatRate() {
@@ -140,6 +146,30 @@ public class DistributerApiView implements Serializable{
 
 	public void setImage(MultipartFile image) {
 		this.image = image;
+	}
+
+	public Date getRegisterDate() {
+		return registerDate;
+	}
+
+	public float getBrokerage() {
+		return brokerage;
+	}
+
+	public float getFunds() {
+		return funds;
+	}
+
+	public void setRegisterDate(Date registerDate) {
+		this.registerDate = registerDate;
+	}
+
+	public void setBrokerage(float brokerage) {
+		this.brokerage = brokerage;
+	}
+
+	public void setFunds(float funds) {
+		this.funds = funds;
 	}
 	
 	
