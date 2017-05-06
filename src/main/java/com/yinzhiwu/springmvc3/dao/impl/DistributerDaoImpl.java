@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.exception.DataNotFoundException;
+import org.hibernate.type.LongType;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
@@ -19,22 +21,20 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	private static final Log logger = LogFactory.getLog(DistributerDaoImpl.class);
 
 	@Override
-	public Integer save(Distributer entity) {
+	public Integer saveBean(Distributer entity) throws DataAccessException {
+		int id = getNextId();
+		logger.debug(id);
 		entity.setPassword(SecurityUtil.encryptByMd5(entity.getPassword()));
-		entity.setMemberId(ShareCodeUtil.toSerialCode(1));
-		int id = save(entity);
-		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
 		entity.setMemberId(GeneratorUtil.generateMemberId(id));
-		update(entity);
-		return entity.getId();
+		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
+		return super.save(entity);
 	}
 
-	@SuppressWarnings("unused")
-	private int generateId() {
-		String hql = "select ifnull(max(id),0) + 1 from Distributer";
-		List<?> ids = getHibernateTemplate().find(hql);
-//		logger.info(ids.size());
-		return (int) ids.get(0);
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	private int getNextId() {
+		String sql = "select  AUTO_INCREMENT from information_schema.tables where table_name ='distributer'";
+		List<Long> list = getSession().createNativeQuery(sql).addScalar("AUTO_INCREMENT", LongType.INSTANCE) .list();
+		return list.get(0).intValue();
 	}
 
 	@Override
@@ -86,10 +86,30 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	}
 
 	@Override
-	public Distributer findByAccountPassword(String account, String password) {
-		// TODO Auto-generated method stub
-		return null;
+	public Distributer findByAccountPassword(String account, String password) throws Exception {
+		String encriptedPassword = SecurityUtil.encryptByMd5(password);
+		List<Distributer> distributers = findByProperties(
+				new String[]{"account", "password"}, 
+				new Object[]{account,encriptedPassword});
+		if (distributers.size()>0)
+			return distributers.get(0);
+		else{
+			List<Distributer> distributers2 = findByProperty("account", account);
+			if(distributers2.size()>0)
+				throw new Exception("password is Incorrect");
+			else
+				throw new Exception("account:" + account + " is not exist");
+		}
+		
 	}
+
+	@Override
+	public List<Distributer> findTopThree() {
+		String sql = "select * from Distributer order by accumulativeBrokerage desc limit 3";
+		List<Distributer> distributers = getSession().createNativeQuery(sql, Distributer.class).list();
+		return distributers;
+	}
+
 
 	
 

@@ -12,7 +12,7 @@ public class SecurityUtil {
 	
 	private static final String KEY_MD5 = "MD5";
 	
-	private static final int ENCRYPT_LENGTH = 3;
+	private static final int ENCRYPT_LENGTH = 32;
 
 	public static String encryptByMd5(String inputStr) {
 		BigInteger bigInteger = null;

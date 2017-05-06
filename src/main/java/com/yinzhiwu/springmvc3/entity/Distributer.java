@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -82,7 +83,7 @@ public class Distributer extends BaseEntity{
 	@Column(length=32, unique=true, nullable=false)
 	private String wechatNo;
 	
-	@Pattern(regexp="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$")
+	@Pattern(regexp="^1\\d{10}$")
 	@Column(length=32, unique=true, nullable=false)
 	private String phoneNo;
 	
@@ -99,8 +100,9 @@ public class Distributer extends BaseEntity{
 	@Column(length=10, unique=true, updatable=false)
 	private String shareCode;
 	
-	@ManyToOne(targetEntity=Distributer.class)
-	@JoinColumn(name="super_distributer_id", foreignKey=@ForeignKey(name="fk_distributer_superDistributer_id"))
+	@ManyToOne(targetEntity=Distributer.class, fetch=FetchType.LAZY)
+	@JoinColumn(name="super_distributer_id",
+		foreignKey=@ForeignKey(name="fk_distributer_superDistributer_id"))
 	private Distributer superDistributer;
 	
 	@Column(length=32, unique=true)

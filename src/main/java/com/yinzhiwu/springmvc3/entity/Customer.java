@@ -1,7 +1,6 @@
 package com.yinzhiwu.springmvc3.entity;
 
-import java.sql.Date;
-import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -405,7 +404,7 @@ public class Customer {
 		this.age = (int) CalendarUtil.getAge(d.getBirthday());
 		this.weChat = d.getWechatNo();
 		this.sourceOfCustomer = "微信";
-		this.createTime= (Date) d.getCreateDate();
+		this.createTime= d.getCreateDate();
 		this.lastChangeTime=(Date) d.getLastModifiedDate();
 		this.lastSyncTimeStamp=(Date) d.getLastModifiedDate();
 		this.lastChangeTimestamp = (Date) d.getLastModifiedDate();
