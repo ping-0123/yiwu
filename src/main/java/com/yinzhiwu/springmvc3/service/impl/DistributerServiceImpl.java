@@ -49,6 +49,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Autowired
 	private MoneyRecordService moneyRecordService;
 	
+	
 	@Autowired
 	public void setBaseDao(DistributerDao distributerDao){
 		super.setBaseDao(distributerDao);
@@ -87,6 +88,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				customer = customerDao.findByWeChat(distributer.getWechatNo());
 			} catch (DataNotFoundException e1) {
 				customer = new Customer(distributer);
+				customerDao.save(customer);
 			}
 		}
 		distributer.setCustomer(customer);

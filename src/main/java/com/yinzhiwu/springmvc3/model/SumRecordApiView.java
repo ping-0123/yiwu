@@ -11,6 +11,8 @@ public class SumRecordApiView implements Serializable{
 
 	private DistributerApiView distributerApiView;
 	
+	private float accumulativeBrokerage;
+	
 	private int myShareTweetTimes;
 	
 	private int subordinateShareTweetTimes;
@@ -84,6 +86,14 @@ public class SumRecordApiView implements Serializable{
 
 	public void setDistributerApiView(DistributerApiView distributerApiView) {
 		this.distributerApiView = distributerApiView;
+	}
+
+	public float getAccumulativeBrokerage() {
+		return accumulativeBrokerage;
+	}
+
+	public void setAccumulativeBrokerage(float accumulativeBrokerage) {
+		this.accumulativeBrokerage = accumulativeBrokerage;
 	}
 
 	

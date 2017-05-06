@@ -50,6 +50,7 @@ public class BusinessServiceImpl implements BusinessService{
 	private SumRecordApiView wrapToSumRecordApiView(Distributer d) {
 		SumRecordApiView apiView = new SumRecordApiView();
 		apiView.setDistributerApiView(new DistributerApiView(d));
+		apiView.setAccumulativeBrokerage(d.getAccumulativeBrokerage());
 		apiView.setMyShareTweetTimes(expRecordDao.findMyShareTweetTimes(d.getId()));
 		apiView.setSubordinateShareTweetTimes(expRecordDao.findSubordinateShareTweetTimes(d.getId()));
 		apiView.setSubordinateCount(expRecordDao.findSubordinateRegisterTimes(d.getId()));

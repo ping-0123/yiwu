@@ -24,8 +24,8 @@ public class BusinessController {
 		return businessService.getPerformance(distributerId);
 	}
 
-	@GetMapping(value="getTopThreePerfomance")
-	public YiwuJson<List<SumRecordApiView>> getTopThreePerfomance(){
+	@GetMapping(value="getTopThree")
+	public YiwuJson<List<SumRecordApiView>> getTopThree(){
 		return businessService.getTopThreePerfomance();
 	}
 }
