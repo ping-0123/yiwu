@@ -200,3 +200,24 @@ footer .nav li:nth-child(5) a.active{
 .turn_list ul:last-child{border-bottom:1px solid #999999;}
 .turn_list ul li{border-left:1px solid #999999;}
 .turn_list ul{border-right:1px solid #999999 ;}
+
+/*转发微信*/
+
+.search{width: 90%;margin: 0 auto;height:120px;margin-top: 60px;}
+.search input{text-align: center; width: 100%;height: 30px;line-height:30px;border-radius:5px;border:1px solid #999999;}
+
+.search ul li{ width: 25%;float: left; height: 30px;margin-top: 10px;}
+.search ul li a{ display: block; width: 90%;height:30px;margin: 0 auto;line-height: 30px;
+                 text-align: center;background-color: deeppink;color:white;border-radius: 5px;}
+.active a{background-color: #E01C64!important;}
+
+.artyList{ width: 90%;margin: 0 auto;}
+.artyList ul li:first-child{border-top:solid #999999 1px ;}
+.artyList ul li{border-bottom:solid #999999 1px; width: 100%;
+                height: 100px;overflow: hidden;}
+               
+.banner{ width: 80px; float:left;height: 90px;overflow: hidden;margin-top: 5px;}
+.banner img{ width: 80px;height: auto;}
+.artyContent{ width: 70%;float: right;margin-top: 5px;}
+.artyContent span{font-size: 10px;}
+.artyContent small{ display: block; text-align: right;}
