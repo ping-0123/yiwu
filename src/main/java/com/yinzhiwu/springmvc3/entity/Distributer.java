@@ -49,7 +49,8 @@ import com.yinzhiwu.springmvc3.enums.Gender;
 			@UniqueConstraint(name="uk_distributer_phoneNo", columnNames="phoneNo"),
 			@UniqueConstraint(name="uk_distributer_shareCode", columnNames="shareCode"),
 			@UniqueConstraint(name="uk_distributer_headIconName", columnNames="headIconName"),
-			@UniqueConstraint(name="fuk_distributer_customer_id", columnNames="customer_id")})
+			@UniqueConstraint(name="fuk_distributer_customer_id", columnNames="customer_id"),
+			@UniqueConstraint(name="fuk_distributer_defaultCapitalAccount_id", columnNames="defaultCapitalAccount_id")})
 public class Distributer extends BaseEntity{
 
 	/**
@@ -113,7 +114,9 @@ public class Distributer extends BaseEntity{
 	
 	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="expGrade_id", referencedColumnName="id", foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
+	@JoinColumn(name="expGrade_id", referencedColumnName="id", 
+		unique=true,
+		foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
 	private ExpGrade expGrade;
 	
 	private float brokerage;
@@ -137,7 +140,9 @@ public class Distributer extends BaseEntity{
 	@JoinColumn(name="followedByStore_id", foreignKey=@ForeignKey(name="fk_distributer_followedByStore_id"))
 	private Department followedByStore;
 	
-	
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(foreignKey=@ForeignKey(name="fk_distributer_defaultCapitalAccount_id"))
+	private CapitalAccount defaultCapitalAccount;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="superDistributer")
@@ -430,6 +435,14 @@ public class Distributer extends BaseEntity{
 
 	public void setAccumulativeFunds(float accumulativeFunds) {
 		this.accumulativeFunds = accumulativeFunds;
+	}
+
+	public CapitalAccount getDefaultCapitalAccount() {
+		return defaultCapitalAccount;
+	}
+
+	public void setDefaultCapitalAccount(CapitalAccount defaultCapitalAccount) {
+		this.defaultCapitalAccount = defaultCapitalAccount;
 	}
 
 	

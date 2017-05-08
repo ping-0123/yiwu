@@ -15,6 +15,7 @@ import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.ExpGradeDao;
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.model.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.DistributerApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.DistributerService;
@@ -180,6 +181,16 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		DistributerApiView distributerApiView = new DistributerApiView(d);
 		distributerApiView.setBeatRate(distributerDao.getBeatRate(d.getExp()));
 		return distributerApiView;
+	}
+
+	@Override
+	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(int distributerId) {
+		YiwuJson<CapitalAccountApiView> yiwuJson = new YiwuJson<>();
+		CapitalAccountApiView v = new CapitalAccountApiView(
+				distributerDao.get(distributerId)
+					.getDefaultCapitalAccount());
+		yiwuJson.setData(v);
+		return yiwuJson;
 	}
 
 	

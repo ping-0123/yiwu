@@ -1,16 +1,12 @@
 package com.yinzhiwu.springmvc3.controller;
 
 
-import java.io.File;
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -22,12 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mysql.jdbc.Util;
 import com.yinzhiwu.springmvc3.dao.impl.DistributerDaoImpl;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.model.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.DistributerApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.DistributerService;
@@ -69,7 +64,6 @@ public class DistributerController {
 		return distributerService.loginByAccount(account,password);
 	}
 	
-	
 	@GetMapping(value="/getById/{id}")
 	public YiwuJson<DistributerApiView> getDistributerInfo(@PathVariable int id){
 		return distributerService.findById(id);
@@ -77,10 +71,17 @@ public class DistributerController {
 	
 	@PostMapping(value="/modifyHeadIcon")
 	public YiwuJson<DistributerApiView>  modifyHeadIcon(HttpServletRequest servletRequest,
-				@ModelAttribute DistributerApiView distributerApiView){
+				@ModelAttribute DistributerApiView d){
 		String parentPath = servletRequest.getServletContext().getRealPath(UrlUtil.HEAD_ICON_PATH);
-		return distributerService.modifyHeadIcon(distributerApiView.getId(),
-				distributerApiView.getImage(), parentPath);
+		return distributerService.modifyHeadIcon(
+				d.getId(),
+				d.getImage(), 
+				parentPath);
+	}
+	
+	@GetMapping(value="/getDefaultCapitalAccount")
+	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(int distributerId){
+		return distributerService.getDefaultCapitalAccount(distributerId);
 	}
 	
 	   @RequestMapping(value = "/input")
