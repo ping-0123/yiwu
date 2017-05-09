@@ -17,10 +17,14 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 
 	YiwuJson<DistributerApiView> findById(int id);
 
-	YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile);
 
 	YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile, String fileSavePath);
 
 	YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(int distributerId);
+
+	YiwuJson<CapitalAccountApiView> getCapitalAccount(int distributerId, String typeName);
+
+	void setDefaultCapitalAccount(int distributerId, int accountId);
+
 
 }

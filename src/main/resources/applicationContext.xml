@@ -98,6 +98,7 @@
             <tx:method name="deleteAndRepair" />  
   
             <tx:method name="get*"  />  
+            <tx:method name="set*" />
             <tx:method name="find*"  />  
             <tx:method name="load*" propagation="SUPPORTS" />  
             <tx:method name="search*" propagation="SUPPORTS" />  

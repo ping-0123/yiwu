@@ -3,6 +3,10 @@ package com.yinzhiwu.springmvc3.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,6 +21,7 @@ public class DistributerApiView implements Serializable{
 	 */
 	private static final long serialVersionUID = -1063578788280665376L;
 
+	@Min(1)
 	private int id;
 	
 	private int expGradeNo;
@@ -40,6 +45,7 @@ public class DistributerApiView implements Serializable{
 	
 	private float funds;
 	
+	@NotNull
 	@JsonIgnore
 	private MultipartFile image;
 	

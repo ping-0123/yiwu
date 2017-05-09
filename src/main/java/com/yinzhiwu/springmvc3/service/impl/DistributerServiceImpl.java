@@ -2,6 +2,7 @@ package com.yinzhiwu.springmvc3.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.yinzhiwu.springmvc3.dao.CapitalAccountDao;
 import com.yinzhiwu.springmvc3.dao.CustomerDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.ExpGradeDao;
+import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.model.CapitalAccountApiView;
@@ -45,6 +48,8 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Autowired
 	private MoneyRecordService moneyRecordService;
 	
+	@Autowired
+	private CapitalAccountDao capitalAccountDao;
 	
 	@Autowired
 	public void setBaseDao(DistributerDao distributerDao){
@@ -171,12 +176,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		return mYiwuJson;
 	}
 
-	@Override
-	public YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	private DistributerApiView wrapToApiView(Distributer d){
 		DistributerApiView distributerApiView = new DistributerApiView(d);
 		distributerApiView.setBeatRate(distributerDao.getBeatRate(d.getExp()));
@@ -191,6 +190,28 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 					.getDefaultCapitalAccount());
 		yiwuJson.setData(v);
 		return yiwuJson;
+	}
+
+	@Override
+	public YiwuJson<CapitalAccountApiView> getCapitalAccount(int distributerId, String typeName) {
+		YiwuJson<CapitalAccountApiView> yiwuJson = new YiwuJson<>();
+		Distributer d = distributerDao.get(distributerId);
+		Set<CapitalAccount> accounts = d.getCapitalAccounts();
+		for (CapitalAccount a : accounts) {
+			if(typeName.equals(a.getCapitalAccountType().getName())){
+				yiwuJson.setData(new CapitalAccountApiView(a));
+				break;
+			}
+		}
+		return yiwuJson;
+	}
+
+	@Override
+	public void setDefaultCapitalAccount(int distributerId, int accountId) {
+		Distributer d = distributerDao.get(distributerId);
+		CapitalAccount account = capitalAccountDao.get(accountId);
+		d.setDefaultCapitalAccount(account);
+		distributerDao.update(d);
 	}
 
 	

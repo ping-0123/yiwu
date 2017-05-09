@@ -30,7 +30,11 @@ public class CapitalAccount extends BaseEntity {
 	@JoinColumn(name="distributer_id", foreignKey=@ForeignKey(name="fk_CapitalAccount_distributer_id"))
 	private Distributer distributer;
 
-	
+
+	public CapitalAccount() {
+		super();
+	}
+
 	
 
 	public String getAccount() {
@@ -50,10 +54,6 @@ public class CapitalAccount extends BaseEntity {
 
 	public void setDistributer(Distributer distributer) {
 		this.distributer = distributer;
-	}
-
-	public CapitalAccount() {
-		super();
 	}
 
 

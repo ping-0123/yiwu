@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+	</head>
+	<body>
+	
+		<p id="content"></p>
+	</body>
+	
+	<script type="text/javascript">
+	
+		var v_baseUrl = "http://localhost:8080/yiwu/";
+//		save_capitalAccount();
+		setDefaultAccount();
+		
+		function setDefaultAccount(){
+			var v_url = v_baseUrl + "/api/distributer/capitalAccount/setDefault";
+			$.ajax({
+				type:"post",
+				url:v_url,
+				data:{'distributerId':'3000018',
+					'accountId':'1'
+				},
+				dataType: "json",
+				timeout:50000,
+				async:true,
+				success: function(data) {
+					$('#content').html(JSON.stringify(data));
+				},
+				error: function(jqXHR){     
+					alert("error");
+				},  
+			});
+		}
+		
+		function register(){
+			var v_url = "api/distributer/register";
+			var v_data = {"phoneNo":'18815273335',
+						'password':'wangwu12',
+						'name':'王五',
+						'nickName':'wangwu',
+						'gender':'FEMALE',
+						'birthday':'1991-01-01',
+						'followedByStore.id':63,
+						'wechatNo':'oIgTGwx1QizvqOMsZ49Oww',
+						'invitationCode':'e3inp'
+					};
+		
+		$.ajax({ 
+			type: "Post", 	
+			url: v_baseUrl+v_url,
+			data:v_data,
+			dataType: "json",
+			timeout:50000,
+			success: function(data) {
+				$('#content').html(JSON.stringify(data));
+			},
+			error: function(jqXHR){     
+				alert("error");
+			},  
+		});	
+		}
+		function save_capitalAccount(){
+			var v_url = v_baseUrl + "api/distributer/capitalAccount";
+			$.ajax({
+				type:"Post",
+				url: v_url,
+				data:{'distributerId':'3000018',
+					'typeName':'微信',
+					'account':'aaaaaaaaaaaaaaa'
+				},
+				dataType: "json",
+				timeout:50000,
+				success:function(data)	{
+					$('#content').html(JSON.stringify(data));
+				},
+				error: function(jqXHR){     
+					alert("error" + jqXHR.getStats());
+				},  
+			});
+		}
+	</script>
+</html>

@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -43,7 +42,8 @@ import com.yinzhiwu.springmvc3.enums.Gender;
  * 唯一键命名规则: uk_{table name}_{unique key name}
  */
 @Table(name="distributer", 
-	uniqueConstraints={@UniqueConstraint(name="uk_distributer_memberId", columnNames={"memberId"}),
+	uniqueConstraints={
+			@UniqueConstraint(name="uk_distributer_memberId", columnNames={"memberId"}),
 			@UniqueConstraint(name="uk_distributer_account", columnNames={"account"}),
 			@UniqueConstraint(name="uk_distributer_wechatNo", columnNames="wechatNO"),
 			@UniqueConstraint(name="uk_distributer_phoneNo", columnNames="phoneNo"),
