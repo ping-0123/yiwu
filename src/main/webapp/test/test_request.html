@@ -14,7 +14,29 @@
 	
 		var v_baseUrl = "http://localhost:8080/yiwu/";
 //		save_capitalAccount();
-		setDefaultAccount();
+//		setDefaultAccount();
+		withdraw();
+		
+		function withdraw(){
+			var v_url = v_baseUrl + "/api/moneyRecord/withdraw";
+			$.ajax({
+				type:"post",
+				url:v_url,
+				data:{'distributerId':'3000018',
+					'accountId':'2000000',
+					'amount':100
+				},
+				dataType: "json",
+				timeout:50000,
+				async:true,
+				success: function(data) {
+					$('#content').html(JSON.stringify(data));
+				},
+				error: function(jqXHR){     
+					alert("error");
+				},  
+			});
+		}
 		
 		function setDefaultAccount(){
 			var v_url = v_baseUrl + "/api/distributer/capitalAccount/setDefault";

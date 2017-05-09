@@ -20,6 +20,7 @@ public interface MoneyRecordService extends IBaseService<MoneyRecord, Integer>{
 
 	public YiwuJson<List<MoneyRecordApiView>> findList(int benificiaryId, MoneyRecordCategory category);
 
-	public boolean withdraw(WithDrawModel m);
+
+	public YiwuJson<Boolean> saveWithdraw(WithDrawModel m);
 
 }

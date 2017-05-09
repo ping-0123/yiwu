@@ -10,7 +10,7 @@ public class WithDrawModel {
 	private int distributerId;
 	
 	@Min(1)
-	private int accountid;
+	private int accountId;
 	
 	@Min(0)
 	private float amount;
@@ -22,7 +22,7 @@ public class WithDrawModel {
 	
 	public WithDrawModel(int distributerId, int accountid, float amount) {
 		this.distributerId = distributerId;
-		this.accountid = accountid;
+		this.accountId = accountid;
 		this.amount = amount;
 	}
 	
@@ -31,8 +31,8 @@ public class WithDrawModel {
 		return distributerId;
 	}
 
-	public int getAccountid() {
-		return accountid;
+	public int getAccountId() {
+		return accountId;
 	}
 
 	public float getAmount() {
@@ -43,8 +43,8 @@ public class WithDrawModel {
 		this.distributerId = distributerId;
 	}
 
-	public void setAccountid(int accountid) {
-		this.accountid = accountid;
+	public void setAccountId(int accountid) {
+		this.accountId = accountid;
 	}
 
 	public void setAmount(float amount) {

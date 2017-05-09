@@ -3,10 +3,7 @@ package com.yinzhiwu.springmvc3.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.CapitalAccountDao;
@@ -120,14 +117,19 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	}
 
 	@Override
-	public boolean withdraw(WithDrawModel m) {
+	public YiwuJson<Boolean> saveWithdraw(WithDrawModel m) {
 		BrokerageRecordType type = recordTypeDao.getWithDrawMoneyRecordType();
 		Distributer beneficiary = distributerDao.get(m.getDistributerId());
 		Distributer contributor = beneficiary;
 		float value = m.getAmount();
-		CapitalAccount account = capitalAccountDao.get(m.getAccountid());
+		CapitalAccount account = capitalAccountDao.get(m.getAccountId());
+		if(account.getDistributer().getId() != beneficiary.getId()){
+			return new YiwuJson<>("提现者不是体现帐号的拥有者");
+		}
+		if(value>beneficiary.getBrokerage())
+			return new YiwuJson<>("提现金额大于账户总金额");
 		saveWithDrawRecord(beneficiary,contributor,value,type,account);
-		return true;
+		return new YiwuJson<>(new Boolean(true));
 	}
 
 

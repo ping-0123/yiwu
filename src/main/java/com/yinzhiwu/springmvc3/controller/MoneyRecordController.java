@@ -61,7 +61,6 @@ public class MoneyRecordController {
 			return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
 		}
 		
-		boolean b = mrService.withdraw(m);
-		return null;
+		return mrService.saveWithdraw(m);
 	}
 }
