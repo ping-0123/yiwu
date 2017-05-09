@@ -9,18 +9,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.yinzhiwu.springmvc3.dao.CapitalAccountDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.MoneyRecordDao;
 import com.yinzhiwu.springmvc3.dao.RecordTypeDao;
 import com.yinzhiwu.springmvc3.entity.BrokerageRecord;
 import com.yinzhiwu.springmvc3.entity.BrokerageRecordType;
+import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.FundsRecord;
 import com.yinzhiwu.springmvc3.entity.FundsRecordType;
 import com.yinzhiwu.springmvc3.entity.MoneyRecord;
 import com.yinzhiwu.springmvc3.entity.MoneyRecordType;
+import com.yinzhiwu.springmvc3.entity.WithDrawRecord;
 import com.yinzhiwu.springmvc3.enums.MoneyRecordCategory;
 import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
+import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
 import com.yinzhiwu.springmvc3.util.MoneyRecordCategoryUtil;
@@ -37,6 +41,9 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	@Autowired
 	private DistributerDao distributerDao;
 	
+	
+	@Autowired
+	private CapitalAccountDao capitalAccountDao;
 	
 	@Autowired
 	private void setMoneyRecordDao(MoneyRecordDao moneyRecordDao)
@@ -67,6 +74,7 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		moneyRecordDao.save(brokerageRecord);
 		if(brokerageRecord.getIncome() >0)
 			beneficiary.setAccumulativeBrokerage(beneficiary.getAccumulativeBrokerage() + brokerageRecord.getIncome());
+		beneficiary.setBrokerage(brokerageRecord.getCurrentBrokerage());
 		distributerDao.update(beneficiary);
 	}
 	
@@ -83,6 +91,17 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		distributerDao.update(beneficiary);
 	}
 
+	private void saveWithDrawRecord(Distributer beneficiary, Distributer contributor, float value,
+			BrokerageRecordType type, CapitalAccount account) 
+	{
+		WithDrawRecord record = new WithDrawRecord(beneficiary, contributor, value, type);
+		record.setAccount(account);
+		moneyRecordDao.save(record);
+		beneficiary.setBrokerage(record.getCurrentBrokerage());
+		distributerDao.update(beneficiary);
+		
+	}
+	
 	@Override
 	public YiwuJson<Integer> findCountByDistributerid(int distributerId) {
 		int count =  moneyRecordDao.findCountByBeneficiatyId(distributerId);
@@ -99,4 +118,17 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		}
 		return new YiwuJson<List<MoneyRecordApiView>>(views);
 	}
+
+	@Override
+	public boolean withdraw(WithDrawModel m) {
+		BrokerageRecordType type = recordTypeDao.getWithDrawMoneyRecordType();
+		Distributer beneficiary = distributerDao.get(m.getDistributerId());
+		Distributer contributor = beneficiary;
+		float value = m.getAmount();
+		CapitalAccount account = capitalAccountDao.get(m.getAccountid());
+		saveWithDrawRecord(beneficiary,contributor,value,type,account);
+		return true;
+	}
+
+
 }

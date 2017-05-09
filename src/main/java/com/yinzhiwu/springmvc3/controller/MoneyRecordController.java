@@ -9,10 +9,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
+import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
 
@@ -49,5 +51,17 @@ public class MoneyRecordController {
 		}
 		
 		return mrService.findList(m.getBenificiaryId(), m.getCategory());
+	}
+	
+	@PostMapping("/withdraw")
+	public YiwuJson<Boolean> withdrawBrockrage(
+			@Valid WithDrawModel m, BindingResult bindingResult){
+		if(bindingResult.hasErrors()){
+			FieldError fieldError = bindingResult.getFieldError();
+			return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
+		}
+		
+		boolean b = mrService.withdraw(m);
+		return null;
 	}
 }

@@ -7,6 +7,7 @@ import com.yinzhiwu.springmvc3.entity.MoneyRecord;
 import com.yinzhiwu.springmvc3.entity.MoneyRecordType;
 import com.yinzhiwu.springmvc3.enums.MoneyRecordCategory;
 import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
+import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 
 public interface MoneyRecordService extends IBaseService<MoneyRecord, Integer>{
@@ -18,5 +19,7 @@ public interface MoneyRecordService extends IBaseService<MoneyRecord, Integer>{
 	public YiwuJson<Integer> findCountByDistributerid(int distributerId);
 
 	public YiwuJson<List<MoneyRecordApiView>> findList(int benificiaryId, MoneyRecordCategory category);
+
+	public boolean withdraw(WithDrawModel m);
 
 }
