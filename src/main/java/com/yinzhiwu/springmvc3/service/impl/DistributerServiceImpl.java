@@ -13,11 +13,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.springmvc3.dao.CapitalAccountDao;
 import com.yinzhiwu.springmvc3.dao.CustomerDao;
+import com.yinzhiwu.springmvc3.dao.CustomerYzwDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.ExpGradeDao;
 import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.model.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.DistributerApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
@@ -40,7 +42,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	private DistributerDao distributerDao;
 	
 	@Autowired
-	private CustomerDao customerDao;
+	private CustomerYzwDao customerYzwDao;
 	
 	@Autowired
 	private ExpRecordService expRecordService;
@@ -81,15 +83,15 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		
 		
 		//关联Customer
-		Customer customer;
+		CustomerYzw customer;
 		try {
-			customer = customerDao.findByPhoneNo(distributer.getPhoneNo());
+			customer = customerYzwDao.findByPhoneNo(distributer.getPhoneNo());
 		} catch (DataNotFoundException e) {
 			try {
-				customer = customerDao.findByWeChat(distributer.getWechatNo());
+				customer = customerYzwDao.findByWeChat(distributer.getWechatNo());
 			} catch (DataNotFoundException e1) {
-				customer = new Customer(distributer);
-//				customerDao.save(customer);  ()
+				customer = new CustomerYzw(distributer);
+//				customerYzwDao.save(customer);  
 			}
 		}
 		distributer.setCustomer(customer);

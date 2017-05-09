@@ -7,6 +7,7 @@ import com.yinzhiwu.springmvc3.entity.MoneyRecord;
 import com.yinzhiwu.springmvc3.entity.MoneyRecordType;
 import com.yinzhiwu.springmvc3.enums.MoneyRecordCategory;
 import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
+import com.yinzhiwu.springmvc3.model.PayDepositModel;
 import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 
@@ -22,5 +23,7 @@ public interface MoneyRecordService extends IBaseService<MoneyRecord, Integer>{
 
 
 	public YiwuJson<Boolean> saveWithdraw(WithDrawModel m);
+
+	public YiwuJson<Boolean> payDeposit(PayDepositModel m);
 
 }

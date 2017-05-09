@@ -28,6 +28,7 @@ import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.enums.Gender;
 
 /**
@@ -133,7 +134,7 @@ public class Distributer extends BaseEntity{
 	
 	@OneToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumn(name="customer_id", unique=true, foreignKey=@ForeignKey(name="fk_distributer_customer_id"))
-	private Customer customer;  //根据手机号码 或者微信号做唯一性关联
+	private CustomerYzw customer;  //根据手机号码 或者微信号做唯一性关联
 	
 
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -292,12 +293,12 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public Customer getCustomer() {
+	public CustomerYzw getCustomer() {
 		return customer;
 	}
 
 
-	public void setCustomer(Customer customer) {
+	public void setCustomer(CustomerYzw customer) {
 		this.customer = customer;
 	}
 

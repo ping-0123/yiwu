@@ -61,6 +61,7 @@
         <property name="packagesToScan">  
             <list>  
                 <value>com.yinzhiwu.springmvc3.entity</value>
+                  <value>com.yinzhiwu.springmvc3.entity.yzw</value>
             </list>  
         </property>  
         <property name="hibernateProperties">  
@@ -106,7 +107,7 @@
             <tx:method name="login*"/>
             <tx:method name="register"/>
   
-            <tx:method name="*" propagation="SUPPORTS" />  
+            <tx:method name="*" propagation="SUPPORTS"/>  
         </tx:attributes>  
     </tx:advice>  
     <aop:config>  

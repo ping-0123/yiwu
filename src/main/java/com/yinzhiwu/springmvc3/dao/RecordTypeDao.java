@@ -14,4 +14,8 @@ public interface RecordTypeDao extends IBaseDao<RecordType, Integer>{
 	public ExpRecordType findSecondaryRegisterExpRecordType();
 
 	public BrokerageRecordType getWithDrawMoneyRecordType();
+	
+	public FundsRecordType getPayFundsRecordType();
+	
+	public BrokerageRecordType getPayBrokerageRecordType();
 }

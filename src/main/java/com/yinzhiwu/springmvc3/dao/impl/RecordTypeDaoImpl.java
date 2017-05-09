@@ -31,5 +31,15 @@ public class RecordTypeDaoImpl extends BaseDaoImpl<RecordType,Integer> implement
 		return (BrokerageRecordType) get(17000009);
 	}
 
+	@Override
+	public FundsRecordType getPayFundsRecordType() {
+		return (FundsRecordType) get(17000024);
+	}
+
+	@Override
+	public BrokerageRecordType getPayBrokerageRecordType() {
+		return (BrokerageRecordType) get(17000023);
+	}
+
 
 }

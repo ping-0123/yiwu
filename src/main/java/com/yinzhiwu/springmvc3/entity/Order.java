@@ -22,7 +22,7 @@ public class Order {
 	@Column(length=32)
 	private String memberCardNo;
 	
-	@Column
+	@Column(name="product_id")
 	private Integer productId;
 	
 	@Column
@@ -47,13 +47,13 @@ public class Order {
 	@Column(name="payed_date")
 	private java.sql.Date payedDate;
 	
-	@Column(length=32)
+	@Column(name="course_id",length=32)
 	private String courseId;
 	
 	@Column(name="checked_status", length=32)
 	private String checkedStatus;
 	
-	@Column
+	@Column(name="store_id")
 	private Integer storeId;
 	
 	@Column(length=32, name="vip_attr")

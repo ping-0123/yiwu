@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
+import com.yinzhiwu.springmvc3.model.PayDepositModel;
 import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
@@ -62,5 +63,17 @@ public class MoneyRecordController {
 		}
 		
 		return mrService.saveWithdraw(m);
+	}
+	
+	
+	@PostMapping("/payDeposit")
+	public YiwuJson<Boolean> payDeposit(@Valid PayDepositModel m, BindingResult bindingResult)
+	{
+		if(bindingResult.hasErrors()){
+			FieldError fieldError = bindingResult.getFieldError();
+			return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
+		}
+		
+		return  mrService.payDeposit(m);
 	}
 }
