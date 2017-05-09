@@ -21,14 +21,16 @@ public class BaseYzwEntity implements Serializable{
 
 	@Column(name="sf_create_user")
 	private Integer createUserId;
+
+	
+	@Column(name="sf_last_change_user")
+	private Integer lastChangeUserId;
+	
 	
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
 	@Column(name="sf_create_time",insertable=true,updatable=true)
 	private Date createTime;
-	
-	@Column(name="sf_last_change_user")
-	private Integer lastChangeUserId;
 	
    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 

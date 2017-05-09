@@ -120,7 +120,7 @@ public class Course {
 	@Column(length=32, name="wedRoom_id")
 	private String wedRoomId;
 	
-	@Column(length=32, name="tueInterval_id")
+	@Column(length=32, name="thuInterval_id")
 	private String thuIntervalId;
 	
 	@Column(length=32, name="thuRoom_id")

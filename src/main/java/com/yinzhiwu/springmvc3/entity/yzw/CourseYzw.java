@@ -2,6 +2,8 @@ package com.yinzhiwu.springmvc3.entity.yzw;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,12 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.LazyCollectionOption;
-
-import com.yinzhiwu.springmvc3.entity.ClassRoom;
-import com.yinzhiwu.springmvc3.entity.Dance;
 
 @Entity
 @Table(name="vcourse")
@@ -218,7 +216,7 @@ public class CourseYzw extends BaseYzwEntity{
 	private String danceIntroduction;
 	
 	
-//	@OneToMany(mappedBy="course")
+//	@OneToMany
 //	List<OrderYzw> orders = new ArrayList<>();
 
 	
