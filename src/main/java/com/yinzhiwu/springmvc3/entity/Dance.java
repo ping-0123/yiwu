@@ -27,19 +27,23 @@ public class Dance {
 	@Column
 	private Float remuneration;
 	
-	@Column
+	@Column(name="sf_create_user")
 	private Integer createUserId;
 	
-	@Column
+	@Column(name="sf_last_change_user")
 	private Integer lastChangeUserId;
 	
-	@Column
+	@Column(name="sf_create_time")
 	private Date createTime;
 	
-	@Column
+	@Column(name="sf_last_change_time")
 	private Date lastChangeTime;
 	
+	private Integer machineCode;
 	
+	private Date sf_last_sync_timeStamp;
+	
+	private Date sf_last_change_timeStamp;
 	
 
 	public Dance() {

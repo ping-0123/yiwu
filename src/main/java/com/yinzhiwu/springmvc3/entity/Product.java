@@ -15,7 +15,7 @@ public class Product {
 	
 	@Id
 	@GeneratedValue
-	@Column(name="Id")
+	@Column(name="id")
 	private Integer id;
 	
 	@Column(length=32)
@@ -57,13 +57,13 @@ public class Product {
 	@Column(name="sf_last_change_time")
 	private Date lastChangeTime;
 	
-	@Column(name="Sf_Last_Change_Timestamp")
+	@Column(name="sf_last_change_timeStamp")
 	private Date lastChangeTimestamp;
 	
-	@Column(name="MachineCode")
+	@Column(name="machineCode")
 	private Integer machineCode;
 	
-	@Column(name="sf_Last_Sync_TimeStamp")
+	@Column(name="sf_last_sync_timeStamp")
 	private Date lastSyncTimeStamp;
 	
 	

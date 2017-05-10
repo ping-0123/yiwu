@@ -36,16 +36,16 @@ public class Department {
 	@Column(length=200)
 	private String description;
 	
-	@Column
+	@Column(name="sf_create_user")
 	private Integer creator;
 	
-	@Column
+	@Column(name="sf_last_change_user")
 	private Integer lastChanger;
 	
-	@Column
+	@Column(name="sf_create_time")
 	private Date createTime;
 	
-	@Column
+	@Column(name="sf_last_change_time")
 	private Date lastChangeTime;
 	
 	@Column
@@ -63,10 +63,10 @@ public class Department {
 	@Column
 	private Integer machineCode;
 	
-	@Column
+	@Column(name="sf_Last_Sync_TimeStamp")
 	private Date lastSyncTimeStamp;
 	
-	@Column
+	@Column(name="sf_last_change_timeStamp")
 	private Date lastChangeTimeStamp;
 	
 	@Column(length=32)

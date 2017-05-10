@@ -1,8 +1,7 @@
 package com.yinzhiwu.springmvc3.controller;
 
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -10,7 +9,6 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -18,18 +16,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mysql.jdbc.Util;
 import com.yinzhiwu.springmvc3.dao.impl.DistributerDaoImpl;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.model.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.DistributerApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.service.CapitalAccountService;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.util.UrlUtil;
 
@@ -41,6 +40,9 @@ public class DistributerController {
 	
 	@Autowired
 	private DistributerService  distributerService;
+	
+	@Autowired
+	private CapitalAccountService caService;
 
 	@RequestMapping(value="/register", method={RequestMethod.POST})
 	public YiwuJson<DistributerApiView> register(String invitationCode,
@@ -69,7 +71,6 @@ public class DistributerController {
 		return distributerService.loginByAccount(account,password);
 	}
 	
-	
 	@GetMapping(value="/getById/{id}")
 	public YiwuJson<DistributerApiView> getDistributerInfo(@PathVariable int id){
 		return distributerService.findById(id);
@@ -77,16 +78,72 @@ public class DistributerController {
 	
 	@PostMapping(value="/modifyHeadIcon")
 	public YiwuJson<DistributerApiView>  modifyHeadIcon(HttpServletRequest servletRequest,
-				@ModelAttribute DistributerApiView distributerApiView){
+				@Valid DistributerApiView d, BindingResult bindingResult){
+		if(bindingResult.hasErrors()){
+			FieldError fieldError = bindingResult.getFieldError();
+			return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
+		}
+		
 		String parentPath = servletRequest.getServletContext().getRealPath(UrlUtil.HEAD_ICON_PATH);
-		return distributerService.modifyHeadIcon(distributerApiView.getId(),
-				distributerApiView.getImage(), parentPath);
+		return distributerService.modifyHeadIcon(
+				d.getId(),
+				d.getImage(), 
+				parentPath);
 	}
 	
-	   @RequestMapping(value = "/input")
-	    public ModelAndView inputProduct(Model model) {
-	        model.addAttribute("distributerApiView", new DistributerApiView());
-	        return new ModelAndView("distributer/form");
-	    }
+	@GetMapping(value="/capitalAccount/getDefault")
+	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(int distributerId){
+		return distributerService.getDefaultCapitalAccount(distributerId);
+	}
+	
+	@PostMapping(value="/capitalAccount/setDefault")
+	public YiwuJson<Boolean> setDefaultCapitalAccount(@Valid CapitalAccountApiView v, BindingResult bindingResult){
+		if(bindingResult.hasErrors()){
+			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+			for (FieldError fieldError : fieldErrors) {
+				if("distributerId".equals(fieldError.getField()) 
+						|| "accountId".equals(fieldError.getField())){
+					return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
+				}
+			}
+		}
+		
+		distributerService.setDefaultCapitalAccount(v.getDistributerId(), v.getAccountId());
+		return new YiwuJson<>(new Boolean(true));
+	}
+	
+	@GetMapping(value="capitalAccount")
+	public YiwuJson<CapitalAccountApiView> getCapitalAccount(int distributerId,
+			 CapitalAccountApiView m, BindingResult bindingResult){
+		if(bindingResult.hasErrors()){
+			FieldError fieldError = bindingResult.getFieldError();
+			return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
+		}
+		
+		return distributerService.getCapitalAccount(distributerId,m.getTypeName());
+	}
+	
+	@PostMapping(value="capitalAccount")
+	public YiwuJson<CapitalAccountApiView> addCapitalAccount(
+			@Valid CapitalAccountApiView v, BindingResult bindingResult){
+		if(bindingResult.hasErrors()){
+			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+			logger.info("addCapitalAccount has erorr field" +  fieldErrors);
+			for (FieldError fieldError : fieldErrors) {
+				if(!fieldError.getField().equals("accountId"))
+					return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
+			}
+			
+		}
+		return caService.addCapitalAccount(v);
+	}
+	
+   @RequestMapping(value = "/input")
+    public ModelAndView inputProduct(Model model) {
+        model.addAttribute("distributerApiView", new DistributerApiView());
+        return new ModelAndView("distributer/form");
+    }
 
+	  
+	   
 }

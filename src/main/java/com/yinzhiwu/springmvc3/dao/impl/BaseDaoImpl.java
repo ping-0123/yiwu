@@ -3,6 +3,7 @@ package com.yinzhiwu.springmvc3.dao.impl;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
+import com.yinzhiwu.springmvc3.entity.BaseEntity;
 
 
 
@@ -135,6 +137,12 @@ public class BaseDaoImpl<T,PK extends Serializable>
 	@Override
 	public void update(T entity){
 		Assert.notNull(entity, "entity is required");
+		if(entity instanceof BaseEntity){
+			BaseEntity baseEntity = (BaseEntity) entity;
+			baseEntity.setLastModifiedDate(new Date());
+			getHibernateTemplate().update(baseEntity);
+			return;
+		}
 		getHibernateTemplate().update(entity);
 	}
 

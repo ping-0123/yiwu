@@ -19,29 +19,29 @@ public class Course {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private String courseId;
 	
-	@Column(length=128)
+	@Column(length=128, name="name")
 	private String courseDesc;
 	
-	@Column(length =32)
+	@Column(length =32, name="dance_id")
 	private String danceId;
 	
 
 	@Column(length =32)
 	private String danceDesc;
 	
-	@Column
+	@Column(name="store_id")
 	private Integer storeId;
 	
 	@Column(length=32)
 	private String storeName;
 	
-	@Column
+	@Column(name="teacher_id")
 	private Integer teacherId;
 	
 	@Column(length=32)
 	private String teacherName;
 	
-	@Column(length=32)
+	@Column(length=32, name="interval_id")
 	private String intervalId;
 	
 	@Column(length=32)
@@ -62,7 +62,7 @@ public class Course {
 	@Column
 	private Float sumCourseHours;
 	
-	@Column(length=32)
+	@Column(length=32, name="classRoom_id")
 	private String classRoomId;
 	
 	@Column(length=32)
@@ -83,77 +83,77 @@ public class Course {
 	@Column
 	private Integer machineCode;
 	
-	@Column(name="Sf_Last_Sync_TimeStamp")
+	@Column(name="sf_last_sync_timeStamp")
 	private Date lastSyncTimeStamp;
 	
-	@Column
+	@Column(name="weeklyCourseHours")
 	private Float weekCourseHours;
 	
-	@Column(name="Delete_flag")
+	@Column(name="delete_flag")
 	private Integer isDeleted;
 	
-	@Column(name="Weeks", length=32)
+	@Column(name="weeks", length=32)
 	private String weekes;
 	
-	@Column(length=32, name="CourseClass")
+	@Column(length=32)
 	private String courseType;
 	
 	@Column(length=32)
 	private String subCourseType;
 	
 	
-	@Column(length=32)
-	private String mondayIntervalId;
+	@Column(length=32,name="monInterval_id")
+	private String monIntervalId;
 	
-	@Column(length=32)
-	private String mondayClassRoomId;
+	@Column(length=32, name="monRoom_id")
+	private String monRoomId;
 	
-	@Column(length=32)
-	private String tuesdayIntervalId;
+	@Column(length=32, name="tueInterval_id")
+	private String tueIntervalId;
 	
-	@Column(length=32)
-	private String tuesdayClassRoomId;
+	@Column(length=32, name="tueRoom_id")
+	private String tueRoomId;
 	
-	@Column(length=32)
+	@Column(length=32, name="wedInterval_id")
 	private String wedIntervalId;
 	
-	@Column(length=32)
+	@Column(length=32, name="wedRoom_id")
 	private String wedRoomId;
 	
-	@Column(length=32)
+	@Column(length=32, name="thuInterval_id")
 	private String thuIntervalId;
 	
-	@Column(length=32)
+	@Column(length=32, name="thuRoom_id")
 	private String thuRoomId;
 	
-	@Column(length=32)
+	@Column(length=32, name="friInterval_id")
 	private String friIntervalId;
 	
-	@Column(length=32)
+	@Column(length=32, name="friRoom_id")
 	private String friRoomId;
 	
-	@Column(length=32)
+	@Column(length=32, name="satInterval_id")
 	private String satIntervalId;
 	
-	@Column(length=32)
+	@Column(length=32, name="satRoom_id")
 	private String satRoomId;
 	
-	@Column(length=32)
+	@Column(length=32, name="sunInterval_id")
 	private String sunIntervalId;
 	
-	@Column(length=32)
+	@Column(length=32, name="sunRoom_id")
 	private String sunRoomId;
 	
-	@Column(length=32, name="STATUS")
+	@Column(length=32, name="status")
 	private String courseStatus;
 	
 	@Column
 	private Integer studentCount;
 	
-	@Column(name="SF_LAST_CHANGE_TIMESTAMp")
+	@Column(name="sf_last_change_timeStamp")
 	private Date lastChangeTimeStamp;
 	
-	@Column(name="INCLUDE_holeday_flag")
+	@Column(name="include_holeday_flag")
 	private Integer isHolidayIncluded;
 	
 	@Column(length=32)
@@ -410,37 +410,7 @@ public class Course {
 		this.subCourseType = subCourseType;
 	}
 
-	public final String getMondayIntervalId() {
-		return mondayIntervalId;
-	}
-
-	public final void setMondayIntervalId(String mondayIntervalId) {
-		this.mondayIntervalId = mondayIntervalId;
-	}
-
-	public final String getMondayClassRoomId() {
-		return mondayClassRoomId;
-	}
-
-	public final void setMondayClassRoomId(String mondayClassRoomId) {
-		this.mondayClassRoomId = mondayClassRoomId;
-	}
-
-	public final String getTuesdayIntervalId() {
-		return tuesdayIntervalId;
-	}
-
-	public final void setTuesdayIntervalId(String tuesdayIntervalId) {
-		this.tuesdayIntervalId = tuesdayIntervalId;
-	}
-
-	public final String getTuesdayClassRoomId() {
-		return tuesdayClassRoomId;
-	}
-
-	public final void setTuesdayClassRoomId(String tuesdayClassRoomId) {
-		this.tuesdayClassRoomId = tuesdayClassRoomId;
-	}
+	
 
 	public final String getWedIntervalId() {
 		return wedIntervalId;
@@ -632,6 +602,38 @@ public class Course {
 
 	public final void setDanceIntroduction(String danceIntroduction) {
 		this.danceIntroduction = danceIntroduction;
+	}
+
+	public String getMonIntervalId() {
+		return monIntervalId;
+	}
+
+	public String getMonRoomId() {
+		return monRoomId;
+	}
+
+	public String getTueIntervalId() {
+		return tueIntervalId;
+	}
+
+	public String getTueRoomId() {
+		return tueRoomId;
+	}
+
+	public void setMonIntervalId(String monIntervalId) {
+		this.monIntervalId = monIntervalId;
+	}
+
+	public void setMonRoomId(String monRoomId) {
+		this.monRoomId = monRoomId;
+	}
+
+	public void setTueIntervalId(String tueIntervalId) {
+		this.tueIntervalId = tueIntervalId;
+	}
+
+	public void setTueRoomId(String tueRoomId) {
+		this.tueRoomId = tueRoomId;
 	}
 	
 
