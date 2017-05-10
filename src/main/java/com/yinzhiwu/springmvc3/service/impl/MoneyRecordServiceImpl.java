@@ -77,13 +77,12 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		_save_funds_record(beneficiary, contributor, 1, fundsRecordType);
 	}
 
-	@Override
-	public void _save_money_record(Distributer beneficiary,Distributer contributor, float value, MoneyRecordType type )
+	public void _save_money_record(Distributer beneficiary,Distributer contributor, float value,  MoneyRecordType type )
 	{
 		if(type instanceof BrokerageRecordType)
 			_save_brokerage_record(beneficiary, contributor, value, (BrokerageRecordType)type);
 		else if(type instanceof FundsRecordType)
-			_save_funds_record(beneficiary, contributor, value, (FundsRecordType) type);
+			_save_funds_record(beneficiary, contributor, value,  (FundsRecordType) type);
 	}
 	
 	
@@ -99,10 +98,38 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	}
 	
 	
+	private void _save_brokerage_record_with_order(Distributer beneficiary,Distributer contributor, 
+			float value, BrokerageRecordType type, OrderYzw order )
+	{
+		BrokerageRecord brokerageRecord = new BrokerageRecord(beneficiary, contributor, value, type);
+		if(order != null)
+			brokerageRecord.setOrder(order);
+		moneyRecordDao.save(brokerageRecord);
+		if(brokerageRecord.getIncome() >0)
+			beneficiary.setAccumulativeBrokerage(beneficiary.getAccumulativeBrokerage() + brokerageRecord.getIncome());
+		beneficiary.setBrokerage(brokerageRecord.getCurrentBrokerage());
+		distributerDao.update(beneficiary);
+	}
+	
+	
 	
 	private void _save_funds_record(Distributer beneficiary,Distributer contributor, float value, FundsRecordType type )
 	{
 		FundsRecord fundsRecord = new FundsRecord(beneficiary, contributor, value, type);
+		moneyRecordDao.save(fundsRecord);
+		
+		if(fundsRecord.getIncome() > 0)
+			beneficiary.setAccumulativeFunds(beneficiary.getAccumulativeFunds() + fundsRecord.getIncome());
+		beneficiary.setFunds(fundsRecord.getCurrentFunds());
+		distributerDao.update(beneficiary);
+	}
+	
+	private void _save_funds_record_with_order(Distributer beneficiary,Distributer contributor, 
+			float value, FundsRecordType type , OrderYzw order)
+	{
+		FundsRecord fundsRecord = new FundsRecord(beneficiary, contributor, value, type);
+		if(order != null)
+			fundsRecord.setOrder(order);
 		moneyRecordDao.save(fundsRecord);
 		
 		if(fundsRecord.getIncome() > 0)
@@ -181,8 +208,9 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		}
 		
 		//2.save order;
+		OrderYzw order = null;
 		try {
-			_save_deposit_order(beneficiary , m.getAmount());
+			order = _save_deposit_order(beneficiary , m.getAmount());
 		} catch (Exception e) {
 //			e.printStackTrace();
 			return new YiwuJson<Boolean>(e.getMessage());
@@ -191,21 +219,23 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		//3.save fundsrecord
 		if(payedFundsValue> 0){
 			FundsRecordType fundsRecordType=recordTypeDao.getPayFundsRecordType();
-			_save_funds_record(beneficiary, contributor, payedFundsValue, fundsRecordType);
+			_save_funds_record_with_order(
+					beneficiary, contributor, payedFundsValue, fundsRecordType, order);
 		}
 		
 		
 		//4.save brockerageRcord
 		if(payedBrokerageValue>0){
-			BrokerageRecordType boBrokerageRecordType = recordTypeDao.getPayBrokerageRecordType();
-			_save_brokerage_record(beneficiary, contributor, payedBrokerageValue, boBrokerageRecordType);
+			BrokerageRecordType brokerageRecordType = recordTypeDao.getPayBrokerageRecordType();
+			_save_brokerage_record_with_order(
+					beneficiary, contributor, payedBrokerageValue, brokerageRecordType, order);
 		}
 		
 		return new YiwuJson<Boolean>(new Boolean(true));
 	}
 
 	
-	private void _save_deposit_order(Distributer beneficiary, float deposit_amount) throws Exception {
+	private OrderYzw _save_deposit_order(Distributer beneficiary, float deposit_amount) throws Exception {
 		//customer
 		CustomerYzw customer = beneficiary.getCustomer();
 		if (customer == null) 
@@ -256,6 +286,9 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		
 		//保存
 		orderYzwDao.save(order);
+		
+		
+		return order;
 	}
 
 
