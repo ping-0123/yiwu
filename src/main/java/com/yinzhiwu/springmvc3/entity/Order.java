@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.entity;
 
+import java.sql.Blob;
 import java.sql.Date;
 
 import javax.persistence.Column;
@@ -107,8 +108,24 @@ public class Order {
 	@Column(length=32, name="current_status")
 	private String currentStatus;
 	
-	@Column(length=32)
-	private String subType;
+	@Column(name="remain_hours")
+	private float remainHours;
+	
+	@Column(name="audit_flag")
+	private Boolean isAuditedByFinance;
+	
+	@Column(name="e_contract_text")
+	private Blob eContractText;
+	
+	@Column(name="e_contract_address")
+	private String econtractAddress;
+	
+	@Column(name="e_contract_picture_flag")
+	private int eContractPictureFlag;
+	
+	@Column(name="e_contract_status")
+	private int eContractStatus;
+	
 	
 	@Column(name="sf_create_user")
 	private Integer createUserId;
@@ -372,13 +389,6 @@ public class Order {
 		this.currentStatus = currentStatus;
 	}
 
-	public final String getSubType() {
-		return subType;
-	}
-
-	public final void setSubType(String subType) {
-		this.subType = subType;
-	}
 
 	public final Integer getCreateUserId() {
 		return createUserId;
@@ -434,6 +444,46 @@ public class Order {
 
 	public final void setLastChangeTimeStamp(Date lastChangeTimeStamp) {
 		this.lastChangeTimeStamp = lastChangeTimeStamp;
+	}
+
+	public float getRemainHours() {
+		return remainHours;
+	}
+
+	public Boolean getIsAuditedByFinance() {
+		return isAuditedByFinance;
+	}
+
+	public Blob geteContractText() {
+		return eContractText;
+	}
+
+	public int geteContractPictureFlag() {
+		return eContractPictureFlag;
+	}
+
+	public int geteContractStatus() {
+		return eContractStatus;
+	}
+
+	public void setRemainHours(float remainHours) {
+		this.remainHours = remainHours;
+	}
+
+	public void setIsAuditedByFinance(Boolean isAuditedByFinance) {
+		this.isAuditedByFinance = isAuditedByFinance;
+	}
+
+	public void seteContractText(Blob eContractText) {
+		this.eContractText = eContractText;
+	}
+
+	public void seteContractPictureFlag(int eContractPictureFlag) {
+		this.eContractPictureFlag = eContractPictureFlag;
+	}
+
+	public void seteContractStatus(int eContractStatus) {
+		this.eContractStatus = eContractStatus;
 	}
 	
 	

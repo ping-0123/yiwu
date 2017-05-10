@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.springmvc3.entity.MoneyRecord;
 import com.yinzhiwu.springmvc3.enums.MoneyRecordCategory;
 import com.yinzhiwu.springmvc3.util.MoneyRecordCategoryUtil;
@@ -16,6 +17,7 @@ public class MoneyRecordApiView {
 	@Min(0)
 	private int benificiaryId;
 	
+	@JsonFormat(pattern="yyyy/MM/dd")
 	private Date date;
 	
 	@NotNull

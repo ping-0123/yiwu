@@ -15,7 +15,7 @@ public interface MoneyRecordService extends IBaseService<MoneyRecord, Integer>{
 	
 	public void saveRegisterFundsRecord(Distributer beneficiary, Distributer contributor);
 
-	void saveMoneyRecord(Distributer beneficiary, Distributer contributor, float value, MoneyRecordType type);
+	void _save_money_record(Distributer beneficiary, Distributer contributor, float value, MoneyRecordType type);
 
 	public YiwuJson<Integer> findCountByDistributerid(int distributerId);
 

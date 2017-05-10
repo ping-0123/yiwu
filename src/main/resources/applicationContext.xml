@@ -107,7 +107,7 @@
             <tx:method name="login*"/>
             <tx:method name="register"/>
   
-            <tx:method name="*" propagation="SUPPORTS"/>  
+            <tx:method name="*" />  
         </tx:attributes>  
     </tx:advice>  
     <aop:config>  

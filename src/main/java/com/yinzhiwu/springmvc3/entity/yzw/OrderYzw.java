@@ -1,6 +1,7 @@
 package com.yinzhiwu.springmvc3.entity.yzw;
 
 
+import java.sql.Blob;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -11,11 +12,12 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
@@ -28,8 +30,8 @@ public class OrderYzw extends BaseYzwEntity {
 	private static final long serialVersionUID = -8473575190806095432L;
 
 	@Id
-	@Column(length=32)
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(generator="system-uuid")  
+	@GenericGenerator(name="system-uuid", strategy = "uuid") 
 	private String id;
 	
 	@Column(length=32)
@@ -134,9 +136,24 @@ public class OrderYzw extends BaseYzwEntity {
 	@Column(length=32, name="current_status")
 	private String currentStatus;
 	
-	@Column(length=32)
-	private String subType;
-
+	@Column(name="remain_hours")
+	private float remainHours;
+	
+	@Column(name="audit_flag")
+	private Boolean isAuditedByFinance;
+	
+	@Column(name="e_contract_text")
+	private Blob eContractText;
+	
+	@Column(name="e_contract_address")
+	private String econtractAddress;
+	
+	@Column(name="e_contract_picture_flag")
+	private int eContractPictureFlag;
+	
+	@Column(name="e_contract_status")
+	private int eContractStatus;
+	
 	public OrderYzw() {
 		super();
 	}
@@ -222,9 +239,7 @@ public class OrderYzw extends BaseYzwEntity {
 		return currentStatus;
 	}
 
-	public String getSubType() {
-		return subType;
-	}
+
 
 	public void setId(String id) {
 		this.id = id;
@@ -307,9 +322,6 @@ public class OrderYzw extends BaseYzwEntity {
 		this.currentStatus = currentStatus;
 	}
 
-	public void setSubType(String subType) {
-		this.subType = subType;
-	}
 
 	public CustomerYzw getCustomer() {
 		return customer;
@@ -317,6 +329,54 @@ public class OrderYzw extends BaseYzwEntity {
 
 	public void setCustomer(CustomerYzw customer) {
 		this.customer = customer;
+	}
+
+	public float getRemainHours() {
+		return remainHours;
+	}
+
+	public Boolean getIsAuditedByFinance() {
+		return isAuditedByFinance;
+	}
+
+	public Blob geteContractText() {
+		return eContractText;
+	}
+
+	public String getEcontractAddress() {
+		return econtractAddress;
+	}
+
+	public int geteContractPictureFlag() {
+		return eContractPictureFlag;
+	}
+
+	public int geteContractStatus() {
+		return eContractStatus;
+	}
+
+	public void setRemainHours(float remainHours) {
+		this.remainHours = remainHours;
+	}
+
+	public void setIsAuditedByFinance(Boolean isAuditedByFinance) {
+		this.isAuditedByFinance = isAuditedByFinance;
+	}
+
+	public void seteContractText(Blob eContractText) {
+		this.eContractText = eContractText;
+	}
+
+	public void setEcontractAddress(String econtractAddress) {
+		this.econtractAddress = econtractAddress;
+	}
+
+	public void seteContractPictureFlag(int eContractPictureFlag) {
+		this.eContractPictureFlag = eContractPictureFlag;
+	}
+
+	public void seteContractStatus(int eContractStatus) {
+		this.eContractStatus = eContractStatus;
 	}
 
 	

@@ -1,10 +1,12 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,8 @@ import com.yinzhiwu.springmvc3.util.MoneyRecordCategoryUtil;
 @Service
 public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer> implements MoneyRecordService{
 	
+	private static final Log logger = LogFactory.getLog(MoneyRecordServiceImpl.class);
+	
 	@Autowired
 	private MoneyRecordDao moneyRecordDao;
 	
@@ -70,21 +74,21 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	@Override
 	public void saveRegisterFundsRecord(Distributer beneficiary, Distributer contributor) {
 		FundsRecordType fundsRecordType = recordTypeDao.findRegisterFundsRecordType();
-		saveFundsRecord(beneficiary, contributor, 1, fundsRecordType);
+		_save_funds_record(beneficiary, contributor, 1, fundsRecordType);
 	}
 
 	@Override
-	public void saveMoneyRecord(Distributer beneficiary,Distributer contributor, float value, MoneyRecordType type )
+	public void _save_money_record(Distributer beneficiary,Distributer contributor, float value, MoneyRecordType type )
 	{
 		if(type instanceof BrokerageRecordType)
-			saveBrokerageRecord(beneficiary, contributor, value, (BrokerageRecordType)type);
+			_save_brokerage_record(beneficiary, contributor, value, (BrokerageRecordType)type);
 		else if(type instanceof FundsRecordType)
-			saveFundsRecord(beneficiary, contributor, value, (FundsRecordType) type);
+			_save_funds_record(beneficiary, contributor, value, (FundsRecordType) type);
 	}
 	
 	
 	
-	private void saveBrokerageRecord(Distributer beneficiary,Distributer contributor, float value, BrokerageRecordType type )
+	private void _save_brokerage_record(Distributer beneficiary,Distributer contributor, float value, BrokerageRecordType type )
 	{
 		BrokerageRecord brokerageRecord = new BrokerageRecord(beneficiary, contributor, value, type);
 		moneyRecordDao.save(brokerageRecord);
@@ -96,7 +100,7 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	
 	
 	
-	private void saveFundsRecord(Distributer beneficiary,Distributer contributor, float value, FundsRecordType type )
+	private void _save_funds_record(Distributer beneficiary,Distributer contributor, float value, FundsRecordType type )
 	{
 		FundsRecord fundsRecord = new FundsRecord(beneficiary, contributor, value, type);
 		moneyRecordDao.save(fundsRecord);
@@ -107,7 +111,7 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		distributerDao.update(beneficiary);
 	}
 
-	private void saveWithDrawRecord(Distributer beneficiary, Distributer contributor, float value,
+	private void _save_withdraw_record(Distributer beneficiary, Distributer contributor, float value,
 			BrokerageRecordType type, CapitalAccount account) 
 	{
 		WithDrawRecord record = new WithDrawRecord(beneficiary, contributor, value, type);
@@ -147,7 +151,7 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		}
 		if(value>beneficiary.getBrokerage())
 			return new YiwuJson<>("提现金额大于账户总金额");
-		saveWithDrawRecord(beneficiary,contributor,value,type,account);
+		_save_withdraw_record(beneficiary,contributor,value,type,account);
 		return new YiwuJson<>(new Boolean(true));
 	}
 
@@ -159,7 +163,7 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		Distributer contributor = beneficiary;
 		
 		//1. 判断
-		if(m.isFundsFisrt()){
+		if(m.isFundsFirst()){
 			if(m.getAmount() <= beneficiary.getFunds()){
 				payedFundsValue = m.getAmount();
 				payedBrokerageValue = 0;
@@ -180,19 +184,24 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		try {
 			_save_deposit_order(beneficiary , m.getAmount());
 		} catch (Exception e) {
+//			e.printStackTrace();
 			return new YiwuJson<Boolean>(e.getMessage());
 		}
 		
 		//3.save fundsrecord
 		if(payedFundsValue> 0){
 			FundsRecordType fundsRecordType=recordTypeDao.getPayFundsRecordType();
+			_save_funds_record(beneficiary, contributor, payedFundsValue, fundsRecordType);
 		}
 		
 		
 		//4.save brockerageRcord
+		if(payedBrokerageValue>0){
+			BrokerageRecordType boBrokerageRecordType = recordTypeDao.getPayBrokerageRecordType();
+			_save_brokerage_record(beneficiary, contributor, payedBrokerageValue, boBrokerageRecordType);
+		}
 		
-		
-		return null;
+		return new YiwuJson<Boolean>(new Boolean(true));
 	}
 
 	
@@ -211,6 +220,7 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		
 		OrderYzw order = new OrderYzw();
 		order.setId(GeneratorUtil.generateYzwId(orderYzwDao.find_last_id()));
+		logger.info(order.getId());
 		order.setProduct(product);
 		order.setCustomer(customer);
 		order.setMemberCardNo(customer.getMemberCard());
@@ -219,10 +229,33 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		order.setPayedAmount(deposit_amount);
 		order.setDiscount(deposit_amount/order.getMarkedPrice());
 		order.setPayedDate(new Date());
+		order.setStore(beneficiary.getFollowedByStore());
+		order.setVipAttr("推荐会员");
 		
 		//设置会籍合约
 		Contract contract = new Contract();
 		contract.setStatus("已审核");
+		contract.setContractNo(GeneratorUtil.generateContractNo(order.getId()));
+		contract.setValidityTimes(product.getUsefulTimes());
+		 Calendar calendar = Calendar.getInstance();
+		contract.setStart(calendar.getTime());
+		 calendar.add(Calendar.MONTH, product.getUsefulLife());
+		contract.setEnd(calendar.getTime());
+		
+		contract.setRemainTimes(product.getUsefulTimes());
+		if(beneficiary.isAudit()){
+			contract.setType("开放式");
+			contract.setSubType("开放式B");
+		}else {
+			contract.setType("封闭式");
+			contract.setSubType("封闭式");
+		}
+		contract.setValidStoreIds("61; 62; 63; 64; 65; 66; 67; 68; 69");
+		
+		order.setContract(contract);
+		
+		//保存
+		orderYzwDao.save(order);
 	}
 
 

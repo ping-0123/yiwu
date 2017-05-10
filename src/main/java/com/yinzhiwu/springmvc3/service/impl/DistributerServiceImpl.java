@@ -98,7 +98,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		
 		//注册成功
 		try {
-			logger.info("before save");;
+			logger.info("before save");
 			distributerDao.saveBean(distributer);
 			logger.info("after save");
 		} catch (Exception e) {

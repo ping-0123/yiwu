@@ -30,6 +30,7 @@ import org.springframework.util.StringUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
+import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.springmvc3.enums.Gender;
 
 /**
@@ -140,7 +141,7 @@ public class Distributer extends BaseEntity{
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="followedByStore_id", foreignKey=@ForeignKey(name="fk_distributer_followedByStore_id"))
-	private Department followedByStore;
+	private DepartmentYzw followedByStore;
 	
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_distributer_defaultCapitalAccount_id"))
@@ -401,12 +402,12 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public Department getFollowedByStore() {
+	public DepartmentYzw getFollowedByStore() {
 		return followedByStore;
 	}
 
 
-	public void setFollowedByStore(Department followedByStore) {
+	public void setFollowedByStore(DepartmentYzw followedByStore) {
 		this.followedByStore = followedByStore;
 	}
 

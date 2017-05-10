@@ -10,7 +10,7 @@ public class PayDepositModel {
 	@Min(0)
 	private float amount;
 	
-	private boolean fundsFisrt;
+	private boolean fundsFirst;
 
 	public int getDistributerId() {
 		return distributerId;
@@ -20,9 +20,6 @@ public class PayDepositModel {
 		return amount;
 	}
 
-	public boolean isFundsFisrt() {
-		return fundsFisrt;
-	}
 
 	public void setDistributerId(int distributerId) {
 		this.distributerId = distributerId;
@@ -32,10 +29,14 @@ public class PayDepositModel {
 		this.amount = amount;
 	}
 
-	public void setFundsFisrt(boolean fundsFisrt) {
-		this.fundsFisrt = fundsFisrt;
+	public boolean isFundsFirst() {
+		return fundsFirst;
 	}
-	
+
+	public void setFundsFirst(boolean fundsFirst) {
+		this.fundsFirst = fundsFirst;
+	}
+
 	
 
 }

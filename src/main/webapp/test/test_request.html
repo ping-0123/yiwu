@@ -13,11 +13,32 @@
 	<script type="text/javascript">
 	
 		var v_baseUrl = "http://localhost:8080/yiwu/";
-		register();
+//		register();
 //		save_capitalAccount();
 //		setDefaultAccount();
 //		withdraw();
+		payDeposit();
 		
+		function payDeposit(){
+			var v_url = v_baseUrl + "/api/moneyRecord/payDeposit";
+			$.ajax({
+				type:"post",
+				url:v_url,
+				data:{distributerId:'3000018',
+					amount:'100',
+					fundsFirst:true
+				},
+				dataType:"json",
+				timeout:50000,
+				async:true,
+				success:function(data){
+					$('#content').html(JSON.stringify(data));
+				},
+				error: function(jqXHR){     
+					alert("error");
+				}
+			});
+		}
 		function withdraw(){
 			var v_url = v_baseUrl + "/api/moneyRecord/withdraw";
 			$.ajax({
@@ -64,15 +85,15 @@
 		
 		function register(){
 			var v_url = "api/distributer/register";
-			var v_data = {"phoneNo":'18835273345',
+			var v_data = {"phoneNo":'18832343345',
 						'password':'wangwu12',
-						'name':'朱元璋',
-						'nickName':'朱重八',
+						'name':'赵匡胤',
+						'nickName':'宋太祖',
 						'gender':'MALE',
 						//改成 '0222-01-01'报错
 						'birthday':'1999-01-01',
 						'followedByStore.id':63,
-						'wechatNo':'oIgTGwx1QizvqOMsZ49zcwyz',
+						'wechatNo':'oIgTGwx1QisvqOMsZ49zcwyz',
 						'invitationCode':'e3inp'
 					};
 		
