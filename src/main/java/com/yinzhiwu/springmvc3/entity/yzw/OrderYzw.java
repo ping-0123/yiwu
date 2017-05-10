@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -67,8 +68,7 @@ public class OrderYzw extends BaseYzwEntity {
 			@ForeignKey(name="fk_order_course_id", value=ConstraintMode.NO_CONSTRAINT))
 	private CourseYzw course;
 	
-	@Column(name="checked_status", length=32)
-	private String checkedStatus;
+
 	
 	@ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumn(name="store_id", foreignKey=
@@ -78,36 +78,44 @@ public class OrderYzw extends BaseYzwEntity {
 	@Column(length=32, name="vip_attr")
 	private String vipAttr;
 	
-	@Column(length=32)
-	private String contractNo;
+	@Embedded
+	private Contract contract;
 	
-	@Column
-	private Integer validity;
+//	@Column(name="checked_status", length=32)
+//	private String checkedStatus;
 	
-	@Column(name="validity_times")
-	private Integer validityTimes;
+//	@Column(length=32)
+//	private String contractNo;
+//	
+//	@Column
+//	private Integer validity;
+//	
+//	@Column(name="validity_times")
+//	private Integer validityTimes;
+//	
+//	@Column
+//	private Date startDate;
+//	
+//	@Column
+//	private Date endDate;
+//	
+//	@Column(name="remain_times")
+//	private Float remainTimes;
+//	
+//	@Column(length=32, name="product_type")
+//	private String productType;
+//	
+//	@Column(length=32, name="product_subType")
+//	private String productSubType;
 	
-	@Column
-	private Date startDate;
+//	@Column(name="valid_storeids")
+//	private String validStoreIds;
 	
-	@Column
-	private Date endDate;
-	
-	@Column(name="remain_times")
-	private Float remainTimes;
-	
-	@Column(length=32, name="product_type")
-	private String productType;
-	
-	@Column(length=32, name="product_subType")
-	private String productSubType;
 	
 	@Column(length=32)
 	private String recommender;
 	
-	@Column(name="valid_storeids")
-	private String validStoreIds;
-	
+
 	@Column
 	private String pic;
 	
@@ -165,9 +173,6 @@ public class OrderYzw extends BaseYzwEntity {
 		return payedAmount;
 	}
 
-	public CustomerYzw getCustomer() {
-		return customer;
-	}
 
 	public Date getPayedDate() {
 		return payedDate;
@@ -175,10 +180,6 @@ public class OrderYzw extends BaseYzwEntity {
 
 	public CourseYzw getCourse() {
 		return course;
-	}
-
-	public String getCheckedStatus() {
-		return checkedStatus;
 	}
 
 	public DepartmentYzw getStore() {
@@ -189,44 +190,12 @@ public class OrderYzw extends BaseYzwEntity {
 		return vipAttr;
 	}
 
-	public String getContractNo() {
-		return contractNo;
-	}
-
-	public Integer getValidity() {
-		return validity;
-	}
-
-	public Integer getValidityTimes() {
-		return validityTimes;
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public Float getRemainTimes() {
-		return remainTimes;
-	}
-
-	public String getProductType() {
-		return productType;
-	}
-
-	public String getProductSubType() {
-		return productSubType;
+	public Contract getContract() {
+		return contract;
 	}
 
 	public String getRecommender() {
 		return recommender;
-	}
-
-	public String getValidStoreIds() {
-		return validStoreIds;
 	}
 
 	public String getPic() {
@@ -289,9 +258,6 @@ public class OrderYzw extends BaseYzwEntity {
 		this.payedAmount = payedAmount;
 	}
 
-	public void setCustomer(CustomerYzw customer) {
-		this.customer = customer;
-	}
 
 	public void setPayedDate(Date payedDate) {
 		this.payedDate = payedDate;
@@ -299,10 +265,6 @@ public class OrderYzw extends BaseYzwEntity {
 
 	public void setCourse(CourseYzw course) {
 		this.course = course;
-	}
-
-	public void setCheckedStatus(String checkedStatus) {
-		this.checkedStatus = checkedStatus;
 	}
 
 	public void setStore(DepartmentYzw store) {
@@ -313,44 +275,12 @@ public class OrderYzw extends BaseYzwEntity {
 		this.vipAttr = vipAttr;
 	}
 
-	public void setContractNo(String contractNo) {
-		this.contractNo = contractNo;
-	}
-
-	public void setValidity(Integer validity) {
-		this.validity = validity;
-	}
-
-	public void setValidityTimes(Integer validityTimes) {
-		this.validityTimes = validityTimes;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	public void setRemainTimes(Float remainTimes) {
-		this.remainTimes = remainTimes;
-	}
-
-	public void setProductType(String productType) {
-		this.productType = productType;
-	}
-
-	public void setProductSubType(String productSubType) {
-		this.productSubType = productSubType;
+	public void setContract(Contract contract) {
+		this.contract = contract;
 	}
 
 	public void setRecommender(String recommender) {
 		this.recommender = recommender;
-	}
-
-	public void setValidStoreIds(String validStoreIds) {
-		this.validStoreIds = validStoreIds;
 	}
 
 	public void setPic(String pic) {
@@ -380,7 +310,14 @@ public class OrderYzw extends BaseYzwEntity {
 	public void setSubType(String subType) {
 		this.subType = subType;
 	}
-	
+
+	public CustomerYzw getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(CustomerYzw customer) {
+		this.customer = customer;
+	}
 
 	
 	

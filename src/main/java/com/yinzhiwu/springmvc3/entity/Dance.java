@@ -118,6 +118,30 @@ public class Dance {
 	public final void setLastChangeTime(Date lastChangeTime) {
 		this.lastChangeTime = lastChangeTime;
 	}
+
+	public Integer getMachineCode() {
+		return machineCode;
+	}
+
+	public Date getSf_last_sync_timeStamp() {
+		return sf_last_sync_timeStamp;
+	}
+
+	public Date getSf_last_change_timeStamp() {
+		return sf_last_change_timeStamp;
+	}
+
+	public void setMachineCode(Integer machineCode) {
+		this.machineCode = machineCode;
+	}
+
+	public void setSf_last_sync_timeStamp(Date sf_last_sync_timeStamp) {
+		this.sf_last_sync_timeStamp = sf_last_sync_timeStamp;
+	}
+
+	public void setSf_last_change_timeStamp(Date sf_last_change_timeStamp) {
+		this.sf_last_change_timeStamp = sf_last_change_timeStamp;
+	}
 	
 	
 }

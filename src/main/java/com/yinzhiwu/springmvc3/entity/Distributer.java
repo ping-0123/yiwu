@@ -1,6 +1,7 @@
 package com.yinzhiwu.springmvc3.entity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -180,6 +181,22 @@ public class Distributer extends BaseEntity{
 		if (StringUtils.isEmpty(this.account)){
 			this.account = this.phoneNo;
 		}
+	}
+	
+	
+	public int getAge(){
+		Calendar today = Calendar.getInstance();
+		Calendar bir = Calendar.getInstance();
+		bir.setTime(birthday);
+		long age = (today.getTimeInMillis() - bir.getTimeInMillis())/(1000*3600*24*365);
+		return (int) age;
+	}
+	
+	public boolean isAudit(){
+		if(getAge()>=18)
+			return true;
+		else
+			return false;
 	}
 	
 	public String getMemberId() {
