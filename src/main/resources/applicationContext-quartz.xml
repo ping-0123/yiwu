@@ -17,15 +17,15 @@
 	
 	
 	<!-- 使用MethodInvokingJobDetailFactoryBean, 任务类可以不事项Job
-		接口， 通过targetMethod指定调用方法 -->
-  	<bean id="taskJob" class="com.yinzhiwu.springmvc3.timer.BusinessReport" />
+		接口， 通过targetMethod指定调用方法 
+  	<bean id="taskJob" class="com.yinzhiwu.springmvc3.timer.BusinessReport" /> -->
   	
   	<bean name="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="group" value="job_work"></property>
   		<property name="name" value="job_work"></property>
   		<!-- false 表示等上一任务执行完后开启新的任务 -->
   		<property name="concurrent" value="false"></property>
-  		<property name="targetObject" ref="taskJob"></property>
+  		<property name="targetObject" ref="businessReport"></property>
   		<property name="targetMethod" value="execute"></property>
   	</bean>
   	

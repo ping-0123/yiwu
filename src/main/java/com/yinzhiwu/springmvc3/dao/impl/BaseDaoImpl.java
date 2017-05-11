@@ -146,6 +146,7 @@ public class BaseDaoImpl<T,PK extends Serializable>
 		getHibernateTemplate().update(entity);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public int findCount() {
 		String hql = "select count(*) from " + entityClass.getSimpleName();
