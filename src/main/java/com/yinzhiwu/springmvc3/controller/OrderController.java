@@ -31,4 +31,7 @@ public class OrderController {
 					orderService.getDailyOrderByStore(storeId, payedDate, productTypeId));
 		}
 	}
+	
+	
+	
 }
