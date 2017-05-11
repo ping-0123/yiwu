@@ -41,7 +41,7 @@ public class ClassRoom {
 	
 	private Date sf_last_change_time;
 	
-	private int machineCode;
+	private Integer machineCode;
 	
 	private Date sf_last_sync_timeStamp;
 	

@@ -3,6 +3,8 @@ package com.yinzhiwu.springmvc3.dao.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.LessonDao;
@@ -13,7 +15,7 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
 	implements LessonDao
 {
 
-	
+	private static Log LOG = LogFactory.getLog(LessonDaoImpl.class);
 	
 	@Override
 	public Lesson findById(int lessonId) {
@@ -41,6 +43,7 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
 			
 			hql.append(" order by lessonDate, startTime");
 			
+//			LOG.info(getHibernateTemplate().getSessionFactory().getCurrentSession().hashCode());
 			return (List<Lesson>) getHibernateTemplate().findByNamedParam(
 					hql.toString(), 
 					new String[]{"startDate","endDate"}, 

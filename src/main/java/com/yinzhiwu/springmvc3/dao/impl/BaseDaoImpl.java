@@ -52,13 +52,13 @@ public class BaseDaoImpl<T,PK extends Serializable>
   
     public T get(PK id) {  
         Assert.notNull(id, "id is required");  
-        return (T) getSession().get(entityClass, id);  
+        return (T) getHibernateTemplate().get(entityClass, id);  
     }  
   
 	@SuppressWarnings("unchecked")
 	public PK save(T entity)  {  
         Assert.notNull(entity, "entity is required");  
-        return (PK) getSession().save(entity);  
+        return (PK) getHibernateTemplate().save(entity);  
     }
 
 	@SuppressWarnings("unchecked")

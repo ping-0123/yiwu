@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.yinzhiwu.springmvc3.entity.Course;
 
-public interface CourseDao {
+public interface CourseDao extends IBaseDao<Course, String> {
 
 	 public List<Course> findByProperty(String propertyName, Object value);
 	 public Course findById(String id);

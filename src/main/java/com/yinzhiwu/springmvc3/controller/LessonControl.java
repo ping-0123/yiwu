@@ -49,7 +49,7 @@ public class LessonControl {
 			@RequestParam String teacherName,
 			@RequestParam String danceCatagory,
 			@RequestParam Date date,
-			@RequestParam Customer weChat){
+			@RequestParam String weChat){
 		
 		if (date == null){
 			date = new Date();

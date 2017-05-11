@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,11 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.yinzhiwu.springmvc3.dao.AppointmentDao;
 import com.yinzhiwu.springmvc3.dao.CheckInsDao;
 import com.yinzhiwu.springmvc3.dao.ClassRoomDao;
+import com.yinzhiwu.springmvc3.dao.ClassRoomDaoImpl;
 import com.yinzhiwu.springmvc3.dao.CourseDao;
+import com.yinzhiwu.springmvc3.dao.CustomerDao;
 import com.yinzhiwu.springmvc3.dao.LessonDao;
 import com.yinzhiwu.springmvc3.dao.OrderDao;
 import com.yinzhiwu.springmvc3.dao.StoreManCallRollDao;
 import com.yinzhiwu.springmvc3.dao.TeacherCallRollDao;
+import com.yinzhiwu.springmvc3.dao.impl.CustomerDaoImpl;
+import com.yinzhiwu.springmvc3.dao.impl.LessonDaoImpl;
 import com.yinzhiwu.springmvc3.entity.ClassRoom;
 import com.yinzhiwu.springmvc3.entity.Course;
 import com.yinzhiwu.springmvc3.entity.Customer;
@@ -31,9 +38,10 @@ import com.yinzhiwu.springmvc3.service.LessonService;
  * @author ping
  *	星期一为第一天
  */
-@Transactional
 @Service
-public class LessonServiceImplTwo implements LessonService {
+public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  implements LessonService {
+	
+	public static Log logger = LogFactory.getLog(LessonServiceImplTwo.class);
 	
 	@Autowired
 	private LessonDao lessonDao;
@@ -58,6 +66,14 @@ public class LessonServiceImplTwo implements LessonService {
 	
 	@Autowired
 	private TeacherCallRollDao tcrDao;
+	
+	@Autowired
+	private CustomerDao customerDao;
+	
+	@Autowired
+	public void setBaseDao(LessonDao lessonDao){
+		super.setBaseDao(lessonDao);
+	}
 	
 	@Override
 	public Lesson findById(int lessonId) {
@@ -96,7 +112,16 @@ public class LessonServiceImplTwo implements LessonService {
 
 	@Override
 	public List<LessonList> findLessonWeekList(int storeId, String courseType, String teacherName, String danceCatagory,
-			Date date , Customer c) {
+			Date date , String wechat) {
+		
+		Customer c = null;
+		try {
+			c = customerDao.findByWeChat(wechat);
+			logger.info(c.getName());
+//			logger.info("customerDao's current session hashcode" + ((CustomerDaoImpl) customerDao).getSessionFactory().getCurrentSession().hashCode());
+		} catch (DataNotFoundException e) {
+			logger.debug(e.getStackTrace());
+		}
 		
 		//获取周日到周六所对应的日期
 		Calendar ca = Calendar.getInstance();
@@ -110,6 +135,8 @@ public class LessonServiceImplTwo implements LessonService {
 		ca.add(Calendar.DAY_OF_WEEK, 6);
 		Date endDate = ca.getTime();
 		
+		logger.info("lessonDao's seesion factory hashcode" + ((LessonDaoImpl) lessonDao).getSessionFactory().hashCode());
+//		logger.debug("lessonDao's seesion hashcode" + ((LessonDaoImpl) lessonDao).getSessionFactory().getCurrentSession().hashCode());
 		List<Lesson> list = lessonDao.findLessonWeekList(
 				storeId, courseType, teacherName, danceCatagory, startDate, endDate);
 		List<MiniLesson> lm = new ArrayList<>();
@@ -117,6 +144,8 @@ public class LessonServiceImplTwo implements LessonService {
 			MiniLesson ml = new MiniLesson(l);
 			//添加最大预约人数
 			if(null != l.getClassRoomId() && "" != l.getClassRoomId()){
+				logger.info("roomDao's session factory hashCode" + ((ClassRoomDaoImpl) roomDao).getSessionFactory().hashCode());
+//				logger.debug("roomDao's session hashCode" + ((ClassRoomDaoImpl) roomDao).getSessionFactory().getCurrentSession().hashCode());
 				ClassRoom room = roomDao.findById(l.getClassRoomId());
 				if (room != null)
 					ml.setMaxStudentCount(room.getMaxStudentCount());
@@ -167,10 +196,10 @@ public class LessonServiceImplTwo implements LessonService {
 
 
 	@Override
-	public void save(Lesson lesson) {
+	public Integer save(Lesson lesson) {
 		lesson.setCreateTime(new Date());
 		lesson.setCreateUserId(lesson.getDueTeacherId());
-		lessonDao.save(lesson);
+		return lessonDao.save(lesson);
 	}
 
 

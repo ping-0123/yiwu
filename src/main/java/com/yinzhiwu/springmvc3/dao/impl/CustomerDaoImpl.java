@@ -2,6 +2,8 @@ package com.yinzhiwu.springmvc3.dao.impl;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.exception.DataNotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +11,9 @@ import com.yinzhiwu.springmvc3.dao.CustomerDao;
 import com.yinzhiwu.springmvc3.entity.Customer;
 
 @Repository
-public class CustomerDaoImp extends BaseDaoImpl<Customer, Integer> implements CustomerDao {
+public class CustomerDaoImpl extends BaseDaoImpl<Customer, Integer> implements CustomerDao {
+	
+	private static Log LOG = LogFactory.getLog(CustomerDaoImpl.class);
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -21,10 +25,11 @@ public class CustomerDaoImp extends BaseDaoImpl<Customer, Integer> implements Cu
 	@Override
 	public Customer findByWeChat(String weChatNo) throws DataNotFoundException {
 		List<Customer> list = findByProperty("weChat", weChatNo);
+//		LOG.info("CustomerDaoImpl session " + getSession().hashCode());
 		if(list.size() > 0)
 			return list.get(0);
 		else
-			throw new DataNotFoundException(CustomerDaoImp.class, "weChat", weChatNo);
+			throw new DataNotFoundException(CustomerDaoImpl.class, "weChat", weChatNo);
 	}
 
 	@Override
@@ -33,7 +38,7 @@ public class CustomerDaoImp extends BaseDaoImpl<Customer, Integer> implements Cu
 		if(list.size() > 0)
 			return list.get(0);
 		else
-			throw new DataNotFoundException(CustomerDaoImp.class, "mobilePhone", phoneNo);
+			throw new DataNotFoundException(CustomerDaoImpl.class, "mobilePhone", phoneNo);
 	}
 
 }

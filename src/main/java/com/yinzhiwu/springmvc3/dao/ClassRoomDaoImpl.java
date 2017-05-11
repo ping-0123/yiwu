@@ -10,7 +10,7 @@ public class ClassRoomDaoImpl extends BaseDaoImpl<ClassRoom, String> implements 
 
 	@Override
 	public ClassRoom findById(String id) {
-		return get(id);
+		return getHibernateTemplate().get(ClassRoom.class, id);
 	}
 
 }
