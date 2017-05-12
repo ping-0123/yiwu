@@ -1,20 +1,14 @@
 package com.yinzhiwu.springmvc3.timer;
 
 import java.io.Serializable;
-import java.util.Date;
-
-import javax.annotation.Resource;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.internal.LoadingCache;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.service.CustomerService;
-import com.yinzhiwu.springmvc3.service.MoneyRecordService;
 
 
 /**
@@ -46,7 +40,7 @@ public class BusinessReport implements Job, Serializable{
 			long l = (long) (Math.random()* 6*1000);
 			Thread.sleep(l);
 //			System.out.println("暂停: " + l/1000 + "秒开始执行报表的业务逻辑了---现在的时间是---" + new Date());
-			System.out.println(customerService);
+//			System.out.println(customerService.getClass().getSimpleName());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

@@ -47,7 +47,7 @@ public class BaseDaoImpl<T,PK extends Serializable>
     }  
   
     protected Session getSession() {  
-        return sessionFactory.getCurrentSession();  
+        return getHibernateTemplate().getSessionFactory().getCurrentSession();  
     }  
   
     public T get(PK id) {  

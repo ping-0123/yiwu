@@ -1,7 +1,11 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.type.LongType;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
@@ -9,6 +13,8 @@ import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 
 @Repository
 public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements OrderYzwDao{
+	
+	private static Log LOG = LogFactory.getLog(OrderYzwDaoImpl.class);
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
@@ -35,12 +41,31 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 			return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public float get_effective_brockerage_base(OrderYzw order) {
-		// TODO Auto-generated method stub
-		return 0;
+		String hql="select sum(amount) from OrderPayedMethod where order.id=:orderId and payedMethod.id <> 3";
+		List<Float> list = (List<Float>) getHibernateTemplate().findByNamedParam(hql, "orderId", order.getId());
+		return list.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrderYzw> find_produce_commission_orders() {
+		String hql = "from OrderYzw where payedDate > :payedDate ";
+		return (List<OrderYzw>) getHibernateTemplate().findByNamedParam(hql, "payedDate", _get_last_date());
 	}
 
 
-
+	private Date _get_last_date(){
+		String sql = "SELECT PREV_FIRE_TIME FROM yiwu.qrtz_triggers where JOB_NAME = 'orderBrockerageJobDetail'";
+		@SuppressWarnings({ "unchecked", "deprecation" })
+		List<Long> list = getSession().createNativeQuery(sql).addScalar("PREV_FIRE_TIME", LongType.INSTANCE).list();
+		Date date = new Date();
+		date.setTime(list.get(0));
+		logger.info(date);
+		LOG.info("LOG " + date);
+		return date;
+	}
+	
 }

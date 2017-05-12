@@ -242,7 +242,9 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 
 	@Override
 	public void saveCommissionRecord(){
-		List<OrderYzw> orders = OrderYzwDao.find_produce_commission_orders();
+		List<OrderYzw> orders = orderYzwDao.find_produce_commission_orders();
+		if(orders == null || orders.size() ==0)
+			return;
 		for (OrderYzw o : orders) {
 			_save_commission_record_by_order(o);
 		}
