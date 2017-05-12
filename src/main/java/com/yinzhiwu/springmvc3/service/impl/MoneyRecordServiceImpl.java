@@ -42,6 +42,11 @@ import com.yinzhiwu.springmvc3.util.MoneyRecordCategoryUtil;
 @Service
 public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer> implements MoneyRecordService{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4267652070502310535L;
+
 	private static final Log logger = LogFactory.getLog(MoneyRecordServiceImpl.class);
 	
 	@Autowired
@@ -89,18 +94,15 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	
 	private void _save_brokerage_record(Distributer beneficiary,Distributer contributor, float value, BrokerageRecordType type )
 	{
-		BrokerageRecord brokerageRecord = new BrokerageRecord(beneficiary, contributor, value, type);
-		moneyRecordDao.save(brokerageRecord);
-		if(brokerageRecord.getIncome() >0)
-			beneficiary.setAccumulativeBrokerage(beneficiary.getAccumulativeBrokerage() + brokerageRecord.getIncome());
-		beneficiary.setBrokerage(brokerageRecord.getCurrentBrokerage());
-		distributerDao.update(beneficiary);
+		_save_brokerage_record_with_order(beneficiary,contributor,value, type,null);
 	}
 	
 	
 	private void _save_brokerage_record_with_order(Distributer beneficiary,Distributer contributor, 
 			float value, BrokerageRecordType type, OrderYzw order )
 	{
+		if(beneficiary == null || contributor == null)
+			return;
 		BrokerageRecord brokerageRecord = new BrokerageRecord(beneficiary, contributor, value, type);
 		if(order != null)
 			brokerageRecord.setOrder(order);
@@ -115,6 +117,8 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	
 	private void _save_funds_record(Distributer beneficiary,Distributer contributor, float value, FundsRecordType type )
 	{
+		if(beneficiary == null || contributor == null)
+			return;
 		FundsRecord fundsRecord = new FundsRecord(beneficiary, contributor, value, type);
 		moneyRecordDao.save(fundsRecord);
 		
@@ -127,6 +131,8 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	private void _save_funds_record_with_order(Distributer beneficiary,Distributer contributor, 
 			float value, FundsRecordType type , OrderYzw order)
 	{
+		if(beneficiary == null || contributor == null)
+			return;
 		FundsRecord fundsRecord = new FundsRecord(beneficiary, contributor, value, type);
 		if(order != null)
 			fundsRecord.setOrder(order);
@@ -234,6 +240,13 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		return new YiwuJson<Boolean>(new Boolean(true));
 	}
 
+	@Override
+	public void saveCommissionRecord(){
+		List<OrderYzw> orders = OrderYzwDao.find_produce_commission_orders();
+		for (OrderYzw o : orders) {
+			_save_commission_record_by_order(o);
+		}
+	}
 	
 	private OrderYzw _save_deposit_order(Distributer beneficiary, float deposit_amount) throws Exception {
 		//customer
@@ -291,5 +304,38 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		return order;
 	}
 
-
+	
+	private void _save_commission_record_by_order(OrderYzw order){
+		//获取该订单客户对应的分享者
+		Distributer distributer = order.getCustomer().getDistributer();
+		if(distributer == null)
+			return;
+		//获取该订单能够产生佣金收益的 那一部分订单金额
+		float amount = orderYzwDao.get_effective_brockerage_base(order);
+		
+		//1.判断是否为首次购买
+		BrokerageRecordType t1 = null;
+		BrokerageRecordType t2 = null;
+		if(orderYzwDao.isCustomerFirstOrder(order)){
+			t1 = recordTypeDao.find_subordinate_first_order_commission_BrokerageRecordType();
+			t2= recordTypeDao.find_secondary_first_order_commission_BrokerageRecordType();
+		}else {
+			t1=recordTypeDao.find_subordinate_non_first_order_commission_BrokerageRecordType();
+			t2=recordTypeDao.find_subordinate_non_first_order_commission_BrokerageRecordType();
+		}
+		//2.保存上级代理提成
+		_save_brokerage_record_with_order(
+				distributer.getSuperDistributer(), 
+				distributer, 
+				amount,
+				t1,
+				order);
+		//3.保存上上级代理提成
+		_save_brokerage_record_with_order(
+				distributer.getSuperDistributer().getSuperDistributer(), 
+				distributer, 
+				amount, 
+				t2, 
+				order);
+	}
 }

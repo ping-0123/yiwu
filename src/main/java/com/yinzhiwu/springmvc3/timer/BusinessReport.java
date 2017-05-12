@@ -1,9 +1,20 @@
 package com.yinzhiwu.springmvc3.timer;
 
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.annotation.Resource;
+
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.internal.LoadingCache;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import com.yinzhiwu.springmvc3.service.CustomerService;
+import com.yinzhiwu.springmvc3.service.MoneyRecordService;
 
 
 /**
@@ -11,9 +22,17 @@ import org.springframework.stereotype.Component;
  * @author ping
  *
  */
-@Component
-public class BusinessReport implements Job{
+@Service
+public class BusinessReport implements Job, Serializable{
+	
 
+	/**
+	 * 
+	 */
+	@Autowired
+	private CustomerService customerService;
+	
+	private static final long serialVersionUID = 5470492588127078141L;
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		_perform();
@@ -23,7 +42,14 @@ public class BusinessReport implements Job{
 		_perform();
 	}
 	private void _perform(){
-//		System.out.println("开始执行报表的业务逻辑了---现在的时间是---" + new Date());
+		try {
+			long l = (long) (Math.random()* 6*1000);
+			Thread.sleep(l);
+//			System.out.println("暂停: " + l/1000 + "秒开始执行报表的业务逻辑了---现在的时间是---" + new Date());
+			System.out.println(customerService);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

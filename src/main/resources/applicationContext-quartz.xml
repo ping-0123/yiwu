@@ -14,35 +14,48 @@
 			http://www.springframework.org/schema/tx 
             http://www.springframework.org/schema/tx/spring-tx.xsd 
 			">  
-	
-	
+	<!-- http://soulshard.iteye.com/blog/337886 -->
+	<context:property-placeholder location="classpath:quartz.properties"/>  
 	<!-- 使用MethodInvokingJobDetailFactoryBean, 任务类可以不事项Job
 		接口， 通过targetMethod指定调用方法 
   	<bean id="taskJob" class="com.yinzhiwu.springmvc3.timer.BusinessReport" /> -->
   	
-  	<bean name="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<bean name="testJobDetail" class="com.yinzhiwu.springmvc3.timer.MethodInvokingJobDetailFactoryBean">
   		<property name="group" value="job_work"></property>
-  		<property name="name" value="job_work"></property>
+  		<!--  <property name="name" value="job_work"></property> -->
   		<!-- false 表示等上一任务执行完后开启新的任务 -->
   		<property name="concurrent" value="false"></property>
   		<property name="targetObject" ref="businessReport"></property>
   		<property name="targetMethod" value="execute"></property>
   	</bean>
+  	<bean name="orderBrockerageJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+  		  <property name="jobClass" value="com.yinzhiwu.springmvc3.timer.OrderBrockerageJob" /> 
+         <property name="durability" value="true" />  
+  	</bean>
+  	
   	
   	<!-- 调度触发器 -->
-  	<bean id="myTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+  	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
   		<property name="name" value="work_default_name"></property>
   		<property name="group" value="work_default"></property>
-  		<property name="jobDetail" ref="jobDetail"></property>
+  		<property name="jobDetail" ref="testJobDetail"></property>
   		<property name="cronExpression" value="0/5 * * * * ? "></property>
+  		<property name="misfireInstruction" value="2"></property>
+  	</bean>
+  	<bean id="orderBrockerageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+  		<property name="jobDetail" ref="orderBrockerageJobDetail"></property>
+  		<property name="cronExpression" value="0/10 * * * * ?"></property>  <!-- 0 0 4 1/1 * ?-->
+  		<property name="misfireInstruction" value="2"></property>
   	</bean>
   	
   	<!-- 调度工厂 -->
   	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
   		<property name="triggers">
   			<list>
-  				<ref bean="myTrigger" />
+  				<ref bean="cronTrigger" />
+  				<ref bean="orderBrockerageCronTrigger"/>
   			</list>
   		</property>
+  		<property name="configLocation" value="classpath:quartz.properties" />
   	</bean>
  </beans>

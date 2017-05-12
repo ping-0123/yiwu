@@ -175,7 +175,13 @@ public class BaseDaoImpl<T,PK extends Serializable>
 	}
 
 	@Override
-	public int findCountByProperties(String[] propertyNames, Object[] values) {
+	public int findCountByProperties(String[] propertyNames, Object[] values){
+		if(propertyNames.length != values.length)
+			try {
+				throw new Exception("传入的属性名和属性值数量不一致");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		return findByProperties(propertyNames, values).size();
 	}
 }

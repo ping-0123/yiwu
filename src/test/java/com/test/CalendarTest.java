@@ -3,6 +3,8 @@ package com.test;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.enterprise.inject.New;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -23,4 +25,11 @@ public class CalendarTest {
 		System.out.println(t.compareTo(p));
 	}
 
+	
+	@Test
+	public void testDate(){
+		Date date = new Date();
+		date.setTime(1494577345000L);
+		System.out.println(date);
+	}
 }

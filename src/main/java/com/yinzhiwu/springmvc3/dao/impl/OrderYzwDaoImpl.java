@@ -21,4 +21,26 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 			return "20000101001";
 	}
 
+	@Override
+	public boolean isCustomerFirstOrder(OrderYzw order) {
+		String hql = "select count(*) from OrderYzw where customer.id=:customerId and product.name like '%卡%' and payedDate <:payedDate";
+		@SuppressWarnings("unchecked")
+		List<Long> counts = (List<Long>) getHibernateTemplate().findByNamedParam(
+				hql, 
+				new String[]{"customerId", "payedDate"}, 
+				new Object[]{order.getCustomer().getId(), order.getPayedDate()});
+		if(counts.get(0) >0)
+			return false;
+		else
+			return true;
+	}
+
+	@Override
+	public float get_effective_brockerage_base(OrderYzw order) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
 }

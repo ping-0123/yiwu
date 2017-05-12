@@ -9,7 +9,6 @@ import com.yinzhiwu.springmvc3.dao.ExpRecordTypeDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.ExpRecord;
 import com.yinzhiwu.springmvc3.entity.ExpRecordType;
-import com.yinzhiwu.springmvc3.entity.RecordType;
 import com.yinzhiwu.springmvc3.entity.ShareTweet;
 import com.yinzhiwu.springmvc3.service.ExpRecordService;
 
@@ -56,6 +55,7 @@ public class ExpRecordServiceImpl extends BaseServiceImpl<ExpRecord, Integer> im
 		expRecordDao.save(expRecord);
 		//update beneficiary
 		beneficiary.setExp(expRecord.getCurrentExp());
+		//如果积分够了就升级
 		if(beneficiary.getExp()>=beneficiary.getExpGrade().getUpgradeExp())
 			beneficiary.setExpGrade(beneficiary.getExpGrade().getNextGrade());
 		distrituterDao.update(beneficiary);

@@ -41,5 +41,25 @@ public class RecordTypeDaoImpl extends BaseDaoImpl<RecordType,Integer> implement
 		return (BrokerageRecordType) get(17000023);
 	}
 
+	@Override
+	public BrokerageRecordType find_subordinate_first_order_commission_BrokerageRecordType() {
+		return (BrokerageRecordType) get(17000005);
+	}
+
+	@Override
+	public BrokerageRecordType find_subordinate_non_first_order_commission_BrokerageRecordType() {
+		return (BrokerageRecordType) get(17000007);
+	}
+
+	@Override
+	public BrokerageRecordType find_secondary_first_order_commission_BrokerageRecordType() {
+		return (BrokerageRecordType) get(17000006);
+	}
+
+	@Override
+	public BrokerageRecordType find_secondary_non_first_order_commission_BrokerageRecordType() {
+		return (BrokerageRecordType) get(17000008);
+	}
+
 
 }

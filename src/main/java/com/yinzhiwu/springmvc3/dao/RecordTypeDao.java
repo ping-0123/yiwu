@@ -18,4 +18,13 @@ public interface RecordTypeDao extends IBaseDao<RecordType, Integer>{
 	public FundsRecordType getPayFundsRecordType();
 	
 	public BrokerageRecordType getPayBrokerageRecordType();
+	
+
+	public BrokerageRecordType find_subordinate_first_order_commission_BrokerageRecordType();
+	
+	public BrokerageRecordType find_subordinate_non_first_order_commission_BrokerageRecordType();
+	
+	public BrokerageRecordType find_secondary_first_order_commission_BrokerageRecordType();
+	
+	public BrokerageRecordType find_secondary_non_first_order_commission_BrokerageRecordType();
 }
