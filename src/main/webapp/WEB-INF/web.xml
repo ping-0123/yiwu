@@ -11,7 +11,7 @@
     	<param-value>classpath:applicationContext.xml</param-value>
     </context-param>
     
-    <!-- 延迟加载过滤器   
+    <!-- 延迟加载过滤器    
     <filter>
     	<filter-name>openSessionInViewFilter</filter-name>
     	<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>

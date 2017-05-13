@@ -7,11 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form:form commandName="distributerApiView"  action="<%=request.getContextPath() %>/api/distributer/modifyHeadIcon" method="post" enctype="multipart/form-data">
-		  <fieldset>
-		<input type="text" path ="id", value="3000018" />
+	<form:form commandName="d"  action="<%=request.getContextPath() %>/api/distributer/modifyHeadIcon" method="post" enctype="multipart/form-data">
+		 <fieldset>
+		<input type="text" name ="id", value="3000018" />
 		<p>
-		<input type="file" name="image"/>
+		<input type="file" path="image"/>
 		</p>
 		<p id="button">
         <input id="reset" type="reset">

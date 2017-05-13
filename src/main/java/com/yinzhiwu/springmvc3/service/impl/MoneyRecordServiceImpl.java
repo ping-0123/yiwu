@@ -1,20 +1,32 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.yinzhiwu.springmvc3.dao.CapitalAccountDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.MoneyRecordDao;
 import com.yinzhiwu.springmvc3.dao.RecordTypeDao;
 import com.yinzhiwu.springmvc3.entity.BrokerageRecord;
 import com.yinzhiwu.springmvc3.entity.BrokerageRecordType;
+import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.FundsRecord;
 import com.yinzhiwu.springmvc3.entity.FundsRecordType;
 import com.yinzhiwu.springmvc3.entity.MoneyRecord;
 import com.yinzhiwu.springmvc3.entity.MoneyRecordType;
+import com.yinzhiwu.springmvc3.entity.WithDrawRecord;
+import com.yinzhiwu.springmvc3.enums.MoneyRecordCategory;
+import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
+import com.yinzhiwu.springmvc3.model.PayDepositModel;
+import com.yinzhiwu.springmvc3.model.WithDrawModel;
+import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
+import com.yinzhiwu.springmvc3.util.MoneyRecordCategoryUtil;
 
 @Service
 public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer> implements MoneyRecordService{
@@ -23,10 +35,15 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	private MoneyRecordDao moneyRecordDao;
 	
 	@Autowired
+	@Qualifier("recordTypeDaoImpl")
 	private RecordTypeDao recordTypeDao;
 	
 	@Autowired
 	private DistributerDao distributerDao;
+	
+	
+	@Autowired
+	private CapitalAccountDao capitalAccountDao;
 	
 	@Autowired
 	private void setMoneyRecordDao(MoneyRecordDao moneyRecordDao)
@@ -57,6 +74,7 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		moneyRecordDao.save(brokerageRecord);
 		if(brokerageRecord.getIncome() >0)
 			beneficiary.setAccumulativeBrokerage(beneficiary.getAccumulativeBrokerage() + brokerageRecord.getIncome());
+		beneficiary.setBrokerage(brokerageRecord.getCurrentBrokerage());
 		distributerDao.update(beneficiary);
 	}
 	
@@ -72,4 +90,89 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		beneficiary.setFunds(fundsRecord.getCurrentFunds());
 		distributerDao.update(beneficiary);
 	}
+
+	private void saveWithDrawRecord(Distributer beneficiary, Distributer contributor, float value,
+			BrokerageRecordType type, CapitalAccount account) 
+	{
+		WithDrawRecord record = new WithDrawRecord(beneficiary, contributor, value, type);
+		record.setAccount(account);
+		moneyRecordDao.save(record);
+		beneficiary.setBrokerage(record.getCurrentBrokerage());
+		distributerDao.update(beneficiary);
+		
+	}
+	
+	@Override
+	public YiwuJson<Integer> findCountByDistributerid(int distributerId) {
+		int count =  moneyRecordDao.findCountByBeneficiatyId(distributerId);
+		return new YiwuJson<Integer>(count);
+	}
+
+	@Override
+	public YiwuJson<List<MoneyRecordApiView>> findList(int benificiaryId, MoneyRecordCategory category) {
+		List<Integer> typeIds  = MoneyRecordCategoryUtil.toMoneyRecordTypeIds(category);
+		List<MoneyRecord> moneyRecords = moneyRecordDao.findByTypesByBeneficiaryId(benificiaryId,typeIds);
+		List<MoneyRecordApiView> views = new ArrayList<MoneyRecordApiView>();
+		for (MoneyRecord m : moneyRecords) {
+			views.add(new MoneyRecordApiView(m));
+		}
+		return new YiwuJson<List<MoneyRecordApiView>>(views);
+	}
+
+	@Override
+	public YiwuJson<Boolean> saveWithdraw(WithDrawModel m) {
+		BrokerageRecordType type = recordTypeDao.getWithDrawMoneyRecordType();
+		Distributer beneficiary = distributerDao.get(m.getDistributerId());
+		Distributer contributor = beneficiary;
+		float value = m.getAmount();
+		CapitalAccount account = capitalAccountDao.get(m.getAccountId());
+		if(account.getDistributer().getId() != beneficiary.getId()){
+			return new YiwuJson<>("提现者不是体现帐号的拥有者");
+		}
+		if(value>beneficiary.getBrokerage())
+			return new YiwuJson<>("提现金额大于账户总金额");
+		saveWithDrawRecord(beneficiary,contributor,value,type,account);
+		return new YiwuJson<>(new Boolean(true));
+	}
+
+	@Override
+	public YiwuJson<Boolean> payDeposit(PayDepositModel m) {
+		float payedFundsValue =0;
+		float payedBrokerageValue =0;
+		Distributer beneficiary = distributerDao.get(m.getDistributerId());
+		Distributer contributor = beneficiary;
+		
+		//1. 判断
+		if(m.isFundsFisrt()){
+			if(m.getAmount() <= beneficiary.getFunds()){
+				payedFundsValue = m.getAmount();
+				payedBrokerageValue = 0;
+			}else if (m.getAmount() <= beneficiary.getFunds() + beneficiary.getBrokerage()) {
+				payedFundsValue = beneficiary.getFunds();
+				payedBrokerageValue = m.getAmount()-beneficiary.getFunds();
+			}else {
+				return new YiwuJson<>("支付定金金额大于佣金和基金总和");
+			}
+		}else{
+			if(m.getAmount()<=beneficiary.getBrokerage())
+				payedBrokerageValue =  m.getAmount();
+			else
+				return new YiwuJson<>("支付定金金额大于佣金, 如果有基金，请选择优先使用基金");
+		}
+		
+		//2.save order;
+		
+		//3.save fundsrecord
+		if(payedFundsValue> 0){
+			FundsRecordType fundsRecordType=recordTypeDao.getPayFundsRecordType();
+		}
+		
+		
+		//4.save brockerageRcord
+		
+		
+		return null;
+	}
+
+
 }
