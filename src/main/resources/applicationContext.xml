@@ -39,10 +39,10 @@
           <property name="initialPoolSize" value="2"/>  
   
           <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
-          <property name="maxIdleTime"  value="0"/>  
+          <property name="maxIdleTime"  value="3600"/>  
             
           <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
-          <property name="checkoutTimeout" value="3000"/>  
+          <property name="checkoutTimeout" value="10000"/>  
             
           <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
           <property name="acquireIncrement" value="5"/>  
