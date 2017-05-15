@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.MoneyRecordDao;
-import com.yinzhiwu.springmvc3.entity.BrokerageRecordType;
 import com.yinzhiwu.springmvc3.entity.MoneyRecord;
 
 @Repository

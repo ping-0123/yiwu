@@ -264,8 +264,9 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 			product = productYzwDao.get_children_deposit_product();
 		
 		OrderYzw order = new OrderYzw();
-		order.setId(GeneratorUtil.generateYzwId(orderYzwDao.find_last_id()));
-		logger.info(order.getId());
+//		logger.debug(orderYzwDao.find_last_id());
+//		order.setId(GeneratorUtil.generateYzwId(orderYzwDao.find_last_id()));
+//		logger.debug(order.getId());
 		order.setProduct(product);
 		order.setCustomer(customer);
 		order.setMemberCardNo(customer.getMemberCard());
@@ -280,7 +281,7 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		//设置会籍合约
 		Contract contract = new Contract();
 		contract.setStatus("已审核");
-		contract.setContractNo(GeneratorUtil.generateContractNo(order.getId()));
+//		contract.setContractNo(GeneratorUtil.generateContractNo(order.getId()));
 		contract.setValidityTimes(product.getUsefulTimes());
 		 Calendar calendar = Calendar.getInstance();
 		contract.setStart(calendar.getTime());

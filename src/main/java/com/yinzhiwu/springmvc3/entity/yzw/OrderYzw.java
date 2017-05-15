@@ -30,8 +30,8 @@ public class OrderYzw extends BaseYzwEntity {
 	private static final long serialVersionUID = -8473575190806095432L;
 
 	@Id
-	@GeneratedValue(generator="system-uuid")  
-	@GenericGenerator(name="system-uuid", strategy = "uuid") 
+	@GeneratedValue(generator="assigned")  
+	@GenericGenerator(name="assigned", strategy = "assigned") 
 	private String id;
 	
 	@Column(length=32)
@@ -137,7 +137,7 @@ public class OrderYzw extends BaseYzwEntity {
 	private String currentStatus;
 	
 	@Column(name="remain_hours")
-	private float remainHours;
+	private Float remainHours;
 	
 	@Column(name="audit_flag")
 	private Boolean isAuditedByFinance;
@@ -355,7 +355,7 @@ public class OrderYzw extends BaseYzwEntity {
 		return eContractStatus;
 	}
 
-	public void setRemainHours(float remainHours) {
+	public void setRemainHours(Float remainHours) {
 		this.remainHours = remainHours;
 	}
 
