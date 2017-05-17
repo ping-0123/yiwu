@@ -31,7 +31,7 @@ public class TweetServiceImpl  extends BaseServiceImpl<Tweet, Integer> implement
 		Tweet tweet = new Tweet();
 		tweet.setAuthor(m.getAuthor());
 		tweet.setTitle(m.getTitle());
-		TweetType type = (TweetType) baseTypeDao.get(m.getTweet_type_id());
+		TweetType type = (TweetType) baseTypeDao.get(m.getTweetTypeId());
 		tweet.setTweetType(type);
 		TweetContent content = new TweetContent();
 		content.setContent(m.getContent().getBytes());

@@ -10,7 +10,4 @@ public class TweetDaoImpl extends BaseDaoImpl<Tweet, Integer>
 	implements TweetDao
 {
 
-	
-	private void test(){
-	}
 }

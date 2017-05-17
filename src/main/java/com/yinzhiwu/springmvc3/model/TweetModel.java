@@ -1,13 +1,23 @@
 package com.yinzhiwu.springmvc3.model;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Length;
+
 public class TweetModel {
 	
+	@Size(min=2,max=10)
 	private String author;
-	
+							
+	@Length(min=3)
 	private String title;
 	
-	private int tweet_type_id;
+	@Min(1)
+	private int tweetTypeId;
 	
+	@NotNull
 	private String content;
 
 	
@@ -19,9 +29,6 @@ public class TweetModel {
 		return title;
 	}
 
-	public int getTweet_type_id() {
-		return tweet_type_id;
-	}
 
 	public String getContent() {
 		return content;
@@ -35,12 +42,18 @@ public class TweetModel {
 		this.title = title;
 	}
 
-	public void setTweet_type_id(int tweet_type_id) {
-		this.tweet_type_id = tweet_type_id;
-	}
+
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public int getTweetTypeId() {
+		return tweetTypeId;
+	}
+
+	public void setTweetTypeId(int tweetTypeId) {
+		this.tweetTypeId = tweetTypeId;
 	}
 	
 	

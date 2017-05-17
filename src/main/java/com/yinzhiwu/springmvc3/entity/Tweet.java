@@ -35,7 +35,13 @@ public class Tweet extends BaseEntity {
 	
 	@Column(length=32)
 	private String author;
-
+	
+	@Column(length=50)
+	private String digest; //信息摘要
+	
+	@Column(length=50)
+	private String coverIconUrl;
+	
 	private Date editDate;
 	
 	@OneToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
@@ -105,6 +111,22 @@ public class Tweet extends BaseEntity {
 
 	public void setEditDate(Date editDate) {
 		this.editDate = editDate;
+	}
+
+	public String getDigest() {
+		return digest;
+	}
+
+	public String getCoverIconUrl() {
+		return coverIconUrl;
+	}
+
+	public void setDigest(String digest) {
+		this.digest = digest;
+	}
+
+	public void setCoverIconUrl(String coverIconUrl) {
+		this.coverIconUrl = coverIconUrl;
 	}
 
 
