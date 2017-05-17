@@ -1,12 +1,15 @@
 package com.yinzhiwu.springmvc3.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -32,8 +35,10 @@ public class Tweet extends BaseEntity {
 	
 	@Column(length=32)
 	private String author;
+
+	private Date editDate;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_Tweet_tweetContent_id"))
 	private TweetContent tweetContent;
 	
@@ -49,6 +54,11 @@ public class Tweet extends BaseEntity {
 		return shareTweets;
 	}
 
+	public Tweet(){
+		super();
+		this.editDate=super.getCreateDate();
+	}
+	
 	public void setShareTweets(List<ShareTweet> shareTweets) {
 		this.shareTweets = shareTweets;
 	}
@@ -88,6 +98,16 @@ public class Tweet extends BaseEntity {
 	public void setTweetType(TweetType tweetType) {
 		this.tweetType = tweetType;
 	}
+
+	public Date getEditDate() {
+		return editDate;
+	}
+
+	public void setEditDate(Date editDate) {
+		this.editDate = editDate;
+	}
+
+
 
 
 }
