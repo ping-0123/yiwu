@@ -1,6 +1,5 @@
 package com.yinzhiwu.springmvc3.util;
 
-import java.io.File;
 
 import org.springframework.web.multipart.MultipartFile;
 

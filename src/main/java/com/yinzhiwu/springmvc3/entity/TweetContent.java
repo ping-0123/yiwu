@@ -32,6 +32,10 @@ public class TweetContent extends BaseEntity {
 		super();
 	}
 
+	public TweetContent(byte[] bytes) {
+		this.content = bytes;
+	}
+
 	public byte[] getContent() {
 		return content;
 	}

@@ -18,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.yinzhiwu.springmvc3.model.TweetModel;
+
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -63,6 +65,16 @@ public class Tweet extends BaseEntity {
 	public Tweet(){
 		super();
 		this.editDate=super.getCreateDate();
+	}
+	
+	public Tweet(TweetModel m){
+		super();
+		this.editDate=super.getCreateDate();
+		this.title=m.getTitle();
+		this.author=m.getAuthor();
+		this.digest=m.getDigest();
+		this.coverIconUrl=m.getCoverIconUrl();
+		this.tweetContent=new TweetContent(m.getContent().getBytes());
 	}
 	
 	public void setShareTweets(List<ShareTweet> shareTweets) {

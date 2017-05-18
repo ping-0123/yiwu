@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 public class TweetModel {
 	
@@ -14,8 +15,17 @@ public class TweetModel {
 	@Length(min=3)
 	private String title;
 	
+	
 	@Min(1)
 	private int tweetTypeId;
+	
+	@Size(max=50)
+	private String digest;
+	
+	@NotNull
+	private MultipartFile coverIcon;
+	
+	private String coverIconUrl;
 	
 	@NotNull
 	private String content;
@@ -54,6 +64,30 @@ public class TweetModel {
 
 	public void setTweetTypeId(int tweetTypeId) {
 		this.tweetTypeId = tweetTypeId;
+	}
+
+	public String getDigest() {
+		return digest;
+	}
+
+	public MultipartFile getCoverIcon() {
+		return coverIcon;
+	}
+
+	public void setDigest(String digest) {
+		this.digest = digest;
+	}
+
+	public void setCoverIcon(MultipartFile coverIcon) {
+		this.coverIcon = coverIcon;
+	}
+
+	public String getCoverIconUrl() {
+		return coverIconUrl;
+	}
+
+	public void setCoverIconUrl(String coverIconUrl) {
+		this.coverIconUrl = coverIconUrl;
 	}
 	
 	
