@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CourseApiView;
+import com.yinzhiwu.springmvc3.service.CourseYzwService;
 
 @RestController
 @RequestMapping(value="/api/course")
