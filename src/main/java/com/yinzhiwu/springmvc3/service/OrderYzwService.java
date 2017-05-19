@@ -13,5 +13,7 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 
 	YiwuJson<OrderApiView> findById(String id);
 
+	List<String> findContractNosByCustomerId(int customerId);
+
 
 }

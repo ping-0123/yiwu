@@ -3,7 +3,6 @@ package com.yinzhiwu.springmvc3.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -12,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.util.UrlUtil;
 
 public class DistributerApiView implements Serializable{
@@ -45,6 +45,8 @@ public class DistributerApiView implements Serializable{
 	
 	private float funds;
 	
+	private int customerId;
+	
 	@NotNull
 	@JsonIgnore
 	private MultipartFile image;
@@ -72,6 +74,9 @@ public class DistributerApiView implements Serializable{
 		this.neededExpForUpdate = d.getExpGrade().getUpgradeExp()-d.getExp();
 		this.brokerage = d.getBrokerage();
 		this.funds = d.getFunds();
+		CustomerYzw customer = d.getCustomer();
+		if(customer != null)
+			this.customerId = customer.getId();
 	}
 
 	public float getBeatRate() {
@@ -176,6 +181,14 @@ public class DistributerApiView implements Serializable{
 
 	public void setFunds(float funds) {
 		this.funds = funds;
+	}
+
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
 	}
 	
 	

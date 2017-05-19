@@ -9,6 +9,7 @@ import javax.persistence.MappedSuperclass;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @MappedSuperclass 
 public class BaseYzwEntity implements Serializable{
@@ -19,32 +20,37 @@ public class BaseYzwEntity implements Serializable{
 	 */
 	private static final long serialVersionUID = 1232031968327117427L;
 
+	@JsonIgnore
 	@Column(name="sf_create_user")
 	private Integer createUserId;
 
-	
+	@JsonIgnore
 	@Column(name="sf_last_change_user")
 	private Integer lastChangeUserId;
 	
-	
+	@JsonIgnore
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
 	@Column(name="sf_create_time",insertable=true,updatable=true)
 	private Date createTime;
 	
+	@JsonIgnore
    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
 	@Column(name="sf_last_change_time")
 	private Date lastChangeTime;
 	
+	@JsonIgnore
 	@Column
 	private Integer machineCode;
 	
+	@JsonIgnore
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
 	@Column(name="sf_last_sync_timeStamp")
 	private Date lastSyncTimeStamp;
 	
+	@JsonIgnore
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
 	@Column(name="sf_last_change_timeStamp")

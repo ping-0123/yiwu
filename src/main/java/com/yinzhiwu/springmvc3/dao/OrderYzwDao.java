@@ -16,6 +16,8 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String>  {
 
 	public List<OrderYzw> findByCustomer(CustomerYzw customer);
 
+	public List<OrderYzw> findByCustomerId(int customerId);
+
 	
 	
 }

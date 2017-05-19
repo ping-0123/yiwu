@@ -87,6 +87,11 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 	public List<OrderYzw> findByCustomer(CustomerYzw customer) {
 		return findByProperty("customer.id", customer.getId());
 	}
+
+	@Override
+	public List<OrderYzw> findByCustomerId(int customerId) {
+		return findByProperty("customer.id", customerId);
+	}
 	
 	
 	

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
+import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
@@ -52,6 +53,19 @@ public class OrderYzwServiceImpl  extends BaseServiceImpl<OrderYzw,String> imple
 		if(order == null)
 			return new YiwuJson<>("no order found by id: " + id);
 		return new YiwuJson<>(new OrderApiView(order));
+	}
+
+	@Override
+	public List<String> findContractNosByCustomerId(int customerId) {
+		List<OrderYzw> orders = orderDao.findByCustomerId(customerId);
+		if(orders == null || orders.size() ==0)
+			return null;
+		List<String> contractNos = new ArrayList<>();
+		for (OrderYzw o : orders) {
+			if(o.getContract() != null)
+				contractNos.add(o.getContract().getContractNo());
+		}
+		return contractNos;
 	}
 
 }
