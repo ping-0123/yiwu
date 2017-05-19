@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,7 @@ public class MessageController {
 	
 	
 	@GetMapping("/id/{id}")
-	public YiwuJson<MessageApiView> findById(int id){
+	public YiwuJson<MessageApiView> findById(@PathVariable int id){
 		if(id<=0)
 			return new YiwuJson<>("message id must be more than zero");
 		return messageService.findById(id);

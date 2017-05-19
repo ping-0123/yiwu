@@ -9,6 +9,7 @@ import org.hibernate.type.LongType;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
+import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 import com.yinzhiwu.springmvc3.util.GeneratorUtil;
 
@@ -80,6 +81,11 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 		entity.setId(GeneratorUtil.generateYzwId(find_last_id()));
 		entity.getContract().setContractNo(GeneratorUtil.generateContractNo(entity.getId()));
 		return super.save(entity);
+	}
+
+	@Override
+	public List<OrderYzw> findByCustomer(CustomerYzw customer) {
+		return findByProperty("customer.id", customer.getId());
 	}
 	
 	
