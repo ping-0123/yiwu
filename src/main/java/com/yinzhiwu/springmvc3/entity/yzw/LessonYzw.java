@@ -61,7 +61,7 @@ public class LessonYzw extends BaseYzwEntity {
 	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="classRoomId", foreignKey=
 			@ForeignKey(name="fk_lesson_classRoom_id", value=ConstraintMode.NO_CONSTRAINT))
-	private String classRoomId;
+	private ClassRoomYzw classRoom;
 
 	@Column(length = 32)
 	private String classRoomName;
@@ -188,9 +188,6 @@ public class LessonYzw extends BaseYzwEntity {
 		return dueTeacherName;
 	}
 
-	public String getClassRoomId() {
-		return classRoomId;
-	}
 
 	public String getClassRoomName() {
 		return classRoomName;
@@ -336,10 +333,6 @@ public class LessonYzw extends BaseYzwEntity {
 		this.dueTeacherName = dueTeacherName;
 	}
 
-	public void setClassRoomId(String classRoomId) {
-		this.classRoomId = classRoomId;
-	}
-
 	public void setClassRoomName(String classRoomName) {
 		this.classRoomName = classRoomName;
 	}
@@ -438,6 +431,14 @@ public class LessonYzw extends BaseYzwEntity {
 
 	public void setQrCode(String qrCode) {
 		this.qrCode = qrCode;
+	}
+
+	public ClassRoomYzw getClassRoom() {
+		return classRoom;
+	}
+
+	public void setClassRoom(ClassRoomYzw classRoom) {
+		this.classRoom = classRoom;
 	}
 
 	

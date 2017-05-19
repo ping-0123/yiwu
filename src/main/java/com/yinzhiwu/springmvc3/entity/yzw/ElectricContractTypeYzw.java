@@ -3,12 +3,17 @@ package com.yinzhiwu.springmvc3.entity.yzw;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="velectric_contract_type")
 public class ElectricContractTypeYzw {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	private String description;
