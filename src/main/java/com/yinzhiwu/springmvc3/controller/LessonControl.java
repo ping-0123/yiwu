@@ -19,6 +19,7 @@ import com.yinzhiwu.springmvc3.entity.Lesson;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.LessonApiView;
 import com.yinzhiwu.springmvc3.service.LessonService;
+import com.yinzhiwu.springmvc3.service.LessonYzwService;
 
 /**
  * @since 用formater and validate
