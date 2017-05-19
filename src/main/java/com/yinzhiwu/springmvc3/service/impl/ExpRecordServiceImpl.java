@@ -1,5 +1,7 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,8 +48,12 @@ public class ExpRecordServiceImpl extends BaseServiceImpl<ExpRecord, Integer> im
 	}
 	
 
-	private void _save_exp_record_with_share_tweet(Distributer beneficiary,Distributer contributor, 
+	private void _save_exp_record_with_share_tweet(
+			@NotNull Distributer beneficiary,
+			@NotNull Distributer contributor, 
 			float value, ExpRecordType type, ShareTweet shareTweet ){
+		if(beneficiary == null )
+			return;
 		ExpRecord expRecord = new ExpRecord(beneficiary, contributor, value, type);
 		if(shareTweet != null)
 			expRecord.setShareTweet(shareTweet);
@@ -72,6 +78,8 @@ public class ExpRecordServiceImpl extends BaseServiceImpl<ExpRecord, Integer> im
 		_save_exp_record_with_share_tweet(sharer, sharer, 1, type, shareTweet);
 		
 		//上一级获取
+		if(sharer.getSuperDistributer() == null)
+			return;
 		ExpRecordType type2 = expRecordTypeDao.findByShareTweetBySubordiante();
 		_save_exp_record_with_share_tweet(
 				sharer.getSuperDistributer(), sharer, 1, type2, shareTweet);

@@ -17,7 +17,28 @@
 //		save_capitalAccount();
 //		setDefaultAccount();
 //		withdraw();
-		payDeposit();
+//		payDeposit();
+		shareTweet();
+		
+		function shareTweet(){
+			var v_url = v_baseUrl + "/api/tweet/share";
+			$.ajax({
+				type:"post",
+				url:v_url,
+				data:{distributerId:'3000049',
+					tweetId:3
+				},
+				dataType:"json",
+				timeout:50000,
+				async:true,
+				success:function(data){
+					$('#content').html(JSON.stringify(data));
+				},
+				error: function(jqXHR){     
+					alert("error");
+				}
+			});
+		}
 		
 		function payDeposit(){
 			var v_url = v_baseUrl + "/api/moneyRecord/payDeposit";

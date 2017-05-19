@@ -6,6 +6,7 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
@@ -43,7 +44,7 @@ public class ExpRecord extends AbstractRecord {
 		super();
 	}
 
-	public ExpRecord(Distributer beneficiaty, Distributer contributor, float contributedValue, RecordType recordType) {
+	public ExpRecord(@NotNull Distributer beneficiaty, Distributer contributor, float contributedValue, RecordType recordType) {
 		super(beneficiaty, contributor, contributedValue, recordType);
 		this.currentExp = beneficiaty.getExp() + getIncome();
 	}
