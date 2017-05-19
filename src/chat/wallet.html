@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+		<link rel="stylesheet" href="css/wallet.css" />
+		<title>我的钱包</title>
+	</head>
+	<body>
+		<header>
+		<a href="../index.html" title=""><img src="img/e5_logo.png" width="66" height="34" alt=""></a>
+		<div class="ins">
+			<img src="img/logo.png" width="20" height="20" alt="">
+			<strong>音之舞</strong>
+		</div>
+		<div class="scan">
+			<a href="my.html">返回</a>
+		</div>
+	    </header>
+	    
+	    <div class="remaining">
+	    	<p>1,524.00</p>
+	    	<div class="money">
+	    	<span>
+	    	<a>1,500.00</a>
+	    	<a>可提现金</a>
+	    	</span>
+	    	<span>
+	    	<a>24.00</a>
+	    	<a class="pocket">培训基金</a><small onclick="overlay()">?</small>
+	    	</span>
+	    	</div>
+	    </div>
+	    
+	    <div id="modal-overlay"> 
+        <div class="modal-data" id="modal-data">
+        <p> 
+                 培训基金<br>
+        1、是针对获得的收入进行的一种奖励<br>
+        2、奖励的额度与收入均可以用来购买本机构的服务产品。<br>
+        3、如果您现在活着未来有计划购买我们的产品，可以不提现，这样每天都会有培训基金收益哦<br>
+               规则<br>
+        1、奖励的金额以收入余额为基数进行计算。<br>
+        2、年化的基金奖励收入为5%（如100元在本账户中存放一年可获得5元奖励）<br>
+        3、此奖励只能用来购买我们的产品，不可用于提现。
+        </p>
+        <p><button onclick="overlay()" href="">关闭</button></p>
+        </div>
+        </div>
+	    
+	    
+	    
+	    <div class="record">
+	    	<ul>
+	    	<li>明细记录<span>35条 ></span></li>
+	    	<li>提现账户<span>15055962072 ></span></li>
+	    	</ul>
+	    </div>
+	    <div class="bottom">
+	    	<a href="">我要提现</a>
+	    	<a href="">我要购买课程</a>
+	    </div>
+	    
+	     <footer>
+		<div class="nav f-cb">
+			<ul>
+				<li>
+					<a href="index.html" title="">首页</a>
+				</li>
+				<li>
+					<a href="open.html" title="">开放课程</a>
+				</li>
+				<li>
+					<a href="close.html" title="">封闭课程</a>
+				</li>
+				<li>
+					<a href="private.html" title="">私教课</a>
+				</li>
+				<li>
+					<a class="active"  href="my.html" title="">我的</a>
+				</li>
+			</ul>
+		</div>
+	</footer>
+	
+<script>
+function overlay(){
+    var e1 = document.getElementById('modal-overlay');           
+    e1.style.display =  (e1.style.display == "block"  ) ? "none" : "block";
+}
+
+function show(){
+    var e1 = document.getElementById("ss"),
+        e2 = document.getElementById('modal-data');
+    e1.style.display ="block";
+    e2.style.display ="none";
+}
+</script>	
+	</body>
+</html>
