@@ -35,6 +35,7 @@ import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
 import com.yinzhiwu.springmvc3.model.PayDepositModel;
 import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.service.MessageService;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
 import com.yinzhiwu.springmvc3.util.GeneratorUtil;
 import com.yinzhiwu.springmvc3.util.MoneyRecordCategoryUtil;
@@ -47,7 +48,6 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	 */
 	private static final long serialVersionUID = 4267652070502310535L;
 
-	private static final Log logger = LogFactory.getLog(MoneyRecordServiceImpl.class);
 	
 	@Autowired
 	private MoneyRecordDao moneyRecordDao;
@@ -69,6 +69,9 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	
 	@Autowired
 	private ProductYzwDao productYzwDao;
+
+	@Autowired
+	private MessageService messageService;
 	
 	@Autowired
 	private void setMoneyRecordDao(MoneyRecordDao moneyRecordDao)
@@ -103,14 +106,24 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	{
 		if(beneficiary == null || contributor == null)
 			return;
+		//产生记录
 		BrokerageRecord brokerageRecord = new BrokerageRecord(beneficiary, contributor, value, type);
 		if(order != null)
 			brokerageRecord.setOrder(order);
 		moneyRecordDao.save(brokerageRecord);
+		
+		//更新distribter 的当前佣金和累计佣金
 		if(brokerageRecord.getIncome() >0)
 			beneficiary.setAccumulativeBrokerage(beneficiary.getAccumulativeBrokerage() + brokerageRecord.getIncome());
 		beneficiary.setBrokerage(brokerageRecord.getCurrentBrokerage());
 		distributerDao.update(beneficiary);
+		
+		//产生消息
+		messageService.saveBrockerageIncomeMessage(
+				beneficiary,
+				contributor.getName(),
+				brokerageRecord.getContributedValue(),
+				brokerageRecord.getIncome());
 	}
 	
 	
