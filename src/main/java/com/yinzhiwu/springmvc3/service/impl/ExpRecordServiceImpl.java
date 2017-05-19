@@ -45,7 +45,6 @@ public class ExpRecordServiceImpl extends BaseServiceImpl<ExpRecord, Integer> im
 		
 	}
 	
-	
 
 	private void _save_exp_record_with_share_tweet(Distributer beneficiary,Distributer contributor, 
 			float value, ExpRecordType type, ShareTweet shareTweet ){
@@ -63,5 +62,18 @@ public class ExpRecordServiceImpl extends BaseServiceImpl<ExpRecord, Integer> im
 	
 	private void _save_exp_record(Distributer beneficiary,Distributer contributor, float value, ExpRecordType type){
 		_save_exp_record_with_share_tweet(beneficiary, contributor, value, type, null);
+	}
+
+	@Override
+	public void saveShareTweetExprRecord(Distributer sharer, ShareTweet shareTweet) {
+		
+		//本人获取
+		ExpRecordType type = expRecordTypeDao.findByShareTweetBySelf();
+		_save_exp_record_with_share_tweet(sharer, sharer, 1, type, shareTweet);
+		
+		//上一级获取
+		ExpRecordType type2 = expRecordTypeDao.findByShareTweetBySubordiante();
+		_save_exp_record_with_share_tweet(
+				sharer.getSuperDistributer(), sharer, 1, type2, shareTweet);
 	}
 }

@@ -18,4 +18,14 @@ public class ExpRecordTypeDaoImpl extends BaseDaoImpl<ExpRecordType, Integer> im
 		return get(17000002);
 	}
 
+	@Override
+	public ExpRecordType findByShareTweetBySelf() {
+		return get(17000011);
+	}
+
+	@Override
+	public ExpRecordType findByShareTweetBySubordiante() {
+		return get(17000012);
+	}
+
 }

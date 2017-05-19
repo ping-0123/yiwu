@@ -106,6 +106,7 @@
             <tx:method name="datagrid*" propagation="SUPPORTS" />  
             <tx:method name="login*"/>
             <tx:method name="register"/>
+            <tx:method name="share*" />
   
             <tx:method name="*" />  
         </tx:attributes>  
