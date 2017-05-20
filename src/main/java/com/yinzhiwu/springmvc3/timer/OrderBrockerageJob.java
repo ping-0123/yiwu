@@ -24,7 +24,6 @@ public class OrderBrockerageJob extends QuartzJobBean implements Serializable {
 
 	@Override
 	public void executeInternal(JobExecutionContext context) throws JobExecutionException {
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		moneyRecordService.saveCommissionRecord();
 	}
 

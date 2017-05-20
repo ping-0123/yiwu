@@ -5,7 +5,6 @@ import java.util.List;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.MoneyRecord;
 import com.yinzhiwu.springmvc3.entity.MoneyRecordType;
-import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 import com.yinzhiwu.springmvc3.enums.MoneyRecordCategory;
 import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
 import com.yinzhiwu.springmvc3.model.PayDepositModel;

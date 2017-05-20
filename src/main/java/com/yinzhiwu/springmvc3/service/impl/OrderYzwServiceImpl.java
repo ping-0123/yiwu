@@ -3,12 +3,13 @@ package com.yinzhiwu.springmvc3.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.OneToMany;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
-import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
@@ -23,6 +24,7 @@ public class OrderYzwServiceImpl  extends BaseServiceImpl<OrderYzw,String> imple
 	@Autowired
 	private OrderYzwDao orderDao;
 	
+	@OneToMany
 	@Autowired
 	private DistributerDao distributerDao;
 	
