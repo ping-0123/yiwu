@@ -2,7 +2,6 @@ package com.test;
 
 import java.util.ArrayList;
 
-import org.hibernate.engine.jdbc.batch.spi.Batch;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

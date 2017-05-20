@@ -139,227 +139,224 @@ public class CustomerYzw  extends BaseYzwEntity{
 		this.sourceOfCustomer = "微信";
 	}
 
-	
-
-	public final Integer getId() {
+	public Integer getId() {
 		return id;
 	}
-
-	public final void setId(Integer id) {
-		this.id = id;
-	}
-
-
-	public final String getAuditOrChild() {
-		return auditOrChild;
-	}
-
-	public final void setAuditOrChild(String auditOrChild) {
-		this.auditOrChild = auditOrChild;
-	}
-
-	public final String getIsMember() {
-		return isMember;
-	}
-
-	public final void setIsMember(String isMember) {
-		this.isMember = isMember;
-	}
-
-	public final String getMemberCard() {
-		return memberCard;
-	}
-
-	public final void setMemberCard(String memberCard) {
-		this.memberCard = memberCard;
-	}
-
-	public final String getName() {
-		return name;
-	}
-
-	public final void setName(String name) {
-		this.name = name;
-	}
-
-	public final String getGender() {
-		return gender;
-	}
-
-	public final void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public final String getMobilePhone() {
-		return mobilePhone;
-	}
-
-	public final void setMobilePhone(String mobilePhone) {
-		this.mobilePhone = mobilePhone;
-	}
-
-	public final String getResidentId() {
-		return residentId;
-	}
-
-	public final void setResidentId(String residentId) {
-		this.residentId = residentId;
-	}
-
-	public final Date getBirthday() {
-		return birthday;
-	}
-
-	public final void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-
-	public final Integer getAge() {
-		return age;
-	}
-
-	public final void setAge(Integer age) {
-		this.age = age;
-	}
-
-	public final String getQq() {
-		return qq;
-	}
-
-	public final void setQq(String qq) {
-		this.qq = qq;
-	}
-
-	public final String getWeChat() {
-		return weChat;
-	}
-
-	public final void setWeChat(String weChat) {
-		this.weChat = weChat;
-	}
-
-	public final String getAddress() {
-		return address;
-	}
-
-	public final void setAddress(String address) {
-		this.address = address;
-	}
-
-	public final String getCompany() {
-		return company;
-	}
-
-	public final void setCompany(String company) {
-		this.company = company;
-	}
-
-	public final String getProfession() {
-		return profession;
-	}
-
-	public final void setProfession(String profession) {
-		this.profession = profession;
-	}
-
-	public final String getInteresting() {
-		return interesting;
-	}
-
-	public final void setInteresting(String interesting) {
-		this.interesting = interesting;
-	}
-
-	public final String getPhoto() {
-		return photo;
-	}
-
-	public final void setPhoto(String photo) {
-		this.photo = photo;
-	}
-
-	public final String getCustomerLevel() {
-		return customerLevel;
-	}
-
-	public final void setCustomerLevel(String customerLevel) {
-		this.customerLevel = customerLevel;
-	}
-
-	public final String getSourceOfCustomer() {
-		return sourceOfCustomer;
-	}
-
-	public final void setSourceOfCustomer(String sourceOfCustomer) {
-		this.sourceOfCustomer = sourceOfCustomer;
-	}
-
-	public final Date getDayOfNextTrack() {
-		return DayOfNextTrack;
-	}
-
-	public final void setDayOfNextTrack(Date dayOfNextTrack) {
-		DayOfNextTrack = dayOfNextTrack;
-	}
-
-	public final Integer getTimesOfUntrack() {
-		return timesOfUntrack;
-	}
-
-	public final void setTimesOfUntrack(Integer timesOfUntrack) {
-		this.timesOfUntrack = timesOfUntrack;
-	}
-
-	public final Integer getTimesOfRemainderCourse() {
-		return timesOfRemainderCourse;
-	}
-
-	public final void setTimesOfRemainderCourse(Integer timesOfRemainderCourse) {
-		this.timesOfRemainderCourse = timesOfRemainderCourse;
-	}
-
-	public final String getPassword() {
-		return password;
-	}
-
-	public final void setPassword(String password) {
-		this.password = password;
-	}
-
-	public final Integer getCredit() {
-		return credit;
-	}
-
-	public final void setCredit(Integer credit) {
-		this.credit = credit;
-	}
-
-	public final Float getEarnest() {
-		return earnest;
-	}
-
-	public final void setEarnest(Float earnest) {
-		this.earnest = earnest;
-	}
-
-	
-
 
 	public EmployeeYzw getSalesman() {
 		return salesman;
 	}
 
-	public void setSalesman(EmployeeYzw salesman) {
-		this.salesman = salesman;
+	public String getAuditOrChild() {
+		return auditOrChild;
+	}
+
+	public String getIsMember() {
+		return isMember;
+	}
+
+	public String getMemberCard() {
+		return memberCard;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public String getMobilePhone() {
+		return mobilePhone;
+	}
+
+	public String getResidentId() {
+		return residentId;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public Integer getAge() {
+		return age;
+	}
+
+	public String getQq() {
+		return qq;
+	}
+
+	public String getWeChat() {
+		return weChat;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public String getProfession() {
+		return profession;
+	}
+
+	public String getInteresting() {
+		return interesting;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public String getCustomerLevel() {
+		return customerLevel;
+	}
+
+	public String getSourceOfCustomer() {
+		return sourceOfCustomer;
+	}
+
+	public Date getDayOfNextTrack() {
+		return DayOfNextTrack;
+	}
+
+	public Integer getTimesOfUntrack() {
+		return timesOfUntrack;
+	}
+
+	public Integer getTimesOfRemainderCourse() {
+		return timesOfRemainderCourse;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public Integer getCredit() {
+		return credit;
+	}
+
+	public Float getEarnest() {
+		return earnest;
 	}
 
 	public Distributer getDistributer() {
 		return distributer;
 	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setSalesman(EmployeeYzw salesman) {
+		this.salesman = salesman;
+	}
+
+	public void setAuditOrChild(String auditOrChild) {
+		this.auditOrChild = auditOrChild;
+	}
+
+	public void setIsMember(String isMember) {
+		this.isMember = isMember;
+	}
+
+	public void setMemberCard(String memberCard) {
+		this.memberCard = memberCard;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public void setMobilePhone(String mobilePhone) {
+		this.mobilePhone = mobilePhone;
+	}
+
+	public void setResidentId(String residentId) {
+		this.residentId = residentId;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
+
+	public void setWeChat(String weChat) {
+		this.weChat = weChat;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	public void setProfession(String profession) {
+		this.profession = profession;
+	}
+
+	public void setInteresting(String interesting) {
+		this.interesting = interesting;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
+	public void setCustomerLevel(String customerLevel) {
+		this.customerLevel = customerLevel;
+	}
+
+	public void setSourceOfCustomer(String sourceOfCustomer) {
+		this.sourceOfCustomer = sourceOfCustomer;
+	}
+
+	public void setDayOfNextTrack(Date dayOfNextTrack) {
+		DayOfNextTrack = dayOfNextTrack;
+	}
+
+	public void setTimesOfUntrack(Integer timesOfUntrack) {
+		this.timesOfUntrack = timesOfUntrack;
+	}
+
+	public void setTimesOfRemainderCourse(Integer timesOfRemainderCourse) {
+		this.timesOfRemainderCourse = timesOfRemainderCourse;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setCredit(Integer credit) {
+		this.credit = credit;
+	}
+
+	public void setEarnest(Float earnest) {
+		this.earnest = earnest;
+	}
+
 	public void setDistributer(Distributer distributer) {
 		this.distributer = distributer;
 	}
+
+	
+
 	
 	
 }
