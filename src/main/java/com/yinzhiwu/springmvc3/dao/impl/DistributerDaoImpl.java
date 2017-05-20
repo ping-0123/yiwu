@@ -73,7 +73,7 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		if (sum==0)
 			return 0;
 		else
-			return counts.get(0).intValue()/sum;
+			return counts.get(0).intValue()/(float)sum;
 	}
 
 	@Override
@@ -109,6 +109,16 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		@SuppressWarnings("deprecation")
 		List<Distributer> distributers = getSession().createNativeQuery(sql, Distributer.class).list();
 		return distributers;
+	}
+
+	@Override
+	public int findCountByPhoneNo(String phoneNo) {
+		return findCountByProperty("phoneNo", phoneNo);
+	}
+
+	@Override
+	public int findCountByWechatNo(String wechatNo) {
+		return findCountByProperty("wechatNo", wechatNo);
 	}
 
 

@@ -1,9 +1,5 @@
 package com.yinzhiwu.springmvc3.entity.yzw;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
@@ -15,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -83,6 +78,134 @@ public class DepartmentYzw extends BaseYzwEntity {
 	
 	@Column
 	private String province;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public DepartmentYzw getSuperior() {
+		return superior;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public Integer getManager1() {
+		return manager1;
+	}
+
+	public Integer getManager2() {
+		return manager2;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Integer getRemoved() {
+		return removed;
+	}
+
+	public Integer getFlag() {
+		return flag;
+	}
+
+	public Integer getWparam() {
+		return wparam;
+	}
+
+	public Integer getLparam() {
+		return lparam;
+	}
+
+	public String getOperationDistrict() {
+		return operationDistrict;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public String getOfficialAccount() {
+		return officialAccount;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setSuperior(DepartmentYzw superior) {
+		this.superior = superior;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public void setManager1(Integer manager1) {
+		this.manager1 = manager1;
+	}
+
+	public void setManager2(Integer manager2) {
+		this.manager2 = manager2;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setRemoved(Integer removed) {
+		this.removed = removed;
+	}
+
+	public void setFlag(Integer flag) {
+		this.flag = flag;
+	}
+
+	public void setWparam(Integer wparam) {
+		this.wparam = wparam;
+	}
+
+	public void setLparam(Integer lparam) {
+		this.lparam = lparam;
+	}
+
+	public void setOperationDistrict(String operationDistrict) {
+		this.operationDistrict = operationDistrict;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public void setOfficialAccount(String officialAccount) {
+		this.officialAccount = officialAccount;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
 	
 //	@OneToMany(mappedBy="department")
 //	List<EmployeeYzw> employees = new ArrayList<>();

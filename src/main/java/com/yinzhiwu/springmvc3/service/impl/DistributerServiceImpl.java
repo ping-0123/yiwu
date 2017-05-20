@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.springmvc3.dao.CapitalAccountDao;
-import com.yinzhiwu.springmvc3.dao.CustomerDao;
 import com.yinzhiwu.springmvc3.dao.CustomerYzwDao;
+import com.yinzhiwu.springmvc3.dao.DepartmentYzwDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.ExpGradeDao;
 import com.yinzhiwu.springmvc3.entity.CapitalAccount;
-import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
+import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.springmvc3.model.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.DistributerApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
@@ -40,6 +40,9 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	
 	@Autowired
 	private DistributerDao distributerDao;
+	
+	@Autowired
+	private DepartmentYzwDao departmentYzwDao;
 	
 	@Autowired
 	private CustomerYzwDao customerYzwDao;
@@ -64,6 +67,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	
 	@Override
 	public  YiwuJson<DistributerApiView> register(String invitationCode, Distributer distributer){
+		//验证手机号码是否已注册
+		if (distributerDao.findCountByPhoneNo(distributer.getPhoneNo()) > 0) 
+			return new YiwuJson<>(distributer.getPhoneNo() + " 该手机号码已经被注册 ");
+		//验证微信号是否已被注册
+		if(distributerDao.findCountByWechatNo(distributer.getWechatNo())> 0)
+			return new YiwuJson<>(distributer.getWechatNo() + " 该微信号已经被注册 ");
 		
 		//设置默认帐号
 		distributer.initialize();
@@ -81,6 +90,11 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				mYiwuJson.setMsg("无效的分享码");
 			}
 		
+		//设置门店
+		DepartmentYzw store = null;
+		if(distributer.getFollowedByStore() != null)
+			store= departmentYzwDao.get(distributer.getFollowedByStore().getId());
+		distributer.setFollowedByStore(store);
 		
 		//关联Customer
 		CustomerYzw customer;
