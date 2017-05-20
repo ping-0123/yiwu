@@ -106,6 +106,7 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	@Override
 	public List<Distributer> findTopThree() {
 		String sql = "select * from Distributer order by accumulativeBrokerage desc limit 3";
+		@SuppressWarnings("deprecation")
 		List<Distributer> distributers = getSession().createNativeQuery(sql, Distributer.class).list();
 		return distributers;
 	}

@@ -108,9 +108,6 @@ public class ElectricContractYzw {
 	}
 	
 
-	public String getContractNo() {
-		return contractNo;
-	}
 
 	public String getCustomerName() {
 		return customerName;
@@ -241,9 +238,6 @@ public class ElectricContractYzw {
 		return sf_last_change_time;
 	}
 
-	public void setContractNo(String contractNo) {
-		this.contractNo = contractNo;
-	}
 
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
@@ -383,6 +377,20 @@ public class ElectricContractYzw {
 	public void setSf_last_change_user(int sf_last_change_user) {
 		this.sf_last_change_user = sf_last_change_user;
 	}
+
+
+
+	public String getContractNo() {
+		return contractNo;
+	}
+
+
+
+	public void setContractNo(String contractNo) {
+		this.contractNo = contractNo;
+	}
+
+
 	
 	
 }

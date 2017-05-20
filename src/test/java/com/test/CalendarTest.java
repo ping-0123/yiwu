@@ -17,6 +17,11 @@ public class CalendarTest {
 	private static long MILLISESONDS_OF_ONE_DAY =1000*3600*24;
 	
 	private static DateFormat DATE_FOMATE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	@Test
+	public void test(){
+		System.out.println("aa\nbb\n");
+	}
 
 	@Test
 	public void testDateCompare(){
