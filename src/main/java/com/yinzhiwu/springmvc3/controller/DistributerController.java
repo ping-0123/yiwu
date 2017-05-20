@@ -143,6 +143,13 @@ public class DistributerController {
         return new ModelAndView("distributer/form");
     }
 
+   
+   @GetMapping(value="validatyPhoneNo")
+   public YiwuJson<Boolean> validatyIsRegister(String phoneNo){
+	   if(! phoneNo.matches("^1\\d{10}$"))
+		   return new YiwuJson<>("请输入合法的11位数手机号码");
+	   return distributerService.judgePhoneNoIsRegistered(phoneNo);
+   }
 	  
 	   
 }

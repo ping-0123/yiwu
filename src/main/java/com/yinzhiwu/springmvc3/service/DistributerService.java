@@ -26,5 +26,7 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 
 	void setDefaultCapitalAccount(int distributerId, int accountId);
 
+	YiwuJson<Boolean> judgePhoneNoIsRegistered(String phoneNo);
+
 
 }

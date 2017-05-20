@@ -97,6 +97,7 @@
             <tx:method name="remove*" />  
             <tx:method name="repair" />  
             <tx:method name="deleteAndRepair" />  
+            <tx:method name="judge*"/>
   
             <tx:method name="get*"  />  
             <tx:method name="set*" />

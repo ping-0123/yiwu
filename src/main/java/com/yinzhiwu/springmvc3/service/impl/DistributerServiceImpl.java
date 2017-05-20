@@ -230,5 +230,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		distributerDao.update(d);
 	}
 
+	@Override
+	public YiwuJson<Boolean> judgePhoneNoIsRegistered(String phoneNo) {
+		if(distributerDao.findCountByPhoneNo(phoneNo) >0)
+			return new YiwuJson<>(phoneNo + " 该手机号码已注册");
+		return new YiwuJson<>(new Boolean(false));
+	}
+
 	
 }
