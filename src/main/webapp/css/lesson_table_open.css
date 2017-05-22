@@ -2,19 +2,92 @@
 
 @media screen and (orientation: portrait) { 
   /*竖屏 css*/  
-  *{padding: 0; margin: 0; font-size: 25px;} 
-  .display_second{display: none;}
-  .display_first{ text-align: center;margin-top: 30%;}
-  .display_first img{ width: 80%; height: auto;margin-top: 35%;}
-  .display_first p{padding-top: 20%;font-weight: bold;line-height: 50px;}
-  .display_first p span{color:darkolivegreen;}
-  .display_first p small{font-weight: 100;}
+       *{padding: 0;margin:0;text-decoration: none;list-style: none;font-family: "微软雅黑";}  
+       .nav{ width: 100%; height: 80px;}
+       .logo{width:100%;height:50px;text-align: center;}
+       .logo img{ width:120px;height: auto;margin-top: 10px;}
+       .menu{ width:100%;height: 30px;line-height: 30px;}
+       
+       /*select*/
+       .select_option ul li{ float: left; width: 30%;text-align: center;}
+       .select_option ul li:first-child{margin-left:5%;}
+       .select_option ul li select{border: none;
+                                    background: transparent;
+                                    appearance:none;
+                                    -moz-appearance:none;
+                                    -webkit-appearance:none;}
+       .select_option ul li select:focus{background-color: transparent;}                          
+       .select_option ul li select:hover{background-color:transparent; ;} 
+       .district{background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:70px 12px;}
+       .district select{ width:80%;height: 30px;border-radius:6px; font-size: 16px;padding-left: 5px;padding-left: 20px;}
+       .store{ width: 20%;background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:80px 12px ;}
+       .store select{width: 90%;height: 30px;border-radius:6px;font-size: 14px;padding-left: 5px;padding-left: 20px;}
+       .type{ width: 20%;background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:80px 12px ;}
+       .type select{width: 90%;height: 30px;border-radius:6px;font-size: 14px;padding-left: 10%;padding-left: 20px;}
+       /*第二段*/
+      .address_week{ width: 100%;height: 100px;}
+			.first_line{ display: block; width: 100%; height: 30px; line-height: 30px;}
+			.first_line span{ font-size: 16px;padding-left:13%;color: red;}
+			.first_line small{padding-left: 20px;font-size: 16px;color: red;}
+			.second_line{ display: block; width: 100%; height: 70px;overflow: hidden;}
+      .second_line ul{ width: 100%;}
+      .address_week_1{ width: 65%;height:40px;line-height: 14px;}
+      .address_week_1 li{ width: 100%;height:20px;line-height:20px;padding-left: 18%;}
+      .address_week_1 li span{font-size: 12px;}
+      .address_week_2{ width: 35%;}
+      .address_week_2 li:first-child{float:left;margin-left: 13%;}
+      .address_week_2 li:last-child{ float: right;margin-right: 13%;}
+      .address_week_2 li a{font-size: 16px;color: #000000;}
+      #address{background:url(../images/adress.png);background-repeat:no-repeat ;background-size:13px 13px;background-position:11% 6px;}
+      #phone{background:url(../images/phone.png);background-repeat:no-repeat; 
+              background-size:11px 11px;background-position:11% 6px;}
+              
+      
+           /*table*/
+        .table_lesson{ width: 100%;overflow-x: scroll}
+        .table_lesson table{ width:600px; margin:0 auto;border-collapse:collapse;}
+        .table_lesson table thead{border-top:1px dotted darkgray;border-bottom: 1px dotted darkgray;z-index: 1000;}
+        .table_lesson table thead tr th{height: 60px; font-size: 11px;font-weight:400;line-height: 12px;}
+        .table_lesson table tbody tr td{height: 62px; text-align: center;}
+        .table_lesson table tbody tr td small{font-size: 10px;}
+        .table_lesson table tbody tr td ul{line-height: 10px;    margin-top: 5px;margin-left: 2px;}
+        .table_lesson table tbody tr td ul li{ text-align: center;}
+        .table_lesson table tbody tr td:first-child{margin-top:20px;}
+        .open_type{background-color:#FE007F;
+                   width:86%;
+                   border-radius:5px;
+                   padding-top: 5px;padding-bottom: 5px;padding-left: 4px;padding-right: 4px; }
+        .open_type li{color:white;}
+        
+        .close_type{background-color:#ffea2f; width:86%;border-radius:5px;
+        
+                    padding-top: 5px;padding-bottom: 5px;padding-left: 4px;padding-right: 4px;}
+                    
+        
+        .current{background-color: #d2d2d2;}
+        .close_type li:first-child small{font-size: 12px;}
+        .open_type li:first-child small{font-size: 12px;}
+        
+        .open_A_type{background-color:#FE007F;
+                   width:86%;
+                   border-radius:5px;
+                   padding-top: 5px;padding-bottom: 5px;padding-left: 4px;padding-right: 4px;color: white;}
+        .open_B_type{background-color: cornflowerblue;
+                   width:86%;
+                   border-radius:5px;
+                   padding-top: 5px;padding-bottom: 5px;padding-left: 4px;padding-right: 4px;color: white;}
+         
+          .footer{min-height: 30px; width: 96%; margin-top:10px;border-top:1px dotted darkgray;margin-left:2% ;}
+          .open_tip{height: 40px;line-height: 40px;}
+          .open_tip img{ width: 6px; height: auto;float: left;margin-top: 13px;margin-left: 5px;}
+          .open_tip p{float: left; padding-left: 6px;font-size: 12px;}
+            
   }    
 
 @media screen and (orientation: landscape) {   
   /*横屏 css*/ 
   *{padding: 0;margin:0;text-decoration: none;list-style: none;font-family: "微软雅黑";}  
-  .display_first{display: none;}
+
          /*nav*/
         .nav{ width: 100%; height: 80px;}
         .logo{ float: left; width: 30%; height: 80px;}
@@ -43,12 +116,14 @@
 				.second_line{ display: block; width: 100%; height: 40px; line-height: 20px;overflow: hidden;}
         .second_line ul{ float: left;}
         .address_week_1{ width: 65%;line-height: 14px;margin-top:8px;}
+        .address_week_1 li{float: none!important;}
         .address_week_2{ width: 35%;margin-top: 16px;}
         .address_week_2 li:first-child{margin-left: 10%;}
         .address_week_2 li:last-child{ float: right;margin-right: 10%;}
         .address_week_2 li a{font-size: 18px;color: #000000;}
         .second_line ul li{ float: left; font-size: 12px;}
-        #address{padding-left: 18px;background:url(../images/adress.png);background-repeat:no-repeat ;background-size:13px 13px;background-position:18px 0px ;}
+        #address{padding-left: 18px;background:url(../images/adress.png);background-repeat:no-repeat ;
+                 background-size:13px 13px;background-position:18px 0px ;}
         #address span{padding-left: 16px;}
         #phone{padding-left: 18px;}
         #phone span{padding-left: 16px;white-space:nowrap; color:#000000;position: absolute;top:132px;background:url(../images/phone.png);background-repeat:no-repeat; background-size:11px 11px;background-position:1px 1px}
