@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.exception.DataNotFoundException;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +38,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	
 	@Autowired
 	private ExpGradeDao expGradeDao;
+	
 	
 	@Autowired
 	private DistributerDao distributerDao;

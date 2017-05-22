@@ -1,7 +1,5 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
-import javax.enterprise.inject.New;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
