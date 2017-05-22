@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -13,9 +13,7 @@
 			            <div class="logo">
 						<img src="images/logo.png">
 						</div>
-						<div class="return">
 
-						<a href="javascript:void(0);" onclick="window.location.href='journaling.html?districtId='+districtId+'&year='+year+'&productTypeId='+productTypeId+'&month='+month+''">返回</a>
 						</div>
 						
 						<div class="store">
@@ -125,10 +123,6 @@ var productTypeId=getUrlParam('product-id');
 var districtId=getUrlParam('district-id');
 var requestDate = new Date(payedDate);
 var curDate =format(payedDate,'yyyy-MM-dd');
-
-var year=requestDate.getFullYear();
-var month = requestDate.getMonth()+1;
-var url=baseApiUrl+"api/order/getDailyOrders";
 
 
 	$(document).ready(function(){

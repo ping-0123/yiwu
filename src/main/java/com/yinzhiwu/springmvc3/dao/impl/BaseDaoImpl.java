@@ -3,6 +3,7 @@ package com.yinzhiwu.springmvc3.dao.impl;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
+import com.yinzhiwu.springmvc3.entity.BaseEntity;
 
 
 
@@ -45,18 +47,18 @@ public class BaseDaoImpl<T,PK extends Serializable>
     }  
   
     protected Session getSession() {  
-        return sessionFactory.getCurrentSession();  
+        return getHibernateTemplate().getSessionFactory().getCurrentSession();  
     }  
   
     public T get(PK id) {  
         Assert.notNull(id, "id is required");  
-        return (T) getSession().get(entityClass, id);  
+        return (T) getHibernateTemplate().get(entityClass, id);  
     }  
   
 	@SuppressWarnings("unchecked")
 	public PK save(T entity)  {  
         Assert.notNull(entity, "entity is required");  
-        return (PK) getSession().save(entity);  
+        return (PK) getHibernateTemplate().save(entity);  
     }
 
 	@SuppressWarnings("unchecked")
@@ -124,6 +126,34 @@ public class BaseDaoImpl<T,PK extends Serializable>
 		}
 	}
 
+
+
+	@Override
+	public List<T> findByExample(T entity) {
+		Assert.notNull(entity, "entity is required");
+		return getHibernateTemplate().findByExample(entity);
+	}  
+	
+	@Override
+	public void update(T entity){
+		Assert.notNull(entity, "entity is required");
+		if(entity instanceof BaseEntity){
+			BaseEntity baseEntity = (BaseEntity) entity;
+			baseEntity.setLastModifiedDate(new Date());
+			getHibernateTemplate().update(baseEntity);
+			return;
+		}
+		getHibernateTemplate().update(entity);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public int findCount() {
+		String hql = "select count(*) from " + entityClass.getSimpleName();
+		List<Long> sums =   (List<Long>) getHibernateTemplate().find(hql);
+		return sums.get(0).intValue();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findByProperties(String[] propertyNames, Object[] values) {
@@ -141,27 +171,18 @@ public class BaseDaoImpl<T,PK extends Serializable>
 				hql.toString(), 
 				map.keySet().toArray(new String[] {}),
 				map.values().toArray(new Object[] {}));
-		
 
 	}
 
 	@Override
-	public List<T> findByExample(T entity) {
-		Assert.notNull(entity, "entity is required");
-		return getHibernateTemplate().findByExample(entity);
-	}  
-	
-	@Override
-	public void update(T entity){
-		Assert.notNull(entity, "entity is required");
-		getHibernateTemplate().update(entity);
-	}
-
-	@Override
-	public int findCount() {
-		String hql = "select count(*) from " + entityClass.getSimpleName();
-		List<Long> sums =   (List<Long>) getHibernateTemplate().find(hql);
-		return sums.get(0).intValue();
+	public int findCountByProperties(String[] propertyNames, Object[] values){
+		if(propertyNames.length != values.length)
+			try {
+				throw new Exception("传入的属性名和属性值数量不一致");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		return findByProperties(propertyNames, values).size();
 	}
 }
 

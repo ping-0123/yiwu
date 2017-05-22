@@ -34,6 +34,10 @@ public class ShareTweet extends BaseEntity {
 	
 	private Date shareDate;
 
+	public ShareTweet(){
+		super();
+		this.shareDate = super.getCreateDate();
+	}
 
 	public Distributer getSharer() {
 		return sharer;

@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
+
 @Entity
 @Table
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -30,7 +32,7 @@ public abstract class MoneyRecord extends AbstractRecord {
 	@ManyToOne
 	@JoinColumn(name="order_id", 
 		foreignKey=@ForeignKey(value = ConstraintMode.NO_CONSTRAINT, name="fk_moneyrecord_order_id"))  //
-	private Order order;
+	private OrderYzw order;
 
 	public float getCurrentBrokerage() {
 		return currentBrokerage;
@@ -49,14 +51,6 @@ public abstract class MoneyRecord extends AbstractRecord {
 	}
 
 
-	public Order getOrder() {
-		return order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-
 	public MoneyRecord(Distributer beneficiaty, Distributer contributor, float contributedValue,
 			RecordType recordType) {
 		super(beneficiaty, contributor, contributedValue, recordType);
@@ -66,6 +60,14 @@ public abstract class MoneyRecord extends AbstractRecord {
 
 	public MoneyRecord() {
 		super();
+	}
+
+	public OrderYzw getOrder() {
+		return order;
+	}
+
+	public void setOrder(OrderYzw order) {
+		this.order = order;
 	}
 	
 	

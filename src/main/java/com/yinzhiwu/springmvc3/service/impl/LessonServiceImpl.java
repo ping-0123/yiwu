@@ -5,12 +5,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.AppointmentDao;
 import com.yinzhiwu.springmvc3.dao.ClassRoomDao;
 import com.yinzhiwu.springmvc3.dao.CourseDao;
+import com.yinzhiwu.springmvc3.dao.CustomerDao;
 import com.yinzhiwu.springmvc3.dao.LessonDao;
 import com.yinzhiwu.springmvc3.dao.OrderDao;
 import com.yinzhiwu.springmvc3.entity.ClassRoom;
@@ -22,7 +27,9 @@ import com.yinzhiwu.springmvc3.model.MiniLesson;
 import com.yinzhiwu.springmvc3.service.LessonService;
 
 @Service
-public class LessonServiceImpl implements LessonService {
+public class LessonServiceImpl extends BaseServiceImpl<Lesson, Integer> implements LessonService {
+	
+	public static Log LOG = LogFactory.getLog(LessonServiceImpl.class);
 	
 	@Autowired
 	private LessonDao lessonDao;
@@ -38,6 +45,10 @@ public class LessonServiceImpl implements LessonService {
 	
 	@Autowired
 	private OrderDao orderDao;
+	
+	@Autowired
+	@Qualifier("customerDaoImpl")
+	private CustomerDao customerDao;
 	
 	@Override
 	public Lesson findById(int lessonId) {
@@ -76,7 +87,14 @@ public class LessonServiceImpl implements LessonService {
 
 	@Override
 	public List<LessonList> findLessonWeekList(int storeId, String courseType, String teacherName, String danceCatagory,
-			Date date , Customer c) {
+			Date date , String wechatNo) {
+		
+		Customer c=null;
+		try {
+			c = customerDao.findByWeChat(wechatNo);
+		} catch (DataNotFoundException e) {
+			LOG.debug(e.getStackTrace());
+		}
 		
 		//获取周日到周六所对应的日期
 		Calendar ca = Calendar.getInstance();
@@ -127,8 +145,8 @@ public class LessonServiceImpl implements LessonService {
 
 
 	@Override
-	public void save(Lesson lesson) {
-		lessonDao.save(lesson);
+	public Integer save(Lesson lesson) {
+		return lessonDao.save(lesson);
 	}
 
 

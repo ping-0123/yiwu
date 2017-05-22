@@ -45,25 +45,25 @@ public class CheckIns {
 	@Column
 	private String uncallrollReason;
 	
-	@Column
+	@Column(name="sf_create_user")
 	private Integer createUserId;
 	
-	@Column
+	@Column(name="sf_last_change_user")
 	private Integer lastChangeUserId;
 	
-	@Column
+	@Column(name="sf_create_time")
 	private Date createTime;
 	
-	@Column
+	@Column(name="sf_last_change_time")
 	private Date lastChangeTime;
 	
 	@Column
 	private Integer machineCode;
 	
-	@Column
+	@Column(name="sf_last_sync_timeStamp")
 	private Date lastSyncTimeStamp;
 	
-	@Column
+	@Column(name="sf_last_change_timeStamp")
 	private Date lastChangeTimeStamp;
 
 	public final int getId() {

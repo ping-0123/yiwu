@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>ueditor_post_test</title>
+	</head>
+	<body>
+    <form action="../api/tweet/save" method="post" enctype="multipart/form-data">
+    	<label for="author">Author:</label>
+    	<input id="author" name="author" type="text" /> <br  />
+    	<p><label for="author">Title:</label>
+    	<input id="title" name="title" type="text"  /> </p>
+    	<p><label for="tweetType">tweetType:</label>
+    	<select name="tweetTypeId">
+    		 <option value="17000015">产品</option>
+    		 <option value="17000016">市场活动</option>
+    	</select>
+    	</p>
+    	<p><label for="digest">内容摘要: </label>
+    	<input type="text" id="digest" name="digest" />
+    	</p>
+    	<p><label for="coverIcon">简介图片: </label>
+    	<img id="pic", src="" >
+    	<input type="file" id="coverIcon", name="coverIcon" />
+    	</p>
+    	
+        <!-- 加载编辑器的容器 -->
+        <script id="container" name="content" type="text/plain">
+            这里写你的初始化内容
+        </script>
+        <p>
+        	<input id="reset" type="reset"  />  
+        	<input id="submit" type="submit"  />
+        </p>
+    </form>
+    <!-- 配置文件 -->
+    <script type="text/javascript" src="ueditor.config.js"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="ueditor.all.js"></script>
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+        var editor = UE.getEditor('container');
+    </script>
+    
+    
+</body>
+</html>

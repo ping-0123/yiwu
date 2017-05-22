@@ -1,6 +1,5 @@
 package com.yinzhiwu.springmvc3.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
@@ -14,13 +13,17 @@ public class Message extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 4309449622965840107L;
+	
+	public enum Status{
+		UNREAD,
+		READ
+	}
 
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_Message_receiver_id"))
 	private Distributer receiver;
 	
-	@Column(length=10)
-	private String status;
+	private Status status;
 	
 	private String content;
 	
@@ -29,15 +32,14 @@ public class Message extends BaseEntity {
 	private MessageType messageType;
 
 
+	
+	
 	public Distributer getReceiver() {
 		return receiver;
 	}
 
 	
 
-	public String getStatus() {
-		return status;
-	}
 
 	public String getContent() {
 		return content;
@@ -47,10 +49,7 @@ public class Message extends BaseEntity {
 		this.receiver = receiver;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
+	
 	public void setContent(String content) {
 		this.content = content;
 	}
@@ -64,6 +63,28 @@ public class Message extends BaseEntity {
 
 	public void setMessageType(MessageType messageType) {
 		this.messageType = messageType;
+	}
+
+
+
+
+	public Status getStatus() {
+		return status;
+	}
+
+
+
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+
+
+
+	public Message() {
+		super();
+		this.status = Status.UNREAD;
 	}
 	
 	

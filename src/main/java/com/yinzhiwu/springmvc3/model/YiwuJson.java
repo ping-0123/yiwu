@@ -27,6 +27,13 @@ public class YiwuJson<T> {
 		this.data = data;
 		this.result = true;
 	}
+	
+	public YiwuJson(String msg){
+		this.returnCode = 200;
+		this.secure = false;
+		this.msg = msg;
+		this.result = false;
+	}
 
 	
 	

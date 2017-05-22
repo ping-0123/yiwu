@@ -12,4 +12,8 @@ public class WeChatShareTweet extends ShareTweet {
 	 */
 	private static final long serialVersionUID = -219687631656636689L;
 
+	
+	public WeChatShareTweet(){
+		super();
+	}
 }

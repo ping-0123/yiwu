@@ -1,7 +1,7 @@
 package com.yinzhiwu.springmvc3.entity;
 
-import java.util.Date;
 import java.sql.Time;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +15,7 @@ import javax.persistence.Table;
 public class Lesson {
 
 	@Id
+	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer lessonId;
 
@@ -129,22 +130,22 @@ public class Lesson {
 	@Column(name = "sf_create_user")
 	private Integer createUserId;
 
-	@Column(name = "SF_CREATE_TIME")
+	@Column(name = "sf_create_time")
 	private Date createTime;
 
-	@Column(name = "SF_LAST_CHANGE_USER")
+	@Column(name = "sf_last_change_user")
 	private Integer lastChangeUserId;
 
-	@Column(name = "SF_LAST_CHANGE_TIME")
+	@Column(name = "sf_last_change_time")
 	private Date lastChangeTime;
 
-	@Column(name = "MachineCode")
+	@Column(name = "machineCode")
 	private Integer machineCode;
 
-	@Column(name = "Sf_Last_Sync_TimeStamp")
+	@Column(name = "sf_last_sync_timeStamp")
 	private Date lastSyncTimeStamp;
 
-	@Column(name = "SF_Last_Change_Timestamp")
+	@Column(name = "sf_last_change_timeStamp")
 	private Date lastChangeTimeStamp;
 
 	public Lesson(Integer lessonId, String courseid, Date lessonDate, Time startTime, Time endTime, String lessonDesc,

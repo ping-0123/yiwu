@@ -1,4 +1,4 @@
-@media screen and (orientation: portrait) { 
+﻿@media screen and (orientation: portrait) { 
 *{margin:0;padding:0;list-style: none;text-decoration: none;font-family: "微软雅黑";font-size: 12px;}
   .logo{ height: 80px;float: left; width: 40%;}
   .logo img{ width:auto; 
@@ -26,11 +26,12 @@
   .time_choose_1 li:last-child{ color: darkseagreen;padding-top: 4px;padding-left: 5px;}
   .time_choose_2 li:first-child{font-size: 16px;margin-left: 20%;}
   .time_choose_2 li:last-child{font-size: 16px;margin-left: 15%;}
+
    /*表格*/
   .table{width: 100%;overflow-x: scroll;position: relative;}
   .title{ min-width:1600px;}
   .title ul li{ display: block;float: left; width:65px; height:25px; line-height:25px;background-color: gainsboro;text-align: right;}
-  .title ul li:first-child{ width: 75px!important;}
+  .title ul li:first-child{width:71px;}
   .title ul li:last-child{ width: 65px!important;padding-right: 10px;}
   .statistics{ min-width:1600px;clear: both;}
   .statistics li{ float: left; width: 65px; text-align:right;height: 25px;line-height: 25px;}
@@ -71,6 +72,7 @@
   .time_choose_1 li:first-child{ font-size: 16px;margin-left: 10%;}
   .time_choose_1 li:last-child{ color: darkseagreen;padding-top:5px;padding-left: 8px;}
   .time_choose_2 li:first-child{font-size: 16px;margin-left: 20%;font-weight: bold;}
+
   .time_choose_2 li:last-child{font-size: 16px;margin-left: 29%;font-weight: bold;}
   
   
@@ -90,3 +92,4 @@
   .left_position ul li{ width: 75px; height: 25px; line-height:25px;text-align:right;background-color: white;}
   .posion_nav{background-color: gainsboro!important;}
    }
+

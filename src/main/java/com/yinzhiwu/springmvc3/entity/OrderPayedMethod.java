@@ -1,10 +1,12 @@
 package com.yinzhiwu.springmvc3.entity;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -13,7 +15,7 @@ import javax.persistence.Table;
 public class OrderPayedMethod {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	@Column(length=32)
@@ -26,25 +28,25 @@ public class OrderPayedMethod {
 	private float amount;
 	
 	@Column
-	private Integer createUserId;
+	private Integer sf_create_user;
 	
 	@Column
-	private Integer lastChangeUserId;
+	private Integer sf_last_change_user;
 	
 	@Column
-	private Date createTime;
+	private Date sf_create_time;
 	
 	@Column
-	private Date lastChangeTime;
+	private Date sf_last_change_time;
 	
 	@Column
 	private Integer machineCode;
 	
 	@Column 
-	private Date lastSyncTimestamp;
+	private Date sf_last_sync_timeStamp;
 	
 	@Column
-	private Date lastChangeTimestamp;
+	private Date sf_last_change_timeStamp;
 	
 	
 }

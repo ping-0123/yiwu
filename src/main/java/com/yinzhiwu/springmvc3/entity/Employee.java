@@ -52,14 +52,17 @@ public class Employee {
 	@Column
 	private Integer disabled;
 	
-	@Column
+	@Column(name="sf_create_user")
 	private Integer creator;
 	
-	@Column
+	@Column(name="sf_last_change_user")
 	private Integer lastChanger;
 	
 	@Column
 	private Date createTime;
+	
+	@Column(name="sf_last_change_time")
+	private Date lastChangeTime;
 	
 	@Column
 	private Integer removed;
@@ -88,10 +91,10 @@ public class Employee {
 	@Column(length=128)
 	private String bindMac;
 	
-	@Column(name="Sf_Last_Sync_TimeStamp")
+	@Column(name="sf_Last_Sync_TimeStamp")
 	private Date lastSyncTimeStamp;
 	
-	@Column(name="Sf_Last_Change_Timestamp")
+	@Column(name="sf_last_change_timeStamp")
 	private Date lastChangeTimeStamp;
 	
 	@Column
@@ -402,6 +405,16 @@ public class Employee {
 
 	public final void setLastOnlineTimeStamp(Date lastOnlineTimeStamp) {
 		this.lastOnlineTimeStamp = lastOnlineTimeStamp;
+	}
+
+
+	public Date getLastChangeTime() {
+		return lastChangeTime;
+	}
+
+
+	public void setLastChangeTime(Date lastChangeTime) {
+		this.lastChangeTime = lastChangeTime;
 	}
 	
 	

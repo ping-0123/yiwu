@@ -1,27 +1,36 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.exception.DataNotFoundException;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.yinzhiwu.springmvc3.dao.CustomerDao;
+import com.yinzhiwu.springmvc3.dao.CapitalAccountDao;
+import com.yinzhiwu.springmvc3.dao.CustomerYzwDao;
+import com.yinzhiwu.springmvc3.dao.DepartmentYzwDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.ExpGradeDao;
-import com.yinzhiwu.springmvc3.entity.Customer;
+import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
+import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.springmvc3.model.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.DistributerApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.service.ExpRecordService;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
-import com.yinzhiwu.springmvc3.util.GeneratorUtil;
-import com.yinzhiwu.springmvc3.util.SecurityUtil;
-import com.yinzhiwu.springmvc3.util.ShareCodeUtil;
 
 
 
+//@Transactional
 @Service
 public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer> implements DistributerService {
 
@@ -30,17 +39,24 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Autowired
 	private ExpGradeDao expGradeDao;
 	
+	
 	@Autowired
 	private DistributerDao distributerDao;
 	
 	@Autowired
-	private CustomerDao customerDao;
+	private DepartmentYzwDao departmentYzwDao;
+	
+	@Autowired
+	private CustomerYzwDao customerYzwDao;
 	
 	@Autowired
 	private ExpRecordService expRecordService;
 	
 	@Autowired
 	private MoneyRecordService moneyRecordService;
+	
+	@Autowired
+	private CapitalAccountDao capitalAccountDao;
 	
 	@Autowired
 	public void setBaseDao(DistributerDao distributerDao){
@@ -53,6 +69,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	
 	@Override
 	public  YiwuJson<DistributerApiView> register(String invitationCode, Distributer distributer){
+		//验证手机号码是否已注册
+		if (distributerDao.findCountByPhoneNo(distributer.getPhoneNo()) > 0) 
+			return new YiwuJson<>(distributer.getPhoneNo() + " 该手机号码已经被注册 ");
+		//验证微信号是否已被注册
+		if(distributerDao.findCountByWechatNo(distributer.getWechatNo())> 0)
+			return new YiwuJson<>(distributer.getWechatNo() + " 该微信号已经被注册 ");
 		
 		//设置默认帐号
 		distributer.initialize();
@@ -70,23 +92,31 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				mYiwuJson.setMsg("无效的分享码");
 			}
 		
+		//设置门店
+		DepartmentYzw store = null;
+		if(distributer.getFollowedByStore() != null)
+			store= departmentYzwDao.get(distributer.getFollowedByStore().getId());
+		distributer.setFollowedByStore(store);
 		
 		//关联Customer
-		Customer customer;
+		CustomerYzw customer;
 		try {
-			customer = customerDao.findByPhoneNo(distributer.getPhoneNo());
+			customer = customerYzwDao.findByPhoneNo(distributer.getPhoneNo());
 		} catch (DataNotFoundException e) {
 			try {
-				customer = customerDao.findByWeChat(distributer.getWechatNo());
+				customer = customerYzwDao.findByWeChat(distributer.getWechatNo());
 			} catch (DataNotFoundException e1) {
-				customer = new Customer(distributer);
+				customer = new CustomerYzw(distributer);
+//				customerYzwDao.save(customer);  
 			}
 		}
 		distributer.setCustomer(customer);
 		
 		//注册成功
 		try {
+			logger.info("before save");
 			distributerDao.saveBean(distributer);
+			logger.info("after save");
 		} catch (Exception e) {
 			mYiwuJson.setMsg(e.getMessage());
 			mYiwuJson.setResult(false);
@@ -124,11 +154,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		return mYiwuJson;
 	}
 	
-	private DistributerApiView wrapToApiView(Distributer d){
-		DistributerApiView distributerApiView = new DistributerApiView(d);
-		distributerApiView.setBeatRate(distributerDao.getBeatRate(d.getExp()));
-		return distributerApiView;
-	}
 
 	@Override
 	public YiwuJson<DistributerApiView> loginByAccount(String account, String password) {
@@ -149,6 +174,69 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		Distributer distributer = distributerDao.get(id);
 		mYiwuJson.setData(wrapToApiView(distributer));
 		return mYiwuJson;
+	}
+
+	@Override
+	public YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile, String fileSavePath) {
+		Distributer distributer = distributerDao.get(id);
+		String imageName = distributer.getMemberId() + ".jpg";
+		File imageFile = new File(fileSavePath, imageName);
+		try {
+			multipartFile.transferTo(imageFile);
+		} catch (IllegalStateException | IOException e) {
+			mYiwuJson.setMsg(e.getMessage());
+			mYiwuJson.setResult(false);
+			return mYiwuJson;
+		}
+		distributer.setHeadIconName(imageName);
+		distributerDao.update(distributer);
+		mYiwuJson.setData( wrapToApiView(distributer));
+		return mYiwuJson;
+	}
+
+	private DistributerApiView wrapToApiView(Distributer d){
+		DistributerApiView distributerApiView = new DistributerApiView(d);
+		distributerApiView.setBeatRate(distributerDao.getBeatRate(d.getExp()));
+		return distributerApiView;
+	}
+
+	@Override
+	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(int distributerId) {
+		YiwuJson<CapitalAccountApiView> yiwuJson = new YiwuJson<>();
+		CapitalAccountApiView v = new CapitalAccountApiView(
+				distributerDao.get(distributerId)
+					.getDefaultCapitalAccount());
+		yiwuJson.setData(v);
+		return yiwuJson;
+	}
+
+	@Override
+	public YiwuJson<CapitalAccountApiView> getCapitalAccount(int distributerId, String typeName) {
+		YiwuJson<CapitalAccountApiView> yiwuJson = new YiwuJson<>();
+		Distributer d = distributerDao.get(distributerId);
+		Set<CapitalAccount> accounts = d.getCapitalAccounts();
+		for (CapitalAccount a : accounts) {
+			if(typeName.equals(a.getCapitalAccountType().getName())){
+				yiwuJson.setData(new CapitalAccountApiView(a));
+				break;
+			}
+		}
+		return yiwuJson;
+	}
+
+	@Override
+	public void setDefaultCapitalAccount(int distributerId, int accountId) {
+		Distributer d = distributerDao.get(distributerId);
+		CapitalAccount account = capitalAccountDao.get(accountId);
+		d.setDefaultCapitalAccount(account);
+		distributerDao.update(d);
+	}
+
+	@Override
+	public YiwuJson<Boolean> judgePhoneNoIsRegistered(String phoneNo) {
+		if(distributerDao.findCountByPhoneNo(phoneNo) >0)
+			return new YiwuJson<>(phoneNo + " 该手机号码已注册");
+		return new YiwuJson<>(new Boolean(false));
 	}
 
 	

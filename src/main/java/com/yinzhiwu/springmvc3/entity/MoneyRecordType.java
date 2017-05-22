@@ -23,4 +23,7 @@ public class MoneyRecordType extends RecordType{
 		super.setComments(comments);
 		super.setFactor(factor);
 	}
+	
+
+	
 }

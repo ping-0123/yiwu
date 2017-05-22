@@ -1,11 +1,13 @@
 package com.yinzhiwu.springmvc3.entity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,6 +29,8 @@ import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
+import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.springmvc3.enums.Gender;
 
 /**
@@ -41,13 +45,15 @@ import com.yinzhiwu.springmvc3.enums.Gender;
  * 唯一键命名规则: uk_{table name}_{unique key name}
  */
 @Table(name="distributer", 
-	uniqueConstraints={@UniqueConstraint(name="uk_distributer_memberId", columnNames={"memberId"}),
+	uniqueConstraints={
+			@UniqueConstraint(name="uk_distributer_memberId", columnNames={"memberId"}),
 			@UniqueConstraint(name="uk_distributer_account", columnNames={"account"}),
 			@UniqueConstraint(name="uk_distributer_wechatNo", columnNames="wechatNO"),
 			@UniqueConstraint(name="uk_distributer_phoneNo", columnNames="phoneNo"),
 			@UniqueConstraint(name="uk_distributer_shareCode", columnNames="shareCode"),
 			@UniqueConstraint(name="uk_distributer_headIconName", columnNames="headIconName"),
-			@UniqueConstraint(name="fuk_distributer_customer_id", columnNames="customer_id")})
+			@UniqueConstraint(name="fuk_distributer_customer_id", columnNames="customer_id"),
+			@UniqueConstraint(name="fuk_distributer_defaultCapitalAccount_id", columnNames="defaultCapitalAccount_id")})
 public class Distributer extends BaseEntity{
 
 	/**
@@ -82,7 +88,7 @@ public class Distributer extends BaseEntity{
 	@Column(length=32, unique=true, nullable=false)
 	private String wechatNo;
 	
-	@Pattern(regexp="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$")
+	@Pattern(regexp="^1\\d{10}$")
 	@Column(length=32, unique=true, nullable=false)
 	private String phoneNo;
 	
@@ -99,8 +105,9 @@ public class Distributer extends BaseEntity{
 	@Column(length=10, unique=true, updatable=false)
 	private String shareCode;
 	
-	@ManyToOne(targetEntity=Distributer.class)
-	@JoinColumn(name="super_distributer_id", foreignKey=@ForeignKey(name="fk_distributer_superDistributer_id"))
+	@ManyToOne(targetEntity=Distributer.class, fetch=FetchType.LAZY)
+	@JoinColumn(name="super_distributer_id",
+		foreignKey=@ForeignKey(name="fk_distributer_superDistributer_id"))
 	private Distributer superDistributer;
 	
 	@Column(length=32, unique=true)
@@ -110,7 +117,9 @@ public class Distributer extends BaseEntity{
 	
 	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="expGrade_id", referencedColumnName="id", foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
+	@JoinColumn(name="expGrade_id", referencedColumnName="id", 
+		unique=true,
+		foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
 	private ExpGrade expGrade;
 	
 	private float brokerage;
@@ -125,16 +134,18 @@ public class Distributer extends BaseEntity{
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date registedTime;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumn(name="customer_id", unique=true, foreignKey=@ForeignKey(name="fk_distributer_customer_id"))
-	private Customer customer;  //根据手机号码 或者微信号做唯一性关联
+	private CustomerYzw customer;  //根据手机号码 或者微信号做唯一性关联
 	
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="followedByStore_id", foreignKey=@ForeignKey(name="fk_distributer_followedByStore_id"))
-	private Department followedByStore;
+	private DepartmentYzw followedByStore;
 	
-	
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(foreignKey=@ForeignKey(name="fk_distributer_defaultCapitalAccount_id"))
+	private CapitalAccount defaultCapitalAccount;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="superDistributer")
@@ -171,6 +182,22 @@ public class Distributer extends BaseEntity{
 		if (StringUtils.isEmpty(this.account)){
 			this.account = this.phoneNo;
 		}
+	}
+	
+	
+	public int getAge(){
+		Calendar today = Calendar.getInstance();
+		Calendar bir = Calendar.getInstance();
+		bir.setTime(birthday);
+		long age = (today.getTimeInMillis() - bir.getTimeInMillis())/(1000*3600*24*365);
+		return (int) age;
+	}
+	
+	public boolean isAudit(){
+		if(getAge()>=18)
+			return true;
+		else
+			return false;
 	}
 	
 	public String getMemberId() {
@@ -284,12 +311,12 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public Customer getCustomer() {
+	public CustomerYzw getCustomer() {
 		return customer;
 	}
 
 
-	public void setCustomer(Customer customer) {
+	public void setCustomer(CustomerYzw customer) {
 		this.customer = customer;
 	}
 
@@ -375,12 +402,12 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public Department getFollowedByStore() {
+	public DepartmentYzw getFollowedByStore() {
 		return followedByStore;
 	}
 
 
-	public void setFollowedByStore(Department followedByStore) {
+	public void setFollowedByStore(DepartmentYzw followedByStore) {
 		this.followedByStore = followedByStore;
 	}
 
@@ -427,6 +454,14 @@ public class Distributer extends BaseEntity{
 
 	public void setAccumulativeFunds(float accumulativeFunds) {
 		this.accumulativeFunds = accumulativeFunds;
+	}
+
+	public CapitalAccount getDefaultCapitalAccount() {
+		return defaultCapitalAccount;
+	}
+
+	public void setDefaultCapitalAccount(CapitalAccount defaultCapitalAccount) {
+		this.defaultCapitalAccount = defaultCapitalAccount;
 	}
 
 	
