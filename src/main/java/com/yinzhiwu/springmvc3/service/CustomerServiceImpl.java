@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.CustomerDao;
@@ -16,6 +17,7 @@ public class CustomerServiceImpl implements CustomerService {
 	private static final Log logger = LogFactory.getLog(CustomerServiceImpl.class);
 	
 	@Autowired
+	@Qualifier("customerDaoImpl")
 	private CustomerDao customerDao;
 
 	@Override
