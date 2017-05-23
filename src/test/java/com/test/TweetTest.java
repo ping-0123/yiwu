@@ -24,4 +24,7 @@ public class TweetTest {
 		byte[] content = tweet.getTweetContent().getContent();
 		System.out.println(new String(content));
 	}
+	
+	public void test2(){
+	}
 }

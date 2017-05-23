@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @MappedSuperclass 
-public class BaseYzwEntity implements Serializable{
+public abstract class BaseYzwEntity implements Serializable{
 
 	
 	/**

@@ -3,6 +3,7 @@ package com.yinzhiwu.springmvc3.dao.impl;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
@@ -22,9 +25,10 @@ import com.yinzhiwu.springmvc3.entity.BaseEntity;
 
 
 
-public class BaseDaoImpl<T,PK extends Serializable> 
+public abstract class BaseDaoImpl<T,PK extends Serializable> 
 				extends HibernateDaoSupport 
 				implements IBaseDao<T, PK> {
+	private static Log LOG = LogFactory.getLog(BaseTypeDaoImpl.class);
 
 	private Class<T> entityClass;  
     protected SessionFactory sessionFactory;  
@@ -47,52 +51,83 @@ public class BaseDaoImpl<T,PK extends Serializable>
     }  
   
     protected Session getSession() {  
-        return getHibernateTemplate().getSessionFactory().getCurrentSession();  
+    	try {
+    		 return getHibernateTemplate().getSessionFactory().getCurrentSession();  
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			return null;
+		}
+       
     }  
   
     public T get(PK id) {  
-        Assert.notNull(id, "id is required");  
-        return (T) getHibernateTemplate().get(entityClass, id);  
-    }  
+        Assert.notNull(id, "id is required"); 
+        try {
+        	return (T) getHibernateTemplate().get(entityClass, id);  
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			return null;
+		}
+    } 
   
 	@SuppressWarnings("unchecked")
 	public PK save(T entity)  {  
         Assert.notNull(entity, "entity is required");  
-        return (PK) getHibernateTemplate().save(entity);  
+        try {
+        	return (PK) getHibernateTemplate().save(entity);  
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			return null;
+		}
     }
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findByProperty(String propertyName, Object value) {
 		String hql = "from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
-		return (List<T>) getHibernateTemplate().findByNamedParam(hql, "value", value);
+		try {
+			return (List<T>) getHibernateTemplate().findByNamedParam(hql, "value", value);
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			return new ArrayList<>();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public int findCountByProperty(String propertyName, Object value) {
 		String hql = "select count(*) from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
-		List<Long> l = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "value", value);
-		return l.get(0).intValue();
+		try {
+			List<Long> l = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "value", value);
+			return l.get(0).intValue();
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			return 0;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findByProperties(Map<String, Object> map) {
-		Map<String, Object> v_map = new HashMap<>();
-		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
-		for (String string : map.keySet()) {
-			if(null != string && !"".equals(string)){
-				String valString = string.replace(".", "");
-				hql.append(" and " + string + "=:" + valString);
-				v_map.put(valString, map.get(string));
+		try{
+			Map<String, Object> v_map = new HashMap<>();
+			StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
+			for (String string : map.keySet()) {
+				if(null != string && !"".equals(string)){
+					String valString = string.replace(".", "");
+					hql.append(" and " + string + "=:" + valString);
+					v_map.put(valString, map.get(string));
+				}
 			}
+			
+			return (List<T>) getHibernateTemplate().findByNamedParam(
+					hql.toString(), 
+					v_map.keySet().toArray(new String[] {}),
+					v_map.values().toArray(new Object[] {}));
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+			return new ArrayList<>();
 		}
-		
-		return (List<T>) getHibernateTemplate().findByNamedParam(
-				hql.toString(), 
-				v_map.keySet().toArray(new String[] {}),
-				v_map.values().toArray(new Object[] {}));
 
   
 }
@@ -101,28 +136,45 @@ public class BaseDaoImpl<T,PK extends Serializable>
 	@Override
 	public List<T> findAll() {
 		String hql = "from "+  entityClass.getSimpleName();
-		return (List<T>) getHibernateTemplate().find(hql);
+		try{
+			return (List<T>) getHibernateTemplate().find(hql);
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+			return new ArrayList<>();
+		}
 	}
 
 	@Override
 	public void saveOrUpdate(T entity) {
 		Assert.notNull(entity, "entity is required");
-		 getHibernateTemplate().saveOrUpdate(entity);
+		try {
+			getHibernateTemplate().saveOrUpdate(entity);
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+		}
 	}
 
 	@Override
 	public void delete(T entity) {
 		Assert.notNull(entity, "entity is required");
-		getHibernateTemplate().delete(entity);
+		try{
+			getHibernateTemplate().delete(entity);
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+		}
 		
 	}
 
 	@Override
 	public void delete(PK id) {
 		Assert.notNull(id, "id is required");
-		T entity = get(id);
-		if (entity !=null){
-			delete(entity);
+		try{
+			T entity = get(id);
+			if (entity !=null){
+				delete(entity);
+			}
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
 		}
 	}
 
@@ -131,46 +183,65 @@ public class BaseDaoImpl<T,PK extends Serializable>
 	@Override
 	public List<T> findByExample(T entity) {
 		Assert.notNull(entity, "entity is required");
-		return getHibernateTemplate().findByExample(entity);
+		try{
+			return getHibernateTemplate().findByExample(entity);
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+			return new ArrayList<>();
+		}
 	}  
 	
 	@Override
 	public void update(T entity){
 		Assert.notNull(entity, "entity is required");
-		if(entity instanceof BaseEntity){
-			BaseEntity baseEntity = (BaseEntity) entity;
-			baseEntity.setLastModifiedDate(new Date());
-			getHibernateTemplate().update(baseEntity);
-			return;
+		try{
+			if(entity instanceof BaseEntity){
+				BaseEntity baseEntity = (BaseEntity) entity;
+				baseEntity.setLastModifiedDate(new Date());
+				getHibernateTemplate().update(baseEntity);
+				return;
+			}
+			getHibernateTemplate().update(entity);
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
 		}
-		getHibernateTemplate().update(entity);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public int findCount() {
 		String hql = "select count(*) from " + entityClass.getSimpleName();
-		List<Long> sums =   (List<Long>) getHibernateTemplate().find(hql);
-		return sums.get(0).intValue();
+		try{
+			List<Long> sums =   (List<Long>) getHibernateTemplate().find(hql);
+			return sums.get(0).intValue();
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+			return 0;
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findByProperties(String[] propertyNames, Object[] values) {
 		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
-		Map<String,Object> map = new HashMap<>();
-		for(int i = 0; i<propertyNames.length; i++){
-			if(StringUtils.hasLength(propertyNames[i])){
-				String valString = propertyNames[i].replace(".", "");
-				hql.append(" and " + propertyNames[i] + "=:" + valString);
-				map.put(valString, values[i]);
+		try{
+			Map<String,Object> map = new HashMap<>();
+			for(int i = 0; i<propertyNames.length; i++){
+				if(StringUtils.hasLength(propertyNames[i])){
+					String valString = propertyNames[i].replace(".", "");
+					hql.append(" and " + propertyNames[i] + "=:" + valString);
+					map.put(valString, values[i]);
+				}
 			}
+			
+			return  (List<T>) getHibernateTemplate().findByNamedParam(
+					hql.toString(), 
+					map.keySet().toArray(new String[] {}),
+					map.values().toArray(new Object[] {}));
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+			return new ArrayList<>();
 		}
-		
-		return  (List<T>) getHibernateTemplate().findByNamedParam(
-				hql.toString(), 
-				map.keySet().toArray(new String[] {}),
-				map.values().toArray(new Object[] {}));
 
 	}
 
@@ -182,7 +253,12 @@ public class BaseDaoImpl<T,PK extends Serializable>
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		return findByProperties(propertyNames, values).size();
+		try{
+			return findByProperties(propertyNames, values).size();
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+			return 0;
+		}
 	}
 }
 

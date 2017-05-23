@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * ʵ���� - ���� 
  */  
 @MappedSuperclass  
-public class BaseEntity implements Serializable{  
+public abstract class BaseEntity implements Serializable{  
   
     /**
 	 * 
