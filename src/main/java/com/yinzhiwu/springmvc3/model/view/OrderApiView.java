@@ -2,12 +2,17 @@ package com.yinzhiwu.springmvc3.model.view;
 
 import java.util.Date;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 
 public class OrderApiView {
+	
+	private Log LOG = LogFactory.getLog(OrderApiView.class);
 	
 	private String id;
 	
@@ -49,11 +54,15 @@ public class OrderApiView {
 		}
 		
 		CourseYzw course= o.getCourse();
-		if(course != null){
-			this.courseId = course.getId();
-			this.courseName = course.getName();
-			this.courseStore = course.getStoreName();
-			this.courseStartDate = course.getStartDate();
+		try{
+			if(course != null){
+				this.courseId = course.getId();
+				this.courseName = course.getName();
+				this.courseStore = course.getStoreName();
+				this.courseStartDate = course.getStartDate();
+			}
+		}catch (Exception e) {
+			LOG.warn(e.getMessage());
 		}
 	}
 

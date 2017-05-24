@@ -9,6 +9,7 @@ import org.hibernate.type.LongType;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
+import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 import com.yinzhiwu.springmvc3.util.GeneratorUtil;
@@ -91,6 +92,23 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 	@Override
 	public List<OrderYzw> findByCustomerId(int customerId) {
 		return findByProperty("customer.id", customerId);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public OrderYzw get(String id) {
+		//1.select courseId from vorder
+		String hql = "select o.course from OrderYzw o  where o.id = :id";
+		List<CourseYzw> courses = (List<CourseYzw>) getHibernateTemplate().findByNamedParam(hql, "id", id);
+		if(courses != null && courses.size()>0)
+			return super.get(id);
+		else{
+			OrderYzw order = super.get(id);
+			if(order != null)
+				order.setCourse(null);
+			return order;
+		}
+		
 	}
 	
 	
