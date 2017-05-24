@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -24,6 +26,8 @@ import com.yinzhiwu.springmvc3.service.MoneyRecordService;
 @RequestMapping("/api/moneyRecord")
 public class MoneyRecordController {
 	
+	private static Log LOG = LogFactory.getLog(MoneyRecordController.class);
+	
 	@Autowired
 	private MoneyRecordService mrService;
 
@@ -42,6 +46,8 @@ public class MoneyRecordController {
 	public YiwuJson<List<MoneyRecordApiView>> getList(
 			@Valid @ModelAttribute  MoneyRecordApiView m,
 			BindingResult bindingResult){
+		LOG.info(m.getCategory());
+		LOG.info(m.getBeneficiaryId());
 		if(bindingResult.hasErrors())
 		{
 			FieldError fieldError = bindingResult.getFieldError();
@@ -52,7 +58,7 @@ public class MoneyRecordController {
 			return yiwuJson;
 		}
 		
-		return mrService.findList(m.getBenificiaryId(), m.getCategory());
+		return mrService.findList(m.getBeneficiaryId(), m.getCategory());
 	}
 	
 	@PostMapping("/withdraw")

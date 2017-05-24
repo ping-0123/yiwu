@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,8 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	 * 
 	 */
 	private static final long serialVersionUID = 4267652070502310535L;
+	
+	private static Log LOG = LogFactory.getLog(MoneyRecordServiceImpl.class);
 
 	
 	@Autowired
@@ -175,6 +179,7 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	@Override
 	public YiwuJson<List<MoneyRecordApiView>> findList(int benificiaryId, MoneyRecordCategory category) {
 		List<Integer> typeIds  = MoneyRecordCategoryUtil.toMoneyRecordTypeIds(category);
+		LOG.info(typeIds);
 		List<MoneyRecord> moneyRecords = moneyRecordDao.findByTypesByBeneficiaryId(benificiaryId,typeIds);
 		List<MoneyRecordApiView> views = new ArrayList<MoneyRecordApiView>();
 		for (MoneyRecord m : moneyRecords) {

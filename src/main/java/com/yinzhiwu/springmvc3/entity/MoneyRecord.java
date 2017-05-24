@@ -4,6 +4,7 @@ import javax.persistence.ConstraintMode;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -29,7 +30,7 @@ public abstract class MoneyRecord extends AbstractRecord {
 	
 	private float currentFunds;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="order_id", 
 		foreignKey=@ForeignKey(value = ConstraintMode.NO_CONSTRAINT, name="fk_moneyrecord_order_id"))  //
 	private OrderYzw order;
