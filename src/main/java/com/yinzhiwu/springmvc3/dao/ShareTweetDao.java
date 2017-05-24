@@ -11,5 +11,7 @@ public interface ShareTweetDao extends IBaseDao<ShareTweet, Integer> {
 
 	List<ShareTweet> findBySharerId(int sharerId);
 
+	List<ShareTweet> findBySharerIds(List<Integer> subordiateIds);
+
 
 }

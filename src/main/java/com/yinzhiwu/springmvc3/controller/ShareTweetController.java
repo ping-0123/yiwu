@@ -28,4 +28,14 @@ public class ShareTweetController {
 	public YiwuJson<List<TweetShareApiView>> findListBySharerByBeneficiary(int sharerId, int beneficiaryId){
 		return shareTweetService.findListBysharerByBeneficiary(sharerId, beneficiaryId);
 	}
+	
+	@GetMapping("/list/my")
+	public YiwuJson<List<TweetShareApiView>> findListSharedByMe(int sharerId){
+		return shareTweetService.findListBysharerByBeneficiary(sharerId, sharerId);
+	}
+	
+	@GetMapping("/list/subordinates")
+	public YiwuJson<List<TweetShareApiView>> findListByMySubordinates(int sharerId){
+		return shareTweetService.findListByMySubordinates(sharerId);
+	}
 }

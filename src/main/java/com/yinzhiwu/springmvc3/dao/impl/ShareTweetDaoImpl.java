@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.ShareTweetDao;
+import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.ShareTweet;
 
 
@@ -35,6 +36,13 @@ public class ShareTweetDaoImpl
 	public List<ShareTweet> findBySharerId(int sharerId) {
 		return findByProperty("sharer.id", sharerId);
 	}
+
+	@Override
+	public List<ShareTweet> findBySharerIds(List<Integer> subordiateIds) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 }

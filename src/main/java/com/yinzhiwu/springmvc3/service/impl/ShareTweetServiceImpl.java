@@ -90,5 +90,29 @@ public class ShareTweetServiceImpl extends BaseServiceImpl<ShareTweet, Integer>
 		
 		return new YiwuJson<>(views);
 	}
+
+	@Override
+	public YiwuJson<List<TweetShareApiView>> findListByMySubordinates(int sharerId) {
+		Distributer beneficiary = distributerDao.get(sharerId);
+		if(beneficiary == null)
+			return new YiwuJson<>("不存在id为:" + sharerId + "的用户, 请传入正确的受益者Id" );
+		List<Distributer> subordiates = beneficiary.getSubordinates();
+		if(subordiates.size() == 0 )
+			return new YiwuJson<>("分享者：" + beneficiary.getName() + " 没有下级客户");
+		
+		//获取一级客户分享的推文
+		List<ShareTweet> shareTweets = new ArrayList<>();
+		for (Distributer distributer : subordiates) {
+			shareTweets.addAll(distributer.getShareTweets());
+		}
+		
+		//包装成DTO
+		List<TweetShareApiView> views = new ArrayList<>();
+		for (ShareTweet shareTweet : shareTweets) {
+			views.add(new TweetShareApiView(shareTweet,beneficiary));
+		}
+		
+		return new YiwuJson<>(views);
+	}
 	
 }

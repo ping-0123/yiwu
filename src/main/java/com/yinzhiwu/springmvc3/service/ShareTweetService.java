@@ -13,4 +13,6 @@ public interface ShareTweetService extends IBaseService<ShareTweet, Integer>{
 
 	YiwuJson<List<TweetShareApiView>> findListBysharerByBeneficiary(int sharerId, int beneficiaryId);
 
+	YiwuJson<List<TweetShareApiView>> findListByMySubordinates(int sharerId);
+
 }
