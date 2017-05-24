@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -46,6 +47,23 @@ public class MoneyRecordDaoImpl extends BaseDaoImpl<MoneyRecord, Integer> implem
 	public List<MoneyRecord> findByTypesByBeneficiaryId(int benificiaryId, List<Integer> typeIds) {
 		String hql = "from MoneyRecord where beneficiaty.id = " + benificiaryId + " and recordType.id in :typeIds";
 		return (List<MoneyRecord>) getHibernateTemplate().findByNamedParam(hql, "typeIds", typeIds);
+	}
+
+	@Override
+	public List<MoneyRecord> findByBeneficaryIdBySubordiatesOrderTypes(int benificiaryId) {
+//		int[] typeIds = new int[]{17000005,17000007};
+		List<Integer> typeIds = new ArrayList<>();
+		typeIds.add(17000005);
+		typeIds.add(17000007);
+		return findByTypesByBeneficiaryId(benificiaryId, typeIds);
+	}
+
+	@Override
+	public List<MoneyRecord> findByBeneficaryIdBySecondariesOrderTypes(int benificiaryId) {
+		List<Integer> typeIds = new ArrayList<>();
+		typeIds.add(17000006);
+		typeIds.add(17000008);
+		return findByTypesByBeneficiaryId(benificiaryId, typeIds);
 	}
 
 

@@ -19,5 +19,9 @@ public interface MoneyRecordDao extends IBaseDao<MoneyRecord, Integer>{
 	public int findCountByBeneficiatyId(int beneficiatyId);
 
 	public List<MoneyRecord> findByTypesByBeneficiaryId(int benificiaryId, List<Integer> typeIds);
+
+	public List<MoneyRecord> findByBeneficaryIdBySubordiatesOrderTypes(int benificiaryId);
+
+	public List<MoneyRecord> findByBeneficaryIdBySecondariesOrderTypes(int benificiaryId);
 }
 	

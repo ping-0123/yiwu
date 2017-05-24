@@ -17,6 +17,7 @@ import com.yinzhiwu.springmvc3.model.PayDepositModel;
 import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.MoneyRecordApiView;
+import com.yinzhiwu.springmvc3.model.view.OrderMoneyRecordApiView;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
 
 @RestController
@@ -75,5 +76,17 @@ public class MoneyRecordController {
 		}
 		
 		return  mrService.payDeposit(m);
+	}
+	
+	@GetMapping("orderRecords/subordinates")
+	public YiwuJson<List<OrderMoneyRecordApiView>> findSubordiatesOrderRecords(int distributerId)
+	{
+		return mrService.findSubordiatesOrderRecords(distributerId);
+	}
+	
+	@GetMapping("orderRecords/secondaries")
+	public YiwuJson<List<OrderMoneyRecordApiView>> findSecondaryOrderRecords(int distributerId)
+	{
+		return mrService.findSecondaryOrderRecords(distributerId);
 	}
 }

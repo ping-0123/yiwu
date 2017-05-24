@@ -33,6 +33,7 @@ import com.yinzhiwu.springmvc3.model.PayDepositModel;
 import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.MoneyRecordApiView;
+import com.yinzhiwu.springmvc3.model.view.OrderMoneyRecordApiView;
 import com.yinzhiwu.springmvc3.service.MessageService;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
 import com.yinzhiwu.springmvc3.util.MoneyRecordCategoryUtil;
@@ -350,5 +351,31 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 				amount, 
 				t2, 
 				order);
+	}
+
+	@Override
+	public YiwuJson<List<OrderMoneyRecordApiView>> findSubordiatesOrderRecords(int distributerId) {
+		List<MoneyRecord> records = moneyRecordDao.findByBeneficaryIdBySubordiatesOrderTypes(distributerId);
+//		Distributer distributer = distributerDao.get(distributerId);
+//		if(distributer==null)
+//			return new YiwuJson<>("can not found distributer by this id: " + distributerId);
+//		List<Distributer> subordiates = distributer.getSubordinates();
+//		if(subordiates.size()==0)
+//			return new YiwuJson<>("分销者:" + distributer.getName() + " 没有一级客户");
+		List<OrderMoneyRecordApiView> views = new ArrayList<>();
+		for (MoneyRecord r : records) {
+			views.add(new OrderMoneyRecordApiView(r));
+		}
+		return new YiwuJson<>(views);
+	}
+
+	@Override
+	public YiwuJson<List<OrderMoneyRecordApiView>> findSecondaryOrderRecords(int distributerId) {
+		List<MoneyRecord> records = moneyRecordDao.findByBeneficaryIdBySecondariesOrderTypes(distributerId);
+		List<OrderMoneyRecordApiView> views = new ArrayList<>();
+		for (MoneyRecord r : records) {
+			views.add(new OrderMoneyRecordApiView(r));
+		}
+		return new YiwuJson<>(views);
 	}
 }
