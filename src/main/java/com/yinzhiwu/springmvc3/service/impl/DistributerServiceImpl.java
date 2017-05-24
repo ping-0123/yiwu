@@ -2,6 +2,8 @@ package com.yinzhiwu.springmvc3.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -12,18 +14,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mysql.fabric.xmlrpc.base.Array;
 import com.yinzhiwu.springmvc3.dao.CapitalAccountDao;
 import com.yinzhiwu.springmvc3.dao.CustomerYzwDao;
 import com.yinzhiwu.springmvc3.dao.DepartmentYzwDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.ExpGradeDao;
+import com.yinzhiwu.springmvc3.dao.ExpRecordTypeDao;
 import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
-import com.yinzhiwu.springmvc3.model.CapitalAccountApiView;
-import com.yinzhiwu.springmvc3.model.DistributerApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
+import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
+import com.yinzhiwu.springmvc3.model.view.DistributerRegisterApiView;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.service.ExpRecordService;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
@@ -46,8 +51,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Autowired
 	private DepartmentYzwDao departmentYzwDao;
 	
+	
 	@Autowired
 	private CustomerYzwDao customerYzwDao;
+	
+	@Autowired
+	private ExpRecordTypeDao expRecordTypeDao;
 	
 	@Autowired
 	private ExpRecordService expRecordService;
@@ -237,6 +246,48 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		if(distributerDao.findCountByPhoneNo(phoneNo) >0)
 			return new YiwuJson<>(phoneNo + " 该手机号码已注册");
 		return new YiwuJson<>(new Boolean(false));
+	}
+
+	@Override
+	public YiwuJson<List<DistributerRegisterApiView>> findSubordiatesRegisterRecords(int distributerId) {
+		Distributer distributer = distributerDao.get(distributerId);
+		if(distributer == null)
+			return new YiwuJson<>("no distributer found by id: " + distributerId);
+		List<Distributer> subordiates = distributer.getSubordinates();
+		if(subordiates.size()==0)
+			return new YiwuJson<>(distributer.getName() +  "该分销者不存在下级客户");
+		
+		float exp = expRecordTypeDao.findSubordinateRegisterExpRecordType().getFactor();
+		List<DistributerRegisterApiView> views = new ArrayList<>();
+		for (Distributer d : subordiates) {
+			views.add(new DistributerRegisterApiView(d,exp));
+		}
+		return new YiwuJson<>(views);
+	}
+
+	@Override
+	public YiwuJson<List<DistributerRegisterApiView>> findSecondariesRegisterRecords(int distributerId) {
+		Distributer distributer = distributerDao.get(distributerId);
+		if(distributer == null)
+			return new YiwuJson<>("no distributer found by id: " + distributerId);
+		List<Distributer> subordiates = distributer.getSubordinates();
+		if(subordiates.size()==0)
+			return new YiwuJson<>(distributer.getName() +  "该分销者不存在下级客户");
+		
+		List<Distributer> secondaries = new ArrayList<>();
+		for (Distributer s : subordiates) {
+			secondaries.addAll(s.getSubordinates());
+		}
+		if(secondaries.size()==0)
+			return new YiwuJson<>(distributer.getName() +  "该分销者不存在二级客户");
+		
+		float exp = expRecordTypeDao.findSecondaryRegisterExpRecordType().getFactor();
+		List<DistributerRegisterApiView> views = new ArrayList<>();
+		for (Distributer d : secondaries) {
+			views.add(new DistributerRegisterApiView(d, exp));
+		}
+		
+		return new YiwuJson<>(views);
 	}
 
 	

@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.model;
+package com.yinzhiwu.springmvc3.model.view;
 
 import java.io.Serializable;
 import java.util.Date;

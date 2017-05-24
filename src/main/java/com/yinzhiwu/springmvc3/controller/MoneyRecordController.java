@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
 import com.yinzhiwu.springmvc3.model.PayDepositModel;
 import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.MoneyRecordApiView;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
 
 @RestController

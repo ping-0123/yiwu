@@ -10,9 +10,9 @@ import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.ExpRecordDao;
 import com.yinzhiwu.springmvc3.dao.MoneyRecordDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.model.DistributerApiView;
-import com.yinzhiwu.springmvc3.model.SumRecordApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
+import com.yinzhiwu.springmvc3.model.view.SumRecordApiView;
 import com.yinzhiwu.springmvc3.service.BusinessService;
 
 

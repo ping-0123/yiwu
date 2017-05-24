@@ -1,8 +1,8 @@
 package com.yinzhiwu.springmvc3.service;
 
 import com.yinzhiwu.springmvc3.entity.Account;
-import com.yinzhiwu.springmvc3.model.EmployeeApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.EmployeeApiView;
 
 public interface AccountService {
 	

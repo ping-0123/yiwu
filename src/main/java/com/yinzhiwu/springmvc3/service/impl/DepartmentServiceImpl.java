@@ -11,8 +11,8 @@ import com.yinzhiwu.springmvc3.dao.DepartmentDao;
 import com.yinzhiwu.springmvc3.dao.StoreInfoDao;
 import com.yinzhiwu.springmvc3.entity.Department;
 import com.yinzhiwu.springmvc3.entity.StoreInfo;
-import com.yinzhiwu.springmvc3.model.BriefDepartment;
 import com.yinzhiwu.springmvc3.model.Store;
+import com.yinzhiwu.springmvc3.model.view.DepartmentApiView;
 import com.yinzhiwu.springmvc3.service.DepartmentService;
 
 @Service
@@ -26,22 +26,22 @@ public class DepartmentServiceImpl implements DepartmentService {
 	private StoreInfoDao storeInfoDao;
 
 	@Override
-	public List<BriefDepartment> findAllOperationDistricts() {
+	public List<DepartmentApiView> findAllOperationDistricts() {
 		List<Department> list = departmentDao.findAllOperationDistricts();
-		List<BriefDepartment> l = new ArrayList<>();
+		List<DepartmentApiView> l = new ArrayList<>();
 		for (Department d : list) {
-			l.add(new BriefDepartment(d));
+			l.add(new DepartmentApiView(d));
 		}
 		
 		return l;
 	}
 
 	@Override
-	public List<BriefDepartment> findStoresByDistrictId(int districtId) {
+	public List<DepartmentApiView> findStoresByDistrictId(int districtId) {
 		List<Department> list = departmentDao.findStoresByDistrictId(districtId);
-		List<BriefDepartment> l = new ArrayList<>();
+		List<DepartmentApiView> l = new ArrayList<>();
 		for (Department d : list) {
-			l.add(new BriefDepartment(d));
+			l.add(new DepartmentApiView(d));
 		}
 		return l;
 	}

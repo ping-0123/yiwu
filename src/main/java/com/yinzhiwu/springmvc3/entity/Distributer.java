@@ -159,9 +159,16 @@ public class Distributer extends BaseEntity{
 	@OneToMany(mappedBy="beneficiaty", targetEntity=MoneyRecord.class)
 	private List<MoneyRecord> moneyRecords = new ArrayList<>();
 	
+	@OneToMany(mappedBy="contributor")
+	private List<MoneyRecord> contributedMoneyRecords  = new ArrayList<>();
+	
+	
 	@JsonIgnore
 	@OneToMany(mappedBy="beneficiaty", targetEntity=ExpRecord.class)
 	private List<ExpRecord> expRecords = new ArrayList<>();
+	
+	@OneToMany(mappedBy="contributor")
+	private List<ExpRecord> contributedExpRecords = new ArrayList<>();
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="receiver")
@@ -471,6 +478,22 @@ public class Distributer extends BaseEntity{
 		if(d instanceof Distributer)
 			return this.getId()!=null && this.getId() == ((Distributer) d).getId();
 		return false;
+	}
+
+	public List<MoneyRecord> getContributedMoneyRecords() {
+		return contributedMoneyRecords;
+	}
+
+	public List<ExpRecord> getContributedExpRecords() {
+		return contributedExpRecords;
+	}
+
+	public void setContributedMoneyRecords(List<MoneyRecord> contributedMoneyRecords) {
+		this.contributedMoneyRecords = contributedMoneyRecords;
+	}
+
+	public void setContributedExpRecords(List<ExpRecord> contributedExpRecords) {
+		this.contributedExpRecords = contributedExpRecords;
 	}
 
 	

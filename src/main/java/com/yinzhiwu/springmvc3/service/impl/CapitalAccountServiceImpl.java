@@ -11,8 +11,8 @@ import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.CapitalAccountType;
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.model.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.service.CapitalAccountService;
 import com.yinzhiwu.springmvc3.util.CapitalAccountTypeUtil;
 

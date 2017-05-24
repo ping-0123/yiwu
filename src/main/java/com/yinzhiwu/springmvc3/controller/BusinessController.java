@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yinzhiwu.springmvc3.model.SumRecordApiView;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.SumRecordApiView;
 import com.yinzhiwu.springmvc3.service.BusinessService;
 
 

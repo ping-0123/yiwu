@@ -6,10 +6,10 @@ import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.MoneyRecord;
 import com.yinzhiwu.springmvc3.entity.MoneyRecordType;
 import com.yinzhiwu.springmvc3.enums.MoneyRecordCategory;
-import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
 import com.yinzhiwu.springmvc3.model.PayDepositModel;
 import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.MoneyRecordApiView;
 
 public interface MoneyRecordService extends IBaseService<MoneyRecord, Integer>{
 	
