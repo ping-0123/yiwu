@@ -1,10 +1,14 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mysql.fabric.xmlrpc.base.Array;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.ShareTweetDao;
 import com.yinzhiwu.springmvc3.dao.TweetDao;
@@ -13,6 +17,7 @@ import com.yinzhiwu.springmvc3.entity.ShareTweet;
 import com.yinzhiwu.springmvc3.entity.Tweet;
 import com.yinzhiwu.springmvc3.entity.WeChatShareTweet;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.TweetShareApiView;
 import com.yinzhiwu.springmvc3.service.ExpRecordService;
 import com.yinzhiwu.springmvc3.service.ShareTweetService;
 import com.yinzhiwu.springmvc3.util.CalendarUtil;
@@ -67,6 +72,23 @@ public class ShareTweetServiceImpl extends BaseServiceImpl<ShareTweet, Integer>
 		if(count <=3)
 			expRecordService.saveShareTweetExprRecord(sharer, shareTweet);
 		return new YiwuJson<>(new Boolean(true));
+	}
+
+	@Override
+	public YiwuJson<List<TweetShareApiView>> findListBysharerByBeneficiary(int sharerId, int beneficiaryId) {
+		List<ShareTweet> shareTweets = shareTweetDao.findBySharerId(sharerId);
+		if(shareTweets.size() ==0 )
+			return new YiwuJson<>(sharerId + "： 尚未分享消息");
+		Distributer beneficiary = distributerDao.get(beneficiaryId);
+		if(beneficiary == null)
+			return new YiwuJson<>("不存在id为:" + beneficiaryId + "的用户, 请传入正确的受益者Id" );
+		
+		List<TweetShareApiView> views = new ArrayList<>();
+		for (ShareTweet shareTweet : shareTweets) {
+			views.add(new TweetShareApiView(shareTweet,beneficiary));
+		}
+		
+		return new YiwuJson<>(views);
 	}
 	
 }

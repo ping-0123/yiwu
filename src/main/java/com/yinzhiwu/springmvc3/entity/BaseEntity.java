@@ -137,5 +137,7 @@ public abstract class BaseEntity implements Serializable{
 
 	public  void setLastModifiedUserId(int moddifiedUserId) {
 		this.lastModifiedUserId = moddifiedUserId;
-	}  
+	}
+
+
 }  

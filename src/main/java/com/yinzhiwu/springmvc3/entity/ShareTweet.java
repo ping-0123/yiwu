@@ -1,6 +1,8 @@
 package com.yinzhiwu.springmvc3.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
@@ -10,6 +12,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -33,7 +36,10 @@ public class ShareTweet extends BaseEntity {
 	private Tweet tweet;
 	
 	private Date shareDate;
-
+	
+	@OneToMany(mappedBy="shareTweet")
+	private List<ExpRecord> expRecords = new ArrayList<>();
+	
 	public ShareTweet(){
 		super();
 		this.shareDate = super.getCreateDate();
@@ -63,6 +69,15 @@ public class ShareTweet extends BaseEntity {
 	public void setShareDate(Date shareDate) {
 		this.shareDate = shareDate;
 	}
+
+	public List<ExpRecord> getExpRecords() {
+		return expRecords;
+	}
+
+	public void setExpRecords(List<ExpRecord> expRecords) {
+		this.expRecords = expRecords;
+	}
+
 	
 	
 }

@@ -30,6 +30,11 @@ public class ShareTweetDaoImpl
 		log.info(list.get(0).intValue());
 		return list.get(0).intValue();
 	}
+
+	@Override
+	public List<ShareTweet> findBySharerId(int sharerId) {
+		return findByProperty("sharer.id", sharerId);
+	}
 	
 
 }

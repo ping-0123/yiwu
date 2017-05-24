@@ -464,5 +464,14 @@ public class Distributer extends BaseEntity{
 		this.defaultCapitalAccount = defaultCapitalAccount;
 	}
 
+	@Override
+	public boolean equals(Object d) {
+		if(this == d)
+			return true;
+		if(d instanceof Distributer)
+			return this.getId()!=null && this.getId() == ((Distributer) d).getId();
+		return false;
+	}
+
 	
 }
