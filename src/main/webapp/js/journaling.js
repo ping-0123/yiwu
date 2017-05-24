@@ -5,7 +5,7 @@ var year=currentDate.getFullYear();
 var month = currentDate.getMonth() + 1;
 var districtId =0;
 var productTypeId=0;
-}
+
 
 
 
@@ -64,7 +64,7 @@ function loadRevenue(v_districtId,
 					v_month,
 					v_productTypeId){
 						
-	var url =ajaxUrl +"api/revenue/getMonthlyRevenue";
+	var url =baseApiUrl +"api/revenue/getMonthlyRevenue";
 
 	
 	$.get(url,
@@ -154,7 +154,6 @@ function loadRevenue(v_districtId,
 				t=t+"</ul>"
 				
 				$('.content').html(t);
-			}
 
 	});
 }
@@ -182,7 +181,7 @@ function writeHeadStores(v_data){
 }
 
 function loadDistrict(){
-	var url = ajaxUrl +"api/district/list";
+	var url = baseApiUrl +"api/district/list";
 	$.ajax({ 
 			type: "Get", 	
 			url: url,
@@ -207,7 +206,7 @@ function loadDistrict(){
 
 
 function loadProductLines(){
-	var url = ajaxUrl + "api/productType/getAll";
+	var url = baseApiUrl + "api/productType/getAll";
 	$.ajax({
 		type:"get",
 		url:url,
