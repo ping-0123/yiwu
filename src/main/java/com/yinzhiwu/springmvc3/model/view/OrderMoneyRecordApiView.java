@@ -3,7 +3,6 @@ package com.yinzhiwu.springmvc3.model.view;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.springmvc3.entity.BrokerageRecord;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.MoneyRecord;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
