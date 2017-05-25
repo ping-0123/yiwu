@@ -46,6 +46,30 @@ public class DataNotFoundException extends Exception {
 		this.propertyName = propertyName;
 		this.value = value;
 	}
+
+	public Class<?> getEntity() {
+		return entity;
+	}
+
+	public String getPropertyName() {
+		return propertyName;
+	}
+
+	public Object getValue() {
+		return value;
+	}
+
+	public void setEntity(Class<?> entity) {
+		this.entity = entity;
+	}
+
+	public void setPropertyName(String propertyName) {
+		this.propertyName = propertyName;
+	}
+
+	public void setValue(Object value) {
+		this.value = value;
+	}
 	
 
 }
