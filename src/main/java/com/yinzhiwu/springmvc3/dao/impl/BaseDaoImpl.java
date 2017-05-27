@@ -15,12 +15,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
 import com.yinzhiwu.springmvc3.entity.BaseEntity;
+import com.yinzhiwu.springmvc3.model.page.PageBean;
 
 
 
@@ -259,6 +261,46 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 			LOG.error(e.getMessage());
 			return 0;
 		}
+	}
+
+	
+
+	
+	@Override
+	public PageBean<T> findPageByHql(String hql, int pageNum, int pageSize){
+		Assert.hasLength(hql);
+		if(pageNum <=0)
+			pageNum =1;
+		if(pageSize<=0)
+			pageSize = PageBean.DEFAULT_PAGE_SIZE;
+		
+		int totalRecords =  findCountByHql(_get_count_hql(hql));
+		if(totalRecords ==0)
+			return new PageBean<>(pageSize, pageNum, totalRecords, new ArrayList<>());
+		
+		Query<?> query = getSession().createQuery(hql);
+		query.setFirstResult((pageNum-1) * pageSize);
+		query.setMaxResults(pageSize);
+		@SuppressWarnings("unchecked")
+		List<T> list =(List<T>) query.list();
+		
+		return new PageBean<>(pageSize, pageNum, totalRecords,list);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public int findCountByHql(String hql){
+		try{
+			List<Long> list=   (List<Long>) getHibernateTemplate().find(hql);
+			return list.get(0).intValue();
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+			return 0;
+		}
+	}
+	
+	private String _get_count_hql(String hql){
+		int i = hql.toUpperCase().indexOf("FROM");
+		return "select count(*) " + hql.substring(i);
 	}
 }
 

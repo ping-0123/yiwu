@@ -2,8 +2,12 @@ package com.yinzhiwu.springmvc3.model.page;
 
 import java.util.List;
 
-public class Pager<T> {
+import org.springframework.util.Assert;
 
+public class PageBean<T> {
+	
+	public static   int  DEFAULT_PAGE_SIZE = 10;
+	
 	private int pageSize;  //每页显示多少条记录
 	
 	private int currentPage; //当前第几页数据
@@ -14,10 +18,10 @@ public class Pager<T> {
 	
 	private List<T> datas;
 	
-	public Pager(){
+	public PageBean(){
 	}
 
-	public Pager(int pageSize, int pageNum, List<T> sourceList){
+	public PageBean(int pageSize, int pageNum, List<T> sourceList){
 		this.pageSize = pageSize;
 		this.totalRecord = sourceList.size();
 		this.totalPage = this.totalRecord/this.pageSize;
@@ -27,6 +31,17 @@ public class Pager<T> {
 		int fromIndex = this.pageSize * (pageNum -1);
 		int toIndex = pageSize*pageNum> totalRecord? totalRecord:pageSize*pageNum;
 		this.datas = sourceList.subList(fromIndex, toIndex);
+	}
+	
+	public PageBean(int pageSize, int currentPage, int totalRecord,  List<T> datas) {
+		Assert.isTrue(datas.size()<=pageSize);
+		this.pageSize = pageSize;
+		this.currentPage = currentPage;
+		this.totalRecord = totalRecord;
+		this.totalPage = this.totalRecord/this.pageSize;
+		if(this.totalRecord % this.pageSize !=0)
+			this.totalPage = this.totalPage + 1;
+		this.datas = datas;
 	}
 	
 	public int getPageSize() {
@@ -68,6 +83,8 @@ public class Pager<T> {
 	public void setList(List<T> list) {
 		this.datas = list;
 	}
+
+	
 	
 	
 }

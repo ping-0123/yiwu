@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import com.yinzhiwu.springmvc3.model.page.PageBean;
+
 public interface IBaseDao<T ,PK extends Serializable> {
 
 		public T get(PK id);
@@ -35,6 +37,10 @@ public interface IBaseDao<T ,PK extends Serializable> {
 		void delete(PK id);
 
 		void update(T entity);
+
+
+
+		PageBean<T> findPageByHql(String hql, int pageNum, int pageSize);
 		
 
 }

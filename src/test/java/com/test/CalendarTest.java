@@ -80,4 +80,12 @@ public class CalendarTest {
 		System.out.println(offset/1000/3600);
 	}
 	
+	@Test
+	public void testString(){
+		String aa = "select * from Lesson";
+		int i = aa.toUpperCase().indexOf("FROM");
+		System.out.println(i);
+		System.out.println("select count(*) " + aa.substring(i));
+	}
+	
 }
