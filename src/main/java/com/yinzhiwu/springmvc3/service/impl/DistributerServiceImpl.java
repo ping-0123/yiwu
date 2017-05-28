@@ -127,9 +127,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			distributerDao.saveBean(distributer);
 			logger.info("after save");
 		} catch (Exception e) {
-			mYiwuJson.setMsg(e.getMessage());
-			mYiwuJson.setResult(false);
-			return mYiwuJson;
+			return new YiwuJson<>(e.getMessage());
 		}
 		
 		//注册产生收益
@@ -145,22 +143,19 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 						distributer);
 		}
 	
-		
-		mYiwuJson.setData(wrapToApiView(distributer));
-		return mYiwuJson;
+		return new YiwuJson<>(wrapToApiView(distributer));
+	
 	}
 
 	@Override
 	public YiwuJson<DistributerApiView> loginByWechat(String wechatNo) {
 		try {
 			Distributer distributer = distributerDao.findByWechat(wechatNo);
-			mYiwuJson.setData(wrapToApiView(distributer));
+			return new YiwuJson<>(wrapToApiView(distributer));
 		} catch (DataNotFoundException e) {
-			mYiwuJson.setMsg(e.getMessage());
-			mYiwuJson.setResult(false);
-			return mYiwuJson;
+			return new YiwuJson<>(e.getMessage());
 		}
-		return mYiwuJson;
+//		return mYiwuJson;
 	}
 	
 
@@ -169,20 +164,18 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		Distributer distributer;
 		try {
 			distributer = distributerDao.findByAccountPassword(account,password);
-			mYiwuJson.setData(wrapToApiView(distributer));
+			return new YiwuJson<>(wrapToApiView(distributer));
 		} catch (Exception e) {
-			mYiwuJson.setMsg(e.getMessage());
-			mYiwuJson.setResult(false);
-			return mYiwuJson;
+			return new YiwuJson<>(e.getMessage());
 		}
-		return mYiwuJson;
+//		return mYiwuJson;
 	}
 
 	@Override
 	public YiwuJson<DistributerApiView> findById(int id) {
 		Distributer distributer = distributerDao.get(id);
-		mYiwuJson.setData(wrapToApiView(distributer));
-		return mYiwuJson;
+//		mYiwuJson.setData(wrapToApiView(distributer));
+		return new YiwuJson<>(wrapToApiView(distributer));
 	}
 
 	@Override
@@ -193,14 +186,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		try {
 			multipartFile.transferTo(imageFile);
 		} catch (IllegalStateException | IOException e) {
-			mYiwuJson.setMsg(e.getMessage());
-			mYiwuJson.setResult(false);
-			return mYiwuJson;
+			return new YiwuJson<>(e.getMessage());
 		}
 		distributer.setHeadIconName(imageName);
 		distributerDao.update(distributer);
-		mYiwuJson.setData( wrapToApiView(distributer));
-		return mYiwuJson;
+//		mYiwuJson.setData( wrapToApiView(distributer));
+		return new YiwuJson<>(wrapToApiView(distributer));
 	}
 
 	private DistributerApiView wrapToApiView(Distributer d){
