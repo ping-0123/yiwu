@@ -67,9 +67,12 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public float getBeatRate(float exp) {
-		String hql = "select count(*) from Distributer d where d.exp <= :exp";
+		String hql = "select count(*) from Distributer d where d.exp < :exp";
+		logger.debug("传入的经验值是：" + exp);
 		List<Long> counts = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "exp", exp);
+		logger.debug(exp + "击败的数量：" + counts.get(0).intValue());
 		int sum = findCount();
+		logger.debug("分销人数总数：" + sum);
 		if (sum==0)
 			return 0;
 		else
