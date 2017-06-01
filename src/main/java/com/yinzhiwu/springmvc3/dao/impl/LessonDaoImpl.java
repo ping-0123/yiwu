@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.LessonDao;
 import com.yinzhiwu.springmvc3.entity.Lesson;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Repository
 public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
@@ -18,7 +19,7 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
 	private static Log LOG = LogFactory.getLog(LessonDaoImpl.class);
 	
 	@Override
-	public Lesson findById(int lessonId) {
+	public Lesson findById(int lessonId) throws DataNotFoundException {
 //		return (Lesson) getHibernateTemplate().get(Lesson.class, lessonId);
 		return get(lessonId);
 	}

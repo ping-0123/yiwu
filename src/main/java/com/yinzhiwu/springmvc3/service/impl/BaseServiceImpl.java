@@ -4,10 +4,16 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.service.IBaseService;
 
 public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBaseService<T, PK> {
+	
+	private static Log LOG = LogFactory.getLog(BaseServiceImpl.class);
 
 	private IBaseDao<T, PK> baseDao;
 	
@@ -27,7 +33,12 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 
 	@Override
 	public T get(PK id) {
-		return baseDao.get(id);
+		try {
+			return baseDao.get(id);
+		} catch (DataNotFoundException e) {
+			LOG.error(e.getMessage());
+			return null;
+		}
 	}
 
 	@Override

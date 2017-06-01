@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.springmvc3.enums.Gender;
@@ -19,7 +20,7 @@ public class DistributerRegisterModel {
 	
 	@Pattern(regexp="^[a-zA-Z]\\w{5,17}$",
 			message="密码必须由字母开头，有字母，数字，下划线组成的6-18位字符")
-	private String passWord;
+	private String password;
 	
 	private String name;
 	
@@ -34,6 +35,7 @@ public class DistributerRegisterModel {
 	
 	private int followedByStoreId;
 	
+	@Size(min=28, max =28)
 	private String wechatNo;
 	
 	private String invitationCode;
@@ -46,8 +48,8 @@ public class DistributerRegisterModel {
 		return account;
 	}
 
-	public String getPassWord() {
-		return passWord;
+	public String getPassword() {
+		return password;
 	}
 
 	public String getName() {
@@ -87,7 +89,7 @@ public class DistributerRegisterModel {
 	}
 
 	public void setPassWord(String passWord) {
-		this.passWord = passWord;
+		this.password = passWord;
 	}
 
 	public void setName(String name) {
@@ -116,6 +118,10 @@ public class DistributerRegisterModel {
 
 	public void setInvitationCode(String invitationCode) {
 		this.invitationCode = invitationCode;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	

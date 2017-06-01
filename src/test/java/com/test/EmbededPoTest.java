@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
 import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,7 +23,13 @@ public class EmbededPoTest {
 	
 	@Test
 	public void testEmbeded(){
-		OrderYzw order = orderYzwDao.get("20170423035");
+		OrderYzw order = null;
+		try {
+			order = orderYzwDao.get("20170423035");
+		} catch (DataNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Contract contract = order.getContract();
 		System.out.println(contract.getValidityTimes());
 //		System.out.println(contract.getCustomer().getName());

@@ -53,8 +53,12 @@ public class PlanRevenueServiceImpl implements PlanRevenueService {
 
 	@Override
 	public PlanRevenueApiModel get(int id) {
-		return new PlanRevenueApiModel(
-				departmentDao,prDao.get(id));
+		try{
+			return new PlanRevenueApiModel(
+					departmentDao,prDao.get(id));
+		}catch (Exception e) {
+			return null;
+		}
 	}
 
 

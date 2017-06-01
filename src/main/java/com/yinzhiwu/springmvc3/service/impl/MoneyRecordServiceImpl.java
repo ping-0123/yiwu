@@ -190,70 +190,78 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 
 	@Override
 	public YiwuJson<Boolean> saveWithdraw(WithDrawModel m) {
-		BrokerageRecordType type = recordTypeDao.getWithDrawMoneyRecordType();
-		Distributer beneficiary = distributerDao.get(m.getDistributerId());
-		Distributer contributor = beneficiary;
-		float value = m.getAmount();
-		CapitalAccount account = capitalAccountDao.get(m.getAccountId());
-		if(account.getDistributer().getId() != beneficiary.getId()){
-			return new YiwuJson<>("提现者不是提现帐号的拥有者");
+		try{
+			BrokerageRecordType type = recordTypeDao.getWithDrawMoneyRecordType();
+			Distributer beneficiary = distributerDao.get(m.getDistributerId());
+			Distributer contributor = beneficiary;
+			float value = m.getAmount();
+			CapitalAccount account = capitalAccountDao.get(m.getAccountId());
+			if(account.getDistributer().getId() != beneficiary.getId()){
+				return new YiwuJson<>("提现者不是提现帐号的拥有者");
+			}
+			if(value>beneficiary.getBrokerage())
+				return new YiwuJson<>("提现金额大于账户总金额");
+			_save_withdraw_record(beneficiary,contributor,value,type,account);
+			return new YiwuJson<>(new Boolean(true));
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
 		}
-		if(value>beneficiary.getBrokerage())
-			return new YiwuJson<>("提现金额大于账户总金额");
-		_save_withdraw_record(beneficiary,contributor,value,type,account);
-		return new YiwuJson<>(new Boolean(true));
 	}
 
 	@Override
 	public YiwuJson<Boolean> payDeposit(PayDepositModel m) {
-		float payedFundsValue =0;
-		float payedBrokerageValue =0;
-		Distributer beneficiary = distributerDao.get(m.getDistributerId());
-		Distributer contributor = beneficiary;
-		
-		//1. 判断
-		if(m.isFundsFirst()){
-			if(m.getAmount() <= beneficiary.getFunds()){
-				payedFundsValue = m.getAmount();
-				payedBrokerageValue = 0;
-			}else if (m.getAmount() <= beneficiary.getFunds() + beneficiary.getBrokerage()) {
-				payedFundsValue = beneficiary.getFunds();
-				payedBrokerageValue = m.getAmount()-beneficiary.getFunds();
-			}else {
-				return new YiwuJson<>("支付定金金额大于佣金和基金总和");
+		try{
+			float payedFundsValue =0;
+			float payedBrokerageValue =0;
+			Distributer beneficiary = distributerDao.get(m.getDistributerId());
+			Distributer contributor = beneficiary;
+			
+			//1. 判断
+			if(m.isFundsFirst()){
+				if(m.getAmount() <= beneficiary.getFunds()){
+					payedFundsValue = m.getAmount();
+					payedBrokerageValue = 0;
+				}else if (m.getAmount() <= beneficiary.getFunds() + beneficiary.getBrokerage()) {
+					payedFundsValue = beneficiary.getFunds();
+					payedBrokerageValue = m.getAmount()-beneficiary.getFunds();
+				}else {
+					return new YiwuJson<>("支付定金金额大于佣金和基金总和");
+				}
+			}else{
+				if(m.getAmount()<=beneficiary.getBrokerage())
+					payedBrokerageValue =  m.getAmount();
+				else
+					return new YiwuJson<>("支付定金金额大于佣金, 如果有基金，请选择优先使用基金");
 			}
-		}else{
-			if(m.getAmount()<=beneficiary.getBrokerage())
-				payedBrokerageValue =  m.getAmount();
-			else
-				return new YiwuJson<>("支付定金金额大于佣金, 如果有基金，请选择优先使用基金");
+			
+			//2.save order;
+			OrderYzw order = null;
+			try {
+				order = _save_deposit_order(beneficiary , m.getAmount());
+			} catch (Exception e) {
+	//			e.printStackTrace();
+				return new YiwuJson<Boolean>(e.getMessage());
+			}
+			
+			//3.save fundsrecord
+			if(payedFundsValue> 0){
+				FundsRecordType fundsRecordType=recordTypeDao.getPayFundsRecordType();
+				_save_funds_record_with_order(
+						beneficiary, contributor, payedFundsValue, fundsRecordType, order);
+			}
+			
+			
+			//4.save brockerageRcord
+			if(payedBrokerageValue>0){
+				BrokerageRecordType brokerageRecordType = recordTypeDao.getPayBrokerageRecordType();
+				_save_brokerage_record_with_order(
+						beneficiary, contributor, payedBrokerageValue, brokerageRecordType, order);
+			}
+			
+			return new YiwuJson<Boolean>(new Boolean(true));
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
 		}
-		
-		//2.save order;
-		OrderYzw order = null;
-		try {
-			order = _save_deposit_order(beneficiary , m.getAmount());
-		} catch (Exception e) {
-//			e.printStackTrace();
-			return new YiwuJson<Boolean>(e.getMessage());
-		}
-		
-		//3.save fundsrecord
-		if(payedFundsValue> 0){
-			FundsRecordType fundsRecordType=recordTypeDao.getPayFundsRecordType();
-			_save_funds_record_with_order(
-					beneficiary, contributor, payedFundsValue, fundsRecordType, order);
-		}
-		
-		
-		//4.save brockerageRcord
-		if(payedBrokerageValue>0){
-			BrokerageRecordType brokerageRecordType = recordTypeDao.getPayBrokerageRecordType();
-			_save_brokerage_record_with_order(
-					beneficiary, contributor, payedBrokerageValue, brokerageRecordType, order);
-		}
-		
-		return new YiwuJson<Boolean>(new Boolean(true));
 	}
 
 	@Override

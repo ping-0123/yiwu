@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.page.PageBean;
 
 public interface IBaseDao<T ,PK extends Serializable> {
 
-		public T get(PK id);
+		public T get(PK id) throws DataNotFoundException;
 		
 		public PK save(T entity);
 		

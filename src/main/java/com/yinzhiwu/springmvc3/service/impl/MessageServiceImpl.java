@@ -6,15 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mysql.fabric.xmlrpc.base.Array;
 import com.yinzhiwu.springmvc3.dao.MessageDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.Message;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.MessageApiView;
 import com.yinzhiwu.springmvc3.service.MessageService;
-
-import cn.jmessage.api.message.MessageType;
 
 @Service
 public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implements MessageService {
@@ -55,15 +52,19 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 
 	@Override
 	public YiwuJson<MessageApiView> findById(int id) {
-		Message  message = messageDao.get(id);
-		if(message == null)
-			return new YiwuJson<>("no message found by id " + id);
-		
-		//更改消息状态
-		message.setStatus(Message.Status.READ);
-		messageDao.update(message);
-		
-		//返回
-		return new YiwuJson<>(new MessageApiView(message));
+		try{
+			Message  message = messageDao.get(id);
+			if(message == null)
+				return new YiwuJson<>("no message found by id " + id);
+			
+			//更改消息状态
+			message.setStatus(Message.Status.READ);
+			messageDao.update(message);
+			
+			//返回
+			return new YiwuJson<>(new MessageApiView(message));
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 }

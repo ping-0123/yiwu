@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yinzhiwu.springmvc3.dao.DepartmentDao;
 import com.yinzhiwu.springmvc3.entity.PlanRevenue;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 public class PlanRevenueApiModel {
 	private int id;
@@ -93,7 +94,12 @@ public class PlanRevenueApiModel {
 	public PlanRevenueApiModel(@Autowired DepartmentDao dao, PlanRevenue plan){
 		this.id = plan.getId();
 		this.storeId = plan.getStoreId();
-		this.storeName = dao.get(this.storeId).getDeptName();
+		try {
+			this.storeName = dao.get(this.storeId).getDeptName();
+		} catch (DataNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.year=plan.getYear();
 		this.month = plan.getMonth();
 		this.productTypeId = plan.getProductType().getId();

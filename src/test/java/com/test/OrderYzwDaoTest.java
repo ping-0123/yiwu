@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.springmvc3.dao.impl.OrderYzwDaoImpl;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -32,7 +33,13 @@ public class OrderYzwDaoTest {
 	@Test
 	public void testGet(){
 		String id = "20160514060-4";
-		OrderYzw order = orderYzwDaoImpl.get(id);
+		OrderYzw order = null;
+		try {
+			order = orderYzwDaoImpl.get(id);
+		} catch (DataNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(order.getId());
 	}
 	

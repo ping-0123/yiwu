@@ -2,11 +2,11 @@ package com.yinzhiwu.springmvc3.dao.impl;
 
 import java.util.List;
 
-import org.hibernate.exception.DataNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.CustomerYzwDao;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Repository
 public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implements CustomerYzwDao{

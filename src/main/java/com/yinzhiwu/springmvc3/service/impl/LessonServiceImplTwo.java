@@ -7,11 +7,9 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.springmvc3.dao.AppointmentDao;
 import com.yinzhiwu.springmvc3.dao.CheckInsDao;
@@ -23,12 +21,12 @@ import com.yinzhiwu.springmvc3.dao.LessonDao;
 import com.yinzhiwu.springmvc3.dao.OrderDao;
 import com.yinzhiwu.springmvc3.dao.StoreManCallRollDao;
 import com.yinzhiwu.springmvc3.dao.TeacherCallRollDao;
-import com.yinzhiwu.springmvc3.dao.impl.CustomerDaoImpl;
 import com.yinzhiwu.springmvc3.dao.impl.LessonDaoImpl;
 import com.yinzhiwu.springmvc3.entity.ClassRoom;
 import com.yinzhiwu.springmvc3.entity.Course;
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Lesson;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.LessonList;
 import com.yinzhiwu.springmvc3.model.MiniLesson;
 import com.yinzhiwu.springmvc3.service.LessonService;
@@ -79,7 +77,12 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 	
 	@Override
 	public Lesson findById(int lessonId) {
-		return lessonDao.findById(lessonId);
+		try {
+			return lessonDao.findById(lessonId);
+		} catch (DataNotFoundException e) {
+			logger.warn(e.getMessage());
+			return null;
+		}
 	}
 	
 	
@@ -154,9 +157,14 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 			}
 			
 			//添加舞种，舞种等级
-			Course course = courseDao.findById(l.getCourseid());
-			ml.setDanceName(course.getDanceDesc());
-			ml.setDanceGrade(course.getDanceGrade());
+			Course course;
+			try {
+				course = courseDao.findById(l.getCourseid());
+				ml.setDanceName(course.getDanceDesc());
+				ml.setDanceGrade(course.getDanceGrade());
+			} catch (DataNotFoundException e) {
+				logger.warn(e.getMessage());
+			}
 			
 			//添加封闭式课程的上课人数
 			if("封闭式".equals(l.getCourseType()) && l.getCourseid() != null){

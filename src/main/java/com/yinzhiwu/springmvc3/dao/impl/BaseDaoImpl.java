@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
 import com.yinzhiwu.springmvc3.entity.BaseEntity;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.page.PageBean;
 
 
@@ -62,14 +63,12 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
        
     }  
   
-    public T get(PK id) {  
+    public T get(PK id) throws DataNotFoundException {  
         Assert.notNull(id, "id is required"); 
-        try {
-        	return (T) getHibernateTemplate().get(entityClass, id);  
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
-			return null;
-		}
+    	T t = (T) getHibernateTemplate().get(entityClass, id);  
+    	if(t==null)
+    		throw  new DataNotFoundException(entityClass,"id", id);
+    	return t;
     } 
   
 	@SuppressWarnings("unchecked")

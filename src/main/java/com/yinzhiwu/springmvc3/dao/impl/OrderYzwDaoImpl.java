@@ -12,6 +12,7 @@ import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
 import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.util.GeneratorUtil;
 
 @Repository
@@ -96,7 +97,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public OrderYzw get(String id) {
+	public OrderYzw get(String id) throws DataNotFoundException {
 		//1.select courseId from vorder
 		String hql = "select o.course from OrderYzw o  where o.id = :id";
 		List<CourseYzw> courses = (List<CourseYzw>) getHibernateTemplate().findByNamedParam(hql, "id", id);

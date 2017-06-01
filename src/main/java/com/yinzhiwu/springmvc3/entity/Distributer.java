@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.springmvc3.enums.Gender;
+import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
 
 /**
  * 
@@ -201,6 +202,21 @@ public class Distributer extends BaseEntity{
 		}
 	}
 	
+	public Distributer(DistributerRegisterModel m){
+		super();
+		this.registedTime = getCreateDate();
+		this.phoneNo = m.getPhoneNo();
+		this.account = m.getAccount();
+		this.password = m.getPassword();
+		this.name = m.getName();
+		this.nickName = m.getNickName();
+		this.gender = m.getGender();
+		this.birthday =m.getBirthDay();
+		DepartmentYzw d = new DepartmentYzw();
+		d.setId(m.getFollowedByStoreId());
+		this.setFollowedByStore(d);
+		this.wechatNo = m.getWechatNo();
+	}
 	
 	public int getAge(){
 		Calendar today = Calendar.getInstance();

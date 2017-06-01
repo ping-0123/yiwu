@@ -8,10 +8,6 @@ import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
 @Repository
 public class CourseYzwDaoImpl extends BaseDaoImpl<CourseYzw,String> implements CourseYzwDao {
 
-	@Override
-	public CourseYzw get(String id) {
-		return super.get(id);
-	}
 
 	
 }

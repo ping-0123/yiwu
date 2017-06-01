@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.exception.DataNotFoundException;
 import org.hibernate.type.LongType;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.util.GeneratorUtil;
 import com.yinzhiwu.springmvc3.util.SecurityUtil;
 import com.yinzhiwu.springmvc3.util.ShareCodeUtil;

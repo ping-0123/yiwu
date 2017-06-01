@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.yinzhiwu.springmvc3.dao.impl.DistributerDaoImpl;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
@@ -31,6 +33,7 @@ import com.yinzhiwu.springmvc3.model.view.DistributerRegisterApiView;
 import com.yinzhiwu.springmvc3.service.CapitalAccountService;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.util.UrlUtil;
+
 
 @RestController
 @RequestMapping("/api/distributer")
@@ -59,6 +62,19 @@ public class DistributerController {
 		return  distributerService.register(invitationCode, distributer);
 	}
 	
+	@PostMapping(value="")
+	public YiwuJson<DistributerApiView> register2(@Valid DistributerRegisterModel m, BindingResult bindingResult){
+		if(bindingResult.hasErrors()){
+			return new YiwuJson<>(bindingResult.getFieldError().getDefaultMessage());
+		}
+		if(!StringUtils.hasLength(m.getName()))
+			m.setName(m.getPhoneNo());
+		if(!StringUtils.hasLength(m.getAccount()))
+			m.setAccount(m.getPhoneNo());
+		if(!StringUtils.hasLength(m.getNickName()))
+			m.setNickName(m.getPhoneNo());
+		return distributerService.register2(m);
+	}
 	
 	@RequestMapping(value="/loginByWechat", method={RequestMethod.POST,RequestMethod.GET})
 	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String  wechatNo ){
@@ -162,4 +178,6 @@ public class DistributerController {
    public YiwuJson<List<DistributerRegisterApiView>> findSecondariesRegisterRecords(int distributerId){
 	   return distributerService.findSecondariesRegisterRecords(distributerId);
    }
+   
+   
 }
