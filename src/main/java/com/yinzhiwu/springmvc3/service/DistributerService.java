@@ -39,4 +39,5 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 	YiwuJson<DistributerApiView> register2(DistributerRegisterModel m);
 
 
+
 }

@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hamcrest.core.Is;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.springmvc3.entity.Distributer;

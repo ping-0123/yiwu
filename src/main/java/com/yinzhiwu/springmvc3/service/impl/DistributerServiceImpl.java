@@ -320,4 +320,13 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	}
 
 
+	@Override
+	public void modify(Integer id, Distributer entity)
+			throws DataNotFoundException, IllegalArgumentException, IllegalAccessException {
+		super.modify(id, entity);
+	}
+
+
+	
+
 }

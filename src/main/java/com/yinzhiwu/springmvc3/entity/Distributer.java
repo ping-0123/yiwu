@@ -148,7 +148,7 @@ public class Distributer extends BaseEntity{
 	private CustomerYzw customer;  //根据手机号码 或者微信号做唯一性关联
 	
 
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
 	@JoinColumn(name="followedByStore_id", foreignKey=
 		@ForeignKey(name="fk_distributer_followedByStore_id", value=ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw followedByStore;

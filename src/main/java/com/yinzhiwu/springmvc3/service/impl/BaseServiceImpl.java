@@ -1,11 +1,16 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.OneToMany;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.util.Assert;
 
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
@@ -96,4 +101,42 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		baseDao.update(entity);
 	}
 
+	@Override
+	public void modify(PK id, T entity) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException{
+		long start = System.currentTimeMillis();
+		Assert.notNull(id);
+		if(entity== null)
+			return;
+		T newEntity = baseDao.get(id);
+		
+		Field[] fields = entity.getClass().getDeclaredFields();
+		LOG.info(fields.length);
+		boolean update_flag =false;
+		long afterReflect = System.currentTimeMillis();
+		LOG.info("反射所花时间: " + (afterReflect-start));
+		for (Field f : fields) {
+//			LOG.info(f.get(entity) + " vs " + f.get(newEntity));
+//			LOG.info(Modifier.isStatic(f.getModifiers()));
+			f.setAccessible(true);
+			if(!Modifier.isStatic(f.getModifiers()) 
+					&&f.get(entity)!=null 
+					&& f.getDeclaredAnnotation(OneToMany.class) == null
+					&& !f.get(entity).equals(f.get(newEntity)))
+			{
+				f.set(newEntity, f.get(entity));
+				LOG.info(f.get(newEntity));
+				update_flag = true;
+			}
+		}
+		long afterCompare=System.currentTimeMillis();
+		LOG.info("对比所化时间: " + (afterCompare-afterReflect));
+		if(update_flag){
+//			LOG.info(update_flag);
+			baseDao.update(newEntity);
+		}
+		
+		long end = System.currentTimeMillis();
+		LOG.info("更新所花时间: " + (end-afterCompare));
+		LOG.info("所花总时间： " + (end-start));
+	}
 }

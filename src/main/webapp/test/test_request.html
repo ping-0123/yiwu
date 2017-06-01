@@ -13,12 +13,28 @@
 	<script type="text/javascript">
 	
 		var v_baseUrl = "http://localhost:8080/yiwu/";
-  		register();
+//		register();
 //		save_capitalAccount();
 //		setDefaultAccount();
 //		withdraw();
 //		payDeposit();
 //		shareTweet();
+		modify();
+
+		function modify(){
+			var v_url = v_baseUrl + "/api/distributer/3000001";
+			$.ajax({
+				type:'PUT',
+				url:v_url,
+				data:{'nickName':'bbbb', 'followedByStore.id': '61'},
+				dataType:'json',
+				timeout:5000,
+				success:function(data){
+//					alert(JSON.toString(data));
+					document.write("chenggong");
+				}
+			});
+		}
 		
 		function shareTweet(){
 			var v_url = v_baseUrl + "/api/tweet/share";

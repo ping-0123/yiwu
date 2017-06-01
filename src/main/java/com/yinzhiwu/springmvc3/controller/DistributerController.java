@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.yinzhiwu.springmvc3.dao.impl.DistributerDaoImpl;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.model.DistributerModifyModel;
 import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
@@ -38,7 +41,7 @@ import com.yinzhiwu.springmvc3.util.UrlUtil;
 @RestController
 @RequestMapping("/api/distributer")
 public class DistributerController {
-	private static final Log logger = LogFactory.getLog(DistributerDaoImpl.class);
+	private static final Log LOG = LogFactory.getLog(DistributerDaoImpl.class);
 	
 	
 	@Autowired
@@ -55,7 +58,7 @@ public class DistributerController {
 		if(bindingResult.hasErrors()){
 			 FieldError field = bindingResult.getFieldError();
 			 String message =   field.getField() + " " + field.getDefaultMessage();
-			 logger.info(message);
+			 LOG.info(message);
 			 return new YiwuJson<>(200,false,message,null,false);
 		}
 		
@@ -144,7 +147,7 @@ public class DistributerController {
 			@Valid CapitalAccountApiView v, BindingResult bindingResult){
 		if(bindingResult.hasErrors()){
 			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-			logger.info("addCapitalAccount has erorr field" +  fieldErrors);
+			LOG.info("addCapitalAccount has erorr field" +  fieldErrors);
 			for (FieldError fieldError : fieldErrors) {
 				if(!fieldError.getField().equals("accountId"))
 					return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
@@ -179,5 +182,17 @@ public class DistributerController {
 	   return distributerService.findSecondariesRegisterRecords(distributerId);
    }
    
+   @PutMapping(value="/{id}")
+   public YiwuJson<Boolean> modify(Distributer d, @PathVariable int id){
+		try {
+			System.out.println(d.getNickName());
+			distributerService.modify(id, d);
+			return new YiwuJson<>(new Boolean(true));
+		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
+			LOG.error(e.getMessage());
+			return new YiwuJson<>(e.getMessage());
+		}
+	   
+   }
    
 }
