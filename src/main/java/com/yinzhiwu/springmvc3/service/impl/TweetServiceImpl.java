@@ -7,8 +7,8 @@ import org.aspectj.lang.annotation.After;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yinzhiwu.springmvc3.dao.BaseTypeDao;
 import com.yinzhiwu.springmvc3.dao.TweetDao;
-import com.yinzhiwu.springmvc3.entity.BaseTypeDao;
 import com.yinzhiwu.springmvc3.entity.Tweet;
 import com.yinzhiwu.springmvc3.entity.TweetType;
 import com.yinzhiwu.springmvc3.model.TweetModel;

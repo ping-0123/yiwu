@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -44,7 +45,7 @@ import com.yinzhiwu.springmvc3.enums.Gender;
  * 外键列命名规则: {parent table name}_{referenced column name}
  * 唯一键命名规则: uk_{table name}_{unique key name}
  */
-@Table(name="distributer", 
+@Table(name="yiwu_distributer", 
 	uniqueConstraints={
 			@UniqueConstraint(name="uk_distributer_memberId", columnNames={"memberId"}),
 			@UniqueConstraint(name="uk_distributer_account", columnNames={"account"}),
@@ -60,8 +61,8 @@ public class Distributer extends BaseEntity{
 	 * 
 	 */
 	private static final long serialVersionUID = -8400038437062433347L;
-	
-	@Column(length=32,unique=true, nullable=false, updatable=false)
+//	unique=true,
+	@Column(length=32, nullable=false, updatable=false)
 //	@Formula("concat('E5', lpad(id,8,'0'))")
 //	@ColumnDefault("concat('E5', lpad(id,8,'0'))")
 	private String memberId;
@@ -78,18 +79,21 @@ public class Distributer extends BaseEntity{
 	
 	@Pattern(regexp="(\\p{Alpha}|\\d|_){5,31}")
 //	@NotNull
-	@Column(length=32, unique=true, nullable=false, updatable=false)
+//	unique
+	@Column(length=32, nullable=false, updatable=false)
 	private String account;  //默认是手机号
 	
 	@Column(length=32, nullable=false)
 	private String password;
 	
+//	unique
 	@NotNull
-	@Column(length=32, unique=true, nullable=false)
+	@Column(length=32,  nullable=false)
 	private String wechatNo;
 	
+//	unique
 	@Pattern(regexp="^1\\d{10}$")
-	@Column(length=32, unique=true, nullable=false)
+	@Column(length=32, nullable=false)
 	private String phoneNo;
 	
 	@Past
@@ -102,7 +106,8 @@ public class Distributer extends BaseEntity{
 	@Enumerated(EnumType.ORDINAL)
 	private Gender gender;
 	
-	@Column(length=10, unique=true, updatable=false)
+//	unique
+	@Column(length=10, updatable=false)
 	private String shareCode;
 	
 	@ManyToOne(targetEntity=Distributer.class, fetch=FetchType.LAZY)
@@ -110,7 +115,8 @@ public class Distributer extends BaseEntity{
 		foreignKey=@ForeignKey(name="fk_distributer_superDistributer_id"))
 	private Distributer superDistributer;
 	
-	@Column(length=32, unique=true)
+//	unique
+	@Column(length=32)
 	private String headIconName;
 	
 	private float exp;
@@ -134,15 +140,19 @@ public class Distributer extends BaseEntity{
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date registedTime;
 	
+//	unique
 	@OneToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	@JoinColumn(name="customer_id", unique=true, foreignKey=@ForeignKey(name="fk_distributer_customer_id"))
+	@JoinColumn(name="customer_id", foreignKey=@ForeignKey(
+			name="fk_distributer_customer_id", value = ConstraintMode.NO_CONSTRAINT))
 	private CustomerYzw customer;  //根据手机号码 或者微信号做唯一性关联
 	
 
 	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="followedByStore_id", foreignKey=@ForeignKey(name="fk_distributer_followedByStore_id"))
+	@JoinColumn(name="followedByStore_id", foreignKey=
+		@ForeignKey(name="fk_distributer_followedByStore_id", value=ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw followedByStore;
 	
+//	unique
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_distributer_defaultCapitalAccount_id"))
 	private CapitalAccount defaultCapitalAccount;
@@ -159,7 +169,7 @@ public class Distributer extends BaseEntity{
 	@OneToMany(mappedBy="beneficiaty", targetEntity=MoneyRecord.class)
 	private List<MoneyRecord> moneyRecords = new ArrayList<>();
 	
-	@OneToMany(mappedBy="contributor")
+	@OneToMany(mappedBy="contributor", targetEntity=MoneyRecord.class)
 	private List<MoneyRecord> contributedMoneyRecords  = new ArrayList<>();
 	
 	
@@ -167,7 +177,7 @@ public class Distributer extends BaseEntity{
 	@OneToMany(mappedBy="beneficiaty", targetEntity=ExpRecord.class)
 	private List<ExpRecord> expRecords = new ArrayList<>();
 	
-	@OneToMany(mappedBy="contributor")
+	@OneToMany(mappedBy="contributor", targetEntity=ExpRecord.class)
 	private List<ExpRecord> contributedExpRecords = new ArrayList<>();
 	
 	@JsonIgnore

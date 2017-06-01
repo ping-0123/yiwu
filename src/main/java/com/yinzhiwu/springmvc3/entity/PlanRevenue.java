@@ -15,7 +15,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="plan_revenue", uniqueConstraints=
+@Table(name="yiwu_plan_revenue", uniqueConstraints=
 	@UniqueConstraint(name="uk_PlanRevenue_storeId_year_month_productTypeId", 
 			columnNames={"storeId","year", "month", "productTypeId"}))
 public class PlanRevenue {

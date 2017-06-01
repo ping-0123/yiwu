@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="share_style", length=32)
 @DiscriminatorValue("Share")
-@Table(name="share_tweet")
+@Table(name="yiwu_share_tweet")
 public class ShareTweet extends BaseEntity {
 
 	/**

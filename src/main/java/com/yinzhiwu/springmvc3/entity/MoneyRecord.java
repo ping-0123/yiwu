@@ -15,10 +15,11 @@ import javax.persistence.Table;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 
 @Entity
-@Table
+@Table(name="yiwu_money_record")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="brokerage_funds", length=32)
+@DiscriminatorColumn(name="type", length=32)
 @DiscriminatorValue("MoneyRecord")
+//@DiscriminatorValue("MoneyRecord")
 public abstract class MoneyRecord extends AbstractRecord {
 
 	/**

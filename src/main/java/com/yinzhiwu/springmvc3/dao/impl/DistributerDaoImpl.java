@@ -32,7 +32,7 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	private int getNextId() {
-		String sql = "select  AUTO_INCREMENT from information_schema.tables where table_name ='distributer'";
+		String sql = "select  AUTO_INCREMENT from information_schema.tables where table_name ='yiwu_distributer'";
 		List<Long> list = getSession().createNativeQuery(sql).addScalar("AUTO_INCREMENT", LongType.INSTANCE) .list();
 		return list.get(0).intValue();
 	}

@@ -16,7 +16,8 @@ import javax.persistence.UniqueConstraint;
 
 
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(name="uk_expgrade_gradeNo", columnNames="gradeNo"),
+@Table(name="yiwu_exp_grade",
+		uniqueConstraints={@UniqueConstraint(name="uk_expgrade_gradeNo", columnNames="gradeNo"),
 		@UniqueConstraint(name="uk_expgrade_name", columnNames="name")
 })
 public class ExpGrade extends BaseEntity {
