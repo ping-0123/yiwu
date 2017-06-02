@@ -4,7 +4,7 @@
   <groupId>com.yinzhiwu</groupId>
   <artifactId>yiwu</artifactId>
   <packaging>war</packaging>
-  <version>1.1.16</version>
+  <version>1.1.17</version>
   <name>yiwu Maven Webapp</name>
   <url>http://maven.apache.org</url>
   
@@ -13,6 +13,7 @@
 	  	<spring.version>4.3.6.RELEASE</spring.version>
 	  	<jackson.version>2.8.7</jackson.version>
 	  	<quartz.version>2.3.0</quartz.version>
+	  	<qiniu.version>7.2.6</qiniu.version>
   </properties>
   
   <dependencies>
@@ -177,7 +178,12 @@
 	    <version>1.1.2-offical</version>
 	</dependency>
 	
-
+	<!-- #########  七牛云  ########### -->
+	<dependency>
+	  <groupId>com.qiniu</groupId>
+	  <artifactId>qiniu-java-sdk</artifactId>
+	  <version>${qiniu.version}</version>
+	</dependency>	
 		
   </dependencies>
   <build>
