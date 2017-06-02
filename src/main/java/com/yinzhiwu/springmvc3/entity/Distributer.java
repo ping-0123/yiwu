@@ -125,7 +125,6 @@ public class Distributer extends BaseEntity{
 	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="expGrade_id", referencedColumnName="id", 
-		unique=true,
 		foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
 	private ExpGrade expGrade;
 	
