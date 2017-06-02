@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -56,9 +57,12 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OrderYzw> find_produce_commission_orders() {
+	public List<OrderYzw> find_produce_commission_orders() throws DataNotFoundException {
 		String hql = "from OrderYzw where createTime >= :payedDate and product.name like '%卡%' ";
-		return (List<OrderYzw>) getHibernateTemplate().findByNamedParam(hql, "payedDate", _get_last_date());
+		List<OrderYzw> orders = (List<OrderYzw>) getHibernateTemplate().findByNamedParam(hql, "payedDate", _get_last_date());
+		if(orders== null || orders.size() ==0)
+			throw new DataNotFoundException(OrderYzw.class, "createTime", _get_last_date());
+		return orders;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -71,11 +75,11 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 		String sql = "SELECT PREV_FIRE_TIME FROM yiwu.qrtz_triggers where JOB_NAME = 'orderBrockerageJobDetail'";
 		@SuppressWarnings({ "unchecked", "deprecation" })
 		List<Long> list = getSession().createNativeQuery(sql).addScalar("PREV_FIRE_TIME", LongType.INSTANCE).list();
-		Date date = new Date();
-		date.setTime(list.get(0));
-		logger.info(date);
-		LOG.info("LOG " + date);
-		return date;
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(list.get(0));
+		LOG.debug("上一次执行orderBrockerageJobDetail时间是: " + calendar.getTime());
+		return calendar.getTime();
 	}
 
 	@Override

@@ -31,6 +31,7 @@ import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.ProductYzw;
 import com.yinzhiwu.springmvc3.enums.MoneyRecordCategory;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.PayDepositModel;
 import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
@@ -266,11 +267,13 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 
 	@Override
 	public void saveCommissionRecord(){
-		List<OrderYzw> orders = orderYzwDao.find_produce_commission_orders();
-		if(orders == null || orders.size() ==0)
-			return;
-		for (OrderYzw o : orders) {
-			_save_commission_record_by_order(o);
+		try{
+			List<OrderYzw> orders = orderYzwDao.find_produce_commission_orders();
+			for (OrderYzw o : orders) {
+				_save_commission_record_by_order(o);
+			}
+		}catch (DataNotFoundException e) {
+			LOG.info(e.getMessage());
 		}
 	}
 	
