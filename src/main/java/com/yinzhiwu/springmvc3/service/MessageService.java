@@ -14,4 +14,9 @@ public interface MessageService  extends IBaseService<Message, Integer>{
 	public YiwuJson<List<MessageApiView>> findByReceiverId(int receiverId);
 
 	public YiwuJson<MessageApiView> findById(int id);
+
+	void saveSubordinateRegisterMessage(Distributer receiver, String customerName, float consumeValue,
+			float inComeValue);
+
+	public void saveWithdrawMessage(Distributer beneficiary, float value);
 }

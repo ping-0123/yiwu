@@ -86,6 +86,8 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	public void saveRegisterFundsRecord(Distributer beneficiary, Distributer contributor) {
 		FundsRecordType fundsRecordType = recordTypeDao.findRegisterFundsRecordType();
 		_save_funds_record(beneficiary, contributor, 1, fundsRecordType);
+		//保存消息
+		messageService.saveBrockerageIncomeMessage(beneficiary, contributor.getName(), 0f, fundsRecordType.getFactor());
 	}
 
 	public void _save_money_record(Distributer beneficiary,Distributer contributor, float value,  MoneyRecordType type )
@@ -168,6 +170,9 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		moneyRecordDao.save(record);
 		beneficiary.setBrokerage(record.getCurrentBrokerage());
 		distributerDao.update(beneficiary);
+		
+		//保存提现消息
+		messageService.saveWithdrawMessage(beneficiary, value);
 		
 	}
 	
