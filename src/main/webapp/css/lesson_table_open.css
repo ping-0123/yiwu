@@ -4,12 +4,12 @@
   /*竖屏 css*/  
        *{padding: 0;margin:0;text-decoration: none;list-style: none;font-family: "微软雅黑";}  
        .nav{ width: 100%; height: 80px;}
-       .logo{width:100%;height:50px;text-align: center;}
-       .logo img{ width:120px;height: auto;margin-top: 10px;}
-       .menu{ width:100%;height: 30px;line-height: 30px;}
+       .logo{width:50%;height:80px;text-align: center;float: left;}
+       .logo img{ width:160px;height: auto;margin-top: 20px;}
+       .menu{ position: absolute;top:30px;left: 70%; width:100px;}
        
        /*select*/
-       .select_option ul li{ float: left; width: 30%;text-align: center;}
+       .select_option ul li{text-align: center;}
        .select_option ul li:first-child{margin-left:5%;}
        .select_option ul li select{border: none;
                                     background: transparent;
@@ -18,29 +18,35 @@
                                     -webkit-appearance:none;}
        .select_option ul li select:focus{background-color: transparent;}                          
        .select_option ul li select:hover{background-color:transparent; ;} 
-       .district{background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:70px 12px;}
-       .district select{ width:80%;height: 30px;border-radius:6px; font-size: 16px;padding-left: 5px;padding-left: 20px;}
-       .store{ width: 20%;background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:80px 12px ;}
-       .store select{width: 90%;height: 30px;border-radius:6px;font-size: 14px;padding-left: 5px;padding-left: 20px;}
-       .type{ width: 20%;background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:80px 12px ;}
-       .type select{width: 90%;height: 30px;border-radius:6px;font-size: 14px;padding-left: 10%;padding-left: 20px;}
+       
+       .district{ width:100px;background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:70px 10px;}
+       .district select{ width:100%;height: 30px;border-radius:6px; font-size: 18px;padding-left: 5px;}
+       
+       .store{ width: 100px;background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:70px 10px;margin-left:5%;margin-top: 10px;}
+       .store select{width: 90%;height: 30px;border-radius:6px;font-size: 12px; }
+       
+       .type{ width: 100px;background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:70px 10px;margin-left:5%;margin-top: 5px;}
+       .type select{width: 90%;height: 30px;border-radius:6px;font-size: 12px;}
+   
+     
+       
        /*第二段*/
-      .address_week{ width: 100%;height: 100px;}
+      .address_week{ width: 100%;height: 130px;}
 			.first_line{ display: block; width: 100%; height: 30px; line-height: 30px;}
-			.first_line span{ font-size: 16px;padding-left:13%;color: red;}
+			.first_line span{ font-size: 16px;padding-left:5%;color: red;}
 			.first_line small{padding-left: 20px;font-size: 16px;color: red;}
-			.second_line{ display: block; width: 100%; height: 70px;overflow: hidden;}
+			.second_line{ display: block; width: 100%; height: 100px;overflow: hidden;}
       .second_line ul{ width: 100%;}
-      .address_week_1{ width: 65%;height:40px;line-height: 14px;}
-      .address_week_1 li{ width: 100%;height:20px;line-height:20px;padding-left: 18%;}
+      .address_week_1{height:40px;line-height: 14px;}
+      .address_week_1 li{ width: 100%;height:20px;line-height:20px;padding-left: 10%;}
       .address_week_1 li span{font-size: 12px;}
-      .address_week_2{ width: 35%;}
-      .address_week_2 li:first-child{float:left;margin-left: 13%;}
-      .address_week_2 li:last-child{ float: right;margin-right: 13%;}
+      .address_week_2{height: 60px;line-height: 60px;}
+      .address_week_2 li:first-child{float:left;margin-left: 5%;}
+      .address_week_2 li:last-child{ float: right;margin-right: 5%;}
       .address_week_2 li a{font-size: 16px;color: #000000;}
-      #address{background:url(../images/adress.png);background-repeat:no-repeat ;background-size:13px 13px;background-position:11% 6px;}
+      #address{background:url(../images/adress.png);background-repeat:no-repeat ;background-size:13px 13px;background-position:4% 6px;}
       #phone{background:url(../images/phone.png);background-repeat:no-repeat; 
-              background-size:11px 11px;background-position:11% 6px;}
+              background-size:11px 11px;background-position:5% 6px;}
               
       
            /*table*/
@@ -77,12 +83,64 @@
                    border-radius:5px;
                    padding-top: 5px;padding-bottom: 5px;padding-left: 4px;padding-right: 4px;color: white;}
          
-          .footer{min-height: 30px; width: 96%; margin-top:10px;border-top:1px dotted darkgray;margin-left:2% ;}
+          .footer{min-height: 30px; width: 100%; margin-top:10px;border-top:1px dotted darkgray;}
           .open_tip{height: 40px;line-height: 40px;}
           .open_tip img{ width: 6px; height: auto;float: left;margin-top: 13px;margin-left: 5px;}
-          .open_tip p{float: left; padding-left: 6px;font-size: 12px;}
+          .open_tip p{float: left; width: 94%;height: 40px; padding-left: 6px;font-size: 12px;overflow: hidden;}
             
-  }    
+  /*  iphone5  适配    */
+   @media screen and (max-width:321px ) {
+   	    .nav{ width: 100%; height: 70px;}
+        .logo{width:50%;height:70px;text-align: center;float: left;}
+        .logo img{ width:140px;height: auto;margin-top: 20px;}
+       	.menu{ width: 90px;}
+       	.district{width: 90px;background-position:60px 10px;}
+       	.store{width: 90px;background-position:60px 10px;margin-top: 12px;}
+       	.type{width: 90px;background-position:60px 10px;margin-top: 12px;}
+       }
+  /*  ipad     适配     */
+      @media screen and (min-width:767px ) {
+      	.nav{ width: 100%; height: 120px;}
+        .logo{width:40%;height:120px;float: left;}
+        .logo img{ display: block; width:250px;height: auto;margin-top: 25px;margin-left: 10%;}
+        .menu{ position: absolute;top:0;left:340px; width:420px;height: 120px;}
+        .select_option{width:420px;height: 120px;}
+        .select_option ul{width:420px;height: 120px;}
+        .select_option ul li{text-align: center;float: left;margin-top: 65px;}
+        .select_option ul li:first-child{margin-left:0;}
+        
+       .district{ width:120px;background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:70px 10px;}
+       .district select{ width:100%;height: 30px;border-radius:6px; font-size: 20px;padding-left: 5px;}
+       
+       .store{ width: 120px;background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:70px 10px;margin-left:5%;margin-top: 0;}
+       .store select{width: 90%;height: 30px;border-radius:6px;font-size: 14px; }
+       
+       .type{ width: 120px;background:url(../images/V.png);background-repeat:no-repeat;background-size:11px 11px;background-position:70px 10px;margin-left:5%;margin-top: 0;}
+       .type select{width: 90%;height: 30px;border-radius:6px;font-size: 14px;}
+       
+       /* address_week*/
+        .address_week{ width: 100%;height: 140px;}
+			.first_line{ display: block; width: 100%; height: 40px; line-height: 40px;}
+			.first_line span{ font-size: 20px;padding-left:5%;color: red;}
+			.first_line small{padding-left: 20px;font-size: 16px;color: red;}
+			.second_line{ display: block; width: 100%; height: 100px;overflow: hidden;}
+      .second_line ul{ width: 100%;}
+      .address_week_1{height:40px;line-height: 14px;}
+      .address_week_1 li{ width: 100%;height:20px;line-height:20px;padding-left: 8%;}
+      .address_week_1 li span{font-size: 12px;}
+      .address_week_2{height: 60px;line-height: 60px;}
+      .address_week_2 li:first-child{float:left;margin-left: 5%;}
+      .address_week_2 li:last-child{ float: right;margin-right: 5%;}
+      .address_week_2 li a{font-size: 20px;color: #000000;}
+      #address{background:url(../images/adress.png);background-repeat:no-repeat ;background-size:13px 13px;background-position:4% 6px;}
+      #phone{background:url(../images/phone.png);background-repeat:no-repeat; 
+              background-size:11px 11px;background-position:4.3% 6px;}
+         .table_lesson table{ width:100%; margin:0 auto;border-collapse:collapse;}      
+       
+        }    
+        
+       } 
+        
 
 @media screen and (orientation: landscape) {   
   /*横屏 css*/ 
@@ -168,4 +226,11 @@
           .open_tip{height: 40px;line-height: 40px;}
           .open_tip img{ width: 6px; height: auto;float: left;margin-top: 13px;margin-left: 5px;}
           .open_tip p{float: left; padding-left: 6px;font-size: 12px;}
-}   
+          
+          @media screen and (min-width:1023px ) {
+          	.logo img{ width:180px; height: auto; margin-left: 5%; margin-top: 18px;}
+          	
+          	
+          }
+          
+          }   
