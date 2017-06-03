@@ -1,6 +1,7 @@
 package com.test;
 
-import javax.xml.ws.RespectBinding;
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,9 +25,16 @@ public class QiniuTest {
 	private String secretKey = Qiniu.SECRET_KEY;
 	private String bucket = Qiniu.BUCKET;
 	private Zone zone = Zone.zone2();
+	private Configuration cfg = new Configuration(zone);
+	private UploadManager uploadManager = new UploadManager(cfg);
+	private Auth auth = Auth.create(accessKey, secretKey);
+	private String upToken = auth.uploadToken(bucket);
 	
 	private String filePath ="C:\\Users\\ping\\Pictures\\yiwu测试\\android学员端闪退.jpg";
-
+	private String sqlFilePath = "C:\\Users\\ping\\Documents\\asas.sql";
+	private String sampleVideo = "C:\\Users\\Public\\Videos\\Sample Videos\\Wildlife.wmv";
+	private String wugui="C:\\Users\\ping\\Downloads\\古典舞-无归.mp4";
+	
 	@Test
 	public void testReturnBody(){
 		Auth auth = Auth.create(Qiniu.ACCESS_KEY, Qiniu.ACCESS_KEY);
@@ -40,15 +48,11 @@ public class QiniuTest {
 	
 	@Test
 	public void uploadFromLocalFile(){
-		Configuration cfg = new Configuration(zone);
 		
-		UploadManager uploadManager = new UploadManager(cfg);
+		String key = "video/wugui.mp4";
 		
-		String key = "android";
-		Auth auth = Auth.create(accessKey, secretKey);
-		String upToken = auth.uploadToken(bucket);
 		try{
-			Response response = uploadManager.put(filePath, key, upToken);
+			Response response = uploadManager.put(sampleVideo, key, upToken);
 			
 			DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
 			
@@ -63,5 +67,53 @@ public class QiniuTest {
 				e1.printStackTrace();
 			}
 		}
+	}
+	
+	@Test
+	public void uploadBytes(){
+		String key = "bytes";
+		try {
+			byte[] uploadBytes = "杭州音之舞科技有限公司".getBytes("utf-8");
+			Response response = uploadManager.put(uploadBytes, key, upToken);
+			DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
+			System.out.println(putRet.key);	
+			System.out.println(putRet.hash);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (QiniuException e) {
+			Response r = e.response;
+			System.err.println(r.toString());
+			try {
+				System.err.println(r.bodyString());
+			} catch (QiniuException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+	}
+	
+	@Test
+	public void uploadInputStream(){
+		String key = "yzw2\\inputStream";
+		try {
+			byte[] uploadBytes = "杭州音之舞科技有限公司".getBytes("utf-8");
+			ByteArrayInputStream stream = new ByteArrayInputStream(uploadBytes);
+//			Response response = uploadManager.put(uploadBytes, key, upToken);
+			Response response = uploadManager.put(stream, key, upToken, null, null);
+			DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
+			System.out.println(putRet.key);	
+			System.out.println(putRet.hash);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (QiniuException e) {
+			Response r = e.response;
+			System.err.println(r.toString());
+			try {
+				System.err.println(r.bodyString());
+			} catch (QiniuException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
 	}
 }
