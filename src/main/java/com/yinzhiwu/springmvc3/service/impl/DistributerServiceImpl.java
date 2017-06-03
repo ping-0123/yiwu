@@ -113,6 +113,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				distributer.setFollowedByStore(store);
 			} catch (DataNotFoundException e) {
 				LOG.warn(e.getMessage());
+				distributer.setFollowedByStore(null);
 			}
 			
 		}

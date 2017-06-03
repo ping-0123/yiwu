@@ -4,7 +4,6 @@ package com.yinzhiwu.springmvc3.model;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -29,7 +28,7 @@ public class DistributerRegisterModel {
 	@NotNull
 	private Gender gender;
 	
-	@Past
+//	@Past
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date birthDay;
 	

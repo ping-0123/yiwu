@@ -1,6 +1,8 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,17 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 		message.setReceiver(receiver);
 		messageDao.save(message);
 	}
+	
+	@Override
+	public void saveSubordinateRegisterMessage(Distributer receiver, String customerName, float consumeValue,
+			float inComeValue){
+		Message message = new Message();
+		String content = customerName + "通过您的邀请码: " + receiver.getShareCode() + "注册成为音之舞的会员," 
+				+ "您获得了" + inComeValue + "收益";
+		message.setContent(content);
+		message.setReceiver(receiver);
+		messageDao.save(message);
+	}
 
 	@Override
 	public YiwuJson<List<MessageApiView>> findByReceiverId(int receiverId) {
@@ -66,5 +79,18 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 		}catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
+	}
+
+	@Override
+	public void saveWithdrawMessage(Distributer receiver, float value) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
+		if(receiver == null)
+			return;
+		Message message = new Message();
+		String content = "您于" + format.format(new Date()) + "提现" + value + "元" ;
+		message.setContent(content);
+		message.setReceiver(receiver);
+		messageDao.save(message);
+		
 	}
 }
