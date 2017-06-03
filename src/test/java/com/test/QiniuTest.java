@@ -54,10 +54,10 @@ public class QiniuTest {
 	@Test
 	public void uploadFromLocalFile(){
 		
-		String key = "android/exit.jpg";
+		String key = "video-wugui.mp4";
 		
 		try{
-			Response response = uploadManager.put(filePath, key, upToken);
+			Response response = uploadManager.put(wugui, key, upToken);
 			
 			DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
 			
@@ -138,4 +138,10 @@ public class QiniuTest {
 		}
 	}
 	
+	
+	@Test
+	public void callBack(){
+		auth.uploadToken(bucket, null, 10000, new StringMap()
+				.put("callbackUrl", value))
+	}
 }

@@ -53,7 +53,7 @@ import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
 			@UniqueConstraint(name="uk_distributer_wechatNo", columnNames="wechatNO"),
 			@UniqueConstraint(name="uk_distributer_phoneNo", columnNames="phoneNo"),
 			@UniqueConstraint(name="uk_distributer_shareCode", columnNames="shareCode"),
-			@UniqueConstraint(name="uk_distributer_headIconName", columnNames="headIconName"),
+//			@UniqueConstraint(name="uk_distributer_headIconName", columnNames="headIconName"),
 			@UniqueConstraint(name="fuk_distributer_customer_id", columnNames="customer_id"),
 			@UniqueConstraint(name="fuk_distributer_defaultCapitalAccount_id", columnNames="defaultCapitalAccount_id")})
 public class Distributer extends BaseEntity{
@@ -117,7 +117,7 @@ public class Distributer extends BaseEntity{
 	private Distributer superDistributer;
 	
 //	unique
-	@Column(length=32)
+	@Column(length=255, name="headIconUrl")
 	private String headIconName;
 	
 	private float exp;
@@ -125,7 +125,7 @@ public class Distributer extends BaseEntity{
 	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="expGrade_id", referencedColumnName="id", 
-		unique=true,
+//		unique=true,
 		foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
 	private ExpGrade expGrade;
 	
