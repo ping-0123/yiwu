@@ -202,6 +202,8 @@ function loadStores(v_districtId){
 								else if(lesson.subCourseType == "开放式B"){
 									t = t +"<ul class=\"open_B_type\">" ;}
 							}
+							t = t+ "<li style=\"display:none\">lessonId:" + lesson.lessonId
+							 +"</li><li style=\"display:none\">courseId:" + lesson.courseid + "</li>";
 							
 							t= t+ "<li><small>" + lesson.danceName.replace("少儿","") + lesson.danceGrade  + "</small>" +"</li><li><small>"
 								+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"
@@ -210,7 +212,12 @@ function loadStores(v_districtId){
 							if(lesson.courseType=="封闭式"){
 							//	封闭式的预约：门店点名人数|教师点名人数|班级人数
 								var classStudentCount =0;
-								if(lesson.lessonDate >=new Date()){
+								var today = new Date();
+								today.setHours(0);
+								today.setMinutes(0);
+								today.setSeconds(0);
+								today.setMilliseconds(0);
+								if(lesson.lessonDate >= getTodayBegin()){
 									classStudentCount = lesson.attendedStudentCount;
 								}else{
 									classStudentCount = lesson.checkedInsStudentCount;

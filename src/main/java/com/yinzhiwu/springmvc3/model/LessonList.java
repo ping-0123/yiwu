@@ -7,7 +7,7 @@ public class LessonList {
 	
 	private Date date;
 	private int weekday;
-	private List<LessonApiView> list;
+	private List<LessonOldApiView> list;
 	
 	public final Date getDate() {
 		return date;
@@ -21,13 +21,13 @@ public class LessonList {
 	public final void setWeekday(int weekday) {
 		this.weekday = weekday;
 	}
-	public final List<LessonApiView> getList() {
+	public final List<LessonOldApiView> getList() {
 		return list;
 	}
-	public final void setList(List<LessonApiView> list) {
+	public final void setList(List<LessonOldApiView> list) {
 		this.list = list;
 	}
-	public LessonList(java.sql.Date date, int weekday, List<LessonApiView> list) {
+	public LessonList(java.sql.Date date, int weekday, List<LessonOldApiView> list) {
 		this.date = date;
 		this.weekday = weekday;
 		this.list = list;

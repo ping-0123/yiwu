@@ -1,12 +1,12 @@
 package com.yinzhiwu.springmvc3.dao;
 
 import com.yinzhiwu.springmvc3.entity.Appointment;
-import com.yinzhiwu.springmvc3.model.LessonApiView;
+import com.yinzhiwu.springmvc3.model.LessonOldApiView;
 
 public interface AppointmentDao extends IBaseDao<Appointment, Integer>{
 
 	public int getAppointedStudentCount(int lessonId);
 	
-	public LessonApiView.AttendedStatus findStatus(int lessonId, int customerId);
+	public LessonOldApiView.AttendedStatus findStatus(int lessonId, int customerId);
 	
 }

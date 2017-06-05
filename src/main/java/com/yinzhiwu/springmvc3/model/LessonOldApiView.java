@@ -4,17 +4,9 @@ import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.criteria.CriteriaBuilder.Case;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.yinzhiwu.springmvc3.dao.CourseDao;
-import com.yinzhiwu.springmvc3.dao.CourseYzwDao;
-import com.yinzhiwu.springmvc3.dao.LessonDao;
 import com.yinzhiwu.springmvc3.entity.Lesson;
-import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
 
-public class LessonApiView {
+public class LessonOldApiView {
 	
 //	public static String  APPONTED = "已预约"; // 已预约
 //	public static String UN_APOINTED = "未预约";
@@ -28,6 +20,7 @@ public class LessonApiView {
 	
 	private String courseid;
 	
+//	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date lessonDate;
 	
 	private int week;
@@ -79,7 +72,7 @@ public class LessonApiView {
 	private int sumTimesOfCourse;
 	
 
-	public LessonApiView(Integer lessonId, String courseid, Date lessonDate, Time startTime, Time endTime,
+	public LessonOldApiView(Integer lessonId, String courseid, Date lessonDate, Time startTime, Time endTime,
 			String lessonDesc, Integer storeId, String storeName, Float lessonTime, Integer dueTeacherId,
 			String dueTeacherName, String courseType, String subCourseType) {
 		super();
@@ -102,7 +95,7 @@ public class LessonApiView {
 	}
 	
 	
-	public LessonApiView(Lesson l){
+	public LessonOldApiView(Lesson l){
 		this.lessonId = l.getLessonId();
 		this.courseid = l.getCourseid();
 		this.lessonDate = l.getLessonDate();

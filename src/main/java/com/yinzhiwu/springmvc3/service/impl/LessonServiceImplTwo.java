@@ -28,7 +28,7 @@ import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Lesson;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.LessonList;
-import com.yinzhiwu.springmvc3.model.LessonApiView;
+import com.yinzhiwu.springmvc3.model.LessonOldApiView;
 import com.yinzhiwu.springmvc3.service.LessonService;
 
 
@@ -86,7 +86,7 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 	}
 	
 	
-	private List<LessonList> wrapLessonWeekList(List<LessonApiView> l, Date start){
+	private List<LessonList> wrapLessonWeekList(List<LessonOldApiView> l, Date start){
 		
 		List<LessonList> list = new ArrayList<>();
 		Calendar ca = Calendar.getInstance();
@@ -99,7 +99,7 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 			ca.add(Calendar.DAY_OF_MONTH, 1);
 		}
 		
-		for (LessonApiView miniLesson : l) {
+		for (LessonOldApiView miniLesson : l) {
 			for(int j= 0; j<list.size(); j++)
 			{
 				if (miniLesson.getWeek()==list.get(j).getWeekday()){
@@ -139,9 +139,9 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 		
 		List<Lesson> lessons = lessonDao.findLessonWeekList(
 				storeId, courseType, teacherName, danceCatagory, startDate, endDate);
-		List<LessonApiView> views = new ArrayList<>();
+		List<LessonOldApiView> views = new ArrayList<>();
 		for (Lesson l : lessons) {
-			LessonApiView view = _wrap_to_api_view(c, l);
+			LessonOldApiView view = _wrap_to_api_view(c, l);
 			views.add(view);
 			
 		}
@@ -149,8 +149,8 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 		return wrapLessonWeekList(views, startDate);
 	}
 
-	private LessonApiView _wrap_to_api_view(Customer c, Lesson l) {
-		LessonApiView view = new LessonApiView(l);
+	private LessonOldApiView _wrap_to_api_view(Customer c, Lesson l) {
+		LessonOldApiView view = new LessonOldApiView(l);
 		//添加最大预约人数
 		if(null != l.getClassRoomId() && "" != l.getClassRoomId()){
 			ClassRoom room = roomDao.findById(l.getClassRoomId());
