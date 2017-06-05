@@ -17,4 +17,6 @@ public interface LessonDao extends IBaseDao<Lesson, Integer> {
 			String danceCatagory,
 			Date startDate,
 			Date endDate);
+
+	public int findOrderInCourse(Lesson l);
 }

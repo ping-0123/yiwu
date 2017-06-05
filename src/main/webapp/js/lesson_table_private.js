@@ -215,7 +215,7 @@ function loadStores(v_districtId){
 								}else{
 									classStudentCount = lesson.checkedInsStudentCount;
 								}
-								t= t+ "<li><small>预约:" + lesson.storeManCallRollCount
+								t= t+ "<li><small>点名:" + lesson.storeManCallRollCount
 									+ "/" + lesson.teacherCallRollCount 
 									+ "/" + classStudentCount + "</small></li></ul>";
 							}

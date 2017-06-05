@@ -28,7 +28,7 @@ import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Lesson;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.LessonList;
-import com.yinzhiwu.springmvc3.model.MiniLesson;
+import com.yinzhiwu.springmvc3.model.LessonApiView;
 import com.yinzhiwu.springmvc3.service.LessonService;
 
 
@@ -86,7 +86,7 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 	}
 	
 	
-	private List<LessonList> wrapLessonWeekList(List<MiniLesson> l, Date start){
+	private List<LessonList> wrapLessonWeekList(List<LessonApiView> l, Date start){
 		
 		List<LessonList> list = new ArrayList<>();
 		Calendar ca = Calendar.getInstance();
@@ -99,11 +99,10 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 			ca.add(Calendar.DAY_OF_MONTH, 1);
 		}
 		
-		for (MiniLesson miniLesson : l) {
+		for (LessonApiView miniLesson : l) {
 			for(int j= 0; j<list.size(); j++)
 			{
 				if (miniLesson.getWeek()==list.get(j).getWeekday()){
-//					list.get(j).setDate(miniLesson.getLessonDate());
 					list.get(j).getList().add(miniLesson);
 					break;
 				}
@@ -122,8 +121,6 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 		Customer c = null;
 		try {
 			c = customerDao.findByWeChat(wechat);
-			logger.info(c.getName());
-//			logger.info("customerDao's current session hashcode" + ((CustomerDaoImpl) customerDao).getSessionFactory().getCurrentSession().hashCode());
 		} catch (DataNotFoundException e) {
 			logger.debug(e.getStackTrace());
 		}
@@ -140,68 +137,72 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 		ca.add(Calendar.DAY_OF_WEEK, 6);
 		Date endDate = ca.getTime();
 		
-		logger.info("lessonDao's seesion factory hashcode" + ((LessonDaoImpl) lessonDao).getSessionFactory().hashCode());
-//		logger.debug("lessonDao's seesion hashcode" + ((LessonDaoImpl) lessonDao).getSessionFactory().getCurrentSession().hashCode());
-		List<Lesson> list = lessonDao.findLessonWeekList(
+		List<Lesson> lessons = lessonDao.findLessonWeekList(
 				storeId, courseType, teacherName, danceCatagory, startDate, endDate);
-		List<MiniLesson> lm = new ArrayList<>();
-		for (Lesson l : list) {
-			MiniLesson ml = new MiniLesson(l);
-			//添加最大预约人数
-			if(null != l.getClassRoomId() && "" != l.getClassRoomId()){
-				logger.info("roomDao's session factory hashCode" + ((ClassRoomDaoImpl) roomDao).getSessionFactory().hashCode());
-//				logger.debug("roomDao's session hashCode" + ((ClassRoomDaoImpl) roomDao).getSessionFactory().getCurrentSession().hashCode());
-				ClassRoom room = roomDao.findById(l.getClassRoomId());
-				if (room != null)
-					ml.setMaxStudentCount(room.getMaxStudentCount());
-			}
-			
-			//添加舞种，舞种等级
-			Course course;
-			try {
-				course = courseDao.findById(l.getCourseid());
-				ml.setDanceName(course.getDanceDesc());
-				ml.setDanceGrade(course.getDanceGrade());
-			} catch (DataNotFoundException e) {
-				logger.warn(e.getMessage());
-			}
-			
-			//添加封闭式课程的上课人数
-			if("封闭式".equals(l.getCourseType()) && l.getCourseid() != null){
-				ml.setAttendedStudentCount(orderDao.findAttendedStudentCount(l.getCourseid()));
-			}
-			//添加当前预约人数
-			if(l.getCourseType().equals("开放式"))
-				ml.setAppointedStudentCount(appointedDao.getAppointedStudentCount(l.getLessonId()));
-			
-			//添加预约状态
-			if(c != null){
-				if("开放式".equals(l.getCourseType()))
-					ml.setAttendedStatus(appointedDao.findStatus(l.getLessonId(), c.getId()));
-			}
-			
-			// 添加签到人数
-			ml.setCheckedInsStudentCount(
-					checkInsDao.findCheckedInStudentCountByLessonId(l.getLessonId().toString()));
-					// checkInsDao.findCountByProperty("lessonId", l.getLessonId().toString()));
-			
-			
-			if ("封闭式".equals(l.getCourseType())){
-			//添加店员点名人数
-				ml.setStoreManCallRollCount(
-						scrDao.findCountByProperty("lessonId", l.getLessonId().toString()) );
-				
-			//添加老师点名人数
-				ml.setTeacherCallRollCount(
-						tcrDao.findCountByProperty("lessonId", l.getLessonId()));
-			}
-			
-			
-			lm.add(ml);
+		List<LessonApiView> views = new ArrayList<>();
+		for (Lesson l : lessons) {
+			LessonApiView view = _wrap_to_api_view(c, l);
+			views.add(view);
 			
 		}
 		
-		return wrapLessonWeekList(lm, startDate);
+		return wrapLessonWeekList(views, startDate);
+	}
+
+	private LessonApiView _wrap_to_api_view(Customer c, Lesson l) {
+		LessonApiView view = new LessonApiView(l);
+		//添加最大预约人数
+		if(null != l.getClassRoomId() && "" != l.getClassRoomId()){
+			ClassRoom room = roomDao.findById(l.getClassRoomId());
+			if (room != null)
+				view.setMaxStudentCount(room.getMaxStudentCount());
+		}
+		
+		//添加舞种，舞种等级
+		Course course;
+		try {
+			course = courseDao.findById(l.getCourseid());
+			view.setDanceName(course.getDanceDesc());
+			view.setDanceGrade(course.getDanceGrade());
+		} catch (DataNotFoundException e) {
+			logger.warn(e.getMessage());
+		}
+		
+		//添加封闭式课程的上课人数
+		if("封闭式".equals(l.getCourseType()) && l.getCourseid() != null){
+			view.setAttendedStudentCount(orderDao.findAttendedStudentCount(l.getCourseid()));
+		}
+		//添加当前预约人数
+		if(l.getCourseType().equals("开放式"))
+			view.setAppointedStudentCount(appointedDao.getAppointedStudentCount(l.getLessonId()));
+		
+		//添加预约状态
+		if(c != null){
+			if("开放式".equals(l.getCourseType()))
+				view.setAttendedStatus(appointedDao.findStatus(l.getLessonId(), c.getId()));
+		}
+		
+		// 添加签到人数
+		view.setCheckedInsStudentCount(
+				checkInsDao.findCheckedInStudentCountByLessonId(l.getLessonId().toString()));
+				// checkInsDao.findCountByProperty("lessonId", l.getLessonId().toString()));
+		
+		
+		if ("封闭式".equals(l.getCourseType())){
+		//添加店员点名人数
+			view.setStoreManCallRollCount(
+					scrDao.findCountByProperty("lessonId", l.getLessonId().toString()) );
+			
+		//添加老师点名人数
+			view.setTeacherCallRollCount(
+					tcrDao.findCountByProperty("lessonId", l.getLessonId()));
+		}
+		
+		//添加总课次和当前上课进度
+		view.setSumTimesOfCourse(lessonDao.findCountByProperty("courseid", l.getCourseid()));
+		view.setOrderInCourse(lessonDao.findOrderInCourse(l));
+		
+		return view;
 	}
 
 

@@ -4,8 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
-import javax.enterprise.inject.New;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -26,6 +26,8 @@ import com.yinzhiwu.springmvc3.qiniu.Qiniu;
 @RunWith(BlockJUnit4ClassRunner.class)
 public class QiniuTest {
 	
+	private static Log LOG = LogFactory.getLog(QuartzTest.class);
+	
 	private String accessKey = Qiniu.ACCESS_KEY;
 	private String secretKey = Qiniu.SECRET_KEY;
 	private String bucket = Qiniu.BUCKET;
@@ -39,6 +41,15 @@ public class QiniuTest {
 	private String sqlFilePath = "C:\\Users\\ping\\Documents\\asas.sql";
 	private String sampleVideo = "C:\\Users\\Public\\Videos\\Sample Videos\\Wildlife.wmv";
 	private String wugui="C:\\Users\\ping\\Videos\\wugui.mp4";
+	
+	@Test
+	public void testResourceLoader(){
+		System.out.println(Qiniu.ACCESS_KEY);
+		System.out.println(Qiniu.ACCESS_KEY);
+		System.out.println(Qiniu.SECRET_KEY);
+		System.out.println(Qiniu.BUCKET);
+		System.out.println(Qiniu.CDN_URL);
+	}
 	
 	@Test
 	public void testReturnBody(){
@@ -133,7 +144,6 @@ public class QiniuTest {
 			System.out.println(info.mimeType);
 			System.out.println(new Date(info.putTime));
 		} catch (QiniuException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -141,7 +151,18 @@ public class QiniuTest {
 	
 	@Test
 	public void callBack(){
-		auth.uploadToken(bucket, null, 10000, new StringMap()
-				.put("callbackUrl", value))
+		String uploadToken = auth.uploadToken(bucket, null, 10000, new StringMap()
+				.put("callbackUrl", "http://www.yinzhiwu.com:9090/yiwu/api/distributer/loginByWechat")
+				.put("callbackBody", "wechatNo=oIgTGwy8pL7MDj4H_jNVGO4uJGIE"));
+//				.put("callbackBody", "url="+ Qiniu.BASE_URL + "${key}" ));
+		
+		try {
+			Response response = uploadManager.put(filePath, "ping.jpg", uploadToken);
+			LOG.info(response.bodyString());
+		} catch (QiniuException e) {
+			Response response = e.response;
+			LOG.error(response.toString());
+			e.printStackTrace();
+		}
 	}
 }

@@ -16,7 +16,7 @@
 	  	<qiniu.version>7.2.6</qiniu.version>
   </properties>
   
-  <dependencies>
+  <dependencies>	
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

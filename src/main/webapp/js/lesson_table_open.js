@@ -1,3 +1,4 @@
+
 function format(time, format){
     var t = new Date(time);
     var tf = function(i){return (i < 10 ? '0' : '') + i};
@@ -214,7 +215,10 @@ function loadStores(v_districtId){
 									+ "/" +lesson.maxStudentCount
 									+"</small></li></ul>";
 							}else{
-								t = t+ "<li><small> <br />  </small></li>";
+//								封闭式添加当前课程状态
+//								t = t+ "<li><small>" +  getChineseLessonStatus(lesson.lessonStatus) + "</small></li></ul>";
+//								封闭式添加当前课程进度
+								t = t+ "<li><small>进度:" + lesson.orderInCourse + "/" +  lesson.sumTimesOfCourse + "</small></li></ul>";
 							}
 						}
 						t=t+"</td>";
@@ -235,3 +239,21 @@ function loadStores(v_districtId){
 		});	
 }
 
+function getChineseLessonStatus(v_lessonStatus){
+	var status;
+	switch (v_lessonStatus) {
+	case 'UN_KNOWN','UN_AUDITED','':
+		status = "未审核";
+		break;
+	case 'AUDITED':
+		status = "已排课";
+		break;
+	case 'FINISHED':
+		status = '已开课';
+		break;
+	default:
+		status = "未审核";
+		break;
+	}
+	return status;
+}

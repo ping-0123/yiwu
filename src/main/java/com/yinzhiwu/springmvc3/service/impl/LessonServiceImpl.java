@@ -23,7 +23,7 @@ import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Lesson;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.LessonList;
-import com.yinzhiwu.springmvc3.model.MiniLesson;
+import com.yinzhiwu.springmvc3.model.LessonApiView;
 import com.yinzhiwu.springmvc3.service.LessonService;
 
 @Service
@@ -61,7 +61,7 @@ public class LessonServiceImpl extends BaseServiceImpl<Lesson, Integer> implemen
 	}
 	
 	
-	private List<LessonList> wrapLessonWeekList(List<MiniLesson> l, Date start){
+	private List<LessonList> wrapLessonWeekList(List<LessonApiView> l, Date start){
 		
 		List<LessonList> list = new ArrayList<>();
 		Calendar ca = Calendar.getInstance();
@@ -74,7 +74,7 @@ public class LessonServiceImpl extends BaseServiceImpl<Lesson, Integer> implemen
 			ca.add(Calendar.DAY_OF_MONTH, 1);
 		}
 		
-		for (MiniLesson miniLesson : l) {
+		for (LessonApiView miniLesson : l) {
 			for(int j= 0; j<list.size(); j++)
 			{
 				if (miniLesson.getWeek()==list.get(j).getWeekday()){
@@ -113,9 +113,9 @@ public class LessonServiceImpl extends BaseServiceImpl<Lesson, Integer> implemen
 		
 		List<Lesson> list = lessonDao.findLessonWeekList(
 				storeId, courseType, teacherName, danceCatagory, startDate, endDate);
-		List<MiniLesson> lm = new ArrayList<>();
+		List<LessonApiView> lm = new ArrayList<>();
 		for (Lesson l : list) {
-			MiniLesson ml = new MiniLesson(l);
+			LessonApiView ml = new LessonApiView(l);
 			//添加最大预约人数
 			if(null != l.getClassRoomId() && "" != l.getClassRoomId()){
 				ClassRoom room = roomDao.findById(l.getClassRoomId());
