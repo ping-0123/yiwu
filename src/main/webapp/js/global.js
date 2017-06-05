@@ -1,5 +1,5 @@
-var baseApiUrl="http://192.168.0.115:8080/yiwu/";
-//var baseApiUrl="";
+//var baseApiUrl="http://192.168.0.115:8080/yiwu/";
+var baseApiUrl="";
 
 function getTodayBegin(){
 	var today = new Date();
