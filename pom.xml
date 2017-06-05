@@ -4,7 +4,7 @@
   <groupId>com.yinzhiwu</groupId>
   <artifactId>yiwu</artifactId>
   <packaging>war</packaging>
-  <version>1.1.17</version>
+  <version>1.1.18</version>
   <name>yiwu Maven Webapp</name>
   <url>http://maven.apache.org</url>
   
