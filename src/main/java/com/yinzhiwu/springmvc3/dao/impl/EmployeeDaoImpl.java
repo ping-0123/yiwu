@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.EmployeeDao;
 import com.yinzhiwu.springmvc3.entity.Employee;
-import com.yinzhiwu.springmvc3.model.EmployeeApiView;
+import com.yinzhiwu.springmvc3.model.view.EmployeeApiView;
 
 @Repository
 public class EmployeeDaoImpl extends BaseDaoImpl<Employee,Integer> implements EmployeeDao{

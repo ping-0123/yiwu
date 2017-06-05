@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.model;
+package com.yinzhiwu.springmvc3.model.view;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;

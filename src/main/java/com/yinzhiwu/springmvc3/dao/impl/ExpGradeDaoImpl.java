@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.exception.DataNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.ExpGradeDao;
 import com.yinzhiwu.springmvc3.dao.impl.BaseDaoImpl;
 import com.yinzhiwu.springmvc3.entity.ExpGrade;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 
 @Repository

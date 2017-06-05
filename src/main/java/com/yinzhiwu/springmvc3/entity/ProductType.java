@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="product_type", uniqueConstraints=
+@Table(name="yiwu_product_type", uniqueConstraints=
 		@UniqueConstraint(name="uk_ProductType_name", columnNames="name"))
 public class ProductType {
 

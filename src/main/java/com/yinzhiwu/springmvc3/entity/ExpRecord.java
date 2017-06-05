@@ -9,7 +9,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table
+@Table(name="yiwu_exp_record")
+//@DiscriminatorValue("ExpRecord")
 public class ExpRecord extends AbstractRecord {
 
 	/**

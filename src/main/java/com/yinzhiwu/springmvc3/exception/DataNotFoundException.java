@@ -1,4 +1,4 @@
-package org.hibernate.exception;
+package com.yinzhiwu.springmvc3.exception;
 
 public class DataNotFoundException extends Exception {
 
@@ -41,9 +41,34 @@ public class DataNotFoundException extends Exception {
 
 
 	public DataNotFoundException(Class<?> entity, String propertyName, Object value){
-		super("return zero rows from " + entity.getSimpleName() + " where " + propertyName + "=" + value.toString());
+		super("can not found data from  database's table " + "yiwu_" + entity.getSimpleName().toLowerCase() 
+			+	" by " + propertyName + "=" + value.toString());
 		this.entity = entity;
 		this.propertyName = propertyName;
+		this.value = value;
+	}
+
+	public Class<?> getEntity() {
+		return entity;
+	}
+
+	public String getPropertyName() {
+		return propertyName;
+	}
+
+	public Object getValue() {
+		return value;
+	}
+
+	public void setEntity(Class<?> entity) {
+		this.entity = entity;
+	}
+
+	public void setPropertyName(String propertyName) {
+		this.propertyName = propertyName;
+	}
+
+	public void setValue(Object value) {
 		this.value = value;
 	}
 	

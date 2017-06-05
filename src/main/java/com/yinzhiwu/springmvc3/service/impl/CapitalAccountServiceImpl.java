@@ -1,7 +1,5 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
-import javax.enterprise.inject.New;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +9,9 @@ import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.CapitalAccountType;
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.model.CapitalAccountApiView;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.service.CapitalAccountService;
 import com.yinzhiwu.springmvc3.util.CapitalAccountTypeUtil;
 
@@ -35,16 +34,22 @@ public class CapitalAccountServiceImpl extends BaseServiceImpl<CapitalAccount, I
 
 	@Override
 	public YiwuJson<CapitalAccountApiView> addCapitalAccount(CapitalAccountApiView v) {
-		CapitalAccountType type = catDao.get(CapitalAccountTypeUtil.toTypeId(v.getTypeName()));
-		Distributer d = dDao.get(v.getDistributerId());
-		CapitalAccount account = new CapitalAccount();
-		account.setCapitalAccountType(type);
-		account.setDistributer(d);
-		account.setAccount(v.getAccount());
-		caDao.save(account);
 		
-		return new YiwuJson<CapitalAccountApiView>(
+		CapitalAccountType type;
+		try {
+			type = catDao.get(CapitalAccountTypeUtil.toTypeId(v.getTypeName()));
+			Distributer d = dDao.get(v.getDistributerId());
+			CapitalAccount account = new CapitalAccount();
+			account.setCapitalAccountType(type);
+			account.setDistributer(d);
+			account.setAccount(v.getAccount());
+			caDao.save(account);
+			
+			return new YiwuJson<CapitalAccountApiView>(
 				new CapitalAccountApiView(account));
+		} catch (DataNotFoundException e) {
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 
 }

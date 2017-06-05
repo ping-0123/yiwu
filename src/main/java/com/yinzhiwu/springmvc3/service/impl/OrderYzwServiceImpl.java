@@ -35,26 +35,34 @@ public class OrderYzwServiceImpl  extends BaseServiceImpl<OrderYzw,String> imple
 
 	@Override
 	public YiwuJson<List<OrderAbbrApiView>> findByDistributerId(int distributerId) {
-		Distributer distributer = distributerDao.get(distributerId);
-		if(distributer == null)
-			return new YiwuJson<>("no Distributer found by id :" + distributerId);
-		CustomerYzw customer = distributer.getCustomer();
-		if(customer == null )
-			return new YiwuJson<>("no customer found by distributerId: " + distributerId);
-		List<OrderYzw> orders = orderDao.findByCustomer(customer);
-		List<OrderAbbrApiView> views = new ArrayList<>();
-		for (OrderYzw o : orders) {
-			views.add(new OrderAbbrApiView(o));
+		try{
+			Distributer distributer = distributerDao.get(distributerId);
+			if(distributer == null)
+				return new YiwuJson<>("no Distributer found by id :" + distributerId);
+			CustomerYzw customer = distributer.getCustomer();
+			if(customer == null )
+				return new YiwuJson<>("no customer found by distributerId: " + distributerId);
+			List<OrderYzw> orders = orderDao.findByCustomer(customer);
+			List<OrderAbbrApiView> views = new ArrayList<>();
+			for (OrderYzw o : orders) {
+				views.add(new OrderAbbrApiView(o));
+			}
+			return new YiwuJson<>(views);
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
 		}
-		return new YiwuJson<>(views);
 	}
 
 	@Override
 	public YiwuJson<OrderApiView> findById(String id) {
-		OrderYzw order = orderDao.get(id);
-		if(order == null)
-			return new YiwuJson<>("no order found by id: " + id);
-		return new YiwuJson<>(new OrderApiView(order));
+		try{
+			OrderYzw order = orderDao.get(id);
+			if(order == null)
+				return new YiwuJson<>("no order found by id: " + id);
+			return new YiwuJson<>(new OrderApiView(order));
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 
 	@Override

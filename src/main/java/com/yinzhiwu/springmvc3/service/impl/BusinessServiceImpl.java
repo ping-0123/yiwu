@@ -10,9 +10,10 @@ import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.ExpRecordDao;
 import com.yinzhiwu.springmvc3.dao.MoneyRecordDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.model.DistributerApiView;
-import com.yinzhiwu.springmvc3.model.SumRecordApiView;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
+import com.yinzhiwu.springmvc3.model.view.SumRecordApiView;
 import com.yinzhiwu.springmvc3.service.BusinessService;
 
 
@@ -28,13 +29,19 @@ public class BusinessServiceImpl implements BusinessService{
 	@Autowired
 	private DistributerDao distributerDao;
 
-	private YiwuJson<SumRecordApiView> mYiwuJson = new YiwuJson<>();
+//	private YiwuJson<SumRecordApiView> mYiwuJson = new YiwuJson<>();
 	
 	@Override
 	public YiwuJson<SumRecordApiView> getPerformance(int distributerId) {
-		mYiwuJson.setData(wrapToSumRecordApiView(
-							distributerDao.get(distributerId)));
-		return mYiwuJson;
+		Distributer d;
+		try {
+			d = distributerDao.get(distributerId);
+			if(d==null)
+				return new YiwuJson<>("cannot find Distributer by id " + distributerId);
+			return new YiwuJson<>(wrapToSumRecordApiView(d));
+		} catch (DataNotFoundException e) {
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 
 	@Override

@@ -3,11 +3,22 @@ package com.yinzhiwu.springmvc3.entity;
 import java.util.Date;
 
 import javax.persistence.ConstraintMode;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 
+//@Entity
+//@Table(name="yiwu_income_record")
+//@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn(name="type", length=32)
+//@DiscriminatorValue("AbstractRecord")
 @MappedSuperclass
 public abstract class AbstractRecord extends BaseEntity{
 
@@ -17,17 +28,20 @@ public abstract class AbstractRecord extends BaseEntity{
 	private static final long serialVersionUID = 8102222572160379415L;
 	
 	@ManyToOne(targetEntity=Distributer.class)
-	@JoinColumn(name="beneficiaty_id", foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name="beneficiaty_id", foreignKey=@ForeignKey(
+			value =ConstraintMode.NO_CONSTRAINT,name="fk_record_beneficiaty_id"))
 	private Distributer beneficiaty;
 
 	@ManyToOne
-	@JoinColumn(name="recordType_id",foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name="recordType_id",foreignKey=@ForeignKey(
+			value=ConstraintMode.NO_CONSTRAINT,name="fk_record_recordType_id"))
 	private RecordType recordType;	
 	
 	private float income;
 	
 	@ManyToOne
-	@JoinColumn(name="contributor_id", foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name="contributor_id", foreignKey=@ForeignKey(
+			value=ConstraintMode.NO_CONSTRAINT, name="fk_record_contributor_id"))
 	private Distributer contributor;
 	
 	private float contributedValue;

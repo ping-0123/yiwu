@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.model;
+package com.yinzhiwu.springmvc3.model.view;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -29,6 +29,8 @@ public class DistributerApiView implements Serializable{
 	private String name;
 	
 	private String nickName;
+	
+	private String phoneNo;
 	
 	private String memeberId;
 	
@@ -67,6 +69,7 @@ public class DistributerApiView implements Serializable{
 		this.expGradeNo = d.getExpGrade().getGradeNo();
 		this.name = d.getName();
 		this.nickName = d.getNickName();
+		this.phoneNo = d.getPhoneNo();
 		this.memeberId = d.getMemberId();
 		this.shareCode = d.getShareCode();
 		this.headIconUrl = UrlUtil.toHeadIcomUrl(d.getHeadIconName());
@@ -189,6 +192,14 @@ public class DistributerApiView implements Serializable{
 
 	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
+	}
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 	
 	

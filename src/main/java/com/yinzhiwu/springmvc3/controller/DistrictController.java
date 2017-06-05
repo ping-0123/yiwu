@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.springmvc3.entity.Department;
-import com.yinzhiwu.springmvc3.model.BriefDepartment;
+import com.yinzhiwu.springmvc3.model.view.DepartmentApiView;
 import com.yinzhiwu.springmvc3.service.DepartmentService;
 
 @CrossOrigin
@@ -29,7 +29,7 @@ public class DistrictController {
 	
 	@RequestMapping(value="/list", method={RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
-	public List<BriefDepartment> getDistrictList(){
+	public List<DepartmentApiView> getDistrictList(){
 		return s.findAllOperationDistricts();
 	}
 	

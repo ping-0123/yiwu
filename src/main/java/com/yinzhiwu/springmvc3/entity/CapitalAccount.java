@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="capital_account", uniqueConstraints=
+@Table(name="yiwu_capital_account", uniqueConstraints=
 	@UniqueConstraint(name="uk_CapitalAccount_accont", columnNames="account"))
 public class CapitalAccount extends BaseEntity {
 	

@@ -6,8 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
-@Table
+//@Entity
+//@Table
 @Access(AccessType.PROPERTY)
 public class Test extends BaseEntity{
 	

@@ -10,12 +10,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,17 +28,22 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.yinzhiwu.springmvc3.dao.impl.DistributerDaoImpl;
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.model.CapitalAccountApiView;
-import com.yinzhiwu.springmvc3.model.DistributerApiView;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.model.DistributerModifyModel;
+import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
+import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
+import com.yinzhiwu.springmvc3.model.view.DistributerRegisterApiView;
 import com.yinzhiwu.springmvc3.service.CapitalAccountService;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.util.UrlUtil;
 
+
 @RestController
 @RequestMapping("/api/distributer")
 public class DistributerController {
-	private static final Log logger = LogFactory.getLog(DistributerDaoImpl.class);
+	private static final Log LOG = LogFactory.getLog(DistributerDaoImpl.class);
 	
 	
 	@Autowired
@@ -42,6 +51,11 @@ public class DistributerController {
 	
 	@Autowired
 	private CapitalAccountService caService;
+	
+	@InitBinder
+	public void initBinder(WebDataBinder dataBinder){
+		dataBinder.setDisallowedFields("birthDay");
+	}
 
 	@RequestMapping(value="/register", method={RequestMethod.POST})
 	public YiwuJson<DistributerApiView> register(String invitationCode,
@@ -51,13 +65,26 @@ public class DistributerController {
 		if(bindingResult.hasErrors()){
 			 FieldError field = bindingResult.getFieldError();
 			 String message =   field.getField() + " " + field.getDefaultMessage();
-			 logger.info(message);
+			 LOG.info(message);
 			 return new YiwuJson<>(200,false,message,null,false);
 		}
 		
 		return  distributerService.register(invitationCode, distributer);
 	}
 	
+	@PostMapping(value="")
+	public YiwuJson<DistributerApiView> register2(@Valid DistributerRegisterModel m, BindingResult bindingResult){
+		if(bindingResult.hasErrors()){
+			return new YiwuJson<>(bindingResult.getFieldError().getDefaultMessage());
+		}
+		if(!StringUtils.hasLength(m.getName()))
+			m.setName(m.getPhoneNo());
+		if(!StringUtils.hasLength(m.getAccount()))
+			m.setAccount(m.getPhoneNo());
+		if(!StringUtils.hasLength(m.getNickName()))
+			m.setNickName(m.getPhoneNo());
+		return distributerService.register2(m);
+	}
 	
 	@RequestMapping(value="/loginByWechat", method={RequestMethod.POST,RequestMethod.GET})
 	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String  wechatNo ){
@@ -127,7 +154,7 @@ public class DistributerController {
 			@Valid CapitalAccountApiView v, BindingResult bindingResult){
 		if(bindingResult.hasErrors()){
 			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-			logger.info("addCapitalAccount has erorr field" +  fieldErrors);
+			LOG.info("addCapitalAccount has erorr field" +  fieldErrors);
 			for (FieldError fieldError : fieldErrors) {
 				if(!fieldError.getField().equals("accountId"))
 					return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
@@ -151,5 +178,28 @@ public class DistributerController {
 	   return distributerService.judgePhoneNoIsRegistered(phoneNo);
    }
 	  
+   @GetMapping(value="/registerRecords/subordinates")
+   public YiwuJson<List<DistributerRegisterApiView>> findSubordiatesRegisterRecords(int distributerId){
+	    return distributerService.findSubordiatesRegisterRecords(distributerId);
+   }
+   
+   
+   @GetMapping(value="registerRecords/secondaries")
+   public YiwuJson<List<DistributerRegisterApiView>> findSecondariesRegisterRecords(int distributerId){
+	   return distributerService.findSecondariesRegisterRecords(distributerId);
+   }
+   
+   @PutMapping(value="/{id}")
+   public YiwuJson<Boolean> modify(Distributer d, @PathVariable int id){
+		try {
+			System.out.println(d.getNickName());
+			distributerService.modify(id, d);
+			return new YiwuJson<>(new Boolean(true));
+		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
+			LOG.error(e.getMessage());
+			return new YiwuJson<>(e.getMessage());
+		}
 	   
+   }
+   
 }

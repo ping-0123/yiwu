@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	</head>
 	<body>
 	
@@ -12,13 +12,56 @@
 	
 	<script type="text/javascript">
 	
-		var v_baseUrl = "http://localhost:8080/yiwu/";
-  		register();
+//		var v_baseUrl = "http://www.yinzhiwu.com:9090/yiwu/";
+		var v_baseUrl = "http://192.168.0.115:8080/yiwu/"
+		modifyHeadIconWithAjax();
+//		register();
 //		save_capitalAccount();
 //		setDefaultAccount();
 //		withdraw();
 //		payDeposit();
 //		shareTweet();
+//		modify();
+
+
+		function modifyHeadIconWithAjax(){
+			var v_url = v_baseUrl + "/qiniu/callback/distributer/3000000"
+			$.ajax({
+				type:"post",
+				url:v_url,
+				async:true,
+				data:{url:'http://oq3hegvvd.bkt.clouddn.com/android/exit3.jpg'},
+				dataType:'json',
+				success:function(data){
+					document.write("chenggong");
+				}
+			});
+		}
+
+		function modifyHeadIcon(){
+			var v_url = v_baseUrl + "/qiniu/callback/distributer/3000000"
+			$.post(v_url,
+				{url:'http://oq3hegvvd.bkt.clouddn.com/android/exit2.jpg'},
+				function(data){
+					document.write("chenggong");
+				},
+				'json');
+		}
+		
+		function modify(){
+			var v_url = v_baseUrl + "/api/distributer/3000001";
+			$.ajax({
+				type:'PUT',
+				url:v_url,
+				data:{'nickName':'bbbb', 'followedByStore.id': '61'},
+				dataType:'json',
+				timeout:5000,
+				success:function(data){
+//					alert(JSON.toString(data));
+					document.write("chenggong");
+				}
+			});
+		}
 		
 		function shareTweet(){
 			var v_url = v_baseUrl + "/api/tweet/share";
@@ -106,15 +149,15 @@
 		
 		function register(){
 			var v_url = "api/distributer/register";
-			var v_data = {"phoneNo":'18332633885',
+			var v_data = {"phoneNo":'18332644889',
 						'password':'wangwu12',
-						'name':'朱棣',
-						'nickName':'明成祖',
+						'name':'王麻子',
+						'nickName':'王麻子',
 						'gender':'MALE',
 						//改成 '0222-01-01'报错
 						'birthday':'1999-01-01',
 						'followedByStore.id':63,
-						'wechatNo':'oIgTGwx1Qisvq4rsZ49zcwyz',
+						'wechatNo':'oIgTGwx1Qisvq4ty949zcwyz',
 						'invitationCode':'e3inp'
 					};
 		

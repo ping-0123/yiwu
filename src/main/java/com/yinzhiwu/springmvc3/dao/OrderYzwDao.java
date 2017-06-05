@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 public interface OrderYzwDao extends IBaseDao<OrderYzw, String>  {
 	public String find_last_id();
@@ -12,7 +13,7 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String>  {
 
 	public float get_effective_brockerage_base(OrderYzw order);
 
-	public List<OrderYzw> find_produce_commission_orders();
+	public List<OrderYzw> find_produce_commission_orders() throws DataNotFoundException;
 
 	public List<OrderYzw> findByCustomer(CustomerYzw customer);
 

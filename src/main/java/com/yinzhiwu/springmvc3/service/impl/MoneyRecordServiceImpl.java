@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -29,10 +31,12 @@ import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.ProductYzw;
 import com.yinzhiwu.springmvc3.enums.MoneyRecordCategory;
-import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.PayDepositModel;
 import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.MoneyRecordApiView;
+import com.yinzhiwu.springmvc3.model.view.OrderMoneyRecordApiView;
 import com.yinzhiwu.springmvc3.service.MessageService;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
 import com.yinzhiwu.springmvc3.util.MoneyRecordCategoryUtil;
@@ -44,6 +48,8 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	 * 
 	 */
 	private static final long serialVersionUID = 4267652070502310535L;
+	
+	private static Log LOG = LogFactory.getLog(MoneyRecordServiceImpl.class);
 
 	
 	@Autowired
@@ -80,6 +86,8 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	public void saveRegisterFundsRecord(Distributer beneficiary, Distributer contributor) {
 		FundsRecordType fundsRecordType = recordTypeDao.findRegisterFundsRecordType();
 		_save_funds_record(beneficiary, contributor, 1, fundsRecordType);
+		//保存消息
+		messageService.saveBrockerageIncomeMessage(beneficiary, contributor.getName(), 0f, fundsRecordType.getFactor());
 	}
 
 	public void _save_money_record(Distributer beneficiary,Distributer contributor, float value,  MoneyRecordType type )
@@ -163,6 +171,9 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 		beneficiary.setBrokerage(record.getCurrentBrokerage());
 		distributerDao.update(beneficiary);
 		
+		//保存提现消息
+		messageService.saveWithdrawMessage(beneficiary, value);
+		
 	}
 	
 	@Override
@@ -174,6 +185,7 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	@Override
 	public YiwuJson<List<MoneyRecordApiView>> findList(int benificiaryId, MoneyRecordCategory category) {
 		List<Integer> typeIds  = MoneyRecordCategoryUtil.toMoneyRecordTypeIds(category);
+		LOG.info(typeIds);
 		List<MoneyRecord> moneyRecords = moneyRecordDao.findByTypesByBeneficiaryId(benificiaryId,typeIds);
 		List<MoneyRecordApiView> views = new ArrayList<MoneyRecordApiView>();
 		for (MoneyRecord m : moneyRecords) {
@@ -184,79 +196,89 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 
 	@Override
 	public YiwuJson<Boolean> saveWithdraw(WithDrawModel m) {
-		BrokerageRecordType type = recordTypeDao.getWithDrawMoneyRecordType();
-		Distributer beneficiary = distributerDao.get(m.getDistributerId());
-		Distributer contributor = beneficiary;
-		float value = m.getAmount();
-		CapitalAccount account = capitalAccountDao.get(m.getAccountId());
-		if(account.getDistributer().getId() != beneficiary.getId()){
-			return new YiwuJson<>("提现者不是提现帐号的拥有者");
+		try{
+			BrokerageRecordType type = recordTypeDao.getWithDrawMoneyRecordType();
+			Distributer beneficiary = distributerDao.get(m.getDistributerId());
+			Distributer contributor = beneficiary;
+			float value = m.getAmount();
+			CapitalAccount account = capitalAccountDao.get(m.getAccountId());
+			if(account.getDistributer().getId() != beneficiary.getId()){
+				return new YiwuJson<>("提现者不是提现帐号的拥有者");
+			}
+			if(value>beneficiary.getBrokerage())
+				return new YiwuJson<>("提现金额大于账户总金额");
+			_save_withdraw_record(beneficiary,contributor,value,type,account);
+			return new YiwuJson<>(new Boolean(true));
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
 		}
-		if(value>beneficiary.getBrokerage())
-			return new YiwuJson<>("提现金额大于账户总金额");
-		_save_withdraw_record(beneficiary,contributor,value,type,account);
-		return new YiwuJson<>(new Boolean(true));
 	}
 
 	@Override
 	public YiwuJson<Boolean> payDeposit(PayDepositModel m) {
-		float payedFundsValue =0;
-		float payedBrokerageValue =0;
-		Distributer beneficiary = distributerDao.get(m.getDistributerId());
-		Distributer contributor = beneficiary;
-		
-		//1. 判断
-		if(m.isFundsFirst()){
-			if(m.getAmount() <= beneficiary.getFunds()){
-				payedFundsValue = m.getAmount();
-				payedBrokerageValue = 0;
-			}else if (m.getAmount() <= beneficiary.getFunds() + beneficiary.getBrokerage()) {
-				payedFundsValue = beneficiary.getFunds();
-				payedBrokerageValue = m.getAmount()-beneficiary.getFunds();
-			}else {
-				return new YiwuJson<>("支付定金金额大于佣金和基金总和");
+		try{
+			float payedFundsValue =0;
+			float payedBrokerageValue =0;
+			Distributer beneficiary = distributerDao.get(m.getDistributerId());
+			Distributer contributor = beneficiary;
+			
+			//1. 判断
+			if(m.isFundsFirst()){
+				if(m.getAmount() <= beneficiary.getFunds()){
+					payedFundsValue = m.getAmount();
+					payedBrokerageValue = 0;
+				}else if (m.getAmount() <= beneficiary.getFunds() + beneficiary.getBrokerage()) {
+					payedFundsValue = beneficiary.getFunds();
+					payedBrokerageValue = m.getAmount()-beneficiary.getFunds();
+				}else {
+					return new YiwuJson<>("支付定金金额大于佣金和基金总和");
+				}
+			}else{
+				if(m.getAmount()<=beneficiary.getBrokerage())
+					payedBrokerageValue =  m.getAmount();
+				else
+					return new YiwuJson<>("支付定金金额大于佣金, 如果有基金，请选择优先使用基金");
 			}
-		}else{
-			if(m.getAmount()<=beneficiary.getBrokerage())
-				payedBrokerageValue =  m.getAmount();
-			else
-				return new YiwuJson<>("支付定金金额大于佣金, 如果有基金，请选择优先使用基金");
+			
+			//2.save order;
+			OrderYzw order = null;
+			try {
+				order = _save_deposit_order(beneficiary , m.getAmount());
+			} catch (Exception e) {
+	//			e.printStackTrace();
+				return new YiwuJson<Boolean>(e.getMessage());
+			}
+			
+			//3.save fundsrecord
+			if(payedFundsValue> 0){
+				FundsRecordType fundsRecordType=recordTypeDao.getPayFundsRecordType();
+				_save_funds_record_with_order(
+						beneficiary, contributor, payedFundsValue, fundsRecordType, order);
+			}
+			
+			
+			//4.save brockerageRcord
+			if(payedBrokerageValue>0){
+				BrokerageRecordType brokerageRecordType = recordTypeDao.getPayBrokerageRecordType();
+				_save_brokerage_record_with_order(
+						beneficiary, contributor, payedBrokerageValue, brokerageRecordType, order);
+			}
+			
+			return new YiwuJson<Boolean>(new Boolean(true));
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
 		}
-		
-		//2.save order;
-		OrderYzw order = null;
-		try {
-			order = _save_deposit_order(beneficiary , m.getAmount());
-		} catch (Exception e) {
-//			e.printStackTrace();
-			return new YiwuJson<Boolean>(e.getMessage());
-		}
-		
-		//3.save fundsrecord
-		if(payedFundsValue> 0){
-			FundsRecordType fundsRecordType=recordTypeDao.getPayFundsRecordType();
-			_save_funds_record_with_order(
-					beneficiary, contributor, payedFundsValue, fundsRecordType, order);
-		}
-		
-		
-		//4.save brockerageRcord
-		if(payedBrokerageValue>0){
-			BrokerageRecordType brokerageRecordType = recordTypeDao.getPayBrokerageRecordType();
-			_save_brokerage_record_with_order(
-					beneficiary, contributor, payedBrokerageValue, brokerageRecordType, order);
-		}
-		
-		return new YiwuJson<Boolean>(new Boolean(true));
 	}
 
 	@Override
 	public void saveCommissionRecord(){
-		List<OrderYzw> orders = orderYzwDao.find_produce_commission_orders();
-		if(orders == null || orders.size() ==0)
-			return;
-		for (OrderYzw o : orders) {
-			_save_commission_record_by_order(o);
+		try{
+			List<OrderYzw> orders = orderYzwDao.find_produce_commission_orders();
+			for (OrderYzw o : orders) {
+				_save_commission_record_by_order(o);
+			}
+		}catch (DataNotFoundException e) {
+			LOG.info(e.getMessage());
 		}
 	}
 	
@@ -350,5 +372,31 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 				amount, 
 				t2, 
 				order);
+	}
+
+	@Override
+	public YiwuJson<List<OrderMoneyRecordApiView>> findSubordiatesOrderRecords(int distributerId) {
+		List<MoneyRecord> records = moneyRecordDao.findByBeneficaryIdBySubordiatesOrderTypes(distributerId);
+//		Distributer distributer = distributerDao.get(distributerId);
+//		if(distributer==null)
+//			return new YiwuJson<>("can not found distributer by this id: " + distributerId);
+//		List<Distributer> subordiates = distributer.getSubordinates();
+//		if(subordiates.size()==0)
+//			return new YiwuJson<>("分销者:" + distributer.getName() + " 没有一级客户");
+		List<OrderMoneyRecordApiView> views = new ArrayList<>();
+		for (MoneyRecord r : records) {
+			views.add(new OrderMoneyRecordApiView(r));
+		}
+		return new YiwuJson<>(views);
+	}
+
+	@Override
+	public YiwuJson<List<OrderMoneyRecordApiView>> findSecondaryOrderRecords(int distributerId) {
+		List<MoneyRecord> records = moneyRecordDao.findByBeneficaryIdBySecondariesOrderTypes(distributerId);
+		List<OrderMoneyRecordApiView> views = new ArrayList<>();
+		for (MoneyRecord r : records) {
+			views.add(new OrderMoneyRecordApiView(r));
+		}
+		return new YiwuJson<>(views);
 	}
 }

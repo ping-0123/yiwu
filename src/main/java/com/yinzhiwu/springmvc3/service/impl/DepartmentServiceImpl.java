@@ -3,6 +3,8 @@ package com.yinzhiwu.springmvc3.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -11,12 +13,15 @@ import com.yinzhiwu.springmvc3.dao.DepartmentDao;
 import com.yinzhiwu.springmvc3.dao.StoreInfoDao;
 import com.yinzhiwu.springmvc3.entity.Department;
 import com.yinzhiwu.springmvc3.entity.StoreInfo;
-import com.yinzhiwu.springmvc3.model.BriefDepartment;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.Store;
+import com.yinzhiwu.springmvc3.model.view.DepartmentApiView;
 import com.yinzhiwu.springmvc3.service.DepartmentService;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
+	
+	private static Log LOG = LogFactory.getLog(DepartmentServiceImpl.class);
 	
 	@Autowired
 	@Qualifier("departmentDaoImplTwo")
@@ -26,22 +31,22 @@ public class DepartmentServiceImpl implements DepartmentService {
 	private StoreInfoDao storeInfoDao;
 
 	@Override
-	public List<BriefDepartment> findAllOperationDistricts() {
+	public List<DepartmentApiView> findAllOperationDistricts() {
 		List<Department> list = departmentDao.findAllOperationDistricts();
-		List<BriefDepartment> l = new ArrayList<>();
+		List<DepartmentApiView> l = new ArrayList<>();
 		for (Department d : list) {
-			l.add(new BriefDepartment(d));
+			l.add(new DepartmentApiView(d));
 		}
 		
 		return l;
 	}
 
 	@Override
-	public List<BriefDepartment> findStoresByDistrictId(int districtId) {
+	public List<DepartmentApiView> findStoresByDistrictId(int districtId) {
 		List<Department> list = departmentDao.findStoresByDistrictId(districtId);
-		List<BriefDepartment> l = new ArrayList<>();
+		List<DepartmentApiView> l = new ArrayList<>();
 		for (Department d : list) {
-			l.add(new BriefDepartment(d));
+			l.add(new DepartmentApiView(d));
 		}
 		return l;
 	}
@@ -64,9 +69,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 			Store s = new Store();
 			s.setId(d.getId());
 			s.setName(d.getDeptName());
-			StoreInfo sf = storeInfoDao.get(d.getId());
-			s.setAddress(sf.getAddress());
-			s.setTelePhone(sf.getTelePhone());
+			try{
+				StoreInfo sf = storeInfoDao.get(d.getId());
+				s.setAddress(sf.getAddress());
+				s.setTelePhone(sf.getTelePhone());
+			}catch (Exception e) {
+				LOG.warn(e.getMessage());
+			}
 			
 			storeList.add(s);
 		}
@@ -76,10 +85,16 @@ public class DepartmentServiceImpl implements DepartmentService {
 	@Override
 	public Store findStoreInfoById(int id) {
 		Department dept = departmentDao.findById(id);
-		StoreInfo sf = storeInfoDao.get(id);
-		Store s = new Store(sf);
-		s.setName(dept.getDeptName());
-		return s;
+		try{
+			StoreInfo sf = storeInfoDao.get(id);
+			Store s = new Store(sf);
+			s.setName(dept.getDeptName());
+			return s;
+		}catch(DataNotFoundException e){
+			LOG.warn(e.getMessage());
+			return new Store(dept);
+		}
+		
 	}
 	
 	@Override

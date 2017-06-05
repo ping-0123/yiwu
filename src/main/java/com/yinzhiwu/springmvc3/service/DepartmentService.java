@@ -3,14 +3,14 @@ package com.yinzhiwu.springmvc3.service;
 import java.util.List;
 
 import com.yinzhiwu.springmvc3.entity.Department;
-import com.yinzhiwu.springmvc3.model.BriefDepartment;
 import com.yinzhiwu.springmvc3.model.Store;
+import com.yinzhiwu.springmvc3.model.view.DepartmentApiView;
 
 public interface DepartmentService {
 	
-	public List<BriefDepartment> findAllOperationDistricts();
+	public List<DepartmentApiView> findAllOperationDistricts();
 	
-	public List<BriefDepartment> findStoresByDistrictId(int districtId);
+	public List<DepartmentApiView> findStoresByDistrictId(int districtId);
 	
 	public List<Store> findStoreInfosByDistrictId(int districtId);
 	

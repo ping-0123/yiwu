@@ -1,20 +1,19 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mysql.fabric.xmlrpc.base.Array;
 import com.yinzhiwu.springmvc3.dao.MessageDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.Message;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.MessageApiView;
 import com.yinzhiwu.springmvc3.service.MessageService;
-
-import cn.jmessage.api.message.MessageType;
 
 @Service
 public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implements MessageService {
@@ -40,6 +39,17 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 		message.setReceiver(receiver);
 		messageDao.save(message);
 	}
+	
+	@Override
+	public void saveSubordinateRegisterMessage(Distributer receiver, String customerName, float consumeValue,
+			float inComeValue){
+		Message message = new Message();
+		String content = customerName + "通过您的邀请码: " + receiver.getShareCode() + "注册成为音之舞的会员," 
+				+ "您获得了" + inComeValue + "收益";
+		message.setContent(content);
+		message.setReceiver(receiver);
+		messageDao.save(message);
+	}
 
 	@Override
 	public YiwuJson<List<MessageApiView>> findByReceiverId(int receiverId) {
@@ -55,15 +65,32 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 
 	@Override
 	public YiwuJson<MessageApiView> findById(int id) {
-		Message  message = messageDao.get(id);
-		if(message == null)
-			return new YiwuJson<>("no message found by id " + id);
+		try{
+			Message  message = messageDao.get(id);
+			if(message == null)
+				return new YiwuJson<>("no message found by id " + id);
+			
+			//更改消息状态
+			message.setStatus(Message.Status.READ);
+			messageDao.update(message);
+			
+			//返回
+			return new YiwuJson<>(new MessageApiView(message));
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
+	}
+
+	@Override
+	public void saveWithdrawMessage(Distributer receiver, float value) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
+		if(receiver == null)
+			return;
+		Message message = new Message();
+		String content = "您于" + format.format(new Date()) + "提现" + value + "元" ;
+		message.setContent(content);
+		message.setReceiver(receiver);
+		messageDao.save(message);
 		
-		//更改消息状态
-		message.setStatus(Message.Status.READ);
-		messageDao.update(message);
-		
-		//返回
-		return new YiwuJson<>(new MessageApiView(message));
 	}
 }

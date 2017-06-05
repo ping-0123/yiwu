@@ -1,11 +1,15 @@
 package com.yinzhiwu.springmvc3.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.model.CapitalAccountApiView;
-import com.yinzhiwu.springmvc3.model.DistributerApiView;
+import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
+import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
+import com.yinzhiwu.springmvc3.model.view.DistributerRegisterApiView;
 
 public interface DistributerService extends IBaseService<Distributer, Integer> {
 
@@ -27,6 +31,13 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 	void setDefaultCapitalAccount(int distributerId, int accountId);
 
 	YiwuJson<Boolean> judgePhoneNoIsRegistered(String phoneNo);
+
+	YiwuJson<List<DistributerRegisterApiView>> findSubordiatesRegisterRecords(int distributerId);
+
+	YiwuJson<List<DistributerRegisterApiView>> findSecondariesRegisterRecords(int distributerId);
+
+	YiwuJson<DistributerApiView> register2(DistributerRegisterModel m);
+
 
 
 }

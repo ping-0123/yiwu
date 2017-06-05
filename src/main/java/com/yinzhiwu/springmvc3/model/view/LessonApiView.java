@@ -4,7 +4,6 @@ import java.sql.Time;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.springmvc3.entity.Lesson;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 
 public class LessonApiView {

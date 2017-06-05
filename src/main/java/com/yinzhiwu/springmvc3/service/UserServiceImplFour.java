@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.AccountDao;
 import com.yinzhiwu.springmvc3.entity.Account;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Service
 public class UserServiceImplFour implements UserService {
@@ -20,7 +21,13 @@ public class UserServiceImplFour implements UserService {
 
 	@Override
 	public Account findById(int id) {
-		return dao.get(id);
+		try {
+			return dao.get(id);
+		} catch (DataNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

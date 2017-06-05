@@ -1,14 +1,14 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
-import org.hibernate.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.AccountDao;
 import com.yinzhiwu.springmvc3.dao.EmployeeDao;
 import com.yinzhiwu.springmvc3.entity.Account;
-import com.yinzhiwu.springmvc3.model.EmployeeApiView;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.EmployeeApiView;
 import com.yinzhiwu.springmvc3.service.AccountService;
 
 @Service

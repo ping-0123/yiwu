@@ -6,7 +6,7 @@ import java.util.Date;
 
 import com.yinzhiwu.springmvc3.entity.Lesson;
 
-public class MiniLesson {
+public class LessonOldApiView {
 	
 //	public static String  APPONTED = "已预约"; // 已预约
 //	public static String UN_APOINTED = "未预约";
@@ -14,10 +14,13 @@ public class MiniLesson {
 	
 	public enum AttendedStatus{UNKNOWN,APPONTED,UN_APOINTED,ATTENDED}
 	
+	public enum LessonStatus{UN_KNOWN,UN_AUDITED, AUDITED, FINISHED}
+	
 	private Integer lessonId;
 	
 	private String courseid;
 	
+//	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date lessonDate;
 	
 	private int week;
@@ -41,6 +44,8 @@ public class MiniLesson {
 	private String courseType;
 	
 	private String subCourseType;
+	
+	private LessonStatus lessonStatus;
 
 	private Integer maxStudentCount;
 	
@@ -60,9 +65,14 @@ public class MiniLesson {
 	
 	private int teacherCallRollCount;
 	
+	//这个课在整套课程中所处的位置
+	private int orderInCourse;
+	
+	//这节课对应的课程所拥有的总课次
+	private int sumTimesOfCourse;
+	
 
-
-	public MiniLesson(Integer lessonId, String courseid, Date lessonDate, Time startTime, Time endTime,
+	public LessonOldApiView(Integer lessonId, String courseid, Date lessonDate, Time startTime, Time endTime,
 			String lessonDesc, Integer storeId, String storeName, Float lessonTime, Integer dueTeacherId,
 			String dueTeacherName, String courseType, String subCourseType) {
 		super();
@@ -81,11 +91,11 @@ public class MiniLesson {
 		this.subCourseType = subCourseType;
 		setWeek();
 		this.attendedStatus = AttendedStatus.UNKNOWN;
-		
+	
 	}
 	
 	
-	public MiniLesson(Lesson l){
+	public LessonOldApiView(Lesson l){
 		this.lessonId = l.getLessonId();
 		this.courseid = l.getCourseid();
 		this.lessonDate = l.getLessonDate();
@@ -99,8 +109,28 @@ public class MiniLesson {
 		this.dueTeacherName = l.getDueTeacherName();
 		this.courseType = l.getCourseType();
 		this.subCourseType = l.getSubCourseType();
+//		System.out.println(l.getSubCourseType());
+		switch (l.getLessonStatus()) {
+		case "":
+			this.lessonStatus = LessonStatus.UN_KNOWN;
+			break;
+		case "未审核":
+			this.lessonStatus = LessonStatus.UN_AUDITED;
+			break;
+		case "已排课":
+			this.lessonStatus = LessonStatus.AUDITED;
+			break;
+		case "已开课":
+			this.lessonStatus =LessonStatus.FINISHED;
+			break;
+		default:
+			this.lessonStatus = LessonStatus.UN_KNOWN;
+			break;
+		}
 		setWeek();
 		this.attendedStatus = AttendedStatus.UNKNOWN;
+//		this.sumTimesOfCourse = lessonDao.findCountByProperty("courseid", this.courseid);
+//		this.orderInCourse = lessonDao.findOrderInCourse(l);
 	}
 	
 
@@ -310,6 +340,36 @@ public class MiniLesson {
 
 	public final void setTeacherCallRollCount(int teacherCallRollCount) {
 		this.teacherCallRollCount = teacherCallRollCount;
+	}
+
+
+	public LessonStatus getLessonStatus() {
+		return lessonStatus;
+	}
+
+
+	public void setLessonStatus(LessonStatus lessonStatus) {
+		this.lessonStatus = lessonStatus;
+	}
+
+
+	public int getOrderInCourse() {
+		return orderInCourse;
+	}
+
+
+	public int getSumTimesOfCourse() {
+		return sumTimesOfCourse;
+	}
+
+
+	public void setOrderInCourse(int orderInCourse) {
+		this.orderInCourse = orderInCourse;
+	}
+
+
+	public void setSumTimesOfCourse(int sumTimesOfCourse) {
+		this.sumTimesOfCourse = sumTimesOfCourse;
 	}
 
 	

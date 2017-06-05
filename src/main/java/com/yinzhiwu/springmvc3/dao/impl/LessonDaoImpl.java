@@ -6,9 +6,11 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.yinzhiwu.springmvc3.dao.LessonDao;
 import com.yinzhiwu.springmvc3.entity.Lesson;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Repository
 public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
@@ -18,7 +20,7 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
 	private static Log LOG = LogFactory.getLog(LessonDaoImpl.class);
 	
 	@Override
-	public Lesson findById(int lessonId) {
+	public Lesson findById(int lessonId) throws DataNotFoundException {
 //		return (Lesson) getHibernateTemplate().get(Lesson.class, lessonId);
 		return get(lessonId);
 	}
@@ -48,6 +50,17 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
 					hql.toString(), 
 					new String[]{"startDate","endDate"}, 
 					new Object[]{startDate,endDate});
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public int findOrderInCourse(Lesson l) {
+		Assert.notNull(l);
+		String hql = "select count(*) from Lesson where startDateTime <= :startDateTime and courseid = :courseId";
+		List<Long> longs = (List<Long>) getHibernateTemplate().findByNamedParam(hql,
+				new String[]{"startDateTime", "courseId"}, 
+				new Object[]{l.getStartDateTime(), l.getCourseid()}) ;
+		return longs.get(0).intValue();
 	}
 	
 

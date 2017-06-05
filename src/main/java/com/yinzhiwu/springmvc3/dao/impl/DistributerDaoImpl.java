@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.exception.DataNotFoundException;
 import org.hibernate.type.LongType;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.util.GeneratorUtil;
 import com.yinzhiwu.springmvc3.util.SecurityUtil;
 import com.yinzhiwu.springmvc3.util.ShareCodeUtil;
@@ -32,7 +32,7 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	private int getNextId() {
-		String sql = "select  AUTO_INCREMENT from information_schema.tables where table_name ='distributer'";
+		String sql = "select  AUTO_INCREMENT from information_schema.tables where table_name ='yiwu_distributer'";
 		List<Long> list = getSession().createNativeQuery(sql).addScalar("AUTO_INCREMENT", LongType.INSTANCE) .list();
 		return list.get(0).intValue();
 	}
@@ -67,9 +67,12 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public float getBeatRate(float exp) {
-		String hql = "select count(*) from Distributer d where d.exp <= :exp";
+		String hql = "select count(*) from Distributer d where d.exp < :exp";
+		logger.debug("传入的经验值是：" + exp);
 		List<Long> counts = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "exp", exp);
+		logger.debug(exp + "击败的数量：" + counts.get(0).intValue());
 		int sum = findCount();
+		logger.debug("分销人数总数：" + sum);
 		if (sum==0)
 			return 0;
 		else

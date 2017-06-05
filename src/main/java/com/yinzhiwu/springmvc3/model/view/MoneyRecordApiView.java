@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.model;
+package com.yinzhiwu.springmvc3.model.view;
 
 import java.util.Date;
 
@@ -15,7 +15,7 @@ import com.yinzhiwu.springmvc3.util.MoneyRecordCategoryUtil;
 public class MoneyRecordApiView {
 
 	@Min(0)
-	private int benificiaryId;
+	private int beneficiaryId;
 	
 	@JsonFormat(pattern="yyyy/MM/dd")
 	private Date date;
@@ -31,7 +31,7 @@ public class MoneyRecordApiView {
 	
 	public MoneyRecordApiView(MoneyRecord m)
 	{
-		this.benificiaryId = m.getBeneficiaty().getId();
+		this.beneficiaryId = m.getBeneficiaty().getId();
 		this.date = m.getContributedDate();
 		this.category = MoneyRecordCategoryUtil
 				.toMoneyRecordCategory(m.getRecordType().getId());
@@ -41,8 +41,8 @@ public class MoneyRecordApiView {
 	}
 	 
 
-	public int getBenificiaryId() {
-		return benificiaryId;
+	public int getBeneficiaryId() {
+		return beneficiaryId;
 	}
 
 	public Date getDate() {
@@ -65,8 +65,8 @@ public class MoneyRecordApiView {
 		return currentFunds;
 	}
 
-	public void setBenificiaryId(int benificiaryId) {
-		this.benificiaryId = benificiaryId;
+	public void setBeneficiaryId(int beneficiaryId) {
+		this.beneficiaryId = beneficiaryId;
 	}
 
 	public void setDate(Date date) {

@@ -1,8 +1,7 @@
 package com.yinzhiwu.springmvc3.dao;
 
-import org.hibernate.exception.DataNotFoundException;
-
 import com.yinzhiwu.springmvc3.entity.Account;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 public interface AccountDao extends IBaseDao<Account, Integer>{
 

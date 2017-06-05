@@ -8,9 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 
 @Entity
+@Table(name="yiwu_tweet_content")
 public class TweetContent extends BaseEntity {
 
 	/**

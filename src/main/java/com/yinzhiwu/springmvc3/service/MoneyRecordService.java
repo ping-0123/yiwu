@@ -6,10 +6,11 @@ import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.MoneyRecord;
 import com.yinzhiwu.springmvc3.entity.MoneyRecordType;
 import com.yinzhiwu.springmvc3.enums.MoneyRecordCategory;
-import com.yinzhiwu.springmvc3.model.MoneyRecordApiView;
 import com.yinzhiwu.springmvc3.model.PayDepositModel;
 import com.yinzhiwu.springmvc3.model.WithDrawModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.view.MoneyRecordApiView;
+import com.yinzhiwu.springmvc3.model.view.OrderMoneyRecordApiView;
 
 public interface MoneyRecordService extends IBaseService<MoneyRecord, Integer>{
 	
@@ -27,5 +28,9 @@ public interface MoneyRecordService extends IBaseService<MoneyRecord, Integer>{
 	public YiwuJson<Boolean> payDeposit(PayDepositModel m);
 
 	void saveCommissionRecord();
+
+	public YiwuJson<List<OrderMoneyRecordApiView>> findSubordiatesOrderRecords(int distributerId);
+
+	public YiwuJson<List<OrderMoneyRecordApiView>> findSecondaryOrderRecords(int distributerId);
 
 }

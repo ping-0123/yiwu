@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.CourseYzwDao;
 import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CourseApiView;
 import com.yinzhiwu.springmvc3.service.CourseYzwService;
@@ -23,10 +24,12 @@ public class CourseYzwServiceImpl  extends BaseServiceImpl<CourseYzw,String> imp
 	
 	@Override
 	public YiwuJson<CourseApiView> findById(String id) {
-		CourseYzw course = courseDao.get(id);
-		if(course == null)
-			return new YiwuJson<>("not found by id:" + id);
-		return new YiwuJson<>(new CourseApiView(course));
+		try{
+			CourseYzw course = courseDao.get(id);
+			return new YiwuJson<>(new CourseApiView(course));
+		}catch (DataNotFoundException e) {
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 
 }

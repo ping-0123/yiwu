@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.ProductTypeDao;
 import com.yinzhiwu.springmvc3.entity.ProductType;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.service.ProductTypeService;
 
 
@@ -24,7 +25,11 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 	@Override
 	public ProductType findById(Integer id) {
-		return productTypeDao.get(id);
+		try {
+			return productTypeDao.get(id);
+		} catch (DataNotFoundException e) {
+			return null;
+		}
 	}
 
 

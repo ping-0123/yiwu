@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.CourseDao;
 import com.yinzhiwu.springmvc3.entity.Course;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Repository
 public class CourseDaoImpl extends BaseDaoImpl<Course, String> implements CourseDao{
@@ -16,7 +17,7 @@ public class CourseDaoImpl extends BaseDaoImpl<Course, String> implements Course
 	}
 
 	@Override
-	public Course findById(String id) {
+	public Course findById(String id) throws DataNotFoundException {
 		return get(id);
 	}
 
