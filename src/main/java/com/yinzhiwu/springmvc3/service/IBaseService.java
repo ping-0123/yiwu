@@ -37,7 +37,7 @@ public interface IBaseService<T, PK extends Serializable> {
 	 * 通过dao.get(id)从数据库中取出一个新实体newEntity, 将newEntity中的属性值
 	 * 设置为entity对应的值(entity中某一属性为null, 则newEntity中相应属性值不变)
 	 * 改方法用到了反射
-	 * 该方法忽略@OneToMany注解的属性
+	 * 该方法忽略@OneToMany注解的属性的修改
 	 * 
 	 * @param id 需要更改的数据的id
 	 * @param entity 需要更改的属性封装在entity中

@@ -38,52 +38,52 @@ public class RevenueServiceImpl implements RevenueService{
 	@Override
 	public Object getMonthlyRevenue(int year, int month, int districtId, int productTypeId) {
 		//取出该区域下所有的门店
-		List<Department> storeList = null;
+		List<Department> stores = null;
 		if(districtId ==0){
-			storeList= deptDao.findAllStores();
+			stores= deptDao.findAllStores();
 		}else{
-			storeList= deptDao.findStoresByDistrictId(districtId);
+			stores= deptDao.findStoresByDistrictId(districtId);
 		}
 		
-		int cols = storeList.size();
+		int cols = stores.size();
 		// 设置开始和结束时间
-		Calendar sc = Calendar.getInstance();
-		sc.set(Calendar.YEAR, year);
-		sc.set(Calendar.MONTH, month-1);
-		sc.set(Calendar.DAY_OF_MONTH, 1);
-		Date start = sc.getTime();
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month-1);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		Date start = calendar.getTime();
 		
-		sc.add(Calendar.MONTH, 1);
-		sc.add(Calendar.DAY_OF_MONTH, -1);
-		Date end = sc.getTime();
+		calendar.add(Calendar.MONTH, 1);
+		calendar.add(Calendar.DAY_OF_MONTH, -1);
+		Date end = calendar.getTime();
 		
 		int rows = 1 + (int) ((end.getTime()-start.getTime())/(1000*60*60*24));
 		
 		RevenueModel[][] revenue = new RevenueModel[rows][cols];
 	
-		sc.setTime(start);
+		calendar.setTime(start);
 		for(int i=0; i<rows; i++){
 			for(int j=0; j<cols; j++){
 				RevenueModel r = new RevenueModel();
-				r.setDate(new java.sql.Date(sc.getTime().getTime()));
-				r.setStoreId(storeList.get(j).getId());
-				r.setStoreName(storeList.get(j).getDeptName());
+				r.setDate(new java.sql.Date(calendar.getTime().getTime()));
+				r.setStoreId(stores.get(j).getId());
+				r.setStoreName(stores.get(j).getDeptName());
 				r.setAmount(0.0);
 				revenue[i][j] = r;
 			}
-			sc.add(Calendar.DAY_OF_MONTH, 1);
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
 		}
 		
 		//取出按天按店的营业额
-		List<Object[]> revenueList = orderDao.getMonthlyRevenue(districtId, productTypeId, start, end);
+		List<Object[]> revenues = orderDao.getMonthlyRevenue(districtId, productTypeId, start, end);
 		
-		for (Object[] objs : revenueList) {
+		for (Object[] objs : revenues) {
 			try {
 				revenue[getRowIndex((Date)objs[2])]
-						[getCloumnIndex((int)objs[0], storeList)]
+						[getCloumnIndex((int)objs[0], stores)]
 						.setAmount((double)objs[3]);
 			} catch (Exception e) {
-				logger.warn("storeId: " + objs[0] + " not found ");
+//				logger.warn("storeId: " + objs[0] + " not found ");
 			}
 		}
 		
@@ -93,7 +93,7 @@ public class RevenueServiceImpl implements RevenueService{
 		PlanRevenue[]  plans = new PlanRevenue[cols];
 		for(int j=0; j<cols; j++){
 			PlanRevenue p = prDao.findStoreMonthlyPlanRevenue(
-					storeList.get(j).getId(), productTypeId, year, month);
+					stores.get(j).getId(), productTypeId, year, month);
 			plans[j] = p;
 		
 		}
@@ -112,9 +112,10 @@ public class RevenueServiceImpl implements RevenueService{
 		throw new Exception("storeId: " + storeId + " not found " );
 	}
 	
-	@SuppressWarnings("deprecation")
 	private int getRowIndex(Date date){
-		return date.getDate() -1;
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		return  calendar.get(Calendar.DAY_OF_MONTH) -1;
 	}
 
 	

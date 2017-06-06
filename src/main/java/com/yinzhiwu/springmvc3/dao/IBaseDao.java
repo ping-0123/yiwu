@@ -43,5 +43,6 @@ public interface IBaseDao<T ,PK extends Serializable> {
 
 		PageBean<T> findPageByHql(String hql, int pageNum, int pageSize);
 		
+		
 
 }

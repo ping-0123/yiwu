@@ -189,7 +189,7 @@ public class DistributerController {
 	   return distributerService.findSecondariesRegisterRecords(distributerId);
    }
    
-   @PutMapping(value="/{id}")
+   @RequestMapping(value="/{id}", method={RequestMethod.PUT, RequestMethod.POST})
    public YiwuJson<Boolean> modify(Distributer d, @PathVariable int id){
 		try {
 			System.out.println(d.getNickName());

@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Order;
-import com.yinzhiwu.springmvc3.model.view.OrderApiView;
 import com.yinzhiwu.springmvc3.model.view.OrderOldApiView;
 
 public interface OrderDao  extends IBaseDao<Order, String>{

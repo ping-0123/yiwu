@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import org.apache.commons.logging.Log;
@@ -109,17 +110,17 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 			return;
 		T newEntity = baseDao.get(id);
 		
+		entity.getClass().getSuperclass();
 		Field[] fields = entity.getClass().getDeclaredFields();
 		LOG.info(fields.length);
 		boolean update_flag =false;
 		long afterReflect = System.currentTimeMillis();
 		LOG.info("反射所花时间: " + (afterReflect-start));
 		for (Field f : fields) {
-//			LOG.info(f.get(entity) + " vs " + f.get(newEntity));
-//			LOG.info(Modifier.isStatic(f.getModifiers()));
 			f.setAccessible(true);
 			if(!Modifier.isStatic(f.getModifiers()) 
-					&&f.get(entity)!=null 
+					&&f.get(entity)!=null
+					&& f.getDeclaredAnnotation(Id.class) == null
 					&& f.getDeclaredAnnotation(OneToMany.class) == null
 					&& !f.get(entity).equals(f.get(newEntity)))
 			{
@@ -131,7 +132,6 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		long afterCompare=System.currentTimeMillis();
 		LOG.info("对比所化时间: " + (afterCompare-afterReflect));
 		if(update_flag){
-//			LOG.info(update_flag);
 			baseDao.update(newEntity);
 		}
 		
