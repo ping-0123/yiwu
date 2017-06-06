@@ -14,14 +14,43 @@
 	
 //		var v_baseUrl = "http://www.yinzhiwu.com:9090/yiwu/";
 		var v_baseUrl = "http://192.168.0.115:8080/yiwu/"
-		modifyHeadIconWithAjax();
-//		register();
+//		modifyHeadIconWithAjax();
+		register();
 //		save_capitalAccount();
 //		setDefaultAccount();
 //		withdraw();
 //		payDeposit();
 //		shareTweet();
 //		modify();
+		function register(){
+			var v_url = "api/distributer";
+			var v_data = {"phoneNo":'18332244489',
+						'password':'wangwu12',
+						'name':'小王',
+						'nickName':'王小二',
+						'gender':'MALE',
+						//改成 '0222-01-01'报错
+						'birthday':'1999-01-01',
+						'followedByStore.id':63,
+						'wechatNo':'oIgTGwx1Qivbd4ty699zcwyz',
+						'invitationCode':'e3it8o3f'
+					};
+		
+		$.ajax({ 
+			type: "POST", 	
+			url: v_baseUrl+v_url,
+			data:v_data,
+			dataType: "json",
+			timeout:50000,
+			success: function(data) {
+				$('#content').html(JSON.stringify(data));
+			},
+			error: function(jqXHR){     
+				$('#content').html(jqXHR.status);
+			},  
+		});	
+		}
+
 
 
 		function modifyHeadIconWithAjax(){
@@ -148,21 +177,21 @@
 		}
 		
 		function register(){
-			var v_url = "api/distributer/register";
-			var v_data = {"phoneNo":'18332644889',
+			var v_url = "api/distributer";
+			var v_data = {"phoneNo":'18332244489',
 						'password':'wangwu12',
-						'name':'王麻子',
-						'nickName':'王麻子',
+						'name':'小王',
+						'nickName':'王小二',
 						'gender':'MALE',
 						//改成 '0222-01-01'报错
 						'birthday':'1999-01-01',
 						'followedByStore.id':63,
-						'wechatNo':'oIgTGwx1Qisvq4ty949zcwyz',
-						'invitationCode':'e3inp'
+						'wechatNo':'oIgTGwx1Qivbd4ty699zcwyz',
+						'invitationCode':'e3it8o3f'
 					};
 		
 		$.ajax({ 
-			type: "Post", 	
+			type: "POST", 	
 			url: v_baseUrl+v_url,
 			data:v_data,
 			dataType: "json",
@@ -171,7 +200,7 @@
 				$('#content').html(JSON.stringify(data));
 			},
 			error: function(jqXHR){     
-				alert("error");
+				$('#content').html(jqXHR.status);
 			},  
 		});	
 		}

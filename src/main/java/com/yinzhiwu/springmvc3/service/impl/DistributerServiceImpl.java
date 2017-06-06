@@ -134,9 +134,9 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		
 		//注册成功
 		try {
-			LOG.info("before save");
+//			LOG.info("before save");
 			distributerDao.saveBean(distributer);
-			LOG.info("after save");
+//			LOG.info("after save");
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}

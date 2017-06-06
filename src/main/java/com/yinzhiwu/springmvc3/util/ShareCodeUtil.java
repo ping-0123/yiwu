@@ -2,6 +2,8 @@ package com.yinzhiwu.springmvc3.util;
 
 import java.util.Random;
 
+import org.apache.log4j.chainsaw.Main;
+
 /**
  * 邀请码生成器，算法原理：<br/>
  * 1) 获取id: 1127738 <br/>
