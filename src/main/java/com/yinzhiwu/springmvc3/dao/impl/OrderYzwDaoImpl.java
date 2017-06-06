@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -91,12 +92,22 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 
 	@Override
 	public List<OrderYzw> findByCustomer(CustomerYzw customer) {
-		return findByProperty("customer.id", customer.getId());
+		try{
+			return findByProperty("customer.id", customer.getId());
+		}catch (DataNotFoundException e) {
+			LOG.error(e);
+			return new ArrayList<>();
+		}
 	}
 
 	@Override
 	public List<OrderYzw> findByCustomerId(int customerId) {
-		return findByProperty("customer.id", customerId);
+		try{
+			return findByProperty("customer.id", customerId);
+		}catch (DataNotFoundException e) {
+			LOG.error(e);
+			return new ArrayList<>();
+		}
 	}
 
 	@SuppressWarnings("unchecked")

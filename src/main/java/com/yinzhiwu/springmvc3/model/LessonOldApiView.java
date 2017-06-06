@@ -16,6 +16,8 @@ public class LessonOldApiView {
 	
 	public enum LessonStatus{UN_KNOWN,UN_AUDITED, AUDITED, FINISHED}
 	
+	public enum CheckedInStatus{UN_KNOWN, UN_CHECKED, CHECKED,PATCHED,NON_CHECKABLE}
+	
 	private Integer lessonId;
 	
 	private String courseid;
@@ -41,6 +43,10 @@ public class LessonOldApiView {
 	
 	private String dueTeacherName;
 	
+	private int actualTeacherId;
+	
+	private String actualTeacherName;
+	
 	private String courseType;
 	
 	private String subCourseType;
@@ -51,7 +57,9 @@ public class LessonOldApiView {
 	
 	private AttendedStatus attendedStatus;
 	
-	private int appointedStudentCount;
+	private CheckedInStatus checkedInStatus;
+	
+	private Integer appointedStudentCount;
 	
 	private String danceName;
 	
@@ -106,6 +114,8 @@ public class LessonOldApiView {
 		this.storeName = l.getStoreName();
 		this.lessonTime = l.getLessonTime();
 		this.dueTeacherId = l.getDueTeacherId();
+		this.actualTeacherId = l.getActualTeacherId();
+		this.actualTeacherName = l.getActualTeacherName();
 		this.dueTeacherName = l.getDueTeacherName();
 		this.courseType = l.getCourseType();
 		this.subCourseType = l.getSubCourseType();
@@ -370,6 +380,36 @@ public class LessonOldApiView {
 
 	public void setSumTimesOfCourse(int sumTimesOfCourse) {
 		this.sumTimesOfCourse = sumTimesOfCourse;
+	}
+
+
+	public CheckedInStatus getCheckedInStatus() {
+		return checkedInStatus;
+	}
+
+
+	public void setCheckedInStatus(CheckedInStatus checkedInStatus) {
+		this.checkedInStatus = checkedInStatus;
+	}
+
+
+	public Integer getActualTeacherId() {
+		return actualTeacherId;
+	}
+
+
+	public String getActualTeacherName() {
+		return actualTeacherName;
+	}
+
+
+	public void setActualTeacherId(Integer actualTeacherId) {
+		this.actualTeacherId = actualTeacherId;
+	}
+
+
+	public void setActualTeacherName(String actualTeacherName) {
+		this.actualTeacherName = actualTeacherName;
 	}
 
 	

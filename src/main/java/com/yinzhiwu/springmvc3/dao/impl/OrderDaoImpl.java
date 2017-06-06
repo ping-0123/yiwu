@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.yinzhiwu.springmvc3.dao.OrderDao;
 import com.yinzhiwu.springmvc3.entity.Customer;
 import com.yinzhiwu.springmvc3.entity.Order;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.view.OrderOldApiView;
 
 
@@ -133,7 +134,11 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 		map.put("customerId", customerId);
 		map.put("productSubType", subType);
 		map.put("checkedStatus", "已审核");
-		return findByProperties(map) ;
+		try {
+			return findByProperties(map) ;
+		} catch (DataNotFoundException e) {
+			return new ArrayList<>();
+		}
 	}
 
 	@Override

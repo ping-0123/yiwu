@@ -68,7 +68,7 @@ public class ShareTweetServiceImpl extends BaseServiceImpl<ShareTweet, Integer>
 			//2.产生经验收益
 				//2.1如果是当天前三次， 则产生经验收益
 			int count = shareTweetDao.findCountBySharerByDate(
-					distributerId, CalendarUtil.getTodayZeroTime());
+					distributerId, CalendarUtil.getTodayBegin().getTime());
 			if(count <=3)
 				expRecordService.saveShareTweetExprRecord(sharer, shareTweet);
 			return new YiwuJson<>(new Boolean(true));

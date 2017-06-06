@@ -16,17 +16,17 @@ public interface IBaseService<T, PK extends Serializable> {
 	
 	public void saveOrUpdate(T entity);
 	
-	public List<T> findAll();
+	public List<T> findAll() throws DataNotFoundException;
 	
-	public List<T> findByProperty(String propertyName, Object value);
+	public List<T> findByProperty(String propertyName, Object value) throws DataNotFoundException;
 	
 	public int findCountByProperty(String propertyName, Object value);
 	
-	public List<T> findByProperties(Map<String, Object> propertyMap);
+	public List<T> findByProperties(Map<String, Object> propertyMap) throws DataNotFoundException;
 	
-	public List<T> findByProperties(String[] propertyNames, Object[] values);
+	public List<T> findByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException;
 	
-	public List<T> findByExample(T entity);
+	public List<T> findByExample(T entity) throws DataNotFoundException;
 
 	void delete(T entit);
 	
@@ -38,6 +38,7 @@ public interface IBaseService<T, PK extends Serializable> {
 	 * 设置为entity对应的值(entity中某一属性为null, 则newEntity中相应属性值不变)
 	 * 改方法用到了反射
 	 * 该方法忽略@OneToMany注解的属性的修改
+	 * 该方法不能修改从父类继承过来的成员变量的值
 	 * 
 	 * @param id 需要更改的数据的id
 	 * @param entity 需要更改的属性封装在entity中

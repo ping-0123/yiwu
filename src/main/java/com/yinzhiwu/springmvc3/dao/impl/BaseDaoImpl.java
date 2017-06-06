@@ -88,14 +88,12 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> findByProperty(String propertyName, Object value) {
+	public List<T> findByProperty(String propertyName, Object value) throws DataNotFoundException {
 		String hql = "from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
-		try {
-			return (List<T>) getHibernateTemplate().findByNamedParam(hql, "value", value);
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
-			return new ArrayList<>();
-		}
+		List<T> list =  (List<T>) getHibernateTemplate().findByNamedParam(hql, "value", value);
+		if(list==null || list.size() ==0)
+			throw new DataNotFoundException(entityClass, propertyName, value);
+		return list;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -113,40 +111,34 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> findByProperties(Map<String, Object> map) {
-		try{
-			Map<String, Object> v_map = new HashMap<>();
-			StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
-			for (String string : map.keySet()) {
-				if(null != string && !"".equals(string)){
-					String valString = string.replace(".", "");
-					hql.append(" and " + string + "=:" + valString);
-					v_map.put(valString, map.get(string));
-				}
+	public List<T> findByProperties(Map<String, Object> map) throws DataNotFoundException {
+		Map<String, Object> v_map = new HashMap<>();
+		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
+		for (String string : map.keySet()) {
+			if(null != string && !"".equals(string)){
+				String valString = string.replace(".", "");
+				hql.append(" and " + string + "=:" + valString);
+				v_map.put(valString, map.get(string));
 			}
-			
-			return (List<T>) getHibernateTemplate().findByNamedParam(
-					hql.toString(), 
-					v_map.keySet().toArray(new String[] {}),
-					v_map.values().toArray(new Object[] {}));
-		}catch (Exception e) {
-			LOG.error(e.getMessage());
-			return new ArrayList<>();
 		}
-
-  
+		
+		List<T>  list = (List<T>) getHibernateTemplate().findByNamedParam(
+				hql.toString(), 
+				v_map.keySet().toArray(new String[] {}),
+				v_map.values().toArray(new Object[] {}));
+		if(list==null || list.size() ==0)
+			throw new DataNotFoundException();
+		return list;
 }
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> findAll() {
+	public List<T> findAll() throws DataNotFoundException {
 		String hql = "from "+  entityClass.getSimpleName();
-		try{
-			return (List<T>) getHibernateTemplate().find(hql);
-		}catch (Exception e) {
-			LOG.error(e.getMessage());
-			return new ArrayList<>();
-		}
+		List<T> list =  (List<T>) getHibernateTemplate().find(hql);
+		if(list==null || list.size() ==0)
+			throw new DataNotFoundException();
+		return list;
 	}
 
 	@Override
@@ -186,14 +178,12 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 
 
 	@Override
-	public List<T> findByExample(T entity) {
+	public List<T> findByExample(T entity) throws DataNotFoundException {
 		Assert.notNull(entity, "entity is required");
-		try{
-			return getHibernateTemplate().findByExample(entity);
-		}catch (Exception e) {
-			LOG.error(e.getMessage());
-			return new ArrayList<>();
-		}
+		List<T> list =   getHibernateTemplate().findByExample(entity);
+		if(list==null || list.size() ==0)
+			throw new DataNotFoundException();
+		return list;
 	}  
 	
 	@Override
@@ -227,27 +217,24 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> findByProperties(String[] propertyNames, Object[] values) {
+	public List<T> findByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException {
 		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
-		try{
-			Map<String,Object> map = new HashMap<>();
-			for(int i = 0; i<propertyNames.length; i++){
-				if(StringUtils.hasLength(propertyNames[i])){
-					String valString = propertyNames[i].replace(".", "");
-					hql.append(" and " + propertyNames[i] + "=:" + valString);
-					map.put(valString, values[i]);
-				}
+		Map<String,Object> map = new HashMap<>();
+		for(int i = 0; i<propertyNames.length; i++){
+			if(StringUtils.hasLength(propertyNames[i])){
+				String valString = propertyNames[i].replace(".", "");
+				hql.append(" and " + propertyNames[i] + "=:" + valString);
+				map.put(valString, values[i]);
 			}
-			
-			return  (List<T>) getHibernateTemplate().findByNamedParam(
-					hql.toString(), 
-					map.keySet().toArray(new String[] {}),
-					map.values().toArray(new Object[] {}));
-		}catch (Exception e) {
-			LOG.error(e.getMessage());
-			return new ArrayList<>();
 		}
-
+		
+		List<T> list =  (List<T>) getHibernateTemplate().findByNamedParam(
+				hql.toString(), 
+				map.keySet().toArray(new String[] {}),
+				map.values().toArray(new Object[] {}));
+		if(list==null || list.size() ==0)
+			throw new DataNotFoundException();
+		return list;
 	}
 
 	@Override

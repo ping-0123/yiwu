@@ -58,12 +58,12 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	}
 
 	@Override
-	public List<T> findAll() {
+	public List<T> findAll() throws DataNotFoundException {
 		return baseDao.findAll();
 	}
 
 	@Override
-	public List<T> findByProperty(String propertyName, Object value) {
+	public List<T> findByProperty(String propertyName, Object value) throws DataNotFoundException {
 		return baseDao.findByProperty(propertyName, value);
 	}
 
@@ -73,17 +73,17 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	}
 
 	@Override
-	public List<T> findByProperties(Map<String, Object> propertyMap) {
+	public List<T> findByProperties(Map<String, Object> propertyMap) throws DataNotFoundException {
 		return baseDao.findByProperties(propertyMap);
 	}
 
 	@Override
-	public List<T> findByProperties(String[] propertyNames, Object[] values) {
+	public List<T> findByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException {
 		return baseDao.findByProperties(propertyNames, values);
 	}
 
 	@Override
-	public List<T> findByExample(T entity) {
+	public List<T> findByExample(T entity) throws DataNotFoundException {
 		return baseDao.findByExample(entity);
 	}
 

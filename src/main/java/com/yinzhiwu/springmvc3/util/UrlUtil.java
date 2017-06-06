@@ -2,12 +2,11 @@ package com.yinzhiwu.springmvc3.util;
 
 import org.springframework.util.StringUtils;
 
-import com.yinzhiwu.springmvc3.qiniu.Qiniu;
 
 public class UrlUtil {
 	
-//	public static String HEAD_ICON_PATH = "/resources/images/headIcons";
-	public static String HEAD_ICON_PATH = Qiniu.CDN_URL;
+	public static String HEAD_ICON_PATH = "/resources/images/headIcons";
+//	public static String HEAD_ICON_PATH = Qiniu.CDN_URL;
 	
 	public static String TWEET_COVER_ICON_PATH="/resources/images/tweetCoverIcons";
 	

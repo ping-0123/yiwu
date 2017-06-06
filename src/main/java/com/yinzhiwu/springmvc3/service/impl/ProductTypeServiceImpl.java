@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,11 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 	@Override
 	public List<ProductType> findAll() {
-		return productTypeDao.findAll();
+		try{
+			return productTypeDao.findAll();
+		}catch (DataNotFoundException e) {
+			return new ArrayList<>();
+		}
 	}
 
 	@Override

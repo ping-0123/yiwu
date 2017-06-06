@@ -14,14 +14,12 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.springmvc3.dao.AppointmentDao;
 import com.yinzhiwu.springmvc3.dao.CheckInsDao;
 import com.yinzhiwu.springmvc3.dao.ClassRoomDao;
-import com.yinzhiwu.springmvc3.dao.ClassRoomDaoImpl;
 import com.yinzhiwu.springmvc3.dao.CourseDao;
 import com.yinzhiwu.springmvc3.dao.CustomerDao;
 import com.yinzhiwu.springmvc3.dao.LessonDao;
 import com.yinzhiwu.springmvc3.dao.OrderDao;
 import com.yinzhiwu.springmvc3.dao.StoreManCallRollDao;
 import com.yinzhiwu.springmvc3.dao.TeacherCallRollDao;
-import com.yinzhiwu.springmvc3.dao.impl.LessonDaoImpl;
 import com.yinzhiwu.springmvc3.entity.ClassRoom;
 import com.yinzhiwu.springmvc3.entity.Course;
 import com.yinzhiwu.springmvc3.entity.Customer;
@@ -29,7 +27,9 @@ import com.yinzhiwu.springmvc3.entity.Lesson;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.LessonList;
 import com.yinzhiwu.springmvc3.model.LessonOldApiView;
+import com.yinzhiwu.springmvc3.model.LessonOldApiView.CheckedInStatus;
 import com.yinzhiwu.springmvc3.service.LessonService;
+import com.yinzhiwu.springmvc3.util.CalendarUtil;
 
 
 /**
@@ -202,6 +202,29 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 		view.setSumTimesOfCourse(lessonDao.findCountByProperty("courseid", l.getCourseid()));
 		view.setOrderInCourse(lessonDao.findOrderInCourse(l));
 		
+		//添加刷卡状态
+		if  ((l.getLessonDate().compareTo(CalendarUtil.getTodayBegin().getTime()) >=0 )){
+			if ("未审核".equals(l.getLessonStatus())|| l.getLessonDate()==null || "".equals(l.getLessonStatus())) {
+				view.setCheckedInStatus(CheckedInStatus.UN_CHECKED);
+			}else
+				view.setCheckedInStatus(CheckedInStatus.UN_KNOWN);
+		}
+
+		try {
+			Date checkedInTime = checkInsDao.findByProperties(
+					new String[]{"lessonId","teacherId"}, 
+					new Object[]{l.getLessonId(), l.getActualTeacherId()}).get(0).getCreateTime();
+			Calendar end = Calendar.getInstance();
+			end.setTimeInMillis(l.getLessonDate().getTime()  + l.getEndTime().getTime());
+			//如果刷卡时间比课程结束时间大 则是补刷
+			if(checkedInTime.compareTo(end.getTime()) >=0)
+				view.setCheckedInStatus(CheckedInStatus.PATCHED);
+			else
+				view.setCheckedInStatus(CheckedInStatus.CHECKED);
+		} catch (DataNotFoundException e) {
+			view.setCheckedInStatus(CheckedInStatus.UN_CHECKED);
+		}
+	
 		return view;
 	}
 

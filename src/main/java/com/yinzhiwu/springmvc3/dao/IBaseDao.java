@@ -16,22 +16,22 @@ public interface IBaseDao<T ,PK extends Serializable> {
 		public void saveOrUpdate(T entity);
 		
 		
-		public List<T> findAll();
+		public List<T> findAll() throws DataNotFoundException;
 		
 		public int findCount();
 		
-		public List<T> findByProperty(String propertyName, Object value);
+		public List<T> findByProperty(String propertyName, Object value) throws DataNotFoundException;
 		
 		public int findCountByProperty(String propertyName, Object value);
 		
 		
-		public List<T> findByProperties(Map<String, Object> param);
+		public List<T> findByProperties(Map<String, Object> param) throws DataNotFoundException;
 		
-		public List<T> findByProperties(String[] propertyNames, Object[] values);
+		public List<T> findByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException;
 		
 		public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception;
 		
-		public List<T> findByExample(T entity);
+		public List<T> findByExample(T entity) throws DataNotFoundException;
 
 		void delete(T entit);
 		

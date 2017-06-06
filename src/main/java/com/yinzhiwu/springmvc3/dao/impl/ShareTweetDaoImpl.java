@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.ShareTweetDao;
 import com.yinzhiwu.springmvc3.entity.ShareTweet;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 
 @Repository
@@ -16,7 +18,7 @@ public class ShareTweetDaoImpl
 	extends BaseDaoImpl<ShareTweet,Integer> 
 	implements ShareTweetDao {
 	
-	private static Log log  = LogFactory.getLog(ShareTweetDaoImpl.class);
+	private static Log LOG  = LogFactory.getLog(ShareTweetDaoImpl.class);
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -26,14 +28,19 @@ public class ShareTweetDaoImpl
 				hql, 
 				new String[]{"sharerId", "startDate"},
 				new Object[]{distributerId,date});
-		log.info("date..." + date);
-		log.info(list.get(0).intValue());
+		LOG.info("date..." + date);
+		LOG.info(list.get(0).intValue());
 		return list.get(0).intValue();
 	}
 
 	@Override
 	public List<ShareTweet> findBySharerId(int sharerId) {
-		return findByProperty("sharer.id", sharerId);
+		try{
+			return findByProperty("sharer.id", sharerId);
+		}catch (DataNotFoundException e) {
+			LOG.warn(e);
+			return new ArrayList<>();
+		}
 	}
 
 	@Override

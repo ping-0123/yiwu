@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.TweetTypeDao;
 import com.yinzhiwu.springmvc3.entity.TweetType;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.TweetTypeApiView;
 import com.yinzhiwu.springmvc3.service.TweetTypeService;
@@ -30,16 +31,20 @@ public class TweetTypeServiceImpl extends BaseServiceImpl<TweetType, Integer> im
 	
 	@Override
 	public YiwuJson<List<TweetTypeApiView>> findAllTweetTypes(){
-		long beforeSelect = System.currentTimeMillis();
-		List<TweetType> types = tweetTypeDao.findAll();
-		long afterSelect = System.currentTimeMillis();
-		LOG.debug("select time: " + (afterSelect-beforeSelect));
-		List<TweetTypeApiView> views = new ArrayList<>();
-		for (TweetType t : types) {
-			views.add(new TweetTypeApiView(t));
+		try{
+			long beforeSelect = System.currentTimeMillis();
+			List<TweetType> types = tweetTypeDao.findAll();
+			long afterSelect = System.currentTimeMillis();
+			LOG.debug("select time: " + (afterSelect-beforeSelect));
+			List<TweetTypeApiView> views = new ArrayList<>();
+			for (TweetType t : types) {
+				views.add(new TweetTypeApiView(t));
+			}
+			long afterWrap = System.currentTimeMillis();
+			LOG.debug("wrap Time: " +  (afterWrap-afterSelect));
+			return new YiwuJson<>(views);
+		}catch (DataNotFoundException e) {
+			return new YiwuJson<>(e.getMessage());
 		}
-		long afterWrap = System.currentTimeMillis();
-		LOG.debug("wrap Time: " +  (afterWrap-afterSelect));
-		return new YiwuJson<>(views);
 	}
 }

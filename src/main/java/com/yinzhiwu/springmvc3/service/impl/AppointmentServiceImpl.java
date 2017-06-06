@@ -18,6 +18,7 @@ import com.yinzhiwu.springmvc3.entity.Appointment.APPOINT_STATUS;
 import com.yinzhiwu.springmvc3.service.AppointmentService;
 import com.yinzhiwu.springmvc3.entity.Lesson;
 import com.yinzhiwu.springmvc3.entity.Order;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
@@ -71,10 +72,14 @@ public class AppointmentServiceImpl implements AppointmentService{
 		map.put("customerId", customerId);
 		map.put("lessonId", lessonId);
 		map.put("status", "预约");
-		List<Appointment> appointments = appointmentDao.findByProperties(map);
-		if (appointments.size()==0 || appointments.size()>1)
+		List<Appointment> appointments;
+		try {
+			appointments = appointmentDao.findByProperties(map);
+			return appointments.get(0);
+		} catch (DataNotFoundException e) {
 			return null;
-		return appointments.get(0);
+		}
+
 	}
 	
 	private boolean isAppointable(int customerId, int lessonId){
