@@ -19,7 +19,7 @@ public class TweetModel {
 	@Min(1)
 	private int tweetTypeId;
 	
-	@Size(max=50)
+	@Size(max=250)
 	private String digest;
 	
 	@NotNull
