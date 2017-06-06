@@ -153,7 +153,6 @@ public class DistributerController {
 			@Valid CapitalAccountApiView v, BindingResult bindingResult){
 		if(bindingResult.hasErrors()){
 			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-			LOG.info("addCapitalAccount has erorr field" +  fieldErrors);
 			for (FieldError fieldError : fieldErrors) {
 				if(!fieldError.getField().equals("accountId"))
 					return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
@@ -191,7 +190,6 @@ public class DistributerController {
    @RequestMapping(value="/{id}", method={RequestMethod.PUT, RequestMethod.POST})
    public YiwuJson<Boolean> modify(Distributer d, @PathVariable int id){
 		try {
-			System.out.println(d.getNickName());
 			distributerService.modify(id, d);
 			return new YiwuJson<>(new Boolean(true));
 		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
