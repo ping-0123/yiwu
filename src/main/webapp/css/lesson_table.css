@@ -85,7 +85,7 @@
           .open_tip{height: 40px;line-height: 40px;}
           .open_tip img{ width: 6px; height: auto;float: left;margin-top: 13px;margin-left: 5px;}
           .open_tip p{float: left; width: 94%;height: 40px; padding-left: 6px;font-size: 12px;overflow: hidden;}
-            
+          .complete{color:red;} 
   /*  iphone5  适配    */
    @media screen and (max-width:321px ) {
    	    .nav{ width: 100%; height: 70px;}
@@ -185,7 +185,7 @@
         #phone span{padding-left: 16px;white-space:nowrap; color:#000000;position: absolute;top:132px;background:url(../images/phone.png);background-repeat:no-repeat; background-size:11px 11px;background-position:1px 1px}
         #phone a{ display: block;}
       
-        
+        .complete{color:red;}
         /*table*/
         .table_lesson{ width: 100%;}
         .table_lesson table{ width:96%; margin:0 auto;border-collapse:collapse;}

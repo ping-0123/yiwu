@@ -221,7 +221,10 @@ function loadStores(v_districtId){
 //								封闭式添加当前课程状态
 //								t = t+ "<li><small>" +  getChineseLessonStatus(lesson.lessonStatus) + "</small></li></ul>";
 //								封闭式添加当前课程进度
-								t = t+ "<li><small>进度:" + lesson.orderInCourse + "/" +  lesson.sumTimesOfCourse + "</small></li></ul>";
+								if(lesson.orderInCourse == lesson.sumTimesOfCourse)
+									t = t+ "<li><small class='complete'>进度:" + lesson.orderInCourse + "/" +  lesson.sumTimesOfCourse + "</small></li></ul>";
+								else
+									t = t+ "<li><small>进度:" + lesson.orderInCourse + "/" +  lesson.sumTimesOfCourse + "</small></li></ul>";
 							}
 						}
 						t=t+"</td>";
