@@ -152,11 +152,10 @@ public class OrderYzw extends BaseYzwEntity {
 	private Integer eContractPictureFlag;
 	
 	@Column(name="e_contract_status")
-	private Integer eContractStatus;
+	private Boolean eContractStatus;
 
 	
 	public OrderYzw() {
-		super();
 	}
 
 	public String getId() {
@@ -352,9 +351,6 @@ public class OrderYzw extends BaseYzwEntity {
 		return eContractPictureFlag;
 	}
 
-	public int geteContractStatus() {
-		return eContractStatus;
-	}
 
 	public void setRemainHours(Float remainHours) {
 		this.remainHours = remainHours;
@@ -376,9 +372,18 @@ public class OrderYzw extends BaseYzwEntity {
 		this.eContractPictureFlag = eContractPictureFlag;
 	}
 
-	public void seteContractStatus(int eContractStatus) {
+	public Boolean geteContractStatus() {
+		return eContractStatus;
+	}
+
+	public void seteContractPictureFlag(Integer eContractPictureFlag) {
+		this.eContractPictureFlag = eContractPictureFlag;
+	}
+
+	public void seteContractStatus(Boolean eContractStatus) {
 		this.eContractStatus = eContractStatus;
 	}
+
 
 
 	

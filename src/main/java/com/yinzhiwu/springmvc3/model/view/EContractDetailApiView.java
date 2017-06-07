@@ -68,7 +68,6 @@ public class EContractDetailApiView {
 	private Date finalDate;
 	
 
-	private Boolean isConfirmed;
 	
 	private String type;
 	
@@ -104,7 +103,6 @@ public class EContractDetailApiView {
 		this.depositAmount		=e.getDepositAmount();
 		this.depositDate		=e.getDepositDate();
 		this.finalDate			=e.getFinalDate();
-		this.isConfirmed		=e.isConfirmed();
 		this.type				=e.getContractType().getDescription();
 		this.context			=e.getContractType().getContent();
 	}
@@ -221,9 +219,6 @@ public class EContractDetailApiView {
 		return finalDate;
 	}
 
-	public Boolean getIsConfirmed() {
-		return isConfirmed;
-	}
 
 	public String getType() {
 		return type;
@@ -345,9 +340,6 @@ public class EContractDetailApiView {
 		this.finalDate = finalDate;
 	}
 
-	public void setIsConfirmed(Boolean isConfirmed) {
-		this.isConfirmed = isConfirmed;
-	}
 
 	public void setType(String type) {
 		this.type = type;

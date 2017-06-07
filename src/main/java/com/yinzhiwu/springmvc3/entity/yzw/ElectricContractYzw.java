@@ -59,13 +59,13 @@ public class ElectricContractYzw {
 	
 	private Date effectiveEnd;
 	
-	private int timesOfLesson;
+	private Integer timesOfLesson;
 	
-	private float price;
+	private Float price;
 	
-	private float amount;
+	private Float amount;
 	
-	private float promotionPrice;
+	private Float promotionPrice;
 	
 	private String rangeOfApplication;
 	
@@ -94,7 +94,7 @@ public class ElectricContractYzw {
 					value=ConstraintMode.NO_CONSTRAINT))
 	private ElectricContractTypeYzw contractType;
 	
-	private boolean isConfirmed;
+	private Boolean isConfirmed;
 	
 	@JsonIgnore
 	private Integer sf_create_user;
@@ -109,282 +109,16 @@ public class ElectricContractYzw {
 	private Date sf_last_change_time;
 	
 	public ElectricContractYzw(){
+	}
+
+
+
+	public void init() {
 		this.sf_last_change_user =1;
 		this.sf_create_user = 1;
 		Date date = new Date();
 		this.sf_create_time = date;
 		this.sf_last_change_time = date;
-	}
-	
-
-
-	public String getCustomerName() {
-		return customerName;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public Date getBirthday() {
-		return birthday;
-	}
-
-	public String getIdentityCardNo() {
-		return identityCardNo;
-	}
-
-	public String getMobiePhoneNo() {
-		return mobiePhoneNo;
-	}
-
-	public String getQqNo() {
-		return qqNo;
-	}
-
-	public String getWechatNo() {
-		return wechatNo;
-	}
-
-	public CustomerYzw getCustomer() {
-		return customer;
-	}
-
-	public String getContactAddress() {
-		return contactAddress;
-	}
-
-	public String getHomeAddress() {
-		return homeAddress;
-	}
-
-	public String getRecommendMemberCardNo() {
-		return recommendMemberCardNo;
-	}
-
-	public String getMemberCardNo() {
-		return memberCardNo;
-	}
-
-	public Date getEffectiveStart() {
-		return effectiveStart;
-	}
-
-	public Date getEffectiveEnd() {
-		return effectiveEnd;
-	}
-
-	public int getTimesOfLesson() {
-		return timesOfLesson;
-	}
-
-	public float getPrice() {
-		return price;
-	}
-
-	public float getAmount() {
-		return amount;
-	}
-
-	public float getPromotionPrice() {
-		return promotionPrice;
-	}
-
-	public String getRangeOfApplication() {
-		return rangeOfApplication;
-	}
-
-	public String getSupplementalInstruction() {
-		return supplementalInstruction;
-	}
-
-	public String getUppercaseAmount() {
-		return uppercaseAmount;
-	}
-
-	public String getLowercaseAmount() {
-		return lowercaseAmount;
-	}
-
-	public Date getPayedDate() {
-		return payedDate;
-	}
-
-	public String getPayedMethod() {
-		return payedMethod;
-	}
-
-	public float getDepositAmount() {
-		return depositAmount;
-	}
-
-	public Date getDepositDate() {
-		return depositDate;
-	}
-
-	public Date getFinalDate() {
-		return finalDate;
-	}
-
-	public ElectricContractTypeYzw getContractType() {
-		return contractType;
-	}
-
-	public boolean isConfirmed() {
-		return isConfirmed;
-	}
-
-	public int getSf_create_user() {
-		return sf_create_user;
-	}
-
-
-	public Date getSf_create_time() {
-		return sf_create_time;
-	}
-
-	public Date getSf_last_change_time() {
-		return sf_last_change_time;
-	}
-
-
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-
-	public void setIdentityCardNo(String identityCardNo) {
-		this.identityCardNo = identityCardNo;
-	}
-
-	public void setMobiePhoneNo(String mobiePhoneNo) {
-		this.mobiePhoneNo = mobiePhoneNo;
-	}
-
-	public void setQqNo(String qqNo) {
-		this.qqNo = qqNo;
-	}
-
-	public void setWechatNo(String wechatNo) {
-		this.wechatNo = wechatNo;
-	}
-
-	public void setCustomer(CustomerYzw customer) {
-		this.customer = customer;
-	}
-
-	public void setContactAddress(String contactAddress) {
-		this.contactAddress = contactAddress;
-	}
-
-	public void setHomeAddress(String homeAddress) {
-		this.homeAddress = homeAddress;
-	}
-
-	public void setRecommendMemberCardNo(String recommendMemberCardNo) {
-		this.recommendMemberCardNo = recommendMemberCardNo;
-	}
-
-	public void setMemberCardNo(String memberCardNo) {
-		this.memberCardNo = memberCardNo;
-	}
-
-	public void setEffectiveStart(Date effectiveStart) {
-		this.effectiveStart = effectiveStart;
-	}
-
-	public void setEffectiveEnd(Date effectiveEnd) {
-		this.effectiveEnd = effectiveEnd;
-	}
-
-	public void setTimesOfLesson(int timesOfLesson) {
-		this.timesOfLesson = timesOfLesson;
-	}
-
-	public void setPrice(float price) {
-		this.price = price;
-	}
-
-	public void setAmount(float amount) {
-		this.amount = amount;
-	}
-
-	public void setPromotionPrice(float promotionPrice) {
-		this.promotionPrice = promotionPrice;
-	}
-
-	public void setRangeOfApplication(String rangeOfApplication) {
-		this.rangeOfApplication = rangeOfApplication;
-	}
-
-	public void setSupplementalInstruction(String supplementalInstruction) {
-		this.supplementalInstruction = supplementalInstruction;
-	}
-
-	public void setUppercaseAmount(String uppercaseAmount) {
-		this.uppercaseAmount = uppercaseAmount;
-	}
-
-	public void setLowercaseAmount(String lowercaseAmount) {
-		this.lowercaseAmount = lowercaseAmount;
-	}
-
-	public void setPayedDate(Date payedDate) {
-		this.payedDate = payedDate;
-	}
-
-	public void setPayedMethod(String payedMethod) {
-		this.payedMethod = payedMethod;
-	}
-
-	public void setDepositAmount(float depositAmount) {
-		this.depositAmount = depositAmount;
-	}
-
-	public void setDepositDate(Date depositDate) {
-		this.depositDate = depositDate;
-	}
-
-	public void setFinalDate(Date finalDate) {
-		this.finalDate = finalDate;
-	}
-
-	public void setContractType(ElectricContractTypeYzw contractType) {
-		this.contractType = contractType;
-	}
-
-	public void setConfirmed(boolean isConfirmed) {
-		this.isConfirmed = isConfirmed;
-	}
-
-	public void setSf_create_user(int sf_create_user) {
-		this.sf_create_user = sf_create_user;
-	}
-
-
-	public void setSf_create_time(Date sf_create_time) {
-		this.sf_create_time = sf_create_time;
-	}
-
-	public void setSf_last_change_time(Date sf_last_change_time) {
-		this.sf_last_change_time = sf_last_change_time;
-	}
-
-
-	public int getSf_last_change_user() {
-		return sf_last_change_user;
-	}
-
-
-	public void setSf_last_change_user(int sf_last_change_user) {
-		this.sf_last_change_user = sf_last_change_user;
 	}
 
 
@@ -395,11 +129,409 @@ public class ElectricContractYzw {
 
 
 
+	public String getCustomerName() {
+		return customerName;
+	}
+
+
+
+	public String getGender() {
+		return gender;
+	}
+
+
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+
+
+	public String getIdentityCardNo() {
+		return identityCardNo;
+	}
+
+
+
+	public String getMobiePhoneNo() {
+		return mobiePhoneNo;
+	}
+
+
+
+	public String getQqNo() {
+		return qqNo;
+	}
+
+
+
+	public String getWechatNo() {
+		return wechatNo;
+	}
+
+
+
+	public CustomerYzw getCustomer() {
+		return customer;
+	}
+
+
+
+	public String getContactAddress() {
+		return contactAddress;
+	}
+
+
+
+	public String getHomeAddress() {
+		return homeAddress;
+	}
+
+
+
+	public String getRecommendMemberCardNo() {
+		return recommendMemberCardNo;
+	}
+
+
+
+	public String getMemberCardNo() {
+		return memberCardNo;
+	}
+
+
+
+	public Date getEffectiveStart() {
+		return effectiveStart;
+	}
+
+
+
+	public Date getEffectiveEnd() {
+		return effectiveEnd;
+	}
+
+
+
+	public Integer getTimesOfLesson() {
+		return timesOfLesson;
+	}
+
+
+
+	public Float getPrice() {
+		return price;
+	}
+
+
+
+	public Float getAmount() {
+		return amount;
+	}
+
+
+
+	public Float getPromotionPrice() {
+		return promotionPrice;
+	}
+
+
+
+	public String getRangeOfApplication() {
+		return rangeOfApplication;
+	}
+
+
+
+	public String getSupplementalInstruction() {
+		return supplementalInstruction;
+	}
+
+
+
+	public String getUppercaseAmount() {
+		return uppercaseAmount;
+	}
+
+
+
+	public String getLowercaseAmount() {
+		return lowercaseAmount;
+	}
+
+
+
+	public Date getPayedDate() {
+		return payedDate;
+	}
+
+
+
+	public String getPayedMethod() {
+		return payedMethod;
+	}
+
+
+
+	public Float getDepositAmount() {
+		return depositAmount;
+	}
+
+
+
+	public Date getDepositDate() {
+		return depositDate;
+	}
+
+
+
+	public Date getFinalDate() {
+		return finalDate;
+	}
+
+
+
+	public ElectricContractTypeYzw getContractType() {
+		return contractType;
+	}
+
+
+
+	public Boolean getIsConfirmed() {
+		return isConfirmed;
+	}
+
+
+
+	public Integer getSf_create_user() {
+		return sf_create_user;
+	}
+
+
+
+	public Integer getSf_last_change_user() {
+		return sf_last_change_user;
+	}
+
+
+
+	public Date getSf_create_time() {
+		return sf_create_time;
+	}
+
+
+
+	public Date getSf_last_change_time() {
+		return sf_last_change_time;
+	}
+
+
+
 	public void setContractNo(String contractNo) {
 		this.contractNo = contractNo;
 	}
 
 
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+
+
+	public void setIdentityCardNo(String identityCardNo) {
+		this.identityCardNo = identityCardNo;
+	}
+
+
+
+	public void setMobiePhoneNo(String mobiePhoneNo) {
+		this.mobiePhoneNo = mobiePhoneNo;
+	}
+
+
+
+	public void setQqNo(String qqNo) {
+		this.qqNo = qqNo;
+	}
+
+
+
+	public void setWechatNo(String wechatNo) {
+		this.wechatNo = wechatNo;
+	}
+
+
+
+	public void setCustomer(CustomerYzw customer) {
+		this.customer = customer;
+	}
+
+
+
+	public void setContactAddress(String contactAddress) {
+		this.contactAddress = contactAddress;
+	}
+
+
+
+	public void setHomeAddress(String homeAddress) {
+		this.homeAddress = homeAddress;
+	}
+
+
+
+	public void setRecommendMemberCardNo(String recommendMemberCardNo) {
+		this.recommendMemberCardNo = recommendMemberCardNo;
+	}
+
+
+
+	public void setMemberCardNo(String memberCardNo) {
+		this.memberCardNo = memberCardNo;
+	}
+
+
+
+	public void setEffectiveStart(Date effectiveStart) {
+		this.effectiveStart = effectiveStart;
+	}
+
+
+
+	public void setEffectiveEnd(Date effectiveEnd) {
+		this.effectiveEnd = effectiveEnd;
+	}
+
+
+
+	public void setTimesOfLesson(Integer timesOfLesson) {
+		this.timesOfLesson = timesOfLesson;
+	}
+
+
+
+	public void setPrice(Float price) {
+		this.price = price;
+	}
+
+
+
+	public void setAmount(Float amount) {
+		this.amount = amount;
+	}
+
+
+
+	public void setPromotionPrice(Float promotionPrice) {
+		this.promotionPrice = promotionPrice;
+	}
+
+
+
+	public void setRangeOfApplication(String rangeOfApplication) {
+		this.rangeOfApplication = rangeOfApplication;
+	}
+
+
+
+	public void setSupplementalInstruction(String supplementalInstruction) {
+		this.supplementalInstruction = supplementalInstruction;
+	}
+
+
+
+	public void setUppercaseAmount(String uppercaseAmount) {
+		this.uppercaseAmount = uppercaseAmount;
+	}
+
+
+
+	public void setLowercaseAmount(String lowercaseAmount) {
+		this.lowercaseAmount = lowercaseAmount;
+	}
+
+
+
+	public void setPayedDate(Date payedDate) {
+		this.payedDate = payedDate;
+	}
+
+
+
+	public void setPayedMethod(String payedMethod) {
+		this.payedMethod = payedMethod;
+	}
+
+
+
+	public void setDepositAmount(Float depositAmount) {
+		this.depositAmount = depositAmount;
+	}
+
+
+
+	public void setDepositDate(Date depositDate) {
+		this.depositDate = depositDate;
+	}
+
+
+
+	public void setFinalDate(Date finalDate) {
+		this.finalDate = finalDate;
+	}
+
+
+
+	public void setContractType(ElectricContractTypeYzw contractType) {
+		this.contractType = contractType;
+	}
+
+
+
+	public void setIsConfirmed(Boolean isConfirmed) {
+		this.isConfirmed = isConfirmed;
+	}
+
+
+
+	public void setSf_create_user(Integer sf_create_user) {
+		this.sf_create_user = sf_create_user;
+	}
+
+
+
+	public void setSf_last_change_user(Integer sf_last_change_user) {
+		this.sf_last_change_user = sf_last_change_user;
+	}
+
+
+
+	public void setSf_create_time(Date sf_create_time) {
+		this.sf_create_time = sf_create_time;
+	}
+
+
+
+	public void setSf_last_change_time(Date sf_last_change_time) {
+		this.sf_last_change_time = sf_last_change_time;
+	}
+	
+
+
+	
 	
 	
 }

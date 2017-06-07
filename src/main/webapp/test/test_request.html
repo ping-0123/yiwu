@@ -15,7 +15,7 @@
 //		var v_baseUrl = "http://www.yinzhiwu.com:9090/yiwu/";
 		var v_baseUrl = "http://192.168.0.115:8080/yiwu/"
 //		modifyHeadIconWithAjax();
-		register();
+//		register();
 //		save_capitalAccount();
 //		setDefaultAccount();
 //		withdraw();
@@ -23,6 +23,21 @@
 //		shareTweet();
 //		modify();
 //		modifyDistributer();
+		confirmContract();
+		
+		
+		function confirmContract(){
+			$.ajax({
+				type:"PUT",
+				url:v_baseUrl + "/api/order/20160917007",
+				data:{eContractStatus:'true'},
+				cache:false,
+				success:function(data){
+						$('#content').html(JSON.stringify(data));
+				},
+				async:true
+			});
+		}
 
 		function modifyDistributer(){
 			$.ajax({
