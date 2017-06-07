@@ -8,28 +8,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="velectric_contract_type")
 public class ElectricContractTypeYzw {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	private String description;
 	
 	private String content;
 	
-	private int sf_create_user;
+	@JsonIgnore
+	private Integer sf_create_user;
 	
-	private int sf_last_change_user;
+	@JsonIgnore
+	private Integer sf_last_change_user;
 	
+	@JsonIgnore
 	private Date sf_create_time;
 	
+	@JsonIgnore
 	private Date sf_last_change_time;
 	
-	private int machineCode;
+	@JsonIgnore
+	private Integer machineCode;
 	
+	@JsonIgnore
 	private Date sf_last_sync_timeStamp;
 	
 	public ElectricContractTypeYzw(){

@@ -1,38 +1,23 @@
-package com.yinzhiwu.springmvc3.entity.yzw;
+package com.yinzhiwu.springmvc3.model.view;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import org.springframework.util.Assert;
 
-import org.hibernate.annotations.GenericGenerator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yinzhiwu.springmvc3.entity.yzw.ElectricContractYzw;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+public class EContractDetailApiView {
 
-@Entity
-@Table(name="velectric_contract")
-public class ElectricContractYzw {
-
-	@Id
-	@GeneratedValue(generator="assigned")  
-	@GenericGenerator(name="assigned", strategy = "assigned")
 	private String contractNo;
 	
 	private String customerName;
 	
 	private String gender;
 	
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date birthday;
 	
-	@Column(name="IdentityCardNo")
 	private String identityCardNo;
 	
 	private String mobiePhoneNo;
@@ -41,11 +26,7 @@ public class ElectricContractYzw {
 	
 	private String wechatNo;
 	
-	@ManyToOne(fetch =FetchType.LAZY)
-	@JoinColumn(name="customerId", foreignKey=
-			@ForeignKey(name="fk_electricContract_customer_id", 
-						value=ConstraintMode.NO_CONSTRAINT))
-	private CustomerYzw customer; 
+	private Integer customerId; 
 	
 	private String contactAddress;
 	
@@ -71,8 +52,6 @@ public class ElectricContractYzw {
 	
 	private String supplementalInstruction;
 	
-	//大写金额
-	@Column(name="uppcaseAmount")
 	private String uppercaseAmount;
 	
 	//小写金额
@@ -88,35 +67,47 @@ public class ElectricContractYzw {
 	
 	private Date finalDate;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="contractType", foreignKey=
-			@ForeignKey(name="fk_ElectricContract_contractType",
-					value=ConstraintMode.NO_CONSTRAINT))
-	private ElectricContractTypeYzw contractType;
-	
-	private boolean isConfirmed;
-	
-	@JsonIgnore
-	private Integer sf_create_user;
-	
-	@JsonIgnore
-	private Integer sf_last_change_user;
-	
-	@JsonIgnore
-	private Date sf_create_time;
-	
-	@JsonIgnore
-	private Date sf_last_change_time;
-	
-	public ElectricContractYzw(){
-		this.sf_last_change_user =1;
-		this.sf_create_user = 1;
-		Date date = new Date();
-		this.sf_create_time = date;
-		this.sf_last_change_time = date;
-	}
-	
 
+	private Boolean isConfirmed;
+	
+	private String type;
+	
+	private String context;
+	
+	public EContractDetailApiView(ElectricContractYzw e){
+		Assert.notNull(e);
+		this.contractNo		= e.getContractNo();
+		this.customerName 	= e.getCustomerName();
+		this.gender 		= e.getGender();
+		this.birthday 		= e.getBirthday();
+		this.identityCardNo = e.getIdentityCardNo();
+		this.mobiePhoneNo 	= e.getMobiePhoneNo();
+		this.qqNo			= e.getQqNo();
+		this.wechatNo		=e.getWechatNo();
+		this.customerId		=e.getCustomer().getId();
+		this.contactAddress	=e.getContactAddress();
+		this.homeAddress 	=e.getHomeAddress();
+		this.recommendMemberCardNo	=e.getRecommendMemberCardNo();
+		this.memberCardNo	=e.getMemberCardNo();
+		this.effectiveStart	=e.getEffectiveStart();
+		this.effectiveEnd	=e.getEffectiveEnd();
+		this.timesOfLesson	=e.getTimesOfLesson();
+		this.price			=e.getPrice();
+		this.amount			=e.getAmount();
+		this.promotionPrice	=e.getPromotionPrice();
+		this.rangeOfApplication	=e.getRangeOfApplication();
+		this.supplementalInstruction =e.getSupplementalInstruction();
+		this.uppercaseAmount	=e.getUppercaseAmount();
+		this.lowercaseAmount	=e.getLowercaseAmount();
+		this.payedDate			=e.getPayedDate();
+		this.payedMethod		=e.getPayedMethod();
+		this.depositAmount		=e.getDepositAmount();
+		this.depositDate		=e.getDepositDate();
+		this.finalDate			=e.getFinalDate();
+		this.isConfirmed		=e.isConfirmed();
+		this.type				=e.getContractType().getDescription();
+		this.context			=e.getContractType().getContent();
+	}
 
 	public String getCustomerName() {
 		return customerName;
@@ -146,8 +137,12 @@ public class ElectricContractYzw {
 		return wechatNo;
 	}
 
-	public CustomerYzw getCustomer() {
-		return customer;
+	public String getContractNo() {
+		return contractNo;
+	}
+
+	public Integer getCustomerId() {
+		return customerId;
 	}
 
 	public String getContactAddress() {
@@ -214,7 +209,7 @@ public class ElectricContractYzw {
 		return payedMethod;
 	}
 
-	public float getDepositAmount() {
+	public Float getDepositAmount() {
 		return depositAmount;
 	}
 
@@ -226,27 +221,21 @@ public class ElectricContractYzw {
 		return finalDate;
 	}
 
-	public ElectricContractTypeYzw getContractType() {
-		return contractType;
-	}
-
-	public boolean isConfirmed() {
+	public Boolean getIsConfirmed() {
 		return isConfirmed;
 	}
 
-	public int getSf_create_user() {
-		return sf_create_user;
+	public String getType() {
+		return type;
 	}
 
-
-	public Date getSf_create_time() {
-		return sf_create_time;
+	public String getContext() {
+		return context;
 	}
 
-	public Date getSf_last_change_time() {
-		return sf_last_change_time;
+	public void setContractNo(String contractNo) {
+		this.contractNo = contractNo;
 	}
-
 
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
@@ -276,8 +265,8 @@ public class ElectricContractYzw {
 		this.wechatNo = wechatNo;
 	}
 
-	public void setCustomer(CustomerYzw customer) {
-		this.customer = customer;
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
 	}
 
 	public void setContactAddress(String contactAddress) {
@@ -344,7 +333,7 @@ public class ElectricContractYzw {
 		this.payedMethod = payedMethod;
 	}
 
-	public void setDepositAmount(float depositAmount) {
+	public void setDepositAmount(Float depositAmount) {
 		this.depositAmount = depositAmount;
 	}
 
@@ -356,49 +345,17 @@ public class ElectricContractYzw {
 		this.finalDate = finalDate;
 	}
 
-	public void setContractType(ElectricContractTypeYzw contractType) {
-		this.contractType = contractType;
-	}
-
-	public void setConfirmed(boolean isConfirmed) {
+	public void setIsConfirmed(Boolean isConfirmed) {
 		this.isConfirmed = isConfirmed;
 	}
 
-	public void setSf_create_user(int sf_create_user) {
-		this.sf_create_user = sf_create_user;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-
-	public void setSf_create_time(Date sf_create_time) {
-		this.sf_create_time = sf_create_time;
+	public void setContext(String context) {
+		this.context = context;
 	}
-
-	public void setSf_last_change_time(Date sf_last_change_time) {
-		this.sf_last_change_time = sf_last_change_time;
-	}
-
-
-	public int getSf_last_change_user() {
-		return sf_last_change_user;
-	}
-
-
-	public void setSf_last_change_user(int sf_last_change_user) {
-		this.sf_last_change_user = sf_last_change_user;
-	}
-
-
-
-	public String getContractNo() {
-		return contractNo;
-	}
-
-
-
-	public void setContractNo(String contractNo) {
-		this.contractNo = contractNo;
-	}
-
 
 	
 	
