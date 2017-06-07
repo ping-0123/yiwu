@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.model.page.PageBean;
 
 public interface IBaseService<T, PK extends Serializable> {
 	
-	public T get(PK id);
-	
-	public PK save(T entity);
+
 	
 	public void update(T entity);
 	
@@ -30,8 +29,9 @@ public interface IBaseService<T, PK extends Serializable> {
 
 	void delete(T entit);
 	
+	public PK save(T entity);
+	
 	void deleteById(PK id);
-
 
 	/**
 	 * 通过dao.get(id)从数据库中取出一个新实体newEntity, 将newEntity中的属性值
@@ -48,4 +48,9 @@ public interface IBaseService<T, PK extends Serializable> {
 	 * 
 	 */
 	void modify(PK id, T entity) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException;
+	
+	public T get(PK id);
+	
+	
+	public PageBean<T> findPage(T entity, int pageNum, int pageSize);
 }

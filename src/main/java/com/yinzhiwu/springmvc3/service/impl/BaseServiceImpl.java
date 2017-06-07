@@ -15,6 +15,7 @@ import org.springframework.util.Assert;
 
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.model.page.PageBean;
 import com.yinzhiwu.springmvc3.service.IBaseService;
 
 public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBaseService<T, PK> {
@@ -132,11 +133,17 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		long afterCompare=System.currentTimeMillis();
 		LOG.info("对比所化时间: " + (afterCompare-afterReflect));
 		if(update_flag){
+			LOG.info("开始更新");
 			baseDao.update(newEntity);
 		}
 		
 		long end = System.currentTimeMillis();
 		LOG.info("更新所花时间: " + (end-afterCompare));
 		LOG.info("所花总时间： " + (end-start));
+	}
+	
+	@Override
+	public PageBean<T> findPage(T entity, int pageNum, int pageSize){
+		return null;
 	}
 }

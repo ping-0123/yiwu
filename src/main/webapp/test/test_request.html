@@ -22,19 +22,32 @@
 //		payDeposit();
 //		shareTweet();
 //		modify();
+//		modifyDistributer();
+
+		function modifyDistributer(){
+			$.ajax({
+				type:"POST",
+				url:v_baseUrl + "/api/distributer/3000002",
+				data:{'headIconName':'aaabbbb',
+					'defaultCapitalAccount.id':2000003},
+				async:true,
+				cache:false,
+				success:function(data){
+					$('#content').html(JSON.stringify(data));
+				}
+			});
+		}
 		function register(){
 			var v_url = "api/distributer";
-			var v_data = {"phoneNo":'18332244489',
-						'password':'wangwu12',
-						'name':'小王',
-						'nickName':'王小二',
-						'gender':'MALE',
-						//改成 '0222-01-01'报错
-						'birthday':'1999-01-01',
-						'followedByStore.id':63,
-						'wechatNo':'oIgTGwx1Qivbd4ty699zcwyz',
-						'invitationCode':'e3it8o3f'
-					};
+			var v_data = {phoneNo:'18813574529',
+						password:'suning0987',
+						gender:'MALE',
+						birthday:'2000-01-01',
+						followedByStoreId:'63',
+						wechatNo:'oIgTGwx1QizvqOMsZ49Ouih7GHpM',
+						invitationCode:''
+				};
+
 		
 		$.ajax({ 
 			type: "POST", 	
@@ -175,35 +188,7 @@
 				},  
 			});
 		}
-		
-		function register(){
-			var v_url = "api/distributer";
-			var v_data = {"phoneNo":'18332244489',
-						'password':'wangwu12',
-						'name':'小王',
-						'nickName':'王小二',
-						'gender':'MALE',
-						//改成 '0222-01-01'报错
-						'birthday':'1999-01-01',
-						'followedByStore.id':63,
-						'wechatNo':'oIgTGwx1Qivbd4ty699zcwyz',
-						'invitationCode':'e3it8o3f'
-					};
-		
-		$.ajax({ 
-			type: "POST", 	
-			url: v_baseUrl+v_url,
-			data:v_data,
-			dataType: "json",
-			timeout:50000,
-			success: function(data) {
-				$('#content').html(JSON.stringify(data));
-			},
-			error: function(jqXHR){     
-				$('#content').html(jqXHR.status);
-			},  
-		});	
-		}
+
 		function save_capitalAccount(){
 			var v_url = v_baseUrl + "api/distributer/capitalAccount";
 			$.ajax({

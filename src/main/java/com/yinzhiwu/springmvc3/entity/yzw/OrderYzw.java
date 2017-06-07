@@ -149,10 +149,11 @@ public class OrderYzw extends BaseYzwEntity {
 	private String econtractAddress;
 	
 	@Column(name="e_contract_picture_flag")
-	private int eContractPictureFlag;
+	private Integer eContractPictureFlag;
 	
 	@Column(name="e_contract_status")
-	private int eContractStatus;
+	private Integer eContractStatus;
+
 	
 	public OrderYzw() {
 		super();
@@ -378,6 +379,7 @@ public class OrderYzw extends BaseYzwEntity {
 	public void seteContractStatus(int eContractStatus) {
 		this.eContractStatus = eContractStatus;
 	}
+
 
 	
 	

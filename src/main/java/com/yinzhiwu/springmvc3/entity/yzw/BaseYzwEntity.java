@@ -57,6 +57,9 @@ public abstract class BaseYzwEntity implements Serializable{
 	private Date lastChangeTimestamp;
 
 	public BaseYzwEntity() {
+	}
+	
+	protected void init() {
 		this.createUserId = 1;
 		Date date = new Date();
 		this.createTime = date;
@@ -65,6 +68,7 @@ public abstract class BaseYzwEntity implements Serializable{
 		this.lastChangeTimestamp = date;
 		this.lastSyncTimeStamp =date;
 	}
+	
     
     
 	public Integer getCreateUserId() {

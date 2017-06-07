@@ -19,7 +19,7 @@ public class Contract {
 	private Integer validity;
 	
 	@Column(name="validity_times")
-	private int validityTimes;
+	private Integer validityTimes;
 	
 	@Column(name="startdate")
 	private Date start;
@@ -28,7 +28,7 @@ public class Contract {
 	private Date end;
 	
 	@Column(name="remain_times")
-	private float remainTimes;
+	private Float remainTimes;
 	
 	@Column(name="product_type")
 	private String type;

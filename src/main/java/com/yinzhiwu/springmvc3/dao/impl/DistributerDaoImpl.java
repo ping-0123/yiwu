@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.type.LongType;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
@@ -21,9 +20,10 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	private static final Log logger = LogFactory.getLog(DistributerDaoImpl.class);
 
 	@Override
-	public Integer saveBean(Distributer entity) throws DataAccessException {
+	public Integer save(Distributer entity){
 		int id = getNextId();
 		logger.debug(id);
+		entity.setId(id);
 		entity.setPassword(SecurityUtil.encryptByMd5(entity.getPassword()));
 		entity.setMemberId(GeneratorUtil.generateMemberId(id));
 		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
@@ -106,12 +106,12 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Distributer> findTopThree() {
-		String sql = "select * from Distributer order by accumulativeBrokerage desc limit 3";
-		@SuppressWarnings("deprecation")
-		List<Distributer> distributers = getSession().createNativeQuery(sql, Distributer.class).list();
-		return distributers;
+		String hql = "from Distributer order by accumulativeBrokerage desc";
+		getHibernateTemplate().setMaxResults(3);
+		return (List<Distributer>) getHibernateTemplate().find(hql);
 	}
 
 	@Override

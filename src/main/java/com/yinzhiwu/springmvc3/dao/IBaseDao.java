@@ -31,6 +31,13 @@ public interface IBaseDao<T ,PK extends Serializable> {
 		
 		public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception;
 		
+		/**
+		 * 如果T中的某一成员变量的class为@Entity注解, 则查询时忽略该属性， 即查询语句没有表的关联
+		 * 
+		 * @param entity
+		 * @return
+		 * @throws DataNotFoundException
+		 */
 		public List<T> findByExample(T entity) throws DataNotFoundException;
 
 		void delete(T entit);

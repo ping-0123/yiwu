@@ -24,6 +24,7 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.databind.deser.Deserializers.Base;
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
 import com.yinzhiwu.springmvc3.entity.BaseEntity;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
@@ -79,6 +80,8 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 	public PK save(T entity)  {  
         Assert.notNull(entity, "entity is required");  
         try {
+        	if(entity instanceof BaseEntity)
+        		((BaseEntity) entity).init();
         	return (PK) getHibernateTemplate().save(entity);  
 		} catch (Exception e) {
 			LOG.error(e.getMessage());

@@ -54,12 +54,13 @@ public abstract class BaseEntity implements Serializable{
     @Column(insertable=true,updatable=true)
     protected Date lastModifiedDate;  
     
-    
-    
-    
       
     public BaseEntity() {
-    	Date date = new Date();
+	}
+
+
+	public void init() {
+		Date date = new Date();
     	this.createDate = date;
     	this.lastModifiedDate=date;
     	this.createUserId=1;
@@ -67,8 +68,6 @@ public abstract class BaseEntity implements Serializable{
 	}
 
 
-//    @GeneratedValue(generator = "uuid")  
-//    @GenericGenerator(name = "uuid", strategy = "uuid")  
     public Integer getId() {  
         return id;  
     }  

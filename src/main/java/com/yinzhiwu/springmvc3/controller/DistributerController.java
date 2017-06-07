@@ -41,7 +41,7 @@ import com.yinzhiwu.springmvc3.util.UrlUtil;
 @CrossOrigin(origins="*")
 @RestController
 @RequestMapping("/api/distributer")
-public class DistributerController {
+public class DistributerController extends BaseController {
 	private static final Log LOG = LogFactory.getLog(DistributerDaoImpl.class);
 	
 	
@@ -72,17 +72,12 @@ public class DistributerController {
 	}
 	
 	@PostMapping(value="")
-	public YiwuJson<DistributerApiView> register2(@Valid DistributerRegisterModel m, BindingResult bindingResult){
+	public YiwuJson<DistributerApiView> register(@Valid Distributer m, String invitationCode, BindingResult bindingResult){
 		if(bindingResult.hasErrors()){
-			return new YiwuJson<>(bindingResult.getFieldError().getDefaultMessage());
+			return new YiwuJson<>(getErrorsMessage(bindingResult));
 		}
-		if(!StringUtils.hasLength(m.getName()))
-			m.setName(m.getPhoneNo());
-		if(!StringUtils.hasLength(m.getAccount()))
-			m.setAccount(m.getPhoneNo());
-		if(!StringUtils.hasLength(m.getNickName()))
-			m.setNickName(m.getPhoneNo());
-		return distributerService.register2(m);
+		
+		return distributerService.register(invitationCode,m);
 	}
 	
 	@RequestMapping(value="/loginByWechat", method={RequestMethod.POST,RequestMethod.GET})

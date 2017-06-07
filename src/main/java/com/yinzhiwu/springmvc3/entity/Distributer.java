@@ -22,7 +22,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -78,7 +77,7 @@ public class Distributer extends BaseEntity{
 	@Column(length=32)  
 	private String nickName; //默认是会员Id
 	
-	@Pattern(regexp="(\\p{Alpha}|\\d|_){5,31}")
+//	@Pattern(regexp="(\\p{Alpha}|\\d|_){5,31}")
 //	@NotNull
 //	unique
 	@Column(length=32, nullable=false, updatable=false)
@@ -97,7 +96,7 @@ public class Distributer extends BaseEntity{
 	@Column(length=32, nullable=false)
 	private String phoneNo;
 	
-	@Past
+//	@Past
 	@Column
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date birthday;
@@ -120,7 +119,7 @@ public class Distributer extends BaseEntity{
 	@Column(length=255, name="headIconUrl")
 	private String headIconName;
 	
-	private float exp;
+	private Float exp;
 	
 	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -129,13 +128,13 @@ public class Distributer extends BaseEntity{
 		foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
 	private ExpGrade expGrade;
 	
-	private float brokerage;
+	private Float brokerage;
 	
-	private float funds;
+	private Float funds;
 	
-	private float accumulativeBrokerage;
+	private Float accumulativeBrokerage;
 	
-	private float accumulativeFunds;
+	private Float accumulativeFunds;
 	
 
 	@JsonFormat(pattern="yyyy-MM-dd")
@@ -154,7 +153,7 @@ public class Distributer extends BaseEntity{
 	private DepartmentYzw followedByStore;
 	
 //	unique
-	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_distributer_defaultCapitalAccount_id"))
 	private CapitalAccount defaultCapitalAccount;
 	
@@ -188,12 +187,28 @@ public class Distributer extends BaseEntity{
 	@JsonIgnore
 	@OneToMany(mappedBy="sharer")
 	private List<ShareTweet> shareTweets = new ArrayList<>();
-
+	
+	@Override
+	public void init() {
+		super.init();
+		if(!StringUtils.hasLength(this.getName()))
+			setName(getPhoneNo());
+		if(!StringUtils.hasLength(getAccount()))
+			setAccount(getPhoneNo());
+		if(!StringUtils.hasLength(getNickName()))
+			setNickName(getPhoneNo());
+		if(!StringUtils.hasLength(getPassword()))
+			this.password = "yzw123456";
+		this.registedTime = super.getCreateDate();
+		this.exp = 0f;
+		this.funds = 0f;
+		this.brokerage =0f;
+		this.accumulativeBrokerage = 0f;
+		this.accumulativeFunds = 0f;
+	}
 
 	
 	public Distributer() {
-		super();
-		this.registedTime = getCreateDate();
 	}
 	
 	public void initialize(){
@@ -522,5 +537,6 @@ public class Distributer extends BaseEntity{
 		this.contributedExpRecords = contributedExpRecords;
 	}
 
+	
 	
 }

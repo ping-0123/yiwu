@@ -19,7 +19,6 @@ public interface DistributerDao extends IBaseDao<Distributer, Integer> {
 
 	public Distributer findByAccountPassword(String account, String password) throws  Exception;
 
-	Integer saveBean(Distributer entity) throws Exception;
 
 	/**
 	 * 返回提成收入前三名的推广员

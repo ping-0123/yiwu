@@ -71,7 +71,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		super.setBaseDao(distributerDao);
 	}
 	
-	private YiwuJson<DistributerApiView> mYiwuJson = new YiwuJson<DistributerApiView>(); 
 	
 	@Override
 	public YiwuJson<DistributerApiView> register2(DistributerRegisterModel m) {
@@ -82,15 +81,15 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	
 	@Override
 	public  YiwuJson<DistributerApiView> register(String invitationCode, Distributer distributer){
+		//设置新注册用户的初始值
+		distributer.init();
+		
 		//验证手机号码是否已注册
 		if (distributerDao.findCountByPhoneNo(distributer.getPhoneNo()) > 0) 
 			return new YiwuJson<>(distributer.getPhoneNo() + " 该手机号码已经被注册 ");
 		//验证微信号是否已被注册
 		if(distributerDao.findCountByWechatNo(distributer.getWechatNo())> 0)
 			return new YiwuJson<>(distributer.getWechatNo() + " 该微信号已经被注册 ");
-		
-		//设置默认帐号
-		distributer.initialize();
 		
 		//设置经验等级为初始等级
 		distributer.setExpGrade(expGradeDao.findLowestGrade());
@@ -102,7 +101,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				superDistributer = distributerDao.findByShareCode(invitationCode);
 				distributer.setSuperDistributer(superDistributer);
 			} catch (DataNotFoundException e) {
-				mYiwuJson.setMsg("无效的分享码");
+				LOG.warn(e.getMessage());
 			}
 		
 		//设置门店
@@ -123,20 +122,20 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		try {
 			customer = customerYzwDao.findByPhoneNo(distributer.getPhoneNo());
 		} catch (DataNotFoundException e) {
+			LOG.info("no customer accociate with the distributer whose phoneNo is " +distributer.getPhoneNo());
 			try {
 				customer = customerYzwDao.findByWeChat(distributer.getWechatNo());
 			} catch (DataNotFoundException e1) {
+				LOG.info("no customer accociate with the distributer whose wechatNo is " +distributer.getWechatNo());
 				customer = new CustomerYzw(distributer);
-//				customerYzwDao.save(customer);  
+				LOG.info("new customer's name is " + customer.getName());
 			}
 		}
 		distributer.setCustomer(customer);
 		
 		//注册成功
 		try {
-//			LOG.info("before save");
-			distributerDao.saveBean(distributer);
-//			LOG.info("after save");
+			distributerDao.save(distributer);
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
@@ -155,7 +154,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		}
 	
 		return new YiwuJson<>(wrapToApiView(distributer));
-	
 	}
 
 	@Override
@@ -267,8 +265,11 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 
 	@Override
 	public YiwuJson<Boolean> judgePhoneNoIsRegistered(String phoneNo) {
-		if(distributerDao.findCountByPhoneNo(phoneNo) >0)
-			return new YiwuJson<>(phoneNo + " 该手机号码已注册");
+		if(distributerDao.findCountByPhoneNo(phoneNo) >0){
+			YiwuJson<Boolean> yiwuJson = new YiwuJson<>(new Boolean(true));
+			yiwuJson.setMsg(phoneNo + " 该手机号码已注册");
+			return yiwuJson;
+		}
 		return new YiwuJson<>(new Boolean(false));
 	}
 

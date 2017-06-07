@@ -12,7 +12,8 @@ import com.yinzhiwu.springmvc3.enums.Gender;
 
 public class DistributerRegisterModel {
 	
-	@Pattern(regexp="^1\\d{10}$")
+	@Pattern(regexp="^1\\d{10}$",
+			message = "请输入正确的11位手机号码")
 	private String phoneNo;
 	
 	private String account;
@@ -34,7 +35,7 @@ public class DistributerRegisterModel {
 	
 	private int followedByStoreId;
 	
-	@Size(min=28, max =28)
+	@Size(min=10, max =28)
 	private String wechatNo;
 	
 	private String invitationCode;
