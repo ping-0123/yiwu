@@ -20,6 +20,11 @@ import javax.persistence.Table;
 @Table(name = "vlesson")
 public class LessonYzw extends BaseYzwEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1007567421844511100L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
