@@ -38,6 +38,8 @@ public class OrderApiView {
 	
 	private Date courseStartDate;
 	
+	private Boolean eContractStatus;
+	
 	public OrderApiView(){};
 	
 	public OrderApiView(OrderYzw o){
@@ -64,6 +66,7 @@ public class OrderApiView {
 		}catch (Exception e) {
 			LOG.warn(e.getMessage());
 		}
+		this.eContractStatus = o.geteContractStatus();
 	}
 
 	public String getId() {
@@ -146,6 +149,14 @@ public class OrderApiView {
 
 	public void setCourseStartDate(Date courseStartDate) {
 		this.courseStartDate = courseStartDate;
+	}
+
+	public Boolean geteContractStatus() {
+		return eContractStatus;
+	}
+
+	public void seteContractStatus(Boolean eContractStatus) {
+		this.eContractStatus = eContractStatus;
 	}
 
 	

@@ -48,7 +48,7 @@ public class OrderController {
 		return orderYzwService.findByDistributerId(distributerId);
 	}
 	
-	@GetMapping(value="/id/{id}")
+	@GetMapping(value="/{id}")
 	public YiwuJson<OrderApiView> findById(@PathVariable String id){
 		return orderYzwService.findById(id);
 	}
