@@ -86,6 +86,8 @@ public class ElectricContractYzw {
 	
 	private Date depositDate;
 	
+	private Float finalAmount;
+	
 	private Date finalDate;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -527,6 +529,18 @@ public class ElectricContractYzw {
 
 	public void setSf_last_change_time(Date sf_last_change_time) {
 		this.sf_last_change_time = sf_last_change_time;
+	}
+
+
+
+	public Float getFinalAmount() {
+		return finalAmount;
+	}
+
+
+
+	public void setFinalAmount(Float finalAmount) {
+		this.finalAmount = finalAmount;
 	}
 	
 

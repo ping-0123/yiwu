@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.springmvc3.entity.PlanRevenue;
-import com.yinzhiwu.springmvc3.entity.ProductType;
+import com.yinzhiwu.springmvc3.entity.type.ProductType;
 import com.yinzhiwu.springmvc3.model.PlanRevenueApiModel;
 import com.yinzhiwu.springmvc3.model.ReturnedJson;
 import com.yinzhiwu.springmvc3.model.Store;

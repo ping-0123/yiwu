@@ -14,6 +14,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.yinzhiwu.springmvc3.entity.type.ProductType;
+
 @Entity
 @Table(name="yiwu_plan_revenue", uniqueConstraints=
 	@UniqueConstraint(name="uk_PlanRevenue_storeId_year_month_productTypeId", 

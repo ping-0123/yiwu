@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.ExpRecordTypeDao;
-import com.yinzhiwu.springmvc3.entity.ExpRecordType;
+import com.yinzhiwu.springmvc3.entity.type.ExpRecordType;
 import com.yinzhiwu.springmvc3.service.ExpRecordTypeService;
 
 

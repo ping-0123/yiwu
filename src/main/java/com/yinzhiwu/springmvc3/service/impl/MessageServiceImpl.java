@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.MessageDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.entity.IncomeRecord;
 import com.yinzhiwu.springmvc3.entity.Message;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.MessageApiView;
@@ -93,4 +94,5 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 		messageDao.save(message);
 		
 	}
+
 }

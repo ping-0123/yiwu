@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.entity;
+package com.yinzhiwu.springmvc3.entity.type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+
+import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 
 @Entity
 @DiscriminatorValue("capitalAccountType")

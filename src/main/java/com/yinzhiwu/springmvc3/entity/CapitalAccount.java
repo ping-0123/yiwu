@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.yinzhiwu.springmvc3.entity.type.CapitalAccountType;
+
 @Entity
 @Table(name="yiwu_capital_account", uniqueConstraints=
 	@UniqueConstraint(name="uk_CapitalAccount_accont", columnNames="account"))

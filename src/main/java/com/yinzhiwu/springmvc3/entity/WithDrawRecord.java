@@ -8,6 +8,8 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.yinzhiwu.springmvc3.entity.type.RecordType;
+
 
 @Entity
 @DiscriminatorValue("WithDrawRecord")

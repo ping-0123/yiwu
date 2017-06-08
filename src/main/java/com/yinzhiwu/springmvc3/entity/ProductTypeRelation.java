@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.yinzhiwu.springmvc3.entity.type.ProductType;
+
 @Entity
 @Table(name="yiwu_product_type_relation",uniqueConstraints={
 		@UniqueConstraint(name="uk_ProductTypeRelation_productId", columnNames="productId")})

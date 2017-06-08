@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.springmvc3.dao.BaseTypeDao;
 import com.yinzhiwu.springmvc3.dao.TweetDao;
 import com.yinzhiwu.springmvc3.entity.Tweet;
-import com.yinzhiwu.springmvc3.entity.TweetType;
+import com.yinzhiwu.springmvc3.entity.type.TweetType;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.TweetModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;

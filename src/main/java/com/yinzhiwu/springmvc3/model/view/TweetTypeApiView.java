@@ -1,6 +1,6 @@
 package com.yinzhiwu.springmvc3.model.view;
 
-import com.yinzhiwu.springmvc3.entity.TweetType;
+import com.yinzhiwu.springmvc3.entity.type.TweetType;
 
 public class TweetTypeApiView {
 

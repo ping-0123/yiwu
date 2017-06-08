@@ -10,8 +10,8 @@ import com.yinzhiwu.springmvc3.dao.ExpRecordDao;
 import com.yinzhiwu.springmvc3.dao.ExpRecordTypeDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.ExpRecord;
-import com.yinzhiwu.springmvc3.entity.ExpRecordType;
 import com.yinzhiwu.springmvc3.entity.ShareTweet;
+import com.yinzhiwu.springmvc3.entity.type.ExpRecordType;
 import com.yinzhiwu.springmvc3.service.ExpRecordService;
 
 @Service

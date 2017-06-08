@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.springmvc3.dao.CapitalAccountDao;
@@ -20,6 +21,7 @@ import com.yinzhiwu.springmvc3.dao.ExpGradeDao;
 import com.yinzhiwu.springmvc3.dao.ExpRecordTypeDao;
 import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.entity.type.RelationType;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
@@ -31,6 +33,7 @@ import com.yinzhiwu.springmvc3.model.view.DistributerRegisterApiView;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.service.ExpRecordService;
 import com.yinzhiwu.springmvc3.service.MoneyRecordService;
+
 
 
 
@@ -326,6 +329,23 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	public void modify(Integer id, Distributer entity)
 			throws DataNotFoundException, IllegalArgumentException, IllegalAccessException {
 		super.modify(id, entity);
+	}
+
+
+	@Override
+	public Distributer find_by_relation(Distributer distributer, RelationType relation) {
+		Assert.notNull(distributer);
+		Assert.notNull(relation);
+		
+		if(relation.equals(RelationType.SELF_WITH_SELF)){
+			return distributer;
+		}else if(relation.equals(RelationType.SELF_WITH_SUPERIOR)) {
+			return distributer.getSuperDistributer();
+		}else if(relation.equals(RelationType.SELF_WITH_GRAND)) {
+			if(distributer.getSuperDistributer() != null)
+				return distributer.getSuperDistributer().getSuperDistributer();
+		}
+		return null;
 	}
 
 

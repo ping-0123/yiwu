@@ -3,10 +3,10 @@ package com.yinzhiwu.springmvc3.dao.impl;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.RecordTypeDao;
-import com.yinzhiwu.springmvc3.entity.BrokerageRecordType;
-import com.yinzhiwu.springmvc3.entity.ExpRecordType;
-import com.yinzhiwu.springmvc3.entity.FundsRecordType;
-import com.yinzhiwu.springmvc3.entity.RecordType;
+import com.yinzhiwu.springmvc3.entity.type.BrokerageRecordType;
+import com.yinzhiwu.springmvc3.entity.type.ExpRecordType;
+import com.yinzhiwu.springmvc3.entity.type.FundsRecordType;
+import com.yinzhiwu.springmvc3.entity.type.RecordType;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Repository

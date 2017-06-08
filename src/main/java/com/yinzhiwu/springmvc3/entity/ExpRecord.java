@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.yinzhiwu.springmvc3.entity.type.RecordType;
+
 @Entity
 @Table(name="yiwu_exp_record")
 //@DiscriminatorValue("ExpRecord")

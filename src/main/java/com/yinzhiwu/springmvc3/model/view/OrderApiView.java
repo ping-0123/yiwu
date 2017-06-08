@@ -30,6 +30,8 @@ public class OrderApiView {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date contractEnd;
 	
+	private String checkedStatus;
+	
 	private String courseId;
 	
 	private String courseName;
@@ -48,11 +50,12 @@ public class OrderApiView {
 		this.id = o.getId();
 		Contract contract = o.getContract();
 		if(contract != null){
-			this.contractNo = contract.getContractNo();
-			this.validityTimes = contract.getValidityTimes();
-			this.contractStart = contract.getStart();
-			this.contractEnd = contract.getEnd();
-			this.productType = contract.getType();
+			this.contractNo		 = contract.getContractNo();
+			this.validityTimes	 = contract.getValidityTimes();
+			this.contractStart	 = contract.getStart();
+			this.contractEnd 	 = contract.getEnd();
+			this.productType 	 = contract.getType();
+			this.checkedStatus	 = contract.getStatus();
 		}
 		
 		CourseYzw course= o.getCourse();
@@ -159,7 +162,13 @@ public class OrderApiView {
 		this.eContractStatus = eContractStatus;
 	}
 
-	
-	
+	public String getCheckedStatus() {
+		return checkedStatus;
+	}
+
+	public void setCheckedStatus(String checkedStatus) {
+		this.checkedStatus = checkedStatus;
+	}
+
 	
 }

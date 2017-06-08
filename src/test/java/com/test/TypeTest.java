@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yinzhiwu.springmvc3.entity.BaseType;
-import com.yinzhiwu.springmvc3.entity.BrokerageRecordType;
-import com.yinzhiwu.springmvc3.entity.CapitalAccountType;
-import com.yinzhiwu.springmvc3.entity.ExpRecordType;
-import com.yinzhiwu.springmvc3.entity.FundsRecordType;
-import com.yinzhiwu.springmvc3.entity.TweetType;
+import com.yinzhiwu.springmvc3.entity.type.BaseType;
+import com.yinzhiwu.springmvc3.entity.type.BrokerageRecordType;
+import com.yinzhiwu.springmvc3.entity.type.CapitalAccountType;
+import com.yinzhiwu.springmvc3.entity.type.ExpRecordType;
+import com.yinzhiwu.springmvc3.entity.type.FundsRecordType;
+import com.yinzhiwu.springmvc3.entity.type.TweetType;
 import com.yinzhiwu.springmvc3.service.BaseTypeService;
 import com.yinzhiwu.springmvc3.service.RecordTypeService;
 

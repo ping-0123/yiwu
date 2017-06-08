@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.entity.type.RelationType;
 import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
@@ -37,6 +38,8 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 	YiwuJson<List<DistributerRegisterApiView>> findSecondariesRegisterRecords(int distributerId);
 
 	YiwuJson<DistributerApiView> register2(DistributerRegisterModel m);
+
+	Distributer find_by_relation(Distributer distributer, RelationType relation);
 
 
 

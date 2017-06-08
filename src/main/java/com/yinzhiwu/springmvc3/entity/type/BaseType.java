@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.entity;
+package com.yinzhiwu.springmvc3.entity.type;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+
+import com.yinzhiwu.springmvc3.entity.BaseEntity;
 
 @Entity
 @Table(name="yiwu_type")

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.BaseTypeDao;
-import com.yinzhiwu.springmvc3.entity.BaseType;
+import com.yinzhiwu.springmvc3.entity.type.BaseType;
 import com.yinzhiwu.springmvc3.service.BaseTypeService;
 
 @Service

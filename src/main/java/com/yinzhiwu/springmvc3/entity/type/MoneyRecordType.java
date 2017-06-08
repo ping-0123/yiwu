@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.entity;
+package com.yinzhiwu.springmvc3.entity.type;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

@@ -65,6 +65,8 @@ public class EContractDetailApiView {
 	
 	private Date depositDate;
 	
+	private Float finalAmount;
+	
 	private Date finalDate;
 	
 
@@ -102,6 +104,7 @@ public class EContractDetailApiView {
 		this.payedMethod		=e.getPayedMethod();
 		this.depositAmount		=e.getDepositAmount();
 		this.depositDate		=e.getDepositDate();
+		this.finalAmount		=e.getFinalAmount();
 		this.finalDate			=e.getFinalDate();
 		this.type				=e.getContractType().getDescription();
 		this.context			=e.getContractType().getContent();
@@ -347,6 +350,14 @@ public class EContractDetailApiView {
 
 	public void setContext(String context) {
 		this.context = context;
+	}
+
+	public Float getFinalAmount() {
+		return finalAmount;
+	}
+
+	public void setFinalAmount(Float finalAmount) {
+		this.finalAmount = finalAmount;
 	}
 
 	

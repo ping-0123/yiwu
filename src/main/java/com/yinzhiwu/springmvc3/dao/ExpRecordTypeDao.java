@@ -1,6 +1,6 @@
 package com.yinzhiwu.springmvc3.dao;
 
-import com.yinzhiwu.springmvc3.entity.ExpRecordType;
+import com.yinzhiwu.springmvc3.entity.type.ExpRecordType;
 
 public interface ExpRecordTypeDao extends IBaseDao<ExpRecordType, Integer> {
 	

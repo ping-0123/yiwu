@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.TweetTypeDao;
-import com.yinzhiwu.springmvc3.entity.TweetType;
+import com.yinzhiwu.springmvc3.entity.type.TweetType;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.TweetTypeApiView;

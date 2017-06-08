@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
+import com.yinzhiwu.springmvc3.entity.type.RecordType;
+
 //@Entity
 //@Table(name="yiwu_income_record")
 //@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
