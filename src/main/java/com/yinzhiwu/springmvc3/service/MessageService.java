@@ -21,5 +21,9 @@ public interface MessageService  extends IBaseService<Message, Integer>{
 
 	public void saveWithdrawMessage(Distributer beneficiary, float value);
 
+	/**
+	 * Brokerage 的变动才会产生消息
+	 * @param incomeRecord
+	 */
 	public void save_by_record(IncomeRecord incomeRecord);
 }

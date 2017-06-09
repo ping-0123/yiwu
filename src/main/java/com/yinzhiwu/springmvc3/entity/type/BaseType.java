@@ -15,14 +15,14 @@ import com.yinzhiwu.springmvc3.entity.BaseEntity;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="type_class", length=32)
 @DiscriminatorValue(value="abstractType")
-public class BaseType extends BaseEntity {
+public abstract class BaseType extends BaseEntity {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7200613894589888689L;
 	
-	@Column(length=32)
+	@Column(length=50)
 	private String name;
 	
 	
@@ -46,6 +46,12 @@ public class BaseType extends BaseEntity {
 		this.name = name;
 	}
 	
-	
+	public boolean equals(BaseType another)
+	{
+		if(another == null)
+			return false;
+		return this.name.equals(another.getName())?true:false;
+	}
+
 
 }

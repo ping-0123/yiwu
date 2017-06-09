@@ -20,7 +20,7 @@ import com.yinzhiwu.springmvc3.service.IBaseService;
 
 public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBaseService<T, PK> {
 	
-	private static Log LOG = LogFactory.getLog(BaseServiceImpl.class);
+	protected  Log logger = LogFactory.getLog(getClass());
 
 	private IBaseDao<T, PK> baseDao;
 	
@@ -43,7 +43,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		try {
 			return baseDao.get(id);
 		} catch (DataNotFoundException e) {
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			return null;
 		}
 	}
@@ -113,10 +113,10 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		
 		entity.getClass().getSuperclass();
 		Field[] fields = entity.getClass().getDeclaredFields();
-		LOG.info(fields.length);
+		logger.info(fields.length);
 		boolean update_flag =false;
 		long afterReflect = System.currentTimeMillis();
-		LOG.info("反射所花时间: " + (afterReflect-start));
+		logger.info("反射所花时间: " + (afterReflect-start));
 		for (Field f : fields) {
 			f.setAccessible(true);
 			if(!Modifier.isStatic(f.getModifiers()) 
@@ -126,20 +126,20 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 					&& !f.get(entity).equals(f.get(newEntity)))
 			{
 				f.set(newEntity, f.get(entity));
-				LOG.info(f.get(newEntity));
+				logger.info(f.get(newEntity));
 				update_flag = true;
 			}
 		}
 		long afterCompare=System.currentTimeMillis();
-		LOG.info("对比所化时间: " + (afterCompare-afterReflect));
+		logger.info("对比所化时间: " + (afterCompare-afterReflect));
 		if(update_flag){
-			LOG.info("开始更新");
+			logger.info("开始更新");
 			baseDao.update(newEntity);
 		}
 		
 		long end = System.currentTimeMillis();
-		LOG.info("更新所花时间: " + (end-afterCompare));
-		LOG.info("所花总时间： " + (end-start));
+		logger.info("更新所花时间: " + (end-afterCompare));
+		logger.info("所花总时间： " + (end-start));
 	}
 	
 	@Override

@@ -19,8 +19,9 @@ public class Message extends BaseEntity {
 	private static final long serialVersionUID = 4309449622965840107L;
 	
 	public enum Status{
-		UNREAD,
-		READ
+		UNREAD(0),READ(1);
+		private Status(int index){
+		}
 	}
 
 	@ManyToOne
@@ -35,8 +36,20 @@ public class Message extends BaseEntity {
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_Message_messageType_id"))
 	private MessageType messageType;
 
-
+	public Message() {
+	}
 	
+	public Message(Distributer receiver, String content){
+		init();
+		this.receiver = receiver;
+		this.content = content;
+	}
+	
+	@Override
+	public void init(){
+		super.init();
+		this.status = Status.UNREAD;
+	}
 	
 	public Distributer getReceiver() {
 		return receiver;
@@ -86,10 +99,6 @@ public class Message extends BaseEntity {
 
 
 
-	public Message() {
-		super();
-		this.status = Status.UNREAD;
-	}
-	
+
 	
 }
