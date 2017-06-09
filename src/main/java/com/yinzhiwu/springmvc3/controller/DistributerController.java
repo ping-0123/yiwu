@@ -76,8 +76,11 @@ public class DistributerController extends BaseController {
 		if(bindingResult.hasErrors()){
 			return new YiwuJson<>(getErrorsMessage(bindingResult));
 		}
-		
-		return distributerService.register(invitationCode,m);
+		try{
+			return distributerService.register(invitationCode,m);
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 	
 	@RequestMapping(value="/loginByWechat", method={RequestMethod.POST,RequestMethod.GET})

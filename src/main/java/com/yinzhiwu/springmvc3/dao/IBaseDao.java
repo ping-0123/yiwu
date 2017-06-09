@@ -13,6 +13,7 @@ public interface IBaseDao<T ,PK extends Serializable> {
 		
 		public PK save(T entity);
 		
+		
 		public void saveOrUpdate(T entity);
 		
 		

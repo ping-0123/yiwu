@@ -1,5 +1,6 @@
 package com.test;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -89,5 +90,10 @@ public class TypeTest {
 		}
 	}
 	
-	
+	@Test
+	public void initTypes(){
+		
+		Field[] fields = CapitalAccountType.class.getDeclaredFields();
+		
+	}
 }

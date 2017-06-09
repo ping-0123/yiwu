@@ -31,7 +31,7 @@ import com.yinzhiwu.springmvc3.service.LessonYzwService;
 @CrossOrigin
 @Controller
 @RequestMapping(value="api/lesson")
-public class LessonControl {
+public class LessonController {
 
 	@Autowired
 	@Qualifier(value="lessonServiceImplTwo")

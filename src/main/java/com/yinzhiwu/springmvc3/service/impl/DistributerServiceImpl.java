@@ -139,7 +139,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		//注册成功
 		try {
 			distributerDao.save(distributer);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 		

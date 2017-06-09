@@ -1,6 +1,7 @@
 package com.yinzhiwu.springmvc3.model.view;
 
 import com.yinzhiwu.springmvc3.entity.Employee;
+import com.yinzhiwu.springmvc3.entity.yzw.EmployeeYzw;
 
 public class EmployeeApiView {
 
@@ -19,6 +20,11 @@ public class EmployeeApiView {
 	public EmployeeApiView(int id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+
+	public EmployeeApiView(EmployeeYzw emp) {
+		this.id = emp.getId();
+		this.name = emp.getName();
 	}
 
 	public final int getId() {

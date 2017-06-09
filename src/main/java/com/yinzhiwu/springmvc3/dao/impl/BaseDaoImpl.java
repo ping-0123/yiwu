@@ -291,5 +291,16 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		int i = hql.toUpperCase().indexOf("FROM");
 		return "select count(*) " + hql.substring(i);
 	}
+	
+	@SuppressWarnings("unused")
+	private Throwable _get_root_Exception(Throwable e)
+	{
+		Throwable next = e.getCause();
+		if(next == null)
+			return e;
+		else
+			return _get_root_Exception(next);
+	}
+	
 }
 
