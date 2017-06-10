@@ -2,12 +2,15 @@ package com.yinzhiwu.springmvc3.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.springmvc3.dao.CustomerYzwDao;
 import com.yinzhiwu.springmvc3.dao.DepartmentYzwDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.DistributerIncomeDao;
+import com.yinzhiwu.springmvc3.dao.IncomeGradeDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.entity.income.DistributerIncome;
 import com.yinzhiwu.springmvc3.entity.income.RegisterEvent;
 import com.yinzhiwu.springmvc3.entity.type.EventType;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
@@ -38,6 +41,9 @@ public class DistributerServiceImplTwo  extends DistributerServiceImpl implement
 	@Autowired
 	private DistributerIncomeDao distributerIncomeDao;
 	
+	@Autowired
+	private IncomeGradeDao incomeGradeDao;
+	
 	@Override
 	public YiwuJson<DistributerApiView> register(String invitationCode, Distributer distributer) {
 		
@@ -61,7 +67,7 @@ public class DistributerServiceImplTwo  extends DistributerServiceImpl implement
 		/**
 		 * set super proxy distributer
 		 */
-		if(invitationCode != null)
+		if(StringUtils.hasLength(invitationCode))
 			try {
 				Distributer superDistributer = distributerDao.findByShareCode(invitationCode);
 				distributer.setSuperDistributer(superDistributer);
@@ -100,16 +106,35 @@ public class DistributerServiceImplTwo  extends DistributerServiceImpl implement
 		}
 		distributer.setCustomer(customer);
 		
+		
 		/**
 		 * register to database
 		 */
 		distributerDao.save(distributer);
 		
 		/**
+		 * init new distributer's incomes
+		 */
+		DistributerIncome exp  = new DistributerIncome(distributer, IncomeType.EXP, 
+				incomeGradeDao.find_lowest_grade_by_income_type(IncomeType.EXP.getId()));
+		DistributerIncome funds = new DistributerIncome(distributer, IncomeType.FUNDS,
+				incomeGradeDao.find_lowest_grade_by_income_type(IncomeType.FUNDS.getId()));
+		DistributerIncome brokerage = new DistributerIncome(distributer,IncomeType.BROKERAGE,
+				incomeGradeDao.find_lowest_grade_by_income_type(IncomeType.BROKERAGE.getId()));
+		distributerIncomeDao.save(exp);
+		distributerIncomeDao.save(funds);
+		distributerIncomeDao.save(brokerage);
+		distributer.getDistributerIncomes().add(exp);
+		distributer.getDistributerIncomes().add(brokerage);
+		distributer.getDistributerIncomes().add(funds);
+		
+	
+		
+		/**
 		 * produce register event
 		 */
 		RegisterEvent event = null;
-		 if(distributer.getSuperDistributer() ==null)
+		 if(distributer.getSuperDistributer() == null)
 			 event = new RegisterEvent(
 					 distributer, 
 					 EventType.REGISTER_WITHOUT_INVATATION_CODE, 
@@ -120,9 +145,10 @@ public class DistributerServiceImplTwo  extends DistributerServiceImpl implement
 					 EventType.REGISTER_WITH_INVATATION_CODE, 
 					 1f, invitationCode);
 		 incomeEventService.save(event);
+		 
 		
 		 /**
-		  * get distributer's current exp income value
+		  * get distributer's current exp income value and beat rate for return
 		  */
 		float expValue =0f;
 		try {
@@ -132,12 +158,12 @@ public class DistributerServiceImplTwo  extends DistributerServiceImpl implement
 		} catch (Exception e) {
 			logger.warn(e.getLocalizedMessage());
 		}
-		 
+		float beatRate = distributerIncomeDao.get_beat_rate(IncomeType.EXP,expValue);
+		
 		/*
 		 * return dto
 		 */
-		 return new YiwuJson<>(new DistributerApiView(distributer,
-				 distributerIncomeDao.get_beat_rate(IncomeType.EXP,expValue)));
+		 return new YiwuJson<>(new DistributerApiView(distributer,beatRate));
 	}
 	
 	

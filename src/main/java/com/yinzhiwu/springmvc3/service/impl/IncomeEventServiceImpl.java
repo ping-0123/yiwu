@@ -27,4 +27,5 @@ public class IncomeEventServiceImpl extends BaseServiceImpl<IncomeEvent, Integer
 		return event.getId();	
 	}
 	
+	
 }

@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import com.yinzhiwu.springmvc3.entity.BaseEntity;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
@@ -17,8 +16,8 @@ import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 
 @Entity
 @Table(name="yiwu_income_grade",uniqueConstraints={
-		@UniqueConstraint(name="uk_incomeGrade_gradeNo", columnNames="gradeNo"),
-		@UniqueConstraint(name="uk_incomeGrade_name", columnNames="name")
+//		@UniqueConstraint(name="uk_incomeGrade_gradeNo", columnNames="gradeNo"),
+//		@UniqueConstraint(name="uk_incomeGrade_name", columnNames="name")
 })
 public class IncomeGrade extends BaseEntity {
 	
@@ -37,7 +36,7 @@ public class IncomeGrade extends BaseEntity {
 	@Column(length=32, nullable=false)  //uk
 	private String name;
 	
-	private Integer upgradeNeededValue;
+	private Float upgradeNeededValue;
 	
 	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="next_grade_id", foreignKey=@ForeignKey(name="fk_incomeGrade_nextGrade_id"))
@@ -57,6 +56,9 @@ public class IncomeGrade extends BaseEntity {
 
 	
 	
+
+
+
 	public String getName() {
 		return name;
 	}
@@ -135,10 +137,6 @@ public class IncomeGrade extends BaseEntity {
 
 
 
-	public Integer getUpgradeNeededValue() {
-		return upgradeNeededValue;
-	}
-
 
 
 	public void setGradeNo(Integer gradeNo) {
@@ -147,9 +145,34 @@ public class IncomeGrade extends BaseEntity {
 
 
 
-	public void setUpgradeNeededValue(Integer upgradeNeededValue) {
+	public Float getUpgradeNeededValue() {
+		return upgradeNeededValue;
+	}
+
+
+
+	public void setUpgradeNeededValue(Float upgradeNeededValue) {
 		this.upgradeNeededValue = upgradeNeededValue;
 	}
+
+
+
+
+
+
+	public IncomeGrade(IncomeType incomeType, Integer gradeNo, String name, Float upgradeNeededValue,
+			IncomeGrade nextGrade, Float increaseDiscount, Boolean lowestGrade, Boolean highesGrade) {
+		this.incomeType = incomeType;
+		this.gradeNo = gradeNo;
+		this.name = name;
+		this.upgradeNeededValue = upgradeNeededValue;
+		this.nextGrade = nextGrade;
+		this.increaseDiscount = increaseDiscount;
+		this.lowestGrade = lowestGrade;
+		this.highesGrade = highesGrade;
+	}
+
+
 
 
 

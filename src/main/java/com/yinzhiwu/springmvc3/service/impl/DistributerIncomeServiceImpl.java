@@ -11,8 +11,6 @@ import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.service.DistributerIncomeService;
 
-import javassist.bytecode.stackmap.BasicBlock.Catch;
-
 @Service
 public class DistributerIncomeServiceImpl extends BaseServiceImpl<DistributerIncome, Integer> implements DistributerIncomeService {
 
@@ -60,7 +58,7 @@ public class DistributerIncomeServiceImpl extends BaseServiceImpl<DistributerInc
 				dIncome.setIncomeGrade(dIncome.getIncomeGrade().getNextGrade());
 		}catch (NullPointerException e) {
 			logger.info("distributer: " + dIncome.getDistributer().getId() + "'s " 
-					+ dIncome.getIncomeType().getName() + "income grade is the upest grade");
+					+ dIncome.getIncomeType().getName() + " income grade is the upest grade");
 		}
 		
 		/**

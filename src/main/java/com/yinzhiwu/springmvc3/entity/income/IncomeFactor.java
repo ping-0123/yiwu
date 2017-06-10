@@ -69,6 +69,19 @@ public class IncomeFactor extends BaseEntity {
 	public void setIncomeType(IncomeType type) {
 		this.incomeType = type;
 	}
+
+
+	public IncomeFactor() {
+	}
+
+
+	public IncomeFactor(EventType eventType, IncomeType incomeType, RelationType relation, Float factor) {
+		this.eventType = eventType;
+		this.incomeType = incomeType;
+		this.relation = relation;
+		this.factor = factor;
+	}
+	
 	
 	
 }

@@ -12,13 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 
 @Entity
-@Table(name="yiwu_exp_grade",
-		uniqueConstraints={@UniqueConstraint(name="uk_expgrade_gradeNo", columnNames="gradeNo"),
-		@UniqueConstraint(name="uk_expgrade_name", columnNames="name")
+@Table(name="yiwu_exp_grade",uniqueConstraints={
+//		@UniqueConstraint(name="uk_expgrade_gradeNo", columnNames="gradeNo"),
+//		@UniqueConstraint(name="uk_expgrade_name", columnNames="name")
 })
 public class ExpGrade extends BaseEntity {
 	
@@ -28,7 +27,7 @@ public class ExpGrade extends BaseEntity {
 	private static final long serialVersionUID = -6432236461203601711L;
 
 	
-	@Column(unique=true, nullable=false)  //uk
+	@Column(nullable=false)  //uk
 	private int gradeNo;
 	
 	@Column(length=32, nullable=false)  //uk

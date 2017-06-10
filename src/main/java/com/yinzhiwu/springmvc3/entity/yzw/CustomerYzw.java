@@ -133,8 +133,8 @@ public class CustomerYzw  extends BaseYzwEntity{
 		else
 			this.gender="男";
 		this.mobilePhone = d.getPhoneNo();
-		this.birthday = new java.sql.Date(d.getBirthday().getTime());
-		this.age = (int) CalendarUtil.getAge(d.getBirthday());
+		this.birthday = d.getBirthday()==null ? new Date(): d.getBirthday();
+		this.age = (int) CalendarUtil.getAge(this.getBirthday());
 		this.weChat = d.getWechatNo();
 		this.sourceOfCustomer = "微信";
 	}

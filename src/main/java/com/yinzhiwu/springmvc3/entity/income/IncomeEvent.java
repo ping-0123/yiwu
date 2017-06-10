@@ -37,7 +37,7 @@ public class IncomeEvent extends BaseEntity {
 	private Date occurTime;
 	
 	
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_event_type_id"))
 	private EventType type;
 	

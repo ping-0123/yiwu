@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yinzhiwu.springmvc3.dao.IncomeFactorDao;
 import com.yinzhiwu.springmvc3.dao.IncomeRecordDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.income.IncomeEvent;
 import com.yinzhiwu.springmvc3.entity.income.IncomeFactor;
 import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.service.DistributerIncomeService;
 import com.yinzhiwu.springmvc3.service.IncomeRecordService;
 import com.yinzhiwu.springmvc3.service.MessageService;
@@ -23,6 +25,8 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 	@Autowired
 	private MessageService messageService;
 	
+	@Autowired
+	private IncomeFactorDao incomeFactorDao;
 	
 	@Autowired
 	public void setBaseDao(IncomeRecordDao incomeRecordDao){
@@ -39,7 +43,13 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 
 	@Override
 	public void save_records_produced_by_event(IncomeEvent event) {
-		List<IncomeFactor> factors = event.getType().getIncomeFactors();
+		List<IncomeFactor> factors;
+		try {
+			factors = incomeFactorDao.findByProperty("eventType.id", event.getType().getId());
+		} catch (DataNotFoundException e) {
+			logger.info(e.getMessage());
+			return;
+		}
 		for (IncomeFactor factor : factors) {
 			Distributer benificiary = factor.getRelation().getRelativeDistributer(event.getDistributer());
 			if(benificiary != null && factor.getFactor() != 0f && event.getParam() != 0){

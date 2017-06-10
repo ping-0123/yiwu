@@ -29,11 +29,14 @@ import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yinzhiwu.springmvc3.entity.income.DistributerIncome;
+import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.springmvc3.enums.Gender;
 import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
+import com.yinzhiwu.springmvc3.service.DistributerIncomeService;
 
 /**
  * 
@@ -203,6 +206,10 @@ public class Distributer extends BaseEntity{
 	@OneToMany(mappedBy="sharer")
 	private List<ShareTweet> shareTweets = new ArrayList<>();
 	
+	@JsonIgnore
+	@OneToMany(mappedBy="distributer", cascade=CascadeType.PERSIST)
+	private List<DistributerIncome>  distributerIncomes = new ArrayList<>();
+	
 	@Override
 	public void init() {
 		super.init();
@@ -261,6 +268,15 @@ public class Distributer extends BaseEntity{
 			return true;
 		else
 			return false;
+	}
+	
+	public  DistributerIncome getDistributerIncome(IncomeType type){
+		List<DistributerIncome> incomes = this.getDistributerIncomes();
+		for (DistributerIncome income : incomes) {
+			if(type.equals(income.getIncomeType()))
+				return income;
+		}
+		return null;
 	}
 	
 	public String getMemberId() {
@@ -585,6 +601,16 @@ public class Distributer extends BaseEntity{
 
 	public void setEmployee(EmployeeYzw employee) {
 		this.employee = employee;
+	}
+
+
+	public List<DistributerIncome> getDistributerIncomes() {
+		return distributerIncomes;
+	}
+
+
+	public void setDistributerIncomes(List<DistributerIncome> distributerIncomes) {
+		this.distributerIncomes = distributerIncomes;
 	}
 
 	

@@ -45,7 +45,7 @@ public class DistributerController extends BaseController {
 	
 	
 	@Autowired
-	@Qualifier("distributerServiceImpl")
+	@Qualifier("distributerServiceImplTwo")
 	private DistributerService  distributerService;
 	
 	@Autowired
@@ -79,6 +79,7 @@ public class DistributerController extends BaseController {
 		try{
 			return distributerService.register(invitationCode,m);
 		}catch (Exception e) {
+			e.printStackTrace();
 			return new YiwuJson<>(e.getMessage());
 		}
 	}

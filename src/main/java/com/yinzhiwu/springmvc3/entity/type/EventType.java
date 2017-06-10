@@ -33,6 +33,7 @@ public class EventType  extends BaseType{
 	@OneToMany(mappedBy="eventType")
 	private List<IncomeFactor> incomeFactors = new ArrayList<>();
 
+	
 	public List<IncomeFactor> getIncomeFactors() {
 		return incomeFactors;
 	}

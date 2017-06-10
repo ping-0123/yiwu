@@ -8,4 +8,37 @@
 	<body>
 		<p id="content"></p>
 	</body>
+	<script type="text/javascript">
+		var v_baseUrl = "http://192.168.0.115:8080/yiwu/";
+		register();
+		
+		
+		function register(){
+				var v_url = "api/distributer";
+				var v_data = {phoneNo:'18048901609',
+							password:'suning0987',
+							gender:'MALE',
+							birthday:'2000-01-01',
+							'followedByStore.id':'63',
+							wechatNo:'oIgTGwx1Qiz333csesd965h7029',
+							invitationCode:'zoz2qqjv'
+					};
+	
+			
+			$.ajax({ 
+				type: "POST", 	
+				url: v_baseUrl+v_url,
+				data:v_data,
+				dataType: "json",
+				timeout:50000,
+				success: function(data) {
+					$('#content').html(JSON.stringify(data));
+				},
+				error: function(jqXHR){     
+					$('#content').html(jqXHR.status);
+				},  
+			});	
+		}
+	
+	</script>
 </html>
