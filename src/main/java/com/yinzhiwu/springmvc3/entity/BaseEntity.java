@@ -10,13 +10,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;  
   
-/** 
- * ʵ���� - ���� 
- */  
+/**
+ * name rule
+ * foreign key:  			 fk_{table name}_{foreign key column name}
+ * foreign key column name:  {parent table name}_{referenced column name}
+ * unique key: 				 uk_{table name}_{unique key column name}
+ */
+
 @MappedSuperclass  
 public abstract class BaseEntity implements Serializable{  
   
@@ -24,6 +30,7 @@ public abstract class BaseEntity implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	/** 
      * ID 
      */  

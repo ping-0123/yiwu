@@ -81,6 +81,25 @@ public class DistributerApiView implements Serializable{
 		if(customer != null)
 			this.customerId = customer.getId();
 	}
+	
+	public DistributerApiView(Distributer d, Float rate){
+		this.id = d.getId();
+		this.expGradeNo = d.getExpGrade().getGradeNo();
+		this.name = d.getName();
+		this.nickName = d.getNickName();
+		this.phoneNo = d.getPhoneNo();
+		this.memeberId = d.getMemberId();
+		this.shareCode = d.getShareCode();
+		this.headIconUrl = UrlUtil.toHeadIcomUrl(d.getHeadIconName());
+		this.registerDate = d.getRegistedTime();
+		this.neededExpForUpdate = d.getExpGrade().getUpgradeExp()-d.getExp();
+		this.brokerage = d.getBrokerage();
+		this.funds = d.getFunds();
+		CustomerYzw customer = d.getCustomer();
+		if(customer != null)
+			this.customerId = customer.getId();
+		this.beatRate = rate;
+	}
 
 	public float getBeatRate() {
 		return beatRate;

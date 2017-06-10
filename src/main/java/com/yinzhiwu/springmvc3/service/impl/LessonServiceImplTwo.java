@@ -136,16 +136,23 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 		Date startDate = ca.getTime();
 		ca.add(Calendar.DAY_OF_WEEK, 6);
 		Date endDate = ca.getTime();
-		
-		List<Lesson> lessons = lessonDao.findLessonWeekList(
-				storeId, courseType, teacherName, danceCatagory, startDate, endDate);
 		List<LessonOldApiView> views = new ArrayList<>();
-		for (Lesson l : lessons) {
-			LessonOldApiView view = _wrap_to_api_view(c, l);
-			views.add(view);
-			
+		
+		List<Lesson> lessons = new ArrayList<>();
+		try {
+			lessons = lessonDao.findLessonWeekList(
+					storeId, courseType, teacherName, danceCatagory, startDate, endDate);
+		} catch (DataNotFoundException e) {
+			logger.warn(e.getMessage());
 		}
 		
+		if(lessons.size() != 0){
+			for (Lesson l : lessons) {
+				LessonOldApiView view = _wrap_to_api_view(c, l);
+				views.add(view);
+			}
+		}
+			
 		return wrapLessonWeekList(views, startDate);
 	}
 
@@ -213,13 +220,14 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 		try {
 			Date checkedInTime = checkInsDao.findByProperties(
 					new String[]{"lessonId","teacherId"}, 
-					new Object[]{l.getLessonId(), l.getActualTeacherId()}).get(0).getCreateTime();
+					new Object[]{l.getLessonId().toString(), l.getActualTeacherId()})
+				.get(0).getCreateTime();
 			Calendar end = Calendar.getInstance();
 			end.setTimeInMillis(l.getLessonDate().getTime()  + l.getEndTime().getTime());
 			//如果刷卡时间比课程结束时间大 则是补刷
-			if(checkedInTime.compareTo(end.getTime()) >=0)
+			if(checkedInTime.compareTo(end.getTime()) >=0){
 				view.setCheckedInStatus(CheckedInStatus.PATCHED);
-			else
+			}else
 				view.setCheckedInStatus(CheckedInStatus.CHECKED);
 		} catch (DataNotFoundException e) {
 			view.setCheckedInStatus(CheckedInStatus.UN_CHECKED);

@@ -11,8 +11,8 @@ import org.springframework.util.Assert;
 
 import com.yinzhiwu.springmvc3.dao.MessageDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.entity.IncomeRecord;
 import com.yinzhiwu.springmvc3.entity.Message;
+import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
 import com.yinzhiwu.springmvc3.entity.type.EventType;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
@@ -108,7 +108,7 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 		try{
 			if(!incomeRecord.getIncomeType().equals(IncomeType.BROKERAGE))
 				return;
-			if(EventType.PURCHASE_PRODUCTS.equals(incomeRecord.getEvent().getType())){
+			if(EventType.PURCHASE_PRODUCTS.equals(incomeRecord.getIncomeEvent().getType())){
 				String message = MessageTemplate.BrokerageMessage.generate_purchase_products_message(
 						incomeRecord.getContributor().getPhoneNo(), 
 						incomeRecord.getRecordTimestamp(), 
@@ -116,7 +116,7 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 						incomeRecord.getIncomeValue());
 				Message m = new Message(incomeRecord.getBenificiary(),message);
 				super.save(m);
-			}else if(EventType.WITHDRAW.equals(incomeRecord.getEvent().getType())){
+			}else if(EventType.WITHDRAW.equals(incomeRecord.getIncomeEvent().getType())){
 //				 super.save(new Message(incomeRecord.getBenificiary()),
 //						 MessageTemplate.BrokerageMessage.generate_withdraw_message(
 //								 incomeRecord.getRecordTimestamp(), 

@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.entity;
+package com.yinzhiwu.springmvc3.entity.income;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.yinzhiwu.springmvc3.entity.BaseEntity;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 
 
@@ -31,12 +32,12 @@ public class IncomeGrade extends BaseEntity {
 	private IncomeType incomeType;
 	
 	@Column(nullable=false)  //uk
-	private int gradeNo;
+	private Integer gradeNo;
 	
 	@Column(length=32, nullable=false)  //uk
 	private String name;
 	
-	private float upgradeExp;
+	private Integer upgradeNeededValue;
 	
 	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="next_grade_id", foreignKey=@ForeignKey(name="fk_incomeGrade_nextGrade_id"))
@@ -64,13 +65,9 @@ public class IncomeGrade extends BaseEntity {
 		this.name = name;
 	}
 
-	public float getUpgradeExp() {
-		return upgradeExp;
-	}
 
-	public void setUpgradeExp(float upgradeExp) {
-		this.upgradeExp = upgradeExp;
-	}
+
+
 
 	public IncomeGrade getNextGrade() {
 		return nextGrade;
@@ -127,13 +124,31 @@ public class IncomeGrade extends BaseEntity {
 
 
 	public void setIncomeType(IncomeType incomeType) {
-		incomeType = incomeType;
+		this.incomeType = incomeType;
 	}
 
 
 
 	public void setIncreaseDiscount(Float increaseDiscount) {
 		this.increaseDiscount = increaseDiscount;
+	}
+
+
+
+	public Integer getUpgradeNeededValue() {
+		return upgradeNeededValue;
+	}
+
+
+
+	public void setGradeNo(Integer gradeNo) {
+		this.gradeNo = gradeNo;
+	}
+
+
+
+	public void setUpgradeNeededValue(Integer upgradeNeededValue) {
+		this.upgradeNeededValue = upgradeNeededValue;
 	}
 
 

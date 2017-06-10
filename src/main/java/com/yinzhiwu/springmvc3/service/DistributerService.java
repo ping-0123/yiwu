@@ -39,7 +39,6 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 
 	YiwuJson<DistributerApiView> register2(DistributerRegisterModel m);
 
-	Distributer find_by_relation(Distributer distributer, RelationType relation);
 
 
 

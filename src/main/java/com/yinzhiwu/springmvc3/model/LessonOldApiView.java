@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.springmvc3.entity.Lesson;
 
 public class LessonOldApiView {
@@ -22,7 +23,7 @@ public class LessonOldApiView {
 	
 	private String courseid;
 	
-//	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date lessonDate;
 	
 	private int week;
@@ -43,7 +44,7 @@ public class LessonOldApiView {
 	
 	private String dueTeacherName;
 	
-	private int actualTeacherId;
+	private Integer actualTeacherId;
 	
 	private String actualTeacherName;
 	
@@ -65,19 +66,19 @@ public class LessonOldApiView {
 	
 	private String danceGrade;
 	
-	private int attendedStudentCount;
+	private Integer attendedStudentCount;
 	
-	private int checkedInsStudentCount;
+	private Integer checkedInsStudentCount;
 	
-	private int storeManCallRollCount;
+	private Integer storeManCallRollCount;
 	
-	private int teacherCallRollCount;
+	private Integer teacherCallRollCount;
 	
 	//这个课在整套课程中所处的位置
-	private int orderInCourse;
+	private Integer orderInCourse;
 	
 	//这节课对应的课程所拥有的总课次
-	private int sumTimesOfCourse;
+	private Integer sumTimesOfCourse;
 	
 
 	public LessonOldApiView(Integer lessonId, String courseid, Date lessonDate, Time startTime, Time endTime,
@@ -144,252 +145,72 @@ public class LessonOldApiView {
 	}
 	
 
-	public final Integer getLessonId() {
-		return lessonId;
-	}
+	
 
-	public final void setLessonId(Integer lessonId) {
-		this.lessonId = lessonId;
-	}
-
-	public final String getCourseid() {
-		return courseid;
-	}
-
-	public final void setCourseid(String courseid) {
-		this.courseid = courseid;
-	}
-
-	public final Date getLessonDate() {
-		return lessonDate;
-	}
-
-	public final void setLessonDate(Date lessonDate) {
-		this.lessonDate = lessonDate;
-		setWeek();
-	}
-
-	public final int getWeek() {
-		return week;
-	}
-
-	private final void setWeek(){
+	private  void setWeek(){
 		Calendar ca = Calendar.getInstance();
 		ca.setTime(lessonDate);
 		week = ca.get(Calendar.DAY_OF_WEEK);
 	}
 
-	public final Time getStartTime() {
+
+	public Integer getLessonId() {
+		return lessonId;
+	}
+
+
+	public String getCourseid() {
+		return courseid;
+	}
+
+
+	public Date getLessonDate() {
+		return lessonDate;
+	}
+
+
+	public int getWeek() {
+		return week;
+	}
+
+
+	public Time getStartTime() {
 		return startTime;
 	}
 
-	public final void setStartTime(Time startTime) {
-		this.startTime = startTime;
-	}
 
-	public final Time getEndTime() {
+	public Time getEndTime() {
 		return endTime;
 	}
 
-	public final void setEndTime(Time endTime) {
-		this.endTime = endTime;
-	}
 
-	public final String getLessonDesc() {
+	public String getLessonDesc() {
 		return lessonDesc;
 	}
 
-	public final void setLessonDesc(String lessonDesc) {
-		this.lessonDesc = lessonDesc;
-	}
 
-	public final Integer getStoreId() {
+	public Integer getStoreId() {
 		return storeId;
 	}
 
-	public final void setStoreId(Integer storeId) {
-		this.storeId = storeId;
-	}
 
-	public final String getStoreName() {
+	public String getStoreName() {
 		return storeName;
 	}
 
-	public final void setStoreName(String storeName) {
-		this.storeName = storeName;
-	}
 
-	public final Float getLessonTime() {
+	public Float getLessonTime() {
 		return lessonTime;
 	}
 
-	public final void setLessonTime(Float lessonTime) {
-		this.lessonTime = lessonTime;
-	}
 
-	public final Integer getDueTeacherId() {
+	public Integer getDueTeacherId() {
 		return dueTeacherId;
 	}
 
-	public final void setDueTeacherId(Integer dueTeacherId) {
-		this.dueTeacherId = dueTeacherId;
-	}
 
-	public final String getDueTeacherName() {
+	public String getDueTeacherName() {
 		return dueTeacherName;
-	}
-
-	public final void setDueTeacherName(String dueTeacherName) {
-		this.dueTeacherName = dueTeacherName;
-	}
-
-	public final String getCourseType() {
-		return courseType;
-	}
-
-	public final void setCourseType(String courseType) {
-		this.courseType = courseType;
-	}
-
-	public final String getSubCourseType() {
-		return subCourseType;
-	}
-
-	public final void setSubCourseType(String subCourseType) {
-		this.subCourseType = subCourseType;
-	}
-
-
-	public Integer getMaxStudentCount() {
-		return maxStudentCount;
-	}
-
-
-	public void setMaxStudentCount(Integer maxStudentCount) {
-		this.maxStudentCount = maxStudentCount;
-	}
-
-
-	public final AttendedStatus getAttendedStatus() {
-		return attendedStatus;
-	}
-
-
-	public final void setAttendedStatus(AttendedStatus attendedStatus) {
-		this.attendedStatus = attendedStatus;
-	}
-
-
-	public int getAppointedStudentCount() {
-		return appointedStudentCount;
-	}
-
-
-	public void setAppointedStudentCount(int appointedStudentCount) {
-		this.appointedStudentCount = appointedStudentCount;
-	}
-
-
-	public String getDanceName() {
-		return danceName;
-	}
-
-
-	public void setDanceName(String danceName) {
-		this.danceName = danceName;
-	}
-
-
-	public String getDanceGrade() {
-		return danceGrade;
-	}
-
-
-	public void setDanceGrade(String danceGrade) {
-		this.danceGrade = danceGrade;
-	}
-	public final int getAttendedStudentCount() {
-		return attendedStudentCount;
-	}
-
-
-	public final void setAttendedStudentCount(int attendedStudentCount) {
-		this.attendedStudentCount = attendedStudentCount;
-	}
-
-
-	public final int getCheckedInsStudentCount() {
-		return checkedInsStudentCount;
-	}
-
-
-	public final void setCheckedInsStudentCount(int checkedInsStudentCount) {
-		this.checkedInsStudentCount = checkedInsStudentCount;
-	}
-
-
-	public final void setWeek(int week) {
-		this.week = week;
-	}
-
-
-	public final int getStoreManCallRollCount() {
-		return storeManCallRollCount;
-	}
-
-
-	public final void setStoreManCallRollCount(int storeManCallRollCount) {
-		this.storeManCallRollCount = storeManCallRollCount;
-	}
-
-
-	public final int getTeacherCallRollCount() {
-		return teacherCallRollCount;
-	}
-
-
-	public final void setTeacherCallRollCount(int teacherCallRollCount) {
-		this.teacherCallRollCount = teacherCallRollCount;
-	}
-
-
-	public LessonStatus getLessonStatus() {
-		return lessonStatus;
-	}
-
-
-	public void setLessonStatus(LessonStatus lessonStatus) {
-		this.lessonStatus = lessonStatus;
-	}
-
-
-	public int getOrderInCourse() {
-		return orderInCourse;
-	}
-
-
-	public int getSumTimesOfCourse() {
-		return sumTimesOfCourse;
-	}
-
-
-	public void setOrderInCourse(int orderInCourse) {
-		this.orderInCourse = orderInCourse;
-	}
-
-
-	public void setSumTimesOfCourse(int sumTimesOfCourse) {
-		this.sumTimesOfCourse = sumTimesOfCourse;
-	}
-
-
-	public CheckedInStatus getCheckedInStatus() {
-		return checkedInStatus;
-	}
-
-
-	public void setCheckedInStatus(CheckedInStatus checkedInStatus) {
-		this.checkedInStatus = checkedInStatus;
 	}
 
 
@@ -403,6 +224,141 @@ public class LessonOldApiView {
 	}
 
 
+	public String getCourseType() {
+		return courseType;
+	}
+
+
+	public String getSubCourseType() {
+		return subCourseType;
+	}
+
+
+	public LessonStatus getLessonStatus() {
+		return lessonStatus;
+	}
+
+
+	public Integer getMaxStudentCount() {
+		return maxStudentCount;
+	}
+
+
+	public AttendedStatus getAttendedStatus() {
+		return attendedStatus;
+	}
+
+
+	public CheckedInStatus getCheckedInStatus() {
+		return checkedInStatus;
+	}
+
+
+	public Integer getAppointedStudentCount() {
+		return appointedStudentCount;
+	}
+
+
+	public String getDanceName() {
+		return danceName;
+	}
+
+
+	public String getDanceGrade() {
+		return danceGrade;
+	}
+
+
+	public Integer getAttendedStudentCount() {
+		return attendedStudentCount;
+	}
+
+
+	public Integer getCheckedInsStudentCount() {
+		return checkedInsStudentCount;
+	}
+
+
+	public Integer getStoreManCallRollCount() {
+		return storeManCallRollCount;
+	}
+
+
+	public Integer getTeacherCallRollCount() {
+		return teacherCallRollCount;
+	}
+
+
+	public Integer getOrderInCourse() {
+		return orderInCourse;
+	}
+
+
+	public Integer getSumTimesOfCourse() {
+		return sumTimesOfCourse;
+	}
+
+
+	public void setLessonId(Integer lessonId) {
+		this.lessonId = lessonId;
+	}
+
+
+	public void setCourseid(String courseid) {
+		this.courseid = courseid;
+	}
+
+
+	public void setLessonDate(Date lessonDate) {
+		this.lessonDate = lessonDate;
+	}
+
+
+	public void setWeek(int week) {
+		this.week = week;
+	}
+
+
+	public void setStartTime(Time startTime) {
+		this.startTime = startTime;
+	}
+
+
+	public void setEndTime(Time endTime) {
+		this.endTime = endTime;
+	}
+
+
+	public void setLessonDesc(String lessonDesc) {
+		this.lessonDesc = lessonDesc;
+	}
+
+
+	public void setStoreId(Integer storeId) {
+		this.storeId = storeId;
+	}
+
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+
+
+	public void setLessonTime(Float lessonTime) {
+		this.lessonTime = lessonTime;
+	}
+
+
+	public void setDueTeacherId(Integer dueTeacherId) {
+		this.dueTeacherId = dueTeacherId;
+	}
+
+
+	public void setDueTeacherName(String dueTeacherName) {
+		this.dueTeacherName = dueTeacherName;
+	}
+
+
 	public void setActualTeacherId(Integer actualTeacherId) {
 		this.actualTeacherId = actualTeacherId;
 	}
@@ -412,5 +368,81 @@ public class LessonOldApiView {
 		this.actualTeacherName = actualTeacherName;
 	}
 
+
+	public void setCourseType(String courseType) {
+		this.courseType = courseType;
+	}
+
+
+	public void setSubCourseType(String subCourseType) {
+		this.subCourseType = subCourseType;
+	}
+
+
+	public void setLessonStatus(LessonStatus lessonStatus) {
+		this.lessonStatus = lessonStatus;
+	}
+
+
+	public void setMaxStudentCount(Integer maxStudentCount) {
+		this.maxStudentCount = maxStudentCount;
+	}
+
+
+	public void setAttendedStatus(AttendedStatus attendedStatus) {
+		this.attendedStatus = attendedStatus;
+	}
+
+
+	public void setCheckedInStatus(CheckedInStatus checkedInStatus) {
+		this.checkedInStatus = checkedInStatus;
+	}
+
+
+	public void setAppointedStudentCount(Integer appointedStudentCount) {
+		this.appointedStudentCount = appointedStudentCount;
+	}
+
+
+	public void setDanceName(String danceName) {
+		this.danceName = danceName;
+	}
+
+
+	public void setDanceGrade(String danceGrade) {
+		this.danceGrade = danceGrade;
+	}
+
+
+	public void setAttendedStudentCount(Integer attendedStudentCount) {
+		this.attendedStudentCount = attendedStudentCount;
+	}
+
+
+	public void setCheckedInsStudentCount(Integer checkedInsStudentCount) {
+		this.checkedInsStudentCount = checkedInsStudentCount;
+	}
+
+
+	public void setStoreManCallRollCount(Integer storeManCallRollCount) {
+		this.storeManCallRollCount = storeManCallRollCount;
+	}
+
+
+	public void setTeacherCallRollCount(Integer teacherCallRollCount) {
+		this.teacherCallRollCount = teacherCallRollCount;
+	}
+
+
+	public void setOrderInCourse(Integer orderInCourse) {
+		this.orderInCourse = orderInCourse;
+	}
+
+
+	public void setSumTimesOfCourse(Integer sumTimesOfCourse) {
+		this.sumTimesOfCourse = sumTimesOfCourse;
+	}
+
+	
 	
 }

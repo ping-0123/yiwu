@@ -1,21 +1,29 @@
-package com.yinzhiwu.springmvc3.entity;
+package com.yinzhiwu.springmvc3.entity.income;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.yinzhiwu.springmvc3.entity.BaseEntity;
+import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.entity.Message;
 import com.yinzhiwu.springmvc3.entity.type.EventType;
 
 @Entity
-@Table(name="yiwu_event")
-public class Event extends BaseEntity {
+@Table(name="yiwu_income_event")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="event_type")
+@DiscriminatorValue("IncomeEvent")
+public class IncomeEvent extends BaseEntity {
 
 	/**
 	 * 
@@ -28,14 +36,31 @@ public class Event extends BaseEntity {
 	
 	private Date occurTime;
 	
-	private Float param;
 	
 	@ManyToOne()
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_event_type_id"))
 	private EventType type;
 	
-	private String comment;
-
+	private Float param;
+	
+	public IncomeEvent(){};
+	
+	public IncomeEvent(Distributer distributer, EventType type, Float param) {
+		init();
+		this.distributer = distributer;
+		this.type = type;
+		this.param = param;
+	}
+	
+	@Override
+	public void init(){
+		super.init();
+		this.occurTime = super.getCreateDate();
+	}
+	
+	public Message generateMessage(IncomeRecord incomeRecord){
+		return null;
+	}
 	
 	public Distributer getDistributer() {
 		return distributer;
@@ -45,17 +70,10 @@ public class Event extends BaseEntity {
 		return occurTime;
 	}
 
-	public Float getParam() {
-		return param;
-	}
-
 	public EventType getType() {
 		return type;
 	}
 
-	public String getComment() {
-		return comment;
-	}
 
 	public void setDistributer(Distributer distributer) {
 		this.distributer = distributer;
@@ -65,17 +83,20 @@ public class Event extends BaseEntity {
 		this.occurTime = occurTime;
 	}
 
-	public void setParam(Float param) {
-		this.param = param;
-	}
-
 	public void setType(EventType type) {
 		this.type = type;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+
+	public Float getParam() {
+		return param;
 	}
+
+	public void setParam(Float param) {
+		this.param = param;
+	}
+
+	
 
 
 }

@@ -5,14 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.IncomeRecordDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.entity.Event;
-import com.yinzhiwu.springmvc3.entity.IncomeFactor;
-import com.yinzhiwu.springmvc3.entity.IncomeRecord;
+import com.yinzhiwu.springmvc3.entity.income.IncomeEvent;
+import com.yinzhiwu.springmvc3.entity.income.IncomeFactor;
+import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
 import com.yinzhiwu.springmvc3.service.DistributerIncomeService;
-import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.service.IncomeRecordService;
 import com.yinzhiwu.springmvc3.service.MessageService;
 
@@ -25,8 +23,6 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 	@Autowired
 	private MessageService messageService;
 	
-	@Autowired
-	private DistributerService distributerService;
 	
 	@Autowired
 	public void setBaseDao(IncomeRecordDao incomeRecordDao){
@@ -42,13 +38,13 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 	}
 
 	@Override
-	public void save_records_produced_by_event(Event event) {
+	public void save_records_produced_by_event(IncomeEvent event) {
 		List<IncomeFactor> factors = event.getType().getIncomeFactors();
 		for (IncomeFactor factor : factors) {
-			Distributer benificiary = distributerService.find_by_relation(event.getDistributer(), factor.getRelation());
+			Distributer benificiary = factor.getRelation().getRelativeDistributer(event.getDistributer());
 			if(benificiary != null && factor.getFactor() != 0f && event.getParam() != 0){
 				IncomeRecord record = new IncomeRecord(event, factor, benificiary);
-				save(record);
+				this.save(record);
 			}
 		}
 	}

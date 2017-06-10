@@ -18,8 +18,8 @@ public class CapitalAccountType extends BaseType {
 	 */
 	private static final long serialVersionUID = 8530666072419354311L;
 	
-	public static final CapitalAccountType WECHAT_PAY = new CapitalAccountType("WECHAT_PAY");
-	public static final CapitalAccountType ALI_PAY = new CapitalAccountType("ALI_PAY");
+	public static final CapitalAccountType WECHAT_PAY = new CapitalAccountType(10001,"WECHAT_PAY");
+	public static final CapitalAccountType ALI_PAY = new CapitalAccountType(10002,"ALI_PAY");
 	
 	
 	@OneToMany(mappedBy="capitalAccountType")
@@ -45,6 +45,11 @@ public class CapitalAccountType extends BaseType {
 
 	public CapitalAccountType(String name) {
 		super(name);
+	}
+
+
+	public CapitalAccountType(int id, String name) {
+		super(id, name);
 	}
 	
 	

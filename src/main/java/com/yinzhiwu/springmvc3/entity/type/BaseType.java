@@ -1,26 +1,33 @@
 package com.yinzhiwu.springmvc3.entity.type;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
-import com.yinzhiwu.springmvc3.entity.BaseEntity;
+import org.hibernate.annotations.GenericGenerator;
+
 
 @Entity
 @Table(name="yiwu_type")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="type_class", length=32)
+@DiscriminatorColumn(name="whichType", length=32)
 @DiscriminatorValue(value="abstractType")
-public abstract class BaseType extends BaseEntity {
+public abstract class BaseType implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7200613894589888689L;
+	
+
 	
 	@Column(length=50)
 	private String name;
@@ -30,7 +37,7 @@ public abstract class BaseType extends BaseEntity {
 	public BaseType() {
 		super();
 	}
-
+	
 
 	public String getName() {
 		return name;
@@ -42,7 +49,11 @@ public abstract class BaseType extends BaseEntity {
 
 
 	public BaseType(String name) {
-		super();
+		this.name = name;
+	}
+	
+	public BaseType(Integer id , String name){
+		this.id = id;
 		this.name = name;
 	}
 	
@@ -53,5 +64,25 @@ public abstract class BaseType extends BaseEntity {
 		return this.name.equals(another.getName())?true:false;
 	}
 
+
+	@Id  
+	@GeneratedValue(generator="assigned")  
+	@GenericGenerator(name="assigned", strategy = "assigned") 
+	private Integer id;
+
+
+
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	
+	
+	
 
 }

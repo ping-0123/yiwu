@@ -9,8 +9,8 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
@@ -29,7 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.yinzhiwu.springmvc3.dao.impl.DistributerDaoImpl;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
-import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
@@ -46,6 +45,7 @@ public class DistributerController extends BaseController {
 	
 	
 	@Autowired
+	@Qualifier("distributerServiceImpl")
 	private DistributerService  distributerService;
 	
 	@Autowired

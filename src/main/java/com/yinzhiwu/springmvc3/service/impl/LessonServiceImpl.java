@@ -109,46 +109,52 @@ public class LessonServiceImpl extends BaseServiceImpl<Lesson, Integer> implemen
 		Date startDate = ca.getTime();
 		ca.add(Calendar.DAY_OF_WEEK, Calendar.SATURDAY-Calendar.SUNDAY);
 		Date endDate = ca.getTime();
-		
-		
-		List<Lesson> list = lessonDao.findLessonWeekList(
-				storeId, courseType, teacherName, danceCatagory, startDate, endDate);
 		List<LessonOldApiView> lm = new ArrayList<>();
-		for (Lesson l : list) {
-			LessonOldApiView ml = new LessonOldApiView(l);
-			//添加最大预约人数
-			if(null != l.getClassRoomId() && "" != l.getClassRoomId()){
-				ClassRoom room = roomDao.findById(l.getClassRoomId());
-				if (room != null)
-					ml.setMaxStudentCount(room.getMaxStudentCount());
+		
+		List<Lesson> list ;
+		try {
+			list = lessonDao.findLessonWeekList(
+					storeId, courseType, teacherName, danceCatagory, startDate, endDate);
+			for (Lesson l : list) {
+				LessonOldApiView ml = new LessonOldApiView(l);
+				//添加最大预约人数
+				if(null != l.getClassRoomId() && "" != l.getClassRoomId()){
+					ClassRoom room = roomDao.findById(l.getClassRoomId());
+					if (room != null)
+						ml.setMaxStudentCount(room.getMaxStudentCount());
+				}
+				
+				//添加舞种，舞种等级
+				Course course;
+				try {
+					course = courseDao.findById(l.getCourseid());
+					ml.setDanceName(course.getDanceDesc());
+					ml.setDanceGrade(course.getDanceGrade());
+				} catch (DataNotFoundException e) {
+					LOG.error(e.getMessage());
+				}
+				
+				//添加封闭式课程的上课人数
+				if("封闭式".equals(l.getCourseType()) && l.getCourseid() != null){
+					ml.setAttendedStudentCount(orderDao.findAttendedStudentCount(l.getCourseid()));
+				}
+				//添加当前预约人数
+				if(l.getCourseType().equals("开放式"))
+					ml.setAppointedStudentCount(appointedDao.getAppointedStudentCount(l.getLessonId()));
+				
+				//添加预约状态
+				if(c != null){
+					if("开放式".equals(l.getCourseType()))
+						ml.setAttendedStatus(appointedDao.findStatus(l.getLessonId(), c.getId()));
+				}
+				lm.add(ml);
+				
 			}
-			
-			//添加舞种，舞种等级
-			Course course;
-			try {
-				course = courseDao.findById(l.getCourseid());
-				ml.setDanceName(course.getDanceDesc());
-				ml.setDanceGrade(course.getDanceGrade());
-			} catch (DataNotFoundException e) {
-				LOG.error(e.getMessage());
-			}
-			
-			//添加封闭式课程的上课人数
-			if("封闭式".equals(l.getCourseType()) && l.getCourseid() != null){
-				ml.setAttendedStudentCount(orderDao.findAttendedStudentCount(l.getCourseid()));
-			}
-			//添加当前预约人数
-			if(l.getCourseType().equals("开放式"))
-				ml.setAppointedStudentCount(appointedDao.getAppointedStudentCount(l.getLessonId()));
-			
-			//添加预约状态
-			if(c != null){
-				if("开放式".equals(l.getCourseType()))
-					ml.setAttendedStatus(appointedDao.findStatus(l.getLessonId(), c.getId()));
-			}
-			lm.add(ml);
-			
+		} catch (DataNotFoundException e1) {
+			e1.printStackTrace();
 		}
+		
+		
 		
 		return wrapLessonWeekList(lm, startDate);
 	}

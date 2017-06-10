@@ -6,6 +6,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.util.Assert;
+
 import com.yinzhiwu.springmvc3.entity.type.MessageType;
 
 @Entity
@@ -40,6 +42,8 @@ public class Message extends BaseEntity {
 	}
 	
 	public Message(Distributer receiver, String content){
+		Assert.notNull(receiver);
+		
 		init();
 		this.receiver = receiver;
 		this.content = content;

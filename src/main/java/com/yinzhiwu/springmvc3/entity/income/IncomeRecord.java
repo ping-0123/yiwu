@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.entity;
+package com.yinzhiwu.springmvc3.entity.income;
 
 import java.util.Date;
 
@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.yinzhiwu.springmvc3.entity.BaseEntity;
+import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.entity.Message;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 import com.yinzhiwu.springmvc3.entity.type.RelationType;
 
@@ -22,11 +25,11 @@ public class IncomeRecord extends BaseEntity {
 	private static final long serialVersionUID = 4478053780652759400L;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeRecord_event_id"))
-	private Event event;
+	@JoinColumn(nullable=false, foreignKey=@ForeignKey(name="fk_incomeRecord_event_id"))
+	private IncomeEvent incomeEvent;
 	
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeRecord_incomeType_id"))
+	@JoinColumn(nullable=false, foreignKey=@ForeignKey(name="fk_incomeRecord_incomeType_id"))
 	private IncomeType incomeType;
 	
 	private Date recordTimestamp;
@@ -38,7 +41,7 @@ public class IncomeRecord extends BaseEntity {
 	private Float contributedValue;
 	
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeRecord_benificiary_id"))
+	@JoinColumn(nullable=false,foreignKey=@ForeignKey(name="fk_incomeRecord_benificiary_id"))
 	private Distributer benificiary;
 	
 	private Float incomeFactor;
@@ -49,9 +52,9 @@ public class IncomeRecord extends BaseEntity {
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeRecord_relationType_id"))
 	private RelationType con_ben_relation;
 
-	public IncomeRecord(Event event2, IncomeFactor factor, Distributer benificiary) {
+	public IncomeRecord(IncomeEvent event2, IncomeFactor factor, Distributer benificiary) {
 		super.init();
-		this.event = event2;
+		this.incomeEvent = event2;
 		this.incomeType = factor.getIncomeType();
 		this.recordTimestamp = super.getCreateDate();
 		this.contributor = event2.getDistributer();
@@ -62,8 +65,14 @@ public class IncomeRecord extends BaseEntity {
 		this.con_ben_relation = factor.getRelation();
 	}
 
-	public Event getEvent() {
-		return event;
+	public IncomeRecord(){}
+	
+	public Message generateMessage(){
+		try{
+			return this.incomeEvent.generateMessage(this);
+		}catch (Exception e) {
+			return null;
+		}
 	}
 
 	public IncomeType getIncomeType() {
@@ -98,9 +107,6 @@ public class IncomeRecord extends BaseEntity {
 		return con_ben_relation;
 	}
 
-	public void setEvent(Event event) {
-		this.event = event;
-	}
 
 	public void setIncomeType(IncomeType incomeType) {
 		this.incomeType = incomeType;
@@ -132,6 +138,16 @@ public class IncomeRecord extends BaseEntity {
 
 	public void setCon_ben_relation(RelationType con_ben_relation) {
 		this.con_ben_relation = con_ben_relation;
+	}
+
+
+	public IncomeEvent getIncomeEvent() {
+		return incomeEvent;
+	}
+
+
+	public void setIncomeEvent(IncomeEvent incomeEvent) {
+		this.incomeEvent = incomeEvent;
 	}
 	
 	

@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.entity;
+package com.yinzhiwu.springmvc3.entity.income;
 
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -6,6 +6,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.yinzhiwu.springmvc3.entity.BaseEntity;
 import com.yinzhiwu.springmvc3.entity.type.EventType;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 import com.yinzhiwu.springmvc3.entity.type.RelationType;

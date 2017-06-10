@@ -3,8 +3,8 @@ package com.yinzhiwu.springmvc3.service;
 import java.util.List;
 
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.entity.IncomeRecord;
 import com.yinzhiwu.springmvc3.entity.Message;
+import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.MessageApiView;
 

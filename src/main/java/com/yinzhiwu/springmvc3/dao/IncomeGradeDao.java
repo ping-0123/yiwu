@@ -1,6 +1,6 @@
 package com.yinzhiwu.springmvc3.dao;
 
-import com.yinzhiwu.springmvc3.entity.IncomeGrade;
+import com.yinzhiwu.springmvc3.entity.income.IncomeGrade;
 
 public interface IncomeGradeDao extends IBaseDao<IncomeGrade, Integer> {
 

@@ -16,7 +16,7 @@ public interface LessonDao extends IBaseDao<Lesson, Integer> {
 			String teacherName,
 			String danceCatagory,
 			Date startDate,
-			Date endDate);
+			Date endDate) throws DataNotFoundException;
 
 	public int findOrderInCourse(Lesson l);
 }

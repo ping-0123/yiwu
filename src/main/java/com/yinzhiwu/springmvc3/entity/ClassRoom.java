@@ -33,9 +33,9 @@ public class ClassRoom {
 	@Column
 	private Integer minStudentCount;
 	
-	private int sf_create_user;
+	private Integer sf_create_user;
 	
-	private int sf_last_change_user;
+	private Integer sf_last_change_user;
 	
 	private Date sf_create_time;
 	
@@ -46,61 +46,36 @@ public class ClassRoom {
 	private Date sf_last_sync_timeStamp;
 	
 	private Date  sf_last_change_timeStamp;
-	
 
-	public final String getRoomId() {
+	public String getRoomId() {
 		return roomId;
 	}
 
-	public final void setRoomId(String roomId) {
-		this.roomId = roomId;
-	}
-
-	public final String getRoomName() {
+	public String getRoomName() {
 		return roomName;
 	}
 
-	public final void setRoomName(String roomName) {
-		this.roomName = roomName;
-	}
-
-	public final Integer getStoreId() {
+	public Integer getStoreId() {
 		return storeId;
 	}
 
-	public final void setStoreId(Integer storeId) {
-		this.storeId = storeId;
-	}
-
-	public final String getStoreName() {
+	public String getStoreName() {
 		return storeName;
 	}
 
-	public final void setStoreName(String storeName) {
-		this.storeName = storeName;
-	}
-
-	public final Integer getMaxStudentCount() {
+	public Integer getMaxStudentCount() {
 		return maxStudentCount;
 	}
 
-	public final void setMaxStudentCount(Integer maxStudentCount) {
-		this.maxStudentCount = maxStudentCount;
-	}
-
-	public final Integer getMinStudentCount() {
+	public Integer getMinStudentCount() {
 		return minStudentCount;
 	}
 
-	public final void setMinStudentCount(Integer minStudentCount) {
-		this.minStudentCount = minStudentCount;
-	}
-
-	public int getSf_create_user() {
+	public Integer getSf_create_user() {
 		return sf_create_user;
 	}
 
-	public int getSf_last_change_user() {
+	public Integer getSf_last_change_user() {
 		return sf_last_change_user;
 	}
 
@@ -112,7 +87,7 @@ public class ClassRoom {
 		return sf_last_change_time;
 	}
 
-	public int getMachineCode() {
+	public Integer getMachineCode() {
 		return machineCode;
 	}
 
@@ -124,11 +99,35 @@ public class ClassRoom {
 		return sf_last_change_timeStamp;
 	}
 
-	public void setSf_create_user(int sf_create_user) {
+	public void setRoomId(String roomId) {
+		this.roomId = roomId;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	public void setStoreId(Integer storeId) {
+		this.storeId = storeId;
+	}
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+
+	public void setMaxStudentCount(Integer maxStudentCount) {
+		this.maxStudentCount = maxStudentCount;
+	}
+
+	public void setMinStudentCount(Integer minStudentCount) {
+		this.minStudentCount = minStudentCount;
+	}
+
+	public void setSf_create_user(Integer sf_create_user) {
 		this.sf_create_user = sf_create_user;
 	}
 
-	public void setSf_last_change_user(int sf_last_change_user) {
+	public void setSf_last_change_user(Integer sf_last_change_user) {
 		this.sf_last_change_user = sf_last_change_user;
 	}
 
@@ -140,7 +139,7 @@ public class ClassRoom {
 		this.sf_last_change_time = sf_last_change_time;
 	}
 
-	public void setMachineCode(int machineCode) {
+	public void setMachineCode(Integer machineCode) {
 		this.machineCode = machineCode;
 	}
 
@@ -151,8 +150,9 @@ public class ClassRoom {
 	public void setSf_last_change_timeStamp(Date sf_last_change_timeStamp) {
 		this.sf_last_change_timeStamp = sf_last_change_timeStamp;
 	}
+	
 
-
+	
 	
 	
 }

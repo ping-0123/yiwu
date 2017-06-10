@@ -63,6 +63,7 @@
                 <value>com.yinzhiwu.springmvc3.entity</value>
                 <value>com.yinzhiwu.springmvc3.entity.yzw</value>
                 <value>com.yinzhiwu.springmvc3.entity.type</value>
+                <value>com.yinzhiwu.springmvc3.entity.income</value>
             </list>  
         </property>  
         <property name="hibernateProperties">  

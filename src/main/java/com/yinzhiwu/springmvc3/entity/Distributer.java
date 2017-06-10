@@ -31,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.springmvc3.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.springmvc3.enums.Gender;
 import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
 
@@ -40,11 +41,6 @@ import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
  *
  */
 @Entity
-/**
- * 外键命名规则:  fk_{table name}_{foreign key name}
- * 外键列命名规则: {parent table name}_{referenced column name}
- * 唯一键命名规则: uk_{table name}_{unique key name}
- */
 @Table(name="yiwu_distributer", 
 	uniqueConstraints={
 			@UniqueConstraint(name="uk_distributer_memberId", columnNames={"memberId"}),
@@ -61,10 +57,13 @@ public class Distributer extends BaseEntity{
 	 * 
 	 */
 	private static final long serialVersionUID = -8400038437062433347L;
-//	unique=true,
+	
+	/**
+	 * unique=true,
+	 * @Formula("concat('E5', lpad(id,8,'0'))")
+	 * @ColumnDefault("concat('E5', lpad(id,8,'0'))")
+	 */
 	@Column(length=32, nullable=false, updatable=false)
-//	@Formula("concat('E5', lpad(id,8,'0'))")
-//	@ColumnDefault("concat('E5', lpad(id,8,'0'))")
 	private String memberId;
 	
 	
@@ -77,21 +76,28 @@ public class Distributer extends BaseEntity{
 	@Column(length=32)  
 	private String nickName; //默认是会员Id
 	
-//	@Pattern(regexp="(\\p{Alpha}|\\d|_){5,31}")
-//	@NotNull
-//	unique
+	/**
+	 * 	@Pattern(regexp="(\\p{Alpha}|\\d|_){5,31}")
+	 *	@NotNull
+	 *	unique
+	 */
+
 	@Column(length=32, nullable=false, updatable=false)
 	private String account;  //默认是手机号
 	
 	@Column(length=32, nullable=false)
 	private String password;
 	
-//	unique
+	/**
+	 * unique
+	 */
 	@NotNull
 	@Column(length=32,  nullable=false)
 	private String wechatNo;
 	
-//	unique
+	/**
+	 * unique
+	 */
 	@Pattern(regexp="^1\\d{10}$")
 	@Column(length=32, nullable=false)
 	private String phoneNo;
@@ -124,7 +130,6 @@ public class Distributer extends BaseEntity{
 	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="expGrade_id", referencedColumnName="id", 
-//		unique=true,
 		foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
 	private ExpGrade expGrade;
 	
@@ -140,12 +145,7 @@ public class Distributer extends BaseEntity{
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date registedTime;
 	
-//	unique
-	@OneToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	@JoinColumn(name="customer_id", foreignKey=@ForeignKey(
-			name="fk_distributer_customer_id", value = ConstraintMode.NO_CONSTRAINT))
-	private CustomerYzw customer;  //根据手机号码 或者微信号做唯一性关联
-	
+
 
 	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
 	@JoinColumn(name="followedByStore_id", foreignKey=
@@ -156,6 +156,21 @@ public class Distributer extends BaseEntity{
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_distributer_defaultCapitalAccount_id"))
 	private CapitalAccount defaultCapitalAccount;
+	
+	
+	/**
+	 * 根据手机号码 或者微信号做唯一性关联
+	 */
+	@OneToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@JoinColumn(name="customer_id", foreignKey=@ForeignKey(
+			name="fk_distributer_customer_id", value = ConstraintMode.NO_CONSTRAINT))
+	private CustomerYzw customer;  
+	
+	
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
+	@JoinColumn(foreignKey=@ForeignKey(
+			name="fk_distributer_employee_id", value=ConstraintMode.NO_CONSTRAINT))
+	private EmployeeYzw employee;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="superDistributer")
@@ -535,6 +550,41 @@ public class Distributer extends BaseEntity{
 
 	public void setContributedExpRecords(List<ExpRecord> contributedExpRecords) {
 		this.contributedExpRecords = contributedExpRecords;
+	}
+
+
+	public EmployeeYzw getEmployee() {
+		return employee;
+	}
+
+
+	public void setExp(Float exp) {
+		this.exp = exp;
+	}
+
+
+	public void setBrokerage(Float brokerage) {
+		this.brokerage = brokerage;
+	}
+
+
+	public void setFunds(Float funds) {
+		this.funds = funds;
+	}
+
+
+	public void setAccumulativeBrokerage(Float accumulativeBrokerage) {
+		this.accumulativeBrokerage = accumulativeBrokerage;
+	}
+
+
+	public void setAccumulativeFunds(Float accumulativeFunds) {
+		this.accumulativeFunds = accumulativeFunds;
+	}
+
+
+	public void setEmployee(EmployeeYzw employee) {
+		this.employee = employee;
 	}
 
 	

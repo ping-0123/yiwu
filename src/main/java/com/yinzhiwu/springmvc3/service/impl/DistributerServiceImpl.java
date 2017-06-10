@@ -10,7 +10,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.springmvc3.dao.CapitalAccountDao;
@@ -21,7 +20,6 @@ import com.yinzhiwu.springmvc3.dao.ExpGradeDao;
 import com.yinzhiwu.springmvc3.dao.ExpRecordTypeDao;
 import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.entity.type.RelationType;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
@@ -84,17 +82,26 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	
 	@Override
 	public  YiwuJson<DistributerApiView> register(String invitationCode, Distributer distributer){
-		//设置新注册用户的初始值
+		/**
+		 * init new distributer' default properties such as "createTime"
+		 */
 		distributer.init();
 		
-		//验证手机号码是否已注册
+		/**
+		 * verify that the phoneNo has been registered
+		 */
 		if (distributerDao.findCountByPhoneNo(distributer.getPhoneNo()) > 0) 
 			return new YiwuJson<>(distributer.getPhoneNo() + " 该手机号码已经被注册 ");
-		//验证微信号是否已被注册
+		
+		/**
+		 * verify that the wechatNo has been registered
+		 */
 		if(distributerDao.findCountByWechatNo(distributer.getWechatNo())> 0)
 			return new YiwuJson<>(distributer.getWechatNo() + " 该微信号已经被注册 ");
 		
-		//设置经验等级为初始等级
+		/**
+		 * set init exp grade
+		 */
 		distributer.setExpGrade(expGradeDao.findLowestGrade());
 		
 		//设置上级代理
@@ -167,7 +174,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		} catch (DataNotFoundException e) {
 			return new YiwuJson<>(e.getMessage());
 		}
-//		return mYiwuJson;
 	}
 	
 
@@ -332,21 +338,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	}
 
 
-	@Override
-	public Distributer find_by_relation(Distributer distributer, RelationType relation) {
-		Assert.notNull(distributer);
-		Assert.notNull(relation);
-		
-		if(relation.equals(RelationType.SELF_WITH_SELF)){
-			return distributer;
-		}else if(relation.equals(RelationType.SELF_WITH_SUPERIOR)) {
-			return distributer.getSuperDistributer();
-		}else if(relation.equals(RelationType.SELF_WITH_GRAND)) {
-			if(distributer.getSuperDistributer() != null)
-				return distributer.getSuperDistributer().getSuperDistributer();
-		}
-		return null;
-	}
 
 
 	

@@ -28,7 +28,7 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Lesson> findLessonWeekList(int storeId, String courseType, String teacherName, String danceCatagory,
-			Date startDate, Date endDate) {
+			Date startDate, Date endDate) throws DataNotFoundException {
 
 			StringBuilder hql = new StringBuilder(""
 					+ " FROM Lesson l"
@@ -38,18 +38,25 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
 				hql.append(" and storeId =" +  storeId);
 			if (courseType !="" && courseType !=null)
 				hql.append(" and courseType = '" + courseType.replaceAll("\\s*", "") + "'");
-			if(teacherName !="" && teacherName !=null)
-				hql.append(" and dueTeacherName like '%" + teacherName.replaceAll("\\s*", "") + "%'");
+			if(teacherName !="" && teacherName !=null){
+//				hql.append(" and (dueTeacherName like '%" + teacherName.replaceAll("\\s*", "") + "%'");
+//				hql.append(" or actualTeacherName like '%" +  teacherName.replaceAll("\\s*", "") + "%')" );
+				hql.append(" and (dueTeacherName ='" + teacherName + "'");
+				hql.append(" or actualTeacherName ='" +  teacherName + "')" );
+			}
 			if(danceCatagory !="" && danceCatagory !=null)
 				hql.append(" and lessonDesc like '%" + danceCatagory.replaceAll("\\s*", "") + "%'");
 			
 			hql.append(" order by lessonDate, startTime");
 			
 //			LOG.info(getHibernateTemplate().getSessionFactory().getCurrentSession().hashCode());
-			return (List<Lesson>) getHibernateTemplate().findByNamedParam(
+			List<Lesson> lessons = (List<Lesson>) getHibernateTemplate().findByNamedParam(
 					hql.toString(), 
 					new String[]{"startDate","endDate"}, 
 					new Object[]{startDate,endDate});
+			if(null==lessons || lessons.size()==0)
+				throw new DataNotFoundException();
+			return lessons;
 	}
 
 	@SuppressWarnings("unchecked")

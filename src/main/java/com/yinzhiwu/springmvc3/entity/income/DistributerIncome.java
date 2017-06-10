@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.entity;
+package com.yinzhiwu.springmvc3.entity.income;
 
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -7,6 +7,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.yinzhiwu.springmvc3.entity.BaseEntity;
+import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 
 @Entity
@@ -43,6 +45,8 @@ public class DistributerIncome extends BaseEntity {
 		this.incomeGrade = incomeGrade;
 	}
 
+	public  DistributerIncome(){}
+	
 	@Override
 	public void init() {
 		super.init();

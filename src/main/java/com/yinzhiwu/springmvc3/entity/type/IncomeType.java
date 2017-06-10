@@ -12,11 +12,11 @@ public class IncomeType  extends BaseType{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static final IncomeType EXP = new IncomeType("EXP");
+	public static final IncomeType EXP = new IncomeType(10012,"EXP");
 	
-	public static final IncomeType FUNDS = new IncomeType("FUNDS");
+	public static final IncomeType FUNDS = new IncomeType(10013,"FUNDS");
 	
-	public static final IncomeType BROKERAGE = new IncomeType("BROKERAGE");
+	public static final IncomeType BROKERAGE = new IncomeType(10014,"BROKERAGE");
 
 	
 	public IncomeType() {
@@ -27,6 +27,10 @@ public class IncomeType  extends BaseType{
 		super(name);
 	}
 	
+	public IncomeType(int i, String string) {
+		super(i,string);
+	}
+
 	public boolean equals(IncomeType  another)
 	{
 		if(another == null)

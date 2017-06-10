@@ -67,7 +67,6 @@
 				<bean class="com.yinzhiwu.springmvc3.convert.StringToDateConvertor">
 					<constructor-arg type="java.lang.String" value="yyyy-MM-dd"/>
 				</bean>
-				<bean class="com.yinzhiwu.springmvc3.convert.StringToCustomerConvertor"></bean>
 			</list>
 		</property>
 	</bean>

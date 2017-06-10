@@ -3,7 +3,7 @@ package com.yinzhiwu.springmvc3.dao.impl;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.IncomeGradeDao;
-import com.yinzhiwu.springmvc3.entity.IncomeGrade;
+import com.yinzhiwu.springmvc3.entity.income.IncomeGrade;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Repository
