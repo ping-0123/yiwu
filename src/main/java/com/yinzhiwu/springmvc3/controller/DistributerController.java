@@ -56,6 +56,7 @@ public class DistributerController extends BaseController {
 		dataBinder.setDisallowedFields("birthDay");
 	}
 
+	@Deprecated
 	@RequestMapping(value="/register", method={RequestMethod.POST})
 	public YiwuJson<DistributerApiView> register(String invitationCode,
 										@Valid @ModelAttribute Distributer distributer,
@@ -84,7 +85,7 @@ public class DistributerController extends BaseController {
 		}
 	}
 	
-	@RequestMapping(value="/loginByWechat", method={RequestMethod.POST,RequestMethod.GET})
+	@PostMapping(value="/loginByWechat")
 	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String  wechatNo ){
 		return distributerService.loginByWechat(wechatNo);
 	}
@@ -95,10 +96,18 @@ public class DistributerController extends BaseController {
 		return distributerService.loginByAccount(account,password);
 	}
 	
+	@Deprecated
 	@GetMapping(value="/getById/{id}")
 	public YiwuJson<DistributerApiView> getDistributerInfo(@PathVariable int id){
 		return distributerService.findById(id);
 	}
+	
+	
+	@GetMapping(value="/{id}")
+	public YiwuJson<DistributerApiView> doGet(@PathVariable int id){
+		return distributerService.findById(id);
+	}
+	
 	
 	@PostMapping(value="/modifyHeadIcon")
 	public YiwuJson<DistributerApiView>  modifyHeadIcon(HttpServletRequest servletRequest,
@@ -185,6 +194,7 @@ public class DistributerController extends BaseController {
    public YiwuJson<List<DistributerRegisterApiView>> findSecondariesRegisterRecords(int distributerId){
 	   return distributerService.findSecondariesRegisterRecords(distributerId);
    }
+   
    
    @RequestMapping(value="/{id}", method={RequestMethod.PUT, RequestMethod.POST})
    public YiwuJson<Boolean> modify(Distributer d, @PathVariable int id){

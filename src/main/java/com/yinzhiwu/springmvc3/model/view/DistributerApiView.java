@@ -87,6 +87,9 @@ public class DistributerApiView implements Serializable{
 			this.customerId = customer.getId();
 	}
 	
+	
+	
+	
 	public DistributerApiView(Distributer d, Float rate){
 		try{
 			this.id = d.getId();

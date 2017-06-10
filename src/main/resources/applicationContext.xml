@@ -64,6 +64,7 @@
                 <value>com.yinzhiwu.springmvc3.entity.yzw</value>
                 <value>com.yinzhiwu.springmvc3.entity.type</value>
                 <value>com.yinzhiwu.springmvc3.entity.income</value>
+                  <value>com.yinzhiwu.springmvc3.deprecated</value>
             </list>  
         </property>  
         <property name="hibernateProperties">  

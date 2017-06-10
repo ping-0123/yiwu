@@ -167,4 +167,20 @@ public class DistributerServiceImplTwo  extends DistributerServiceImpl implement
 	}
 	
 	
+
+	@Override
+	public YiwuJson<DistributerApiView> findById(int id) {
+		try{
+			Distributer distributer = distributerDao.get(id);
+			float rate = distributerIncomeDao.get_beat_rate(
+					IncomeType.EXP,
+					distributer.getDistributerIncome(IncomeType.EXP).getIncome());
+			return new YiwuJson<>(new DistributerApiView(distributer, rate));
+		}catch (DataNotFoundException e) {
+			return new YiwuJson<>(e.getMessage());
+		}
+	}
+
+	
+	
 }
