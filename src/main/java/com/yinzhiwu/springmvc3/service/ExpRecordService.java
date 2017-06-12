@@ -3,7 +3,6 @@ package com.yinzhiwu.springmvc3.service;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.ExpRecord;
 import com.yinzhiwu.springmvc3.entity.ShareTweet;
-import com.yinzhiwu.springmvc3.entity.Tweet;
 
 public interface ExpRecordService extends IBaseService<ExpRecord, Integer>{
 	

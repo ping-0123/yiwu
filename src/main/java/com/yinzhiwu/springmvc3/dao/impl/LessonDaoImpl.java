@@ -36,7 +36,7 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
 					+ " and courseType <> '私教课'");
 			if (storeId > 0)
 				hql.append(" and storeId =" +  storeId);
-			if (courseType !="" && courseType !=null)
+			if (courseType !=""  && courseType !=null && courseType != "全部")
 				hql.append(" and courseType = '" + courseType.replaceAll("\\s*", "") + "'");
 			if(teacherName !="" && teacherName !=null){
 //				hql.append(" and (dueTeacherName like '%" + teacherName.replaceAll("\\s*", "") + "%'");

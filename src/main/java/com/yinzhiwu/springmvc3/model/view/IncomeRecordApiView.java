@@ -2,17 +2,23 @@ package com.yinzhiwu.springmvc3.model.view;
 
 import java.util.Date;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
 
 public class IncomeRecordApiView {
+	
+	private static Log LOG = LogFactory.getLog(IncomeRecordApiView.class);
 
 	private int id;
 	
 	@JsonFormat(pattern="yyyy/MM/dd")
 	private Date date;
+	
+	private String eventTypeName;
 	
 	private String memberName;
 	
@@ -26,7 +32,10 @@ public class IncomeRecordApiView {
 	
 	private float payedAmount;
 	
+	private float currentValue;
+	
 	private float factor;
+	
 	
 	public IncomeRecordApiView(){}
 	
@@ -36,6 +45,10 @@ public class IncomeRecordApiView {
 		
 		this.id = r.getId();
 		this.date = r.getRecordTimestamp();
+		try{this.eventTypeName = r.getIncomeEvent().getType().getName();
+		}catch (Exception e) {
+			LOG.error(e.getMessage());}
+		
 		this.memberId = r.getContributor().getMemberId();
 		this.memberName = r.getContributor().getName();
 		if(r.getContributor().getSuperDistributer() != null)
@@ -44,6 +57,7 @@ public class IncomeRecordApiView {
 			this.incomeTypeName = r.getIncomeType().getName();
 		this.incomeValue = r.getIncomeValue();
 		this.payedAmount = r.getContributedValue();
+		this.currentValue = r.getCurrentValue();
 		this.factor = r.getIncomeFactor();
 	}
 
@@ -121,6 +135,25 @@ public class IncomeRecordApiView {
 	public void setIncomeTypeName(String incomeTypeName) {
 		this.incomeTypeName = incomeTypeName;
 	}
+
+	public String getEventTypeName() {
+		return eventTypeName;
+	}
+
+
+	public void setEventTypeName(String eventTypeName) {
+		this.eventTypeName = eventTypeName;
+	}
+
+	public float getCurrentValue() {
+		return currentValue;
+	}
+
+	public void setCurrentValue(float currentValue) {
+		this.currentValue = currentValue;
+	}
+
+
 	
 	
 	
