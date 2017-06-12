@@ -12,7 +12,7 @@ import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.ShareTweetEventService;
 
 @RestController
-@RequestMapping("/api/shareTweet")
+@RequestMapping("/api/event/shareTweet")
 public class ShareTweetController extends BaseController {
 
 	@Autowired

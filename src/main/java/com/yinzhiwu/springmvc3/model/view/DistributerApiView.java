@@ -91,25 +91,40 @@ public class DistributerApiView implements Serializable{
 	
 	
 	public DistributerApiView(Distributer d, Float rate){
+		this.id = d.getId();
+		this.name = d.getName();
+		this.nickName = d.getNickName();
+		this.phoneNo = d.getPhoneNo();
+		this.memeberId = d.getMemberId();
+		this.shareCode = d.getShareCode();
+		this.headIconUrl = UrlUtil.toHeadIcomUrl(d.getHeadIconName());
+		this.registerDate = d.getRegistedTime();
+		this.beatRate = rate;
+		
 		try{
-			this.id = d.getId();
-//			this.expGradeNo = d.getExpGrade().getGradeNo();
-			this.name = d.getName();
-			this.nickName = d.getNickName();
-			this.phoneNo = d.getPhoneNo();
-			this.memeberId = d.getMemberId();
-			this.shareCode = d.getShareCode();
-			this.headIconUrl = UrlUtil.toHeadIcomUrl(d.getHeadIconName());
-			this.registerDate = d.getRegistedTime();
-			this.beatRate = rate;
 			this.brokerage = d.getDistributerIncome(IncomeType.BROKERAGE).getIncome();
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+		}
+		
+		try{
 			this.funds = d.getDistributerIncome(IncomeType.FUNDS).getIncome();
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+		}
+		
+		try{
 			this.expGradeNo = d.getDistributerIncome(IncomeType.EXP).getIncomeGrade().getGradeNo();
 			this.neededExpForUpdate = d.getDistributerIncome(IncomeType.EXP).getIncomeGrade().getUpgradeNeededValue()
 					-d.getDistributerIncome(IncomeType.EXP).getIncome();
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+		}
+		
+		try{
 			this.customerId = d.getCustomer().getId();
 		}catch (Exception e) {
-			LOG.error(e);
+			LOG.equals(e.getMessage());
 		}
 	}
 

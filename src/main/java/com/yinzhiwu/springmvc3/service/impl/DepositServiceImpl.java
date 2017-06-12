@@ -1,16 +1,19 @@
 package com.yinzhiwu.springmvc3.service.impl;
 
-import org.hibernate.mapping.DependantValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.springmvc3.dao.DepositDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
+import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
+import com.yinzhiwu.springmvc3.dao.ProductYzwDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.income.DepositEvent;
 import com.yinzhiwu.springmvc3.entity.type.EventType;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
+import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
+import com.yinzhiwu.springmvc3.entity.yzw.ProductYzw;
 import com.yinzhiwu.springmvc3.service.DepositService;
 import com.yinzhiwu.springmvc3.service.IncomeEventService;
 
@@ -20,6 +23,10 @@ public class DepositServiceImpl extends BaseServiceImpl<DepositEvent, Integer> i
 	@Autowired private IncomeEventService incomeEventService;
 	
 	@Autowired private DistributerDao distributerDao;
+	
+	@Autowired private OrderYzwDao orderDao;
+	
+	@Autowired private ProductYzwDao productDao;
 	
 	@Autowired
 	public  void setBaseDao(DepositDao depositDao){
@@ -37,7 +44,7 @@ public class DepositServiceImpl extends BaseServiceImpl<DepositEvent, Integer> i
 
 	
 	@Override
-	public void payDeposit(int distributerId, float amount, boolean fundsFirst) throws Exception{
+	public void saveDeposit(int distributerId, float amount, boolean fundsFirst) throws Exception{
 		if(amount<=0)
 			throw new Exception("请输入非负的定金金额");
 		Distributer distributer = distributerDao.get(distributerId);
@@ -47,6 +54,8 @@ public class DepositServiceImpl extends BaseServiceImpl<DepositEvent, Integer> i
 		 */
 		float brokerage = 0f;
 		float funds = 0f;
+		DepositEvent fundsDepoist  = null;
+		DepositEvent brokerageDeposit = null;
 		try{
 			brokerage = distributer.getDistributerIncome(IncomeType.BROKERAGE).getIncome();
 			funds = distributer.getDistributerIncome(IncomeType.FUNDS).getIncome();
@@ -54,25 +63,44 @@ public class DepositServiceImpl extends BaseServiceImpl<DepositEvent, Integer> i
 			logger.debug(e.getMessage());
 		}
 		if(amount >(brokerage + funds))
-			throw new Exception("您的账户佣金余额不足以支付定金");
+			throw new Exception("您的账户资金余额不足以支付定金");
 
+		/**
+		 * save in order
+		 */
+		ProductYzw product;
+		if(distributer.isAudit())
+			product = productDao.get_audit_deposit_product();
+		else
+			product = productDao.get_children_deposit_product();
+		OrderYzw order = new OrderYzw(
+				distributer.getCustomer(), product, amount,distributer.getFollowedByStore());
+		orderDao.save(order);
 		
+		/**
+		 * save deposit event
+		 */
 		if(! fundsFirst){
 			if(amount > brokerage)
 				throw new Exception("您的账户佣金余额不足");
-			DepositEvent e = new DepositEvent(distributer, EventType.PAY_DEPOSIT_BY_BROKERAGE,amount);
-			incomeEventService.save(e);
+			brokerageDeposit = new DepositEvent(
+					distributer, EventType.PAY_DEPOSIT_BY_BROKERAGE,amount,order);
+			incomeEventService.save(brokerageDeposit);
 		}else if(amount <= funds){
-			DepositEvent e = new DepositEvent(distributer, EventType.PAY_DEPOSIT_BY_FUNDS, amount);
-			incomeEventService.save(e);
+			fundsDepoist= new DepositEvent(
+					distributer, EventType.PAY_DEPOSIT_BY_FUNDS, amount,order);
+			incomeEventService.save(fundsDepoist);
 		}else{
 			float fundsAmount = funds;
 			float brokerageAmount = amount -funds;
-			DepositEvent e1 = new DepositEvent(distributer,EventType.PAY_DEPOSIT_BY_FUNDS,fundsAmount);
-			DepositEvent e2 = new DepositEvent(distributer, EventType.PAY_DEPOSIT_BY_BROKERAGE,brokerageAmount);
-			incomeEventService.save(e1);
-			incomeEventService.save(e2);
+			fundsDepoist = new DepositEvent(
+					distributer,EventType.PAY_DEPOSIT_BY_FUNDS,fundsAmount,order);
+			brokerageDeposit = new DepositEvent(
+					distributer, EventType.PAY_DEPOSIT_BY_BROKERAGE,brokerageAmount,order);
+			incomeEventService.save(fundsDepoist);
+			incomeEventService.save(brokerageDeposit);
 		}
+		
 		
 	}
 }

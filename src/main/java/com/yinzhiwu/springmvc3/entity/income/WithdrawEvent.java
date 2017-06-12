@@ -33,6 +33,11 @@ public class WithdrawEvent extends IncomeEvent{
 		super(distributer, type, param);
 	}
 	
+	public WithdrawEvent(Distributer distributer, EventType type, Float param,CapitalAccount capitalAccount) {
+		super(distributer, type, param);
+		this.capitalAccount = capitalAccount;
+	}
+	
 	public WithdrawEvent() {}
 
 	@Override
@@ -58,6 +63,9 @@ public class WithdrawEvent extends IncomeEvent{
 	public void setCapitalAccount(CapitalAccount capitalAccount) {
 		this.capitalAccount = capitalAccount;
 	}
+
+
+	
 
 
 

@@ -2,6 +2,7 @@ package com.yinzhiwu.springmvc3.entity.yzw;
 
 
 import java.sql.Blob;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -18,6 +19,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.util.Assert;
+
+import com.yinzhiwu.springmvc3.entity.Distributer;
 
 
 @Entity
@@ -158,6 +162,50 @@ public class OrderYzw extends BaseYzwEntity {
 	public OrderYzw() {
 	}
 
+	
+	public OrderYzw(CustomerYzw cust, ProductYzw product, float payAmount, DepartmentYzw dept){
+		Assert.notNull(cust);
+		Assert.notNull(product);
+		
+		this.product = product;
+		this.customer = cust;
+		this.memberCardNo = cust.getMemberCard();
+		this.markedPrice =(float) product.getMarkedPrice();
+		this.count = 1;
+		this.payedAmount = payAmount;
+		this.discount = (payedAmount/this.markedPrice);
+		this.setStore(dept);
+		this.vipAttr="推荐会员";
+		
+		Contract contract = new Contract();
+		contract.setStatus("已审核");
+		contract.setValidityTimes(product.getUsefulTimes());
+		 Calendar calendar = Calendar.getInstance();
+		contract.setStart(calendar.getTime());
+		 calendar.add(Calendar.MONTH, product.getUsefulLife());
+		contract.setEnd(calendar.getTime());
+		
+		contract.setRemainTimes(product.getUsefulTimes());
+		if("成人".equals(cust.getAddress())){
+			contract.setType("开放式");
+			contract.setSubType("开放式B");
+		}else {
+			contract.setType("封闭式");
+			contract.setSubType("封闭式");
+		}
+		contract.setValidStoreIds("61; 62; 63; 64; 65; 66; 67; 68; 69");
+		
+		this.contract = contract;
+		
+	}
+	
+	
+	@Override
+	public void init(){
+		super.init();
+		this.payedDate = super.getCreateTime();
+	}
+	
 	public String getId() {
 		return id;
 	}

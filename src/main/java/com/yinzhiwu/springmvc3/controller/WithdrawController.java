@@ -6,23 +6,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.springmvc3.model.YiwuJson;
-import com.yinzhiwu.springmvc3.service.DepositService;
+import com.yinzhiwu.springmvc3.service.WithdrawEventService;
 
 @RestController
-@RequestMapping("/api/event/deposit")
-public class DepositController extends BaseController{
-
+@RequestMapping("/api/event/withdraw")
+public class WithdrawController extends BaseController {
+	
 	@Autowired
-	private DepositService depositService;
+	private WithdrawEventService withdrawEventService;
 	
 	@PostMapping
-	public YiwuJson<Boolean> payDeposit(int distributerId,  float amount, boolean fundsFirst){
+	public YiwuJson<Boolean> withdraw(int distributerId, int accountId, float amount){
 		try{
-			depositService.saveDeposit(distributerId , amount, fundsFirst);
+			withdrawEventService.saveWithdraw(distributerId, accountId,amount);
 		}catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 		
 		return new YiwuJson<>(new Boolean(true));
 	}
+
 }

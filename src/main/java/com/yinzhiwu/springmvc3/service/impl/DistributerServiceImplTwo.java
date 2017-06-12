@@ -8,9 +8,7 @@ import com.yinzhiwu.springmvc3.dao.CustomerYzwDao;
 import com.yinzhiwu.springmvc3.dao.DepartmentYzwDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.DistributerIncomeDao;
-import com.yinzhiwu.springmvc3.dao.IncomeGradeDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.entity.income.DistributerIncome;
 import com.yinzhiwu.springmvc3.entity.income.RegisterEvent;
 import com.yinzhiwu.springmvc3.entity.type.EventType;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
@@ -41,9 +39,7 @@ public class DistributerServiceImplTwo  extends DistributerServiceImpl implement
 	@Autowired
 	private DistributerIncomeDao distributerIncomeDao;
 	
-	@Autowired
-	private IncomeGradeDao incomeGradeDao;
-	
+
 	@Override
 	public YiwuJson<DistributerApiView> register(String invitationCode, Distributer distributer) {
 		
@@ -114,7 +110,7 @@ public class DistributerServiceImplTwo  extends DistributerServiceImpl implement
 		
 		/**
 		 * init new distributer's incomes
-		 */
+		
 		DistributerIncome exp  = new DistributerIncome(distributer, IncomeType.EXP, 
 				incomeGradeDao.find_lowest_grade_by_income_type(IncomeType.EXP.getId()));
 		DistributerIncome funds = new DistributerIncome(distributer, IncomeType.FUNDS,
@@ -127,7 +123,7 @@ public class DistributerServiceImplTwo  extends DistributerServiceImpl implement
 		distributer.getDistributerIncomes().add(exp);
 		distributer.getDistributerIncomes().add(brokerage);
 		distributer.getDistributerIncomes().add(funds);
-		
+		 */
 	
 		
 		/**
@@ -163,7 +159,11 @@ public class DistributerServiceImplTwo  extends DistributerServiceImpl implement
 		/*
 		 * return dto
 		 */
-		 return new YiwuJson<>(new DistributerApiView(distributer,beatRate));
+		try {
+			return new YiwuJson<>(new DistributerApiView(distributerDao.get(distributer.getId()),beatRate));
+		} catch (DataNotFoundException e) {
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 	
 	
