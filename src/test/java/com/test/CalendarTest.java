@@ -23,19 +23,6 @@ public class CalendarTest {
 		System.out.println("aa\nbb\n");
 	}
 
-	@Test
-	public void testDateCompare(){
-		Date today = new Date();
-		Date past = new Date(1989, 12,27);
-		
-		Calendar t = Calendar.getInstance();
-		Calendar p = Calendar.getInstance();
-		p.setTime(past);
-		t.add(Calendar.YEAR, -18);
-		System.out.println(t.getTime());
-		System.out.println(t.compareTo(p));
-	}
-
 	
 	@Test
 	public void testDate(){
@@ -44,20 +31,7 @@ public class CalendarTest {
 		System.out.println(date);
 	}
 	
-	@Test
-	public void truncateDate(){
-		Date date = new Date();
-		System.out.println(MILLISESONDS_OF_ONE_DAY);
-		System.out.println(DATE_FOMATE.format(date));
-		System.out.println(date.getTime()/MILLISESONDS_OF_ONE_DAY);
-		System.out.println(date.getTime());
-		System.out.println((date.getTime()/MILLISESONDS_OF_ONE_DAY)*MILLISESONDS_OF_ONE_DAY);
-		Date date1 = new Date((date.getTime()/MILLISESONDS_OF_ONE_DAY)*MILLISESONDS_OF_ONE_DAY);
-		System.out.println(DATE_FOMATE.format(date1));
-		System.out.println(DATE_FOMATE.format(new Date(1495162181191L)));
-		System.out.println(new Date(2017,5,19).getTime());
-		System.out.println(DATE_FOMATE.format(new Date(2017,5,19)));
-	}
+	
 	
 	@Test 
 	public void truncateDate2(){

@@ -1,6 +1,7 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -19,12 +20,14 @@ public class ShareTweetEventDaoImpl extends BaseDaoImpl<ShareTweetEvent, Integer
 		
 		StringBuilder hql =new StringBuilder("select count(*) from ShareTweetEvent where distributer.id = :distributerId");
 		hql.append(" and occurTime between :start and :end");
-		
-		return (long) getHibernateTemplate().findByNamedParam(
-					hql.toString(),
-					new String[]{"distributerId", "start", "end"}, 
-					new Object[]{distributerId, CalendarUtil.getDayBegin(occurTime), occurTime})
-				.get(0);
+		@SuppressWarnings("unchecked")
+		List<Long> longs = (List<Long>) getHibernateTemplate().findByNamedParam(
+				hql.toString(),
+				new String[]{"distributerId", "start", "end"}, 
+				new Object[]{distributerId, CalendarUtil.getDayBegin(occurTime), occurTime});
+		if(null == longs || longs.size() ==0)
+			return 0;
+		return longs.get(0);
 	}
 
 }
