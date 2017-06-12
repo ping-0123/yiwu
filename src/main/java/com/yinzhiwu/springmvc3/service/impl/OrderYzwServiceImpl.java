@@ -65,17 +65,6 @@ public class OrderYzwServiceImpl  extends BaseServiceImpl<OrderYzw,String> imple
 		}
 	}
 
-	@Override
-	public List<String> findContractNosByCustomerId(int customerId) {
-		List<OrderYzw> orders = orderDao.findByCustomerId(customerId);
-		if(orders == null || orders.size() ==0)
-			return null;
-		List<String> contractNos = new ArrayList<>();
-		for (OrderYzw o : orders) {
-			if(o.getContract() != null)
-				contractNos.add(o.getContract().getContractNo());
-		}
-		return contractNos;
-	}
+
 
 }

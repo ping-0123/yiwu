@@ -146,4 +146,11 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	public PageBean<T> findPage(T entity, int pageNum, int pageSize){
 		return null;
 	}
+
+	@Override
+	public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception {
+		return baseDao.findCountByProperties(propertyNames, values);
+	}
+	
+	
 }

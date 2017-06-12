@@ -24,8 +24,6 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 	@Autowired
 	private OrderYzwDao orderDao;
 	
-	@Autowired
-	private OrderYzwService orderService;
 	
 	@Autowired
 	public void setBaseDao(CheckInsYzwDao checkInsYzwDao)
@@ -35,14 +33,14 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 
 	@Override
 	public YiwuJson<Integer> findCountByCustomerId(int customerId) {
-		List<String> contractNos = orderService.findContractNosByCustomerId(customerId);
+		List<String> contractNos = orderDao.find_contractNos_by_customer_id(customerId);
 		int count = checkInsYzwDao.findCountByContractNos(contractNos);
 		return new YiwuJson<>(new Integer(count));
 	}
 
 	@Override
 	public YiwuJson<List<LessonApiView>> findByCustomerId(int customerId) {
-		List<String> contractNos = orderService.findContractNosByCustomerId(customerId);
+		List<String> contractNos = orderDao.find_contractNos_by_customer_id(customerId);
 		List<LessonYzw> lessons = checkInsYzwDao.findByContractNos(contractNos);
 		if(lessons == null || lessons.size() == 0)
 			return new YiwuJson<>("没有上课记录");

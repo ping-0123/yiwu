@@ -25,6 +25,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -60,6 +62,8 @@ public class Distributer extends BaseEntity{
 	 * 
 	 */
 	private static final long serialVersionUID = -8400038437062433347L;
+	
+	private static final Log LOG = LogFactory.getLog(Distributer.class);
 	
 	/**
 	 * unique=true,
@@ -272,6 +276,7 @@ public class Distributer extends BaseEntity{
 	
 	public  DistributerIncome getDistributerIncome(IncomeType type){
 		List<DistributerIncome> incomes = this.getDistributerIncomes();
+		LOG.info(incomes.size());
 		for (DistributerIncome income : incomes) {
 			if(type.equals(income.getIncomeType()))
 				return income;

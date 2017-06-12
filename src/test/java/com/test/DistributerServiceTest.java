@@ -22,13 +22,18 @@ public class DistributerServiceTest {
 	
 	@Test
 	public void saveRegister(){
-		Distributer d = new Distributer();
-		d.setPhoneNo("18803332928");
-		d.setPassword("suning0987");
-		d.setGender(Gender.FEMALE);
-		d.setWechatNo("wechatNo004");
+		String phonePre = "18803332";
+		String wechatNoPre = "wechatNo";
+		for(int i=101; i<120; i++){
+			Distributer d = new Distributer();
+			d.setPhoneNo(phonePre + String.format("%03d",i));
+			d.setPassword("suning0987");
+			d.setGender(Gender.FEMALE);
+			d.setWechatNo(wechatNoPre +  String.format("%03d",i));
+			
+			String invatationCode = "e3ibzofv";
+			distributerService.register(invatationCode, d);
+		}
 		
-		String invatationCode = "5onx529d";
-		distributerService.register(invatationCode, d);
 	}
 }

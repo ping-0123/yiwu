@@ -58,8 +58,14 @@ public class TweetController {
 		return tweetService.findByTypeByFuzzyTitle(tweetTypeId, title);
 	}
 	
+	@Deprecated
 	@GetMapping("/id/{id}")
 	public YiwuJson<TweetApiView> findById(@PathVariable int id){
+		return tweetService.findById(id);
+	}
+	
+	@GetMapping("/{id}")
+	public YiwuJson<TweetApiView> doGet(@PathVariable int id){
 		return tweetService.findById(id);
 	}
 }

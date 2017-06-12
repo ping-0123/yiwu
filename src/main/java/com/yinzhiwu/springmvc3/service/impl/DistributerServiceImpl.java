@@ -236,7 +236,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			return new YiwuJson<>(new CapitalAccountApiView(defaultAccount));
 	
 		}catch (Exception e) {
-			e.printStackTrace();
 			return new YiwuJson<>(e.getMessage());
 		}
 	}

@@ -17,9 +17,15 @@ public class CourseController {
 	@Autowired
 	private CourseYzwService courseYzwService;
 	
+	@Deprecated
 	@GetMapping("/id{id}")
 	public YiwuJson<CourseApiView> findById(@PathVariable String id){
 		return courseYzwService.findById(id);
 	}
 	
+	
+	@GetMapping("/{id}")
+	public YiwuJson<CourseApiView> doGet(@PathVariable String id){
+		return courseYzwService.findById(id);
+	}
 }

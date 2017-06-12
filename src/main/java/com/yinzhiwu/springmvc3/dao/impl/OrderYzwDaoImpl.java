@@ -126,6 +126,15 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 		}
 		
 	}
+
+	
+	@Override
+	public List<String> find_contractNos_by_customer_id(int customerId) {
+		String hql = "select contract.contractNo from OrderYzw t1 where t1.customer.id = :customerId";
+		@SuppressWarnings("unchecked")
+		List<String> constractNos = (List<String>) getHibernateTemplate().findByNamedParam(hql, "customerId", customerId);
+		return constractNos;
+	}
 	
 	
 	

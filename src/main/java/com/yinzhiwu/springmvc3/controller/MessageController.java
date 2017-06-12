@@ -28,8 +28,16 @@ public class MessageController {
 	}
 	
 	
+	@Deprecated
 	@GetMapping("/id/{id}")
 	public YiwuJson<MessageApiView> findById(@PathVariable int id){
+		if(id<=0)
+			return new YiwuJson<>("message id must be more than zero");
+		return messageService.findById(id);
+	}
+	
+	@GetMapping("/{id}")
+	public YiwuJson<MessageApiView> doGet(@PathVariable int id){
 		if(id<=0)
 			return new YiwuJson<>("message id must be more than zero");
 		return messageService.findById(id);

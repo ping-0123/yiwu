@@ -21,6 +21,8 @@ public interface IBaseService<T, PK extends Serializable> {
 	
 	public int findCountByProperty(String propertyName, Object value);
 	
+	public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception;
+	
 	public List<T> findByProperties(Map<String, Object> propertyMap) throws DataNotFoundException;
 	
 	public List<T> findByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException;

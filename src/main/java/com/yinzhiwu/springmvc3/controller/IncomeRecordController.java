@@ -54,4 +54,16 @@ public class IncomeRecordController extends BaseController{
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
+	
+	@GetMapping("/count")
+	public YiwuJson<Integer> getCount(int observerId, int eventTypeId,int relationTypeId, int incomeTypeId){
+		try {
+			int count = incomeRecordService.findCountByProperties(
+					new String[]{"benificiary.id", "incomeEvent.type.id", "con_ben_relation.id", "incomeType.id"}, 
+					new Object[]{observerId,eventTypeId,relationTypeId,incomeTypeId});
+			return new YiwuJson<>(new Integer(count));
+		} catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
+	}
 }
