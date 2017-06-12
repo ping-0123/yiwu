@@ -14,7 +14,7 @@ import com.yinzhiwu.springmvc3.service.ShareTweetService;
 
 @RestController
 @RequestMapping("/api/tweet/share")
-public class ShareTweetController {
+public class ShareTweetControlle2 {
 
 	@Autowired
 	private ShareTweetService shareTweetService;
