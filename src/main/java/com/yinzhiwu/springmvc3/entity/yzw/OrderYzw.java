@@ -21,8 +21,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.Assert;
 
-import com.yinzhiwu.springmvc3.entity.Distributer;
-
 
 @Entity
 @Table(name="vorder")

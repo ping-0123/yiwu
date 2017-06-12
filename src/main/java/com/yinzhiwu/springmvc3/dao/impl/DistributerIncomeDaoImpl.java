@@ -35,4 +35,17 @@ public class DistributerIncomeDaoImpl extends BaseDaoImpl<DistributerIncome, Int
 		return counts.get(0)/(float)sumCount;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Float findCurrentValue(Integer distributerId, Integer incomeTypeId) {
+		String hql = "select income from DistributerIncome where distributer.id=:distributerId and incomeType.id = :incomeTypeId";
+		List<Float> floats = (List<Float>) getHibernateTemplate().findByNamedParam(
+				hql, 
+				new String[]{"distributerId","incomeTypeId"}, 
+				new Object[]{distributerId, incomeTypeId});
+		if(floats.size() ==0 || null == floats)
+			return 0f;
+		return floats.get(0);
+	}
+
 }

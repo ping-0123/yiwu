@@ -5,15 +5,12 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.IncomeEventDao;
 import com.yinzhiwu.springmvc3.entity.income.IncomeEvent;
-import com.yinzhiwu.springmvc3.entity.income.ShareTweetEvent;
 import com.yinzhiwu.springmvc3.service.IncomeEventService;
 import com.yinzhiwu.springmvc3.service.IncomeRecordService;
 
 @Service
 public class IncomeEventServiceImpl extends BaseServiceImpl<IncomeEvent, Integer> implements IncomeEventService {
 	
-	@Autowired
-	private IncomeEventDao incomeEventDao;
 	
 	@Autowired
 	private IncomeRecordService incomeRecordService;

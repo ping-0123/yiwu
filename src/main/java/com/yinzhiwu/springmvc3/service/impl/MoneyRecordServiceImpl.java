@@ -342,7 +342,12 @@ public class MoneyRecordServiceImpl extends BaseServiceImpl<MoneyRecord, Integer
 	
 	private void _save_commission_record_by_order(OrderYzw order){
 		//获取该订单客户对应的分享者
-		Distributer distributer = order.getCustomer().getDistributer();
+		Distributer distributer =null;
+		try {
+			distributer = distributerDao.findByProperty("customer.id", order.getCustomer().getId()).get(0);
+		} catch (DataNotFoundException e) {
+			LOG.error(e.getMessage());
+		}
 		if(distributer == null)
 			return;
 		//获取该订单能够产生佣金收益的 那一部分订单金额

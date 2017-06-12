@@ -13,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -113,9 +112,9 @@ public class CustomerYzw  extends BaseYzwEntity{
 	@Column
 	private Float earnest;
 	
-	@OneToOne(mappedBy="customer",fetch=FetchType.LAZY)
-	private Distributer distributer;
-	
+//	@OneToOne(mappedBy="customer",fetch=FetchType.LAZY)
+//	private Distributer distributer;
+//	
 	public CustomerYzw() {
 		super();
 	}
@@ -243,9 +242,6 @@ public class CustomerYzw  extends BaseYzwEntity{
 		return earnest;
 	}
 
-	public Distributer getDistributer() {
-		return distributer;
-	}
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -349,10 +345,6 @@ public class CustomerYzw  extends BaseYzwEntity{
 
 	public void setEarnest(Float earnest) {
 		this.earnest = earnest;
-	}
-
-	public void setDistributer(Distributer distributer) {
-		this.distributer = distributer;
 	}
 
 	

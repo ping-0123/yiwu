@@ -10,6 +10,8 @@ public interface DistributerIncomeDao extends IBaseDao<DistributerIncome, Intege
 
 	Float get_beat_rate(IncomeType incomeType, float expValue);
 
+	Float findCurrentValue(Integer distributerId, Integer incomeTypeId);
+
 
 	
 }

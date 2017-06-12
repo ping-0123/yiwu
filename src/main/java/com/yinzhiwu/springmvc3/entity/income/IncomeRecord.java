@@ -38,6 +38,7 @@ public class IncomeRecord extends BaseEntity {
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeRecord_contributor_id"))
 	private Distributer contributor;
 	
+	
 	private Float contributedValue;
 	
 	@ManyToOne
@@ -47,6 +48,8 @@ public class IncomeRecord extends BaseEntity {
 	private Float incomeFactor;
 	
 	private Float incomeValue;
+	
+	private Float currentValue;
 	
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeRecord_relationType_id"))
@@ -148,6 +151,14 @@ public class IncomeRecord extends BaseEntity {
 
 	public void setIncomeEvent(IncomeEvent incomeEvent) {
 		this.incomeEvent = incomeEvent;
+	}
+
+	public Float getCurrentValue() {
+		return currentValue;
+	}
+
+	public void setCurrentValue(Float currentValue) {
+		this.currentValue = currentValue;
 	}
 	
 	

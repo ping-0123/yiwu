@@ -1,4 +1,4 @@
-package com.test;
+package init;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

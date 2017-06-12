@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+import com.yinzhiwu.springmvc3.dao.DistributerIncomeDao;
 import com.yinzhiwu.springmvc3.dao.IncomeFactorDao;
 import com.yinzhiwu.springmvc3.dao.IncomeRecordDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
@@ -22,6 +24,8 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 	@Autowired
 	private DistributerIncomeService dIncomeService;
 	
+	@Autowired DistributerIncomeDao dIncomeDao;
+	
 	@Autowired
 	private MessageService messageService;
 	
@@ -35,6 +39,12 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 	
 	@Override
 	public Integer save(IncomeRecord incomeRecord){
+		Assert.notNull(incomeRecord);
+		Assert.notNull(incomeRecord.getBenificiary());
+		Assert.notNull(incomeRecord.getIncomeType());
+		
+		incomeRecord.setCurrentValue(dIncomeDao.findCurrentValue(
+				incomeRecord.getBenificiary().getId(), incomeRecord.getIncomeType().getId()));
 		super.save(incomeRecord);
 		dIncomeService.update_by_record(incomeRecord);
 		messageService.save_by_record(incomeRecord);
