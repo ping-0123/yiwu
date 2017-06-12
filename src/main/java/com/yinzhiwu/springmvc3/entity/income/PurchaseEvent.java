@@ -18,12 +18,6 @@ import com.yinzhiwu.springmvc3.util.MessageTemplate;
 @DiscriminatorValue("PurchaseEvent")
 public class PurchaseEvent extends IncomeEvent {
 
-	public PurchaseEvent(Distributer distributer, EventType type, Float param) {
-		super(distributer, type, param);
-	}
-	
-	public PurchaseEvent() {}
-
 
 	/**
 	 * 
@@ -34,6 +28,17 @@ public class PurchaseEvent extends IncomeEvent {
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeEventPurchase_order_id", value=ConstraintMode.NO_CONSTRAINT))
 	private OrderYzw order;
+	
+	public PurchaseEvent(Distributer distributer, EventType type, Float param) {
+		super(distributer, type, param);
+	}
+	
+	public PurchaseEvent() {}
+
+	public PurchaseEvent(Distributer distributer, EventType type, Float param,OrderYzw order) {
+		super(distributer, type, param);
+		this.order = order;
+	}
 	
 	@Override
 	public Message generateMessage(IncomeRecord record) {
@@ -53,6 +58,8 @@ public class PurchaseEvent extends IncomeEvent {
 	public void setOrder(OrderYzw order) {
 		this.order = order;
 	}
+
+
 
 
 	

@@ -10,7 +10,7 @@ import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.income.WithdrawEvent;
 import com.yinzhiwu.springmvc3.entity.type.EventType;
-import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.service.IncomeEventService;
 import com.yinzhiwu.springmvc3.service.WithdrawEventService;
 
 @Service
@@ -19,6 +19,8 @@ public class WithdrawEventServiceImpl extends BaseServiceImpl<WithdrawEvent,Inte
 	@Autowired private DistributerDao distributerDao;
 	
 	@Autowired private CapitalAccountDao capitalAccountDao;
+	
+	@Autowired private IncomeEventService incomeEventService;
 	
 	@Autowired
 	public void setBaseDao(WithdrawEventDao withdrawEventDao){
@@ -32,7 +34,7 @@ public class WithdrawEventServiceImpl extends BaseServiceImpl<WithdrawEvent,Inte
 		CapitalAccount account = capitalAccountDao.get(accountId);
 		
 		WithdrawEvent event = new WithdrawEvent(distributer, EventType.WITHDRAW, amount, account);
-		super.save(event);
+		incomeEventService.save(event);
 	}
 	
 }
