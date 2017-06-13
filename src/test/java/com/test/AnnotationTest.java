@@ -36,7 +36,6 @@ public class AnnotationTest {
 	public void test(){
 		Field[] fields = Distributer.class.getDeclaredFields();
 		for (Field field : fields) {
-			AnnotatedType annotatedType = field.getAnnotatedType();
 			System.out.println(field.getDeclaredAnnotation(OneToMany.class));
 			System.out.println(field.getAnnotationsByType(OneToMany.class));
 			System.out.println(i++);

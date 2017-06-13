@@ -5,10 +5,7 @@ import java.io.Serializable;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.yinzhiwu.springmvc3.service.CustomerService;
 
 
 /**
@@ -23,8 +20,6 @@ public class BusinessReport implements Job, Serializable{
 	/**
 	 * 
 	 */
-	@Autowired
-	private CustomerService customerService;
 	
 	private static final long serialVersionUID = 5470492588127078141L;
 	@Override

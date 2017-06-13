@@ -23,6 +23,7 @@ import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import com.yinzhiwu.springmvc3.qiniu.Qiniu;
 
+@SuppressWarnings("unused")
 @RunWith(BlockJUnit4ClassRunner.class)
 public class QiniuTest {
 	
@@ -38,6 +39,7 @@ public class QiniuTest {
 	private String upToken = auth.uploadToken(bucket);
 	
 	private String filePath ="C:\\Users\\ping\\Pictures\\yiwu测试\\android学员端闪退.jpg";
+
 	private String sqlFilePath = "C:\\Users\\ping\\Documents\\asas.sql";
 	private String sampleVideo = "C:\\Users\\Public\\Videos\\Sample Videos\\Wildlife.wmv";
 	private String wugui="C:\\Users\\ping\\Videos\\wugui.mp4";

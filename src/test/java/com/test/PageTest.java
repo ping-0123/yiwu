@@ -8,7 +8,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
-import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.model.page.PageBean;
 
@@ -18,9 +17,9 @@ import com.yinzhiwu.springmvc3.model.page.PageBean;
 @ContextConfiguration("classpath:applicationContext.xml")
 public class PageTest {
 
-	@Autowired
+/*	@Autowired
 	private OrderYzwDao orderYzwDao;
-	
+	*/
 	@Autowired
 	private DistributerDao distributerDao;
 	

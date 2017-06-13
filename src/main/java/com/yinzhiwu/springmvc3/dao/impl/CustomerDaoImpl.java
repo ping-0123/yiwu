@@ -2,8 +2,6 @@ package com.yinzhiwu.springmvc3.dao.impl;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.CustomerDao;
@@ -13,7 +11,6 @@ import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 @Repository
 public class CustomerDaoImpl extends BaseDaoImpl<Customer, Integer> implements CustomerDao {
 	
-	private static Log LOG = LogFactory.getLog(CustomerDaoImpl.class);
 
 	@SuppressWarnings("unchecked")
 	@Override

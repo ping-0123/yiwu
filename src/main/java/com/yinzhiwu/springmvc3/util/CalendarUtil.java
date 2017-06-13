@@ -2,9 +2,6 @@ package com.yinzhiwu.springmvc3.util;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
-
-import javax.xml.parsers.FactoryConfigurationError;
 
 public class CalendarUtil {
 

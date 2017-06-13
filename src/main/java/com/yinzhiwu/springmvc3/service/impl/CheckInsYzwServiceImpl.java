@@ -13,7 +13,6 @@ import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.LessonApiView;
 import com.yinzhiwu.springmvc3.service.CheckInsYzwService;
-import com.yinzhiwu.springmvc3.service.OrderYzwService;
 
 @Service
 public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer> implements CheckInsYzwService {

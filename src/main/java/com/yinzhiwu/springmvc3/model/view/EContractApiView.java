@@ -1,13 +1,8 @@
 package com.yinzhiwu.springmvc3.model.view;
 
-import java.text.SimpleDateFormat;
-
-
-import com.yinzhiwu.springmvc3.entity.yzw.ElectricContractYzw;
-
 public class EContractApiView {
 	
-	private static SimpleDateFormat DATE_FORMATE = new SimpleDateFormat("yyyy年MM月");
+//	private static SimpleDateFormat DATE_FORMATE = new SimpleDateFormat("yyyy年MM月");
 	
 	private String contractNo;
 	

@@ -269,7 +269,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		Query<?> query = getSession().createQuery(hql);
 		query.setFirstResult((pageNum-1) * pageSize);
 		query.setMaxResults(pageSize);
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "deprecation" })
 		List<T> list =(List<T>) query.list();
 		
 		return new PageBean<>(pageSize, pageNum, totalRecords,list);

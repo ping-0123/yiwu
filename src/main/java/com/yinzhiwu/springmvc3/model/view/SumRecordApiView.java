@@ -2,12 +2,6 @@ package com.yinzhiwu.springmvc3.model.view;
 
 import java.io.Serializable;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.util.Assert;
-
-import com.yinzhiwu.springmvc3.entity.Distributer;
-
 public class SumRecordApiView implements Serializable{
 	
 	/**
@@ -15,7 +9,7 @@ public class SumRecordApiView implements Serializable{
 	 */
 	private static final long serialVersionUID = 1893739499845022068L;
 	
-	private static Log LOG = LogFactory.getLog(SumRecordApiView.class);
+//	private static Log LOG = LogFactory.getLog(SumRecordApiView.class);
 
 	private DistributerApiView distributerApiView;
 	

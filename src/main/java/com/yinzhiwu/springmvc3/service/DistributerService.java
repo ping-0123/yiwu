@@ -1,16 +1,12 @@
 package com.yinzhiwu.springmvc3.service;
 
-import java.util.List;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.entity.type.RelationType;
 import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
-import com.yinzhiwu.springmvc3.model.view.DistributerRegisterApiView;
 
 public interface DistributerService extends IBaseService<Distributer, Integer> {
 
