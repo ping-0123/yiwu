@@ -1,12 +1,8 @@
 package com.yinzhiwu.springmvc3.model.view;
 
 import java.util.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.entity.ExpRecord;
-import com.yinzhiwu.springmvc3.entity.ShareTweet;
 
 public class TweetShareApiView {
 	
@@ -25,25 +21,25 @@ public class TweetShareApiView {
 	
 	public TweetShareApiView(){};
 	
-	public TweetShareApiView(ShareTweet t, Distributer beneficiary ){
-		if(t== null)
-			return;
-		this.id = t.getId();
-		this.sharer = t.getSharer()==null?null:t.getSharer().getName();
-		this.shareDate = t.getShareDate();
-		this.tweetType = t.getTweet().getTweetType().getName();
-		this.tweetTitle = t.getTweet().getTitle();
-		List<ExpRecord> expRecords = t.getExpRecords();
-		if(expRecords == null || expRecords.size() == 0)
-			this.exp = 0;
-		for (ExpRecord record : expRecords) {
-			if(beneficiary.equals(record.getBeneficiaty())){
-				this.exp = record.getIncome();
-				break;
-			}
-		}
-		
-	}
+//	public TweetShareApiView(ShareTweet t, Distributer beneficiary ){
+//		if(t== null)
+//			return;
+//		this.id = t.getId();
+//		this.sharer = t.getSharer()==null?null:t.getSharer().getName();
+//		this.shareDate = t.getShareDate();
+//		this.tweetType = t.getTweet().getTweetType().getName();
+//		this.tweetTitle = t.getTweet().getTitle();
+//		List<ExpRecord> expRecords = t.getExpRecords();
+//		if(expRecords == null || expRecords.size() == 0)
+//			this.exp = 0;
+//		for (ExpRecord record : expRecords) {
+//			if(beneficiary.equals(record.getBeneficiaty())){
+//				this.exp = record.getIncome();
+//				break;
+//			}
+//		}
+//		
+//	}
 
 	public int getId() {
 		return id;

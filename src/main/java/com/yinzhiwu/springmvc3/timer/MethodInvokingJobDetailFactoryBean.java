@@ -78,6 +78,7 @@ import org.springframework.util.MethodInvoker;
  *
  * @see #afterPropertiesSet()
  */
+@SuppressWarnings("deprecation")
 public class MethodInvokingJobDetailFactoryBean implements FactoryBean, BeanNameAware, InitializingBean
 {
 	private Log logger = LogFactory.getLog(getClass());

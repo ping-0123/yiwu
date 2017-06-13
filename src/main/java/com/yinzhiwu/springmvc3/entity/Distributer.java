@@ -38,7 +38,6 @@ import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.springmvc3.enums.Gender;
 import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
-import com.yinzhiwu.springmvc3.service.DistributerIncomeService;
 
 /**
  * 
@@ -132,21 +131,7 @@ public class Distributer extends BaseEntity{
 	@Column(length=255, name="headIconUrl")
 	private String headIconName;
 	
-	private Float exp;
 	
-	@JsonIgnore
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="expGrade_id", referencedColumnName="id", 
-		foreignKey=@ForeignKey(name="fk_distributer_expGrade_id"))
-	private ExpGrade expGrade;
-	
-	private Float brokerage;
-	
-	private Float funds;
-	
-	private Float accumulativeBrokerage;
-	
-	private Float accumulativeFunds;
 	
 
 	@JsonFormat(pattern="yyyy-MM-dd")
@@ -187,29 +172,13 @@ public class Distributer extends BaseEntity{
 	@OneToMany(mappedBy="distributer")
 	private Set<CapitalAccount> capitalAccounts = new HashSet<>();
 	
-	@JsonIgnore
-	@OneToMany(mappedBy="beneficiaty", targetEntity=MoneyRecord.class)
-	private List<MoneyRecord> moneyRecords = new ArrayList<>();
-	
-	@OneToMany(mappedBy="contributor", targetEntity=MoneyRecord.class)
-	private List<MoneyRecord> contributedMoneyRecords  = new ArrayList<>();
-	
-	
-	@JsonIgnore
-	@OneToMany(mappedBy="beneficiaty", targetEntity=ExpRecord.class)
-	private List<ExpRecord> expRecords = new ArrayList<>();
-	
-	@OneToMany(mappedBy="contributor", targetEntity=ExpRecord.class)
-	private List<ExpRecord> contributedExpRecords = new ArrayList<>();
-	
+
+
 	@JsonIgnore
 	@OneToMany(mappedBy="receiver")
 	private List<Message> messages = new ArrayList<>();
 	
-	@JsonIgnore
-	@OneToMany(mappedBy="sharer")
-	private List<ShareTweet> shareTweets = new ArrayList<>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy="distributer", cascade=CascadeType.PERSIST)
 	private List<DistributerIncome>  distributerIncomes = new ArrayList<>();
@@ -226,11 +195,7 @@ public class Distributer extends BaseEntity{
 		if(!StringUtils.hasLength(getPassword()))
 			this.password = "yzw123456";
 		this.registedTime = super.getCreateDate();
-		this.exp = 0f;
-		this.funds = 0f;
-		this.brokerage =0f;
-		this.accumulativeBrokerage = 0f;
-		this.accumulativeFunds = 0f;
+
 	}
 
 	
@@ -276,7 +241,8 @@ public class Distributer extends BaseEntity{
 	
 	public  DistributerIncome getDistributerIncome(IncomeType type){
 		List<DistributerIncome> incomes = this.getDistributerIncomes();
-		LOG.info(incomes.size());
+		if(null ==incomes || incomes.size() ==0) return null;
+		
 		for (DistributerIncome income : incomes) {
 			if(type.equals(income.getIncomeType()))
 				return income;
@@ -310,99 +276,7 @@ public class Distributer extends BaseEntity{
 		this.headIconName = headIconName;
 	}
 
-	public float getExp() {
-		return exp;
-	}
 
-	public void setExp(float exp) {
-		this.exp = exp;
-	}
-
-
-	public ExpGrade getExpGrade() {
-		return expGrade;
-	}
-
-	public void setExpGrade(ExpGrade expGrade) {
-		this.expGrade = expGrade;
-	}
-
-
-	public float getFunds() {
-		return funds;
-	}
-
-
-	public Date getRegistedTime() {
-		return registedTime;
-	}
-
-
-	public Set<CapitalAccount> getCapitalAccounts() {
-		return capitalAccounts;
-	}
-
-
-	public void setFunds(float funds) {
-		this.funds = funds;
-	}
-
-	public void setRegistedTime(Date registedTime) {
-		this.registedTime = registedTime;
-	}
-
-	public void setCapitalAccounts(Set<CapitalAccount> capitalAccounts) {
-		this.capitalAccounts = capitalAccounts;
-	}
-
-
-
-	public List<Message> getMessages() {
-		return messages;
-	}
-
-	public void setMessages(List<Message> messages) {
-		this.messages = messages;
-	}
-
-	
-
-	public List<ShareTweet> getShareTweets() {
-		return shareTweets;
-	}
-
-	public void setShareTweets(List<ShareTweet> shareTweets) {
-		this.shareTweets = shareTweets;
-	}
-
-
-
-	public List<MoneyRecord> getMoneyRecords() {
-		return moneyRecords;
-	}
-
-
-	public List<ExpRecord> getExpRecords() {
-		return expRecords;
-	}
-
-	public void setMoneyRecords(List<MoneyRecord> moneyRecords) {
-		this.moneyRecords = moneyRecords;
-	}
-
-	public void setExpRecords(List<ExpRecord> expRecords) {
-		this.expRecords = expRecords;
-	}
-
-
-	public CustomerYzw getCustomer() {
-		return customer;
-	}
-
-
-	public void setCustomer(CustomerYzw customer) {
-		this.customer = customer;
-	}
 
 
 	public String getName() {
@@ -420,6 +294,9 @@ public class Distributer extends BaseEntity{
 	}
 
 
+	public String getPassword() {
+		return password;
+	}
 
 
 	public String getWechatNo() {
@@ -437,13 +314,62 @@ public class Distributer extends BaseEntity{
 	}
 
 
+	public Gender getGender() {
+		return gender;
+	}
+
+
 	public Distributer getSuperDistributer() {
 		return superDistributer;
 	}
 
 
+
+
+
+
+	public Date getRegistedTime() {
+		return registedTime;
+	}
+
+
+	public DepartmentYzw getFollowedByStore() {
+		return followedByStore;
+	}
+
+
+	public CapitalAccount getDefaultCapitalAccount() {
+		return defaultCapitalAccount;
+	}
+
+
+	public CustomerYzw getCustomer() {
+		return customer;
+	}
+
+
+	public EmployeeYzw getEmployee() {
+		return employee;
+	}
+
+
 	public List<Distributer> getSubordinates() {
 		return subordinates;
+	}
+
+
+	public Set<CapitalAccount> getCapitalAccounts() {
+		return capitalAccounts;
+	}
+
+
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+
+	public List<DistributerIncome> getDistributerIncomes() {
+		return distributerIncomes;
 	}
 
 
@@ -462,9 +388,15 @@ public class Distributer extends BaseEntity{
 	}
 
 
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
 	public void setWechatNo(String wechatNo) {
 		this.wechatNo = wechatNo;
 	}
+
 
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
@@ -476,18 +408,20 @@ public class Distributer extends BaseEntity{
 	}
 
 
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+
 	public void setSuperDistributer(Distributer superDistributer) {
 		this.superDistributer = superDistributer;
 	}
 
 
-	public void setSubordinates(List<Distributer> subordinates) {
-		this.subordinates = subordinates;
-	}
+	
 
-
-	public DepartmentYzw getFollowedByStore() {
-		return followedByStore;
+	public void setRegistedTime(Date registedTime) {
+		this.registedTime = registedTime;
 	}
 
 
@@ -496,111 +430,13 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public float getBrokerage() {
-		return brokerage;
-	}
-
-
-	public void setBrokerage(float brokerage) {
-		this.brokerage = brokerage;
-	}
-
-
-	
-
-	public Gender getGender() {
-		return gender;
-	}
-
-	public void setGender(Gender gender) {
-		this.gender = gender;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public float getAccumulativeBrokerage() {
-		return accumulativeBrokerage;
-	}
-
-	public float getAccumulativeFunds() {
-		return accumulativeFunds;
-	}
-
-	public void setAccumulativeBrokerage(float accumulativeBrokerage) {
-		this.accumulativeBrokerage = accumulativeBrokerage;
-	}
-
-	public void setAccumulativeFunds(float accumulativeFunds) {
-		this.accumulativeFunds = accumulativeFunds;
-	}
-
-	public CapitalAccount getDefaultCapitalAccount() {
-		return defaultCapitalAccount;
-	}
-
 	public void setDefaultCapitalAccount(CapitalAccount defaultCapitalAccount) {
 		this.defaultCapitalAccount = defaultCapitalAccount;
 	}
 
-	@Override
-	public boolean equals(Object d) {
-		if(this == d)
-			return true;
-		if(d instanceof Distributer)
-			return this.getId()!=null && this.getId() == ((Distributer) d).getId();
-		return false;
-	}
 
-	public List<MoneyRecord> getContributedMoneyRecords() {
-		return contributedMoneyRecords;
-	}
-
-	public List<ExpRecord> getContributedExpRecords() {
-		return contributedExpRecords;
-	}
-
-	public void setContributedMoneyRecords(List<MoneyRecord> contributedMoneyRecords) {
-		this.contributedMoneyRecords = contributedMoneyRecords;
-	}
-
-	public void setContributedExpRecords(List<ExpRecord> contributedExpRecords) {
-		this.contributedExpRecords = contributedExpRecords;
-	}
-
-
-	public EmployeeYzw getEmployee() {
-		return employee;
-	}
-
-
-	public void setExp(Float exp) {
-		this.exp = exp;
-	}
-
-
-	public void setBrokerage(Float brokerage) {
-		this.brokerage = brokerage;
-	}
-
-
-	public void setFunds(Float funds) {
-		this.funds = funds;
-	}
-
-
-	public void setAccumulativeBrokerage(Float accumulativeBrokerage) {
-		this.accumulativeBrokerage = accumulativeBrokerage;
-	}
-
-
-	public void setAccumulativeFunds(Float accumulativeFunds) {
-		this.accumulativeFunds = accumulativeFunds;
+	public void setCustomer(CustomerYzw customer) {
+		this.customer = customer;
 	}
 
 
@@ -609,8 +445,18 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public List<DistributerIncome> getDistributerIncomes() {
-		return distributerIncomes;
+	public void setSubordinates(List<Distributer> subordinates) {
+		this.subordinates = subordinates;
+	}
+
+
+	public void setCapitalAccounts(Set<CapitalAccount> capitalAccounts) {
+		this.capitalAccounts = capitalAccounts;
+	}
+
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
 	}
 
 
@@ -618,6 +464,8 @@ public class Distributer extends BaseEntity{
 		this.distributerIncomes = distributerIncomes;
 	}
 
+
+	
 	
 	
 }

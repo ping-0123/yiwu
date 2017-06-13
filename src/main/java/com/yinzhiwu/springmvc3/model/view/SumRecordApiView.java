@@ -35,12 +35,12 @@ public class SumRecordApiView implements Serializable{
 
 	public SumRecordApiView(){};
 	
-	public SumRecordApiView(Distributer d){
-		Assert.notNull(d);
-		this.distributerApiView = new DistributerApiView(d);
-		this.accumulativeBrokerage = d.getAccumulativeBrokerage();
-	}
-	
+//	public SumRecordApiView(Distributer d){
+//		Assert.notNull(d);
+//		this.distributerApiView = new DistributerApiView(d);
+//		this.accumulativeBrokerage = d.getAccumulativeBrokerage();
+//	}
+//	
 
 
 	public int getMyShareTweetTimes() {

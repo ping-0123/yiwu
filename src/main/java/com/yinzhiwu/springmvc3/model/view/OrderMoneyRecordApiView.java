@@ -3,9 +3,6 @@ package com.yinzhiwu.springmvc3.model.view;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.entity.MoneyRecord;
-import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 
 public class OrderMoneyRecordApiView {
 
@@ -24,27 +21,27 @@ public class OrderMoneyRecordApiView {
 	
 	public OrderMoneyRecordApiView(){}
 	
-	public OrderMoneyRecordApiView(MoneyRecord r){
-		if(r==null)
-			return;
-		Distributer contributer = r.getContributor();
-		if(contributer==null)
-			return;
-		this.memberName = contributer.getName();
-		this.superDistributerName = contributer.getSuperDistributer()==null?
-				null: contributer.getSuperDistributer().getName();
-		OrderYzw order = r.getOrder();
-		if(order !=null){
-			this.payedDate = order.getPayedDate();
-		}else
-			this.payedDate = r.getContributedDate();
-		
-		this.orderAmount = r.getContributedValue();
-		this.promotionRate=r.getIncomeFactor();
-		this.inComeBrokerage = r.getIncome();
-		
-		
-	}
+//	public OrderMoneyRecordApiView(MoneyRecord r){
+//		if(r==null)
+//			return;
+//		Distributer contributer = r.getContributor();
+//		if(contributer==null)
+//			return;
+//		this.memberName = contributer.getName();
+//		this.superDistributerName = contributer.getSuperDistributer()==null?
+//				null: contributer.getSuperDistributer().getName();
+//		OrderYzw order = r.getOrder();
+//		if(order !=null){
+//			this.payedDate = order.getPayedDate();
+//		}else
+//			this.payedDate = r.getContributedDate();
+//		
+//		this.orderAmount = r.getContributedValue();
+//		this.promotionRate=r.getIncomeFactor();
+//		this.inComeBrokerage = r.getIncome();
+//		
+//		
+//	}
 
 	public Date getPayedDate() {
 		return payedDate;

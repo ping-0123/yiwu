@@ -32,7 +32,6 @@ import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
-import com.yinzhiwu.springmvc3.model.view.DistributerRegisterApiView;
 import com.yinzhiwu.springmvc3.service.CapitalAccountService;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.util.UrlUtil;
@@ -184,16 +183,7 @@ public class DistributerController extends BaseController {
 	   return distributerService.judgePhoneNoIsRegistered(phoneNo);
    }
 	  
-   @GetMapping(value="/registerRecords/subordinates")
-   public YiwuJson<List<DistributerRegisterApiView>> findSubordiatesRegisterRecords(int distributerId){
-	    return distributerService.findSubordiatesRegisterRecords(distributerId);
-   }
-   
-   
-   @GetMapping(value="registerRecords/secondaries")
-   public YiwuJson<List<DistributerRegisterApiView>> findSecondariesRegisterRecords(int distributerId){
-	   return distributerService.findSecondariesRegisterRecords(distributerId);
-   }
+
    
    
    @RequestMapping(value="/{id}", method={RequestMethod.PUT, RequestMethod.POST})

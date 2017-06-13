@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
-import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.util.UrlUtil;
 
 public class DistributerApiView implements Serializable{
@@ -68,10 +67,9 @@ public class DistributerApiView implements Serializable{
 		this.id = id;
 	}
 	
-	
-	public DistributerApiView(Distributer d){
+	public DistributerApiView(Distributer d)
+	{
 		this.id = d.getId();
-		this.expGradeNo = d.getExpGrade().getGradeNo();
 		this.name = d.getName();
 		this.nickName = d.getNickName();
 		this.phoneNo = d.getPhoneNo();
@@ -79,15 +77,35 @@ public class DistributerApiView implements Serializable{
 		this.shareCode = d.getShareCode();
 		this.headIconUrl = UrlUtil.toHeadIcomUrl(d.getHeadIconName());
 		this.registerDate = d.getRegistedTime();
-		this.neededExpForUpdate = d.getExpGrade().getUpgradeExp()-d.getExp();
-		this.brokerage = d.getBrokerage();
-		this.funds = d.getFunds();
-		CustomerYzw customer = d.getCustomer();
-		if(customer != null)
-			this.customerId = customer.getId();
+		this.beatRate = 0f;
+		
+		try{
+			this.brokerage = d.getDistributerIncome(IncomeType.BROKERAGE).getIncome();
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+		}
+		
+		try{
+			this.funds = d.getDistributerIncome(IncomeType.FUNDS).getIncome();
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+		}
+		
+		try{
+			this.expGradeNo = d.getDistributerIncome(IncomeType.EXP).getIncomeGrade().getGradeNo();
+			this.neededExpForUpdate = d.getDistributerIncome(IncomeType.EXP).getIncomeGrade().getUpgradeNeededValue()
+					-d.getDistributerIncome(IncomeType.EXP).getIncome();
+		}catch (Exception e) {
+			LOG.error(e.getMessage());
+		}
+		
+		try{
+			this.customerId = d.getCustomer().getId();
+		}catch (Exception e) {
+			LOG.equals(e.getMessage());
+		}
 	}
-	
-	
+
 	
 	
 	public DistributerApiView(Distributer d, Float rate){

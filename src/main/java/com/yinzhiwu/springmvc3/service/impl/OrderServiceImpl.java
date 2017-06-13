@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.OrderDao;
-import com.yinzhiwu.springmvc3.model.view.OrderApiView;
 import com.yinzhiwu.springmvc3.model.view.OrderOldApiView;
 import com.yinzhiwu.springmvc3.service.OrderService;
 

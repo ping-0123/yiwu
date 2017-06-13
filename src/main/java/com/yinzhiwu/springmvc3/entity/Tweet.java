@@ -1,8 +1,6 @@
 package com.yinzhiwu.springmvc3.entity;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,7 +13,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -57,12 +54,8 @@ public class Tweet extends BaseEntity {
 	@JoinColumn(name="tweetType_id", foreignKey=@ForeignKey(name="fk_tweet_tweetType_id"))
 	private TweetType tweetType;
   
-	@OneToMany(mappedBy="tweet")
-	private List<ShareTweet> shareTweets = new ArrayList<>();
+
 	
-	public List<ShareTweet> getShareTweets() { 
-		return shareTweets;
-	}
 
 	public Tweet(){
 		super();
@@ -79,9 +72,6 @@ public class Tweet extends BaseEntity {
 		this.tweetContent=new TweetContent(m.getContent().getBytes());
 	}
 	
-	public void setShareTweets(List<ShareTweet> shareTweets) {
-		this.shareTweets = shareTweets;
-	}
 
 
 	public String getTitle() {

@@ -33,9 +33,6 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 
 	YiwuJson<Boolean> judgePhoneNoIsRegistered(String phoneNo);
 
-	YiwuJson<List<DistributerRegisterApiView>> findSubordiatesRegisterRecords(int distributerId);
-
-	YiwuJson<List<DistributerRegisterApiView>> findSecondariesRegisterRecords(int distributerId);
 
 	YiwuJson<DistributerApiView> register2(DistributerRegisterModel m);
 
