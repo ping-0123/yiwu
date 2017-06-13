@@ -26,6 +26,8 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 	
 	@Autowired DistributerIncomeDao dIncomeDao;
 	
+	@Autowired IncomeRecordDao incomeRecordDao;
+	
 	@Autowired
 	private MessageService messageService;
 	
@@ -67,5 +69,10 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 				this.save(record);
 			}
 		}
+	}
+
+	@Override
+	public int findCountByIncomeTypesByBeneficiary(int distributerId, int[] incomeTypeIds) {
+		return incomeRecordDao.findCountByIncomeTypesByBeneficiary(distributerId, incomeTypeIds);
 	}
 }

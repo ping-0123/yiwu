@@ -7,7 +7,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.yinzhiwu.springmvc3.dao.CheckInsYzwDao;
-import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.CheckInsYzwService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,7 +21,7 @@ public class CheckInsYzwServiceTest {
 	@Test
 	public void testFindCountByCustomerId(){
 		int customerId = 19552;
-		YiwuJson<Integer> yiwuJson = service.findCountByCustomerId(customerId);
-		System.out.println(yiwuJson.getData());
+		int i= service.findCountByCustomerId(customerId);
+		System.out.println(i);
 	}
 }

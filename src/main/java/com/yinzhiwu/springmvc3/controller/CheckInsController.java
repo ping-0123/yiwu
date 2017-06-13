@@ -20,7 +20,7 @@ public class CheckInsController extends BaseController{
 	
 	
 	@GetMapping("/lesson/count")
-	public YiwuJson<Integer> findCountByCustomerId2(int customerId){
+	public YiwuJson<Integer> findCountByCustomerId(int customerId){
 		try{
 			return new YiwuJson<>(new Integer(checkInsYzwService.findCountByCustomerId(customerId))) ;
 		}catch (Exception e) {
