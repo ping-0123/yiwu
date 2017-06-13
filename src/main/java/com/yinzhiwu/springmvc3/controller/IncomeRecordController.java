@@ -66,4 +66,5 @@ public class IncomeRecordController extends BaseController{
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
+	
 }

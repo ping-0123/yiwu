@@ -8,8 +8,9 @@ import com.yinzhiwu.springmvc3.model.view.LessonApiView;
 
 public interface CheckInsYzwService extends IBaseService<CheckInsYzw, Integer> {
 
-	YiwuJson<Integer> findCountByCustomerId(int customerId);
 
 	YiwuJson<List<LessonApiView>> findByCustomerId(int customerId);
+
+	int findCountByCustomerId(int customerId);
 
 }

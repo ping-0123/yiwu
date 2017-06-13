@@ -11,6 +11,8 @@ public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer>{
 
 	List<LessonYzw> findByContractNos(List<String> contractNos);
 
+	int findCountByCustomerId(int customerId);
+
 
 
 }

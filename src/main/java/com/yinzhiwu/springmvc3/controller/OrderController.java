@@ -48,6 +48,16 @@ public class OrderController {
 		return orderYzwService.findByDistributerId(distributerId);
 	}
 	
+	@GetMapping(value="/count")
+	public YiwuJson<Integer> findCount(int customerId){
+		try{
+			int count = orderYzwService.findCountByProperty("customer.id", customerId);
+			return new YiwuJson<>(new Integer(count));
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
+	}
+	
 	@GetMapping(value="/{id}")
 	public YiwuJson<OrderApiView> findById(@PathVariable String id){
 		return orderYzwService.findById(id);

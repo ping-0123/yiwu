@@ -1,6 +1,7 @@
 package com.yinzhiwu.springmvc3.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ import com.yinzhiwu.springmvc3.service.ShareTweetEventService;
 public class ShareTweetController extends BaseController {
 
 	@Autowired
-	private ShareTweetEventService incomeEventService;
+	private ShareTweetEventService shareTweetEventService;
 	
 	@PostMapping
 	public YiwuJson<Boolean> doPost(int distributerId, int tweetId){
@@ -30,8 +31,18 @@ public class ShareTweetController extends BaseController {
 		event.setTweet(tweet);
 		
 		try{
-			incomeEventService.save(event);
+			shareTweetEventService.save(event);
 			return new YiwuJson<>(new Boolean(true));
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
+	}
+	
+	@GetMapping("/count")
+	public YiwuJson<Integer> findCount(int distributerId){
+		try{
+			int count = shareTweetEventService.findCountByProperty("distributer.id", distributerId);
+			return new YiwuJson<>(new Integer(count));
 		}catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}

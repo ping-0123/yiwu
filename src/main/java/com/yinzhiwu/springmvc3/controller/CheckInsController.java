@@ -13,14 +13,20 @@ import com.yinzhiwu.springmvc3.service.CheckInsYzwService;
 
 @RestController
 @RequestMapping("/api/checkIns")
-public class CheckInsController {
+public class CheckInsController extends BaseController{
 
 	@Autowired
 	private CheckInsYzwService checkInsYzwService;
 	
+	
 	@GetMapping("/lesson/count")
-	public YiwuJson<Integer> findCountByCustomerId(int customerId){
-		return checkInsYzwService.findCountByCustomerId(customerId);
+	public YiwuJson<Integer> findCountByCustomerId2(int customerId){
+		try{
+			return new YiwuJson<>(new Integer(checkInsYzwService.findCountByCustomerId(customerId))) ;
+		}catch (Exception e) {
+			logger.error(e.getMessage());
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 	
 	@GetMapping("/lesson/list")

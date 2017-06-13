@@ -31,12 +31,10 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 	}
 
 	@Override
-	public YiwuJson<Integer> findCountByCustomerId(int customerId) {
-		List<String> contractNos = orderDao.find_contractNos_by_customer_id(customerId);
-		int count = checkInsYzwDao.findCountByContractNos(contractNos);
-		return new YiwuJson<>(new Integer(count));
+	public int findCountByCustomerId(int customerId){
+		return checkInsYzwDao.findCountByCustomerId(customerId);
 	}
-
+	
 	@Override
 	public YiwuJson<List<LessonApiView>> findByCustomerId(int customerId) {
 		List<String> contractNos = orderDao.find_contractNos_by_customer_id(customerId);

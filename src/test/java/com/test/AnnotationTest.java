@@ -1,7 +1,6 @@
 package com.test;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
 
 import javax.persistence.OneToMany;
