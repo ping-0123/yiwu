@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.Message;
 import com.yinzhiwu.springmvc3.entity.type.EventType;
+import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 import com.yinzhiwu.springmvc3.util.MessageTemplate;
 
 @Entity
@@ -49,7 +50,7 @@ public class RegisterEvent extends IncomeEvent {
 	public Message generateMessage(IncomeRecord incomeRecord) {
 		Assert.notNull(incomeRecord);
 		Assert.notNull(incomeRecord.getBenificiary());
-		if(!this.getDistributer().equals(incomeRecord.getBenificiary()))
+		if(!this.getDistributer().equals(incomeRecord.getBenificiary()) || incomeRecord.getIncomeType() != IncomeType.EXP)
 			return null;
 		String msg = MessageTemplate.generate_register_message();
 		if(StringUtils.hasLength(msg))

@@ -58,8 +58,6 @@ public class Tweet extends BaseEntity {
 	
 
 	public Tweet(){
-		super();
-		this.editDate=super.getCreateDate();
 	}
 	
 	public Tweet(TweetModel m){
@@ -72,6 +70,11 @@ public class Tweet extends BaseEntity {
 		this.tweetContent=new TweetContent(m.getContent().getBytes());
 	}
 	
+	@Override
+	public void init() {
+		super.init();
+		this.editDate = super.getCreateDate();
+	}
 
 
 	public String getTitle() {
@@ -132,6 +135,7 @@ public class Tweet extends BaseEntity {
 	public void setCoverIconUrl(String coverIconUrl) {
 		this.coverIconUrl = coverIconUrl;
 	}
+
 
 
 

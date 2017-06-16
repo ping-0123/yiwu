@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title>编辑推文</title>
 		<link rel="stylesheet" href="css/style.css"  type="text/css"/>
+		<script src="../js/global.js"></script>
 	</head>
 	<body>
 		
@@ -66,9 +67,9 @@
     <script type="text/javascript" src="../js/jquery.min.js"></script>
     <!-- 加载推文类型 -->
     <script type="text/javascript">
-	$.ajax({
+    $.ajax({
 		type:"GET",
-		url: "http://www.yinzhiwu.com:9090/yiwu/api/types/tweetType/list",
+		url: baseApiUrl + "/api/types/tweetType/list",
 		async:true,
 		cache:false,
 		success:function(data){
@@ -162,6 +163,7 @@
             param.top = Math.round((maxHeight - param.height) / 2);
             return param;
         }
+    
     </script>
     
 </body>
