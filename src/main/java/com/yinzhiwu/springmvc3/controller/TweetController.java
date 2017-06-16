@@ -7,8 +7,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -27,9 +25,8 @@ import com.yinzhiwu.springmvc3.util.UrlUtil;
 
 @RestController
 @RequestMapping(value="/api/tweet")
-public class TweetController {
+public class TweetController extends BaseController {
 	
-	private static Log log = LogFactory.getLog(TweetController.class);
 
 	@Autowired
 	private TweetService tweetService;	
@@ -38,6 +35,7 @@ public class TweetController {
 	public YiwuJson<Boolean> save(HttpServletRequest request, @Valid TweetModel m, BindingResult bindingResult){
 		if(bindingResult.hasErrors()){
 			FieldError fieldError = bindingResult.getFieldError();
+			logger.info(super.getErrorsMessage(bindingResult));
 			return new YiwuJson<>(fieldError.getField() + ": " + fieldError.getDefaultMessage());
 		}
 		File file = new File(request.getServletContext().getRealPath(UrlUtil.TWEET_COVER_ICON_PATH), 
@@ -45,7 +43,7 @@ public class TweetController {
 		try {
 			m.getCoverIcon().transferTo(file);
 		} catch (IllegalStateException | IOException e) {
-			log.info("connot save file.....");
+			logger.info("connot save file.....");
 			return new YiwuJson<>(e.getMessage());
 		}
 		m.setCoverIconUrl(UrlUtil.toTweetCoverIconUrl(file.getName()));
