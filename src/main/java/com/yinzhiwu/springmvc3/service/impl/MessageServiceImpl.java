@@ -13,12 +13,9 @@ import com.yinzhiwu.springmvc3.dao.MessageDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.Message;
 import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
-import com.yinzhiwu.springmvc3.entity.type.EventType;
-import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.MessageApiView;
 import com.yinzhiwu.springmvc3.service.MessageService;
-import com.yinzhiwu.springmvc3.util.MessageTemplate;
 
 @Service
 public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implements MessageService {
@@ -91,7 +88,6 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 
 	@Override
 	public void saveWithdrawMessage(Distributer receiver, float value) {
-		
 		if(receiver == null)
 			return;
 		Message message = new Message();
@@ -99,33 +95,14 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 		message.setContent(content);
 		message.setReceiver(receiver);
 		messageDao.save(message);
-		
 	}
 
 	@Override
 	public void save_by_record(IncomeRecord incomeRecord) {
 		Assert.notNull(incomeRecord);
-		try{
-			if(!incomeRecord.getIncomeType().equals(IncomeType.BROKERAGE))
-				return;
-			if(EventType.PURCHASE_PRODUCTS.equals(incomeRecord.getIncomeEvent().getType())){
-				String message = MessageTemplate.BrokerageMessage.generate_purchase_products_message(
-						incomeRecord.getContributor().getPhoneNo(), 
-						incomeRecord.getRecordTimestamp(), 
-						incomeRecord.getContributedValue(), 
-						incomeRecord.getIncomeValue());
-				Message m = new Message(incomeRecord.getBenificiary(),message);
-				super.save(m);
-			}else if(EventType.WITHDRAW.equals(incomeRecord.getIncomeEvent().getType())){
-//				 super.save(new Message(incomeRecord.getBenificiary()),
-//						 MessageTemplate.BrokerageMessage.generate_withdraw_message(
-//								 incomeRecord.getRecordTimestamp(), 
-//								 incomeRecord.getContributedValue(),withdrawAmount, accountType, account))
-			}
-				
-		}catch (Exception e) {
-			logger.error(e.getMessage());
-		}
+		Message m = incomeRecord.generateMessage();
+		if(m!=null)
+			super.save(m);
 	}
 
 }

@@ -101,31 +101,10 @@ public class DistributerServiceImplTwo  extends DistributerServiceImpl implement
 			}
 		}
 		distributer.setCustomer(customer);
-		
-		
 		/**
 		 * register to database
 		 */
 		distributerDao.save(distributer);
-		
-		/**
-		 * init new distributer's incomes
-		
-		DistributerIncome exp  = new DistributerIncome(distributer, IncomeType.EXP, 
-				incomeGradeDao.find_lowest_grade_by_income_type(IncomeType.EXP.getId()));
-		DistributerIncome funds = new DistributerIncome(distributer, IncomeType.FUNDS,
-				incomeGradeDao.find_lowest_grade_by_income_type(IncomeType.FUNDS.getId()));
-		DistributerIncome brokerage = new DistributerIncome(distributer,IncomeType.BROKERAGE,
-				incomeGradeDao.find_lowest_grade_by_income_type(IncomeType.BROKERAGE.getId()));
-		distributerIncomeDao.save(exp);
-		distributerIncomeDao.save(funds);
-		distributerIncomeDao.save(brokerage);
-		distributer.getDistributerIncomes().add(exp);
-		distributer.getDistributerIncomes().add(brokerage);
-		distributer.getDistributerIncomes().add(funds);
-		 */
-	
-		
 		/**
 		 * produce register event
 		 */
@@ -141,8 +120,6 @@ public class DistributerServiceImplTwo  extends DistributerServiceImpl implement
 					 EventType.REGISTER_WITH_INVATATION_CODE, 
 					 1f, invitationCode);
 		 incomeEventService.save(event);
-		 
-		
 		 /**
 		  * get distributer's current exp income value and beat rate for return
 		  */

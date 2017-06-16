@@ -32,4 +32,8 @@ public class MessageTemplate {
 			return builder.toString();
 		}
 	}
+	
+	public static String generate_register_message(){
+		return "欢迎您加入音之舞";
+	}
 }
