@@ -10,8 +10,16 @@
 	</body>
 	<script type="text/javascript">
 		var v_baseUrl = "http://192.168.0.115:8080/yiwu/";
-		register();
+//		register();
+		shareTweet();
 		
+		function shareTweet(){
+			$.post(v_baseUrl + "/api/event/shareTweet",
+				{distributerId:3000020,tweetId:12000002},
+				function(result){
+					alert(JSON.stringify(result));
+				});
+		}
 		
 		function register(){
 				var v_url = "api/distributer";

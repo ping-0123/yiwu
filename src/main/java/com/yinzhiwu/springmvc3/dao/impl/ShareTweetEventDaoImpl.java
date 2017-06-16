@@ -24,7 +24,7 @@ public class ShareTweetEventDaoImpl extends BaseDaoImpl<ShareTweetEvent, Integer
 		List<Long> longs = (List<Long>) getHibernateTemplate().findByNamedParam(
 				hql.toString(),
 				new String[]{"distributerId", "start", "end"}, 
-				new Object[]{distributerId, CalendarUtil.getDayBegin(occurTime), occurTime});
+				new Object[]{distributerId, CalendarUtil.getDayBegin(occurTime).getTime(), occurTime});
 		if(null == longs || longs.size() ==0)
 			return 0;
 		return longs.get(0);
