@@ -1,7 +1,7 @@
 package com.yinzhiwu.springmvc3.model.view;
 
-import com.yinzhiwu.springmvc3.entity.Employee;
 import com.yinzhiwu.springmvc3.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Employee;
 
 public class EmployeeApiView {
 

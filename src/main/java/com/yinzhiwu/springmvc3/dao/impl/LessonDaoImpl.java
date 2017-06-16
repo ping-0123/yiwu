@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.springmvc3.dao.LessonDao;
-import com.yinzhiwu.springmvc3.entity.Lesson;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Lesson;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Repository

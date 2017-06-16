@@ -9,8 +9,8 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.OrderDao;
-import com.yinzhiwu.springmvc3.entity.Customer;
-import com.yinzhiwu.springmvc3.entity.Order;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Customer;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Order;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.view.OrderOldApiView;
 

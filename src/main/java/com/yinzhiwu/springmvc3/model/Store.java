@@ -1,7 +1,9 @@
 package com.yinzhiwu.springmvc3.model;
 
-import com.yinzhiwu.springmvc3.entity.Department;
+import org.springframework.util.Assert;
+
 import com.yinzhiwu.springmvc3.entity.StoreInfo;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Department;
 
 public class Store {
 	
@@ -24,8 +26,11 @@ public class Store {
 	}
 	
 	public Store(StoreInfo si){
+		Assert.notNull(si);
+		Assert.notNull(si.getAddress());
+		
 		this.id = si.getStoreId();
-		this.address = si.getAddress();
+		this.address = si.getAddress().getAddress();
 		this.telePhone = si.getTelePhone();
 	}
 

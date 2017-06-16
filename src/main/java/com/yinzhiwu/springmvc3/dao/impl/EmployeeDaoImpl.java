@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.EmployeeDao;
-import com.yinzhiwu.springmvc3.entity.Employee;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Employee;
 import com.yinzhiwu.springmvc3.model.view.EmployeeApiView;
 
 @Repository

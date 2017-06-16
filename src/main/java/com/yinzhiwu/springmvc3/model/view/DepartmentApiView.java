@@ -1,6 +1,6 @@
 package com.yinzhiwu.springmvc3.model.view;
 
-import com.yinzhiwu.springmvc3.entity.Department;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Department;
 
 public class DepartmentApiView {
 

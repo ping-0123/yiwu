@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.DepartmentDao;
 import com.yinzhiwu.springmvc3.dao.StoreInfoDao;
-import com.yinzhiwu.springmvc3.entity.Department;
 import com.yinzhiwu.springmvc3.entity.StoreInfo;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Department;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.Store;
 import com.yinzhiwu.springmvc3.model.view.DepartmentApiView;
@@ -71,7 +71,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 			s.setName(d.getDeptName());
 			try{
 				StoreInfo sf = storeInfoDao.get(d.getId());
-				s.setAddress(sf.getAddress());
+				if(sf.getAddress() != null)
+					s.setAddress(sf.getAddress().getAddress());
 				s.setTelePhone(sf.getTelePhone());
 			}catch (Exception e) {
 				LOG.warn(e.getMessage());

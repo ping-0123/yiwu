@@ -12,6 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.yinzhiwu.springmvc3.entity.yzwOld.Employee;
+
 @Entity
 @Table(name="yiwu_account", uniqueConstraints={
 		@UniqueConstraint(name="uk_Account_employeeId", columnNames="employee_id"),

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.IntervalDao;
-import com.yinzhiwu.springmvc3.entity.Interval;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Interval;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.service.IntervalService;
 

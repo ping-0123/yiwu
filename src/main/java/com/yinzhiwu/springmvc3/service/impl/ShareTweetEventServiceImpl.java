@@ -36,6 +36,7 @@ public class ShareTweetEventServiceImpl extends BaseServiceImpl<ShareTweetEvent,
 		 * set event type
 		 */
 		long times = shareTweetEventDao.findDailyShareTimes(e.getDistributer().getId(), e.getOccurTime());
+		e.setOrdinalOfDay((short)(times + 1));
 		if(times <3)
 			e.setType(EventType.SHARE_TWEET_BY_WECHAT_FIRST_THREE_TIMES_PER_DAY);
 		else

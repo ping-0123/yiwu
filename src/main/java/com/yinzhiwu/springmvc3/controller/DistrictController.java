@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yinzhiwu.springmvc3.entity.Department;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Department;
 import com.yinzhiwu.springmvc3.model.view.DepartmentApiView;
 import com.yinzhiwu.springmvc3.service.DepartmentService;
 

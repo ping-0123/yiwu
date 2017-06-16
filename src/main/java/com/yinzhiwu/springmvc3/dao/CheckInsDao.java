@@ -1,6 +1,6 @@
 package com.yinzhiwu.springmvc3.dao;
 
-import com.yinzhiwu.springmvc3.entity.CheckIns;
+import com.yinzhiwu.springmvc3.entity.yzwOld.CheckIns;
 
 public interface CheckInsDao extends IBaseDao<CheckIns,Integer>{
 

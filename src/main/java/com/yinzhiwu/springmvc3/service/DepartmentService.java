@@ -2,7 +2,7 @@ package com.yinzhiwu.springmvc3.service;
 
 import java.util.List;
 
-import com.yinzhiwu.springmvc3.entity.Department;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Department;
 import com.yinzhiwu.springmvc3.model.Store;
 import com.yinzhiwu.springmvc3.model.view.DepartmentApiView;
 

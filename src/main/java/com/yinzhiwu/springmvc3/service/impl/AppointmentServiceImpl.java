@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.springmvc3.dao.AppointmentDao;
 import com.yinzhiwu.springmvc3.dao.LessonDao;
 import com.yinzhiwu.springmvc3.dao.OrderDao;
+import com.yinzhiwu.springmvc3.service.AppointmentService;
 import com.yinzhiwu.springmvc3.entity.Appointment;
 import com.yinzhiwu.springmvc3.entity.Appointment.APPOINT_STATUS;
-import com.yinzhiwu.springmvc3.service.AppointmentService;
-import com.yinzhiwu.springmvc3.entity.Lesson;
-import com.yinzhiwu.springmvc3.entity.Order;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Lesson;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Order;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Service

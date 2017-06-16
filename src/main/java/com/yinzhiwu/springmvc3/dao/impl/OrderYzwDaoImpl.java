@@ -135,6 +135,12 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 		List<String> constractNos = (List<String>) getHibernateTemplate().findByNamedParam(hql, "customerId", customerId);
 		return constractNos;
 	}
+
+	@Override
+	public List<OrderYzw> find_valid_orders_by_customer_by_subCourseType(int customerId, String subCourseType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

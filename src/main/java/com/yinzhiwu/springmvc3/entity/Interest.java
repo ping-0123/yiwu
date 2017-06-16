@@ -1,5 +1,9 @@
 package com.yinzhiwu.springmvc3.entity;
 
+import com.yinzhiwu.springmvc3.entity.yzwOld.Dance;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Department;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Employee;
+
 public class Interest {
 	
 	private Department store;

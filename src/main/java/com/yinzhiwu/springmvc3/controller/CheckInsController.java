@@ -33,4 +33,10 @@ public class CheckInsController extends BaseController{
 	public YiwuJson<List<LessonApiView>> findByCustomerId(int customerId){
 		return checkInsYzwService.findByCustomerId(customerId);
 	}
+	
+	@PostMapping
+	public YiwuJson<Boolean> doPost(int customerId, int lessonId){
+		checkInsYzwService.saveByCutomerByLesson(customerId,lessonId);
+		return null;
+	}
 }

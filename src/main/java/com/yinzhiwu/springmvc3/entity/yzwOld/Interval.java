@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.entity;
+package com.yinzhiwu.springmvc3.entity.yzwOld;
 
 import java.sql.Time;
 import java.util.Date;

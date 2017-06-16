@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.CustomerDao;
-import com.yinzhiwu.springmvc3.entity.Customer;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Customer;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
 @Repository

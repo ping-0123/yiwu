@@ -1,5 +1,4 @@
-package com.yinzhiwu.springmvc3.entity;
-
+package com.yinzhiwu.springmvc3.entity.yzwOld;
 
 import java.util.Date;
 
@@ -10,52 +9,44 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-@Table(name="vappointment")
-public class Appointment {
+@Table(name="vstore_callroll")
+public class StoreManCallRoll {
 	
-	public enum APPOINT_STATUS{APPONTED,UN_APOINTED}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column
-	private Integer coursehourId;
+	@Column(length=32)
+	private String lessonId;
+	
+	@Column(length=32)
+	private String memberCard;
 	
 	@Column
-	private Integer customerId;
+	private Integer flagCallroll;
 	
-	@Column(length=4, name="status")
-	private String status;
+	@Column
+	private String unCallrollReason;
 	
-	@JsonIgnore
-	@Column(name="sf_create_user")
+	@Column
 	private Integer createUserId;
 	
-	@JsonIgnore
-	@Column(name="sf_last_change_user")
+	@Column
 	private Integer lastChangeUserId;
 	
-	@JsonIgnore
-	@Column(name="sf_create_time")
-	private  Date createTime;
+	@Column
+	private Date createTime;
 	
-	@JsonIgnore
-	@Column(name="sf_last_change_time")
+	@Column
 	private Date lastChangeTime;
 	
-	@JsonIgnore
 	@Column
-	private Integer machinecode;
+	private Integer machineCode;
 	
-	@JsonIgnore
-	@Column(name="sf_Last_Sync_TimeStamp")
+	@Column
 	private Date lastSyncTimeStamp;
-	
-	
 
 	public final Integer getId() {
 		return id;
@@ -65,28 +56,36 @@ public class Appointment {
 		this.id = id;
 	}
 
-	public final Integer getCoursehourId() {
-		return coursehourId;
+	public final String getLessonId() {
+		return lessonId;
 	}
 
-	public final void setCoursehourId(Integer coursehourId) {
-		this.coursehourId = coursehourId;
+	public final void setLessonId(String lessonId) {
+		this.lessonId = lessonId;
 	}
 
-	public final Integer getCustomerId() {
-		return customerId;
+	public final String getMemberCard() {
+		return memberCard;
 	}
 
-	public final void setCustomerId(Integer customerId) {
-		this.customerId = customerId;
+	public final void setMemberCard(String memberCard) {
+		this.memberCard = memberCard;
 	}
 
-	public final String getStatus() {
-		return status;
+	public final Integer getFlagCallroll() {
+		return flagCallroll;
 	}
 
-	public final void setStatus(String status) {
-		this.status = status;
+	public final void setFlagCallroll(Integer flagCallroll) {
+		this.flagCallroll = flagCallroll;
+	}
+
+	public final String getUnCallrollReason() {
+		return unCallrollReason;
+	}
+
+	public final void setUnCallrollReason(String unCallrollReason) {
+		this.unCallrollReason = unCallrollReason;
 	}
 
 	public final Integer getCreateUserId() {
@@ -121,12 +120,12 @@ public class Appointment {
 		this.lastChangeTime = lastChangeTime;
 	}
 
-	public final Integer getMachinecode() {
-		return machinecode;
+	public final Integer getMachineCode() {
+		return machineCode;
 	}
 
-	public final void setMachinecode(Integer machinecode) {
-		this.machinecode = machinecode;
+	public final void setMachineCode(Integer machineCode) {
+		this.machineCode = machineCode;
 	}
 
 	public final Date getLastSyncTimeStamp() {
@@ -138,4 +137,7 @@ public class Appointment {
 	}
 	
 	
+	
+
+		
 }

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.DepartmentDao;
 import com.yinzhiwu.springmvc3.dao.PlanRevenueDao;
-import com.yinzhiwu.springmvc3.entity.Department;
 import com.yinzhiwu.springmvc3.entity.PlanRevenue;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Department;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.PlanRevenueApiModel;
 import com.yinzhiwu.springmvc3.service.PlanRevenueService;

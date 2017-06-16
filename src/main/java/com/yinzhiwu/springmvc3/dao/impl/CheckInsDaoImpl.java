@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.CheckInsDao;
-import com.yinzhiwu.springmvc3.entity.CheckIns;
+import com.yinzhiwu.springmvc3.entity.yzwOld.CheckIns;
 
 @Repository
 public class CheckInsDaoImpl extends BaseDaoImpl<CheckIns,Integer> implements CheckInsDao {

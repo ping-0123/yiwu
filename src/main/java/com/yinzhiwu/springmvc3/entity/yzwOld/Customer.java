@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.entity;
+package com.yinzhiwu.springmvc3.entity.yzwOld;
 
 import java.util.Date;
 
@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.enums.Gender;
 import com.yinzhiwu.springmvc3.util.CalendarUtil;
 

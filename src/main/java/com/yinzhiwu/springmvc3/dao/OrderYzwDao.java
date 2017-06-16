@@ -21,6 +21,7 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String>  {
 
 	public List<String> find_contractNos_by_customer_id(int customerId);
 
+	public List<OrderYzw> find_valid_orders_by_customer_by_subCourseType(int customerId, String subCourseType);
 	
 	
 }
