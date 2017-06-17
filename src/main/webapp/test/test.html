@@ -16,9 +16,9 @@
 
 		function checkIn(){
 			$.post(v_baseUrl + "/api/checkIns",
-				{customerId:34892, lessonId:185424},
+				{customerId:34892, lessonId:189255},
 				function(result){
-					alert(JSON.stringify(result));
+					$('#content').html(JSON.stringify(result));
 				});
 		}
 		

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yinzhiwu.springmvc3.entity.yzw.Connotation;
 import com.yinzhiwu.springmvc3.entity.yzwOld.Lesson;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.LessonApiView;
 import com.yinzhiwu.springmvc3.service.LessonService;
@@ -31,7 +33,7 @@ import com.yinzhiwu.springmvc3.service.LessonYzwService;
 @CrossOrigin
 @Controller
 @RequestMapping(value="api/lesson")
-public class LessonController {
+public class LessonController  extends BaseController{
 
 	@Autowired
 	@Qualifier(value="lessonServiceImplTwo")
@@ -40,12 +42,30 @@ public class LessonController {
 	@Autowired
 	private LessonYzwService lessonYzwService;
 	
-	
+	@Deprecated
 	@RequestMapping(value="/id/{id}" ,method={RequestMethod.GET})
 	@ResponseBody
 	public Lesson getLesson(@PathVariable String id){
 		int intId = Integer.parseInt(id);
 		return lessonService.findById(intId);
+	}
+	
+	@RequestMapping(value="/{id}" ,method={RequestMethod.GET})
+	@ResponseBody
+	public Lesson getLesson2(@PathVariable String id){
+		int intId = Integer.parseInt(id);
+		return lessonService.findById(intId);
+	}
+	
+	@GetMapping(value="/connotation/{lessonId}")
+	@ResponseBody
+	public YiwuJson<Connotation> getConnotationByLessonId(@PathVariable int lessonId){
+		try {
+			return new YiwuJson<>(lessonYzwService.get(lessonId).getConnotation());
+		} catch (DataNotFoundException e) {
+			logger.error(e);
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 	
 	@RequestMapping(value="weeklist", method={RequestMethod.POST, RequestMethod.GET})

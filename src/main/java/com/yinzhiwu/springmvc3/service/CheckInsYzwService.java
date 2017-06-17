@@ -18,7 +18,6 @@ public interface CheckInsYzwService extends IBaseService<CheckInsYzw, Integer> {
 
 	CheckInSuccessApiView saveCustomerCheckIn(CustomerYzw customer, LessonYzw lesson) throws Exception;
 
-	CheckInSuccessApiView getCheckInSuccessApiView(int checkInId) throws Exception;
 
 
 

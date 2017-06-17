@@ -3,9 +3,12 @@ package com.yinzhiwu.springmvc3.entity.yzw;
 import java.sql.Time;
 import java.util.Date;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -29,8 +32,9 @@ public class LessonYzw extends BaseYzwEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(length = 32)
-	private String courseid;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="courseId", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	private CourseYzw course;
 
 	@Column
 	private Date lessonDate;
@@ -118,29 +122,41 @@ public class LessonYzw extends BaseYzwEntity {
 	@Column(name = "yuyueRenshu")
 	private Integer appointedStudentCount;
 
-	@Column(name = "neihan")
-	private String connotation;
+	@Embedded
+	@AttributeOverrides({
+			@AttributeOverride(name="connotation",column=@Column(name="neihan")),
+			@AttributeOverride(name="helpInfomation",column=@Column(name="help")),
+			@AttributeOverride(name="introduction",column=@Column(name="jianjie")),
+			@AttributeOverride(name="pictureNo",column=@Column(name="picture")),
+			@AttributeOverride(name="videoUrl",column=@Column(name="video")),
+			@AttributeOverride(name="audioName",column=@Column(name="audio")),
+			@AttributeOverride(name="audioUrl",column=@Column(name="audio_link")),
+			@AttributeOverride(name="danceIntroduction",column=@Column(name="dance_introduction"))})
+	private Connotation connotation;
+	
+//	@Column(name = "neihan")
+//	private String connotation;
 
-	@Column(name = "help")
-	private String helpInfomation;
-
-	@Column(name = "jianjie")
-	private String introduction;
-
-	@Column(name = "picture")
-	private String pictureNo;
-
-	@Column(name = "video")
-	private String videoUrl;
-
-	@Column(name = "audio")
-	private String audioName;
-
-	@Column(name = "audio_link")
-	private String audioUrl;
-
-	@Column(name = "dance_introduction")
-	private String danceIntroduction;
+//	@Column(name = "help")
+//	private String helpInfomation;
+//
+//	@Column(name = "jianjie")
+//	private String introduction;
+//
+//	@Column(name = "picture")
+//	private String pictureNo;
+//
+//	@Column(name = "video")
+//	private String videoUrl;
+//
+//	@Column(name = "audio")
+//	private String audioName;
+//
+//	@Column(name = "audio_link")
+//	private String audioUrl;
+//
+//	@Column(name = "dance_introduction")
+//	private String danceIntroduction;
 
 	@Column(name = "QRcode")
 	private String qrCode;
@@ -153,9 +169,6 @@ public class LessonYzw extends BaseYzwEntity {
 		return id;
 	}
 
-	public String getCourseid() {
-		return courseid;
-	}
 
 	public Date getLessonDate() {
 		return lessonDate;
@@ -258,38 +271,7 @@ public class LessonYzw extends BaseYzwEntity {
 		return appointedStudentCount;
 	}
 
-	public String getConnotation() {
-		return connotation;
-	}
-
-	public String getHelpInfomation() {
-		return helpInfomation;
-	}
-
-	public String getIntroduction() {
-		return introduction;
-	}
-
-	public String getPictureNo() {
-		return pictureNo;
-	}
-
-	public String getVideoUrl() {
-		return videoUrl;
-	}
-
-	public String getAudioName() {
-		return audioName;
-	}
-
-	public String getAudioUrl() {
-		return audioUrl;
-	}
-
-	public String getDanceIntroduction() {
-		return danceIntroduction;
-	}
-
+	
 	public String getQrCode() {
 		return qrCode;
 	}
@@ -298,9 +280,6 @@ public class LessonYzw extends BaseYzwEntity {
 		this.id = id;
 	}
 
-	public void setCourseid(String courseid) {
-		this.courseid = courseid;
-	}
 
 	public void setLessonDate(Date lessonDate) {
 		this.lessonDate = lessonDate;
@@ -402,37 +381,7 @@ public class LessonYzw extends BaseYzwEntity {
 		this.appointedStudentCount = appointedStudentCount;
 	}
 
-	public void setConnotation(String connotation) {
-		this.connotation = connotation;
-	}
-
-	public void setHelpInfomation(String helpInfomation) {
-		this.helpInfomation = helpInfomation;
-	}
-
-	public void setIntroduction(String introduction) {
-		this.introduction = introduction;
-	}
-
-	public void setPictureNo(String pictureNo) {
-		this.pictureNo = pictureNo;
-	}
-
-	public void setVideoUrl(String videoUrl) {
-		this.videoUrl = videoUrl;
-	}
-
-	public void setAudioName(String audioName) {
-		this.audioName = audioName;
-	}
-
-	public void setAudioUrl(String audioUrl) {
-		this.audioUrl = audioUrl;
-	}
-
-	public void setDanceIntroduction(String danceIntroduction) {
-		this.danceIntroduction = danceIntroduction;
-	}
+	
 
 	public void setQrCode(String qrCode) {
 		this.qrCode = qrCode;
@@ -444,6 +393,22 @@ public class LessonYzw extends BaseYzwEntity {
 
 	public void setClassRoom(ClassRoomYzw classRoom) {
 		this.classRoom = classRoom;
+	}
+
+	public CourseYzw getCourse() {
+		return course;
+	}
+
+	public void setCourse(CourseYzw course) {
+		this.course = course;
+	}
+
+	public Connotation getConnotation() {
+		return connotation;
+	}
+
+	public void setConnotation(Connotation connotation) {
+		this.connotation = connotation;
 	}
 
 	

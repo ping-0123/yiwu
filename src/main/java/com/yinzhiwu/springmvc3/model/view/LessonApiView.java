@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 
 public class LessonApiView {
@@ -11,6 +12,12 @@ public class LessonApiView {
 	private int id;
 	
 	private String name;
+	
+	private String courseId;
+	
+	private String danceName;
+	
+	private String danceGrade;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date date;
@@ -36,6 +43,12 @@ public class LessonApiView {
 		this.end = l.getEndTime();
 		this.storeName = l.getStoreName();
 		this.dueTeacher =l.getDueTeacherName();
+		CourseYzw course = l.getCourse();
+		if(course != null){
+			this.courseId = course.getId();
+			this.danceName = course.getName();
+			this.danceGrade = course.getDanceGrade();
+		}
 	}
 	
 	public int getId() {
@@ -92,6 +105,30 @@ public class LessonApiView {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDanceName() {
+		return danceName;
+	}
+
+	public void setDanceName(String danceName) {
+		this.danceName = danceName;
+	}
+
+	public String getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
+
+	public String getDanceGrade() {
+		return danceGrade;
+	}
+
+	public void setDanceGrade(String danceGrade) {
+		this.danceGrade = danceGrade;
 	}
 	
 	
