@@ -124,6 +124,18 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		return findCountByProperty("wechatNo", wechatNo);
 	}
 
+	@Override
+	public Distributer findByCustomerId(Integer customerId){
+		List<Distributer> ds;
+		try {
+			ds = findByProperty("customer.id", customerId);
+		} catch (DataNotFoundException e) {
+			logger.info(e);
+			return null;
+		}
+		return ds.get(0);
+	}
+
 
 	
 

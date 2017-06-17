@@ -1,11 +1,14 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.yinzhiwu.springmvc3.dao.CheckInsYzwDao;
 import com.yinzhiwu.springmvc3.entity.yzw.CheckInsYzw;
+import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 
 @Repository
@@ -35,6 +38,26 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 	public List<LessonYzw> findByContractNos(List<String> contractNos) {
 		String hql = "from CheckInsYzw where contractNo in :contractNos";
 		return (List<LessonYzw>) getHibernateTemplate().findByNamedParam(hql, "contractNos", contractNos);
+	}
+
+	@Override
+	public boolean isCheckedIn(CustomerYzw customer, LessonYzw lesson) {
+		Assert.notNull(customer);
+		Assert.notNull(lesson);
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("select count(*) from CheckInsYzw t1 where t1.lesson.id=:lessonId");
+		hql.append(" and t1.contractNo in");
+		hql.append("(select t1.contract.contractNo from OrderYzw t1 where t1.contract.status='已审核' and t1.contract.subType=:subCourseType");
+		hql.append(" and t1.contract.remainTimes>=1 and t1.contract.end >= :currdate)");
+		@SuppressWarnings("unchecked")
+		List<Long> counts = (List<Long>) getHibernateTemplate().findByNamedParam(
+				hql.toString(), 
+				new String[]{"lessonId", "subCourseType", "currdate"}, 
+				new Object[]{lesson.getId(), lesson.getSubCourseType(), new Date()});
+		if(counts.get(0) > 0)
+			return true;
+		return false;
 	}
 
 }

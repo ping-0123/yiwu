@@ -137,9 +137,26 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 	}
 
 	@Override
-	public List<OrderYzw> find_valid_orders_by_customer_by_subCourseType(int customerId, String subCourseType) {
-		// TODO Auto-generated method stub
-		return null;
+	public String find_valid_contract_by_customer_by_subCourseType(int customerId, String subCourseType) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select t1.contract.contractNo from OrderYzw t1 where t1.contract.status='已审核' and t1.contract.subType=:subCourseType");
+		hql.append(" and t1.contract.remainTimes>=1 and t1.contract.end >= :currdate");
+		hql.append(" order by contract.end");
+		@SuppressWarnings("unchecked")
+		List<String> contracts = (List<String>) getHibernateTemplate().findByNamedParam(
+				hql.toString(), 
+				new String[]{"subCourseType", "currdate"},
+				new Object[]{subCourseType, new Date()});
+		if(contracts==null || contracts.size() ==0)
+			return null;
+		return contracts.get(0);	
+	}
+
+	@Override
+	public OrderYzw findByContractNO(String contractNo) throws Exception {
+		List<OrderYzw> orders = findByProperty("contract.contractNo", contractNo);
+		if(orders.size() >1) throw new Exception("会籍合约：" + contractNo + "重复");
+		return orders.get(0);
 	}
 	
 	

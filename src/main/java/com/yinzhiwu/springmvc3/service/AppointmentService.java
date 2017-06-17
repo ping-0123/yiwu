@@ -1,6 +1,6 @@
 package com.yinzhiwu.springmvc3.service;
 
-import com.yinzhiwu.springmvc3.entity.Appointment;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Appointment;
 
 public interface AppointmentService {
 

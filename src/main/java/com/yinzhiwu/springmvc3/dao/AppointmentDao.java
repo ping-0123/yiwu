@@ -1,6 +1,6 @@
 package com.yinzhiwu.springmvc3.dao;
 
-import com.yinzhiwu.springmvc3.entity.Appointment;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Appointment;
 import com.yinzhiwu.springmvc3.model.LessonOldApiView;
 
 public interface AppointmentDao extends IBaseDao<Appointment, Integer>{

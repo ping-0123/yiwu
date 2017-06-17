@@ -29,4 +29,6 @@ public interface DistributerDao extends IBaseDao<Distributer, Integer> {
 	public int findCountByPhoneNo(String phoneNo);
 
 	public int findCountByWechatNo(String wechatNo);
+
+	public Distributer findByCustomerId(Integer customerId);
 }

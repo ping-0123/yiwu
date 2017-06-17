@@ -43,7 +43,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		try {
 			return baseDao.get(id);
 		} catch (DataNotFoundException e) {
-			logger.error(e.getMessage());
+			logger.info(e.getMessage());
 			return null;
 		}
 	}

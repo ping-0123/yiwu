@@ -59,7 +59,8 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 		try {
 			factors = incomeFactorDao.findByProperty("eventType.id", event.getType().getId());
 		} catch (DataNotFoundException e) {
-			logger.info(e.getMessage());
+//			logger.info(e.getMessage());
+//			logger.info(e);
 			return;
 		}
 		for (IncomeFactor factor : factors) {

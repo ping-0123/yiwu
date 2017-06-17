@@ -23,8 +23,12 @@ public class EContractController  extends BaseController{
 	@GetMapping("/{contractNo}")
 	public YiwuJson<EContractDetailApiView> get(@PathVariable String contractNo)
 	{
-		return new YiwuJson<>(new EContractDetailApiView(
-				electricContractYzwService.get(contractNo)));
+		try {
+			return new YiwuJson<>(new EContractDetailApiView(
+					electricContractYzwService.get(contractNo)));
+		} catch (DataNotFoundException e) {
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 	
 	@PutMapping("/{contractNo}")

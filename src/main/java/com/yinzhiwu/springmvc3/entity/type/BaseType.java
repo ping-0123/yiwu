@@ -28,6 +28,11 @@ public abstract class BaseType implements Serializable {
 	private static final long serialVersionUID = -7200613894589888689L;
 	
 
+	@Id  
+	@GeneratedValue(generator="assigned")  
+	@GenericGenerator(name="assigned", strategy = "assigned") 
+	private Integer id;
+
 	
 	@Column(length=50)
 	private String name;
@@ -65,11 +70,7 @@ public abstract class BaseType implements Serializable {
 	}
 
 
-	@Id  
-	@GeneratedValue(generator="assigned")  
-	@GenericGenerator(name="assigned", strategy = "assigned") 
-	private Integer id;
-
+	
 
 
 	public Integer getId() {

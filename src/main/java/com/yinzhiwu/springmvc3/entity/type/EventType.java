@@ -27,7 +27,12 @@ public class EventType  extends BaseType{
 	public static final EventType PAY_DEPOSIT_BY_BROKERAGE						  = new EventType(10009,"PAY_DEPOSIT_BY_BROKERAGE");
 	public static final EventType YIELD_INTEREST								  = new EventType(10010,"YIELD_INTEREST");
 	public static final EventType WITHDRAW 										  = new EventType(10011,"WITHDRAW");
-	
+	public static final EventType APPOINTMENT									  = new EventType(10027, "APPOINTMENT");
+	public static final EventType CHECK_IN_AFTER_APPOINTMENT					  = new EventType(10028, "CHECK_IN_AFTER_APPOINTMENT");
+	public static final EventType CHECK_IN_WITHOUT_APPOINTMENT					  = new EventType(10029, "CHECK_IN_WITHOUT_APPOINTMENT");
+	public static final EventType UN_APPOINTMENT								  = new EventType(10030, "UN_APPOINTMENT");
+
+
 	
 	
 	@OneToMany(mappedBy="eventType")

@@ -51,7 +51,7 @@ public interface IBaseService<T, PK extends Serializable> {
 	 */
 	void modify(PK id, T entity) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException;
 	
-	public T get(PK id);
+	public T get(PK id) throws DataNotFoundException;
 	
 	
 	public PageBean<T> findPage(T entity, int pageNum, int pageSize);

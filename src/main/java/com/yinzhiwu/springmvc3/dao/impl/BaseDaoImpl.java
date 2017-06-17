@@ -216,18 +216,18 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException {
-		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
+		StringBuilder builder = new StringBuilder("FROM " + entityClass.getSimpleName() + " WHERE 1=1");
 		Map<String,Object> map = new HashMap<>();
 		for(int i = 0; i<propertyNames.length; i++){
 			if(StringUtils.hasLength(propertyNames[i])){
 				String valString = propertyNames[i].replace(".", "");
-				hql.append(" and " + propertyNames[i] + "=:" + valString);
+				builder.append(" and " + propertyNames[i] + "=:" + valString);
 				map.put(valString, values[i]);
 			}
 		}
 		
 		List<T> list =  (List<T>) getHibernateTemplate().findByNamedParam(
-				hql.toString(), 
+				builder.toString(), 
 				map.keySet().toArray(new String[] {}),
 				map.values().toArray(new Object[] {}));
 		if(list==null || list.size() ==0)
@@ -236,19 +236,27 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 	}
 
 	@Override
-	public int findCountByProperties(String[] propertyNames, Object[] values){
-		if(propertyNames.length != values.length)
-			try {
-				throw new Exception("传入的属性名和属性值数量不一致");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		try{
-			return findByProperties(propertyNames, values).size();
-		}catch (Exception e) {
-			LOG.error(e.getMessage());
-			return 0;
+	public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception{
+		if(propertyNames.length != values.length){
+			throw new Exception("传入的属性名和属性值数量不一致");
 		}
+		String[] properties = new String[propertyNames.length];
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT COUNT(*)");
+		builder.append(" FROM " + entityClass.getSimpleName());
+		builder.append(" WHERE 1=1");
+		for(int i = 0; i<propertyNames.length; i++){
+			if(StringUtils.hasLength(propertyNames[i])){
+				properties[i] = propertyNames[i].replace(".", "");
+				builder.append(" AND " + propertyNames[i] + "=:" +properties[i]);
+			}else {
+				throw new Exception("属性名不能为空为null");
+			}
+		}
+		@SuppressWarnings("unchecked")
+		List<Long> count =   (List<Long>) getHibernateTemplate().findByNamedParam(
+				builder.toString(), properties, values);
+		return count.get(0).intValue();
 	}
 
 	

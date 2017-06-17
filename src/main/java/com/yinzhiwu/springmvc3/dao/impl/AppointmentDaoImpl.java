@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.AppointmentDao;
-import com.yinzhiwu.springmvc3.entity.Appointment;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Appointment;
 import com.yinzhiwu.springmvc3.model.LessonOldApiView;
 
 

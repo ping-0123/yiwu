@@ -3,7 +3,9 @@ package com.yinzhiwu.springmvc3.dao;
 import java.util.List;
 
 import com.yinzhiwu.springmvc3.entity.yzw.CheckInsYzw;
+import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Customer;
 
 public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer>{
 
@@ -12,6 +14,8 @@ public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer>{
 	List<LessonYzw> findByContractNos(List<String> contractNos);
 
 	int findCountByCustomerId(int customerId);
+
+	boolean isCheckedIn(CustomerYzw customer, LessonYzw lesson);
 
 
 

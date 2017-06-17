@@ -1,7 +1,10 @@
 package com.yinzhiwu.springmvc3.entity.income;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.enterprise.inject.New;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -11,12 +14,14 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.yinzhiwu.springmvc3.entity.BaseEntity;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.Message;
 import com.yinzhiwu.springmvc3.entity.type.EventType;
+import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 
 @Entity
 @Table(name="yiwu_income_event")
@@ -36,12 +41,14 @@ public class IncomeEvent extends BaseEntity {
 	
 	private Date occurTime;
 	
-	
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_event_type_id"))
 	private EventType type;
 	
 	private Float param;
+	
+	@OneToMany(mappedBy="incomeEvent")
+	private List<IncomeRecord> incomeRecords = new ArrayList<>();
 	
 	public IncomeEvent(){};
 	
@@ -56,6 +63,16 @@ public class IncomeEvent extends BaseEntity {
 	public void init(){
 		super.init();
 		this.occurTime = super.getCreateDate();
+	}
+	
+	public IncomeRecord getAppointedIncomeRecord(IncomeType type){
+		if(this.incomeRecords==null || this.incomeRecords.size() ==0)
+			return null;
+		for (IncomeRecord incomeRecord : incomeRecords) {
+			if(IncomeType.EXP.equals(incomeRecord.getIncomeType()))
+				return incomeRecord;
+		}
+		return null;
 	}
 	
 	public Message generateMessage(IncomeRecord incomeRecord){
@@ -96,6 +113,15 @@ public class IncomeEvent extends BaseEntity {
 		this.param = param;
 	}
 
+	public List<IncomeRecord> getIncomeRecords() {
+		return incomeRecords;
+	}
+
+	public void setIncomeRecords(List<IncomeRecord> incomeRecords) {
+		this.incomeRecords = incomeRecords;
+	}
+
+	
 	
 
 

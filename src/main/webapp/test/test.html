@@ -11,7 +11,16 @@
 	<script type="text/javascript">
 		var v_baseUrl = "http://192.168.0.115:8080/yiwu/";
 //		register();
-		shareTweet();
+//		shareTweet();
+		checkIn();
+
+		function checkIn(){
+			$.post(v_baseUrl + "/api/checkIns",
+				{customerId:34892, lessonId:185424},
+				function(result){
+					alert(JSON.stringify(result));
+				});
+		}
 		
 		function shareTweet(){
 			$.post(v_baseUrl + "/api/event/shareTweet",
