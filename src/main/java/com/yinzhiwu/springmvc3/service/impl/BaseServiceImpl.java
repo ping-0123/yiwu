@@ -116,7 +116,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		logger.info(fields.length);
 		boolean update_flag =false;
 		long afterReflect = System.currentTimeMillis();
-		logger.info("反射所花时间: " + (afterReflect-start));
+		logger.info("反射所花的时间: " + (afterReflect-start));
 		for (Field f : fields) {
 			f.setAccessible(true);
 			if(!Modifier.isStatic(f.getModifiers()) 

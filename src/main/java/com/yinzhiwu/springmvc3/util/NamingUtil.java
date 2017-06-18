@@ -39,7 +39,8 @@ public class NamingUtil {
     }
     /**
      * 驼峰法转下划线
-     * @param camel 源字符串
+     * @param camel		 源字符串
+     * @param lowerCase if lowerCase is true then the character of under line format is lower case else upper case
      * @return 转换后的字符串
      */
     public static String camel2Underline(String camel, boolean lowerCase){
