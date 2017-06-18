@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="  
+			http://www.springframework.org/schema/beans   
+			http://www.springframework.org/schema/beans/spring-beans.xsd  
+			http://www.springframework.org/schema/context   
+			http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/aop   
+			http://www.springframework.org/schema/aop/spring-aop.xsd
+			http://www.springframework.org/schema/tx 
+            http://www.springframework.org/schema/tx/spring-tx.xsd 
+			">
+	  <!-- 配置调度任务-->
+    <bean name="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="transactionManager" ref="transactionManager"/>
+
+        <!-- 任务唯一的名称，将会持久化到数据库-->
+        <property name="schedulerName" value="baseScheduler"/>
+
+        <!-- 每台集群机器部署应用的时候会更新触发器-->
+        <property name="overwriteExistingJobs" value="true"/>
+        <property name="applicationContextSchedulerContextKey" value="appli"/>
+
+        <property name="jobFactory">
+            <bean class="com.aaron.clusterquartz.autowired.AutowiringSpringBeanJobFactory"/>
+        </property>
+
+        <property name="triggers">
+            <list>
+                <ref bean="printCurrentTimeScheduler"/>
+            </list>
+        </property>
+        <property name="jobDetails">
+            <list>
+                <ref bean="printCurrentTimeJobs"/>
+            </list>
+        </property>
+
+        <property name="taskExecutor" ref="executor"/>
+
+    </bean>
+
+    <!-- 配置Job详情 -->
+    
+    <bean name="printCurrentTimeJobs" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.aaron.clusterquartz.job.PrintCurrentTimeJobs"/>
+        <property name="durability" value="true"/>
+        <property name="requestsRecovery" value="false"/>
+    </bean>
+
+    <!-- 配置触发时间 -->
+    <bean name="printCurrentTimeScheduler" class="com.aaron.clusterquartz.cron.PersistableCronTriggerFactoryBean">
+        <property name="jobDetail" ref="printCurrentTimeJobs"/>
+        <property name="cronExpression">
+            <value>0/10 * * * * ?</value>
+        </property>
+        <property name="timeZone">
+            <value>GMT+8:00</value>
+        </property>
+    </bean>
+
+    <!-- 分布式事务配置 end -->
+
+
+</beans>
