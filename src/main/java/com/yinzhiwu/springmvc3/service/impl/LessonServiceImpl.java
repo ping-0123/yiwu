@@ -5,24 +5,31 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.AppointmentDao;
 import com.yinzhiwu.springmvc3.dao.ClassRoomDao;
 import com.yinzhiwu.springmvc3.dao.CourseDao;
+import com.yinzhiwu.springmvc3.dao.CustomerDao;
 import com.yinzhiwu.springmvc3.dao.LessonDao;
 import com.yinzhiwu.springmvc3.dao.OrderDao;
-import com.yinzhiwu.springmvc3.entity.ClassRoom;
-import com.yinzhiwu.springmvc3.entity.Course;
-import com.yinzhiwu.springmvc3.entity.Customer;
-import com.yinzhiwu.springmvc3.entity.Lesson;
+import com.yinzhiwu.springmvc3.entity.yzwOld.ClassRoom;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Course;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Customer;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Lesson;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.LessonList;
-import com.yinzhiwu.springmvc3.model.MiniLesson;
+import com.yinzhiwu.springmvc3.model.LessonOldApiView;
 import com.yinzhiwu.springmvc3.service.LessonService;
 
 @Service
-public class LessonServiceImpl implements LessonService {
+public class LessonServiceImpl extends BaseServiceImpl<Lesson, Integer> implements LessonService {
+	
+	public static Log LOG = LogFactory.getLog(LessonServiceImpl.class);
 	
 	@Autowired
 	private LessonDao lessonDao;
@@ -39,13 +46,22 @@ public class LessonServiceImpl implements LessonService {
 	@Autowired
 	private OrderDao orderDao;
 	
+	@Autowired
+	@Qualifier("customerDaoImpl")
+	private CustomerDao customerDao;
+	
 	@Override
 	public Lesson findById(int lessonId) {
-		return lessonDao.findById(lessonId);
+		try {
+			return lessonDao.findById(lessonId);
+		} catch (DataNotFoundException e) {
+			LOG.error(e.getMessage());
+			return null;
+		}
 	}
 	
 	
-	private List<LessonList> wrapLessonWeekList(List<MiniLesson> l, Date start){
+	private List<LessonList> wrapLessonWeekList(List<LessonOldApiView> l, Date start){
 		
 		List<LessonList> list = new ArrayList<>();
 		Calendar ca = Calendar.getInstance();
@@ -58,7 +74,7 @@ public class LessonServiceImpl implements LessonService {
 			ca.add(Calendar.DAY_OF_MONTH, 1);
 		}
 		
-		for (MiniLesson miniLesson : l) {
+		for (LessonOldApiView miniLesson : l) {
 			for(int j= 0; j<list.size(); j++)
 			{
 				if (miniLesson.getWeek()==list.get(j).getWeekday()){
@@ -76,7 +92,14 @@ public class LessonServiceImpl implements LessonService {
 
 	@Override
 	public List<LessonList> findLessonWeekList(int storeId, String courseType, String teacherName, String danceCatagory,
-			Date date , Customer c) {
+			Date date , String wechatNo) {
+		
+		Customer c=null;
+		try {
+			c = customerDao.findByWeChat(wechatNo);
+		} catch (DataNotFoundException e) {
+			LOG.debug(e.getStackTrace());
+		}
 		
 		//获取周日到周六所对应的日期
 		Calendar ca = Calendar.getInstance();
@@ -86,49 +109,60 @@ public class LessonServiceImpl implements LessonService {
 		Date startDate = ca.getTime();
 		ca.add(Calendar.DAY_OF_WEEK, Calendar.SATURDAY-Calendar.SUNDAY);
 		Date endDate = ca.getTime();
+		List<LessonOldApiView> lm = new ArrayList<>();
 		
-		
-		List<Lesson> list = lessonDao.findLessonWeekList(
-				storeId, courseType, teacherName, danceCatagory, startDate, endDate);
-		List<MiniLesson> lm = new ArrayList<>();
-		for (Lesson l : list) {
-			MiniLesson ml = new MiniLesson(l);
-			//添加最大预约人数
-			if(null != l.getClassRoomId() && "" != l.getClassRoomId()){
-				ClassRoom room = roomDao.findById(l.getClassRoomId());
-				if (room != null)
-					ml.setMaxStudentCount(room.getMaxStudentCount());
+		List<Lesson> list ;
+		try {
+			list = lessonDao.findLessonWeekList(
+					storeId, courseType, teacherName, danceCatagory, startDate, endDate);
+			for (Lesson l : list) {
+				LessonOldApiView ml = new LessonOldApiView(l);
+				//添加最大预约人数
+				if(null != l.getClassRoomId() && "" != l.getClassRoomId()){
+					ClassRoom room = roomDao.findById(l.getClassRoomId());
+					if (room != null)
+						ml.setMaxStudentCount(room.getMaxStudentCount());
+				}
+				
+				//添加舞种，舞种等级
+				Course course;
+				try {
+					course = courseDao.findById(l.getCourseid());
+					ml.setDanceName(course.getDanceDesc());
+					ml.setDanceGrade(course.getDanceGrade());
+				} catch (DataNotFoundException e) {
+					LOG.error(e.getMessage());
+				}
+				
+				//添加封闭式课程的上课人数
+				if("封闭式".equals(l.getCourseType()) && l.getCourseid() != null){
+					ml.setAttendedStudentCount(orderDao.findAttendedStudentCount(l.getCourseid()));
+				}
+				//添加当前预约人数
+				if(l.getCourseType().equals("开放式"))
+					ml.setAppointedStudentCount(appointedDao.getAppointedStudentCount(l.getLessonId()));
+				
+				//添加预约状态
+				if(c != null){
+					if("开放式".equals(l.getCourseType()))
+						ml.setAttendedStatus(appointedDao.findStatus(l.getLessonId(), c.getId()));
+				}
+				lm.add(ml);
+				
 			}
-			
-			//添加舞种，舞种等级
-			Course course = courseDao.findById(l.getCourseid());
-			ml.setDanceName(course.getDanceDesc());
-			ml.setDanceGrade(course.getDanceGrade());
-			
-			//添加封闭式课程的上课人数
-			if("封闭式".equals(l.getCourseType()) && l.getCourseid() != null){
-				ml.setAttendedStudentCount(orderDao.findAttendedStudentCount(l.getCourseid()));
-			}
-			//添加当前预约人数
-			if(l.getCourseType().equals("开放式"))
-				ml.setAppointedStudentCount(appointedDao.getAppointedStudentCount(l.getLessonId()));
-			
-			//添加预约状态
-			if(c != null){
-				if("开放式".equals(l.getCourseType()))
-					ml.setAttendedStatus(appointedDao.findStatus(l.getLessonId(), c.getId()));
-			}
-			lm.add(ml);
-			
+		} catch (DataNotFoundException e1) {
+			e1.printStackTrace();
 		}
+		
+		
 		
 		return wrapLessonWeekList(lm, startDate);
 	}
 
 
 	@Override
-	public void save(Lesson lesson) {
-		lessonDao.save(lesson);
+	public Integer save(Lesson lesson) {
+		return lessonDao.save(lesson);
 	}
 
 

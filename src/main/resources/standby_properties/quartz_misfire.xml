@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">  
+  
+    <!-- 启动触发器的配置开始 -->  
+    <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->  
+    <bean name="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+        <property name="triggers">  
+            <!-- 调度清单 -->  
+            <list>  
+                <ref bean="simpleTrigger" />  
+            </list>  
+        </property>  
+        <!-- quartz配置 -->    
+        <property name="quartzProperties">    
+            <props>    
+                <prop key="org.quartz.threadPool.threadCount">10</prop>    
+                <prop key="org.quartz.jobStore.misfireThreshold">1</prop>    
+            </props>    
+        </property>    
+        <!-- 初始化之后延迟3秒启动scheduler -->    
+        <!--   
+        <property name="startupDelay">    
+            <value>1</value>    
+        </property>    
+        -->  
+    </bean>  
+      
+    <!-- 启动触发器的配置结束 -->  
+  
+    <!-- 调度的配置开始 -->  
+    <!--  
+            quartz-1.8以前的配置   
+        <bean id="myJobTrigger"  
+            class="org.springframework.scheduling.quartz.CronTriggerBean">  
+            <property name="jobDetail">  
+                <ref bean="myJobDetail" />  
+            </property>  
+            <property name="cronExpression">  
+                <value>0/1 * * * * ?</value>  
+            </property>  
+        </bean>  
+        -->  
+    <!-- quartz-2.x的配置 -->  
+    <!-- 定义触发时间 -->  
+    <!-- cronTrigger简单触发器配置 -->  
+    <!-- 默认是withMisfireHandlingInstructionFireAndProceed —— 以当前时间为触发频率立刻触发一次执行，然后按照Cron频率依次执行，如没有空闲进程可用，则kill掉前面那个调度，立即触发当前这个-->  
+    <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">  
+        <property name="jobDetail">  
+            <ref bean="simpleJobDetail"/>  
+        </property>  
+        <!-- <property name="startDelay" value="1" /> -->  
+        <!-- 每3s执行一次 -->  
+        <property name="repeatInterval" value="3000" />  
+        <property name="repeatCount" value="5" />  
+        <!--   
+        ####################################################################
+            MISFIRE_INSTRUCTION_FIRE_NOW    1    
+            	Instructs the Scheduler that upon a mis-fire situation, the SimpleTrigger wants to be fired now by Scheduler.   
+            	NOTE: This instruction should typically only be used for 'one-shot' (non-repeating) Triggers. 
+            		If it is used on a trigger with a repeat count > 0 then it is equivalent to the instruction 
+            		MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_REMAINING_REPEAT_COUNT .   
+          		  立即执行，会丢失misfire job，等效于MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_REMAINING_REPEAT_COUNT  
+              
+         ####################################################################   
+            MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_REMAINING_REPEAT_COUNT   3  
+            	Instructs the Scheduler that upon a mis-fire situation, the SimpleTrigger wants to be re-scheduled to 'now' 
+            		(even if the associated Calendar excludes 'now') with the repeat count set to what it would be, if it 
+            		had not missed any firings. This does obey the Trigger end-time however, so if 'now' is after the 
+            		end-time the Trigger will not fire again.   
+           		NOTE: Use of this instruction causes the trigger to 'forget' the start-time and repeat-count that it was 
+           			originally setup with. Instead, the repeat count on the trigger will be changed to whatever the 
+           			remaining repeat count is (this is only an issue if you for some reason wanted to be able to tell 
+           			what the original values were at some later time).   
+           		NOTE: This instruction could cause the Trigger to go to the 'COMPLETE' state after firing 'now', if all 
+           			the repeat-fire-times where missed.   
+			            立即执行，继续重复执行的次数等于本次+剩余的次数，即剩余次数+1，misfire job不会再执行.  
+				            比如，3s执行一次，重复执行5次，05:08:11开始执行，那么理应重复执行的时间点是05:08:11,05:08:14,05:08:17,05:08:20,05:08:23,05:08:26,  
+				            但如果第一次执行的时间是11s，执行完的时间点是：05:08:22,，那么立即执行的时间点是05:08:22,  
+				            而且从这点开始，还有05:08:23,05:08:26,这两次没执行，所以立即执行后，还会再执行2次。  
+			                         所以之后的执行时间点是：05:08:22,05:08:25,05:08:28  
+			                         
+           ####################################################################   
+            MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT   5  
+            	Instructs the Scheduler that upon a mis-fire situation, the SimpleTrigger wants to be re-scheduled to the 
+	            	next scheduled time after 'now' - taking into account any associated Calendar, and with the repeat count 
+	            	left unchanged.   
+              
+            	NOTE/WARNING: This instruction could cause the Trigger to go directly to the 'COMPLETE' state if the end-time
+            		 of the trigger has arrived.   
+			            不会立即执行，misfire job不会再执行，到下一个触发点再执行，继续重复执行的次数等于剩余次数-1.  
+				            比如，3s执行一次，重复执行5次，02:28:38开始执行，那么理应重复执行的时间点是02:28:38，02:28:41，02:28:44，02:28:47，02:28:50，02:28:53  
+				            但如果第一次执行时间用了11s，到02:28:49结束，那下次执行时间是02:28:50，02:28:53，只有(2-1)=1次，所以一次执行时间点是：02:28:50  
+  
+              
+            ####################################################################      
+            MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_REMAINING_COUNT  4  
+            	Instructs the Scheduler that upon a mis-fire situation, the SimpleTrigger wants to be re-scheduled to the next 
+            		scheduled time after 'now' - taking into account any associated Calendar, and with the repeat count set to 
+            		what it would be, if it had not missed any firings.   
+           		NOTE/WARNING: This instruction could cause the Trigger to go directly to the 'COMPLETE' state if all fire-times where missed.   
+			            不会立即执行，misfire job不会再执行，到下一个触发点再执行，继续重复执行的次数等于剩余次数-1.  
+				            会根据第一次执行的时间，然后从当前时间开始，到终止时间，计算还能执行的剩余次数，重复执行这个剩余次数。相当于重新计算剩余次数，进行调度。  
+				            如：3s执行一次，重复执行5次，从 05:18:52开始，理论上依次执行的时间点是 05:18:55,05:18:58,05:19:01,05:19:04,05:19:07  
+				            但如果第一次执行了11s，到05:19:03结束，则继续按照本来的调度，下次执行的开始时间是05:19:04,接着执行05:19:07  
+				            且错过的05:18:55,05:18:58,05:19:01的触发不会再执行下去  
+  
+  			####################################################################  
+            MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT  2  
+            	Instructs the Scheduler that upon a mis-fire situation, the SimpleTrigger wants to be re-scheduled to 'now' (even if the 
+            		associated Calendar excludes 'now') with the repeat count left as-is. This does obey the Trigger end-time however, 
+            		so if 'now' is after the end-time the Trigger will not fire again.   
+            	NOTE: Use of this instruction causes the trigger to 'forget' the start-time and repeat-count that it was originally setup 
+            		with (this is only an issue if you for some reason wanted to be able to tell what the original values were at some later time).   
+			            立即执行，不会丢失misfire job，从当前时刻开始重新计算每次执行时间点，重做misfire的job  
+				            如：3s执行一次，重复执行5次，05:24:44开始，每次时间点理应是：05:24:47，05:24:50，05:24:53，05:24:56，05:24:59  
+				            但由于第一次执行用了11s，到05:24:55结束，那么从05:24:55开始重新计算剩余次数5次的每次执行的时间点，假设剩余执行每次只需执行2s时间，不会Misfire  
+				            那么剩余执行调度的时间点是：05:24:55，05:24:58，05:25:01，05:25:04，05:25:07  
+              
+              
+             ####################################################################  
+            MISFIRE_INSTRUCTION_SMART_POLICY    0   default   
+            	Instructs the Scheduler that upon a mis-fire situation, the updateAfterMisfire() method will be called on the Trigger to 
+            		determine the mis-fire instruction, which logic will be trigger-implementation-dependent.   
+  				In order to see if this instruction fits your needs, you should look at the documentation for the getSmartMisfirePolicy()
+  					 method on the particular Trigger implementation you are using.  
+           		 如果没有自定义的话，当misfire后，立即执行，不会丢失misfire job... 跟MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT差不多策略  
+        -->  
+        <property name="misfireInstruction"><value>0</value></property>  
+    </bean>  
+    <!-- 调度的配置结束 -->  
+  
+    <!-- job的配置开始 -->  
+    <!-- 定义调用对象和调用对象的方法 -->  
+    <bean id="simpleJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+        <property name="targetObject" ref="missfireJob" />  
+        <property name="targetMethod" value="work" />  
+        <!-- <property name="concurrent" value="false" /> -->  
+        <!-- 同步执行 -->  
+        <property name="concurrent" value="false" />  
+    </bean>  
+    <!-- job的配置结束 -->  
+  
+    <!-- 要调用的工作类 -->  
+    <bean id="missfireJob" class="com.liangbinny.quartz.example6.QuartzMissfireJob" />  
+</beans>  

@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.springmvc3.dao.DepartmentDao;
 import com.yinzhiwu.springmvc3.dao.PlanRevenueDao;
-import com.yinzhiwu.springmvc3.entity.Department;
 import com.yinzhiwu.springmvc3.entity.PlanRevenue;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Department;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.PlanRevenueApiModel;
 import com.yinzhiwu.springmvc3.service.PlanRevenueService;
 
@@ -53,8 +54,12 @@ public class PlanRevenueServiceImpl implements PlanRevenueService {
 
 	@Override
 	public PlanRevenueApiModel get(int id) {
-		return new PlanRevenueApiModel(
-				departmentDao,prDao.get(id));
+		try{
+			return new PlanRevenueApiModel(
+					departmentDao,prDao.get(id));
+		}catch (Exception e) {
+			return null;
+		}
 	}
 
 
@@ -78,21 +83,29 @@ public class PlanRevenueServiceImpl implements PlanRevenueService {
 
 	@Override
 	public List<PlanRevenueApiModel> findAll() {
-		List<PlanRevenueApiModel> planModels = new ArrayList<>();
-		for (PlanRevenue plan : prDao.findAll()) {
-			planModels.add(new PlanRevenueApiModel(departmentDao,plan));
+		try{
+			List<PlanRevenueApiModel> planModels = new ArrayList<>();
+			for (PlanRevenue plan : prDao.findAll()) {
+				planModels.add(new PlanRevenueApiModel(departmentDao,plan));
+			}
+			return planModels;
+		}catch (DataNotFoundException e) {
+			return new ArrayList<>();
 		}
-		return planModels;
 	}
 
 
 	@Override
 	public List<PlanRevenueApiModel> findByExample(PlanRevenue plan) {
-		List<PlanRevenueApiModel> planModels = new ArrayList<>();
-		for (PlanRevenue p : prDao.findByExample(plan)) {
-			planModels.add(new PlanRevenueApiModel(departmentDao,p));
+		try{
+			List<PlanRevenueApiModel> planModels = new ArrayList<>();
+			for (PlanRevenue p : prDao.findByExample(plan)) {
+				planModels.add(new PlanRevenueApiModel(departmentDao,p));
+			}
+			return planModels;
+		}catch (DataNotFoundException e) {
+			return new ArrayList<>();
 		}
-		return planModels;
 	}
 	
 	

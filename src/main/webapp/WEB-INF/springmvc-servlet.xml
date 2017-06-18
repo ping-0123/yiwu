@@ -27,16 +27,16 @@
 	<!-- 配置数据格式转换 -->
 	<mvc:annotation-driven conversion-service="conversionService"/>
 	
-	<!-- 静态资源映射, 解决不能js,css的问题 -->
-
+	<!-- 静态资源映射, 解决不能js,css的问题 
+	<mvc:resources location="/images/" mapping="/images/**"></mvc:resources> -->
 	
 	<!-- don't handle the static resource -->
     <mvc:default-servlet-handler />
     
 	<!-- 全局跨域配置 -->
-	<mvc:cors>
-    	<mvc:mapping path="/**" />
-	</mvc:cors>
+	<mvc:cors> 
+    	<mvc:mapping path="/**" allowed-origins="*" allow-credentials="true" max-age="1800" allowed-methods="GET,POST,PUT,DELETE,OPTIONS" />
+	</mvc:cors>  
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -67,8 +67,7 @@
 				<bean class="com.yinzhiwu.springmvc3.convert.StringToDateConvertor">
 					<constructor-arg type="java.lang.String" value="yyyy-MM-dd"/>
 				</bean>
-				<bean class="com.yinzhiwu.springmvc3.convert.StringToCustomerConvertor"></bean>
-		</list>
+			</list>
 		</property>
 	</bean>
 	
@@ -81,7 +80,7 @@
 	  <bean id="multipartResolver"
             class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="defaultEncoding" value="UTF-8" />
-        <property name="maxUploadSize" value="200000"/>
+        <property name="maxUploadSize" value="2000000"/>
         <property name="resolveLazily" value="true"></property>
     </bean>
 

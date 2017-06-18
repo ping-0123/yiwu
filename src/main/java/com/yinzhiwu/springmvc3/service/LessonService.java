@@ -3,11 +3,10 @@ package com.yinzhiwu.springmvc3.service;
 import java.util.Date;
 import java.util.List;
 
-import com.yinzhiwu.springmvc3.entity.Customer;
-import com.yinzhiwu.springmvc3.entity.Lesson;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Lesson;
 import com.yinzhiwu.springmvc3.model.LessonList;
 
-public interface LessonService {
+public interface LessonService extends IBaseService<Lesson, Integer>{
 	public Lesson findById(int lessonId);
 	
 	public List<LessonList> findLessonWeekList(
@@ -16,7 +15,6 @@ public interface LessonService {
 			String teacherName,
 			String danceCatagory,
 			Date date,
-			Customer c);
+			String wechat);
 
-	public void save(Lesson lesson);
 }

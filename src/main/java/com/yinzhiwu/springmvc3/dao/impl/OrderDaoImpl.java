@@ -9,9 +9,10 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.OrderDao;
-import com.yinzhiwu.springmvc3.entity.Customer;
-import com.yinzhiwu.springmvc3.entity.Order;
-import com.yinzhiwu.springmvc3.model.BriefOrder;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Customer;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Order;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.model.view.OrderOldApiView;
 
 
 @Repository
@@ -88,7 +89,7 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<BriefOrder> findDailyOrderByStore(int storeId, Date payedDate, int productTypeId){
+	public List<OrderOldApiView> findDailyOrderByStore(int storeId, Date payedDate, int productTypeId){
 		String hql = "select  t1.createTime, t2.name,t1.markedPrice,t1.count,t3.amount, t4.name, t5.name, t5.auditOrChild,t1.vipAttr, t6.name"
 				+"	from Order t1 left join Product t2 on(t1.productId=t2.id)"
 				+"		left join OrderPayedMethod t3 on(t1.id= t3.orderId)"
@@ -98,14 +99,14 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 				+ "		left join ProductTypeRelation t7 on(t1.productId=t7.productId)"
 				+"	 where t1.payedDate = :payedDate  and t1.storeId=:storeId and t7.type.id=:productTypeId";
 		
-		List<BriefOrder> orders = new ArrayList<>();
+		List<OrderOldApiView> orders = new ArrayList<>();
 		List<Object[]> l = (List<Object[]>) getHibernateTemplate().findByNamedParam(
 					hql, 
 					new String[]{"payedDate", "storeId","productTypeId"}, 
 					new Object[]{payedDate , storeId, productTypeId});
 		
 		for (Object[] objs : l) {
-			BriefOrder o = new BriefOrder();
+			OrderOldApiView o = new OrderOldApiView();
 			o.setRecordDate((java.sql.Date)objs[0]);
 			o.setProductName((String) objs[1]);
 			if(objs[2] instanceof Float)
@@ -133,11 +134,15 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 		map.put("customerId", customerId);
 		map.put("productSubType", subType);
 		map.put("checkedStatus", "已审核");
-		return findByProperties(map) ;
+		try {
+			return findByProperties(map) ;
+		} catch (DataNotFoundException e) {
+			return new ArrayList<>();
+		}
 	}
 
 	@Override
-	public List<BriefOrder> findDailyOrderByStore(int storeId, Date date) {
+	public List<OrderOldApiView> findDailyOrderByStore(int storeId, Date date) {
 		String hql = "select  t1.createTime, t2.name,t1.markedPrice,t1.count,t3.amount, t4.name, t5.name, t5.auditOrChild,t1.vipAttr, t6.name"
 				+"	from Order t1 left join Product t2 on(t1.productId=t2.id)"
 				+"		left join OrderPayedMethod t3 on(t1.id= t3.orderId)"
@@ -146,7 +151,7 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 				+"		left join Employee t6 on(t1.createUserId= t6.id)"
 				+"	 where t1.payedDate = :payedDate  and t1.storeId=:storeId";
 		
-		List<BriefOrder> orders = new ArrayList<>();
+		List<OrderOldApiView> orders = new ArrayList<>();
 		@SuppressWarnings("unchecked")
 		List<Object[]> l = (List<Object[]>) getHibernateTemplate().findByNamedParam(
 					hql, 
@@ -154,7 +159,7 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 					new Object[]{date , storeId});
 		
 		for (Object[] objs : l) {
-			BriefOrder o = new BriefOrder();
+			OrderOldApiView o = new OrderOldApiView();
 			o.setRecordDate((java.sql.Date)objs[0]);
 			o.setProductName((String) objs[1]);
 			if(objs[2] instanceof Float)

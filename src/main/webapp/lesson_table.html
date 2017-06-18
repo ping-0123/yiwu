@@ -1,80 +1,54 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 	<head>
 		<meta  http-equiv="Content-Type" content="text/html" charset="utf-8" />
 		<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, user-scalable=no">
 		<meta name="format-detection" content="telephone=no">
+		<!-- 不使用缓存 -->
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache, must-revalidate"  />
+		<meta http-equiv="expires" content="0" />
+		
 		<title></title>
-		<link href="css/lesson_table_open.css" rel="stylesheet">
+		<link href="css/lesson_table.css" rel="stylesheet">
 		<script src="js/jquery.min.js" type="text/javascript"></script>
 		<script type="text/javascript" src="js/global.js"></script>
 		<script src="js/lesson_table_open.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
 		<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=aGmLXsUt66lDNYZyI6eEhcHQVmyY5aE2"></script>-->
-	</head>
+	
+		
+		
+	
+  </head>
 	<body>
-		<div class="display_first">
-		<img src="images/kebiao.png">
-		<p>为了更好的体验，请切换至<span>横屏</span>
-		<small style="display: block;margin-top: 20px;">(若您用安卓手机观看，请跳转至浏览器)</small>
-		<p>
-	   </div>
-	    <div class="display_second">
-	    	
-	            <div class="nav">
+	<div class="display_second">
+	    	   <div class="nav">
 						<div class="logo">
 							<img src="images/logo.png">
 						</div>						    	 	
 						<div class="menu">
-							
-								<!--<div class="select">
-								<span class="text_left"  id="m_district"></span>
-								<span class="arrow_right"></span>
-							        <ul class="list" id="list">
-							        <li class="k_district-id"></li>
-									<li></li>
-									<li></li>
-									</ul>
-								</div>
-											<div class="select_store">
-											<span class="text_left_store" store-id="" id="m_storeid"></span>
-											<span class="arrow_right_store" ></span>
-										        <ul class="list_store" id="k_storeid">
-										        <li>门店门店们</li>
-												<li>门店2</li>
-												<li>门店3</li>
-												</ul>
-											</div>
-											
-														
-								            <div class="select_type">
-											<span class="text_left_type" type-id="">开放式</span>
-											<span class="arrow_right_type"></span>
-										        <ul class="list_type">
-										        <li >开放式</li>
-												<li>封闭式</li>
-												</ul>
-											</div>	-->
-						        <div class="select_option">
+							    <div class="select_option">
 						        	<ul>
 						        	 <li class="district">
-									  <select>
-									  <option value ="volvo">杭州</option>
-									  <option value ="saab">宁绍</option>
-									  <option value="opel">苏州</option>
-									  </select> 
+									 <select>
+									 <option value ="volvo">杭州</option>
+									 <option value ="saab">宁绍</option>
+									 <option value="opel">苏州</option>
+									 </select> 
 						        	 </li>
 						        	 <li class="store">
-						        	  <select>
-									  <option value ="volvo">万华店</option>
-									  <option value ="saab">庆春店</option>
+						        	 <select>
+									 <option value ="volvo">万华店</option>
+									 <option value ="saab">庆春店</option>
 									 </select>
 						        	 </li>
 						        	 <li class="type">
 						        	 <select>
-									  <option value ="开放式">开放式</option>
-									  <option value ="封闭式">封闭式</option>
-									  <option value="">全部</option>
-									  </select>
+									 <option value ="开放式">开放式</option>
+									 <option value ="封闭式">封闭式</option>
+									 <option value="">全部</option>
+									 </select>
 						        	 </li>
 						        	</ul>	
 						        </div>
@@ -89,7 +63,7 @@
 						    <div class="second_line">
 						    	<ul class="address_week_1">
 						    	<li id="address"><span></span></li>
-						    	<br><li id="phone"><span></span></li>
+						    	<li id="phone"><span></span></li>
 						    	</ul>
 						    	<ul class="address_week_2">
 						    	<li><a  id="lastweek">< 上一周</a></li>	
@@ -177,8 +151,9 @@
 
 <script>
 
- //   	var ajaxUrl = "http://192.168.0.115:8080/yiwu/"
-	   	var ajaxUrl = "";
+//    	var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/"
+      	var ajaxUrl = baseApiUrl;
+
 		var url =  "api/lesson/weeklist";
 		var selectDate;
 		var districtId =82;

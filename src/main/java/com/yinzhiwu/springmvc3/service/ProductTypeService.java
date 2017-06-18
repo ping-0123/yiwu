@@ -2,7 +2,7 @@ package com.yinzhiwu.springmvc3.service;
 
 import java.util.List;
 
-import com.yinzhiwu.springmvc3.entity.ProductType;
+import com.yinzhiwu.springmvc3.entity.type.ProductType;
 
 public interface ProductTypeService {
 	

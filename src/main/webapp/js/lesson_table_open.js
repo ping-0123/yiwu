@@ -1,3 +1,4 @@
+
 function format(time, format){
     var t = new Date(time);
     var tf = function(i){return (i < 10 ? '0' : '') + i};
@@ -204,9 +205,12 @@ function loadStores(v_districtId){
 									t = t +"<ul class=\"open_B_type\">" ;}
 							}
 							
+							t = t+ "<li style=\"display:none\">lessonId:" + lesson.lessonId
+								 +"</li><li style=\"display:none\">courseId:" + lesson.courseid + "</li>";
+							
 							t= t+ "<li><small>" + lesson.danceName.replace("少儿","") + lesson.danceGrade  + "</small>" +"</li><li><small>"
 								+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"
-								+lesson.dueTeacherName+"</small><li>" ;
+								+lesson.dueTeacherName+"</small></li>" ;
 							if(lesson.courseType =="开放式"){
 							//	开放式的预约： 预约人数/签到人数/容量
 								t= t+ "<li><small>预约:" + lesson.appointedStudentCount 
@@ -214,7 +218,14 @@ function loadStores(v_districtId){
 									+ "/" +lesson.maxStudentCount
 									+"</small></li></ul>";
 							}else{
-								t = t+ "<li><small> <br />  </small></li>";
+//								封闭式添加当前课程状态
+//								t = t+ "<li><small>" +  getChineseLessonStatus(lesson.lessonStatus) + "</small></li></ul>";
+//								封闭式添加当前课程进度
+								if(lesson.orderInCourse==lesson.sumTimesOfCourse){
+									t = t+ "<li><small class='complete'>进度:" + lesson.orderInCourse + "/" +  lesson.sumTimesOfCourse + "</small></li></ul>";
+								}else{
+									t = t+ "<li><small>进度:" + lesson.orderInCourse + "/" +  lesson.sumTimesOfCourse + "</small></li></ul>";
+								}
 							}
 						}
 						t=t+"</td>";
@@ -235,3 +246,21 @@ function loadStores(v_districtId){
 		});	
 }
 
+function getChineseLessonStatus(v_lessonStatus){
+	var status;
+	switch (v_lessonStatus) {
+	case 'UN_KNOWN','UN_AUDITED','':
+		status = "未审核";
+		break;
+	case 'AUDITED':
+		status = "已排课";
+		break;
+	case 'FINISHED':
+		status = '已开课';
+		break;
+	default:
+		status = "未审核";
+		break;
+	}
+	return status;
+}

@@ -1,6 +1,7 @@
 package com.yinzhiwu.springmvc3.entity;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table()
+@Table(name="yiwu_store_info")
 public class StoreInfo {
 	
 
@@ -17,7 +18,8 @@ public class StoreInfo {
 	private Integer storeId;
 	
 	@Column
-	private String address;
+	@Embedded
+	private Address address;
 	
 	@Column(length=20)
 	private String telePhone;
@@ -30,13 +32,6 @@ public class StoreInfo {
 		this.storeId = storeId;
 	}
 
-	public final String getAddress() {
-		return address;
-	}
-
-	public final void setAddress(String address) {
-		this.address = address;
-	}
 
 	public final String getTelePhone() {
 		return telePhone;
@@ -44,6 +39,14 @@ public class StoreInfo {
 
 	public final void setTelePhone(String telePhone) {
 		this.telePhone = telePhone;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 	
 	

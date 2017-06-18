@@ -3,9 +3,9 @@ package com.yinzhiwu.springmvc3.dao;
 import java.util.Date;
 import java.util.List;
 
-import com.yinzhiwu.springmvc3.entity.Customer;
-import com.yinzhiwu.springmvc3.entity.Order;
-import com.yinzhiwu.springmvc3.model.BriefOrder;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Customer;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Order;
+import com.yinzhiwu.springmvc3.model.view.OrderOldApiView;
 
 public interface OrderDao  extends IBaseDao<Order, String>{
 	 public List<Order> findByCustomer(Customer c);
@@ -16,9 +16,9 @@ public interface OrderDao  extends IBaseDao<Order, String>{
 	
 	List<Object[]> getMonthlyRevenue(int districtId, int productType, Date start, Date end);
 	
-	List<BriefOrder> findDailyOrderByStore(int storeId, Date date);
+	List<OrderOldApiView> findDailyOrderByStore(int storeId, Date date);
 	
 	List<Order> findValidOrders(int customerId, String subType);
-	List<BriefOrder> findDailyOrderByStore(int storeId, Date payedDate, int productTypeId);
+	List<OrderOldApiView> findDailyOrderByStore(int storeId, Date payedDate, int productTypeId);
 		
 }

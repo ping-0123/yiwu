@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>编辑推文</title>
+		<link rel="stylesheet" href="css/style.css"  type="text/css"/>
+		<script src="../js/global.js"></script>
+	</head>
+	<body>
+		
+    <form action="../api/tweet/save" method="post" enctype="multipart/form-data">
+    	<p class="firstChild">
+    	<label for="author">作者:</label>
+    	<input id="author" name="author" type="text" /> <br/>
+    	</p>
+    	
+    	<p>
+    		<label for="author">标题:</label>
+    	<input id="title" name="title" type="text"  />
+    	</p>
+    	
+    	
+    	<p>
+    	<label for="tweetType">推文类型:</label>
+    	<select id="tweetTypeIds" name="tweetTypeId" >
+    		 <!--option value="17000015">产品</option>
+    		 <option value="17000016">市场活动</option -->
+    	</select>
+    	</p>
+    	
+    	<p><label for="digest">内容摘要: </label>
+    	<input type="text" id="digest" name="digest" />
+    	</p>
+    	
+    	<p>
+    	<label for="coverIcon">简介图片: </label>
+    	
+    	<!--<img id="pic", src="" >
+    	<input type="file" id="coverIcon", name="coverIcon" />点击上传-->
+    	<a href="javascript:;" class="file">
+        <input type="file" id="coverIcon"  name="coverIcon" onchange="previewImage(this)" />
+		</a>
+    	<div id="preview">
+    		<img id="imghead" width=100 height=100 border=0 src=''>
+		</div>
+     
+    	</p>
+    	
+        <!-- 加载编辑器的容器 -->
+        <script id="container" name="content" type="text/plain">请输入内容</script>
+        <p>
+        	<input id="reset" type="reset"  />  
+        	<input id="submit" type="submit"  />
+        </p>
+    </form>
+    
+    <!-- 配置文件 -->
+    <script type="text/javascript" src="ueditor.config.js"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="ueditor.all.js"></script>
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+        var editor = UE.getEditor('container');
+    </script>
+    
+    <!-- 加载jquery -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 加载推文类型 -->
+    <script type="text/javascript">
+    $.ajax({
+		type:"GET",
+		url: baseApiUrl + "/api/types/tweetType/list",
+		async:true,
+		cache:false,
+		success:function(data){
+			if(data.result){
+				var types = data.data;
+				var options ='';
+				for(var i=0; i<types.length;i++){
+					options = options + "<option value=\"" + types[i].id + "\">" + translateToChinese(types[i].name) +"</option>";
+				}
+				$('#tweetTypeIds').html(options);
+			}
+		}
+	});
+	
+	function translateToChinese(typeName){
+		switch (typeName) {
+		case 'PRODUCT':
+			return "产品";
+		case 'MARKET_ACTIVITY':
+			return "市场活动";
+		case "PROMOTION":
+			return "优惠促销";
+		case "PERFORMACE":
+			return "比赛表演";
+		case "NEWS":
+			return "新闻";
+		case "CHILDREN":
+			return "儿童软文";
+		case "ADULT":
+			return "成人软文";
+		case "OTHER":
+			return "其他";
+		default:
+			break;
+		}
+	}
+	
+	 function previewImage(file)
+        {
+          var MAXWIDTH  = 260; 
+          var MAXHEIGHT = 180;
+          var div = document.getElementById('preview');
+          if (file.files && file.files[0])
+          {
+              div.innerHTML ='<img id=imghead>';
+              var img = document.getElementById('imghead');
+              img.onload = function(){
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width  =  rect.width;
+                img.height =  rect.height;
+//                 img.style.marginLeft = rect.left+'px';
+                img.style.marginTop = rect.top+'px';
+              }
+              var reader = new FileReader();
+              reader.onload = function(evt){img.src = evt.target.result;}
+              reader.readAsDataURL(file.files[0]);
+          }
+          
+          else //兼容IE
+          {
+            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = '<img id=imghead>';
+            var img = document.getElementById('imghead');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+            div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+          }
+        }
+        function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+            var param = {top:0, left:0, width:width, height:height};
+            if( width>maxWidth || height>maxHeight )
+            {
+                rateWidth = width / maxWidth;
+                rateHeight = height / maxHeight;
+                 
+                if( rateWidth > rateHeight )
+                {
+                    param.width =  maxWidth;
+                    param.height = Math.round(height / rateWidth);
+                }else
+                {
+                    param.width = Math.round(width / rateHeight);
+                    param.height = maxHeight;
+                }
+            }
+             
+            param.left = Math.round((maxWidth - param.width) / 2);
+            param.top = Math.round((maxHeight - param.height) / 2);
+            return param;
+        }
+    
+    </script>
+    
+</body>
+</html>

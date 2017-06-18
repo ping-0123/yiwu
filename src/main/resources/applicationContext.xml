@@ -39,10 +39,10 @@
           <property name="initialPoolSize" value="2"/>  
   
           <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
-          <property name="maxIdleTime"  value="0"/>  
+          <property name="maxIdleTime"  value="3600"/>  
             
           <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
-          <property name="checkoutTimeout" value="3000"/>  
+          <property name="checkoutTimeout" value="10000"/>  
             
           <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
           <property name="acquireIncrement" value="5"/>  
@@ -61,6 +61,10 @@
         <property name="packagesToScan">  
             <list>  
                 <value>com.yinzhiwu.springmvc3.entity</value>
+                <value>com.yinzhiwu.springmvc3.entity.yzw</value>
+                <value>com.yinzhiwu.springmvc3.entity.type</value>
+                <value>com.yinzhiwu.springmvc3.entity.income</value>
+                  <value>com.yinzhiwu.springmvc3.entity.yzwOld</value>
             </list>  
         </property>  
         <property name="hibernateProperties">  
@@ -80,10 +84,10 @@
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">  
         <property name="sessionFactory" ref="sessionFactory"></property>  
     </bean>  
-	<!-- 配置事务异常封装 
+	<!-- 配置事务异常封装 -->
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-	<tx:annotation-driven transaction-manager="transactionManager" />    -->
+	<tx:annotation-driven transaction-manager="transactionManager" />    
     <!-- 拦截器方式配置事物 -->  
     <tx:advice id="transactionAdvice" transaction-manager="transactionManager">  
         <tx:attributes>  
@@ -92,24 +96,28 @@
             <tx:method name="update*" />  
             <tx:method name="modify*" />  
             <tx:method name="edit*" />  
-            <tx:method name="delete*" />  
+            <tx:method name="delete*" />  	
             <tx:method name="remove*" />  
             <tx:method name="repair" />  
             <tx:method name="deleteAndRepair" />  
+            <tx:method name="judge*"/>
   
             <tx:method name="get*"  />  
+            <tx:method name="set*" />
             <tx:method name="find*"  />  
             <tx:method name="load*" propagation="SUPPORTS" />  
             <tx:method name="search*" propagation="SUPPORTS" />  
             <tx:method name="datagrid*" propagation="SUPPORTS" />  
             <tx:method name="login*"/>
             <tx:method name="register"/>
+            <tx:method name="share*" />
   
-            <tx:method name="*" propagation="SUPPORTS" />  
+            <tx:method name="*" />  
         </tx:attributes>  
     </tx:advice>  
     <aop:config>  
-        <aop:pointcut id="transactionPointcut" expression="execution(* com.yinzhiwu.springmvc3.service.impl.*Impl.*(..))" />  
+        <aop:pointcut id="transactionPointcut" expression="execution(* com.yinzhiwu.springmvc3.service.impl.*Impl.*(..)) || 
+        												execution(* com.yinzhiwu.springmvc3..*ServiceImpl.*(..))" />  
         <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />  
     </aop:config>  
   

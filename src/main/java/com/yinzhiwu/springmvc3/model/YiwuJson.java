@@ -1,5 +1,7 @@
 package com.yinzhiwu.springmvc3.model;
 
+import org.springframework.util.StringUtils;
+
 public class YiwuJson<T> {
 	
 	private int returnCode;
@@ -26,6 +28,24 @@ public class YiwuJson<T> {
 		this.msg = "success";
 		this.data = data;
 		this.result = true;
+	}
+	
+	public YiwuJson(String msg, T data){
+		this.returnCode = 200;
+		this.secure = false;
+		if(StringUtils.hasLength(msg))
+			this.msg= msg;
+		else
+			this.msg = "success";
+		this.data = data;
+		this.result = true;
+	}
+	
+	public YiwuJson(String msg){
+		this.returnCode = 500;
+		this.secure = false;
+		this.msg = msg;
+		this.result = false;
 	}
 
 	

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	</head>
+	<body>
+	
+		<p id="content"></p>
+	</body>
+	<script type="text/javascript">
+	
+	//		var v_baseUrl = "http://www.yinzhiwu.com:9090/yiwu/";
+			var v_baseUrl = "http://192.168.0.115:8080/yiwu/"
+	//		modifyHeadIconWithAjax();
+			register();
+	//		save_capitalAccount();
+	//		setDefaultAccount();
+	//		withdraw();
+	//		payDeposit();
+	//		shareTweet();
+	//		modify();
+	//		modifyDistributer();
+	//		confirmContract();
+			
+			
+			function confirmContract(){
+				$.ajax({
+					type:"PUT",
+					url:v_baseUrl + "/api/order/20160917007",
+					data:{eContractStatus:'true'},
+					cache:false,
+					success:function(data){
+							$('#content').html(JSON.stringify(data));
+					},
+					async:true
+				});
+			}
+	
+			function modifyDistributer(){
+				$.ajax({
+					type:"POST",
+					url:v_baseUrl + "/api/distributer/3000002",
+					data:{'headIconName':'aaabbbb',
+						'defaultCapitalAccount.id':2000003},
+					async:true,
+					cache:false,
+					success:function(data){
+						$('#content').html(JSON.stringify(data));
+					}
+				});
+			}
+			function register(){
+				var v_url = "api/distributer";
+				var v_data = {phoneNo:'1804890160',
+							password:'suning0987',
+							gender:'MALE',
+							birthday:'2000-01-01',
+							'followedByStore.id':'63',
+							wechatNo:'oIgTGwx1Qiz333csesd965h7GHpM',
+							invitationCode:'zoz2qqjv'
+					};
+	
+			
+			$.ajax({ 
+				type: "POST", 	
+				url: v_baseUrl+v_url,
+				data:v_data,
+				dataType: "json",
+				timeout:50000,
+				success: function(data) {
+					$('#content').html(JSON.stringify(data));
+				},
+				error: function(jqXHR){     
+					$('#content').html(jqXHR.status);
+				},  
+			});	
+			}
+	
+	
+	
+			function modifyHeadIconWithAjax(){
+				var v_url = v_baseUrl + "/qiniu/callback/distributer/3000000"
+				$.ajax({
+					type:"post",
+					url:v_url,
+					async:true,
+					data:{url:'http://oq3hegvvd.bkt.clouddn.com/android/exit3.jpg'},
+					dataType:'json',
+					success:function(data){
+						document.write("chenggong");
+					}
+				});
+			}
+	
+			function modifyHeadIcon(){
+				var v_url = v_baseUrl + "/qiniu/callback/distributer/3000000"
+				$.post(v_url,
+					{url:'http://oq3hegvvd.bkt.clouddn.com/android/exit2.jpg'},
+					function(data){
+						document.write("chenggong");
+					},
+					'json');
+			}
+			
+			function modify(){
+				var v_url = v_baseUrl + "/api/distributer/3000001";
+				$.ajax({
+					type:'PUT',
+					url:v_url,
+					data:{'nickName':'bbbb', 'followedByStore.id': '61'},
+					dataType:'json',
+					timeout:5000,
+					success:function(data){
+	//					alert(JSON.toString(data));
+						document.write("chenggong");
+					}
+				});
+			}
+			
+			function shareTweet(){
+				var v_url = v_baseUrl + "/api/tweet/share";
+				$.ajax({
+					type:"post",
+					url:v_url,
+					data:{distributerId:'3000049',
+						tweetId:3
+					},
+					dataType:"json",
+					timeout:50000,
+					async:true,
+					success:function(data){
+						$('#content').html(JSON.stringify(data));
+					},
+					error: function(jqXHR){     
+						alert("error");
+					}
+				});
+			}
+			
+			function payDeposit(){
+				var v_url = v_baseUrl + "/api/moneyRecord/payDeposit";
+				$.ajax({
+					type:"post",
+					url:v_url,
+					data:{distributerId:'3000018',
+						amount:'200',
+						fundsFirst:true
+					},
+					dataType:"json",
+					timeout:50000,
+					async:true,
+					success:function(data){
+						$('#content').html(JSON.stringify(data));
+					},
+					error: function(jqXHR){     
+						alert("error");
+					}
+				});
+			}
+			function withdraw(){
+				var v_url = v_baseUrl + "/api/moneyRecord/withdraw";
+				$.ajax({
+					type:"post",
+					url:v_url,
+					data:{'distributerId':'3000018',
+						'accountId':'2000000',
+						'amount':100
+					},
+					dataType: "json",
+					timeout:50000,
+					async:true,
+					success: function(data) {
+						$('#content').html(JSON.stringify(data));
+					},
+					error: function(jqXHR){     
+						alert("error");
+					},  
+				});
+			}
+			
+			
+			
+			function setDefaultAccount(){
+				var v_url = v_baseUrl + "/api/distributer/capitalAccount/setDefault";
+				$.ajax({
+					//改成 put会产生跨域问题
+					type:"post",
+					url:v_url,
+					data:{'distributerId':'3000018',
+						'accountId':'2000000'
+					},
+					dataType: "json",
+					timeout:50000,
+					async:true,
+					success: function(data) {
+						$('#content').html(JSON.stringify(data));
+					},
+					error: function(jqXHR){     
+						alert("error");
+					},  
+				});
+			}
+	
+			function save_capitalAccount(){
+				var v_url = v_baseUrl + "api/distributer/capitalAccount";
+				$.ajax({
+					type:"Post",
+					url: v_url,
+					data:{'distributerId':'3000018',
+						'typeName':'支付宝',
+						'account':'bbbbbbbbbb'
+					},
+					dataType: "json",
+					timeout:50000,
+					success:function(data)	{
+						$('#content').html(JSON.stringify(data));
+					},
+					error: function(jqXHR){     
+						alert("error" + jqXHR.getStats());
+					},  
+				});
+			}
+	</script>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+		<link rel="stylesheet" href="css/studio.css" />
+		<script type="text/javascript" src="js/jquery.js" ></script>
+		<title>我的生意</title>
+	</head>
+	<body>
+	    <header>
+		<a href="../index.html" title=""><img src="img/e5_logo.png" width="66" height="34" alt=""></a>
+		<div class="ins">
+			<img src="img/logo.png" width="20" height="20" alt="">
+			<strong>音之舞</strong>
+		</div>
+		<div class="scan">
+			<a href="my.html">返回</a>
+		</div>
+	    </header>
+	    
+	    <div class="invite">
+	    	<p>我的邀请码</p>
+	    	<div class="inub">
+	    		
+	    		<input value="1516455" id="inub" readonly="readonly" type="text">
+	    	
+	    	</div>
+	    	
+	    	<p class="copy" id="copy">复制邀请码</p>
+	    	<div class="ruler">
+	    		<a href="studio/rule.html">游戏规则</a>
+	    		<a href="studio/top_three.html">收入前三名</a>
+	    	</div>
+	    </div>	
+
+        <div class="result">
+        	<p>我的成绩单</p>
+        	<table>
+        	<tr>
+        	<td></td>
+        	<td>我</td>
+        	<td>一级客户</td>
+        	<td>二级客户</td>
+        	</tr>
+        	<tr>
+        	<td>转发次数</td>
+        	<td><a href="studio/forword.html">83次</a></td>
+        	<td><a href="studio/forword.html">642次</a></td>
+        	<td><a href="studio/forword.html">-</a></td>	
+        	</tr>
+        	<tr>
+        	<td>注册会员</td>
+        	<td><a href="studio/register_record.html">-</a></td>
+        	<td><a href="studio/register_record.html">18个</a></td>
+        	<td><a href="studio/register_record.html">105次</a></td>	
+        	</tr>
+        	<tr>
+        	<td>成交单数</td>
+        	<td><a href="studio/turnover.html">-</a></td>
+        	<td><a href="studio/turnover.html">5单</a></td>
+        	<td><a href="studio/turnover.html">29单</a></td>	
+        	</tr>
+        	</table>
+        </div>
+        
+        <div class="wchat">
+        	<a href="studio/articleList.html">转发微信</a>
+        </div>	
+        
+       <footer>
+
+		<div class="nav f-cb">
+			<ul>
+				<li>
+					<a href="index.html" title="">首页</a>
+				</li>
+				<li>
+					<a href="open.html" title="">开放课程</a>
+				</li>
+				<li>
+					<a href="close.html" title="">封闭课程</a>
+				</li>
+				<li>
+					<a href="private.html" title="">私教课</a>
+				</li>
+				<li>
+					<a class="active"  href="my.html" title="">我的</a>
+				</li>
+			</ul>
+		</div>
+	</footer>
+<script type="text/javascript">
+  $(document).ready(function(){
+  	     $('#copy').click(function(){
+  	     $('#inub').trigger('select');
+         document.execCommand('copy');
+         alert('复制成功')
+  })
+  })
+ </script>
+ 
+ 
+	</body>
+</html>

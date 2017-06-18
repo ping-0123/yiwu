@@ -1,12 +1,17 @@
 package com.yinzhiwu.springmvc3.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.springframework.util.Assert;
+
+import com.yinzhiwu.springmvc3.entity.type.MessageType;
 
 @Entity
+@Table(name="yiwu_message")
 public class Message extends BaseEntity {
 
 	
@@ -14,13 +19,18 @@ public class Message extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 4309449622965840107L;
+	
+	public enum Status{
+		UNREAD(0),READ(1);
+		private Status(int index){
+		}
+	}
 
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_Message_receiver_id"))
 	private Distributer receiver;
 	
-	@Column(length=10)
-	private String status;
+	private Status status;
 	
 	private String content;
 	
@@ -28,16 +38,29 @@ public class Message extends BaseEntity {
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_Message_messageType_id"))
 	private MessageType messageType;
 
-
+	public Message() {
+	}
+	
+	public Message(Distributer receiver, String content){
+		Assert.notNull(receiver);
+		
+		init();
+		this.receiver = receiver;
+		this.content = content;
+	}
+	
+	@Override
+	public void init(){
+		super.init();
+		this.status = Status.UNREAD;
+	}
+	
 	public Distributer getReceiver() {
 		return receiver;
 	}
 
 	
 
-	public String getStatus() {
-		return status;
-	}
 
 	public String getContent() {
 		return content;
@@ -47,10 +70,7 @@ public class Message extends BaseEntity {
 		this.receiver = receiver;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
+	
 	public void setContent(String content) {
 		this.content = content;
 	}
@@ -65,6 +85,24 @@ public class Message extends BaseEntity {
 	public void setMessageType(MessageType messageType) {
 		this.messageType = messageType;
 	}
-	
+
+
+
+
+	public Status getStatus() {
+		return status;
+	}
+
+
+
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+
+
+
+
 	
 }

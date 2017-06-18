@@ -14,16 +14,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;  
   
-/** 
- * ʵ���� - ���� 
- */  
+/**
+ * name rule
+ * foreign key:  			 fk_{table name}_{foreign key column name}
+ * foreign key column name:  {parent table name}_{referenced column name}
+ * unique key: 				 uk_{table name}_{unique key column name}
+ */
+
 @MappedSuperclass  
-public class BaseEntity implements Serializable{  
+public abstract class BaseEntity implements Serializable{  
   
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	/** 
      * ID 
      */  
@@ -54,12 +59,13 @@ public class BaseEntity implements Serializable{
     @Column(insertable=true,updatable=true)
     protected Date lastModifiedDate;  
     
-    
-    
-    
       
     public BaseEntity() {
-    	Date date = new Date();
+	}
+
+
+	public void init() {
+		Date date = new Date();
     	this.createDate = date;
     	this.lastModifiedDate=date;
     	this.createUserId=1;
@@ -67,8 +73,6 @@ public class BaseEntity implements Serializable{
 	}
 
 
-//    @GeneratedValue(generator = "uuid")  
-//    @GenericGenerator(name = "uuid", strategy = "uuid")  
     public Integer getId() {  
         return id;  
     }  
@@ -137,5 +141,7 @@ public class BaseEntity implements Serializable{
 
 	public  void setLastModifiedUserId(int moddifiedUserId) {
 		this.lastModifiedUserId = moddifiedUserId;
-	}  
+	}
+
+
 }  

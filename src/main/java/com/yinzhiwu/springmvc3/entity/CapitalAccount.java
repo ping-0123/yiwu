@@ -8,8 +8,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.yinzhiwu.springmvc3.entity.type.CapitalAccountType;
+
 @Entity
-@Table(name="capital_account", uniqueConstraints=
+@Table(name="yiwu_capital_account", uniqueConstraints=
 	@UniqueConstraint(name="uk_CapitalAccount_accont", columnNames="account"))
 public class CapitalAccount extends BaseEntity {
 	
@@ -30,8 +32,13 @@ public class CapitalAccount extends BaseEntity {
 	@JoinColumn(name="distributer_id", foreignKey=@ForeignKey(name="fk_CapitalAccount_distributer_id"))
 	private Distributer distributer;
 
+
+
 	
-	private boolean isDefault;
+	public CapitalAccount() {
+		super();
+	}
+
 	
 
 	public String getAccount() {
@@ -53,10 +60,6 @@ public class CapitalAccount extends BaseEntity {
 		this.distributer = distributer;
 	}
 
-	public CapitalAccount() {
-		super();
-	}
-
 
 	public CapitalAccountType getCapitalAccountType() {
 		return capitalAccountType;
@@ -66,13 +69,4 @@ public class CapitalAccount extends BaseEntity {
 		this.capitalAccountType = capitalAccountType;
 	}
 
-	public boolean isDefault() {
-		return isDefault;
-	}
-
-	public void setDefault(boolean isDefault) {
-		this.isDefault = isDefault;
-	}
-	
-	
 }

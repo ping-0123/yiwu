@@ -14,7 +14,7 @@
 		<form:form commandName="distributerApiView" action="modifyHeadIcon" method="post" enctype="multipart/form-data">
 		  <fieldset>
 		<form:hidden path = "id" value="3000018" />
-		<input type="file" name="image"/>
+		<form:input type="file" path="image"/>
         <input id="reset" type="reset" >
         <input id="submit" type="submit" />
         </fieldset>
