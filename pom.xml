@@ -14,6 +14,7 @@
 	  	<jackson.version>2.8.7</jackson.version>
 	  	<quartz.version>2.3.0</quartz.version>
 	  	<qiniu.version>7.2.6</qiniu.version>
+	  	<swagger.version>2.2.2</swagger.version>
   </properties>
   
   <dependencies>	
@@ -185,6 +186,25 @@
 	  <version>${qiniu.version}</version>
 	</dependency>	
 		
+	<!-- ######### swagger support ############ -->	
+   <dependency>
+        <groupId>com.mangofactory</groupId>
+        <artifactId>swagger-springmvc</artifactId>
+        <version>1.0.2</version>
+    </dependency>
+    <dependency>
+         <groupId>io.springfox</groupId>
+         <artifactId>springfox-swagger2</artifactId>
+         <version>${swagger.version}</version>
+     </dependency>
+      <!--petstore是官方的一个demo，加入此依赖是为了稍后参考接口描述的编写-->
+     <dependency>
+         <groupId>io.springfox</groupId>
+         <artifactId>springfox-petstore</artifactId>
+         <version>${swagger.version}</version>
+     </dependency>
+     
+	
   </dependencies>
   <build>
     <finalName>yiwu</finalName>

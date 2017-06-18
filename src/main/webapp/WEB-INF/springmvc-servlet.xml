@@ -37,7 +37,8 @@
 	<mvc:cors> 
     	<mvc:mapping path="/**" allowed-origins="*" allow-credentials="true" max-age="1800" allowed-methods="GET,POST,PUT,DELETE,OPTIONS" />
 	</mvc:cors>  
-
+	
+	<bean name="applicationSwaggerConfig" class="com.yinzhiwu.springmvc3.swagger.ApplicationSwaggerConfig"> </bean>
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsps/" />
