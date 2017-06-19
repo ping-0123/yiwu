@@ -55,22 +55,22 @@ public class DistributerController extends BaseController {
 		dataBinder.setDisallowedFields("birthDay");
 	}
 
-	@Deprecated
-	@RequestMapping(value="/register", method={RequestMethod.POST})
-	public YiwuJson<DistributerApiView> register(String invitationCode,
-										@Valid @ModelAttribute Distributer distributer,
-										BindingResult bindingResult,
-										Model model){
-		if(bindingResult.hasErrors()){
-			 FieldError field = bindingResult.getFieldError();
-			 String message =   field.getField() + " " + field.getDefaultMessage();
-			 LOG.info(message);
-			 return new YiwuJson<>(200,false,message,null,false);
-		}
-		
-		return  distributerService.register(invitationCode, distributer);
-	}
-	
+//	@Deprecated
+//	@RequestMapping(value="/register", method={RequestMethod.POST})
+//	public YiwuJson<DistributerApiView> register(String invitationCode,
+//										@Valid @ModelAttribute Distributer distributer,
+//										BindingResult bindingResult,
+//										Model model){
+//		if(bindingResult.hasErrors()){
+//			 FieldError field = bindingResult.getFieldError();
+//			 String message =   field.getField() + " " + field.getDefaultMessage();
+//			 LOG.info(message);
+//			 return new YiwuJson<>(200,false,message,null,false);
+//		}
+//		
+//		return  distributerService.register(invitationCode, distributer);
+//	}
+//	
 	@PostMapping(value="")
 	public YiwuJson<DistributerApiView> register(@Valid Distributer m, String invitationCode, BindingResult bindingResult){
 		if(bindingResult.hasErrors()){
