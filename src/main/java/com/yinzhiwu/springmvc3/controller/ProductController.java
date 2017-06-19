@@ -1,7 +1,5 @@
 package com.yinzhiwu.springmvc3.controller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,9 +12,8 @@ import com.yinzhiwu.springmvc3.validator.ProductValidator;
 
 @Controller
 @RequestMapping("/product")
-public class ProductController {
+public class ProductController  extends BaseController{
 
-	private static final Log logger = LogFactory.getLog(ProductController.class);
 	
 	@RequestMapping(value = "/add")
 	public String inputProduct(Model model) {
