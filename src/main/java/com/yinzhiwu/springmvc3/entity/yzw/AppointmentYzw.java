@@ -109,6 +109,12 @@ public class AppointmentYzw {
 	private Date lastSyncTimeStamp;
 	
 	
+	public AppointmentYzw(){};
+	public AppointmentYzw(LessonYzw lesson, CustomerYzw customer){
+		init();
+		this.lesson = lesson;
+		this.customer = customer;
+	};
 	
 	protected void init() {
 		this.createUserId = 1;
@@ -117,6 +123,7 @@ public class AppointmentYzw {
 		this.lastChangeUserId =1;
 		this.lastChangeTime=date;
 		this.lastSyncTimeStamp =date;
+		this.status = AppointStatus.APPONTED;
 	}
 	
 

@@ -20,6 +20,12 @@ import com.yinzhiwu.springmvc3.entity.yzwOld.Order;
 import com.yinzhiwu.springmvc3.entity.yzwOld.Appointment.APPOINT_STATUS;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
+/**
+ * @see AppointmentEventServiceImpl
+ * @author ping
+ *
+ */
+@Deprecated
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
 	

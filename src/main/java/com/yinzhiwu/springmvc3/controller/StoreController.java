@@ -2,6 +2,7 @@ package com.yinzhiwu.springmvc3.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.service.DepartmentService;
 
-//@CrossOrigin
 @Controller
 @RequestMapping(value="/api/store")
 public class StoreController {
@@ -25,11 +25,19 @@ public class StoreController {
 		return departmentService.findStoreInfosByDistrictId(districtId);
 	}
 	
-	@RequestMapping(value="/id/{id}")
+	@Deprecated
+	@GetMapping(value="/id/{id}")
 	@ResponseBody
 	public Object getStore(@PathVariable int id){
 		return departmentService.findStoreInfoById(id);
 	}
+	
+	@GetMapping(value="/{storeId}")
+	@ResponseBody
+	public Object getStoreById(@PathVariable int storeId){
+		return departmentService.findStoreInfoById(storeId);
+	}
+	
 	
 	
 	@RequestMapping(value="/getStoresByCity", method={RequestMethod.GET})
@@ -38,13 +46,13 @@ public class StoreController {
 		return departmentService.findStoreByCities(city);
 	}
 	
-	@RequestMapping(value="/getAllStores")
+	@GetMapping(value="/getAllStores")
 	@ResponseBody
 	public Object getAllStores(){
 		return departmentService.getAllStores();
 	}
 	
-	@RequestMapping(value="/getAllApiStores")
+	@GetMapping(value="/getAllApiStores")
 	@ResponseBody
 	public YiwuJson<?> getAllApiStores(){
 		return new YiwuJson<>(departmentService.getAllStores());
