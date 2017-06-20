@@ -3,6 +3,7 @@ package com.yinzhiwu.springmvc3.dao.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.yinzhiwu.springmvc3.dao.DistributerIncomeDao;
 import com.yinzhiwu.springmvc3.entity.income.DistributerIncome;
@@ -46,6 +47,20 @@ public class DistributerIncomeDaoImpl extends BaseDaoImpl<DistributerIncome, Int
 		if(floats.size() ==0 || null == floats)
 			return 0f;
 		return floats.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DistributerIncome> getTopN(IncomeType type, int topN) {
+		Assert.notNull(type);
+		Assert.isTrue(topN>0);
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("FROM DistributerIncome t1");
+		builder.append(" WHERE t1.incomeType.id=:incomeTypeId" );
+		builder.append(" ORDER BY t1.accumulativeIncome DESC");
+		getHibernateTemplate().setMaxResults(topN);
+		return (List<DistributerIncome>) getHibernateTemplate().findByNamedParam(builder.toString(), "incomeTypeId", type.getId());
 	}
 
 }

@@ -2,6 +2,7 @@ package com.yinzhiwu.springmvc3.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -23,6 +24,7 @@ import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
+import com.yinzhiwu.springmvc3.model.view.TopThreeApiView;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 
 
@@ -259,6 +261,13 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	public void modify(Integer id, Distributer entity)
 			throws DataNotFoundException, IllegalArgumentException, IllegalAccessException {
 		super.modify(id, entity);
+	}
+
+
+	@Override
+	public List<TopThreeApiView> getBrokerageTopThree() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

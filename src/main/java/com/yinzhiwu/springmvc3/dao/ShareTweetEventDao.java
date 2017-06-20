@@ -8,4 +8,5 @@ public interface ShareTweetEventDao extends IBaseDao<ShareTweetEvent, Integer> {
 
 	long findDailyShareTimes(Integer distributerId, Date occurTime);
 
+	int findShareTweetTimes(int distributerId);
 }

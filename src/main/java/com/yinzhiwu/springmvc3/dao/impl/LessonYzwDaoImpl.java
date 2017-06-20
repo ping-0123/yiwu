@@ -21,4 +21,30 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		}
 	}
 
+	@Override
+	public LessonYzw findLastNLesson(LessonYzw thisLesson, int lastN) {
+		if(lastN==0) return thisLesson;
+		if(thisLesson == null) return null;
+		if(thisLesson.getCourse() == null) return null;
+		
+		StringBuilder builder = new StringBuilder();
+		if(lastN > 0){
+			builder.append("FROM LessonYzw WHERE startDateTime <:startDateTime and courseid = :courseId");
+			builder.append(" order by startDateTime desc");
+		}else{
+			builder.append("FROM LessonYzw WHERE startDateTime >:startDateTime and courseid = :courseId");
+			builder.append(" order by startDateTime");
+		}
+		getHibernateTemplate().setMaxResults(lastN);
+		@SuppressWarnings("unchecked")
+		List<LessonYzw> lessons = (List<LessonYzw>) getHibernateTemplate().findByNamedParam(
+				builder.toString(), 
+				new String[]{"startDateTime", "courseId"}, 
+				new Object[]{thisLesson.getStartDateTime(), thisLesson.getCourse().getId()});
+		if(lessons != null && lessons.size() ==lastN)
+			return lessons.get(lastN-1);
+		return null;
+	}
+		
+
 }

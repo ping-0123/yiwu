@@ -11,6 +11,7 @@ import org.hibernate.type.LongType;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
+import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
@@ -137,13 +138,13 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 	}
 
 	@Override
-	public String find_valid_contract_by_customer_by_subCourseType(int customerId, String subCourseType) {
+	public Contract find_valid_contract_by_customer_by_subCourseType(int customerId, String subCourseType) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("select t1.contract.contractNo from OrderYzw t1 where t1.contract.status='已审核' and t1.contract.subType=:subCourseType");
+		hql.append("select t1.contract from OrderYzw t1 where t1.contract.status='已审核' and t1.contract.subType=:subCourseType");
 		hql.append(" and t1.contract.remainTimes>=1 and t1.contract.end >= :currdate");
 		hql.append(" order by contract.end");
 		@SuppressWarnings("unchecked")
-		List<String> contracts = (List<String>) getHibernateTemplate().findByNamedParam(
+		List<Contract> contracts = (List<Contract>) getHibernateTemplate().findByNamedParam(
 				hql.toString(), 
 				new String[]{"subCourseType", "currdate"},
 				new Object[]{subCourseType, new Date()});

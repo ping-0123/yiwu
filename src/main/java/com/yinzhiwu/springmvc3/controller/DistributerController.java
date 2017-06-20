@@ -17,7 +17,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +31,12 @@ import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
+import com.yinzhiwu.springmvc3.model.view.TopThreeApiView;
 import com.yinzhiwu.springmvc3.service.CapitalAccountService;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.util.UrlUtil;
+
+import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins="*")
 @RestController
@@ -55,22 +57,7 @@ public class DistributerController extends BaseController {
 		dataBinder.setDisallowedFields("birthDay");
 	}
 
-//	@Deprecated
-//	@RequestMapping(value="/register", method={RequestMethod.POST})
-//	public YiwuJson<DistributerApiView> register(String invitationCode,
-//										@Valid @ModelAttribute Distributer distributer,
-//										BindingResult bindingResult,
-//										Model model){
-//		if(bindingResult.hasErrors()){
-//			 FieldError field = bindingResult.getFieldError();
-//			 String message =   field.getField() + " " + field.getDefaultMessage();
-//			 LOG.info(message);
-//			 return new YiwuJson<>(200,false,message,null,false);
-//		}
-//		
-//		return  distributerService.register(invitationCode, distributer);
-//	}
-//	
+
 	@PostMapping(value="")
 	public YiwuJson<DistributerApiView> register(@Valid Distributer m, String invitationCode, BindingResult bindingResult){
 		if(bindingResult.hasErrors()){
@@ -198,4 +185,9 @@ public class DistributerController extends BaseController {
 	   
    }
    
+   @GetMapping("/getTopThree")
+   @ApiOperation(value="获取收入前三名的分销者")
+   public YiwuJson<List<TopThreeApiView>> getTopThree(){
+	   return new YiwuJson<>(distributerService.getBrokerageTopThree());
+   }
 }

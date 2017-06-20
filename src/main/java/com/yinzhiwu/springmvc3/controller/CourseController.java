@@ -12,6 +12,8 @@ import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CourseApiView;
 import com.yinzhiwu.springmvc3.service.CourseYzwService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value="/api/course")
 public class CourseController extends BaseController{
@@ -31,6 +33,7 @@ public class CourseController extends BaseController{
 	}
 	
 	@GetMapping("/connotation/{courseId}")
+	@ApiOperation(value="根据课程（课时系列）id获取课程内涵信息")
 	public YiwuJson<Connotation> getConnotationByCourseId(@PathVariable String courseId){
 		try {
 			return new YiwuJson<>(courseYzwService.get(courseId).getConnotation());

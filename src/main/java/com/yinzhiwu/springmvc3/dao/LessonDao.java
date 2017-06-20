@@ -3,6 +3,7 @@ package com.yinzhiwu.springmvc3.dao;
 import java.util.Date;
 import java.util.List;
 
+import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 import com.yinzhiwu.springmvc3.entity.yzwOld.Lesson;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
@@ -19,4 +20,6 @@ public interface LessonDao extends IBaseDao<Lesson, Integer> {
 			Date endDate) throws DataNotFoundException;
 
 	public int findOrderInCourse(Lesson l);
+	
+	
 }

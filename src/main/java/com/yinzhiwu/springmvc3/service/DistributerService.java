@@ -1,5 +1,7 @@
 package com.yinzhiwu.springmvc3.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.springmvc3.entity.Distributer;
@@ -7,6 +9,7 @@ import com.yinzhiwu.springmvc3.model.DistributerRegisterModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
+import com.yinzhiwu.springmvc3.model.view.TopThreeApiView;
 
 public interface DistributerService extends IBaseService<Distributer, Integer> {
 
@@ -31,6 +34,8 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 
 
 	YiwuJson<DistributerApiView> register2(DistributerRegisterModel m);
+
+	List<TopThreeApiView> getBrokerageTopThree();
 
 
 

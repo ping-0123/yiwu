@@ -3,8 +3,6 @@ package com.yinzhiwu.springmvc3.model.view;
 import java.sql.Time;
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -15,9 +13,9 @@ import com.yinzhiwu.springmvc3.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
+import com.yinzhiwu.springmvc3.model.LessonOldApiView;
 
 public class CheckInSuccessApiView {
-	private static Log LOG = LogFactory.getLog(CheckInSuccessApiView.class);
 
 	private Integer times;
 	private Float exp;
@@ -25,7 +23,8 @@ public class CheckInSuccessApiView {
 	//课程信息
 	private String city;
 	private String storeName;
-	private String lessonName;	
+	private String lessonName;
+	private String danceName;
 	private String courseType;
 	private String coachName;
 	@JsonFormat(pattern="yyyy年MM月dd日")
@@ -64,6 +63,8 @@ public class CheckInSuccessApiView {
 			this.city = store.getCity();
 		}
 		this.lessonName = lesson.getName();
+		if(lesson.getCourse() != null)
+			this.danceName = lesson.getCourse().getDanceDesc();
 		this.courseType = lesson.getCourseType();
 		this.coachName = lesson.getDueTeacherName();
 		this.lessonDate = lesson.getLessonDate();
@@ -75,6 +76,7 @@ public class CheckInSuccessApiView {
 		this.validityTimes = contract.getValidityTimes();
 		this.remainTimes = (int) contract.getRemainTimes();
 	}
+	
 	
 	public Integer getTimes() {
 		return times;
@@ -191,6 +193,14 @@ public class CheckInSuccessApiView {
 		this.contractEndDate = contractEndDate;
 		this.validityTimes = validityTimes;
 		this.remainTimes = remainTimes;
+	}
+
+	public String getDanceName() {
+		return danceName;
+	}
+
+	public void setDanceName(String danceName) {
+		this.danceName = danceName;
 	}
 	
 	

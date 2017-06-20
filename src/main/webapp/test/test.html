@@ -12,7 +12,16 @@
 		var v_baseUrl = "http://192.168.0.115:8080/yiwu/";
 //		register();
 //		shareTweet();
-		checkIn();
+//		checkIn();
+		appoint();
+		
+		function appoint(){
+			$.post(v_baseUrl + "/api/appointment/unAppoint",
+				{distributerId:3000050, lessonId:158689},
+				function(result){
+					$('#content').html(JSON.stringify(result));
+				});
+		}
 
 		function checkIn(){
 			$.post(v_baseUrl + "/api/checkIns",

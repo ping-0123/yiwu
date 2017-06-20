@@ -4,26 +4,25 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Embeddable
 public class Contract {
 	
-//	@NaturalId
 	private String contractNo;
-	
-//	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-//	@JoinColumn(name="customer_id", foreignKey=
-//			@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
-//	private CustomerYzw customer;
 	
 	private Integer validity;
 	
 	@Column(name="validity_times")
 	private Integer validityTimes;
 	
+	@JsonFormat(pattern="yyyy-MM-dd")
 	@Column(name="startdate")
 	private Date start;
 	
+	@JsonFormat(pattern="yyyy-MM-dd")
 	@Column(name="endDate")
 	private Date end;
 	

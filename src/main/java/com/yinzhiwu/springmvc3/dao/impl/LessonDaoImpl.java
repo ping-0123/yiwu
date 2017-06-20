@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.springmvc3.dao.LessonDao;
+import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 import com.yinzhiwu.springmvc3.entity.yzwOld.Lesson;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 
@@ -66,6 +67,7 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
 				new Object[]{l.getStartDateTime(), l.getCourseid()}) ;
 		return longs.get(0).intValue();
 	}
-	
+
+
 
 }

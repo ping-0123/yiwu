@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.IncomeRecordDao;
 import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
+import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 
 @Repository
 public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> implements IncomeRecordDao {
@@ -26,6 +27,19 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 				new String[]{"benificiaryId", "incomeTypeIds"}, 
 				new Object[]{benificiaryId, ints});
 		return counts.get(0).intValue();
+	}
+
+	@Override
+	public IncomeRecord findExpProducedByEvent(Integer id, IncomeType exp) {
+		try{
+			List<IncomeRecord> records = findByProperties(
+					new String[]{"incomeEvent.id", "incomeType.id"},
+					new Object[]{id, exp.getId()});
+			return records.get(0);
+		}catch (Exception e) {
+			return null;
+		}
+
 	}
 
 }

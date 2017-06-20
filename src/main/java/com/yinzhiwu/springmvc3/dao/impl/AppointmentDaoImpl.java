@@ -1,9 +1,11 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.mchange.v2.lock.ExactReentrantSharedUseExclusiveUseLock;
 import com.yinzhiwu.springmvc3.dao.AppointmentDao;
 import com.yinzhiwu.springmvc3.entity.yzwOld.Appointment;
 import com.yinzhiwu.springmvc3.model.LessonOldApiView;
@@ -33,4 +35,17 @@ public class AppointmentDaoImpl extends BaseDaoImpl<Appointment, Integer> implem
 				LessonOldApiView.AttendedStatus.UN_APOINTED;
 	}
 
+	@Override
+	public void saveOrUpdate(Appointment entity) {
+		entity.setLastChangeTime(new Date());
+		super.saveOrUpdate(entity);
+	}
+
+	@Override
+	public void update(Appointment entity) {
+		entity.setLastChangeTime(new Date());
+		super.update(entity);
+	}
+
+	
 }

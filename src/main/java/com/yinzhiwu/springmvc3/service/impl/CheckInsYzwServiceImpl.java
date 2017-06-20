@@ -15,8 +15,8 @@ import com.yinzhiwu.springmvc3.entity.income.AfterAppointCheckInEvent;
 import com.yinzhiwu.springmvc3.entity.income.CheckInEvent;
 import com.yinzhiwu.springmvc3.entity.income.IncomeEvent;
 import com.yinzhiwu.springmvc3.entity.income.WithoutAppointCheckInEvent;
-import com.yinzhiwu.springmvc3.entity.type.EventType;
 import com.yinzhiwu.springmvc3.entity.yzw.CheckInsYzw;
+import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
@@ -68,9 +68,10 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		 * 判断是否已刷卡
 		 */
 		if(checkInsYzwDao.isCheckedIn(customer, lesson)) throw new Exception("已刷卡， 无须重复刷卡");
-		String contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
+		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
 				customer.getId(), lesson.getSubCourseType());
-		CheckInsYzw checkIn = new CheckInsYzw(customer.getMemberCard(), lesson, contract, null);
+		if(contract == null) throw new Exception("你没有购买音之舞相关产品， 不能刷卡");
+		CheckInsYzw checkIn = new CheckInsYzw(customer.getMemberCard(), lesson, contract.getContractNo(), null);
 		super.save(checkIn);
 		/**
 		 * 判断是否预约
