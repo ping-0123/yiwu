@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
+import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CheckInSuccessApiView;
 import com.yinzhiwu.springmvc3.model.view.LessonApiView;
 import com.yinzhiwu.springmvc3.service.CheckInsYzwService;
 import com.yinzhiwu.springmvc3.service.CustomerYzwService;
+import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.service.LessonYzwService;
 
 import io.swagger.annotations.Api;
@@ -29,7 +30,7 @@ public class CheckInsController extends BaseController{
 	@Autowired private CheckInsYzwService checkInsYzwService;
 	@Autowired private CustomerYzwService customerService;
 	@Autowired private LessonYzwService lessonService;
-	
+	@Autowired private DistributerService distributerService;
 	
 	@GetMapping("/lesson/count")
 	@ApiOperation(value="获取学员已上课总节数")
@@ -53,11 +54,14 @@ public class CheckInsController extends BaseController{
 	}
 	
 	@PostMapping
-	public YiwuJson<CheckInSuccessApiView> saveCustomerCheckIn(int customerId, int lessonId){
+	@ApiOperation(value="学员签到")
+	public YiwuJson<CheckInSuccessApiView> saveCustomerCheckIn(int distribuerId, int lessonId){
 		try {
-			CustomerYzw customer = customerService.get(customerId);
+			Distributer distributer = distributerService.get(distribuerId);
+			if(distributer == null) throw new Exception(distribuerId + "用户不存在");
 			LessonYzw lesson = lessonService.get(lessonId);
-			return new YiwuJson<>(checkInsYzwService.saveCustomerCheckIn(customer,lesson));
+			if(lesson == null ) throw new Exception(lessonId + "课时不存在");
+			return new YiwuJson<>(checkInsYzwService.saveCustomerCheckIn(distributer,lesson));
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}

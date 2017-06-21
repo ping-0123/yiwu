@@ -15,8 +15,7 @@ public class CapitalAccountApiView {
 	
 	@Min(1)
 	private int accountId;
-	
-	@Pattern(regexp = "(微信|支付宝)")
+	private int accountTypeId;
 	private String typeName;
 	
 	
@@ -32,6 +31,7 @@ public class CapitalAccountApiView {
 		this.distributerId = c.getDistributer().getId();
 		this.accountId = c.getId();
 		this.account = c.getAccount();
+		this.accountTypeId = c.getCapitalAccountType().getId();
 		this.typeName = c.getCapitalAccountType().getName();
 	}
 
@@ -67,6 +67,15 @@ public class CapitalAccountApiView {
 	public void setDistributerId(int distributerId) {
 		this.distributerId = distributerId;
 	}
-	
+
+	public int getAccountTypeId() {
+		return accountTypeId;
+	}
+
+	public void setAccountTypeId(int accountTypeId) {
+		this.accountTypeId = accountTypeId;
+	}
+
+
 	
 }

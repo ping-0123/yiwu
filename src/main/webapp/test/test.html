@@ -12,8 +12,29 @@
 		var v_baseUrl = "http://192.168.0.115:8080/yiwu/";
 //		register();
 //		shareTweet();
-//		checkIn();
-		appoint();
+		checkIn();
+//		appoint();
+//		addNewAccount();
+//		setDefaultAccount()
+		
+		function setDefaultAccount(){
+			$.post(v_baseUrl + "/api/distributer/capitalAccount/setDefault",
+				{distributerId:"3000050",
+				accountId:"2000003"},
+				function(result){
+					$('#content').html(JSON.stringify(result));
+				});
+		}
+		
+		function addNewAccount(){
+			$.post(v_baseUrl + "/api/distributer/capitalAccount",
+				{accountName:"longfreebird2@163.com",
+					capitalAccountTypeId:"10001",
+					distributerId:'3000050'},
+				function(result){
+					$('#content').html(JSON.stringify(result));
+				});
+		}
 		
 		function appoint(){
 			$.post(v_baseUrl + "/api/appointment/unAppoint",
@@ -25,7 +46,7 @@
 
 		function checkIn(){
 			$.post(v_baseUrl + "/api/checkIns",
-				{customerId:34892, lessonId:189255},
+				{customerId:44930, lessonId:201519},
 				function(result){
 					$('#content').html(JSON.stringify(result));
 				});
@@ -47,7 +68,6 @@
 							birthday:'2000-01-01',
 							'followedByStore.id':'63',
 							wechatNo:'oIgTGwx1Qiz333csesd965h7029',
-							invitationCode:'zoz2qqjv'
 					};
 	
 			

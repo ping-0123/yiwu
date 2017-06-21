@@ -61,7 +61,8 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
 	@Override
 	public int findOrderInCourse(Lesson l) {
 		Assert.notNull(l);
-		String hql = "select count(*) from Lesson where startDateTime <= :startDateTime and courseid = :courseId";
+		logger.info(l.getLessonId().toString() +  l.getStartDateTime());
+		String hql = "SELECT COUNT(*) from Lesson WHERE startDateTime <= :startDateTime and courseid = :courseId";
 		List<Long> longs = (List<Long>) getHibernateTemplate().findByNamedParam(hql,
 				new String[]{"startDateTime", "courseId"}, 
 				new Object[]{l.getStartDateTime(), l.getCourseid()}) ;

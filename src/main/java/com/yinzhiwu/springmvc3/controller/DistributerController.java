@@ -1,15 +1,13 @@
 package com.yinzhiwu.springmvc3.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -25,9 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.yinzhiwu.springmvc3.dao.impl.DistributerDaoImpl;
+import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.entity.type.CapitalAccountType;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.model.CapitalAccountModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
@@ -37,20 +37,15 @@ import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.util.UrlUtil;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @CrossOrigin(origins="*")
 @RestController
 @RequestMapping("/api/distributer")
 public class DistributerController extends BaseController {
-	private static final Log LOG = LogFactory.getLog(DistributerDaoImpl.class);
 	
-	
-	@Autowired
-	@Qualifier("distributerServiceImplTwo")
-	private DistributerService  distributerService;
-	
-	@Autowired
-	private CapitalAccountService caService;
+	@Autowired private DistributerService  distributerService;
+	@Autowired private CapitalAccountService capitalAccountService;
 	
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder){
@@ -111,49 +106,91 @@ public class DistributerController extends BaseController {
 	}
 	
 	@GetMapping(value="/capitalAccount/getDefault")
+	@ApiOperation(value="获取默认的提现帐号")
 	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(int distributerId){
-		return distributerService.getDefaultCapitalAccount(distributerId);
+		try {
+			logger.info("capitalAccount/getDefault start with parameter" + distributerId);
+			Distributer distributer = distributerService.get(3000050);
+			logger.info("获取到Distributer" + distributer);
+			if(distributer == null) throw new Exception("Id为" + distributerId + "的客户不存在");
+			CapitalAccount capitalAccount = distributer.getDefaultCapitalAccount();
+			if(capitalAccount == null) throw new Exception("该用户尚未设置默认提现帐号");
+			return new YiwuJson<>(new CapitalAccountApiView(capitalAccount));
+		} catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 	
 	@PostMapping(value="/capitalAccount/setDefault")
-	public YiwuJson<Boolean> setDefaultCapitalAccount(@Valid CapitalAccountApiView v, BindingResult bindingResult){
-		if(bindingResult.hasErrors()){
-			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-			for (FieldError fieldError : fieldErrors) {
-				if("distributerId".equals(fieldError.getField()) 
-						|| "accountId".equals(fieldError.getField())){
-					return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
-				}
+	@ApiOperation(value="设置默认提现帐号")
+	public YiwuJson<Boolean> setDefaultCapitalAccount(
+			@ApiParam(value="分销者Id", required=true) int distributerId,
+			@ApiParam(value="帐号Id", required=true) int accountId)
+	{
+		try{
+			logger.debug("start");
+			Distributer distributer = distributerService.get(distributerId);
+			if(distributer == null) throw new Exception("系统中不存在distributerId为:" + distributerId + "的分销者用户");
+			CapitalAccount account = capitalAccountService.get(accountId);
+			if(account == null) throw new Exception("请输入正确的accountId");
+			if(!account.getDistributer().equals(distributer)) throw  new Exception("帐号" + accountId + "不属于" + distributerId + ",不能设置为其默认提现帐号");
+			distributer.setDefaultCapitalAccount(account);
+			distributerService.update(distributer);
+			return new YiwuJson<>(new Boolean(true));
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
+	}
+	
+	@GetMapping(value="/capitalAccount")
+	@ApiOperation(value="获取资金帐号")
+	public YiwuJson<List<CapitalAccountApiView>> getCapitalAccount(
+			int distributerId,
+			@ApiParam(value="帐号类型Id, 10001：微信支付,10002:支付宝支付, -1：全部支付类型") int accountTypeId)
+	{
+		List<CapitalAccountApiView> views = new ArrayList<>();
+		List<CapitalAccount> accounts = new ArrayList<>();
+		if(accountTypeId == -1){
+			accounts = capitalAccountService.findByProperty("distributer.id", distributerId);
+		}else{
+			try {
+				accounts = capitalAccountService.findByProperties(
+						new String[]{"distributer.id", "capitalAccountType.id" },  
+						new Object[]{distributerId, accountTypeId});
+			} catch (DataNotFoundException e) {
+				accounts = new ArrayList<>();
 			}
 		}
-		
-		distributerService.setDefaultCapitalAccount(v.getDistributerId(), v.getAccountId());
-		return new YiwuJson<>(new Boolean(true));
-	}
-	
-	@GetMapping(value="capitalAccount")
-	public YiwuJson<CapitalAccountApiView> getCapitalAccount(int distributerId,
-			 CapitalAccountApiView m, BindingResult bindingResult){
-		if(bindingResult.hasErrors()){
-			FieldError fieldError = bindingResult.getFieldError();
-			return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
+		for (CapitalAccount capitalAccount : accounts) {
+			views.add(new CapitalAccountApiView(capitalAccount));
 		}
 		
-		return distributerService.getCapitalAccount(distributerId,m.getTypeName());
+		return new YiwuJson<>(views);
 	}
 	
-	@PostMapping(value="capitalAccount")
+	@PostMapping(value="/capitalAccount")
+	@ApiOperation(value="新增资金账户")
 	public YiwuJson<CapitalAccountApiView> addCapitalAccount(
-			@Valid CapitalAccountApiView v, BindingResult bindingResult){
+			@Valid CapitalAccountModel capitalAcountModel, BindingResult bindingResult){
 		if(bindingResult.hasErrors()){
-			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-			for (FieldError fieldError : fieldErrors) {
-				if(!fieldError.getField().equals("accountId"))
-					return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
-			}
-			
+			return new YiwuJson<>(getErrorsMessage(bindingResult));
 		}
-		return caService.addCapitalAccount(v);
+		try{
+			CapitalAccount capitalAccount = new CapitalAccount();
+			capitalAccount.setAccount(capitalAcountModel.getAccountName());
+			Distributer distributer = new Distributer();
+			distributer.setId(capitalAcountModel.getDistributerId());
+			CapitalAccountType type = new CapitalAccountType();
+			type.setId(capitalAcountModel.getCapitalAccountTypeId());
+			capitalAccount.setDistributer(distributer);
+			capitalAccount.setCapitalAccountType(type);
+			logger.debug("begin save the new capitalAccount");
+			capitalAccountService.save(capitalAccount);
+			logger.debug("save the new capitalAccount successfully");
+			return new YiwuJson<>(new CapitalAccountApiView(capitalAccount));
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 	
    @RequestMapping(value = "/input")
@@ -179,7 +216,7 @@ public class DistributerController extends BaseController {
 			distributerService.modify(id, d);
 			return new YiwuJson<>(new Boolean(true));
 		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			return new YiwuJson<>(e.getMessage());
 		}
 	   

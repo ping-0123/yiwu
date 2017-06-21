@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.controller;
 
+import org.dom4j.dtd.ElementDecl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,10 +24,11 @@ public class EContractController  extends BaseController{
 	@GetMapping("/{contractNo}")
 	public YiwuJson<EContractDetailApiView> get(@PathVariable String contractNo)
 	{
-		try {
-			return new YiwuJson<>(new EContractDetailApiView(
-					electricContractYzwService.get(contractNo)));
-		} catch (DataNotFoundException e) {
+		try{
+			ElectricContractYzw eContract = electricContractYzwService.get(contractNo);
+			if(eContract == null) return new YiwuJson<>("未能找到合约号为" + contractNo + "的电子合同");
+			return new YiwuJson<>(new EContractDetailApiView(eContract));
+		}catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}

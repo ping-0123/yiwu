@@ -102,21 +102,20 @@
             <tx:method name="deleteAndRepair" />  
             <tx:method name="judge*"/>
   
-            <tx:method name="get*"  />  
             <tx:method name="set*" />
+            <tx:method name="get*"/>
             <tx:method name="find*"  />  
             <tx:method name="load*" propagation="SUPPORTS" />  
             <tx:method name="search*" propagation="SUPPORTS" />  
             <tx:method name="datagrid*" propagation="SUPPORTS" />  
             <tx:method name="login*"/>
-            <tx:method name="register"/>
+            <tx:method name="register" propagation="REQUIRED"/>
             <tx:method name="share*" />
   
-            <tx:method name="*" />  
         </tx:attributes>  
     </tx:advice>  
     <aop:config>  
-        <aop:pointcut id="transactionPointcut" expression="execution(* com.yinzhiwu.springmvc3.service.impl.*Impl.*(..)) || 
+        <aop:pointcut id="transactionPointcut" expression="execution(* com.yinzhiwu.springmvc3.service.impl.*Impl*.*(..)) || 
         												execution(* com.yinzhiwu.springmvc3..*ServiceImpl.*(..))" />  
         <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />  
     </aop:config>  

@@ -20,6 +20,7 @@ import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
+import com.yinzhiwu.springmvc3.entity.yzwOld.Customer;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CheckInSuccessApiView;
 import com.yinzhiwu.springmvc3.model.view.LessonApiView;
@@ -61,7 +62,9 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 
 	
 	@Override
-	public CheckInSuccessApiView saveCustomerCheckIn(CustomerYzw customer, LessonYzw lesson) throws Exception {
+	public CheckInSuccessApiView saveCustomerCheckIn(Distributer distributer, LessonYzw lesson) throws Exception {
+		CustomerYzw customer = distributer.getCustomer();
+		if(customer == null) throw new Exception(distributer.getId() + "客户不存在");
 		if("封闭式".equals(lesson.getCourseType())) throw new Exception("封闭式课程无须刷卡");
 		if(!"开放式".equals(lesson.getCourseType())) throw new Exception("非开放式课程请在E5pc端按指纹刷卡");
 		/**
@@ -77,15 +80,15 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		 * 判断是否预约
 		 */
 		IncomeEvent event = null;
-		Distributer d =  distibuterDao.findByCustomerId(customer.getId());
-		if(d != null){
-			if(appointmentDao.isAppointed(customer,lesson)){
-				event = new AfterAppointCheckInEvent(d,  1f, checkIn);
-			}else
-				event = new WithoutAppointCheckInEvent(d,  1f, checkIn);
-			incomeEventService.save(event);
-		}
+		if(appointmentDao.isAppointed(customer,lesson)){
+			event = new AfterAppointCheckInEvent(distributer,  1f, checkIn);
+		}else
+			event = new WithoutAppointCheckInEvent(distributer,  1f, checkIn);
+		incomeEventService.save(event);
 		
+		/*
+		 * return 
+		 */
 		checkIn.setEvent((CheckInEvent) event);
 		OrderYzw order = orderDao.findByContractNO(checkIn.getContractNo());
 		return new CheckInSuccessApiView(checkIn.getEvent(), order.getContract());

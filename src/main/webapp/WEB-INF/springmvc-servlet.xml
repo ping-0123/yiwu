@@ -23,6 +23,7 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
 	</context:component-scan>
+	<!--  <context:component-scan base-package="springfox.petstore.controller"></context:component-scan> -->
 	
 	<!-- 配置数据格式转换 -->
 	<mvc:annotation-driven conversion-service="conversionService"/>

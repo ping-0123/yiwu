@@ -17,8 +17,7 @@ public interface IBaseService<T, PK extends Serializable> {
 	
 	public List<T> findAll() throws DataNotFoundException;
 	
-	public List<T> findByProperty(String propertyName, Object value) throws DataNotFoundException;
-	
+	public List<T> findByProperty(String propertyName, Object value);
 	public int findCountByProperty(String propertyName, Object value);
 	
 	public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception;
@@ -51,7 +50,7 @@ public interface IBaseService<T, PK extends Serializable> {
 	 */
 	void modify(PK id, T entity) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException;
 	
-	public T get(PK id) throws DataNotFoundException;
+	public T get(PK id);
 	
 	
 	public PageBean<T> findPage(T entity, int pageNum, int pageSize);

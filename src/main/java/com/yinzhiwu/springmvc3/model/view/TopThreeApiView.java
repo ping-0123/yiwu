@@ -13,6 +13,7 @@ public class TopThreeApiView {
 	private int sumShareTweetTimes;
 	private int sumMemberCount;
 	private int sumOrderCount;
+	private String headIconUrl;
 	
 	
 	public String getDistributerName() {
@@ -50,6 +51,12 @@ public class TopThreeApiView {
 	}
 	public void setSumOrderCount(int sumOrderCount) {
 		this.sumOrderCount = sumOrderCount;
+	}
+	public String getHeadIconUrl() {
+		return headIconUrl;
+	}
+	public void setHeadIconUrl(String headIconUrl) {
+		this.headIconUrl = headIconUrl;
 	}
 	
 	

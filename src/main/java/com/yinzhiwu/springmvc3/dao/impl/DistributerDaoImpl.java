@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.type.IntegerType;
 import org.hibernate.type.LongType;
 import org.springframework.stereotype.Repository;
 
@@ -33,8 +34,8 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	private int getNextId() {
 		String sql = "select  AUTO_INCREMENT from information_schema.tables where table_name ='yiwu_distributer'";
-		List<Long> list = getSession().createNativeQuery(sql).addScalar("AUTO_INCREMENT", LongType.INSTANCE) .list();
-		return list.get(0).intValue();
+		List<Integer> list = getSession().createNativeQuery(sql).addScalar("AUTO_INCREMENT", IntegerType.INSTANCE) .list();
+		return list.get(0);
 	}
 
 	@Override

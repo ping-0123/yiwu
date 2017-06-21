@@ -13,7 +13,6 @@ import com.yinzhiwu.springmvc3.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
-import com.yinzhiwu.springmvc3.model.LessonOldApiView;
 
 public class CheckInSuccessApiView {
 

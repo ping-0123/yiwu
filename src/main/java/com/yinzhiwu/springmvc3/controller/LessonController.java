@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.common.util.concurrent.ExecutionError;
 import com.yinzhiwu.springmvc3.entity.yzw.Connotation;
+import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 import com.yinzhiwu.springmvc3.entity.yzwOld.Lesson;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
@@ -66,8 +68,10 @@ public class LessonController  extends BaseController{
 	@ApiOperation(value="根据课时Id获取课时内涵信息")
 	public YiwuJson<Connotation> getConnotationByLessonId(@PathVariable int lessonId){
 		try {
-			return new YiwuJson<>(lessonYzwService.get(lessonId).getConnotation());
-		} catch (DataNotFoundException e) {
+			LessonYzw lesson = lessonYzwService.get(lessonId);
+			if(lesson == null ) throw new Exception("未能找到lesson id为 " + lessonId + "的课时");
+			return new YiwuJson<>(lesson.getConnotation());
+		} catch (Exception e) {
 			logger.error(e);
 			return new YiwuJson<>(e.getMessage());
 		}

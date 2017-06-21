@@ -14,15 +14,17 @@
 		</param-value>
 	</context-param>
 
-	<!-- 延迟加载过滤器  -->
+	<!-- 延迟加载过滤器 -->
 	<filter>  
 		<filter-name>openSessionInViewFilter</filter-name> 
 		<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class> 
+		<param-name>flushMode</param-name>   
+        <param-value>AUTO</param-value>   
 	</filter> 
 	<filter-mapping> 
 		<filter-name>openSessionInViewFilter</filter-name> 
 		<url-pattern>/api/*</url-pattern> 
-	</filter-mapping>
+	</filter-mapping>   
 
 	<!--org.springframework.web.filter.HiddenHttpMethodFilter:可以把Post请求转变为put和delete请求 -->
 	<filter>

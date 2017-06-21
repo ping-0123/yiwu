@@ -3,6 +3,7 @@ package com.yinzhiwu.springmvc3.service.impl;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,8 +65,12 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	}
 
 	@Override
-	public List<T> findByProperty(String propertyName, Object value) throws DataNotFoundException {
-		return baseDao.findByProperty(propertyName, value);
+	public List<T> findByProperty(String propertyName, Object value){
+		try {
+			return baseDao.findByProperty(propertyName, value);
+		} catch (DataNotFoundException e) {
+			return new ArrayList<>();
+		}
 	}
 
 	@Override
