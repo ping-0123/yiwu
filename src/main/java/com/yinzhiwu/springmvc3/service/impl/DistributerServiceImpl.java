@@ -222,6 +222,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
+	
 	@Override
 	public YiwuJson<CapitalAccountApiView> getCapitalAccount(int distributerId, String typeName) {
 		try{
@@ -240,16 +241,13 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		}
 	}
 	@Override
-	public void setDefaultCapitalAccount(int distributerId, int accountId) {
-		try{
-			Distributer d = distributerDao.get(distributerId);
+	public void setDefaultCapitalAccount(int distributerId, int accountId) throws Exception {
+			Distributer distributer = distributerDao.get(distributerId);
 			CapitalAccount account = capitalAccountDao.get(accountId);
-			d.setDefaultCapitalAccount(account);
-			distributerDao.update(d);
-		}catch (Exception e) {
-			logger.warn(e.getMessage());
-		}
-		
+			if(!account.getDistributer().equals(distributer)) 
+				throw  new Exception("帐号" + accountId + "不属于" + distributerId + ",不能设置为其默认提现帐号");
+			distributer.setDefaultCapitalAccount(account);
+			distributerDao.update(distributer);
 	}
 	@Override
 	public YiwuJson<Boolean> judgePhoneNoIsRegistered(String phoneNo) {

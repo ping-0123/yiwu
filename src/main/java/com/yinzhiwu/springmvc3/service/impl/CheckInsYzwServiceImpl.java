@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.springmvc3.dao.AppointmentYzwDao;
 import com.yinzhiwu.springmvc3.dao.CheckInsYzwDao;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
+import com.yinzhiwu.springmvc3.dao.LessonYzwDao;
 import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.income.AfterAppointCheckInEvent;
@@ -35,6 +36,7 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 	@Autowired private AppointmentYzwDao appointmentDao;
 	@Autowired private IncomeEventService incomeEventService;
 	@Autowired private DistributerDao distibuterDao;
+	@Autowired private LessonYzwDao lessonDao;
 	
 	@Autowired
 	public void setBaseDao(CheckInsYzwDao checkInsYzwDao)
@@ -62,7 +64,11 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 
 	
 	@Override
-	public CheckInSuccessApiView saveCustomerCheckIn(Distributer distributer, LessonYzw lesson) throws Exception {
+	public CheckInSuccessApiView saveCustomerCheckIn(int distributerId, int lessonId) throws Exception {
+		Distributer distributer = distibuterDao.get(distributerId);
+		if(distributer == null) throw new  Exception(distributerId + "用户不存在.");
+		LessonYzw lesson = lessonDao.get(lessonId);
+		if(lesson == null) throw new Exception(lessonId + "预约的课程不存在");
 		CustomerYzw customer = distributer.getCustomer();
 		if(customer == null) throw new Exception(distributer.getId() + "客户不存在");
 		if("封闭式".equals(lesson.getCourseType())) throw new Exception("封闭式课程无须刷卡");

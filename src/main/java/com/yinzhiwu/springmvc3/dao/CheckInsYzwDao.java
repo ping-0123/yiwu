@@ -5,7 +5,6 @@ import java.util.List;
 import com.yinzhiwu.springmvc3.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
-import com.yinzhiwu.springmvc3.entity.yzwOld.Customer;
 
 public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer>{
 

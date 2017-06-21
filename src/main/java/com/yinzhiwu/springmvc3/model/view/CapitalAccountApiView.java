@@ -1,26 +1,30 @@
 package com.yinzhiwu.springmvc3.model.view;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
 import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel
 public class CapitalAccountApiView {
 
-	
-	@Min(1)
+	@ApiModelProperty(value="分销者Id", required=true)
+	@Min(value=1,message="请输入正确的分销者Id")
 	private int distributerId;
 	
-	@Min(1)
 	private int accountId;
+	
+	@Min(value=1, message="请输入正确的资金帐号类型Id: 10001表示微信帐号，10002表示支付宝账号")
 	private int accountTypeId;
+	
 	private String typeName;
 	
-	
 	@Length(min=6, max=50)
-	private String account;
+	private String accountName;
 	
 	
 	
@@ -30,23 +34,16 @@ public class CapitalAccountApiView {
 	public CapitalAccountApiView(CapitalAccount c){
 		this.distributerId = c.getDistributer().getId();
 		this.accountId = c.getId();
-		this.account = c.getAccount();
+		this.accountName = c.getAccount();
 		this.accountTypeId = c.getCapitalAccountType().getId();
 		this.typeName = c.getCapitalAccountType().getName();
 	}
 
-	public String getAccount() {
-		return account;
-	}
 
 	public String getTypeName() {
 		return typeName;
 	}
 
-
-	public void setAccount(String account) {
-		this.account = account;
-	}
 
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
@@ -74,6 +71,14 @@ public class CapitalAccountApiView {
 
 	public void setAccountTypeId(int accountTypeId) {
 		this.accountTypeId = accountTypeId;
+	}
+
+	public String getAccountName() {
+		return accountName;
+	}
+
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
 	}
 
 

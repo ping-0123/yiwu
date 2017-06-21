@@ -27,7 +27,6 @@ import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.type.CapitalAccountType;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
-import com.yinzhiwu.springmvc3.model.CapitalAccountModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
@@ -108,17 +107,7 @@ public class DistributerController extends BaseController {
 	@GetMapping(value="/capitalAccount/getDefault")
 	@ApiOperation(value="获取默认的提现帐号")
 	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(int distributerId){
-		try {
-			logger.info("capitalAccount/getDefault start with parameter" + distributerId);
-			Distributer distributer = distributerService.get(3000050);
-			logger.info("获取到Distributer" + distributer);
-			if(distributer == null) throw new Exception("Id为" + distributerId + "的客户不存在");
-			CapitalAccount capitalAccount = distributer.getDefaultCapitalAccount();
-			if(capitalAccount == null) throw new Exception("该用户尚未设置默认提现帐号");
-			return new YiwuJson<>(new CapitalAccountApiView(capitalAccount));
-		} catch (Exception e) {
-			return new YiwuJson<>(e.getMessage());
-		}
+		return distributerService.getDefaultCapitalAccount(distributerId);
 	}
 	
 	@PostMapping(value="/capitalAccount/setDefault")
@@ -128,14 +117,7 @@ public class DistributerController extends BaseController {
 			@ApiParam(value="帐号Id", required=true) int accountId)
 	{
 		try{
-			logger.debug("start");
-			Distributer distributer = distributerService.get(distributerId);
-			if(distributer == null) throw new Exception("系统中不存在distributerId为:" + distributerId + "的分销者用户");
-			CapitalAccount account = capitalAccountService.get(accountId);
-			if(account == null) throw new Exception("请输入正确的accountId");
-			if(!account.getDistributer().equals(distributer)) throw  new Exception("帐号" + accountId + "不属于" + distributerId + ",不能设置为其默认提现帐号");
-			distributer.setDefaultCapitalAccount(account);
-			distributerService.update(distributer);
+			distributerService.setDefaultCapitalAccount(distributerId, accountId);
 			return new YiwuJson<>(new Boolean(true));
 		}catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
@@ -171,7 +153,8 @@ public class DistributerController extends BaseController {
 	@PostMapping(value="/capitalAccount")
 	@ApiOperation(value="新增资金账户")
 	public YiwuJson<CapitalAccountApiView> addCapitalAccount(
-			@Valid CapitalAccountModel capitalAcountModel, BindingResult bindingResult){
+			@ApiParam("distributerId accountTypeId accountName 必须") @Valid CapitalAccountApiView capitalAcountModel,
+			BindingResult bindingResult){
 		if(bindingResult.hasErrors()){
 			return new YiwuJson<>(getErrorsMessage(bindingResult));
 		}
@@ -181,7 +164,7 @@ public class DistributerController extends BaseController {
 			Distributer distributer = new Distributer();
 			distributer.setId(capitalAcountModel.getDistributerId());
 			CapitalAccountType type = new CapitalAccountType();
-			type.setId(capitalAcountModel.getCapitalAccountTypeId());
+			type.setId(capitalAcountModel.getAccountTypeId());
 			capitalAccount.setDistributer(distributer);
 			capitalAccount.setCapitalAccountType(type);
 			logger.debug("begin save the new capitalAccount");

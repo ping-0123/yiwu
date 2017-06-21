@@ -42,7 +42,7 @@ public class CapitalAccountServiceImpl extends BaseServiceImpl<CapitalAccount, I
 			CapitalAccount account = new CapitalAccount();
 			account.setCapitalAccountType(type);
 			account.setDistributer(d);
-			account.setAccount(v.getAccount());
+			account.setAccount(v.getAccountName());
 			caDao.save(account);
 			
 			return new YiwuJson<CapitalAccountApiView>(

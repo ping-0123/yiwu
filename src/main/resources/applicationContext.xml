@@ -103,7 +103,6 @@
             <tx:method name="judge*"/>
   
             <tx:method name="set*" />
-            <tx:method name="get*"/>
             <tx:method name="find*"  />  
             <tx:method name="load*" propagation="SUPPORTS" />  
             <tx:method name="search*" propagation="SUPPORTS" />  
