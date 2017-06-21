@@ -21,7 +21,6 @@ import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
-import com.yinzhiwu.springmvc3.entity.yzwOld.Customer;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CheckInSuccessApiView;
 import com.yinzhiwu.springmvc3.model.view.LessonApiView;
