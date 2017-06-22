@@ -3,7 +3,6 @@ package com.test;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -17,14 +16,13 @@ import com.yinzhiwu.springmvc3.service.DistributerService;
 public class DistributerServiceTest {
 
 	@Autowired
-	@Qualifier(value="distributerServiceImplTwo")
 	private DistributerService distributerService;
 	
 	@Test
 	public void saveRegister(){
 		String phonePre = "18803332";
 		String wechatNoPre = "wechatNo";
-		for(int i=128; i<130; i++){
+		for(int i=140; i<150; i++){
 			Distributer d = new Distributer();
 			d.setPhoneNo(phonePre + String.format("%03d",i));
 			d.setPassword("suning0987");

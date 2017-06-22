@@ -14,8 +14,8 @@
 //		shareTweet();
 //		checkIn();
 //		appoint();
-//		addNewAccount();
-		setDefaultAccount()
+		addNewAccount();
+//		setDefaultAccount()
 		
 		function setDefaultAccount(){
 			$.post(v_baseUrl + "/api/distributer/capitalAccount/setDefault",
@@ -28,8 +28,8 @@
 		
 		function addNewAccount(){
 			$.post(v_baseUrl + "/api/distributer/capitalAccount",
-				{accountName:"longfreebird2@163.com",
-					capitalAccountTypeId:"10001",
+				{accountName:"longfreebird3@163.com",
+					accountTypeId:'10001',
 					distributerId:'3000050'},
 				function(result){
 					$('#content').html(JSON.stringify(result));

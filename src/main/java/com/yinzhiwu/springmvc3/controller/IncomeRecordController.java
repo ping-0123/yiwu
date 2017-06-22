@@ -69,11 +69,39 @@ public class IncomeRecordController extends BaseController{
 			List<IncomeRecordApiView> views = new ArrayList<>();
 			List<IncomeRecord> records = incomeRecordService.findByProperties(
 					properties.toArray(new String[properties.size()]), values.toArray());
+			if(records.size() == 0) throw new Exception("没有找到对应的收益记录");
 			for (IncomeRecord r : records) {
 				views.add(new IncomeRecordApiView(r));
 			}
 			return new YiwuJson<>(views);
 		} catch (DataNotFoundException e) {
+			return new YiwuJson<>(e.getMessage());
+		} catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
+	}
+	
+	@GetMapping("/listFaster")
+	@ApiOperation(value="更加快速地获取经验,基金,佣金等收益记录列表")
+	public YiwuJson<List<IncomeRecordApiView>> getListFaster(
+			@ApiParam(value="id of distributer", required=true) int observerId, 
+			@ApiParam(value="id of event type [10003： 注册(不带邀请码),10004：注册（带邀请码), "
+					+ "10005:分享推文(前三次), 10006:分享推文(非前三次),10007：购买音之舞产品,"
+					+ "10008:用基金支付定金,10009:用佣金支付定金, 10010:产生利息, 10011:提现,"
+					+ "10027:预约, 10030:取消预约, 10028:签到（预约后), 10029:签到（未预约）, -1:全部]", 
+				required =true) int eventTypeId,
+			@ApiParam(value="id of the relation betweet event subject and observer; "
+					+ "10015：本人和本人,10016：本人上一级,10017：本人和上两级, -1 表示全部",
+				required=true)int relationTypeId,
+			@ApiParam(value="收益类型Id； 10012:经验收益类型, 10013:基金收益类型, 10014：佣金收益类型 , -1:全部类型",
+					required=true) int incomeTypeId)
+	{
+		try{
+			List<IncomeRecordApiView> views = incomeRecordService.getListFaster(
+					observerId, eventTypeId,relationTypeId, incomeTypeId);
+			if(views.size() == 0 ) throw new Exception("没有找到相应的数据");
+			return new YiwuJson<>(views);
+		}catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
@@ -96,6 +124,7 @@ public class IncomeRecordController extends BaseController{
 			List<IncomeRecord> records = incomeRecordService.findByProperties(
 					new String[]{"benificiary.id", "incomeEvent.type.id", "con_ben_relation.id"}, 
 					new Object[]{observerId,eventTypeId,relationTypeId});
+			if(records.size() ==0 ) throw new Exception("没有找到相应的数据");
 			for (IncomeRecord r : records) {
 				views.add(new IncomeRecordShareTweetApiView(r));
 			}

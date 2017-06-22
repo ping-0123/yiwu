@@ -27,6 +27,7 @@ import com.yinzhiwu.springmvc3.entity.CapitalAccount;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.type.CapitalAccountType;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.model.DistributerModifyModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 import com.yinzhiwu.springmvc3.model.view.DistributerApiView;
@@ -35,12 +36,14 @@ import com.yinzhiwu.springmvc3.service.CapitalAccountService;
 import com.yinzhiwu.springmvc3.service.DistributerService;
 import com.yinzhiwu.springmvc3.util.UrlUtil;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @CrossOrigin(origins="*")
 @RestController
 @RequestMapping("/api/distributer")
+@Api(value="distributer")
 public class DistributerController extends BaseController {
 	
 	@Autowired private DistributerService  distributerService;
@@ -176,10 +179,10 @@ public class DistributerController extends BaseController {
 		}
 	}
 	
-   @RequestMapping(value = "/input")
+   @GetMapping(value = "/input")
     public ModelAndView inputProduct(Model model) {
         model.addAttribute("distributerApiView", new DistributerApiView());
-        return new ModelAndView("distributer/form");
+        return new	 ModelAndView("distributer/form");
     }
 
    
@@ -194,10 +197,15 @@ public class DistributerController extends BaseController {
    
    
    @RequestMapping(value="/{id}", method={RequestMethod.PUT, RequestMethod.POST})
-   public YiwuJson<Boolean> modify(Distributer d, @PathVariable int id){
+   @ApiOperation("修改会员个人资料")
+   public YiwuJson<DistributerModifyModel> modify(DistributerModifyModel model, @PathVariable int distributerId){
 		try {
-			distributerService.modify(id, d);
-			return new YiwuJson<>(new Boolean(true));
+			Distributer d = new Distributer();
+			d.setNickName(model.getNickName());
+			d.setName(model.getName());
+			d.setPhoneNo(model.getPhoneNo());
+			distributerService.modify(distributerId, d);
+			return new YiwuJson<>(model);
 		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
 			logger.error(e.getMessage());
 			return new YiwuJson<>(e.getMessage());

@@ -61,6 +61,7 @@ public class IncomeRecordApiView {
 		this.factor = r.getIncomeFactor();
 	}
 
+	
 	public int getId() {
 		return id;
 	}
@@ -151,6 +152,38 @@ public class IncomeRecordApiView {
 
 	public void setCurrentValue(float currentValue) {
 		this.currentValue = currentValue;
+	}
+
+	public IncomeRecordApiView(int id, Date date, String eventTypeName){
+		this.id = id;
+		this.date = date;
+		this.eventTypeName = eventTypeName;
+	}
+	
+	public IncomeRecordApiView(
+			int id, 
+			Date date, 
+			String eventTypeName, 
+			String memberName, 
+			String memberId,
+			String superMemberName, 
+			String incomeTypeName, 
+			float incomeValue, 
+			float payedAmount, 
+			float currentValue,
+			float factor) {
+		super();
+		this.id = id;
+		this.date = date;
+		this.eventTypeName = eventTypeName;
+		this.memberName = memberName;
+		this.memberId = memberId;
+		this.superMemberName = superMemberName;
+		this.incomeTypeName = incomeTypeName;
+		this.incomeValue = incomeValue;
+		this.payedAmount = payedAmount;
+		this.currentValue = currentValue;
+		this.factor = factor;
 	}
 
 

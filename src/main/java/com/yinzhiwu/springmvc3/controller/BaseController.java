@@ -12,7 +12,7 @@ public class BaseController {
 	protected String getErrorsMessage(Errors error) {
 		if(error.hasErrors()){
 			FieldError fieldError = error.getFieldError();
-			return fieldError.getField() + "should be " + fieldError.getDefaultMessage();
+			return fieldError.getField() + " should be " + fieldError.getDefaultMessage();
 		}
 		return null;
 	}

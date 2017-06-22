@@ -7,6 +7,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.springmvc3.entity.income.IncomeFactor;
 
 @Entity
@@ -34,7 +35,7 @@ public class EventType  extends BaseType{
 
 
 	
-	
+	@JsonIgnore
 	@OneToMany(mappedBy="eventType")
 	private List<IncomeFactor> incomeFactors = new ArrayList<>();
 

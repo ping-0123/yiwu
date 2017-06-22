@@ -3,11 +3,13 @@ package com.yinzhiwu.springmvc3.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.IncomeRecordDao;
 import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
+import com.yinzhiwu.springmvc3.model.view.IncomeRecordApiView;
 
 @Repository
 public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> implements IncomeRecordDao {
@@ -42,4 +44,56 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 
 	}
 
+	
+	@Override
+	public IncomeRecordApiView findApiViewById(int id){
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT new com.yinzhiwu.springmvc3.model.view.IncomeRecordApiView(");
+		builder.append(" t1.id");
+		builder.append(",t1.recordTimestamp");
+		builder.append(",t1.incomeEvent.type.name");
+		builder.append(",t1.contributor.name");
+		builder.append(",t1.contributor.memberId");
+		builder.append(",t1.contributor.superDistributer.name");
+		builder.append(",t1.incomeType.name");
+		builder.append(",t1.incomeValue");
+		builder.append(",t1.contributedValue");
+		builder.append(",t1.currentValue");
+		builder.append(",t1.incomeFactor");
+		builder.append(") FROM IncomeRecord t1 ");
+		builder.append(" WHERE t1.id=:incomeRecordId");
+		return getSession().createQuery(builder.toString(), IncomeRecordApiView.class)
+				.setParameter("incomeRecordId", id,IntegerType.INSTANCE)
+				.getSingleResult();
+	}
+
+	@Override
+	public List<IncomeRecordApiView> getListFaster(int observerId, int eventTypeId, int relationTypeId,
+			int incomeTypeId) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT new com.yinzhiwu.springmvc3.model.view.IncomeRecordApiView(");
+		builder.append(" t1.id");
+		builder.append(",t1.recordTimestamp");
+		builder.append(",t1.incomeEvent.type.name");
+		builder.append(",t1.contributor.name");
+		builder.append(",t1.contributor.memberId");
+		builder.append(",t1.contributor.superDistributer.name");
+		builder.append(",t1.incomeType.name");
+		builder.append(",t1.incomeValue");
+		builder.append(",t1.contributedValue");
+		builder.append(",t1.currentValue");
+		builder.append(",t1.incomeFactor");
+		builder.append(") FROM IncomeRecord t1 ");
+		builder.append(" WHERE 1=1");
+		if(observerId != -1)
+			builder.append(" AND t1.benificiary.id =" + observerId);
+		if(eventTypeId != -1)
+			builder.append(" AND t1.incomeEvent.type.id =" + eventTypeId );
+		if(relationTypeId != -1)
+			builder.append(" AND t1.con_ben_relation.id =" + relationTypeId);
+		if(incomeTypeId != -1)
+			builder.append(" AND t1.incomeType.id = " + incomeTypeId);
+		return getSession().createQuery(builder.toString(), IncomeRecordApiView.class)
+				.getResultList();
+	}
 }

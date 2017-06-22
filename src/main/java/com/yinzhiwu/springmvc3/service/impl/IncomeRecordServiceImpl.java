@@ -14,6 +14,7 @@ import com.yinzhiwu.springmvc3.entity.income.IncomeEvent;
 import com.yinzhiwu.springmvc3.entity.income.IncomeFactor;
 import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.model.view.IncomeRecordApiView;
 import com.yinzhiwu.springmvc3.service.DistributerIncomeService;
 import com.yinzhiwu.springmvc3.service.IncomeRecordService;
 import com.yinzhiwu.springmvc3.service.MessageService;
@@ -75,5 +76,11 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 	@Override
 	public int findCountByIncomeTypesByBeneficiary(int distributerId, int[] incomeTypeIds) {
 		return incomeRecordDao.findCountByIncomeTypesByBeneficiary(distributerId, incomeTypeIds);
+	}
+
+	@Override
+	public List<IncomeRecordApiView> getListFaster(int observerId, int eventTypeId, int relationTypeId,
+			int incomeTypeId) {
+		return incomeRecordDao.getListFaster(observerId, eventTypeId, relationTypeId, incomeTypeId);
 	}
 }
