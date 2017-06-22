@@ -13,8 +13,8 @@
 //		register();
 //		shareTweet();
 //		checkIn();
-//		appoint();
-		addNewAccount();
+		appoint();
+//		addNewAccount();
 //		setDefaultAccount()
 		
 		function setDefaultAccount(){
@@ -37,8 +37,8 @@
 		}
 		
 		function appoint(){
-			$.post(v_baseUrl + "/api/appointment/unAppoint",
-				{distributerId:3000050, lessonId:158689},
+			$.post(v_baseUrl + "/api/appointment/appoint",
+				{distributerId:3000050, lessonId:'172725'},
 				function(result){
 					$('#content').html(JSON.stringify(result));
 				});

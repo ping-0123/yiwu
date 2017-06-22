@@ -16,5 +16,7 @@ public interface IncomeRecordDao extends IBaseDao<IncomeRecord, Integer> {
 
 	List<IncomeRecordApiView> getListFaster(int observerId, int eventTypeId, int relationTypeId, int incomeTypeId);
 
+	void testCriteriaQuery();
+
 	
 }

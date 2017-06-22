@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.entity.income;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
@@ -20,6 +21,9 @@ public class IncomeFactor extends BaseEntity {
 	 */
 	private static final long serialVersionUID = 8480309517203173801L;
 
+	@Column(name="delete_flag")
+	private Boolean deleteFlag;
+	
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeFactor_eventType_id"))
 	private EventType eventType;
@@ -34,6 +38,7 @@ public class IncomeFactor extends BaseEntity {
 	
 	private Float factor;
 
+	
 	public EventType getEventType() {
 		return eventType;
 	}
@@ -80,6 +85,16 @@ public class IncomeFactor extends BaseEntity {
 		this.incomeType = incomeType;
 		this.relation = relation;
 		this.factor = factor;
+	}
+
+
+	public Boolean getDeleteFlag() {
+		return deleteFlag;
+	}
+
+
+	public void setDeleteFlag(Boolean deleteFlag) {
+		this.deleteFlag = deleteFlag;
 	}
 	
 	

@@ -17,8 +17,8 @@ public class IncomeFactorDaoImpl extends BaseDaoImpl<IncomeFactor, Integer> impl
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT t1.eventType");
 		builder.append(" FROM IncomeFactor t1");
-//		builder.append(" LEFT JOIN EventType t2 ON (t1.eventType.id = t2.id)");
 		builder.append(" WHERE t1.incomeType.id=:incomeTypeId");
+		builder.append(" AND t1.factor <> 0");
 		return getSession().createQuery(builder.toString(), EventType.class)
 				.setParameter("incomeTypeId", incomeTypeId, IntegerType.INSTANCE)
 				.getResultList();

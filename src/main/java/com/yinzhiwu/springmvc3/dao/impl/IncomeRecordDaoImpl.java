@@ -3,6 +3,10 @@ package com.yinzhiwu.springmvc3.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 
@@ -95,5 +99,16 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 			builder.append(" AND t1.incomeType.id = " + incomeTypeId);
 		return getSession().createQuery(builder.toString(), IncomeRecordApiView.class)
 				.getResultList();
+	}
+	
+	@Override
+	public void testCriteriaQuery(){
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		Root<IncomeRecord> root = criteria.from(IncomeRecord.class);
+		criteria.select(root.get("incomeValue"));
+		criteria.where(builder.equal(root.get("contributedValue"), 1));
+		List<IncomeRecord> records = getSession().createQuery(criteria).getResultList();
+		System.out.println(records.size());
 	}
 }
