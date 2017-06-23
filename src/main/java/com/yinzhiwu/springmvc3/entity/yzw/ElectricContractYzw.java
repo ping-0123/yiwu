@@ -86,6 +86,7 @@ public class ElectricContractYzw {
 	
 	private Date depositDate;
 	
+	@Column(name="finalPayment")
 	private Float finalAmount;
 	
 	private Date finalDate;

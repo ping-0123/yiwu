@@ -7,6 +7,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 
@@ -109,6 +110,7 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 		criteria.select(root.get("incomeValue"));
 		criteria.where(builder.equal(root.get("contributedValue"), 1));
 		List<Long> records = getSession().createQuery(criteria).getResultList();
+		getHibernateTemplate().findByCriteria((DetachedCriteria) criteria);
 		System.out.println(records.size());
 	}
 }

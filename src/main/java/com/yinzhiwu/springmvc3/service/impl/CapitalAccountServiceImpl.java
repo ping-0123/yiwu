@@ -37,7 +37,7 @@ public class CapitalAccountServiceImpl extends BaseServiceImpl<CapitalAccount, I
 		
 		CapitalAccountType type;
 		try {
-			type = catDao.get(CapitalAccountTypeUtil.toTypeId(v.getTypeName()));
+			type = catDao.get(CapitalAccountTypeUtil.toTypeId(v.getAccountName()));
 			Distributer d = dDao.get(v.getDistributerId());
 			CapitalAccount account = new CapitalAccount();
 			account.setCapitalAccountType(type);

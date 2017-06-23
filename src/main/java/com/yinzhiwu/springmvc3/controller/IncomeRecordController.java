@@ -69,7 +69,7 @@ public class IncomeRecordController extends BaseController{
 			List<IncomeRecordApiView> views = new ArrayList<>();
 			List<IncomeRecord> records = incomeRecordService.findByProperties(
 					properties.toArray(new String[properties.size()]), values.toArray());
-			if(records.size() == 0) throw new Exception("没有找到对应的收益记录");
+			if(records== null || records.size() == 0) throw new Exception("没有找到对应的收益记录");
 			for (IncomeRecord r : records) {
 				views.add(new IncomeRecordApiView(r));
 			}

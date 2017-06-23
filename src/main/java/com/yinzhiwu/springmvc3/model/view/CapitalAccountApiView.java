@@ -21,7 +21,7 @@ public class CapitalAccountApiView {
 	@Min(value=1, message="请输入正确的资金帐号类型Id: 10001表示微信帐号，10002表示支付宝账号")
 	private int accountTypeId;
 	
-	private String typeName;
+	private String accountTypeName;
 	
 	@Length(min=6, max=50)
 	private String accountName;
@@ -36,50 +36,49 @@ public class CapitalAccountApiView {
 		this.accountId = c.getId();
 		this.accountName = c.getAccount();
 		this.accountTypeId = c.getCapitalAccountType().getId();
-		this.typeName = c.getCapitalAccountType().getName();
-	}
-
-
-	public String getTypeName() {
-		return typeName;
-	}
-
-
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
-	}
-
-	public int getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
+		this.accountTypeName = c.getCapitalAccountType().getName();
 	}
 
 	public int getDistributerId() {
 		return distributerId;
 	}
 
-	public void setDistributerId(int distributerId) {
-		this.distributerId = distributerId;
+	public int getAccountId() {
+		return accountId;
 	}
 
 	public int getAccountTypeId() {
 		return accountTypeId;
 	}
 
-	public void setAccountTypeId(int accountTypeId) {
-		this.accountTypeId = accountTypeId;
+	public String getAccountTypeName() {
+		return accountTypeName;
 	}
 
 	public String getAccountName() {
 		return accountName;
 	}
 
+	public void setDistributerId(int distributerId) {
+		this.distributerId = distributerId;
+	}
+
+	public void setAccountId(int accountId) {
+		this.accountId = accountId;
+	}
+
+	public void setAccountTypeId(int accountTypeId) {
+		this.accountTypeId = accountTypeId;
+	}
+
+	public void setAccountTypeName(String accountTypeName) {
+		this.accountTypeName = accountTypeName;
+	}
+
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
 	}
+
 
 
 	
