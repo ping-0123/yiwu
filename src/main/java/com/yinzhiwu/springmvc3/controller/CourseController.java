@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.springmvc3.entity.yzw.Connotation;
 import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
-import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.CourseApiView;
 import com.yinzhiwu.springmvc3.service.CourseYzwService;

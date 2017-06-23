@@ -15,7 +15,7 @@ public class IncomeFactorDaoImpl extends BaseDaoImpl<IncomeFactor, Integer> impl
 	@Override
 	public List<EventType> findEventTypes(int incomeTypeId) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("SELECT t1.eventType");
+		builder.append("SELECT  DISTINCT t1.eventType");
 		builder.append(" FROM IncomeFactor t1");
 		builder.append(" WHERE t1.incomeType.id=:incomeTypeId");
 		builder.append(" AND t1.factor <> 0");

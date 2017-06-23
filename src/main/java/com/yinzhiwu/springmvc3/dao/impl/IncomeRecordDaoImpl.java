@@ -108,7 +108,7 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 		Root<IncomeRecord> root = criteria.from(IncomeRecord.class);
 		criteria.select(root.get("incomeValue"));
 		criteria.where(builder.equal(root.get("contributedValue"), 1));
-		List<IncomeRecord> records = getSession().createQuery(criteria).getResultList();
+		List<Long> records = getSession().createQuery(criteria).getResultList();
 		System.out.println(records.size());
 	}
 }
