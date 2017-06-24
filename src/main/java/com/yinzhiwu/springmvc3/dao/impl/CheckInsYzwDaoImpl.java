@@ -36,7 +36,7 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<LessonYzw> findByContractNos(List<String> contractNos) {
-		String hql = "from CheckInsYzw where contractNo in :contractNos";
+		String hql = "SELECT t1.lesson FROM CheckInsYzw t1 WHERE t1.contractNo in :contractNos";
 		return (List<LessonYzw>) getHibernateTemplate().findByNamedParam(hql, "contractNos", contractNos);
 	}
 

@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.springmvc3.entity.BaseEntity;
 import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.Message;
@@ -46,6 +47,7 @@ public class IncomeEvent extends BaseEntity {
 	
 	private Float param;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="incomeEvent")
 	private List<IncomeRecord> incomeRecords = new ArrayList<>();
 	

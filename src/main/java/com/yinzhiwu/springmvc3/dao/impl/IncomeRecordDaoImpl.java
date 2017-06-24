@@ -5,16 +5,21 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.IncomeRecordDao;
+import com.yinzhiwu.springmvc3.entity.Tweet;
 import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
+import com.yinzhiwu.springmvc3.entity.income.ShareTweetEvent;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 import com.yinzhiwu.springmvc3.model.view.IncomeRecordApiView;
+import com.yinzhiwu.springmvc3.model.view.ShareTweetIncomeRecordApiView;
 
 @Repository
 public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> implements IncomeRecordDao {
@@ -105,12 +110,42 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 	@Override
 	public void testCriteriaQuery(){
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
-		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		CriteriaQuery<IncomeRecord> criteria = builder.createQuery(IncomeRecord.class);
 		Root<IncomeRecord> root = criteria.from(IncomeRecord.class);
-		criteria.select(root.get("incomeValue"));
+		criteria.select(root);
 		criteria.where(builder.equal(root.get("contributedValue"), 1));
-		List<Long> records = getSession().createQuery(criteria).getResultList();
-		getHibernateTemplate().findByCriteria((DetachedCriteria) criteria);
+		List<IncomeRecord> records = getSession().createQuery(criteria).getResultList();
 		System.out.println(records.size());
+	}
+
+	@Override
+	public List<ShareTweetIncomeRecordApiView> getShareTweetRecordApiViews(int beneficiaryId, int[] eventTypeIds,
+			int[] relationTypeIds, int[] incomeTypeIds) {
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<ShareTweetIncomeRecordApiView> criteria
+			= builder.createQuery(ShareTweetIncomeRecordApiView.class);
+		Root<ShareTweetEvent> eventFrom = criteria.from(ShareTweetEvent.class);
+		Join<ShareTweetEvent,IncomeRecord> recordJoin = eventFrom.join("incomeRecords", JoinType.LEFT);
+//		Join<ShareTweetEvent, Tweet> tweetJoin = eventJoin.join("tweet", JoinType.LEFT);
+		criteria.select(builder.construct(ShareTweetIncomeRecordApiView.class,
+				recordJoin.get("id"),
+				eventFrom.get("distributer").get("name"),
+				eventFrom.get("occurTime"),
+				eventFrom.get("tweet").get("tweetType").get("name"),
+				eventFrom.get("tweet").get("title"),
+				recordJoin.get("incomeValue")
+				));
+		//where
+		Predicate condition = builder.equal(recordJoin.get("benificiary").get("id"), beneficiaryId);
+		if(eventTypeIds !=null && eventTypeIds.length> 0)
+			condition.in(recordJoin.get("incomeEvent").get("type").get("id"), eventTypeIds);
+		if(relationTypeIds !=null && relationTypeIds.length> 0)
+			condition.in(recordJoin.get("con_ben_relation").get("id"), relationTypeIds);
+		if(incomeTypeIds !=null && incomeTypeIds.length> 0)
+			condition.in(recordJoin.get("incomeType").get("id"), incomeTypeIds);
+		criteria.where(condition);
+		List<ShareTweetIncomeRecordApiView> records = getSession().createQuery(criteria).getResultList();
+		
+		return records;
 	}
 }

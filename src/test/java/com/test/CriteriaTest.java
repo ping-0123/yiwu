@@ -17,6 +17,6 @@ public class CriteriaTest {
 	
 	@Test
 	public void test(){
-		incomeRecordDao.testCriteriaQuery();
+		incomeRecordDao.getShareTweetRecordApiViews(3000050, null, null, null);
 	}
 }

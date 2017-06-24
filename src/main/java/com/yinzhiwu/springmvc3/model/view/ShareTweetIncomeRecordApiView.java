@@ -10,14 +10,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
 import com.yinzhiwu.springmvc3.entity.income.ShareTweetEvent;
 
-public class IncomeRecordShareTweetApiView implements Serializable{
+public class ShareTweetIncomeRecordApiView implements Serializable{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3765087348892278100L;
 	
-	private static Log LOG = LogFactory.getLog(IncomeRecordShareTweetApiView.class);
+	private static Log LOG = LogFactory.getLog(ShareTweetIncomeRecordApiView.class);
 	
 	private int id;
 	
@@ -32,9 +32,9 @@ public class IncomeRecordShareTweetApiView implements Serializable{
 	
 	private float exp;
 	
-	public IncomeRecordShareTweetApiView(){}
+	public ShareTweetIncomeRecordApiView(){}
 	
-	public IncomeRecordShareTweetApiView(IncomeRecord record){
+	public ShareTweetIncomeRecordApiView(IncomeRecord record){
 		try{
 			this.id = record.getId();
 			this.sharer = record.getContributor().getName();
@@ -97,6 +97,20 @@ public class IncomeRecordShareTweetApiView implements Serializable{
 	public void setExp(float exp) {
 		this.exp = exp;
 	}
+
+	public ShareTweetIncomeRecordApiView(int id, String sharer, Date shareDate, String tweetType, String tweetTitle,
+			float exp) {
+		super();
+		this.id = id;
+		this.sharer = sharer;
+		this.shareDate = shareDate;
+		this.tweetType = tweetType;
+		this.tweetTitle = tweetTitle;
+		this.exp = exp;
+	}
 	
-	
+	public ShareTweetIncomeRecordApiView(int id, String sharer){
+		this.id = id;
+		this.sharer = sharer;
+	}
 }

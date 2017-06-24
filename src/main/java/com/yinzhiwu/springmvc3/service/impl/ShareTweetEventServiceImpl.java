@@ -45,5 +45,4 @@ public class ShareTweetEventServiceImpl extends BaseServiceImpl<ShareTweetEvent,
 		return incomeEventService.save(e);
 	}
 	
-	
 }

@@ -12,7 +12,7 @@ import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.IncomeRecordApiView;
-import com.yinzhiwu.springmvc3.model.view.IncomeRecordShareTweetApiView;
+import com.yinzhiwu.springmvc3.model.view.ShareTweetIncomeRecordApiView;
 import com.yinzhiwu.springmvc3.service.IncomeRecordService;
 
 import io.swagger.annotations.Api;
@@ -106,28 +106,26 @@ public class IncomeRecordController extends BaseController{
 		}
 	}
 	
+	
 	@GetMapping("/list/shareTweet")
 	@ApiOperation(value="获取分享推文的收益记录列表")
-	public YiwuJson<List<IncomeRecordShareTweetApiView>> getShareTweetList(
+	public YiwuJson<List<ShareTweetIncomeRecordApiView>> getShareTweetListFaster(
 			@ApiParam(value="id of distributer", required=true)int observerId, 
-			@ApiParam(value="id of event type" , 
+			@ApiParam(value="id array of event type" , 
 				allowableValues="[10003： 注册(不带邀请码),10004：注册（带邀请码), 10005:分享推文(前三次), 10006:分享推文(非前三次),10007：购买音之舞产品,"
 							+ "10008:用基金支付定金,10009:用佣金支付定金, 10010:产生利息, 10011:提现,"
-							+ "10027:预约, 10030:取消预约, 10028:签到（预约后), 10029:签到（未预约）]", 
-				required =true) int eventTypeId,
-			@ApiParam(value="id of the relation betweet event subject and observer",
-				allowableValues="10015：本人和本人,10016：本人上一级,10017：本人和上两级", 
-				required=true)int relationTypeId)
+							+ "10027:预约, 10030:取消预约, 10028:签到（预约后), 10029:签到（未预约）,  不输入:表示全部]", 
+				required =true) int[] eventTypeIds,
+			@ApiParam(value="id  array of the relation betweet event subject and observer",
+				allowableValues="10015：本人和本人,10016：本人上一级,10017：本人和上两级, 不输入:表示全部", 
+				required=true)int[] relationTypeIds,
+			@ApiParam(value="收益类型Id array； 10012:经验收益类型, 10013:基金收益类型, 10014：佣金收益类型 , 不输入:全部类型",
+			required=true) int[] incomeTypeIds)
 	{
 		try{
-			List<IncomeRecordShareTweetApiView> views = new ArrayList<>();
-			List<IncomeRecord> records = incomeRecordService.findByProperties(
-					new String[]{"benificiary.id", "incomeEvent.type.id", "con_ben_relation.id"}, 
-					new Object[]{observerId,eventTypeId,relationTypeId});
-			if(records.size() ==0 ) throw new Exception("没有找到相应的数据");
-			for (IncomeRecord r : records) {
-				views.add(new IncomeRecordShareTweetApiView(r));
-			}
+			List<ShareTweetIncomeRecordApiView>  views = incomeRecordService.getShareTweetRecordApiViews(
+					observerId, eventTypeIds, relationTypeIds, incomeTypeIds);
+			if(views==null || views.size()==0) throw new Exception("没有找到相关数据");
 			return new YiwuJson<>(views);
 		}catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
