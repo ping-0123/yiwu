@@ -14,7 +14,6 @@ import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.springmvc3.dao.IncomeRecordDao;
-import com.yinzhiwu.springmvc3.entity.Tweet;
 import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
 import com.yinzhiwu.springmvc3.entity.income.ShareTweetEvent;
 import com.yinzhiwu.springmvc3.entity.type.IncomeType;
@@ -77,6 +76,7 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 				.getSingleResult();
 	}
 
+	
 	@Override
 	public List<IncomeRecordApiView> getListFaster(int observerId, int eventTypeId, int relationTypeId,
 			int incomeTypeId) {
@@ -137,12 +137,30 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 				));
 		//where
 		Predicate condition = builder.equal(recordJoin.get("benificiary").get("id"), beneficiaryId);
-		if(eventTypeIds !=null && eventTypeIds.length> 0)
-			condition.in(recordJoin.get("incomeEvent").get("type").get("id"), eventTypeIds);
-		if(relationTypeIds !=null && relationTypeIds.length> 0)
-			condition.in(recordJoin.get("con_ben_relation").get("id"), relationTypeIds);
-		if(incomeTypeIds !=null && incomeTypeIds.length> 0)
-			condition.in(recordJoin.get("incomeType").get("id"), incomeTypeIds);
+		if(eventTypeIds !=null && eventTypeIds.length> 0){
+			logger.info(eventTypeIds[0]);
+			List<Integer> types = new ArrayList<>();
+			for (int id : eventTypeIds) {
+				types.add(Integer.valueOf(id));
+			}
+			condition = builder.and(condition,recordJoin.get("incomeEvent").get("type").get("id").in(types));
+		}
+		if(relationTypeIds !=null && relationTypeIds.length> 0){
+			logger.info(relationTypeIds[0]);
+			List<Integer> relations = new ArrayList<>();
+			for (int i : relationTypeIds) {
+				relations.add(Integer.valueOf(i));
+			}
+			condition = builder.and(condition, recordJoin.get("con_ben_relation").get("id").in(relations));
+		}
+		if(incomeTypeIds !=null && incomeTypeIds.length> 0){
+			logger.info(incomeTypeIds[0]);
+			List<Integer> incomes = new ArrayList<>();
+			for (int i : incomeTypeIds) {
+				incomes.add(Integer.valueOf(i));
+			}
+			condition = builder.and(condition, recordJoin.get("incomeType").get("id").in(incomes));
+		}
 		criteria.where(condition);
 		List<ShareTweetIncomeRecordApiView> records = getSession().createQuery(criteria).getResultList();
 		

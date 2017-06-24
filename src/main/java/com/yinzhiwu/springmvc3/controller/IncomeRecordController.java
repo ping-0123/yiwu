@@ -42,8 +42,8 @@ public class IncomeRecordController extends BaseController{
 					+ "10008:用基金支付定金,10009:用佣金支付定金, 10010:产生利息, 10011:提现,"
 					+ "10027:预约, 10030:取消预约, 10028:签到（预约后), 10029:签到（未预约）, -1:全部]", 
 				required =true) int eventTypeId,
-			@ApiParam(value="id of the relation betweet event subject and observer; "
-					+ "10015：本人和本人,10016：本人上一级,10017：本人和上两级, -1 表示全部",
+			@ApiParam(value="事件当事人与观察者(本环境中相当于收益人)的关系 Id; "
+					+ "10015：当事人和本人,10016：当事人上一级,10017：当事人和上两级, -1 表示全部",
 				required=true)int relationTypeId,
 			@ApiParam(value="收益类型Id； 10012:经验收益类型, 10013:基金收益类型, 10014：佣金收益类型 , -1:全部类型",
 					required=true) int incomeTypeId)
@@ -90,8 +90,8 @@ public class IncomeRecordController extends BaseController{
 					+ "10008:用基金支付定金,10009:用佣金支付定金, 10010:产生利息, 10011:提现,"
 					+ "10027:预约, 10030:取消预约, 10028:签到（预约后), 10029:签到（未预约）, -1:全部]", 
 				required =true) int eventTypeId,
-			@ApiParam(value="id of the relation betweet event subject and observer; "
-					+ "10015：本人和本人,10016：本人上一级,10017：本人和上两级, -1 表示全部",
+			@ApiParam(value="事件当事人与观察者(本环境中相当于收益人)的关系 Id; "
+					+ "10015：当事人和本人,10016：当事人上一级,10017：当事人和上两级, -1 表示全部",
 				required=true)int relationTypeId,
 			@ApiParam(value="收益类型Id； 10012:经验收益类型, 10013:基金收益类型, 10014：佣金收益类型 , -1:全部类型",
 					required=true) int incomeTypeId)
@@ -111,15 +111,15 @@ public class IncomeRecordController extends BaseController{
 	@ApiOperation(value="获取分享推文的收益记录列表")
 	public YiwuJson<List<ShareTweetIncomeRecordApiView>> getShareTweetListFaster(
 			@ApiParam(value="id of distributer", required=true)int observerId, 
-			@ApiParam(value="id array of event type" , 
-				allowableValues="[10003： 注册(不带邀请码),10004：注册（带邀请码), 10005:分享推文(前三次), 10006:分享推文(非前三次),10007：购买音之舞产品,"
-							+ "10008:用基金支付定金,10009:用佣金支付定金, 10010:产生利息, 10011:提现,"
-							+ "10027:预约, 10030:取消预约, 10028:签到（预约后), 10029:签到（未预约）,  不输入:表示全部]", 
+			@ApiParam(value="事件类型Id数组;" 
+						+ "[10003： 注册(不带邀请码),10004：注册（带邀请码), 10005:分享推文(前三次), 10006:分享推文(非前三次),10007：购买音之舞产品,"
+						+ "10008:用基金支付定金,10009:用佣金支付定金, 10010:产生利息, 10011:提现,"
+						+ "10027:预约, 10030:取消预约, 10028:签到（预约后), 10029:签到（未预约）,  不输入:表示全部]", 
 				required =true) int[] eventTypeIds,
-			@ApiParam(value="id  array of the relation betweet event subject and observer",
-				allowableValues="10015：本人和本人,10016：本人上一级,10017：本人和上两级, 不输入:表示全部", 
+			@ApiParam(value="关系类型Id数组: Id表示事件当事人和观察者(本接口环境中同收益人)的关系;"
+					+ "10015：当事人和当事人,10016：当事人和他上一级,10017：当事人和上两级, 不输入:表示全部", 
 				required=true)int[] relationTypeIds,
-			@ApiParam(value="收益类型Id array； 10012:经验收益类型, 10013:基金收益类型, 10014：佣金收益类型 , 不输入:全部类型",
+			@ApiParam(value="收益类型Id数组； 10012:经验收益类型, 10013:基金收益类型, 10014：佣金收益类型 , 不输入:全部类型",
 			required=true) int[] incomeTypeIds)
 	{
 		try{

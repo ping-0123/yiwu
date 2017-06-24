@@ -113,8 +113,27 @@ public class LessonController  extends BaseController{
 		lessonService.save(lesson);
 	}
 	
+	@ResponseBody
 	@GetMapping(value="/list")
-	public YiwuJson<List<LessonApiView>> findByCourseId(String courseId){
+	@ApiOperation("根据课程Id(courseId)获取课时列表(lesson list)")
+	public YiwuJson<List<LessonApiView>> findByCourseId(
+			@ApiParam(value="课程Id", required = true) String courseId)
+	{
 		return lessonYzwService.findByCourseId(courseId);
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/listFaster")
+	@ApiOperation("根据课程Id(courseId)获取课时列表(lesson list), 此API查询速度很快")
+	public YiwuJson<List<LessonApiView>> findApiViewByCourseId(
+			@ApiParam(value="课程Id", required = true) String courseId)
+	{
+		try{
+			List<LessonApiView> views = lessonYzwService.findApiViewByCourseId(courseId);
+			return new YiwuJson<>(views);
+		}catch (Exception e) {
+			logger.error(e);
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 }

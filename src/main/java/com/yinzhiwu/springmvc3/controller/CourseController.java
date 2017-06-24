@@ -22,7 +22,7 @@ public class CourseController extends BaseController{
 	private CourseYzwService courseYzwService;
 	
 	@Deprecated
-	@GetMapping("/id{id}")
+	@GetMapping("/id/{id}")
 	public YiwuJson<CourseApiView> findById(@PathVariable String id){
 		return courseYzwService.findById(id);
 	}

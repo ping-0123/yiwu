@@ -3,13 +3,19 @@ package com.yinzhiwu.springmvc3.model.view;
 import java.sql.Time;
 import java.util.Date;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.Session;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 
-public class LessonApiView {
+public class LessonApiView  implements DtoCriteria<LessonYzw>{
 
-	private int id;
+	private Integer id;
 	
 	private String name;
 	
@@ -51,7 +57,7 @@ public class LessonApiView {
 		}
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -129,6 +135,67 @@ public class LessonApiView {
 
 	public void setDanceGrade(String danceGrade) {
 		this.danceGrade = danceGrade;
+	}
+
+
+
+	@Override
+	public CriteriaQuery<LessonApiView> getDtoCriteria(Session session, Class<?> sourceEntityClass) {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<LessonApiView> criteria = builder.createQuery(LessonApiView.class);
+		Root<?> lesson = criteria.from(sourceEntityClass);
+		criteria.select(builder.construct(LessonApiView.class,
+				lesson.get("id"),
+				lesson.get("name"),
+				lesson.get("course").get("id"),
+				lesson.get("course").get("danceDesc"),
+				lesson.get("course").get("danceGrade"),
+				lesson.get("lessonDate"),
+				lesson.get("startTime"),
+				lesson.get("endTime"),
+				lesson.get("storeName"),
+				lesson.get("dueTeacherName")
+				));
+		return criteria;
+	}
+
+	@Override
+	public CriteriaQuery<LessonApiView> getDtoCriteria(Session session) {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<LessonApiView> criteria = builder.createQuery(LessonApiView.class);
+		Root<?> lesson = criteria.from(LessonYzw.class);
+		criteria.select(builder.construct(LessonApiView.class,
+				lesson.get("id"),
+				lesson.get("name"),
+				lesson.get("course").get("id"),
+				lesson.get("course").get("danceDesc"),
+				lesson.get("course").get("danceGrade"),
+				lesson.get("lessonDate"),
+				lesson.get("startTime"),
+				lesson.get("endTime"),
+				lesson.get("storeName"),
+				lesson.get("dueTeacherName")
+				));
+		return criteria;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public LessonApiView(Integer id, String name, String courseId, String danceName, String danceGrade, Date date,
+			Date start, Date end, String storeName, String dueTeacher) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.courseId = courseId;
+		this.danceName = danceName;
+		this.danceGrade = danceGrade;
+		this.date = date;
+		this.start = (Time) start;
+		this.end = (Time) end;
+		this.storeName = storeName;
+		this.dueTeacher = dueTeacher;
 	}
 	
 	

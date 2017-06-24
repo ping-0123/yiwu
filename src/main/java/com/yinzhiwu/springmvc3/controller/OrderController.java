@@ -66,6 +66,8 @@ public class OrderController {
 	
 	@PutMapping("/{id}")
 	public YiwuJson<Boolean> modify(OrderYzw order, @PathVariable String id){
+		if(order.geteContractStatus())
+			order.setCurrentStatus("已确认");
 		try {
 			orderYzwService.modify(id, order);
 		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {

@@ -37,6 +37,12 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		return new YiwuJson<>(views);
 	}
 	
+	
+	@Override
+	public List<LessonApiView> findApiViewByCourseId(String courseId){
+		return lessonDao.findApiViewsByCourseId(courseId);
+	}
+	
 	@Override
 	public LessonYzw getLastNLesson(LessonYzw thisLesson, int lastN){
 		return lessonDao.findLastNLesson(thisLesson, lastN);

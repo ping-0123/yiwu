@@ -14,5 +14,7 @@ public interface LessonYzwService extends IBaseService<LessonYzw, Integer>{
 	LessonYzw getLastNLesson(LessonYzw thisLesson, int lastN);
 
 	Connotation getLastNLessonConnotation(int thisLessonId, int lastN) throws Exception;
+
+	List<LessonApiView> findApiViewByCourseId(String courseId);
 	
 }
