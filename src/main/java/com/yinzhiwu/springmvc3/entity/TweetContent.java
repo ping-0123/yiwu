@@ -22,7 +22,7 @@ public class TweetContent extends BaseEntity {
 
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="content", columnDefinition="Blob")
+	@Column(name="content", columnDefinition="MediumBlob")
 	private byte[] content;
 	
 	@OneToOne(fetch=FetchType.LAZY,
