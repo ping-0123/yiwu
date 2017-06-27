@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jboss.logging.LoggingClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -214,6 +213,7 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 			logger.debug("start test checkin time of lesson" + l.getLessonId() + " " + l.getLessonDesc());
 			logger.debug("the time of coach check in :" + checkedInTime);
 			Calendar end = Calendar.getInstance();
+			end.setTime(l.getLessonDate());
 			Calendar endTime = Calendar.getInstance();
 			endTime.setTime(l.getEndTime());
 			end.set(end.get(Calendar.YEAR), 
