@@ -47,7 +47,12 @@ public class TweetController extends BaseController {
 			return new YiwuJson<>(e.getMessage());
 		}
 		m.setCoverIconUrl(UrlUtil.toTweetCoverIconUrl(file.getName()));
-		tweetService.save(m);
+		try{
+			tweetService.save(m);
+		}catch (Exception e) {
+			return new YiwuJson<>("富文本内容请控制在16M内");
+		}
+		
 		return new YiwuJson<>(new Boolean(true));
 	}
 	
