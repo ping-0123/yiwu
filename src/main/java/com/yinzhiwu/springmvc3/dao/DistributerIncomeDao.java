@@ -14,6 +14,13 @@ public interface DistributerIncomeDao extends IBaseDao<DistributerIncome, Intege
 
 	Float findCurrentValue(Integer distributerId, Integer incomeTypeId);
 
-	List<DistributerIncome>  getTopN(IncomeType type, int topN);
+	/**
+	 * 
+	 * @param incomeTypeId incomeTypeId in(10012, 10013,10014) 10012 represents exp income type, 10013 represents funds income type, 
+	 * 10014 represents brokerage income type
+	 * @param topN  topN>0
+	 * @return
+	 */
+	List<DistributerIncome> getTopN(int incomeTypeId, int topN);
 	
 }

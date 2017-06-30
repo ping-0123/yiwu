@@ -42,7 +42,11 @@ public class CheckInsController extends BaseController{
 	public YiwuJson<List<LessonApiView>> findByCustomerId(
 			@ApiParam(value="id of the customer", required =true) int customerId)
 	{
-		return checkInsYzwService.findByCustomerId(customerId);
+		try{
+			return checkInsYzwService.findByCustomerId(customerId);
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 	
 	@PostMapping

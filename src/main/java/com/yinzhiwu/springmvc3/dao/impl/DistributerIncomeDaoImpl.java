@@ -2,6 +2,7 @@ package com.yinzhiwu.springmvc3.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -51,16 +52,15 @@ public class DistributerIncomeDaoImpl extends BaseDaoImpl<DistributerIncome, Int
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<DistributerIncome> getTopN(IncomeType type, int topN) {
-		Assert.notNull(type);
-		Assert.isTrue(topN>0);
+	public List<DistributerIncome> getTopN(int incomeTypeId, int topN) {
+		if(topN < 0) throw new IllegalIdentifierException("topN should be positive number");
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("FROM DistributerIncome t1");
 		builder.append(" WHERE t1.incomeType.id=:incomeTypeId" );
 		builder.append(" ORDER BY t1.accumulativeIncome DESC");
 		getHibernateTemplate().setMaxResults(topN);
-		return (List<DistributerIncome>) getHibernateTemplate().findByNamedParam(builder.toString(), "incomeTypeId", type.getId());
+		return (List<DistributerIncome>) getHibernateTemplate().findByNamedParam(builder.toString(), "incomeTypeId", incomeTypeId);
 	}
 
 }

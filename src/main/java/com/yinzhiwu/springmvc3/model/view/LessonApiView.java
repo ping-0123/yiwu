@@ -7,6 +7,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -14,6 +16,8 @@ import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 
 public class LessonApiView  implements DtoCriteria<LessonYzw>{
+	
+	private static final Log logger = LogFactory.getLog(LessonApiView.class);
 
 	private Integer id;
 	
@@ -49,11 +53,13 @@ public class LessonApiView  implements DtoCriteria<LessonYzw>{
 		this.end = l.getEndTime();
 		this.storeName = l.getStoreName();
 		this.dueTeacher =l.getDueTeacherName();
-		CourseYzw course = l.getCourse();
-		if(course != null){
+		try{
+			CourseYzw course = l.getCourse();
 			this.courseId = course.getId();
 			this.danceName = course.getName();
 			this.danceGrade = course.getDanceGrade();
+		}catch (Exception e) {
+			logger.error(e.getMessage());
 		}
 	}
 	

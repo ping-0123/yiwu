@@ -6,6 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.yinzhiwu.springmvc3.model.Product;
 import com.yinzhiwu.springmvc3.validator.ProductValidator;
@@ -15,13 +16,13 @@ import com.yinzhiwu.springmvc3.validator.ProductValidator;
 public class ProductController  extends BaseController{
 
 	
-	@RequestMapping(value = "/add")
+	@RequestMapping(value = "/add", method={org.springframework.web.bind.annotation.RequestMethod.GET, org.springframework.web.bind.annotation.RequestMethod.POST})
 	public String inputProduct(Model model) {
 		model.addAttribute("product", new Product());
 		return "product_form";
 	} 
 	
-	@RequestMapping(value = "/save")
+	@RequestMapping(value = "/save", method={RequestMethod.POST})
 	public String saveProduct(@ModelAttribute Product product, BindingResult bindingResult, Model model) {
 		
 		ProductValidator productValidator = new ProductValidator();

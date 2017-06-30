@@ -1,8 +1,11 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.procedure.internal.Util.ResultClassesResolutionContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -36,6 +39,8 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<LessonYzw> findByContractNos(List<String> contractNos) {
+		if(contractNos==null || contractNos.size()==0)
+			return new ArrayList<>();
 		String hql = "SELECT t1.lesson FROM CheckInsYzw t1 WHERE t1.contractNo in :contractNos";
 		return (List<LessonYzw>) getHibernateTemplate().findByNamedParam(hql, "contractNos", contractNos);
 	}

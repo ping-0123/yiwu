@@ -48,13 +48,15 @@ public class RegisterEvent extends IncomeEvent {
 
 	@Override
 	public Message generateMessage(IncomeRecord incomeRecord) {
-		Assert.notNull(incomeRecord);
-		Assert.notNull(incomeRecord.getBenificiary());
-		if(!this.getDistributer().equals(incomeRecord.getBenificiary()) || incomeRecord.getIncomeType() != IncomeType.EXP)
-			return null;
-		String msg = MessageTemplate.generate_register_message();
-		if(StringUtils.hasLength(msg))
-			return new Message(incomeRecord.getBenificiary(), msg);
+		assert(incomeRecord != null);
+		assert(incomeRecord.getBenificiary() != null);
+		
+		if(IncomeType.EXP.equals(incomeRecord.getIncomeType()) 
+				&& incomeRecord.getBenificiary().equals(this.getDistributer())){
+			String msg = MessageTemplate.generate_register_message();
+			if(StringUtils.hasLength(msg))
+				return new Message(incomeRecord.getBenificiary(), msg);
+		}
 		return null;
 	}
 

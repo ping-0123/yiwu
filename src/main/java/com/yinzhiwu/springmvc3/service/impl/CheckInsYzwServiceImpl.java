@@ -51,6 +51,8 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 	@Override
 	public YiwuJson<List<LessonApiView>> findByCustomerId(int customerId) {
 		List<String> contractNos = orderDao.find_contractNos_by_customer_id(customerId);
+		if(contractNos.size() ==0)
+			return new YiwuJson<>("客户"+ customerId + "尚未购买任何音之舞产品");
 		List<LessonYzw> lessons = checkInsYzwDao.findByContractNos(contractNos);
 		if(lessons == null || lessons.size() == 0)
 			return new YiwuJson<>("没有上课记录");
