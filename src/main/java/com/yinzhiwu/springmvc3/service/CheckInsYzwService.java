@@ -3,7 +3,6 @@ package com.yinzhiwu.springmvc3.service;
 import java.util.List;
 
 import com.yinzhiwu.springmvc3.entity.yzw.CheckInsYzw;
-import com.yinzhiwu.springmvc3.model.PageModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.page.PageBean;
 import com.yinzhiwu.springmvc3.model.view.CheckInSuccessApiView;
@@ -18,8 +17,6 @@ public interface CheckInsYzwService extends IBaseService<CheckInsYzw, Integer> {
 
 
 	CheckInSuccessApiView saveCustomerCheckIn(int distributerId, int lessonId) throws Exception;
-
-	YiwuJson<List<LessonApiView>> findByCustomerId(int customerId, PageModel pageModel);
 
 
 	PageBean<LessonApiView> findPageViewByCustomer(int customerId, int pageNo, int pageSize) throws Exception;
