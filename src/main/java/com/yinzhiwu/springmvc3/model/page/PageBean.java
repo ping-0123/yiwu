@@ -2,11 +2,15 @@ package com.yinzhiwu.springmvc3.model.page;
 
 import java.util.List;
 
-import org.springframework.util.Assert;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class PageBean<T> {
 	
-	public static   int  DEFAULT_PAGE_SIZE = 10;
+//	public static final Class<?> beanClazz = 
+//			(Class<?>) ((ParameterizedType) PageBean.class.getGenericSuperclass()).getActualTypeArguments()[0];
+	
+	
+	public static final  int  DEFAULT_PAGE_SIZE = 10;
 	
 	private int pageSize;  //每页显示多少条记录
 	
@@ -16,32 +20,48 @@ public class PageBean<T> {
 	
 	private int totalPage;
 	
-	private List<T> datas;
+	private List<T> data;
 	
 	public PageBean(){
 	}
 
-	public PageBean(int pageSize, int pageNum, List<T> sourceList){
+	public PageBean(int pageSize, int pageNo, List<T> sourceList){
+		if(sourceList==null || sourceList.size()==0) return;
+		if(pageSize <=0) throw new IllegalArgumentException(
+				"pageSize should be positive.");
+		if(pageNo <=0) throw new IllegalArgumentException(
+				"pageNum should be positive.");
+		
 		this.pageSize = pageSize;
 		this.totalRecord = sourceList.size();
 		this.totalPage = this.totalRecord/this.pageSize;
 		if(this.totalRecord % this.pageSize !=0)
 			this.totalPage = this.totalPage + 1;
-		this.currentPage=this.totalPage<pageNum?this.totalPage:pageNum;
-		int fromIndex = this.pageSize * (pageNum -1);
-		int toIndex = pageSize*pageNum> totalRecord? totalRecord:pageSize*pageNum;
-		this.datas = sourceList.subList(fromIndex, toIndex);
+		this.currentPage=this.totalPage<pageNo?this.totalPage:pageNo;
+		int fromIndex = this.pageSize * (pageNo -1);
+		int toIndex = pageSize*pageNo> totalRecord? totalRecord:pageSize*pageNo;
+		this.data = sourceList.subList(fromIndex, toIndex);
 	}
 	
-	public PageBean(int pageSize, int currentPage, int totalRecord,  List<T> datas) {
-		Assert.isTrue(datas.size()<=pageSize);
+	public PageBean(int pageSize, int pageNo, int totalRecord,  List<T> datas) {
+		if(datas==null || datas.size()==0) return;
+		if(datas.size() > pageSize) throw new IllegalArgumentException(
+				"the size of datas should be less than ot equal to pageSize. ");
+		if(pageSize <=0) throw new IllegalArgumentException(
+				"pageSize should be positive.");
+		if(pageNo <=0) throw new IllegalArgumentException(
+				"pageNum should be positive.");
+		if(totalRecord <=0) throw new IllegalArgumentException(
+				"totalRecord should be positive.");
+		
+		
 		this.pageSize = pageSize;
-		this.currentPage = currentPage;
+		this.currentPage = pageNo;
 		this.totalRecord = totalRecord;
 		this.totalPage = this.totalRecord/this.pageSize;
 		if(this.totalRecord % this.pageSize !=0)
 			this.totalPage = this.totalPage + 1;
-		this.datas = datas;
+		this.data = datas;
 	}
 	
 	public int getPageSize() {
@@ -60,8 +80,9 @@ public class PageBean<T> {
 		return totalPage;
 	}
 
+	@JsonIgnore
 	public List<T> getList() {
-		return datas;
+		return data;
 	}
 
 	public void setPageSize(int pageSize) {
@@ -81,7 +102,17 @@ public class PageBean<T> {
 	}
 
 	public void setList(List<T> list) {
-		this.datas = list;
+		this.data = list;
+	}
+
+
+	public List<T> getData() {
+		return data;
+	}
+
+
+	public void setData(List<T> data) {
+		this.data = data;
 	}
 
 	

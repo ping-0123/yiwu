@@ -56,7 +56,7 @@ public class LessonApiView  implements DtoCriteria<LessonYzw>{
 		try{
 			CourseYzw course = l.getCourse();
 			this.courseId = course.getId();
-			this.danceName = course.getName();
+			this.danceName = course.getDanceDesc();
 			this.danceGrade = course.getDanceGrade();
 		}catch (Exception e) {
 			logger.error(e.getMessage());

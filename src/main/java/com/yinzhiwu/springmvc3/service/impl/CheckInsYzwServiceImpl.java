@@ -21,7 +21,9 @@ import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
+import com.yinzhiwu.springmvc3.model.PageModel;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.page.PageBean;
 import com.yinzhiwu.springmvc3.model.view.CheckInSuccessApiView;
 import com.yinzhiwu.springmvc3.model.view.LessonApiView;
 import com.yinzhiwu.springmvc3.service.CheckInsYzwService;
@@ -63,6 +65,27 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		return new YiwuJson<>(views);
 	}
 
+	@Override
+	public PageBean<LessonApiView> findPageViewByCustomer(int customerId, int pageNo, int pageSize) throws Exception {
+		List<String> contractNos = orderDao.find_contractNos_by_customer_id(customerId);
+		if(contractNos.size() ==0)
+			throw  new Exception("客户"+ customerId + "尚未购买任何音之舞产品");
+		return checkInsYzwDao.findPageByContractNos(contractNos,pageNo, pageSize);
+	}
+	
+	@Override
+	public YiwuJson<List<LessonApiView>> findByCustomerId(int customerId, PageModel pageModel) {
+		List<String> contractNos = orderDao.find_contractNos_by_customer_id(customerId);
+		if(contractNos.size() ==0)
+			return new YiwuJson<>("客户"+ customerId + "尚未购买任何音之舞产品");
+		List<LessonYzw> lessons = checkInsYzwDao.findByContractNos(contractNos);
+		if(lessons == null || lessons.size()==0) return new YiwuJson<>("没有上课记录");
+		List<LessonApiView> views = new ArrayList<>();
+		for (LessonYzw l : lessons) {
+			views.add(new LessonApiView(l));
+		}
+		return new YiwuJson<>(views);
+	}
 	
 	@Override
 	public CheckInSuccessApiView saveCustomerCheckIn(int distributerId, int lessonId) throws Exception {
@@ -100,7 +123,8 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		OrderYzw order = orderDao.findByContractNO(checkIn.getContractNo());
 		return new CheckInSuccessApiView(checkIn.getEvent(), order.getContract());
 	}
-	
+
+
 	
 	
 	
