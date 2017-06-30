@@ -265,7 +265,8 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	}
 	@Override
 	public List<TopThreeApiView> getBrokerageTopThree() {
-		List<DistributerIncome> distributerIncomes =  distributerIncomeDao.getTopN(IncomeType.BROKERAGE, 3);
+		List<DistributerIncome> distributerIncomes =  distributerIncomeDao.getTopN(IncomeType.BROKERAGE.getId(), 3);
+		logger.debug(distributerIncomes==null?0:distributerIncomes.size());
 		List<TopThreeApiView> views = new ArrayList<>();
 		for (DistributerIncome income : distributerIncomes) {
 			TopThreeApiView v = new TopThreeApiView();
@@ -277,10 +278,10 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				v.setSumMemberCount(distributerDao.findCountByProperty("superDistributer.id", income.getDistributer().getId()));
 				v.setSumOrderCount(orderDao.findCountByProperty("customer.id", income.getDistributer().getCustomer().getId()));
 				v.setHeadIconUrl(UrlUtil.toHeadIcomUrl(income.getDistributer().getHeadIconName()));
-				views.add(v);
 			}catch (Exception e) {
 				logger.error(e);
 			}
+			views.add(v);
 		}
 		return views;
 	}

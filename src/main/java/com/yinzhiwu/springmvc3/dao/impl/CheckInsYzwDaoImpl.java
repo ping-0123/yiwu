@@ -1,7 +1,14 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -10,6 +17,8 @@ import com.yinzhiwu.springmvc3.dao.CheckInsYzwDao;
 import com.yinzhiwu.springmvc3.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
+import com.yinzhiwu.springmvc3.model.page.PageBean;
+import com.yinzhiwu.springmvc3.model.view.LessonApiView;
 
 @Repository
 public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implements CheckInsYzwDao {
@@ -36,8 +45,53 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<LessonYzw> findByContractNos(List<String> contractNos) {
+		if(contractNos==null || contractNos.size()==0)
+			return new ArrayList<>();
 		String hql = "SELECT t1.lesson FROM CheckInsYzw t1 WHERE t1.contractNo in :contractNos";
 		return (List<LessonYzw>) getHibernateTemplate().findByNamedParam(hql, "contractNos", contractNos);
+	}
+	
+	@Override
+	public PageBean<LessonApiView> findPageByContractNos(List<String> contractNos, int pageNo,int pageSize ) {
+		if(contractNos==null || contractNos.size()==0) return null;
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<LessonApiView> criteria = builder.createQuery(LessonApiView.class);
+		Root<?> checkIn = criteria.from(CheckInsYzw.class);
+		Path<LessonYzw> lesson = checkIn.get("lesson");
+		criteria.select(builder.construct(LessonApiView.class,
+				lesson.get("id"),
+				lesson.get("name"),
+				lesson.get("course").get("id"),
+				lesson.get("course").get("danceDesc"),
+				lesson.get("course").get("danceGrade"),
+				lesson.get("lessonDate"),
+				lesson.get("startTime"),
+				lesson.get("endTime"),
+				lesson.get("storeName"),
+				lesson.get("dueTeacherName")
+				));
+		javax.persistence.criteria.Predicate condition = checkIn.get("contractNo").in(contractNos);
+		criteria.where(condition);
+		criteria.orderBy(builder.desc(lesson.get("lessonDate")), builder.desc(lesson.get("startTime")));
+		
+		//找出记录总数量
+		CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
+		Root<CheckInsYzw> countRoot = countCriteria.from(CheckInsYzw.class);
+		countCriteria.select( builder.count(countRoot));
+		Predicate countPredicate = countRoot.get("contractNo").in(contractNos);
+		countCriteria.where(countPredicate);
+		Long totalCount = getSession().createQuery(countCriteria).getSingleResult();
+		
+		return findPageByCriteria(criteria, pageNo, pageSize, totalCount.intValue());
+//		String hql = "FROM CheckInsYzw t1 WHERE t1.contractNo in :contractNos order by t1.createTime desc";
+//		PageBean<CheckInsYzw> page = findPageByHql(
+//				hql, pageNo, pageSize, new String[]{"contractNos"}, new Object[]{contractNos});
+//		List<LessonYzw> lessons  = new ArrayList<>();
+//		if(page.getData() ==null || page.getData().size() ==0) return null; 
+//		for (CheckInsYzw checkIns : page.getData()) {
+//			lessons.add(checkIns.getLesson());
+//		}
+//		return new PageBean<>(page.getPageSize(), page.getCurrentPage(), page.getTotalRecord(), lessons);
 	}
 
 	@Override
@@ -59,5 +113,7 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 			return true;
 		return false;
 	}
+
+	
 
 }

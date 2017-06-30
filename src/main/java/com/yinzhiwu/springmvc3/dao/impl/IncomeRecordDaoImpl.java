@@ -138,7 +138,7 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 		//where
 		Predicate condition = builder.equal(recordJoin.get("benificiary").get("id"), beneficiaryId);
 		if(eventTypeIds !=null && eventTypeIds.length> 0){
-			logger.info(eventTypeIds[0]);
+			logger.debug(eventTypeIds[0]);
 			List<Integer> types = new ArrayList<>();
 			for (int id : eventTypeIds) {
 				types.add(Integer.valueOf(id));
@@ -146,7 +146,7 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 			condition = builder.and(condition,recordJoin.get("incomeEvent").get("type").get("id").in(types));
 		}
 		if(relationTypeIds !=null && relationTypeIds.length> 0){
-			logger.info(relationTypeIds[0]);
+			logger.debug(relationTypeIds[0]);
 			List<Integer> relations = new ArrayList<>();
 			for (int i : relationTypeIds) {
 				relations.add(Integer.valueOf(i));
@@ -154,7 +154,7 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 			condition = builder.and(condition, recordJoin.get("con_ben_relation").get("id").in(relations));
 		}
 		if(incomeTypeIds !=null && incomeTypeIds.length> 0){
-			logger.info(incomeTypeIds[0]);
+			logger.debug(incomeTypeIds[0]);
 			List<Integer> incomes = new ArrayList<>();
 			for (int i : incomeTypeIds) {
 				incomes.add(Integer.valueOf(i));

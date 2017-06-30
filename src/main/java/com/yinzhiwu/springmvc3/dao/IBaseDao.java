@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.criteria.CriteriaQuery;
+
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.page.PageBean;
 
@@ -50,6 +52,8 @@ public interface IBaseDao<T ,PK extends Serializable> {
 
 
 		PageBean<T> findPageByHql(String hql, int pageNum, int pageSize);
+
+		<R> PageBean<R> findPageByCriteria(CriteriaQuery<R> criteria, int pageNo, int pageSize, int totalSize);
 		
 		
 

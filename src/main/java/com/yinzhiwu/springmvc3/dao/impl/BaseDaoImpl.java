@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaQuery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -259,31 +260,77 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		return count.get(0).intValue();
 	}
 
-	
+	@Override
+	public <R> PageBean<R> findPageByCriteria(CriteriaQuery<R> criteria, int pageNo, int pageSize, int totalSize){
+		if(pageNo<=0) pageNo = 1;
+		if(pageSize<=0) pageSize = PageBean.DEFAULT_PAGE_SIZE;
+		Query<R> query = getSession().createQuery(criteria);
+		query.setFirstResult(((pageNo-1) * pageSize));
+		query.setMaxResults(pageSize);
+		List<R> list = query.getResultList();
+		
+		return new PageBean<>(pageSize, pageNo,totalSize,list);
+	}
 
 	
 	@Override
-	public PageBean<T> findPageByHql(String hql, int pageNum, int pageSize){
+	public PageBean<T> findPageByHql(String hql, int pageNo, int pageSize){
 		Assert.hasLength(hql);
-		if(pageNum <=0)
-			pageNum =1;
+		if(pageNo <=0)
+			pageNo =1;
 		if(pageSize<=0)
 			pageSize = PageBean.DEFAULT_PAGE_SIZE;
 		
 		int totalRecords =  findCountByHql(_get_count_hql(hql));
 		if(totalRecords ==0)
-			return new PageBean<>(pageSize, pageNum, totalRecords, new ArrayList<>());
+			return new PageBean<>(pageSize, pageNo, totalRecords, new ArrayList<>());
 		
-		Query<?> query = getSession().createQuery(hql);
-		query.setFirstResult((pageNum-1) * pageSize);
+		Query<T> query = getSession().createQuery(hql,entityClass);
+		query.setFirstResult((pageNo-1) * pageSize);
 		query.setMaxResults(pageSize);
-		@SuppressWarnings({ "unchecked", "deprecation" })
-		List<T> list =(List<T>) query.list();
+		List<T> list =(List<T>) query.getResultList();
 		
-		return new PageBean<>(pageSize, pageNum, totalRecords,list);
+		return new PageBean<>(pageSize, pageNo, totalRecords,list);
 	}
 	
+	
+	public PageBean<T> findPageByHql(String hql, int pageNo, int pageSize, String[] namedParams, Object[] values){
+		Assert.hasLength(hql, "hql is not correct.");
 		
+		if(pageNo<=0) pageNo = 1;
+		if(pageSize<=0) pageSize = PageBean.DEFAULT_PAGE_SIZE;
+		int totalRecords =  findCountByHql(_get_count_hql(hql), namedParams, values);
+		if(totalRecords ==0)
+			return new PageBean<>(pageSize, pageNo, totalRecords, new ArrayList<>());
+		
+		Query<T> query =getSession().createQuery(hql, entityClass );
+		query.setFirstResult((pageNo-1) * pageSize);
+		query.setMaxResults(pageSize);
+		if(namedParams != null && namedParams.length>0){
+			if(namedParams.length != values.length)
+				throw new IllegalArgumentException("the size of namedparams should equal to the size of values");
+			for (int i=0; i<namedParams.length; i++) {
+				query.setParameter(namedParams[i], values[i]);
+			}
+		}
+		List<T> list = query.getResultList();
+		return new PageBean<>(pageSize, pageNo, totalRecords, list);
+	}
+		
+
+	private int findCountByHql(String hql, String[] namedParams, Object[] values) {
+		Query<Integer>  query = getSession().createQuery(hql, Integer.class);
+		if(namedParams != null && namedParams.length>0){
+			if(namedParams.length != values.length)
+				throw new IllegalArgumentException("the size of namedparams should equal to the size of values");
+			for (int i=0; i<namedParams.length; i++) {
+				query.setParameter(namedParams[i], values[i]);
+			}
+		}
+		return query.getSingleResult();
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public int findCountByHql(String hql){
 		try{
@@ -297,7 +344,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 	
 	private String _get_count_hql(String hql){
 		int i = hql.toUpperCase().indexOf("FROM");
-		return "select count(*) " + hql.substring(i);
+		return "SELECT COUNT(*) " + hql.substring(i);
 	}
 	
 	@SuppressWarnings("unused")

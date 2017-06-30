@@ -42,29 +42,14 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 	
 	public static Log logger = LogFactory.getLog(LessonServiceImplTwo.class);
 	
-	@Autowired
-	private LessonDao lessonDao;
-	
-	@Autowired
-	private ClassRoomDao roomDao;
-	
-	@Autowired
-	private AppointmentDao appointedDao;
-	
-	@Autowired
-	private CourseDao courseDao;
-	
-	@Autowired
-	private OrderDao orderDao;
-	
-	@Autowired
-	private CheckInsDao checkInsDao;
-	
-	@Autowired
-	private StoreManCallRollDao scrDao;
-	
-	@Autowired
-	private TeacherCallRollDao tcrDao;
+	@Autowired private LessonDao lessonDao;
+	@Autowired private ClassRoomDao roomDao;
+	@Autowired private AppointmentDao appointedDao;
+	@Autowired private CourseDao courseDao;
+	@Autowired private OrderDao orderDao;
+	@Autowired private CheckInsDao checkInsDao;
+	@Autowired private StoreManCallRollDao scrDao;
+	@Autowired private TeacherCallRollDao tcrDao;
 	
 	@Autowired
 	@Qualifier("customerDaoImpl")
@@ -157,6 +142,9 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 	}
 
 	private LessonOldApiView _wrap_to_api_view(Customer c, Lesson l) {
+        logger.debug("start wrap lesson + " + l.getLessonDesc());
+		
+		
 		LessonOldApiView view = new LessonOldApiView(l);
 		//添加最大预约人数
 		if(null != l.getClassRoomId() && "" != l.getClassRoomId()){
@@ -222,8 +210,22 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 					new String[]{"lessonId","teacherId"}, 
 					new Object[]{l.getLessonId().toString(), l.getActualTeacherId()})
 				.get(0).getCreateTime();
+			logger.debug("start test checkin time of lesson" + l.getLessonId() + " " + l.getLessonDesc());
+			logger.debug("the time of coach check in :" + checkedInTime);
 			Calendar end = Calendar.getInstance();
-			end.setTimeInMillis(l.getLessonDate().getTime()  + l.getEndTime().getTime());
+			end.setTime(l.getLessonDate());
+			Calendar endTime = Calendar.getInstance();
+			endTime.setTime(l.getEndTime());
+			end.set(end.get(Calendar.YEAR), 
+					end.get(Calendar.MONTH),
+					end.get(Calendar.DAY_OF_MONTH), 
+					endTime.get(Calendar.HOUR_OF_DAY), 
+					endTime.get(Calendar.MINUTE),
+					endTime.get(Calendar.SECOND));
+//			end.setTimeInMillis(l.getLessonDate().getTime()  + l.getEndTime().getTime());
+			logger.debug("lesson date is: " + l.getLessonDate());
+			logger.debug("lesson end time is " + l.getEndTime());
+			logger.debug("The end Time of lesson:" + end.getTime());
 			//如果刷卡时间比课程结束时间大 则是补刷
 			if(checkedInTime.compareTo(end.getTime()) >=0){
 				view.setCheckedInStatus(CheckedInStatus.PATCHED);

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.springmvc3.model.YiwuJson;
+import com.yinzhiwu.springmvc3.model.page.PageBean;
 import com.yinzhiwu.springmvc3.model.view.CheckInSuccessApiView;
 import com.yinzhiwu.springmvc3.model.view.LessonApiView;
 import com.yinzhiwu.springmvc3.service.CheckInsYzwService;
@@ -42,7 +43,26 @@ public class CheckInsController extends BaseController{
 	public YiwuJson<List<LessonApiView>> findByCustomerId(
 			@ApiParam(value="id of the customer", required =true) int customerId)
 	{
-		return checkInsYzwService.findByCustomerId(customerId);
+		try{
+			return checkInsYzwService.findByCustomerId(customerId);
+		}catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
+	}
+	
+	@GetMapping("/lesson/pageList")
+	@ApiOperation(value="分页获取学员已上课课程列表")
+	public YiwuJson<PageBean<LessonApiView>> findPage(
+			@ApiParam(value="id of the customer", required =true) int customerId, 
+			@ApiParam(value="pageNo should be positive", required=true) int pageNo,
+			@ApiParam(value="pageSize should be positive", required=true) int pageSize){
+		try {
+			PageBean<LessonApiView> page = checkInsYzwService.findPageViewByCustomer(customerId,pageNo, pageSize);
+			return new YiwuJson<>(page);
+		} catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
+			
 	}
 	
 	@PostMapping
