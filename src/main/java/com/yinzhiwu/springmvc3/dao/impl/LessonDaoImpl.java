@@ -59,12 +59,13 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer>
 	@SuppressWarnings("unchecked")
 	@Override
 	public int findOrderInCourse(Lesson l) {
-		Assert.notNull(l);
+		Assert.notNull(l, "lesson 不能为空");
+		
 		logger.debug(l.getLessonId().toString() + "开始时间: " +  l.getStartDateTime());
-		String hql = "SELECT COUNT(*) from Lesson WHERE startDateTime <= :startDateTime and courseid = :courseId";
+		String hql = "SELECT COUNT(*) from Lesson WHERE lessonDate <= :lessonDate and courseid = :courseId";
 		List<Long> longs = (List<Long>) getHibernateTemplate().findByNamedParam(hql,
-				new String[]{"startDateTime", "courseId"}, 
-				new Object[]{l.getStartDateTime(), l.getCourseid()}) ;
+				new String[]{"lessonDate", "courseId"}, 
+				new Object[]{l.getLessonDate(), l.getCourseid()}) ;
 		return longs.get(0).intValue();
 	}
 
