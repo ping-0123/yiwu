@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -15,6 +17,7 @@ import org.springframework.util.Assert;
 
 import com.yinzhiwu.springmvc3.dao.CheckInsYzwDao;
 import com.yinzhiwu.springmvc3.entity.yzw.CheckInsYzw;
+import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 import com.yinzhiwu.springmvc3.model.page.PageBean;
@@ -57,22 +60,24 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<LessonApiView> criteria = builder.createQuery(LessonApiView.class);
 		Root<?> checkIn = criteria.from(CheckInsYzw.class);
-		Path<LessonYzw> lesson = checkIn.get("lesson");
+		Join<CheckInsYzw,LessonYzw> lessonJoin = checkIn.join("lesson", JoinType.LEFT);
+		Join<LessonYzw,CourseYzw> courseJoin = lessonJoin.join("course", JoinType.LEFT);
+//		Path<LessonYzw> lesson = checkIn.get("lesson");
 		criteria.select(builder.construct(LessonApiView.class,
-				lesson.get("id"),
-				lesson.get("name"),
-				lesson.get("course").get("id"),
-				lesson.get("course").get("danceDesc"),
-				lesson.get("course").get("danceGrade"),
-				lesson.get("lessonDate"),
-				lesson.get("startTime"),
-				lesson.get("endTime"),
-				lesson.get("storeName"),
-				lesson.get("dueTeacherName")
+				lessonJoin.get("id"),
+				lessonJoin.get("name"),
+				courseJoin.get("id"),
+				courseJoin.get("danceDesc"),
+				courseJoin.get("danceGrade"),
+				lessonJoin.get("lessonDate"),
+				lessonJoin.get("startTime"),
+				lessonJoin.get("endTime"),
+				lessonJoin.get("storeName"),
+				lessonJoin.get("dueTeacherName")
 				));
 		javax.persistence.criteria.Predicate condition = checkIn.get("contractNo").in(contractNos);
 		criteria.where(condition);
-		criteria.orderBy(builder.desc(lesson.get("lessonDate")), builder.desc(lesson.get("startTime")));
+		criteria.orderBy(builder.desc(lessonJoin.get("lessonDate")), builder.desc(lessonJoin.get("startTime")));
 		
 		//找出记录总数量
 		CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
