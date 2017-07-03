@@ -23,7 +23,7 @@ public class LessonOldApiView {
 	
 	private String courseid;
 	
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
 	private Date lessonDate;
 	
 	private int week;

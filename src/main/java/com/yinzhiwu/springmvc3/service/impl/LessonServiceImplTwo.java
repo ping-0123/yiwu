@@ -77,8 +77,10 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 		Calendar ca = Calendar.getInstance();
 		ca.setTime(start);
 		for(int i = 2; i<=8; i++){
+			logger.debug("日期：" + ca.getTime());
+			logger.debug("星期: " + (i<=7?i:i/7));
 			list.add( new LessonList(
-						new java.sql.Date(ca.getTimeInMillis()),
+						ca.getTime(),
 						i<=7?i:i/7, 
 						new ArrayList<>()));
 			ca.add(Calendar.DAY_OF_MONTH, 1);
@@ -110,14 +112,14 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer>  impl
 			logger.debug(e.getStackTrace());
 		}
 		
-		//获取周日到周六所对应的日期
+		//获取周一到周日所对应的日期
 		Calendar ca = Calendar.getInstance();
 		ca.setTime(date);
 		int weekday = ca.get(Calendar.DAY_OF_WEEK);
 		if(weekday>=Calendar.MONDAY)
 			ca.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY-weekday);
 		else
-			ca.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY-weekday-7);
+			ca.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY-weekday-Calendar.DAY_OF_WEEK);
 		Date startDate = ca.getTime();
 		ca.add(Calendar.DAY_OF_WEEK, 6);
 		Date endDate = ca.getTime();

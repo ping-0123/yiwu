@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,10 +18,26 @@ public class CalendarTest {
 	private static DateFormat DATE_FOMATE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	@Test
+	public void testTimeZone(){
+		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		calendar.set(2017, 6, 30, 12, 00);
+		System.out.println(calendar.getTimeZone());
+		System.out.println(calendar.getTime());
+		System.out.println(calendar.getTimeInMillis());
+		
+		System.err.println();
+		Calendar calendar2 = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
+		System.out.println(calendar2.getTimeZone());
+		System.out.println(calendar2.getTime());
+		System.out.println(calendar2.getTimeInMillis());
+	}
+	
+	@Test
 	public void test(){
 		System.out.println("aa\nbb\n");
 	}
 
+	
 	
 	@Test
 	public void testDate(){

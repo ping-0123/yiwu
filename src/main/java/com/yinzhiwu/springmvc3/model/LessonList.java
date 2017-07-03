@@ -1,35 +1,53 @@
 package com.yinzhiwu.springmvc3.model;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class LessonList {
 	
+
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date date;
+	
 	private int weekday;
+	
 	private List<LessonOldApiView> list;
 	
-	public final Date getDate() {
-		return date;
-	}
-	public final void setDate(Date date) {
+	
+	public LessonList(Date date, int weekday, List<LessonOldApiView> list) {
 		this.date = date;
-	}
-	public final int getWeekday() {
-		return weekday;
-	}
-	public final void setWeekday(int weekday) {
 		this.weekday = weekday;
-	}
-	public final List<LessonOldApiView> getList() {
-		return list;
-	}
-	public final void setList(List<LessonOldApiView> list) {
 		this.list = list;
 	}
-	public LessonList(java.sql.Date date, int weekday, List<LessonOldApiView> list) {
+
+	public Date getDate() {
+		return date;
+	}
+
+
+	public int getWeekday() {
+		return weekday;
+	}
+
+
+	public List<LessonOldApiView> getList() {
+		return list;
+	}
+
+
+	public void setDate(Date date) {
 		this.date = date;
+	}
+
+
+	public void setWeekday(int weekday) {
 		this.weekday = weekday;
+	}
+
+
+	public void setList(List<LessonOldApiView> list) {
 		this.list = list;
 	}
 
