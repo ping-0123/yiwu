@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.persistence.criteria.CriteriaQuery;
 
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.exception.YiwuException;
 import com.yinzhiwu.springmvc3.model.page.PageBean;
 
 public interface IBaseDao<T ,PK extends Serializable> {
@@ -54,6 +55,33 @@ public interface IBaseDao<T ,PK extends Serializable> {
 		PageBean<T> findPageByHql(String hql, int pageNum, int pageSize);
 
 		<R> PageBean<R> findPageByCriteria(CriteriaQuery<R> criteria, int pageNo, int pageSize, int totalSize);
+
+		/**
+		 * 修改source的属性修改为target对应的属性值， 如果 target对应的属性值为null， 则source对应的属性
+		 * 保持不变.
+		 * 此函数要求 T 所有的属性类型为封装对象
+		 * @param source 被修改的对象
+		 * @param target 封装了{@code source}对象需要修改的属性
+		 * @throws IllegalAccessException 
+		 * @throws IllegalArgumentException 
+		 */
+		void modify(T source, T target) throws IllegalArgumentException, IllegalAccessException;
+		
+		/**
+		 * T source = get(id) 
+		 * @see IBaseDao#modify(T, T)
+		 * @param id
+		 * @param target
+		 * @throws DataNotFoundException
+		 * @throws IllegalArgumentException
+		 * @throws IllegalAccessException
+		 */
+		void modify(PK id, T target) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException;
+
+		PageBean<T> findPageOfAll(int pageNo, int pageSize);
+
+		PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize)
+				throws YiwuException;
 		
 		
 

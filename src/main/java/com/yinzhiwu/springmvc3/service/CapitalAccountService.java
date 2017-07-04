@@ -6,6 +6,5 @@ import com.yinzhiwu.springmvc3.model.view.CapitalAccountApiView;
 
 public interface CapitalAccountService extends IBaseService<CapitalAccount, Integer>{
 
-	YiwuJson<CapitalAccountApiView> addCapitalAccount(CapitalAccountApiView v);
 
 }

@@ -116,35 +116,35 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 			return;
 		T newEntity = baseDao.get(id);
 		
-		entity.getClass().getSuperclass();
 		Field[] fields = entity.getClass().getDeclaredFields();
 		logger.info(fields.length);
 		boolean update_flag =false;
 		long afterReflect = System.currentTimeMillis();
-		logger.info("反射所花的时间: " + (afterReflect-start));
+		logger.debug("反射所花的时间: " + (afterReflect-start));
 		for (Field f : fields) {
 			f.setAccessible(true);
 			if(!Modifier.isStatic(f.getModifiers()) 
 					&&f.get(entity)!=null
 					&& f.getDeclaredAnnotation(Id.class) == null
+					//排除OneToMany 映射
 					&& f.getDeclaredAnnotation(OneToMany.class) == null
-					&& !f.get(entity).equals(f.get(newEntity)))
+					)
 			{
 				f.set(newEntity, f.get(entity));
-				logger.info(f.get(newEntity));
+				logger.debug(f.get(newEntity));
 				update_flag = true;
 			}
 		}
 		long afterCompare=System.currentTimeMillis();
-		logger.info("对比所化时间: " + (afterCompare-afterReflect));
+		logger.debug("对比所化时间: " + (afterCompare-afterReflect));
 		if(update_flag){
-			logger.info("开始更新");
+			logger.debug("开始更新");
 			baseDao.update(newEntity);
 		}
 		
 		long end = System.currentTimeMillis();
-		logger.info("更新所花时间: " + (end-afterCompare));
-		logger.info("所花总时间： " + (end-start));
+		logger.debug("更新所花时间: " + (end-afterCompare));
+		logger.debug("所花总时间： " + (end-start));
 	}
 	
 	@Override

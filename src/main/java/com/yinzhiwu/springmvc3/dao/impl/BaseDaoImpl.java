@@ -1,6 +1,8 @@
 package com.yinzhiwu.springmvc3.dao.impl;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -10,13 +12,21 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hamcrest.core.Is;
+import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.loader.custom.Return;
 import org.hibernate.query.Query;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
@@ -26,7 +36,11 @@ import com.yinzhiwu.springmvc3.dao.IBaseDao;
 import com.yinzhiwu.springmvc3.entity.BaseEntity;
 import com.yinzhiwu.springmvc3.entity.yzw.BaseYzwEntity;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.exception.YiwuException;
 import com.yinzhiwu.springmvc3.model.page.PageBean;
+import com.yinzhiwu.springmvc3.util.ReflectUtil;
+
+
 
 
 
@@ -132,7 +146,8 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		if(list==null || list.size() ==0)
 			throw new DataNotFoundException();
 		return list;
-}
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -143,7 +158,17 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 			throw new DataNotFoundException();
 		return list;
 	}
-
+	
+	@Override
+	public PageBean<T> findPageOfAll(int pageNo, int pageSize){
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
+		Root<T> root = criteria.from(entityClass);
+		criteria.select(root);
+		int totalSize = findCount();
+		return findPageByCriteria(criteria, pageNo, pageSize, totalSize);
+	}
+	
 	@Override
 	public void saveOrUpdate(T entity) {
 		Assert.notNull(entity, "entity is required");
@@ -238,6 +263,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		return list;
 	}
 
+	
 	@Override
 	public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception{
 		if(propertyNames.length != values.length){
@@ -260,6 +286,42 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		List<Long> count =   (List<Long>) getHibernateTemplate().findByNamedParam(
 				builder.toString(), properties, values);
 		return count.get(0).intValue();
+	}
+	
+	@Override
+	public PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize) throws YiwuException{
+		if(propertyNames.length != values.length){
+			throw new YiwuException("传入的属性名和属性值数量不一致");
+		}
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
+		Root<T> root = criteria.from(entityClass);
+		criteria.select(root);
+		Predicate predicate = null;
+		for(int i=0; i< propertyNames.length; i++){
+			Predicate condition = builder.equal(_getPath(root, propertyNames[i]), values[i]);
+			predicate =(predicate == null)?condition:builder.and(predicate,condition);
+		}
+		criteria.where(predicate);
+		
+		//查询数量
+		CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
+		Root<T> countRoot = countCriteria.from(entityClass);
+		countCriteria.select(builder.count(countRoot));
+		countCriteria.where(predicate);
+		Long totalSize = getSession().createQuery(countCriteria).getSingleResult();
+		
+		return  findPageByCriteria(criteria, pageNo, pageSize, totalSize.intValue());
+	}
+	
+	
+	
+	private <X> Path<?> _getPath(Path<X> path, String propertyName){
+		String[] properties = propertyName.split(".");
+		for(int i=0;i<properties.length; i++){
+			path=path.get(properties[i]);
+		}
+		return path;
 	}
 
 	@Override
@@ -359,5 +421,35 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 			return _get_root_Exception(next);
 	}
 	
+	@Override
+	public void modify(T source, T target) throws IllegalArgumentException, IllegalAccessException{
+		Assert.notNull(source);
+		Assert.notNull(target);
+		
+		Field[] fields = ReflectUtil.getAllFields(source.getClass());
+		for (Field f : fields) {
+			f.setAccessible(true);
+			if(//静态属性不变
+					!Modifier.isStatic(f.getModifiers()) 
+					// target属性为null ,source 对应的属性不变
+					&&f.get(target)!=null
+					//Id 主键不改变
+					&& f.getDeclaredAnnotation(Id.class) == null
+					//排除OneToMany 映射
+					&& f.getDeclaredAnnotation(OneToMany.class) == null)
+				f.set(source, f.get(target));
+		}
+		
+		update(source);
+	}
+	
+	@Override
+	public void modify(PK id, T target) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException{
+		Assert.notNull(id);
+		Assert.notNull(target);
+		
+		T source = get(id);
+		modify(source, target);
+	}
 }
 
