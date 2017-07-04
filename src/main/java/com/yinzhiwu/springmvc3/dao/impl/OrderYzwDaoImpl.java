@@ -16,6 +16,7 @@ import com.yinzhiwu.springmvc3.entity.yzw.CourseYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.exception.YiwuException;
 import com.yinzhiwu.springmvc3.util.GeneratorUtil;
 
 @Repository
@@ -154,9 +155,9 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 	}
 
 	@Override
-	public OrderYzw findByContractNO(String contractNo) throws Exception {
+	public OrderYzw findByContractNO(String contractNo) throws YiwuException, DataNotFoundException {
 		List<OrderYzw> orders = findByProperty("contract.contractNo", contractNo);
-		if(orders.size() >1) throw new Exception("会籍合约：" + contractNo + "重复");
+		if(orders.size() >1) throw new YiwuException("会籍合约：" + contractNo + "重复");
 		return orders.get(0);
 	}
 	

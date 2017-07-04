@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.entity.income;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ConstraintMode;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -25,7 +26,7 @@ public class DepositEvent extends IncomeEvent{
 	 */
 	private static final long serialVersionUID = 5121826589475801050L;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	@JoinColumn(foreignKey = 
 		@ForeignKey(name="fk_depositEvent_order_id", value =ConstraintMode.NO_CONSTRAINT))
 	private OrderYzw order;

@@ -12,8 +12,8 @@
 		var v_baseUrl = "http://192.168.0.115:8080/yiwu/";
 //		register();
 //		shareTweet();
-//		checkIn();
-		appoint();
+		checkIn();
+//		appoint();
 //		addNewAccount();
 //		setDefaultAccount()
 		
@@ -46,7 +46,7 @@
 
 		function checkIn(){
 			$.post(v_baseUrl + "/api/checkIns",
-				{distribuerId:'3000050', lessonId:'136801'},
+				{distribuerId:'3000042', lessonId:'168922'},
 				function(result){
 					$('#content').html(JSON.stringify(result));
 				});

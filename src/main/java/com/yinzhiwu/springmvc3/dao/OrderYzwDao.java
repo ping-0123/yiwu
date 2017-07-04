@@ -6,6 +6,7 @@ import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.exception.YiwuException;
 
 public interface OrderYzwDao extends IBaseDao<OrderYzw, String>  {
 	public String find_last_id();
@@ -24,7 +25,7 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String>  {
 
 	public Contract find_valid_contract_by_customer_by_subCourseType(int customerId, String subCourseType);
 
-	public OrderYzw findByContractNO(String contractNo) throws DataNotFoundException, Exception;
+	public OrderYzw findByContractNO(String contractNo) throws DataNotFoundException, YiwuException;
 	
 	
 }

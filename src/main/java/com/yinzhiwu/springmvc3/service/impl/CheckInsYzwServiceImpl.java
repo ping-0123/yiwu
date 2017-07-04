@@ -21,6 +21,8 @@ import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.springmvc3.exception.YiwuException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.page.PageBean;
 import com.yinzhiwu.springmvc3.model.view.CheckInSuccessApiView;
@@ -74,26 +76,27 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 	
 	
 	@Override
-	public CheckInSuccessApiView saveCustomerCheckIn(int distributerId, int lessonId) throws Exception {
+	public CheckInSuccessApiView saveCustomerCheckIn(int distributerId, int lessonId) throws YiwuException, DataNotFoundException {
 		Distributer distributer = distibuterDao.get(distributerId);
-		if(distributer == null) throw new  Exception(distributerId + "用户不存在.");
+		if(distributer == null) throw new  YiwuException(distributerId + "用户不存在.");
 		LessonYzw lesson = lessonDao.get(lessonId);
-		if(lesson == null) throw new Exception(lessonId + "预约的课程不存在");
+		if(lesson == null) throw new YiwuException(lessonId + "预约的课程不存在");
 		CustomerYzw customer = distributer.getCustomer();
-		if(customer == null) throw new Exception(distributer.getId() + "客户不存在");
-		if("封闭式".equals(lesson.getCourseType())) throw new Exception("封闭式课程无须刷卡");
-		if(!"开放式".equals(lesson.getCourseType())) throw new Exception("非开放式课程请在E5pc端按指纹刷卡");
+		if(customer == null) throw new YiwuException(distributer.getId() + "客户不存在");
+		if("封闭式".equals(lesson.getCourseType())) throw new YiwuException("封闭式课程无须刷卡");
+		if(!"开放式".equals(lesson.getCourseType())) throw new YiwuException("非开放式课程请在E5pc端按指纹刷卡");
 		/**
 		 * 判断是否已刷卡
 		 */
-		if(checkInsYzwDao.isCheckedIn(customer, lesson)) throw new Exception("已刷卡， 无须重复刷卡");
+		if(checkInsYzwDao.isCheckedIn(customer, lesson)) throw new YiwuException("已刷卡， 无须重复刷卡");
 		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
 				customer.getId(), lesson.getSubCourseType());
-		if(contract == null) throw new Exception("你没有购买音之舞相关产品， 不能刷卡");
+		if(contract == null) throw new YiwuException("你没有购买音之舞相关产品， 不能刷卡");
+		//刷卡
 		CheckInsYzw checkIn = new CheckInsYzw(customer.getMemberCard(), lesson, contract.getContractNo(), null);
 		super.save(checkIn);
 		/**
-		 * 判断是否预约
+		 * 判断是否预约, 并保存刷卡事件
 		 */
 		IncomeEvent event = null;
 		if(appointmentDao.isAppointed(customer,lesson)){
@@ -106,8 +109,8 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		 * return 
 		 */
 		checkIn.setEvent((CheckInEvent) event);
-		OrderYzw order = orderDao.findByContractNO(checkIn.getContractNo());
-		return new CheckInSuccessApiView(checkIn.getEvent(), order.getContract());
+//		OrderYzw order = orderDao.findByContractNO(checkIn.getContractNo());
+		return new CheckInSuccessApiView(checkIn.getEvent(), contract);
 	}
 
 

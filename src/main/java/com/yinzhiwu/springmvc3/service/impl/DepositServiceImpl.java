@@ -52,18 +52,12 @@ public class DepositServiceImpl extends BaseServiceImpl<DepositEvent, Integer> i
 		/**
 		 * get distributer's borkerage and funds
 		 */
-		float brokerage = 0f;
-		float funds = 0f;
-		DepositEvent fundsDepoist  = null;
-		DepositEvent brokerageDeposit = null;
-		try{
-			brokerage = distributer.getDistributerIncome(IncomeType.BROKERAGE).getIncome();
-			funds = distributer.getDistributerIncome(IncomeType.FUNDS).getIncome();
-		}catch (Exception e) {
-			logger.debug(e.getMessage());
-		}
+		float brokerage = distributer.getIncomeValue(IncomeType.BROKERAGE);
+		float funds = distributer.getIncomeValue(IncomeType.FUNDS);
 		if(amount >(brokerage + funds))
 			throw new Exception("您的账户资金余额不足以支付定金");
+		DepositEvent fundsDepoist  = null;
+		DepositEvent brokerageDeposit = null;
 
 		/**
 		 * save in order
