@@ -179,6 +179,7 @@ public class DistributerController extends BaseController {
 		}
 	}
 	
+	@Deprecated
    @GetMapping(value = "/input")
     public ModelAndView inputProduct(Model model) {
         model.addAttribute("distributerApiView", new DistributerApiView());
@@ -196,7 +197,7 @@ public class DistributerController extends BaseController {
 
    
    
-   @RequestMapping(value="/{id}", method={RequestMethod.PUT, RequestMethod.POST})
+   @RequestMapping(value="/{distributerId}", method={RequestMethod.PUT, RequestMethod.POST})
    @ApiOperation("修改会员个人资料")
    public YiwuJson<DistributerModifyModel> modify(DistributerModifyModel model, @PathVariable int distributerId){
 		try {
