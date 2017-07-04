@@ -14,6 +14,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hamcrest.core.Is;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -23,6 +24,7 @@ import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.springmvc3.dao.IBaseDao;
 import com.yinzhiwu.springmvc3.entity.BaseEntity;
+import com.yinzhiwu.springmvc3.entity.yzw.BaseYzwEntity;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.page.PageBean;
 
@@ -78,6 +80,8 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
         try {
         	if(entity instanceof BaseEntity)
         		((BaseEntity) entity).init();
+        	if(entity instanceof BaseYzwEntity)
+        		((BaseYzwEntity) entity).init();
         	return (PK) getHibernateTemplate().save(entity);  
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
@@ -189,12 +193,10 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 	public void update(T entity){
 		Assert.notNull(entity, "entity is required");
 		try{
-			if(entity instanceof BaseEntity){
-				BaseEntity baseEntity = (BaseEntity) entity;
-				baseEntity.setLastModifiedDate(new Date());
-				getHibernateTemplate().update(baseEntity);
-				return;
-			}
+			if(entity instanceof BaseEntity)
+				((BaseEntity) entity).setLastModifiedDate(new Date());
+			if(entity instanceof BaseYzwEntity)
+				((BaseYzwEntity) entity).setLastChangeTimestamp(new Date());
 			getHibernateTemplate().update(entity);
 		}catch (Exception e) {
 			LOG.error(e.getMessage());

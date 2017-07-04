@@ -20,7 +20,6 @@ import com.yinzhiwu.springmvc3.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.LessonYzw;
-import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.exception.YiwuException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;

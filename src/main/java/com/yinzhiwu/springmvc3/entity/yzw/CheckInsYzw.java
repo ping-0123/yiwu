@@ -79,7 +79,7 @@ public class CheckInsYzw extends BaseYzwEntity {
 
 	
 	@Override
-	protected void init() {
+	public void init() {
 		super.init();
 	}
 

@@ -21,9 +21,23 @@
 //			payDeposit();
 	//		shareTweet();
 	//		modify();
-	//		modifyDistributer();
+			modifyDistributer();
 	//		confirmContract();
 			
+			
+			function modifyDistributer(){
+				$.ajax({
+					type:"POST",
+					url:v_baseUrl + "/api/distributer/3000066",
+					data:{'nickName':'aaabbbb',
+						'name':'易平'},
+					async:true,
+					cache:false,
+					success:function(data){
+						$('#content').html(JSON.stringify(data));
+					}
+				});
+			}
 			function payDeposit(){
 				$.post(v_baseUrl+"api/event/deposit",
 					{distributerId:3000066,
@@ -49,19 +63,7 @@
 				});
 			}
 	
-			function modifyDistributer(){
-				$.ajax({
-					type:"POST",
-					url:v_baseUrl + "/api/distributer/3000002",
-					data:{'headIconName':'aaabbbb',
-						'defaultCapitalAccount.id':2000003},
-					async:true,
-					cache:false,
-					success:function(data){
-						$('#content').html(JSON.stringify(data));
-					}
-				});
-			}
+
 			function register(){
 				var v_url = "api/distributer";
 				var v_data = {phoneNo:'1804890160',

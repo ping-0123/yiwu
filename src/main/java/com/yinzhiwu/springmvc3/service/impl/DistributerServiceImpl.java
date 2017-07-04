@@ -38,7 +38,10 @@ import com.yinzhiwu.springmvc3.util.UrlUtil;
 
 @Service
 public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer> implements DistributerService{
-
+	@Autowired public void setDao(DistributerDao dao){
+		super.setBaseDao(dao);
+	}
+	
 	@Autowired private DistributerDao distributerDao;
 	@Autowired private DepartmentYzwDao departmentYzwDao;
 	@Autowired private CustomerYzwDao customerYzwDao;

@@ -175,6 +175,7 @@ public class OrderYzw extends BaseYzwEntity {
 		this.setStore(dept);
 		this.vipAttr="推荐会员";
 		
+		//合约
 		Contract contract = new Contract();
 		contract.setStatus("已审核");
 		contract.setValidityTimes(product.getUsefulTimes());
@@ -182,7 +183,6 @@ public class OrderYzw extends BaseYzwEntity {
 		contract.setStart(calendar.getTime());
 		 calendar.add(Calendar.MONTH, product.getUsefulLife());
 		contract.setEnd(calendar.getTime());
-		
 		contract.setRemainTimes(product.getUsefulTimes());
 		if("成人".equals(cust.getAddress())){
 			contract.setType("开放式");
@@ -192,7 +192,6 @@ public class OrderYzw extends BaseYzwEntity {
 			contract.setSubType("封闭式");
 		}
 		contract.setValidStoreIds("61; 62; 63; 64; 65; 66; 67; 68; 69");
-		
 		this.contract = contract;
 		
 	}

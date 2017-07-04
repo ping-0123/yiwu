@@ -59,7 +59,7 @@ public abstract class BaseYzwEntity implements Serializable{
 	public BaseYzwEntity() {
 	}
 	
-	protected void init() {
+	public void init() {
 		this.createUserId = 1;
 		Date date = new Date();
 		this.createTime = date;
