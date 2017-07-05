@@ -80,8 +80,9 @@ public interface IBaseDao<T ,PK extends Serializable> {
 
 		PageBean<T> findPageOfAll(int pageNo, int pageSize);
 
-		PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize)
-				throws YiwuException;
+		PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize);
+
+		PageBean<T> findPageByProperty(String propertyName, Object value, int pageNo, int pageSize);
 		
 		
 

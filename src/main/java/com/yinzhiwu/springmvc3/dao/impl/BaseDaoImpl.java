@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,17 +17,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.loader.custom.Return;
 import org.hibernate.query.Query;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
@@ -36,7 +34,6 @@ import com.yinzhiwu.springmvc3.dao.IBaseDao;
 import com.yinzhiwu.springmvc3.entity.BaseEntity;
 import com.yinzhiwu.springmvc3.entity.yzw.BaseYzwEntity;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
-import com.yinzhiwu.springmvc3.exception.YiwuException;
 import com.yinzhiwu.springmvc3.model.page.PageBean;
 import com.yinzhiwu.springmvc3.util.ReflectUtil;
 
@@ -265,9 +262,9 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 
 	
 	@Override
-	public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception{
+	public int findCountByProperties(String[] propertyNames, Object[] values){
 		if(propertyNames.length != values.length){
-			throw new Exception("传入的属性名和属性值数量不一致");
+			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
 		String[] properties = new String[propertyNames.length];
 		StringBuilder builder = new StringBuilder();
@@ -279,7 +276,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 				properties[i] = propertyNames[i].replace(".", "");
 				builder.append(" AND " + propertyNames[i] + "=:" +properties[i]);
 			}else {
-				throw new Exception("属性名不能为空为null");
+				throw new IllegalArgumentException("属性名不能为空为null");
 			}
 		}
 		@SuppressWarnings("unchecked")
@@ -289,10 +286,12 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 	}
 	
 	@Override
-	public PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize) throws YiwuException{
+	public PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize){
 		if(propertyNames.length != values.length){
-			throw new YiwuException("传入的属性名和属性值数量不一致");
+			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
+		if(Arrays.asList(propertyNames).contains(null)) throw new IllegalArgumentException("属性名不可能为null");
+		
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
 		Root<T> root = criteria.from(entityClass);
@@ -305,23 +304,36 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		criteria.where(predicate);
 		
 		//查询数量
-		CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
-		Root<T> countRoot = countCriteria.from(entityClass);
-		countCriteria.select(builder.count(countRoot));
-		countCriteria.where(predicate);
-		Long totalSize = getSession().createQuery(countCriteria).getSingleResult();
+//		CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
+//		countCriteria.from(entityClass);
+//		countCriteria.select(builder.count(root));
+//		countCriteria.where(predicate);
+//		Long totalSize = getSession().createQuery(countCriteria).getSingleResult();
+		int totalSize = findCountByProperties(propertyNames, values);
 		
-		return  findPageByCriteria(criteria, pageNo, pageSize, totalSize.intValue());
+		return  findPageByCriteria(criteria, pageNo, pageSize, totalSize);
 	}
 	
-	
+	@Override
+	public PageBean<T> findPageByProperty(String propertyName, Object value, int pageNo, int pageSize){
+		if(!StringUtils.hasLength(propertyName)) throw new IllegalArgumentException("propertyName 不能为空" );
+		String[] properties = new String[]{propertyName};
+		Object[] values = new Object[]{value};
+		return findPageByProperties(properties, values, pageNo, pageSize);
+	}
 	
 	private <X> Path<?> _getPath(Path<X> path, String propertyName){
-		String[] properties = propertyName.split(".");
-		for(int i=0;i<properties.length; i++){
-			path=path.get(properties[i]);
+		Path<?> result;
+		if(propertyName.contains(".")){
+			String[] properties = propertyName.split("\\.");
+			result = path.get(properties[0]);
+			for(int i=1;i<properties.length; i++){
+				result=result.get(properties[i]);
+			}
+		}else {
+			result = path.get(propertyName);
 		}
-		return path;
+		return result;
 	}
 
 	@Override

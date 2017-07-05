@@ -2,9 +2,8 @@ package com.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.BlockJUnit4ClassRunner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
@@ -13,8 +12,9 @@ import com.yinzhiwu.springmvc3.model.page.PageBean;
 
 
 @Transactional
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:applicationContext.xml")
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration("classpath:applicationContext.xml")
+@RunWith(BlockJUnit4ClassRunner.class)
 public class PageTest {
 
 /*	@Autowired
@@ -22,6 +22,15 @@ public class PageTest {
 	*/
 	@Autowired
 	private DistributerDao distributerDao;
+	
+	@Test
+	public void testSplit(){
+		String a ="bbbb.cc.dd";
+		String[] as = a.split("\\.");
+		for (String string : as) {
+			System.out.println(string);
+		}
+	}
 	
 	@Test
 	public void testPage(){

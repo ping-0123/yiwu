@@ -1,5 +1,6 @@
 package com.yinzhiwu.springmvc3.model.page;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,7 +21,7 @@ public class PageBean<T> {
 	
 	private int totalPage;
 	
-	private List<T> data;
+	private List<T> data = new ArrayList<T>();
 	
 	public PageBean(){
 	}
