@@ -7,9 +7,15 @@ import java.util.Map;
 import javax.persistence.criteria.CriteriaQuery;
 
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
-import com.yinzhiwu.springmvc3.exception.YiwuException;
 import com.yinzhiwu.springmvc3.model.page.PageBean;
 
+/**
+ * 
+ * @author ping
+ *
+ * @param <T> the entity type
+ * @param <PK> the entity's primary key type
+ */
 public interface IBaseDao<T ,PK extends Serializable> {
 
 		public T get(PK id) throws DataNotFoundException;

@@ -21,8 +21,6 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -39,14 +37,17 @@ import com.yinzhiwu.springmvc3.util.ReflectUtil;
 
 
 
-
-
-
+/**
+ * 
+ * @author ping
+ * @Version 2017年7月5日下午4:07:15
+ *
+ * @param <T> the entity type
+ * @param <PK> the entity's primary key type
+ */
 public abstract class BaseDaoImpl<T,PK extends Serializable> 
-				extends HibernateDaoSupport 
-				implements IBaseDao<T, PK> {
-	private static Log LOG = LogFactory.getLog(BaseTypeDaoImpl.class);
-
+		extends HibernateDaoSupport implements IBaseDao<T, PK> {
+	
 	private Class<T> entityClass;  
     protected SessionFactory sessionFactory;  
       
@@ -71,7 +72,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
     	try {
     		 return getHibernateTemplate().getSessionFactory().getCurrentSession();  
 		} catch (Exception e) {
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			return null;
 		}
        
@@ -95,7 +96,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
         		((BaseYzwEntity) entity).init();
         	return (PK) getHibernateTemplate().save(entity);  
 		} catch (Exception e) {
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			return null;
 		}
     }
@@ -118,7 +119,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 			List<Long> l = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "value", value);
 			return l.get(0).intValue();
 		} catch (Exception e) {
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			return 0;
 		}
 	}
@@ -156,6 +157,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		return list;
 	}
 	
+	
 	@Override
 	public PageBean<T> findPageOfAll(int pageNo, int pageSize){
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
@@ -172,7 +174,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		try {
 			getHibernateTemplate().saveOrUpdate(entity);
 		} catch (Exception e) {
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -182,7 +184,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		try{
 			getHibernateTemplate().delete(entity);
 		}catch (Exception e) {
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		
 	}
@@ -196,7 +198,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 				delete(entity);
 			}
 		}catch (Exception e) {
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -211,6 +213,8 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		return list;
 	}  
 	
+	
+	
 	@Override
 	public void update(T entity){
 		Assert.notNull(entity, "entity is required");
@@ -221,7 +225,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 				((BaseYzwEntity) entity).setLastChangeTimestamp(new Date());
 			getHibernateTemplate().update(entity);
 		}catch (Exception e) {
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -233,7 +237,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 			List<Long> sums =   (List<Long>) getHibernateTemplate().find(hql);
 			return sums.get(0).intValue();
 		}catch (Exception e) {
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			return 0;
 		}
 	}
@@ -413,7 +417,7 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 			List<Long> list=   (List<Long>) getHibernateTemplate().find(hql);
 			return list.get(0).intValue();
 		}catch (Exception e) {
-			LOG.error(e.getMessage());
+			logger.error(e.getMessage());
 			return 0;
 		}
 	}
