@@ -40,6 +40,7 @@ public abstract class BaseEntity implements Serializable{
     /** 
      * �������� 
      */  
+	@Column(updatable=false)
     private Integer createUserId;
     
     

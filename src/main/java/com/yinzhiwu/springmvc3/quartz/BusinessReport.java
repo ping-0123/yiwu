@@ -1,4 +1,4 @@
-package com.yinzhiwu.springmvc3.timer;
+package com.yinzhiwu.springmvc3.quartz;
 
 import java.io.Serializable;
 

@@ -54,7 +54,7 @@ public class DistributerIncomeServiceImpl extends BaseServiceImpl<DistributerInc
 		 * update distributer's income grade
 		 */
 		try{
-			if(dIncome.getIncome() >=dIncome.getIncomeGrade().getNextGrade().getUpgradeNeededValue())
+			if(dIncome.getIncome() >=dIncome.getIncomeGrade().getUpgradeNeededValue())
 				dIncome.setIncomeGrade(dIncome.getIncomeGrade().getNextGrade());
 		}catch (NullPointerException e) {
 			logger.info("distributer: " + dIncome.getDistributer().getId() + "'s " 

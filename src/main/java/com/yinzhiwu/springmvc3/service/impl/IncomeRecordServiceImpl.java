@@ -13,6 +13,7 @@ import com.yinzhiwu.springmvc3.entity.Distributer;
 import com.yinzhiwu.springmvc3.entity.income.IncomeEvent;
 import com.yinzhiwu.springmvc3.entity.income.IncomeFactor;
 import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
+import com.yinzhiwu.springmvc3.entity.type.IncomeType;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.view.IncomeRecordApiView;
 import com.yinzhiwu.springmvc3.model.view.ShareTweetIncomeRecordApiView;
@@ -51,7 +52,8 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 				dIncomeDao.findCurrentValue(incomeRecord.getBenificiary().getId(), incomeRecord.getIncomeType().getId()));
 		super.save(incomeRecord);
 		dIncomeService.update_by_record(incomeRecord);
-		messageService.save_by_record(incomeRecord);
+		if(IncomeType.BROKERAGE.equals(incomeRecord.getIncomeType()))
+			messageService.save_by_record(incomeRecord);
 		return incomeRecord.getId();
 	}
 

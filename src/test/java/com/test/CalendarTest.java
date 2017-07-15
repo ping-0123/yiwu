@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
+import com.yinzhiwu.springmvc3.util.CalendarUtil;
+
 @RunWith(BlockJUnit4ClassRunner.class)
 public class CalendarTest {
 	
@@ -17,6 +19,11 @@ public class CalendarTest {
 	
 	private static DateFormat DATE_FOMATE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
+	@Test
+	public void testGetDayBegin(){
+		Calendar calendar = Calendar.getInstance();
+		System.out.println(CalendarUtil.getDayBegin(calendar).getTime());
+	}
 	@Test
 	public void testTimeZone(){
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));

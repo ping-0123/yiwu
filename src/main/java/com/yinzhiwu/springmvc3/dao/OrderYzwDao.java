@@ -27,5 +27,5 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String>  {
 
 	public OrderYzw findByContractNO(String contractNo) throws DataNotFoundException, YiwuException;
 	
-	
+	public List<OrderYzw> findAllLastDayOrders();
 }

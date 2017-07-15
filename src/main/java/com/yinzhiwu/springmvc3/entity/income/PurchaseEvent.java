@@ -40,6 +40,16 @@ public class PurchaseEvent extends IncomeEvent {
 		this.order = order;
 	}
 	
+	/**
+	 * 收益参数是否应该排除定金？（定金有两种来源， 一种是顾客实付现金， 另外一种是分销系统的余额支付), 在本构造方法中没有排除定金
+	 * @param distributer
+	 * @param order
+	 */
+	public PurchaseEvent(Distributer distributer,  OrderYzw order){
+		super(distributer, EventType.PURCHASE_PRODUCTS, order.getPayedAmount());
+		this.order  = order;
+	}
+	
 	@Override
 	public Message generateMessage(IncomeRecord record) {
 		try{

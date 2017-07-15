@@ -17,4 +17,29 @@
 	<!-- http://soulshard.iteye.com/blog/337886 -->
 	<context:property-placeholder location="classpath:quartz.properties"/>  
 
+    <bean name="orderBrockerageJobDetail"    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+	    <property name="targetObject" ref="purchaseEventServiceImpl" />  
+	    <property name="targetMethod" value="saveAllLastDayPurchaseEvents" />   
+	</bean>   
+	<bean id="orderBrockerageJobTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+	    <property name="jobDetail" ref="orderBrockerageJobDetail" />  
+	    <property name="cronExpression" value="0 0 4 * * ? *" />     <!-- 每日4点 -->
+	</bean> 
+
+ 	<!-- ### 配置创建定配置 Quartz 调度器的 SchedulerFactoryBean ### -->
+ 	<!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->  
+	<bean  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+	    <property name="jobDetails">  
+	        <list>  
+	            <ref bean="orderBrockerageJobDetail" />
+	        </list>  
+	    </property>  
+	  
+	    <property name="triggers">  
+	        <list>  
+	            <ref bean="orderBrockerageJobTrigger" />
+	        </list>  
+	    </property>  
+	</bean>  
+	
  </beans>

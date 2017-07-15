@@ -19,7 +19,6 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	public List<OrderOldApiView> getDailyOrderByStore(int storeId, Date payedDate, int productTypeId){
-		
 		return orderDao.findDailyOrderByStore(storeId, payedDate, productTypeId);
 	}
 

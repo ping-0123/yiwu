@@ -17,6 +17,7 @@ import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.exception.YiwuException;
+import com.yinzhiwu.springmvc3.util.CalendarUtil;
 import com.yinzhiwu.springmvc3.util.GeneratorUtil;
 
 @Repository
@@ -159,6 +160,23 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String>  implements O
 		List<OrderYzw> orders = findByProperty("contract.contractNo", contractNo);
 		if(orders.size() >1) throw new YiwuException("会籍合约：" + contractNo + "重复");
 		return orders.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrderYzw> findAllLastDayOrders() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, -1);
+		String hql = "FROM OrderYzw WHERE payedDate BETWEEN :start and :end and product.name like '%卡%' ";
+		logger.debug("start is " + CalendarUtil.getDayBegin(calendar).getTime());
+		logger.debug("end is " + CalendarUtil.getDayEnd(calendar).getTime());
+		List<OrderYzw> orders =  (List<OrderYzw>) getHibernateTemplate().findByNamedParam(
+				hql, 
+				new String[]{"start", "end"}, 
+				new Object[]{CalendarUtil.getDayBegin(calendar).getTime(), CalendarUtil.getDayEnd(calendar).getTime()});
+		if(orders==null || orders.size() ==0)
+			return new ArrayList<>();
+		return orders;
 	}
 	
 	
