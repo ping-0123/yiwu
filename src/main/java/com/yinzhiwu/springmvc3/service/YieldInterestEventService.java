@@ -7,4 +7,6 @@ public interface YieldInterestEventService extends IBaseService<YieldInterestEve
 
 	void saveYieldInterest(DistributerIncome dIncome);
 
+	void saveYieldInterestByEveryDay();
+
 }

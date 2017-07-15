@@ -22,5 +22,8 @@ public class YieldInterestEvent extends IncomeEvent{
 		super(distributer, type, param);
 	}
 
+	public YieldInterestEvent(Distributer distributer, Float param) {
+		super(distributer, EventType.YIELD_INTEREST, param);
+	}
 	
 }
