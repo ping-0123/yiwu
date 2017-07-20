@@ -34,7 +34,7 @@
 	</bean>   
 	<bean id="yieldInterestJobTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
 	    <property name="jobDetail" ref="yieldInterestJobDetail" />  
-	    <property name="cronExpression" value="0 0 4 * * ? *" />     <!-- 每日4点 -->
+	    <property name="cronExpression" value="0 0 3 * * ? *" />     <!-- 每日3点 -->
 	</bean> 
 
  	<!-- ### 配置创建定配置 Quartz 调度器的 SchedulerFactoryBean ### -->
