@@ -73,7 +73,12 @@ public abstract class BaseEntity implements Serializable{
     	this.lastModifiedUserId=1;
 	}
 
-
+	public void beforeUpdate(){
+		Date date = new Date();
+    	this.lastModifiedDate=date;
+    	this.lastModifiedUserId=1;
+	}
+	
     public Integer getId() {  
         return id;  
     }  

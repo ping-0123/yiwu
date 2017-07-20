@@ -107,45 +107,55 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	public void update(T entity) {
 		baseDao.update(entity);
 	}
-
+	
 	@Override
-	public void modify(PK id, T entity) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException{
-		long start = System.currentTimeMillis();
-		Assert.notNull(id);
-		if(entity== null)
-			return;
-		T newEntity = baseDao.get(id);
-		
-		Field[] fields = entity.getClass().getDeclaredFields();
-		logger.info(fields.length);
-		boolean update_flag =false;
-		long afterReflect = System.currentTimeMillis();
-		logger.debug("反射所花的时间: " + (afterReflect-start));
-		for (Field f : fields) {
-			f.setAccessible(true);
-			if(!Modifier.isStatic(f.getModifiers()) 
-					&&f.get(entity)!=null
-					&& f.getDeclaredAnnotation(Id.class) == null
-					//排除OneToMany 映射
-					&& f.getDeclaredAnnotation(OneToMany.class) == null
-					)
-			{
-				f.set(newEntity, f.get(entity));
-				logger.debug(f.get(newEntity));
-				update_flag = true;
-			}
-		}
-		long afterCompare=System.currentTimeMillis();
-		logger.debug("对比所化时间: " + (afterCompare-afterReflect));
-		if(update_flag){
-			logger.debug("开始更新");
-			baseDao.update(newEntity);
-		}
-		
-		long end = System.currentTimeMillis();
-		logger.debug("更新所花时间: " + (end-afterCompare));
-		logger.debug("所花总时间： " + (end-start));
+	public void modify(T source, T target) throws IllegalArgumentException, IllegalAccessException{
+		baseDao.modify(source, target);
 	}
+	
+	@Override
+	public void modify(PK id, T entity) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException {
+		baseDao.modify(id, entity);
+	}
+
+//	@Override
+//	public void modify(PK id, T entity) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException{
+//		long start = System.currentTimeMillis();
+//		Assert.notNull(id);
+//		if(entity== null)
+//			return;
+//		T newEntity = baseDao.get(id);
+//		
+//		Field[] fields = entity.getClass().getDeclaredFields();
+//		logger.info(fields.length);
+//		boolean update_flag =false;
+//		long afterReflect = System.currentTimeMillis();
+//		logger.debug("反射所花的时间: " + (afterReflect-start));
+//		for (Field f : fields) {
+//			f.setAccessible(true);
+//			if(!Modifier.isStatic(f.getModifiers()) 
+//					&&f.get(entity)!=null
+//					&& f.getDeclaredAnnotation(Id.class) == null
+//					//排除OneToMany 映射
+//					&& f.getDeclaredAnnotation(OneToMany.class) == null
+//					)
+//			{
+//				f.set(newEntity, f.get(entity));
+//				logger.debug(f.get(newEntity));
+//				update_flag = true;
+//			}
+//		}
+//		long afterCompare=System.currentTimeMillis();
+//		logger.debug("对比所化时间: " + (afterCompare-afterReflect));
+//		if(update_flag){
+//			logger.debug("开始更新");
+//			baseDao.update(newEntity);
+//		}
+//		
+//		long end = System.currentTimeMillis();
+//		logger.debug("更新所花时间: " + (end-afterCompare));
+//		logger.debug("所花总时间： " + (end-start));
+//	}
 	
 	@Override
 	public PageBean<T> findPage(T entity, int pageNum, int pageSize){

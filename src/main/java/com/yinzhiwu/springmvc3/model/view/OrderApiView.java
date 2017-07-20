@@ -55,7 +55,7 @@ public class OrderApiView {
 			this.contractStart	 = contract.getStart();
 			this.contractEnd 	 = contract.getEnd();
 			this.productType 	 = contract.getType();
-			this.checkedStatus	 = contract.getStatus();
+			this.checkedStatus	 = contract.getStatus().getStatus();
 		}
 		
 		CourseYzw course= o.getCourse();

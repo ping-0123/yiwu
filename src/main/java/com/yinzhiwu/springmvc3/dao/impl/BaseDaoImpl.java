@@ -7,12 +7,12 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.persistence.Embedded;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -220,9 +220,9 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		Assert.notNull(entity, "entity is required");
 		try{
 			if(entity instanceof BaseEntity)
-				((BaseEntity) entity).setLastModifiedDate(new Date());
+				((BaseEntity) entity).beforeUpdate();;
 			if(entity instanceof BaseYzwEntity)
-				((BaseYzwEntity) entity).setLastChangeTimestamp(new Date());
+				((BaseYzwEntity) entity).beforeUpdate();
 			getHibernateTemplate().update(entity);
 		}catch (Exception e) {
 			logger.error(e.getMessage());
@@ -442,6 +442,12 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 		Assert.notNull(source);
 		Assert.notNull(target);
 		
+		source = modifySourceEntityProperties(source, target);
+		
+		update(source);
+	}
+
+	private <E> E modifySourceEntityProperties(E source, E target) throws IllegalAccessException {
 		Field[] fields = ReflectUtil.getAllFields(source.getClass());
 		for (Field f : fields) {
 			f.setAccessible(true);
@@ -451,12 +457,16 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 					&&f.get(target)!=null
 					//Id 主键不改变
 					&& f.getDeclaredAnnotation(Id.class) == null
+					//属性值相同无须改变
+					&& !f.get(target).equals(f.get(source))
 					//排除OneToMany 映射
 					&& f.getDeclaredAnnotation(OneToMany.class) == null)
-				f.set(source, f.get(target));
+				if(f.getDeclaredAnnotation(Embedded.class) != null){
+					f.set(source, modifySourceEntityProperties(f.get(source), f.get(target)));
+				}else
+					f.set(source, f.get(target));
 		}
-		
-		update(source);
+		return source;
 	}
 	
 	@Override

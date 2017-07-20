@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.Assert;
 
+import com.yinzhiwu.springmvc3.entity.yzw.Contract.ContractStatus;
+
 
 @Entity
 @Table(name="vorder")
@@ -177,7 +179,7 @@ public class OrderYzw extends BaseYzwEntity {
 		
 		//合约
 		Contract contract = new Contract();
-		contract.setStatus("已审核");
+		contract.setStatus(ContractStatus.CHECKED);
 		contract.setValidityTimes(product.getUsefulTimes());
 		 Calendar calendar = Calendar.getInstance();
 		contract.setStart(calendar.getTime());

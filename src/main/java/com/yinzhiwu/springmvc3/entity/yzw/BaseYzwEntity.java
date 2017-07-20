@@ -21,7 +21,7 @@ public abstract class BaseYzwEntity implements Serializable{
 	private static final long serialVersionUID = 1232031968327117427L;
 
 	@JsonIgnore
-	@Column(name="sf_create_user")
+	@Column(updatable=false,name="sf_create_user")
 	private Integer createUserId;
 
 	@JsonIgnore
@@ -31,7 +31,7 @@ public abstract class BaseYzwEntity implements Serializable{
 	@JsonIgnore
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
-	@Column(name="sf_create_time",insertable=true,updatable=true)
+	@Column(name="sf_create_time",insertable=true,updatable=false)
 	private Date createTime;
 	
 	@JsonIgnore
@@ -69,7 +69,12 @@ public abstract class BaseYzwEntity implements Serializable{
 		this.lastSyncTimeStamp =date;
 	}
 	
-    
+    public void beforeUpdate(){
+    	Date date = new Date();
+    	this.lastChangeTime= date;
+    	this.lastChangeTimestamp = date;
+    	this.lastSyncTimeStamp = date;
+    }
     
 	public Integer getCreateUserId() {
 		return createUserId;

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yinzhiwu.springmvc3.entity.yzw.Contract;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
 import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.ReturnedJson;
@@ -66,8 +67,11 @@ public class OrderController {
 	
 	@PutMapping("/{id}")
 	public YiwuJson<Boolean> modify(OrderYzw order, @PathVariable String id){
-		if(order.geteContractStatus())
-			order.setCurrentStatus("已确认");
+//		if(order.geteContractStatus()){
+//			Contract contract = new Contract();
+//			contract.setStatus("已确认");
+//			order.setContract(contract);
+//		}
 		try {
 			orderYzwService.modify(id, order);
 		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {

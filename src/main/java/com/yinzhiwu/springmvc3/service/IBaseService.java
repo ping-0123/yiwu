@@ -48,7 +48,8 @@ public interface IBaseService<T, PK extends Serializable> {
 	 * @throws IllegalAccessException
 	 * 
 	 */
-	void modify(PK id, T entity) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException;
+	public void modify(PK id, T entity) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException;
+	public void modify(T source, T target) throws IllegalArgumentException, IllegalAccessException;
 	
 	public T get(PK id);
 	

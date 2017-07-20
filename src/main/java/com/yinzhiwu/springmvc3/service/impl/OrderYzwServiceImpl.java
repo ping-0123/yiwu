@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.springmvc3.dao.DistributerDao;
 import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
 import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.springmvc3.entity.yzw.Contract;
+import com.yinzhiwu.springmvc3.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.springmvc3.entity.yzw.CustomerYzw;
 import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
+import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
 import com.yinzhiwu.springmvc3.model.YiwuJson;
 import com.yinzhiwu.springmvc3.model.view.OrderAbbrApiView;
 import com.yinzhiwu.springmvc3.model.view.OrderApiView;
@@ -65,6 +68,25 @@ public class OrderYzwServiceImpl  extends BaseServiceImpl<OrderYzw,String> imple
 		}
 	}
 
+	@Override
+	public void modify(String id, OrderYzw entity)
+			throws DataNotFoundException, IllegalArgumentException, IllegalAccessException {
+		OrderYzw source = super.get(id);
+		if(source == null ) throw new DataNotFoundException("id=" + id +  " 的订单不存在");
+		if(/**!source.geteContractStatus() && */entity.geteContractStatus())
+		{
+			if(entity.getContract() == null){
+				Contract con = new Contract();
+				entity.setContract(con);
+			}
+			if(source.getDiscount() < 1)
+				entity.getContract().setStatus(ContractStatus.UN_CHECKED);
+			else
+				entity.getContract().setStatus(ContractStatus.CHECKED);
+		}
+		super.modify(source, entity);
+	}
 
 
+	
 }
