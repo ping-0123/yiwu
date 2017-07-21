@@ -7,6 +7,12 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * 
+ * @author ping
+ * @version 2017年7月21日下午1:45:19
+ *
+ */
 @EnableSwagger2
 public class ApplicationSwaggerConfig {
 

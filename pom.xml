@@ -206,10 +206,11 @@
 		        <version>2.2</version>
 	              <configuration>
 	                      <url>http://localhost:8080/manager/html</url>
-	                     <!--   <server>localServer</server>-->
+	                      <server>tomcat</server>
+	                      <!--  
 	                      <username>tomcat</username>
-	                      <password>tomcat</password>
-	                      <charset>UTF-8</charset>
+	                      <password>tomcat</password> -->
+	                      <charset>UTF-8</charset> 
 	              </configuration>
          </plugin>
     </plugins>
