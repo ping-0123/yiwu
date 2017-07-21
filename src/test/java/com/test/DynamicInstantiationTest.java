@@ -7,9 +7,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yinzhiwu.springmvc3.dao.IncomeRecordDao;
-import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
-import com.yinzhiwu.springmvc3.model.view.IncomeRecordApiView;
+import com.yinzhiwu.yiwu.dao.IncomeRecordDao;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.view.IncomeRecordApiView;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -6,9 +6,9 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yinzhiwu.springmvc3.dao.DistributerDao;
-import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.model.page.PageBean;
+import com.yinzhiwu.yiwu.dao.DistributerDao;
+import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.model.page.PageBean;
 
 
 @Transactional

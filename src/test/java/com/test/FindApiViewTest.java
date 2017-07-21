@@ -9,8 +9,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yinzhiwu.springmvc3.dao.LessonYzwDao;
-import com.yinzhiwu.springmvc3.model.view.LessonApiView;
+import com.yinzhiwu.yiwu.dao.LessonYzwDao;
+import com.yinzhiwu.yiwu.model.view.LessonApiView;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)

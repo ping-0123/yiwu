@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yinzhiwu.springmvc3.dao.EmployeeDao;
-import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.entity.yzwOld.Customer;
-import com.yinzhiwu.springmvc3.model.view.EmployeeApiView;
-import com.yinzhiwu.springmvc3.service.DistributerService;
-import com.yinzhiwu.springmvc3.util.GeneratorUtil;
-import com.yinzhiwu.springmvc3.util.ShareCodeUtil;
+import com.yinzhiwu.yiwu.dao.EmployeeDao;
+import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.yzwOld.Customer;
+import com.yinzhiwu.yiwu.model.view.EmployeeApiView;
+import com.yinzhiwu.yiwu.service.DistributerService;
+import com.yinzhiwu.yiwu.util.GeneratorUtil;
+import com.yinzhiwu.yiwu.util.ShareCodeUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")

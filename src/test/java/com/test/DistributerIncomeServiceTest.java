@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yinzhiwu.springmvc3.entity.income.IncomeRecord;
-import com.yinzhiwu.springmvc3.service.DistributerIncomeService;
-import com.yinzhiwu.springmvc3.service.IncomeRecordService;
+import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
+import com.yinzhiwu.yiwu.service.DistributerIncomeService;
+import com.yinzhiwu.yiwu.service.IncomeRecordService;
 
 /**
 *@Author ping

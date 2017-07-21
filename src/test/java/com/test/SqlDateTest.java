@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yinzhiwu.springmvc3.entity.yzwOld.Lesson;
-import com.yinzhiwu.springmvc3.service.LessonService;
+import com.yinzhiwu.yiwu.entity.yzwOld.Lesson;
+import com.yinzhiwu.yiwu.service.LessonService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")

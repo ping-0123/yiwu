@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
-import com.yinzhiwu.springmvc3.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.Distributer;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class AnnotationTest {
