@@ -28,7 +28,7 @@ public class Qiniu {
 		InputStream in;
 		try {
 //			in = new FileInputStream(new File("qiniu.properties"));
-			in = Qiniu.class.getClassLoader().getResourceAsStream("qiniu.properties");
+			in = Qiniu.class.getClassLoader().getResourceAsStream("properties/qiniu.properties");
 //			in = ClassLoader.getSystemResourceAsStream("qiniu.properties");
 			properties.load(in);
 			ACCESS_KEY = properties.getProperty("qiniu.accessKey");

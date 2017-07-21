@@ -8,6 +8,25 @@
   <name>yiwu Maven Webapp</name>
   <url>http://maven.apache.org</url>
   
+  <profiles>
+  	<profile>
+  		<id>dev</id>
+  		<properties>
+  			<environment>development</environment>
+  		</properties>
+  		<activation>
+  			<activeByDefault>true</activeByDefault>
+  		</activation>
+  	</profile>
+  	<profile>
+  		<id>test</id>
+  		<properties><environment>test</environment></properties>
+  	</profile>
+  	<profile>
+  		<id>prod</id>
+  		<properties><environment>production</environment></properties>
+  	</profile>
+  </profiles>
    <properties>
 	   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
 	  	<spring.version>4.3.6.RELEASE</spring.version>
@@ -185,8 +204,23 @@
      
 	
   </dependencies>
+  
   <build>
     <finalName>yiwu</finalName>
+    <resources>
+    	<resource>
+    		<directory>src/main/resources</directory>
+    		<excludes>
+    			<exclude>environment/development/**</exclude>
+    			<exclude>environment/test/**</exclude>
+    			<exclude>environment/production/**</exclude>
+    		</excludes>
+    	</resource>
+    	<resource>
+    		<directory>src/main/resources/environment/${environment}</directory>
+    		<targetPath>config</targetPath>
+    	</resource>
+    </resources>
     <plugins>
     	<plugin>
     		<groupId>org.apache.maven.plugins</groupId>

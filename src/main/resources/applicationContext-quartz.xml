@@ -14,8 +14,6 @@
 			http://www.springframework.org/schema/tx 
             http://www.springframework.org/schema/tx/spring-tx.xsd 
 			">  
-	<!-- http://soulshard.iteye.com/blog/337886 -->
-	<context:property-placeholder location="classpath:quartz.properties"/>  
 
 	<!-- 产生佣金 -->
     <bean name="orderBrockerageJobDetail"    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
