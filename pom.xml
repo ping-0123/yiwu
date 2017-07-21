@@ -201,8 +201,6 @@
          <artifactId>springfox-petstore</artifactId>
          <version>${swagger.version}</version>
      </dependency>
-     
-	
   </dependencies>
   
   <build>

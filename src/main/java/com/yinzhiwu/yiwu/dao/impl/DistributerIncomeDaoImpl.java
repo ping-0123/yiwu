@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
