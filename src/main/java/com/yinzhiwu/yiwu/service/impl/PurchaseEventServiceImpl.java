@@ -16,7 +16,7 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.IncomeEventService;
 import com.yinzhiwu.yiwu.service.PurchaseEventService;
 
-@Service
+@Service(value="purchaseEventServiceImpl")
 public class PurchaseEventServiceImpl extends BaseServiceImpl<PurchaseEvent,Integer> implements PurchaseEventService {
 	
 	@Autowired private DistributerDao distributerDao;

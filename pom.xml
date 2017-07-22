@@ -27,6 +27,7 @@
   		<properties><environment>production</environment></properties>
   	</profile>
   </profiles>
+  
    <properties>
 	   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
 	  	<spring.version>4.3.6.RELEASE</spring.version>
@@ -216,7 +217,7 @@
     	</resource>
     	<resource>
     		<directory>src/main/resources/environment/${environment}</directory>
-    		<targetPath>config</targetPath>
+    		<targetPath>properties</targetPath>
     	</resource>
     </resources>
     <plugins>

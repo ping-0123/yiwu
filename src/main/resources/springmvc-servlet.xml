@@ -18,7 +18,7 @@
       		http://www.springframework.org/schema/mvc/spring-mvc.xsd
 			">  
 
-	<context:component-scan base-package="com.yinzhiwu.springmvc3">
+	<context:component-scan base-package="com.yinzhiwu.yiwu">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
@@ -39,7 +39,7 @@
     	<mvc:mapping path="/**" allowed-origins="*" allow-credentials="true" max-age="1800" allowed-methods="GET,POST,PUT,DELETE,OPTIONS" />
 	</mvc:cors>  
 	
-	<bean name="applicationSwaggerConfig" class="com.yinzhiwu.springmvc3.swagger.ApplicationSwaggerConfig"> </bean>
+	<bean name="applicationSwaggerConfig" class="com.yinzhiwu.yiwu.swagger.ApplicationSwaggerConfig"> </bean>
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsps/" />
@@ -66,7 +66,7 @@
    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
 		<property name="converters">
 			<list>
-				<bean class="com.yinzhiwu.springmvc3.convert.StringToDateConvertor">
+				<bean class="com.yinzhiwu.yiwu.convert.StringToDateConvertor">
 					<constructor-arg type="java.lang.String" value="yyyy-MM-dd"/>
 				</bean>
 			</list>
