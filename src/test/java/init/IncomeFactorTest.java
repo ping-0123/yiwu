@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yinzhiwu.springmvc3.entity.income.IncomeFactor;
-import com.yinzhiwu.springmvc3.entity.type.EventType;
-import com.yinzhiwu.springmvc3.entity.type.IncomeType;
-import com.yinzhiwu.springmvc3.entity.type.RelationType;
-import com.yinzhiwu.springmvc3.service.IncomeFactorService;
+import com.yinzhiwu.yiwu.entity.income.IncomeFactor;
+import com.yinzhiwu.yiwu.entity.type.EventType;
+import com.yinzhiwu.yiwu.entity.type.IncomeType;
+import com.yinzhiwu.yiwu.entity.type.RelationType;
+import com.yinzhiwu.yiwu.service.IncomeFactorService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")

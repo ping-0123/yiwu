@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.enums.Gender;
-import com.yinzhiwu.springmvc3.service.DistributerService;
+import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.enums.Gender;
+import com.yinzhiwu.yiwu.service.DistributerService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

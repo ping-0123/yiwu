@@ -11,16 +11,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yinzhiwu.springmvc3.dao.CapitalAccountDao;
-import com.yinzhiwu.springmvc3.dao.CustomerYzwDao;
-import com.yinzhiwu.springmvc3.dao.DistributerDao;
-import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
-import com.yinzhiwu.springmvc3.entity.CapitalAccount;
-import com.yinzhiwu.springmvc3.entity.Distributer;
-import com.yinzhiwu.springmvc3.entity.yzw.Contract;
-import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
-import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
-import com.yinzhiwu.springmvc3.service.DistributerService;
+import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
+import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
+import com.yinzhiwu.yiwu.dao.DistributerDao;
+import com.yinzhiwu.yiwu.dao.OrderYzwDao;
+import com.yinzhiwu.yiwu.entity.CapitalAccount;
+import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.yzw.Contract;
+import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.service.DistributerService;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yinzhiwu.springmvc3.entity.type.BaseType;
-import com.yinzhiwu.springmvc3.entity.type.CapitalAccountType;
-import com.yinzhiwu.springmvc3.entity.type.EventType;
-import com.yinzhiwu.springmvc3.entity.type.IncomeType;
-import com.yinzhiwu.springmvc3.entity.type.RelationType;
-import com.yinzhiwu.springmvc3.entity.type.TweetType;
-import com.yinzhiwu.springmvc3.service.BaseTypeService;
+import com.yinzhiwu.yiwu.entity.type.BaseType;
+import com.yinzhiwu.yiwu.entity.type.CapitalAccountType;
+import com.yinzhiwu.yiwu.entity.type.EventType;
+import com.yinzhiwu.yiwu.entity.type.IncomeType;
+import com.yinzhiwu.yiwu.entity.type.RelationType;
+import com.yinzhiwu.yiwu.entity.type.TweetType;
+import com.yinzhiwu.yiwu.service.BaseTypeService;
 
 
 

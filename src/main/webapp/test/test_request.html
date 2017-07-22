@@ -14,15 +14,40 @@
 	//		var v_baseUrl = "http://www.yinzhiwu.com:9090/yiwu/";
 			var v_baseUrl = "http://192.168.0.115:8080/yiwu/"
 	//		modifyHeadIconWithAjax();
-			register();
+//			register();
 	//		save_capitalAccount();
 	//		setDefaultAccount();
 	//		withdraw();
-	//		payDeposit();
+//			payDeposit();
 	//		shareTweet();
 	//		modify();
-	//		modifyDistributer();
+			modifyDistributer();
 	//		confirmContract();
+			
+			
+			function modifyDistributer(){
+				$.ajax({
+					type:"POST",
+					url:v_baseUrl + "/api/distributer/3000066",
+					data:{'nickName':'aaabbbb',
+						'name':'易平'},
+					async:true,
+					cache:false,
+					success:function(data){
+						$('#content').html(JSON.stringify(data));
+					}
+				});
+			}
+			function payDeposit(){
+				$.post(v_baseUrl+"api/event/deposit",
+					{distributerId:3000066,
+					amount:50,
+					fundsFirst:true},
+				function(data){
+					$('#content').html(JSON.stringify(data));
+				},
+				"json")
+			}
 			
 			
 			function confirmContract(){
@@ -38,19 +63,7 @@
 				});
 			}
 	
-			function modifyDistributer(){
-				$.ajax({
-					type:"POST",
-					url:v_baseUrl + "/api/distributer/3000002",
-					data:{'headIconName':'aaabbbb',
-						'defaultCapitalAccount.id':2000003},
-					async:true,
-					cache:false,
-					success:function(data){
-						$('#content').html(JSON.stringify(data));
-					}
-				});
-			}
+
 			function register(){
 				var v_url = "api/distributer";
 				var v_data = {phoneNo:'1804890160',
@@ -139,26 +152,7 @@
 				});
 			}
 			
-			function payDeposit(){
-				var v_url = v_baseUrl + "/api/moneyRecord/payDeposit";
-				$.ajax({
-					type:"post",
-					url:v_url,
-					data:{distributerId:'3000018',
-						amount:'200',
-						fundsFirst:true
-					},
-					dataType:"json",
-					timeout:50000,
-					async:true,
-					success:function(data){
-						$('#content').html(JSON.stringify(data));
-					},
-					error: function(jqXHR){     
-						alert("error");
-					}
-				});
-			}
+
 			function withdraw(){
 				var v_url = v_baseUrl + "/api/moneyRecord/withdraw";
 				$.ajax({

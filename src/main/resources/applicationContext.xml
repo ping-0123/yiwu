@@ -15,10 +15,13 @@
             http://www.springframework.org/schema/tx/spring-tx.xsd 
 			">  
 	<!-- 加载配置文件 -->
-	<context:property-placeholder location="classpath:jdbc.properties,classpath:hibernate.properties,classpath:log4j.properties"/>
+	<context:property-placeholder location="
+		classpath:properties/jdbc.properties,
+		classpath:properties/hibernate.properties,
+		classpath:properties/qiniu.properties,
+		classpath:properties/quartz.properties" />
 	
-	    <!-- �Զ�ɨ��dao��service��(�Զ�ע��) -->  
-    <context:component-scan base-package="com.yinzhiwu.springmvc3">
+    <context:component-scan base-package="com.yinzhiwu.yiwu">
     	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>  
     
@@ -60,11 +63,11 @@
         <property name="dataSource" ref="dataSource" />  
         <property name="packagesToScan">  
             <list>  
-                <value>com.yinzhiwu.springmvc3.entity</value>
-                <value>com.yinzhiwu.springmvc3.entity.yzw</value>
-                <value>com.yinzhiwu.springmvc3.entity.type</value>
-                <value>com.yinzhiwu.springmvc3.entity.income</value>
-                  <value>com.yinzhiwu.springmvc3.entity.yzwOld</value>
+                <value>com.yinzhiwu.yiwu.entity</value>
+                <value>com.yinzhiwu.yiwu.entity.yzw</value>
+                <value>com.yinzhiwu.yiwu.entity.type</value>
+                <value>com.yinzhiwu.yiwu.entity.income</value>
+                  <value>com.yinzhiwu.yiwu.entity.yzwOld</value>
             </list>  
         </property>  
         <property name="hibernateProperties">  
@@ -114,9 +117,10 @@
         </tx:attributes>  
     </tx:advice>  
     <aop:config>  
-        <aop:pointcut id="transactionPointcut" expression="execution(* com.yinzhiwu.springmvc3.service.impl.*Impl*.*(..)) || 
-        												execution(* com.yinzhiwu.springmvc3..*ServiceImpl.*(..))" />  
+        <aop:pointcut id="transactionPointcut" expression="execution(* com.yinzhiwu.yiwu.service.impl.*Impl*.*(..)) || 
+        												execution(* com.yinzhiwu.yiwu..*ServiceImpl.*(..))" />  
         <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />  
     </aop:config>  
   
+  	<import resource="applicationContext-*.xml"/>
  </beans>

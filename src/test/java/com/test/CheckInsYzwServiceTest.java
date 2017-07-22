@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yinzhiwu.springmvc3.dao.CheckInsYzwDao;
-import com.yinzhiwu.springmvc3.service.CheckInsYzwService;
+import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
+import com.yinzhiwu.yiwu.service.CheckInsYzwService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")

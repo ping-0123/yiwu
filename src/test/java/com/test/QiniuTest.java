@@ -21,7 +21,7 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
-import com.yinzhiwu.springmvc3.qiniu.Qiniu;
+import com.yinzhiwu.yiwu.qiniu.Qiniu;
 
 @SuppressWarnings("unused")
 @RunWith(BlockJUnit4ClassRunner.class)

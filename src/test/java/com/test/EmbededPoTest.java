@@ -7,10 +7,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yinzhiwu.springmvc3.dao.OrderYzwDao;
-import com.yinzhiwu.springmvc3.entity.yzw.Contract;
-import com.yinzhiwu.springmvc3.entity.yzw.OrderYzw;
-import com.yinzhiwu.springmvc3.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.dao.OrderYzwDao;
+import com.yinzhiwu.yiwu.entity.yzw.Contract;
+import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -8,9 +8,32 @@
   <name>yiwu Maven Webapp</name>
   <url>http://maven.apache.org</url>
   
+  <profiles>
+  	<profile>
+  		<id>dev</id>
+  		<properties>
+  			<environment>development</environment>
+  		</properties>
+  		<activation>
+  			<activeByDefault>true</activeByDefault>
+  		</activation>
+  	</profile>
+  	<profile>
+  		<id>test</id>
+  		<properties><environment>test</environment></properties>
+  	</profile>
+  	<profile>
+  		<id>prod</id>
+  		<properties><environment>production</environment></properties>
+  	</profile>
+  </profiles>
+  
    <properties>
 	   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
 	  	<spring.version>4.3.6.RELEASE</spring.version>
+	  	<aspectj.version>1.8.10</aspectj.version>
+	  	<hibernate.version>5.2.6.Final</hibernate.version>
+	  	<hibernate.validator.version>5.2.5.Final</hibernate.validator.version>
 	  	<jackson.version>2.8.7</jackson.version>
 	  	<quartz.version>2.3.0</quartz.version>
 	  	<qiniu.version>7.2.6</qiniu.version>
@@ -25,16 +48,22 @@
       <scope>test</scope>
     </dependency>
     
-      <dependency>
+    <!-- #### java servlet #### -->
+    <dependency>
 		<groupId>javax.servlet</groupId>
 		<artifactId>javax.servlet-api</artifactId>
 		<version>3.1.0</version>
 		<scope>provided</scope>
 	</dependency>   
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>jstl</artifactId>
+		<version>1.2</version>
+		<scope>runtime</scope>
+	</dependency>
 	
 	
-	
-	<!-- spring -->
+	<!-- ####### spring #########-->
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-webmvc</artifactId>
@@ -47,74 +76,60 @@
     </dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
-		<artifactId>spring-test</artifactId>
-		<version>${spring.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
 		<artifactId>spring-orm</artifactId>
 		<version>${spring.version}</version>
 	</dependency>
 	<dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context-support</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+    <dependency>
 		<groupId>org.springframework</groupId>
-		<artifactId>spring-tx</artifactId>
-		<version>${spring.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-jdbc</artifactId>
+		<artifactId>spring-test</artifactId>
 		<version>${spring.version}</version>
 	</dependency>
 	
-		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver  -->
+	<!-- #### aspectj 切面编程   #### -->
 	<dependency>
 	    <groupId>org.aspectj</groupId>
 	    <artifactId>aspectjweaver</artifactId>
-	    <version>1.8.10</version>
-	</dependency> 
-
-	<dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>jstl</artifactId>
-		<version>1.2</version>
-		<scope>runtime</scope>
+	    <version>${aspectj.version}</version>
 	</dependency>
-	
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjrt</artifactId>
+		<version>${aspectj.version}</version>
+	</dependency>
 
-	
-			<!-- mysql -->
+	<!-- ### database connector ### -->
 	<dependency>
 		<groupId>mysql</groupId>
 		<artifactId>mysql-connector-java</artifactId>
 		<version>5.1.41</version>
 	</dependency>
-	
-	<!-- c3p0-->
-	<!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
 	<dependency>
 	    <groupId>com.mchange</groupId>
 	    <artifactId>c3p0</artifactId>
 	    <version>0.9.5.2</version>
 	</dependency>
 
-	<!-- hibernate -->
-	<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+	<!-- ### hibernate  ###-->
 	<dependency>
 	    <groupId>org.hibernate</groupId>
 	    <artifactId>hibernate-core</artifactId>
-	    <version>5.2.6.Final</version>
+	    <version>${hibernate.version}</version>
 	</dependency>
-	
 	<dependency>
 	    <groupId>org.hibernate</groupId>
 	    <artifactId>hibernate-validator</artifactId>
-	    <version>5.2.5.Final</version>
+	    <version>${hibernate.validator.version}</version>
 	</dependency>
 
 	<dependency>
 		<groupId>org.hibernate</groupId>
 		<artifactId>hibernate-validator-annotation-processor</artifactId>
-		<version>5.2.5.Final</version>
+		<version>${hibernate.validator.version}</version>
 	</dependency>
 
 	
@@ -138,11 +153,7 @@
 	    <artifactId>jiguang-common</artifactId>
 	    <version>1.0.3</version>
 		</dependency>
-	<dependency>
-		<groupId>com.google.code.gson</groupId>
-		<artifactId>gson</artifactId>
-		<version>2.3</version>
-	</dependency>	
+	
 	<!-- For log4j  -->
 	<dependency>
 		<groupId>org.slf4j</groupId>
@@ -156,12 +167,11 @@
 	</dependency>
 	
 	<!-- apache 文件上传依赖包 -->
-	<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload 
 	<dependency>
 	    <groupId>commons-fileupload</groupId>
 	    <artifactId>commons-fileupload</artifactId>
 	    <version>1.3.2</version>
-	</dependency> -->
+	</dependency>
 
 	<!-- quartz 定时任务 -->
 
@@ -188,28 +198,35 @@
 	</dependency>	
 		
 	<!-- ######### swagger support ############ -->
-	<!--  
-   <dependency>
-        <groupId>com.mangofactory</groupId>
-        <artifactId>swagger-springmvc</artifactId>
-        <version>1.0.2</version>
-    </dependency> -->	
     <dependency>
          <groupId>io.springfox</groupId>
          <artifactId>springfox-swagger2</artifactId>
          <version>${swagger.version}</version>
      </dependency>
-      <!--petstore是官方的一个demo，加入此依赖是为了稍后参考接口描述的编写-->
+      <!--petstore是官方的一个demo，加入此依赖是为了稍后参考接口描述的编写   生产系统中无须添加-->
      <dependency>
          <groupId>io.springfox</groupId>
          <artifactId>springfox-petstore</artifactId>
          <version>${swagger.version}</version>
      </dependency>
-     
-	
   </dependencies>
+  
   <build>
     <finalName>yiwu</finalName>
+    <resources>
+    	<resource>
+    		<directory>src/main/resources</directory>
+    		<excludes>
+    			<exclude>environment/development/**</exclude>
+    			<exclude>environment/test/**</exclude>
+    			<exclude>environment/production/**</exclude>
+    		</excludes>
+    	</resource>
+    	<resource>
+    		<directory>src/main/resources/environment/${environment}</directory>
+    		<targetPath>properties</targetPath>
+    	</resource>
+    </resources>
     <plugins>
     	<plugin>
     		<groupId>org.apache.maven.plugins</groupId>
@@ -228,16 +245,14 @@
 		        <artifactId>tomcat7-maven-plugin</artifactId>
 		        <version>2.2</version>
 	              <configuration>
-	                      <url>http://localhost:9080/manager/html</url>
-	                     <!--   <server>localServer</server>-->
-	                      <username>ping</username>
-	                      <password>ping</password>
-	                      <port>9080</port>
-	                      <path>/ping</path>
-	                      <charset>UTF-8</charset>
+	                      <url>http://localhost:8080/manager/html</url>
+	                      <server>tomcat</server>
+	                      <!--  
+	                      <username>tomcat</username>
+	                      <password>tomcat</password> -->
+	                      <charset>UTF-8</charset> 
 	              </configuration>
          </plugin>
-
     </plugins>
   </build>
   
