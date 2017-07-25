@@ -115,7 +115,6 @@ public class DistributerApiView implements Serializable{
 		this.phoneNo = d.getPhoneNo();
 		this.memeberId = d.getMemberId();
 		this.shareCode = d.getShareCode();
-		this.headIconUrl = UrlUtil.toHeadIcomUrl(d.getHeadIconName());
 		this.registerDate = d.getRegistedTime();
 		this.beatRate = rate;
 		

@@ -1,5 +1,8 @@
 package com.yinzhiwu.yiwu.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.entity.Distributer;
 
 public class DistributerModifyModel {
@@ -9,6 +12,11 @@ public class DistributerModifyModel {
 	private String name;
 	
 	private String phoneNo;
+	
+	@JsonIgnore
+	private MultipartFile image;
+	
+	private String imageUrl;
 
 	public String getNickName() {
 		return nickName;
@@ -41,4 +49,29 @@ public class DistributerModifyModel {
 		d.setPhoneNo(phoneNo);
 		return d;
 	}
+	public DistributerModifyModel fromDistributer(Distributer distributer){
+		DistributerModifyModel model = new DistributerModifyModel();
+		model.setName(distributer.getName());
+		model.setNickName(distributer.getNickName());
+		model.setPhoneNo(distributer.getPhoneNo());
+		return model;
+	}
+	
+	public MultipartFile getImage() {
+		return image;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImage(MultipartFile image) {
+		this.image = image;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+	
+	
 }

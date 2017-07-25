@@ -3,8 +3,12 @@ package com.yinzhiwu.yiwu.entity.type;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @DiscriminatorValue("IncomeType")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class IncomeType  extends BaseType{
 
 	/**

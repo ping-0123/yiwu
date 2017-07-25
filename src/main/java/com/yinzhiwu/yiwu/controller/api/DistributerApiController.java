@@ -57,7 +57,7 @@ public class DistributerApiController extends BaseController {
 
 
 	@PostMapping(value="")
-	public YiwuJson<DistributerApiView> register(@Valid Distributer m, String invitationCode, BindingResult bindingResult){
+	public YiwuJson<Boolean> register(@Valid Distributer m, String invitationCode, BindingResult bindingResult){
 		if(bindingResult.hasErrors()){
 			return new YiwuJson<>(getErrorsMessage(bindingResult));
 		}
@@ -69,13 +69,13 @@ public class DistributerApiController extends BaseController {
 		}
 	}
 	
-	@PostMapping(value="/loginByWechat")
+	@GetMapping(value="/loginByWechat")
 	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String  wechatNo ){
 		return distributerService.loginByWechat(wechatNo);
 	}
 	
 	
-	@GetMapping(value="/loginByAccount")
+	@PostMapping(value="/loginByAccount")
 	public YiwuJson<DistributerApiView> loginByAccount(String account, String password){
 		return distributerService.loginByAccount(account,password);
 	}
@@ -92,7 +92,14 @@ public class DistributerApiController extends BaseController {
 		return distributerService.findById(id);
 	}
 	
-	
+	/**
+	 * @deprecated {@link /{distributerId}}
+	 * @param servletRequest
+	 * @param d
+	 * @param bindingResult
+	 * @return
+	 */
+	@Deprecated
 	@PostMapping(value="/modifyHeadIcon")
 	public YiwuJson<DistributerApiView>  modifyHeadIcon(HttpServletRequest servletRequest,
 				@Valid DistributerApiView d, BindingResult bindingResult){
@@ -195,23 +202,22 @@ public class DistributerApiController extends BaseController {
 	   return distributerService.judgePhoneNoIsRegistered(phoneNo);
    }
 	  
-
+   @GetMapping(value="/editform")
+   public ModelAndView getModifyForm(Model model ){
+	   DistributerModifyModel distributer = new DistributerModifyModel();
+	   model.addAttribute("model", distributer);
+	   return new ModelAndView("distributer/form");
+   }
    
-   
-   @RequestMapping(value="/{distributerId}", method={RequestMethod.PUT, RequestMethod.POST})
+   @RequestMapping(value="/{distributerId}", method={RequestMethod.PUT,RequestMethod.POST})
    @ApiOperation("修改会员个人资料")
    public YiwuJson<DistributerModifyModel> modify(DistributerModifyModel model, @PathVariable int distributerId){
-		try {
-			Distributer d = new Distributer();
-			d.setNickName(model.getNickName());
-			d.setName(model.getName());
-			d.setPhoneNo(model.getPhoneNo());
-			distributerService.modify(distributerId, d);
-			return new YiwuJson<>(model);
-		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
-			logger.error(e.getMessage());
-			return new YiwuJson<>(e.getMessage());
-		}
+	   if(model == null)
+		   return new YiwuJson<>("没有需要修改的项");
+	   if(model.getImage() !=null &&model.getImage().getSize() >500 *1024)
+		   return new YiwuJson<>("您上传的头像太大， 请保存在500Kb以下");
+	   
+		return	distributerService.modify(distributerId, model);
 	   
    }
    

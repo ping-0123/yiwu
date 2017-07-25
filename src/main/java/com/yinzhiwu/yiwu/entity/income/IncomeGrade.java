@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.yinzhiwu.yiwu.entity.BaseEntity;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
 
@@ -19,6 +22,7 @@ import com.yinzhiwu.yiwu.entity.type.IncomeType;
 //		@UniqueConstraint(name="uk_incomeGrade_gradeNo", columnNames="gradeNo"),
 //		@UniqueConstraint(name="uk_incomeGrade_name", columnNames="name")
 })
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class IncomeGrade extends BaseEntity {
 	
 	/**

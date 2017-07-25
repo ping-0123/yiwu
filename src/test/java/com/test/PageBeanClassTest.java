@@ -37,6 +37,6 @@ public class PageBeanClassTest {
 	public void testFindPageByProperties(){
 		PageBean<Distributer> page = distributerDao.findPageByProperty("customer.name", "孟，小主持人", 1, 10);
 		System.err.println(page.getList().size());
-		System.err.println(page.getList().get(0).getAccount());
+		System.err.println(page.getList().get(0).getUsername());
 	}
 }

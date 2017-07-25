@@ -8,6 +8,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Min;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.yinzhiwu.yiwu.entity.BaseEntity;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
@@ -16,6 +19,7 @@ import com.yinzhiwu.yiwu.entity.type.IncomeType;
 @Table(name="yiwu_distributer_income", uniqueConstraints={
 		@UniqueConstraint(name="cuk_dIncome_distributer_incomeType",columnNames={"distributer_id", "incomeType_id"})
 })
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class DistributerIncome extends BaseEntity {
 
 	/**

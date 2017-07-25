@@ -31,10 +31,10 @@ public class FindPageTest {
 	@Test
 	public void testModify(){
 		Distributer taget = new Distributer();
-		taget.setAccount("aaaaaaaaaaa");
+		taget.setUsername("aaaaaaaaaaa");
 		try {
 			distributerDao.modify(3000020,taget);
-			System.err.println(distributerDao.get(3000020).getAccount());
+			System.err.println(distributerDao.get(3000020).getUsername());
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

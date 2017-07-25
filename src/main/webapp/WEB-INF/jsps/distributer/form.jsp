@@ -11,9 +11,8 @@
 	</head>
 	<body>
 		<div id="global">
-		<form:form commandName="distributerApiView" action="modifyHeadIcon" method="post" enctype="multipart/form-data">
+		<form:form commandName="model" action="./3000020" method="post" enctype="multipart/form-data">
 		  <fieldset>
-		<form:hidden path = "id" value="3000018" />
 		<form:input type="file" path="image"/>
         <input id="reset" type="reset" >
         <input id="submit" type="submit" />
