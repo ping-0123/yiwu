@@ -19,6 +19,18 @@ public class DistributerServiceTest {
 	private DistributerService distributerService;
 	
 	@Test
+	public  void testValueInjection(){
+		System.err.println(distributerService.getHeadIconSavePath());
+		System.err.println(distributerService.getHeadIconUrl());
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
 	public void saveRegister(){
 		String phonePre = "18803332";
 		String wechatNoPre = "wechatNo";

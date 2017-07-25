@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,7 @@ import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.DistributerModifyModel;
 import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
@@ -34,7 +36,6 @@ import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.IncomeEventService;
-import com.yinzhiwu.yiwu.util.UrlUtil;
 
 @Service
 public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer> implements DistributerService{
@@ -51,9 +52,13 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Autowired private OrderYzwDao orderDao;
 	@Autowired private CapitalAccountDao capitalAccountDao;
 	
+	@Value("${system.headIcon.savePath}")
+	private String headIconSavePath;
+	@Value("${system.headIcon.url}")
+	private String headIconUrl;
 
 	@Override
-	public YiwuJson<DistributerApiView> register(String invitationCode, Distributer distributer) {
+	public YiwuJson<Boolean> register(String invitationCode, Distributer distributer) {
 		
 		/**
 		 * init new distributer' default properties such as "createTime"
@@ -135,33 +140,28 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		 /**
 		  * get distributer's current exp income value and beat rate for return
 		  */
-		float expValue =0f;
-		try {
-			expValue = distributerIncomeDao.findCountByProperties(
-					 new String[]{"distributer.id", "incomeType.id"}, 
-					 new Object[]{distributer.getId(), IncomeType.EXP.getId()});
-		} catch (Exception e) {
-			logger.warn(e.getLocalizedMessage());
-		}
-		float beatRate = distributerIncomeDao.get_beat_rate(IncomeType.EXP,expValue);
+//		float expValue =0f;
+//		try {
+//			expValue = distributerIncomeDao.findCountByProperties(
+//					 new String[]{"distributer.id", "incomeType.id"}, 
+//					 new Object[]{distributer.getId(), IncomeType.EXP.getId()});
+//		} catch (Exception e) {
+//			logger.warn(e.getLocalizedMessage());
+//		}
+////		float beatRate = distributerIncomeDao.get_beat_rate(IncomeType.EXP,expValue);
 		
 		/*
 		 * return dto
 		 */
-		try {
-			return new YiwuJson<>(new DistributerApiView(distributerDao.get(distributer.getId()),beatRate));
-		} catch (DataNotFoundException e) {
-			return new YiwuJson<>(e.getMessage());
-		}
+		 return new YiwuJson<>("注册成功!", Boolean.TRUE);
 	}
+	
 	@Override
 	public YiwuJson<DistributerApiView> findById(int id) {
 		try{
 			Distributer distributer = distributerDao.get(id);
-			float rate = distributerIncomeDao.get_beat_rate(
-					IncomeType.EXP,
-					distributer.getDistributerIncome(IncomeType.EXP).getIncome());
-			return new YiwuJson<>(new DistributerApiView(distributer, rate));
+			DistributerApiView view = _wrapDaoToApiView(distributer);
+			return new YiwuJson<>(view);
 		}catch (DataNotFoundException e) {
 			return new YiwuJson<>(e.getMessage());
 		}
@@ -170,10 +170,9 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	public YiwuJson<DistributerApiView> loginByWechat(String wechatNo) {
 		try {
 			Distributer distributer = distributerDao.findByWechat(wechatNo);
-			float rate = distributerIncomeDao.get_beat_rate(
-					IncomeType.EXP,
-					distributer.getDistributerIncome(IncomeType.EXP).getIncome());
-			return new YiwuJson<>(new DistributerApiView(distributer, rate));
+			DistributerApiView view = _wrapDaoToApiView(distributer);
+			return new YiwuJson<>(view);
+			
 		} catch (DataNotFoundException e) {
 			return new YiwuJson<>(e.getMessage());
 		}
@@ -182,16 +181,24 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	public YiwuJson<DistributerApiView> loginByAccount(String account, String password) {
 		try {
 			Distributer distributer = distributerDao.findByAccountPassword(account, password);
-			float rate = distributerIncomeDao.get_beat_rate(
-					IncomeType.EXP,
-					distributer.getDistributerIncome(IncomeType.EXP).getIncome());
-			return new YiwuJson<>(new DistributerApiView(distributer, rate));
+			DistributerApiView view = _wrapDaoToApiView(distributer);
+			return new YiwuJson<>(view);
 		} catch (DataNotFoundException e) {
 			return new YiwuJson<>(e.getMessage());
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
+	private DistributerApiView _wrapDaoToApiView(Distributer distributer) {
+		float rate = distributerIncomeDao.get_beat_rate(
+				IncomeType.EXP,
+				distributer.getDistributerIncome(IncomeType.EXP).getIncome());
+		DistributerApiView view = new DistributerApiView(distributer, rate);
+		view.setHeadIconUrl(_getHeadIconUrl(distributer.getHeadIconName()));
+		return view;
+	}
+	
+	@Deprecated
 	@Override
 	public YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile, String fileSavePath) {
 		try{
@@ -280,7 +287,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				v.setSumShareTweetTimes(shareTweeetEventDao.findShareTweetTimes(income.getDistributer().getId()));
 				v.setSumMemberCount(distributerDao.findCountByProperty("superDistributer.id", income.getDistributer().getId()));
 				v.setSumOrderCount(orderDao.findCountByProperty("customer.id", income.getDistributer().getCustomer().getId()));
-				v.setHeadIconUrl(UrlUtil.toHeadIcomUrl(income.getDistributer().getHeadIconName()));
+				v.setHeadIconUrl(_getHeadIconUrl(income.getDistributer().getHeadIconName()));
 			}catch (Exception e) {
 				logger.error(e);
 			}
@@ -288,8 +295,63 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		}
 		return views;
 	}
-
-
-
+	@Override
+	public YiwuJson<DistributerModifyModel> modify(int distributerId, DistributerModifyModel model) {
+		Distributer distributer = model.toDistributer();
+		if(model.getImage() != null && model.getImage().getSize()>0){
+			String fileName= System.currentTimeMillis()+ "_" + model.getImage().getOriginalFilename();
+			File file = new File(headIconSavePath + fileName);
+			File folder = new File(headIconSavePath);
+			if(!folder.exists()){
+				folder.mkdirs();
+			}
+			
+			try {
+				model.getImage().transferTo(file);
+				distributer.setHeadIconName(fileName);
+				model.setImageUrl(headIconUrl + fileName);
+			} catch (IllegalStateException  e) {
+				logger.error(e);
+				return new YiwuJson<>("服务器内部原因，头像保存失败");
+			}catch (IOException e) {
+				logger.error(e.getMessage());
+				return new YiwuJson<>("图片保存目录 "  + headIconSavePath + " 不存在");
+			}
+			
+		}
+		
+		try {
+			super.modify(distributerId, distributer);
+		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
+			logger.error(e);
+			return new YiwuJson<>("服务器内部原因， 修改会员资料失败");
+		}
+		
+		return new YiwuJson<>(model);
+	}
 	
+	@Override
+	public String getHeadIconSavePath() {
+		return headIconSavePath;
+	}
+	@Override
+	public String getHeadIconUrl() {
+		return headIconUrl;
+	}
+	public void setHeadIconSavePath(String headIconSavePath) {
+		this.headIconSavePath = headIconSavePath;
+	}
+	public void setHeadIconUrl(String headIconUrl) {
+		this.headIconUrl = headIconUrl;
+	}
+
+
+	private String _getHeadIconUrl(String headIconName){
+		if(StringUtils.hasLength(headIconName))
+			return headIconUrl + headIconName;
+		else
+			return "";
+	}
+	
+
 }

@@ -22,7 +22,7 @@ public class IncomeFactor extends BaseEntity {
 	private static final long serialVersionUID = 8480309517203173801L;
 
 	@Column(name="delete_flag")
-	private Boolean deleteFlag;
+	private Boolean deleteFlag = Boolean.FALSE;
 	
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeFactor_eventType_id"))

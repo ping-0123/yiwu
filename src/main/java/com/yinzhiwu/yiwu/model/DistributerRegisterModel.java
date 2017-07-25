@@ -16,7 +16,7 @@ public class DistributerRegisterModel {
 			message = "请输入正确的11位手机号码")
 	private String phoneNo;
 	
-	private String account;
+	private String username;
 	
 	@Pattern(regexp="^[a-zA-Z]\\w{5,17}$",
 			message="密码必须由字母开头，有字母，数字，下划线组成的6-18位字符")
@@ -44,8 +44,8 @@ public class DistributerRegisterModel {
 		return phoneNo;
 	}
 
-	public String getAccount() {
-		return account;
+	public String getUsername() {
+		return username;
 	}
 
 	public String getPassword() {
@@ -84,8 +84,8 @@ public class DistributerRegisterModel {
 		this.phoneNo = phoneNo;
 	}
 
-	public void setAccount(String account) {
-		this.account = account;
+	public void setUsername(String account) {
+		this.username = account;
 	}
 
 	public void setPassWord(String passWord) {

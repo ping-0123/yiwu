@@ -19,12 +19,16 @@
   		</activation>
   	</profile>
   	<profile>
-  		<id>test</id>
-  		<properties><environment>test</environment></properties>
+  		<id>tst</id>
+  		<properties>
+  			<environment>testevn</environment>
+  		</properties>
   	</profile>
   	<profile>
   		<id>prod</id>
-  		<properties><environment>production</environment></properties>
+  		<properties>
+  			<environment>production</environment>
+  		</properties>
   	</profile>
   </profiles>
   
@@ -131,7 +135,11 @@
 		<artifactId>hibernate-validator-annotation-processor</artifactId>
 		<version>${hibernate.validator.version}</version>
 	</dependency>
-
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-ehcache</artifactId>
+		<version>${hibernate.version}</version>
+	</dependency>
 	
 	<!-- json支持 -->
 	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
@@ -218,13 +226,15 @@
     		<directory>src/main/resources</directory>
     		<excludes>
     			<exclude>environment/development/**</exclude>
-    			<exclude>environment/test/**</exclude>
+    			<exclude>environment/testevn/**</exclude>
     			<exclude>environment/production/**</exclude>
+    			<exclude>部署到新环境中执行/**</exclude>
+    			<exclude>examples/**</exclude>
     		</excludes>
     	</resource>
     	<resource>
     		<directory>src/main/resources/environment/${environment}</directory>
-    		<targetPath>properties</targetPath>
+    		<targetPath>properties/</targetPath>
     	</resource>
     </resources>
     <plugins>

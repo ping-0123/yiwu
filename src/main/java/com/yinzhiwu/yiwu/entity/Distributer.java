@@ -25,6 +25,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -42,11 +44,12 @@ import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
  * @author ping
  *
  */
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 @Table(name="yiwu_distributer", 
 	uniqueConstraints={
 			@UniqueConstraint(name="uk_distributer_memberId", columnNames={"memberId"}),
-			@UniqueConstraint(name="uk_distributer_account", columnNames={"account"}),
+			@UniqueConstraint(name="uk_distributer_account", columnNames={"username"}),
 			@UniqueConstraint(name="uk_distributer_wechatNo", columnNames="wechatNO"),
 			@UniqueConstraint(name="uk_distributer_phoneNo", columnNames="phoneNo"),
 			@UniqueConstraint(name="uk_distributer_shareCode", columnNames="shareCode"),
@@ -85,8 +88,8 @@ public class Distributer extends BaseEntity{
 	 *	unique
 	 */
 
-	@Column(length=32, nullable=false, updatable=false)
-	private String account;  //默认是手机号
+	@Column(length=32, insertable=true, updatable=false)
+	private String username;  //默认是手机号
 	
 	@Column(length=32, nullable=false)
 	private String password;
@@ -163,19 +166,23 @@ public class Distributer extends BaseEntity{
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="superDistributer")
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private List<Distributer> subordinates = new ArrayList<>();
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="distributer")
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Set<CapitalAccount> capitalAccounts = new HashSet<>();
 	
 
 
 	@JsonIgnore
 	@OneToMany(mappedBy="receiver")
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private List<Message> messages = new ArrayList<>();
 	
 
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	@JsonIgnore
 	@OneToMany(mappedBy="distributer", cascade=CascadeType.PERSIST)
 	private List<DistributerIncome>  distributerIncomes = new ArrayList<>();
@@ -185,8 +192,8 @@ public class Distributer extends BaseEntity{
 		super.init();
 		if(!StringUtils.hasLength(this.getName()))
 			setName(getPhoneNo());
-		if(!StringUtils.hasLength(getAccount()))
-			setAccount(getPhoneNo());
+		if(!StringUtils.hasLength(getUsername()))
+			setUsername(getPhoneNo());
 		if(!StringUtils.hasLength(getNickName()))
 			setNickName(getPhoneNo());
 		if(!StringUtils.hasLength(getPassword()))
@@ -200,8 +207,8 @@ public class Distributer extends BaseEntity{
 	}
 	
 	public void initialize(){
-		if (StringUtils.isEmpty(this.account)){
-			this.account = this.phoneNo;
+		if (StringUtils.isEmpty(this.username)){
+			this.username = this.phoneNo;
 		}
 	}
 	
@@ -209,7 +216,7 @@ public class Distributer extends BaseEntity{
 		super();
 		this.registedTime = getCreateDate();
 		this.phoneNo = m.getPhoneNo();
-		this.account = m.getAccount();
+		this.username = m.getUsername();
 		this.password = m.getPassword();
 		this.name = m.getName();
 		this.nickName = m.getNickName();
@@ -297,8 +304,8 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public String getAccount() {
-		return account;
+	public String getUsername() {
+		return username;
 	}
 
 
@@ -391,8 +398,8 @@ public class Distributer extends BaseEntity{
 	}
 
 
-	public void setAccount(String account) {
-		this.account = account;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 

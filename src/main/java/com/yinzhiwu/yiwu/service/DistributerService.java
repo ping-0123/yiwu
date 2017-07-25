@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.DistributerModifyModel;
 import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
@@ -14,7 +15,7 @@ import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 
 public interface DistributerService extends IBaseService<Distributer, Integer> {
 
-	YiwuJson<DistributerApiView> register(String invitationCode, Distributer distributer);
+	YiwuJson<Boolean> register(String invitationCode, Distributer distributer);
 
 	YiwuJson<DistributerApiView> loginByWechat(String wechatNo);
 
@@ -38,7 +39,11 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 
 	List<TopThreeApiView> getBrokerageTopThree();
 
+	YiwuJson<DistributerModifyModel> modify(int distributerId, DistributerModifyModel model);
 
+	String getHeadIconSavePath();
+
+	String getHeadIconUrl();
 
 
 }
