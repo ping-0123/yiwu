@@ -309,7 +309,10 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			try {
 				model.getImage().transferTo(file);
 				distributer.setHeadIconName(fileName);
-				model.setImageUrl(headIconUrl + fileName);
+				//mutipartFile 不传给前端
+				model.setImage(null);
+				//放回图片的url给前端, 前端通过url访问图片
+				model.setImageUrl(_getHeadIconUrl(fileName));
 			} catch (IllegalStateException  e) {
 				logger.error(e);
 				return new YiwuJson<>("服务器内部原因，头像保存失败");

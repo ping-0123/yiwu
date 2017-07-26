@@ -2,7 +2,6 @@ package com.yinzhiwu.yiwu.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.entity.Distributer;
 
 public class DistributerModifyModel {
@@ -13,7 +12,6 @@ public class DistributerModifyModel {
 	
 	private String phoneNo;
 	
-	@JsonIgnore
 	private MultipartFile image;
 	
 	private String imageUrl;
