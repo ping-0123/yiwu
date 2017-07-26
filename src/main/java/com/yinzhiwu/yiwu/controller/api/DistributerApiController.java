@@ -69,7 +69,7 @@ public class DistributerApiController extends BaseController {
 		}
 	}
 	
-	@GetMapping(value="/loginByWechat")
+	@PostMapping(value="/loginByWechat")
 	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String  wechatNo ){
 		return distributerService.loginByWechat(wechatNo);
 	}
