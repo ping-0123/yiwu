@@ -10,88 +10,86 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vdepartment")
+@Table(name = "vdepartment")
 public class Department {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="Id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "Id")
 	private Integer id;
-	
-	@Column(length=50, name="Name" )
+
+	@Column(length = 50, name = "Name")
 	private String deptName;
-	
+
 	@Column
 	private Integer superiorId;
-	
+
 	@Column
 	private String path;
-	
+
 	@Column
 	private Integer manager1;
-	
+
 	@Column
 	private Integer manager2;
-	
-	@Column(length=200)
+
+	@Column(length = 200)
 	private String description;
-	
-	@Column(name="sf_create_user")
+
+	@Column(name = "sf_create_user")
 	private Integer creator;
-	
-	@Column(name="sf_last_change_user")
+
+	@Column(name = "sf_last_change_user")
 	private Integer lastChanger;
-	
-	@Column(name="sf_create_time")
+
+	@Column(name = "sf_create_time")
 	private Date createTime;
-	
-	@Column(name="sf_last_change_time")
+
+	@Column(name = "sf_last_change_time")
 	private Date lastChangeTime;
-	
+
 	@Column
 	private Integer removed;
-	
+
 	@Column
 	private Integer flag;
-	
+
 	@Column
 	private Integer wparam;
-	
+
 	@Column
 	private Integer lparam;
-	
+
 	@Column
 	private Integer machineCode;
-	
-	@Column(name="sf_Last_Sync_TimeStamp")
+
+	@Column(name = "sf_Last_Sync_TimeStamp")
 	private Date lastSyncTimeStamp;
-	
-	@Column(name="sf_last_change_timeStamp")
+
+	@Column(name = "sf_last_change_timeStamp")
 	private Date lastChangeTimeStamp;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String operationDistrict;
-	
-	@Column(length=16)
+
+	@Column(length = 16)
 	private String city;
-	
-	@Column(length=16)
+
+	@Column(length = 16)
 	private String officialAccount;
-	
+
 	@Column
 	private String logo;
-	
+
 	@Column
 	private String province;
-	
-	
-	
+
 	public Department() {
 	}
 
 	public Department(int id, String name) {
-		this.id=id;
-		this.deptName =name;
+		this.id = id;
+		this.deptName = name;
 	}
 
 	public final Integer getId() {
@@ -101,7 +99,6 @@ public class Department {
 	public final void setId(Integer id) {
 		this.id = id;
 	}
-
 
 	public final String getDeptName() {
 		return deptName;
@@ -278,6 +275,5 @@ public class Department {
 	public final void setProvince(String province) {
 		this.province = province;
 	}
-	
-	
+
 }

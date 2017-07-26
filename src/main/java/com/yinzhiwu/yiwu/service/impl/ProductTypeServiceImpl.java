@@ -11,19 +11,17 @@ import com.yinzhiwu.yiwu.entity.type.ProductType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.ProductTypeService;
 
-
-
 @Service
 public class ProductTypeServiceImpl implements ProductTypeService {
-	
+
 	@Autowired
 	private ProductTypeDao productTypeDao;
 
 	@Override
 	public List<ProductType> findAll() {
-		try{
+		try {
 			return productTypeDao.findAll();
-		}catch (DataNotFoundException e) {
+		} catch (DataNotFoundException e) {
 			return new ArrayList<>();
 		}
 	}
@@ -36,6 +34,5 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 			return null;
 		}
 	}
-
 
 }

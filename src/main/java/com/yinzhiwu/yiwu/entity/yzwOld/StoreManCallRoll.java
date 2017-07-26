@@ -10,41 +10,40 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vstore_callroll")
+@Table(name = "vstore_callroll")
 public class StoreManCallRoll {
-	
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String lessonId;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String memberCard;
-	
+
 	@Column
 	private Integer flagCallroll;
-	
+
 	@Column
 	private String unCallrollReason;
-	
+
 	@Column
 	private Integer createUserId;
-	
+
 	@Column
 	private Integer lastChangeUserId;
-	
+
 	@Column
 	private Date createTime;
-	
+
 	@Column
 	private Date lastChangeTime;
-	
+
 	@Column
 	private Integer machineCode;
-	
+
 	@Column
 	private Date lastSyncTimeStamp;
 
@@ -135,9 +134,5 @@ public class StoreManCallRoll {
 	public final void setLastSyncTimeStamp(Date lastSyncTimeStamp) {
 		this.lastSyncTimeStamp = lastSyncTimeStamp;
 	}
-	
-	
-	
 
-		
 }

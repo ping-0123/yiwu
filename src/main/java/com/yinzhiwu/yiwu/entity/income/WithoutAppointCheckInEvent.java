@@ -24,7 +24,7 @@ public class WithoutAppointCheckInEvent extends CheckInEvent {
 		super(distributer, type, param, checkIn);
 	}
 
-	public WithoutAppointCheckInEvent(Distributer distributer, Float param, CheckInsYzw checkIn){
-		super(distributer, EventType.CHECK_IN_WITHOUT_APPOINTMENT, param,checkIn);
+	public WithoutAppointCheckInEvent(Distributer distributer, Float param, CheckInsYzw checkIn) {
+		super(distributer, EventType.CHECK_IN_WITHOUT_APPOINTMENT, param, checkIn);
 	}
 }

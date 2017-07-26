@@ -1,6 +1,6 @@
 package com.yinzhiwu.yiwu.exception;
 
-public class YiwuException  extends Exception{
+public class YiwuException extends Exception {
 
 	/**
 	 * 
@@ -26,6 +26,5 @@ public class YiwuException  extends Exception{
 	public YiwuException(Throwable cause) {
 		super(cause);
 	}
-	
 
 }

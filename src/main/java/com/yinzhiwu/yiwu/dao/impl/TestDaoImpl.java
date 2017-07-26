@@ -6,6 +6,6 @@ import com.yinzhiwu.yiwu.dao.TestDao;
 import com.yinzhiwu.yiwu.entity.Test;
 
 @Repository
-public class TestDaoImpl extends BaseDaoImpl<Test, Long> implements TestDao{
-	
+public class TestDaoImpl extends BaseDaoImpl<Test, Long> implements TestDao {
+
 }

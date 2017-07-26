@@ -10,42 +10,42 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vclassroom")
+@Table(name = "vclassroom")
 public class ClassRoom {
 
 	@Id
-	@Column(length=32,name="id")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(length = 32, name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String roomId;
-	
-	@Column(length=32, name="name")
+
+	@Column(length = 32, name = "name")
 	private String roomName;
-	
-	@Column(name="store_id")
+
+	@Column(name = "store_id")
 	private Integer storeId;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String storeName;
-	
+
 	@Column
 	private Integer maxStudentCount;
-	
+
 	@Column
 	private Integer minStudentCount;
-	
+
 	private Integer sf_create_user;
-	
+
 	private Integer sf_last_change_user;
-	
+
 	private Date sf_create_time;
-	
+
 	private Date sf_last_change_time;
-	
+
 	private Integer machineCode;
-	
+
 	private Date sf_last_sync_timeStamp;
-	
-	private Date  sf_last_change_timeStamp;
+
+	private Date sf_last_change_timeStamp;
 
 	public String getRoomId() {
 		return roomId;
@@ -150,9 +150,5 @@ public class ClassRoom {
 	public void setSf_last_change_timeStamp(Date sf_last_change_timeStamp) {
 		this.sf_last_change_timeStamp = sf_last_change_timeStamp;
 	}
-	
 
-	
-	
-	
 }

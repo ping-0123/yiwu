@@ -10,24 +10,23 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CourseApiView;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
 
-
 @Service
-public class CourseYzwServiceImpl  extends BaseServiceImpl<CourseYzw,String> implements CourseYzwService{
+public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> implements CourseYzwService {
 
 	@Autowired
 	private CourseYzwDao courseDao;
-	
+
 	@Autowired
-	public void setBaseDao(CourseYzwDao courseYzwDao){
+	public void setBaseDao(CourseYzwDao courseYzwDao) {
 		super.setBaseDao(courseYzwDao);
 	}
-	
+
 	@Override
 	public YiwuJson<CourseApiView> findById(String id) {
-		try{
+		try {
 			CourseYzw course = courseDao.get(id);
 			return new YiwuJson<>(new CourseApiView(course));
-		}catch (DataNotFoundException e) {
+		} catch (DataNotFoundException e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}

@@ -6,6 +6,6 @@ import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 
 @Repository
-public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> implements CapitalAccountDao{
+public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> implements CapitalAccountDao {
 
 }

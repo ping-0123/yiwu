@@ -24,37 +24,35 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/api/appointment")
-public class AppointmentApiController extends BaseController{
+public class AppointmentApiController extends BaseController {
 
 	@Autowired
 	private AppointmentService appointmentService;
-	
+
 	@Deprecated
-	@RequestMapping(value="/getStatus", method={RequestMethod.GET})
-	public ReturnedJson getStatus(@RequestParam int customerId,
-								@RequestParam int lessonId){
-		return new ReturnedJson(
-				appointmentService.getStatus(customerId, lessonId));
+	@RequestMapping(value = "/getStatus", method = { RequestMethod.GET })
+	public ReturnedJson getStatus(@RequestParam int customerId, @RequestParam int lessonId) {
+		return new ReturnedJson(appointmentService.getStatus(customerId, lessonId));
 	}
-	
-	@Autowired private AppointmentEventService appointmentEventService;
-	
-	@PostMapping(value="/appoint")
-	@ApiOperation(value="预约课程")
-	public YiwuJson<AppointSuccessApiView> appointLesson(
-			@ApiParam(required =true) int distributerId, @ApiParam(required =true) int lessonId)
-	{
+
+	@Autowired
+	private AppointmentEventService appointmentEventService;
+
+	@PostMapping(value = "/appoint")
+	@ApiOperation(value = "预约课程")
+	public YiwuJson<AppointSuccessApiView> appointLesson(@ApiParam(required = true) int distributerId,
+			@ApiParam(required = true) int lessonId) {
 		try {
-			return  new YiwuJson<>(appointmentEventService.saveAppoint(distributerId, lessonId));
+			return new YiwuJson<>(appointmentEventService.saveAppoint(distributerId, lessonId));
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
-	@PostMapping(value="/unAppoint")
-	@ApiOperation(value="取消课程预约")
-	public YiwuJson<AppointSuccessApiView> unAppointLesson(
-			@ApiParam(required =true) int distributerId,@ApiParam(required =true) int lessonId)
-	{
+
+	@PostMapping(value = "/unAppoint")
+	@ApiOperation(value = "取消课程预约")
+	public YiwuJson<AppointSuccessApiView> unAppointLesson(@ApiParam(required = true) int distributerId,
+			@ApiParam(required = true) int lessonId) {
 		try {
 			return new YiwuJson<>(appointmentEventService.saveUnAppoint(distributerId, lessonId));
 		} catch (Exception e) {

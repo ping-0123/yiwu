@@ -16,11 +16,12 @@ import com.yinzhiwu.yiwu.model.view.LessonApiView;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class FindApiViewTest {
-	
-	@Autowired LessonYzwDao lessonDao;
-	
+
+	@Autowired
+	LessonYzwDao lessonDao;
+
 	@Test
-	public void test(){
+	public void test() {
 		List<LessonApiView> views = lessonDao.findApiViewsByCourseId("20170502002");
 		System.out.println(views.size());
 		for (LessonApiView v : views) {

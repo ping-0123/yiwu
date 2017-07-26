@@ -17,9 +17,8 @@ import javax.validation.constraints.NotNull;
 import com.yinzhiwu.yiwu.entity.income.CheckInEvent;
 
 @Entity
-@Table(name="vcheck_ins")
+@Table(name = "vcheck_ins")
 public class CheckInsYzw extends BaseYzwEntity {
-	
 
 	/**
 	 * 
@@ -27,47 +26,45 @@ public class CheckInsYzw extends BaseYzwEntity {
 	private static final long serialVersionUID = 925280755246130775L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String memberCard;
-	
+
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="lessonId", foreignKey=
-			@ForeignKey(name="fk_checkIns_lesson_id", value=ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "lessonId", foreignKey = @ForeignKey(name = "fk_checkIns_lesson_id", value = ConstraintMode.NO_CONSTRAINT))
 	private LessonYzw lesson;
-	
-	@Column(length=32, name="contract")
+
+	@Column(length = 32, name = "contract")
 	private String contractNo;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="teacherId", foreignKey=
-			@ForeignKey(name="fk_checkIns_teacher_id", value=ConstraintMode.NO_CONSTRAINT))
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "teacherId", foreignKey = @ForeignKey(name = "fk_checkIns_teacher_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw teacher;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String comsumeSd;
-	
+
 	@Column
 	private Boolean flag;
-	
+
 	@Column
 	private String isRetroactive;
-	
+
 	@Column
 	private Boolean storemanCallroll;
-	
+
 	@Column
 	private String uncallrollReason;
-	
-	@OneToOne(mappedBy="checkIn")
+
+	@OneToOne(mappedBy = "checkIn")
 	private CheckInEvent event;
 
 	public CheckInsYzw() {
 	}
-	
+
 	public CheckInsYzw(String memberCard, LessonYzw lesson, String contractNo, EmployeeYzw teacher) {
 		super.init();
 		this.memberCard = memberCard;
@@ -76,15 +73,11 @@ public class CheckInsYzw extends BaseYzwEntity {
 		this.teacher = teacher;
 	}
 
-
-	
 	@Override
 	public void init() {
 		super.init();
 	}
 
-	
-	
 	public Integer getId() {
 		return id;
 	}
@@ -173,12 +166,4 @@ public class CheckInsYzw extends BaseYzwEntity {
 		this.event = event;
 	}
 
-
-
-
-	
-
-	
-	
-	
 }

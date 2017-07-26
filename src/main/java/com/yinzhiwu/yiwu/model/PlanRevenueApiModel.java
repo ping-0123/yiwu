@@ -9,19 +9,19 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 public class PlanRevenueApiModel {
 	private int id;
-	
+
 	private int storeId;
-	
+
 	private String storeName;
-	
+
 	private int year;
-	
+
 	private int month;
-	
+
 	private int productTypeId;
-	
+
 	private String productTypeName;
-	
+
 	private Double amount;
 
 	public final int getId() {
@@ -91,7 +91,7 @@ public class PlanRevenueApiModel {
 	public PlanRevenueApiModel() {
 	}
 
-	public PlanRevenueApiModel(@Autowired DepartmentDao dao, PlanRevenue plan){
+	public PlanRevenueApiModel(@Autowired DepartmentDao dao, PlanRevenue plan) {
 		this.id = plan.getId();
 		this.storeId = plan.getStoreId();
 		try {
@@ -100,13 +100,11 @@ public class PlanRevenueApiModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.year=plan.getYear();
+		this.year = plan.getYear();
 		this.month = plan.getMonth();
 		this.productTypeId = plan.getProductType().getId();
 		this.productTypeName = plan.getProductType().getName();
 		this.amount = plan.getAmount();
 	}
-	
-	
-}
 
+}

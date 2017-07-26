@@ -6,8 +6,8 @@ import com.yinzhiwu.yiwu.dao.ProductYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
-@Repository 
-public class ProductYzwDaoImpl extends BaseDaoImpl<ProductYzw, Integer> implements ProductYzwDao{
+@Repository
+public class ProductYzwDaoImpl extends BaseDaoImpl<ProductYzw, Integer> implements ProductYzwDao {
 
 	@Override
 	public ProductYzw get_audit_deposit_product() {

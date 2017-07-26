@@ -9,32 +9,35 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 
 public class BrokerageFundsIncomeRecordApiView {
-	
+
 	private static Log LOG = LogFactory.getLog(BrokerageFundsIncomeRecordApiView.class);
 
-	@JsonFormat(pattern="yyyy/MM/dd")
+	@JsonFormat(pattern = "yyyy/MM/dd")
 	private Date date;
-	
+
 	private String category;
-	
+
 	private float incomeValue;
-	
+
 	private float currentValue;
-	
+
 	private String incomeTypeName;
-	
+
 	public BrokerageFundsIncomeRecordApiView() {
 	}
-	
+
 	public BrokerageFundsIncomeRecordApiView(IncomeRecord r) {
 		this.date = r.getRecordTimestamp();
-		try{this.category = r.getIncomeEvent().getType().getName();
-		}catch (Exception e) {
-			LOG.error(e.getMessage());}
+		try {
+			this.category = r.getIncomeEvent().getType().getName();
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+		}
 		this.incomeValue = r.getIncomeValue();
 		this.currentValue = r.getCurrentValue();
-		try{this.incomeTypeName=r.getIncomeType().getName();
-		}catch (Exception e) {
+		try {
+			this.incomeTypeName = r.getIncomeType().getName();
+		} catch (Exception e) {
 			LOG.error(e.getMessage());
 		}
 	}
@@ -79,6 +82,4 @@ public class BrokerageFundsIncomeRecordApiView {
 		this.incomeTypeName = incomeTypeName;
 	}
 
-	
-	
 }

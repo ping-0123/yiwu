@@ -9,33 +9,39 @@ import javax.persistence.Converter;
 import javax.persistence.Embeddable;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 
 @Embeddable
 public class Contract {
-	public enum ContractStatus{
+	public static final String STORE_ID_SEPARATION = ";";
+	public enum ContractStatus {
+		UN_PAYED("未付款"),
 		UN_VERIFIED("未确认"),
 		VERIFIED("已确认"),
-		UN_CHECKED("未审核"),
-		CHECKED("已审核"),
-		UN_PASSED("未通过"),
-		LEFT("请假"),
-		RETURNED_PREMIUM("退费"),
-		FORBIDDEN("禁用"),
+		UN_CHECKED("未审核"), 
+		CHECKED("已审核"), 
+		UN_PASSED("未通过"), 
+		LEFT("请假"), 
+		RETURNED_PREMIUM("退费"), 
+		FORBIDDEN("禁用"), 
 		EXPIRED("到期"),
 		UN_KNOWN("");
-		
+
 		private final String status;
-		
-		public String getStatus(){
+
+		public String getStatus() {
 			return status;
 		}
-		
-		private ContractStatus(String status){
+
+		private ContractStatus(String status) {
 			this.status = status;
 		}
-		
-		public static ContractStatus fromStatus(String status){
+
+		public static ContractStatus fromStatus(String status) {
 			switch (status) {
+			case "未付款":
+				return ContractStatus.UN_PAYED;
 			case "未确认":
 				return ContractStatus.UN_VERIFIED;
 			case "已确认":
@@ -61,55 +67,57 @@ public class Contract {
 			}
 		}
 	}
-	
+
 	@Converter
-	public static class ContractStatusConverter implements AttributeConverter<ContractStatus, String>{
+	public static class ContractStatusConverter implements AttributeConverter<ContractStatus, String> {
 
 		@Override
 		public String convertToDatabaseColumn(ContractStatus arg0) {
-			if(arg0 ==null)
+			if (arg0 == null)
 				return null;
 			return arg0.getStatus();
 		}
 
 		@Override
 		public ContractStatus convertToEntityAttribute(String arg0) {
-			if(arg0 == null)
+			if (arg0 == null)
 				return null;
 			return ContractStatus.fromStatus(arg0);
 		}
-		
+
 	}
-	
+
 	private String contractNo;
-	
+
 	private Integer validity;
-	
-	@Column(name="validity_times")
+
+	@Column(name = "validity_times")
 	private Integer validityTimes;
-	
-	@JsonFormat(pattern="yyyy-MM-dd")
-	@Column(name="startdate")
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "startdate")
 	private Date start;
-	
-	@JsonFormat(pattern="yyyy-MM-dd")
-	@Column(name="endDate")
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "endDate")
 	private Date end;
-	
-	@Column(name="remain_times")
+
+	@Column(name = "remain_times")
 	private Float remainTimes;
-	
-	@Column(name="product_type")
-	private String type;
-	
-	@Column(name="product_subType")
-	private String subType;
-	
-	@Column(name="valid_storeids")
+
+	@Column(name = "product_type", length=32)
+	@Convert(converter=CourseYzw.CourseTypeConverter.class)
+	private CourseType type;
+
+	@Column(name = "product_subType", length=32)
+	@Convert(converter=CourseYzw.SubCourseTypeConverter.class)
+	private SubCourseType subType;
+
+	@Column(name = "valid_storeids")
 	private String validStoreIds;
-	
-	@Column(name="checked_status")
-	@Convert(converter=ContractStatusConverter.class)
+
+	@Column(name = "checked_status")
+	@Convert(converter = ContractStatusConverter.class)
 	private ContractStatus status;
 
 	public Contract() {
@@ -139,11 +147,11 @@ public class Contract {
 		return remainTimes;
 	}
 
-	public String getType() {
+	public CourseType getType() {
 		return type;
 	}
 
-	public String getSubType() {
+	public SubCourseType getSubType() {
 		return subType;
 	}
 
@@ -175,11 +183,11 @@ public class Contract {
 		this.remainTimes = remainTimes;
 	}
 
-	public void setType(String type) {
+	public void setType(CourseType type) {
 		this.type = type;
 	}
 
-	public void setSubType(String subType) {
+	public void setSubType(SubCourseType subType) {
 		this.subType = subType;
 	}
 
@@ -207,6 +215,4 @@ public class Contract {
 		this.status = status;
 	}
 
-
-	
 }

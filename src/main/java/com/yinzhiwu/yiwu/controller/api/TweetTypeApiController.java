@@ -13,14 +13,14 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.service.TweetTypeService;
 
 @RestController
-@RequestMapping(value="/api/types/tweetType")
+@RequestMapping(value = "/api/types/tweetType")
 public class TweetTypeApiController {
 
 	@Autowired
 	private TweetTypeService tweetTypeService;
-	
-	@GetMapping(value="/list")
-	public YiwuJson<List<TweetType>> doList(){
+
+	@GetMapping(value = "/list")
+	public YiwuJson<List<TweetType>> doList() {
 		try {
 			List<TweetType> types = tweetTypeService.findAll();
 			return new YiwuJson<>(types);

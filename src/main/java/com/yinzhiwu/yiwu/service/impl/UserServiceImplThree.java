@@ -9,12 +9,11 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.UserService;
 
 @Service
-public class UserServiceImplThree 
-	implements UserService
-{
+public class UserServiceImplThree implements UserService {
 
 	@Autowired
 	private AccountDao dao;
+
 	public void show() {
 		System.out.println("UserServiceImplThree  show called");
 	}

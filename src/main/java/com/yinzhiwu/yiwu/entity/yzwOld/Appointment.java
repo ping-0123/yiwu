@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.entity.yzwOld;
 
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,49 +12,49 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="vappointment")
+@Table(name = "vappointment")
 public class Appointment {
-	
-	public enum APPOINT_STATUS{APPONTED,UN_APOINTED}
+
+	public enum APPOINT_STATUS {
+		APPONTED, UN_APOINTED
+	}
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column
 	private Integer coursehourId;
-	
+
 	@Column
 	private Integer customerId;
-	
-	@Column(length=4, name="status")
+
+	@Column(length = 4, name = "status")
 	private String status;
-	
+
 	@JsonIgnore
-	@Column(name="sf_create_user")
+	@Column(name = "sf_create_user")
 	private Integer createUserId;
-	
+
 	@JsonIgnore
-	@Column(name="sf_last_change_user")
+	@Column(name = "sf_last_change_user")
 	private Integer lastChangeUserId;
-	
+
 	@JsonIgnore
-	@Column(name="sf_create_time")
-	private  Date createTime;
-	
+	@Column(name = "sf_create_time")
+	private Date createTime;
+
 	@JsonIgnore
-	@Column(name="sf_last_change_time")
+	@Column(name = "sf_last_change_time")
 	private Date lastChangeTime;
-	
+
 	@JsonIgnore
 	@Column
 	private Integer machinecode;
-	
+
 	@JsonIgnore
-	@Column(name="sf_Last_Sync_TimeStamp")
+	@Column(name = "sf_Last_Sync_TimeStamp")
 	private Date lastSyncTimeStamp;
-	
-	
 
 	public final Integer getId() {
 		return id;
@@ -136,6 +135,5 @@ public class Appointment {
 	public final void setLastSyncTimeStamp(Date lastSyncTimeStamp) {
 		this.lastSyncTimeStamp = lastSyncTimeStamp;
 	}
-	
-	
+
 }

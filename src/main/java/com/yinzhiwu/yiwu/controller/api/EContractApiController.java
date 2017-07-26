@@ -16,26 +16,26 @@ import com.yinzhiwu.yiwu.service.ElectricContractYzwService;
 
 @RestController
 @RequestMapping("/api/e-contract")
-public class EContractApiController  extends BaseController{
+public class EContractApiController extends BaseController {
 
 	@Autowired
 	private ElectricContractYzwService electricContractYzwService;
-	
+
 	@GetMapping("/{contractNo}")
-	public YiwuJson<EContractDetailApiView> get(@PathVariable String contractNo)
-	{
-		try{
+	public YiwuJson<EContractDetailApiView> get(@PathVariable String contractNo) {
+		try {
 			ElectricContractYzw eContract = electricContractYzwService.get(contractNo);
-			if(eContract == null) return new YiwuJson<>("未能找到合约号为" + contractNo + "的电子合同");
+			if (eContract == null)
+				return new YiwuJson<>("未能找到合约号为" + contractNo + "的电子合同");
 			return new YiwuJson<>(new EContractDetailApiView(eContract));
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
-	
+
 	@PutMapping("/{contractNo}")
-	public YiwuJson<Boolean> update(ElectricContractYzw e , @PathVariable String contractNo) {
-		if(!e.getIsConfirmed())
+	public YiwuJson<Boolean> update(ElectricContractYzw e, @PathVariable String contractNo) {
+		if (!e.getIsConfirmed())
 			return new YiwuJson<>("确认合同， 请设置参数isConfirmed:'true'");
 		try {
 			electricContractYzwService.modify(contractNo, e);

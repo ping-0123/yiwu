@@ -9,65 +9,61 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vproduct")
+@Table(name = "vproduct")
 public class Product {
 
-	
 	@Id
 	@GeneratedValue
-	@Column(name="id")
+	@Column(name = "id")
 	private Integer id;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String name;
-	
-	@Column(name="card_type",length=32)
+
+	@Column(name = "card_type", length = 32)
 	private String cardType;
-	
-	@Column(name="customer_type", length=32)
+
+	@Column(name = "customer_type", length = 32)
 	private String customerType;
-	
-	@Column(name="marked_price")
+
+	@Column(name = "marked_price")
 	private Integer markedPrice;
-	
-	@Column(name="useful_life")
+
+	@Column(name = "useful_life")
 	private Short usefulLife;
-	
-	@Column(name="useful_times")
+
+	@Column(name = "useful_times")
 	private Short usefulTimes;
-	
-	@Column(name="obsolete_flag")
+
+	@Column(name = "obsolete_flag")
 	private Boolean isObsolete;
-	
-	@Column(name="DY_RCP", length=32)
+
+	@Column(name = "DY_RCP", length = 32)
 	private String dyRCP;
-	
-	@Column(name="max_leave_times")
+
+	@Column(name = "max_leave_times")
 	private Short maxLeaveTimes;
-	
-	@Column(name="sf_create_user")
+
+	@Column(name = "sf_create_user")
 	private Integer createUserId;
-	
-	@Column(name="sf_last_change_user")
+
+	@Column(name = "sf_last_change_user")
 	private Integer lastChangeUserId;
-	
-	@Column(name="sf_create_time")
+
+	@Column(name = "sf_create_time")
 	private Date createTime;
-	
-	@Column(name="sf_last_change_time")
+
+	@Column(name = "sf_last_change_time")
 	private Date lastChangeTime;
-	
-	@Column(name="sf_last_change_timeStamp")
+
+	@Column(name = "sf_last_change_timeStamp")
 	private Date lastChangeTimestamp;
-	
-	@Column(name="machineCode")
+
+	@Column(name = "machineCode")
 	private Integer machineCode;
-	
-	@Column(name="sf_last_sync_timeStamp")
+
+	@Column(name = "sf_last_sync_timeStamp")
 	private Date lastSyncTimeStamp;
-	
-	
-	
 
 	public final Integer getId() {
 		return id;
@@ -204,7 +200,5 @@ public class Product {
 	public final void setLastSyncTimeStamp(Date lastSyncTimeStamp) {
 		this.lastSyncTimeStamp = lastSyncTimeStamp;
 	}
-	
-	
-	
+
 }

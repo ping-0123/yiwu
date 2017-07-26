@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class Lesson {
 
 	@Id
-	@Column(name="id")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer lessonId;
 
@@ -521,7 +521,5 @@ public class Lesson {
 	public final void setClassRoomId(String classRoomId) {
 		this.classRoomId = classRoomId;
 	}
-	
-	
 
 }

@@ -11,35 +11,28 @@ import javax.persistence.UniqueConstraint;
 import com.yinzhiwu.yiwu.entity.type.CapitalAccountType;
 
 @Entity
-@Table(name="yiwu_capital_account", uniqueConstraints=
-	@UniqueConstraint(name="uk_CapitalAccount_accont", columnNames="account"))
+@Table(name = "yiwu_capital_account", uniqueConstraints = @UniqueConstraint(name = "uk_CapitalAccount_accont", columnNames = "account"))
 public class CapitalAccount extends BaseEntity {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7664170465208216472L;
 
-	@Column(length=50, nullable= false) //uk
+	@Column(length = 50, nullable = false) // uk
 	private String account;
-	
-	@ManyToOne
-	@JoinColumn(name="capitalAccountType_id", foreignKey=@ForeignKey(name="fk_capitalAccount_capitalAccountType_id"))
-	private CapitalAccountType capitalAccountType;
-	
 
 	@ManyToOne
-	@JoinColumn(name="distributer_id", foreignKey=@ForeignKey(name="fk_CapitalAccount_distributer_id"))
+	@JoinColumn(name = "capitalAccountType_id", foreignKey = @ForeignKey(name = "fk_capitalAccount_capitalAccountType_id"))
+	private CapitalAccountType capitalAccountType;
+
+	@ManyToOne
+	@JoinColumn(name = "distributer_id", foreignKey = @ForeignKey(name = "fk_CapitalAccount_distributer_id"))
 	private Distributer distributer;
 
-
-
-	
 	public CapitalAccount() {
 		super();
 	}
-
-	
 
 	public String getAccount() {
 		return account;
@@ -49,9 +42,6 @@ public class CapitalAccount extends BaseEntity {
 		this.account = account;
 	}
 
-
-
-
 	public Distributer getDistributer() {
 		return distributer;
 	}
@@ -59,7 +49,6 @@ public class CapitalAccount extends BaseEntity {
 	public void setDistributer(Distributer distributer) {
 		this.distributer = distributer;
 	}
-
 
 	public CapitalAccountType getCapitalAccountType() {
 		return capitalAccountType;

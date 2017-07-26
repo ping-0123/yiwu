@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.model;
 
-
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
@@ -11,33 +10,31 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 public class DistributerRegisterModel {
-	
-	@Pattern(regexp="^1\\d{10}$",
-			message = "请输入正确的11位手机号码")
+
+	@Pattern(regexp = "^1\\d{10}$", message = "请输入正确的11位手机号码")
 	private String phoneNo;
-	
+
 	private String username;
-	
-	@Pattern(regexp="^[a-zA-Z]\\w{5,17}$",
-			message="密码必须由字母开头，有字母，数字，下划线组成的6-18位字符")
+
+	@Pattern(regexp = "^[a-zA-Z]\\w{5,17}$", message = "密码必须由字母开头，有字母，数字，下划线组成的6-18位字符")
 	private String password;
-	
+
 	private String name;
-	
+
 	private String nickName;
-	
+
 	@NotNull
 	private Gender gender;
-	
-//	@Past
-	@JsonFormat(pattern="yyyy-MM-dd")
+
+	// @Past
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date birthDay;
-	
+
 	private int followedByStoreId;
-	
-	@Size(min=10, max =28)
+
+	@Size(min = 10, max = 28)
 	private String wechatNo;
-	
+
 	private String invitationCode;
 
 	public String getPhoneNo() {
@@ -123,6 +120,5 @@ public class DistributerRegisterModel {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
+
 }

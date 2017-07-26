@@ -15,13 +15,14 @@ public class CheckInsYzwServiceTest {
 
 	@Autowired
 	private CheckInsYzwService service;
-	
-	@Autowired CheckInsYzwDao dao;
-	
+
+	@Autowired
+	CheckInsYzwDao dao;
+
 	@Test
-	public void testFindCountByCustomerId(){
+	public void testFindCountByCustomerId() {
 		int customerId = 19552;
-		int i= service.findCountByCustomerId(customerId);
+		int i = service.findCountByCustomerId(customerId);
 		System.out.println(i);
 	}
 }

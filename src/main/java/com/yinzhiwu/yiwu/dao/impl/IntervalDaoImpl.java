@@ -7,6 +7,5 @@ import com.yinzhiwu.yiwu.entity.yzwOld.Interval;
 
 @Repository
 public class IntervalDaoImpl extends BaseDaoImpl<Interval, String> implements IntervalDao {
-	
-	
+
 }

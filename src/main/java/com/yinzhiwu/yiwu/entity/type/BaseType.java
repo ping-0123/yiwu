@@ -14,35 +14,29 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-
 @Entity
-@Table(name="yiwu_type")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="whichType", length=32)
-@DiscriminatorValue(value="abstractType")
+@Table(name = "yiwu_type")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "whichType", length = 32)
+@DiscriminatorValue(value = "abstractType")
 public abstract class BaseType implements Serializable {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7200613894589888689L;
-	
 
-	@Id  
-	@GeneratedValue(generator="assigned")  
-	@GenericGenerator(name="assigned", strategy = "assigned") 
+	@Id
+	@GeneratedValue(generator = "assigned")
+	@GenericGenerator(name = "assigned", strategy = "assigned")
 	private Integer id;
 
-	
-	@Column(length=50)
+	@Column(length = 50)
 	private String name;
-	
-	
 
 	public BaseType() {
 		super();
 	}
-	
 
 	public String getName() {
 		return name;
@@ -52,38 +46,27 @@ public abstract class BaseType implements Serializable {
 		this.name = name;
 	}
 
-
 	public BaseType(String name) {
 		this.name = name;
 	}
-	
-	public BaseType(Integer id , String name){
+
+	public BaseType(Integer id, String name) {
 		this.id = id;
 		this.name = name;
 	}
-	
-	public boolean equals(BaseType another)
-	{
-		if(another == null)
+
+	public boolean equals(BaseType another) {
+		if (another == null)
 			return false;
-		return this.name.equals(another.getName())?true:false;
+		return this.name.equals(another.getName()) ? true : false;
 	}
-
-
-	
-
 
 	public Integer getId() {
 		return id;
 	}
 
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
-	
-	
-	
 
 }

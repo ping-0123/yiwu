@@ -8,7 +8,7 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 
-public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer>{
+public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer> {
 
 	int findCountByContractNos(List<String> contractNos);
 
@@ -18,8 +18,6 @@ public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer>{
 
 	boolean isCheckedIn(CustomerYzw customer, LessonYzw lesson);
 
-	PageBean<LessonApiView> findPageByContractNos(List<String> contractNos, int pageNo , int pageSize);
-	
-
+	PageBean<LessonApiView> findPageByContractNos(List<String> contractNos, int pageNo, int pageSize);
 
 }

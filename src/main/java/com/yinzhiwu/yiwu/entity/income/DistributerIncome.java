@@ -16,10 +16,10 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
 
 @Entity
-@Table(name="yiwu_distributer_income", uniqueConstraints={
-		@UniqueConstraint(name="cuk_dIncome_distributer_incomeType",columnNames={"distributer_id", "incomeType_id"})
-})
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+@Table(name = "yiwu_distributer_income", uniqueConstraints = {
+		@UniqueConstraint(name = "cuk_dIncome_distributer_incomeType", columnNames = { "distributer_id",
+				"incomeType_id" }) })
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DistributerIncome extends BaseEntity {
 
 	/**
@@ -28,20 +28,20 @@ public class DistributerIncome extends BaseEntity {
 	private static final long serialVersionUID = 1220405621432715846L;
 
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_distributerIncome_distributer_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributerIncome_distributer_id"))
 	private Distributer distributer;
-	
+
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_distributerIncome_incomeType_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributerIncome_incomeType_id"))
 	private IncomeType incomeType;
-	
+
 	@Min(0)
 	private Float income;
-	
+
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_dIncome_incomeGrade_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_dIncome_incomeGrade_id"))
 	private IncomeGrade incomeGrade;
-	
+
 	private Float accumulativeIncome;
 
 	public DistributerIncome(Distributer benificiary, IncomeType incomeType2, IncomeGrade incomeGrade) {
@@ -51,8 +51,9 @@ public class DistributerIncome extends BaseEntity {
 		this.incomeGrade = incomeGrade;
 	}
 
-	public  DistributerIncome(){}
-	
+	public DistributerIncome() {
+	}
+
 	@Override
 	public void init() {
 		super.init();

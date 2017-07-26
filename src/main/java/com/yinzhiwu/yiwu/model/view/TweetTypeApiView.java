@@ -5,18 +5,17 @@ import com.yinzhiwu.yiwu.entity.type.TweetType;
 public class TweetTypeApiView {
 
 	private int id;
-	
+
 	private String name;
-	
-	public TweetTypeApiView(){
+
+	public TweetTypeApiView() {
 	}
 
-	public TweetTypeApiView(TweetType t)
-	{
+	public TweetTypeApiView(TweetType t) {
 		this.id = t.getId();
 		this.name = t.getName();
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -32,6 +31,5 @@ public class TweetTypeApiView {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 }

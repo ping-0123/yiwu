@@ -13,14 +13,13 @@ import com.yinzhiwu.yiwu.service.CustomerService;
 @Controller
 @RequestMapping("/api/customer")
 public class CustomerApiController {
-	
+
 	@Autowired
 	private CustomerService customerServce;
 
 	@ResponseBody
-	@RequestMapping(value="/get", method={RequestMethod.GET})
-	public ReturnedJson getByWeChatNo(@RequestParam String weChatNo){
-		return new ReturnedJson(
-				customerServce.findByWeChat(weChatNo));
+	@RequestMapping(value = "/get", method = { RequestMethod.GET })
+	public ReturnedJson getByWeChatNo(@RequestParam String weChatNo) {
+		return new ReturnedJson(customerServce.findByWeChat(weChatNo));
 	}
 }

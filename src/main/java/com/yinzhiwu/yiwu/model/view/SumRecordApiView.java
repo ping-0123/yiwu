@@ -2,40 +2,40 @@ package com.yinzhiwu.yiwu.model.view;
 
 import java.io.Serializable;
 
-public class SumRecordApiView implements Serializable{
-	
+public class SumRecordApiView implements Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1893739499845022068L;
-	
-//	private static Log LOG = LogFactory.getLog(SumRecordApiView.class);
+
+	// private static Log LOG = LogFactory.getLog(SumRecordApiView.class);
 
 	private DistributerApiView distributerApiView;
-	
+
 	private float accumulativeBrokerage;
-	
+
 	private int myShareTweetTimes;
-	
+
 	private int subordinateShareTweetTimes;
-	
+
 	private int subordinateCount;
-	
+
 	private int secondaryCount;
-	
+
 	private int subordinateOrderCount;
-	
+
 	private int secondaryOrderCount;
 
-	public SumRecordApiView(){};
-	
-//	public SumRecordApiView(Distributer d){
-//		Assert.notNull(d);
-//		this.distributerApiView = new DistributerApiView(d);
-//		this.accumulativeBrokerage = d.getAccumulativeBrokerage();
-//	}
-//	
+	public SumRecordApiView() {
+	};
 
+	// public SumRecordApiView(Distributer d){
+	// Assert.notNull(d);
+	// this.distributerApiView = new DistributerApiView(d);
+	// this.accumulativeBrokerage = d.getAccumulativeBrokerage();
+	// }
+	//
 
 	public int getMyShareTweetTimes() {
 		return myShareTweetTimes;
@@ -60,7 +60,6 @@ public class SumRecordApiView implements Serializable{
 	public int getSecondaryOrderCount() {
 		return secondaryOrderCount;
 	}
-
 
 	public void setMyShareTweetTimes(int myShareTweetTimes) {
 		this.myShareTweetTimes = myShareTweetTimes;
@@ -106,6 +105,4 @@ public class SumRecordApiView implements Serializable{
 		this.accumulativeBrokerage = accumulativeBrokerage;
 	}
 
-	
-	
 }

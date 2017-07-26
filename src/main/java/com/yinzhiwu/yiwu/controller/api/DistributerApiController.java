@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.controller.api;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,115 +40,112 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/distributer")
-@Api(value="distributer")
+@Api(value = "distributer")
 public class DistributerApiController extends BaseController {
-	
-	@Autowired private DistributerService  distributerService;
-	@Autowired private CapitalAccountService capitalAccountService;
-	
+
+	@Autowired
+	private DistributerService distributerService;
+	@Autowired
+	private CapitalAccountService capitalAccountService;
+
 	@InitBinder
-	public void initBinder(WebDataBinder dataBinder){
+	public void initBinder(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("birthDay");
 	}
 
-
-	@PostMapping(value="")
-	public YiwuJson<Boolean> register(@Valid Distributer m, String invitationCode, BindingResult bindingResult){
-		if(bindingResult.hasErrors()){
+	@PostMapping(value = "")
+	public YiwuJson<Boolean> register(@Valid Distributer m, String invitationCode, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
 			return new YiwuJson<>(getErrorsMessage(bindingResult));
 		}
-		try{
-			return distributerService.register(invitationCode,m);
-		}catch (Exception e) {
+		try {
+			return distributerService.register(invitationCode, m);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
-	
-	@PostMapping(value="/loginByWechat")
-	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String  wechatNo ){
+
+	@PostMapping(value = "/loginByWechat")
+	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String wechatNo) {
 		return distributerService.loginByWechat(wechatNo);
 	}
-	
-	
-	@PostMapping(value="/loginByAccount")
-	public YiwuJson<DistributerApiView> loginByAccount(String account, String password){
-		return distributerService.loginByAccount(account,password);
+
+	@PostMapping(value = "/loginByAccount")
+	public YiwuJson<DistributerApiView> loginByAccount(String account, String password) {
+		return distributerService.loginByAccount(account, password);
 	}
-	
-	@Deprecated
-	@GetMapping(value="/getById/{id}")
-	public YiwuJson<DistributerApiView> getDistributerInfo(@PathVariable int id){
-		return distributerService.findById(id);
-	}
-	
-	
-	@GetMapping(value="/{id}")
-	public YiwuJson<DistributerApiView> doGet(@PathVariable int id){
-		return distributerService.findById(id);
-	}
-	
+
 	/**
-	 * @deprecated {@link /{distributerId}}
+	 * @deprecated use {@link DistributerApiController#doGet(int)}
+	 * @param id
+	 * @return
+	 */
+	@Deprecated
+	@GetMapping(value = "/getById/{id}")
+	public YiwuJson<DistributerApiView> getDistributerInfo(@PathVariable int id) {
+		return distributerService.findById(id);
+	}
+
+	@GetMapping(value = "/{id}")
+	public YiwuJson<DistributerApiView> doGet(@PathVariable int id) {
+		return distributerService.findById(id);
+	}
+
+	/**
+	 * @deprecated use {@link DistributerApiController#modify(DistributerModifyModel, int)}
 	 * @param servletRequest
 	 * @param d
 	 * @param bindingResult
 	 * @return
 	 */
 	@Deprecated
-	@PostMapping(value="/modifyHeadIcon")
-	public YiwuJson<DistributerApiView>  modifyHeadIcon(HttpServletRequest servletRequest,
-				@Valid DistributerApiView d, BindingResult bindingResult){
-		if(bindingResult.hasErrors()){
+	@PostMapping(value = "/modifyHeadIcon")
+	public YiwuJson<DistributerApiView> modifyHeadIcon(HttpServletRequest servletRequest, @Valid DistributerApiView d,
+			BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
 			FieldError fieldError = bindingResult.getFieldError();
 			return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
 		}
-		
+
 		String parentPath = servletRequest.getServletContext().getRealPath(UrlUtil.HEAD_ICON_PATH);
-		return distributerService.modifyHeadIcon(
-				d.getId(),
-				d.getImage(), 
-				parentPath);
+		return distributerService.modifyHeadIcon(d.getId(), d.getImage(), parentPath);
 	}
-	
-	@GetMapping(value="/capitalAccount/getDefault")
-	@ApiOperation(value="获取默认的提现帐号")
-	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(int distributerId){
+
+	@GetMapping(value = "/capitalAccount/getDefault")
+	@ApiOperation(value = "获取默认的提现帐号")
+	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(int distributerId) {
 		return distributerService.getDefaultCapitalAccount(distributerId);
 	}
-	
-	@PostMapping(value="/capitalAccount/setDefault")
-	@ApiOperation(value="设置默认提现帐号")
-	public YiwuJson<Boolean> setDefaultCapitalAccount(
-			@ApiParam(value="分销者Id", required=true) int distributerId,
-			@ApiParam(value="帐号Id", required=true) int accountId)
-	{
-		try{
+
+	@PostMapping(value = "/capitalAccount/setDefault")
+	@ApiOperation(value = "设置默认提现帐号")
+	public YiwuJson<Boolean> setDefaultCapitalAccount(@ApiParam(value = "分销者Id", required = true) int distributerId,
+			@ApiParam(value = "帐号Id", required = true) int accountId) {
+		try {
 			distributerService.setDefaultCapitalAccount(distributerId, accountId);
 			return new YiwuJson<>(new Boolean(true));
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
-	
-	@GetMapping(value="/capitalAccount")
-	@ApiOperation(value="获取资金帐号")
-	public YiwuJson<List<CapitalAccountApiView>> getCapitalAccount(
-			int distributerId,
-			@ApiParam(value="帐号类型Id, 10001：微信支付,10002:支付宝支付, -1：全部支付类型") int accountTypeId)
-	{
+
+	@GetMapping(value = "/capitalAccount")
+	@ApiOperation(value = "获取资金帐号")
+	public YiwuJson<List<CapitalAccountApiView>> getCapitalAccount(int distributerId,
+			@ApiParam(value = "帐号类型Id, 10001：微信支付,10002:支付宝支付, -1：全部支付类型") int accountTypeId) {
 		List<CapitalAccountApiView> views = new ArrayList<>();
 		List<CapitalAccount> accounts = new ArrayList<>();
-		if(accountTypeId == -1){
+		if (accountTypeId == -1) {
 			accounts = capitalAccountService.findByProperty("distributer.id", distributerId);
-		}else{
+		} else {
 			try {
 				accounts = capitalAccountService.findByProperties(
-						new String[]{"distributer.id", "capitalAccountType.id" },  
-						new Object[]{distributerId, accountTypeId});
+						new String[] { "distributer.id", "capitalAccountType.id" },
+						new Object[] { distributerId, accountTypeId });
 			} catch (DataNotFoundException e) {
 				accounts = new ArrayList<>();
 			}
@@ -157,19 +153,19 @@ public class DistributerApiController extends BaseController {
 		for (CapitalAccount capitalAccount : accounts) {
 			views.add(new CapitalAccountApiView(capitalAccount));
 		}
-		
+
 		return new YiwuJson<>(views);
 	}
-	
-	@PostMapping(value="/capitalAccount")
-	@ApiOperation(value="新增资金账户")
+
+	@PostMapping(value = "/capitalAccount")
+	@ApiOperation(value = "新增资金账户")
 	public YiwuJson<CapitalAccountApiView> addCapitalAccount(
 			@ApiParam("distributerId accountTypeId accountName 必须") @Valid CapitalAccountApiView capitalAcountModel,
-			BindingResult bindingResult){
-		if(bindingResult.hasErrors()){
+			BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
 			return new YiwuJson<>(getErrorsMessage(bindingResult));
 		}
-		try{
+		try {
 			CapitalAccount capitalAccount = new CapitalAccount();
 			capitalAccount.setAccount(capitalAcountModel.getAccountName());
 			Distributer distributer = new Distributer();
@@ -182,48 +178,52 @@ public class DistributerApiController extends BaseController {
 			capitalAccountService.save(capitalAccount);
 			logger.debug("save the new capitalAccount successfully");
 			return new YiwuJson<>(new CapitalAccountApiView(capitalAccount));
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
-	
-	@Deprecated
-   @GetMapping(value = "/input")
-    public ModelAndView inputProduct(Model model) {
-        model.addAttribute("distributerApiView", new DistributerApiView());
-        return new	 ModelAndView("distributer/form");
-    }
 
-   
-   @GetMapping(value="validatyPhoneNo")
-   public YiwuJson<Boolean> validatyIsRegister(String phoneNo){
-	   if(! phoneNo.matches("^1\\d{10}$"))
-		   return new YiwuJson<>("请输入合法的11位数手机号码");
-	   return distributerService.judgePhoneNoIsRegistered(phoneNo);
-   }
-	  
-   @GetMapping(value="/editform")
-   public ModelAndView getModifyForm(Model model ){
-	   DistributerModifyModel distributer = new DistributerModifyModel();
-	   model.addAttribute("model", distributer);
-	   return new ModelAndView("distributer/form");
-   }
-   
-   @RequestMapping(value="/{distributerId}", method={RequestMethod.PUT,RequestMethod.POST})
-   @ApiOperation("修改会员个人资料")
-   public YiwuJson<DistributerModifyModel> modify(DistributerModifyModel model, @PathVariable int distributerId){
-	   if(model == null)
-		   return new YiwuJson<>("没有需要修改的项");
-	   if(model.getImage() !=null &&model.getImage().getSize() >500 *1024)
-		   return new YiwuJson<>("您上传的头像太大， 请保存在500Kb以下");
-	   
-		return	distributerService.modify(distributerId, model);
-	   
-   }
-   
-   @GetMapping("/getTopThree")
-   @ApiOperation(value="获取收入前三名的分销者")
-   public YiwuJson<List<TopThreeApiView>> getTopThree(){
-	   return new YiwuJson<>(distributerService.getBrokerageTopThree());
-   }
+	/**
+	 * @deprecated not supported
+	 * @param model
+	 * @return
+	 */
+	@Deprecated
+	@GetMapping(value = "/input")
+	public ModelAndView inputProduct(Model model) {
+		model.addAttribute("distributerApiView", new DistributerApiView());
+		return new ModelAndView("distributer/form");
+	}
+
+	@GetMapping(value = "validatyPhoneNo")
+	public YiwuJson<Boolean> validatyIsRegister(String phoneNo) {
+		if (!phoneNo.matches("^1\\d{10}$"))
+			return new YiwuJson<>("请输入合法的11位数手机号码");
+		return distributerService.judgePhoneNoIsRegistered(phoneNo);
+	}
+
+	@GetMapping(value = "/editform")
+	public ModelAndView getModifyForm(Model model) {
+		DistributerModifyModel distributer = new DistributerModifyModel();
+		model.addAttribute("model", distributer);
+		return new ModelAndView("distributer/form");
+	}
+
+	@RequestMapping(value = "/{distributerId}", method = { RequestMethod.PUT, RequestMethod.POST })
+	@ApiOperation("修改会员个人资料")
+	public YiwuJson<DistributerModifyModel> modify(DistributerModifyModel model, @PathVariable int distributerId) {
+		if (model == null)
+			return new YiwuJson<>("没有需要修改的项");
+		if (model.getImage() != null && model.getImage().getSize() > 500 * 1024)
+			return new YiwuJson<>("您上传的头像太大， 请保存在500Kb以下");
+
+		return distributerService.modify(distributerId, model);
+
+	}
+
+	@GetMapping("/getTopThree")
+	@ApiOperation(value = "获取收入前三名的分销者")
+	public YiwuJson<List<TopThreeApiView>> getTopThree() {
+		return new YiwuJson<>(distributerService.getBrokerageTopThree());
+	}
 }

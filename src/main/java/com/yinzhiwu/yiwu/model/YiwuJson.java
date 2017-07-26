@@ -3,53 +3,50 @@ package com.yinzhiwu.yiwu.model;
 import org.springframework.util.StringUtils;
 
 public class YiwuJson<T> {
-	
+
 	private int returnCode;
-	
+
 	private boolean secure;
-	
+
 	private String msg;
-	
+
 	private T data;
-	
+
 	private boolean result;
-	
-	
-	public YiwuJson(){
+
+	public YiwuJson() {
 		this.returnCode = 200;
 		this.secure = false;
 		this.msg = "success";
 		this.result = true;
 	};
-	
-	public YiwuJson(T data){
+
+	public YiwuJson(T data) {
 		this.returnCode = 200;
 		this.secure = false;
 		this.msg = "success";
 		this.data = data;
 		this.result = true;
 	}
-	
-	public YiwuJson(String msg, T data){
+
+	public YiwuJson(String msg, T data) {
 		this.returnCode = 200;
 		this.secure = false;
-		if(StringUtils.hasLength(msg))
-			this.msg= msg;
+		if (StringUtils.hasLength(msg))
+			this.msg = msg;
 		else
 			this.msg = "success";
 		this.data = data;
 		this.result = true;
 	}
-	
-	public YiwuJson(String msg){
+
+	public YiwuJson(String msg) {
 		this.returnCode = 500;
 		this.secure = false;
 		this.msg = msg;
 		this.result = false;
 	}
 
-	
-	
 	public YiwuJson(int returnCode, boolean secure, String msg, T data, boolean result) {
 		this.returnCode = returnCode;
 		this.secure = secure;
@@ -98,6 +95,4 @@ public class YiwuJson<T> {
 		this.msg = msg;
 	}
 
-	
-	
 }

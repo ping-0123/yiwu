@@ -7,33 +7,33 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 
 public class DistributerRegisterApiView {
 
-	@JsonFormat(pattern="yyyy/MM/dd")
+	@JsonFormat(pattern = "yyyy/MM/dd")
 	private Date registerDate;
-	
+
 	private String memberId;
-	
+
 	private String memberName;
-	
+
 	private String superDistributerName;
-	
+
 	/**
 	 * 收益者所获得的经验
 	 */
 	private float exp;
-	
-	
-	public DistributerRegisterApiView(){}
-	
-	public DistributerRegisterApiView(Distributer d, float exp){
-		if(d==null)
+
+	public DistributerRegisterApiView() {
+	}
+
+	public DistributerRegisterApiView(Distributer d, float exp) {
+		if (d == null)
 			return;
 		this.registerDate = d.getRegistedTime();
 		this.memberId = d.getMemberId();
-		this.memberName =d.getName();
-		this.superDistributerName = d.getSuperDistributer()==null? null:d.getSuperDistributer().getName();
+		this.memberName = d.getName();
+		this.superDistributerName = d.getSuperDistributer() == null ? null : d.getSuperDistributer().getName();
 		this.exp = exp;
 	}
-	
+
 	public Date getRegisterDate() {
 		return registerDate;
 	}
@@ -73,5 +73,5 @@ public class DistributerRegisterApiView {
 	public void setExp(float exp) {
 		this.exp = exp;
 	}
-	
+
 }

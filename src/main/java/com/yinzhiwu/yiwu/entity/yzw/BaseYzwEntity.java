@@ -11,71 +11,70 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@MappedSuperclass 
-public abstract class BaseYzwEntity implements Serializable{
+@MappedSuperclass
+public abstract class BaseYzwEntity implements Serializable {
 
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1232031968327117427L;
 
 	@JsonIgnore
-	@Column(updatable=false,name="sf_create_user")
+	@Column(updatable = false, name = "sf_create_user")
 	private Integer createUserId;
 
 	@JsonIgnore
-	@Column(name="sf_last_change_user")
+	@Column(name = "sf_last_change_user")
 	private Integer lastChangeUserId;
-	
+
 	@JsonIgnore
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
-	@Column(name="sf_create_time",insertable=true,updatable=false)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@Column(name = "sf_create_time", insertable = true, updatable = false)
 	private Date createTime;
-	
+
 	@JsonIgnore
-   @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
-	@Column(name="sf_last_change_time")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@Column(name = "sf_last_change_time")
 	private Date lastChangeTime;
-	
+
 	@JsonIgnore
 	@Column
 	private Integer machineCode;
-	
+
 	@JsonIgnore
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
-	@Column(name="sf_last_sync_timeStamp")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@Column(name = "sf_last_sync_timeStamp")
 	private Date lastSyncTimeStamp;
-	
+
 	@JsonIgnore
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") 
-	@Column(name="sf_last_change_timeStamp")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@Column(name = "sf_last_change_timeStamp")
 	private Date lastChangeTimestamp;
 
 	public BaseYzwEntity() {
 	}
-	
+
 	public void init() {
 		this.createUserId = 1;
 		Date date = new Date();
 		this.createTime = date;
-		this.lastChangeUserId =1;
-		this.lastChangeTime=date;
+		this.lastChangeUserId = 1;
+		this.lastChangeTime = date;
 		this.lastChangeTimestamp = date;
-		this.lastSyncTimeStamp =date;
+		this.lastSyncTimeStamp = date;
 	}
-	
-    public void beforeUpdate(){
-    	Date date = new Date();
-    	this.lastChangeTime= date;
-    	this.lastChangeTimestamp = date;
-    	this.lastSyncTimeStamp = date;
-    }
-    
+
+	public void beforeUpdate() {
+		Date date = new Date();
+		this.lastChangeTime = date;
+		this.lastChangeTimestamp = date;
+		this.lastSyncTimeStamp = date;
+	}
+
 	public Integer getCreateUserId() {
 		return createUserId;
 	}
@@ -99,13 +98,10 @@ public abstract class BaseYzwEntity implements Serializable{
 	public Date getLastChangeTimestamp() {
 		return lastChangeTimestamp;
 	}
-	
-
 
 	public void setCreateUserId(Integer createUserId) {
 		this.createUserId = createUserId;
 	}
-
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
@@ -135,7 +131,4 @@ public abstract class BaseYzwEntity implements Serializable{
 		this.lastChangeUserId = lastChangeUserId;
 	}
 
-
-	
-	
 }

@@ -5,41 +5,42 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class TweetShareApiView {
-	
+
 	private int id;
-	
+
 	private String sharer;
-	
-	@JsonFormat(pattern="yyyy/MM/dd")
+
+	@JsonFormat(pattern = "yyyy/MM/dd")
 	private Date shareDate;
-	
+
 	private String tweetType;
-	
+
 	private String tweetTitle;
-	
+
 	private float exp;
-	
-	public TweetShareApiView(){};
-	
-//	public TweetShareApiView(ShareTweet t, Distributer beneficiary ){
-//		if(t== null)
-//			return;
-//		this.id = t.getId();
-//		this.sharer = t.getSharer()==null?null:t.getSharer().getName();
-//		this.shareDate = t.getShareDate();
-//		this.tweetType = t.getTweet().getTweetType().getName();
-//		this.tweetTitle = t.getTweet().getTitle();
-//		List<ExpRecord> expRecords = t.getExpRecords();
-//		if(expRecords == null || expRecords.size() == 0)
-//			this.exp = 0;
-//		for (ExpRecord record : expRecords) {
-//			if(beneficiary.equals(record.getBeneficiaty())){
-//				this.exp = record.getIncome();
-//				break;
-//			}
-//		}
-//		
-//	}
+
+	public TweetShareApiView() {
+	};
+
+	// public TweetShareApiView(ShareTweet t, Distributer beneficiary ){
+	// if(t== null)
+	// return;
+	// this.id = t.getId();
+	// this.sharer = t.getSharer()==null?null:t.getSharer().getName();
+	// this.shareDate = t.getShareDate();
+	// this.tweetType = t.getTweet().getTweetType().getName();
+	// this.tweetTitle = t.getTweet().getTitle();
+	// List<ExpRecord> expRecords = t.getExpRecords();
+	// if(expRecords == null || expRecords.size() == 0)
+	// this.exp = 0;
+	// for (ExpRecord record : expRecords) {
+	// if(beneficiary.equals(record.getBeneficiaty())){
+	// this.exp = record.getIncome();
+	// break;
+	// }
+	// }
+	//
+	// }
 
 	public int getId() {
 		return id;
@@ -88,6 +89,5 @@ public class TweetShareApiView {
 	public void setExp(float exp) {
 		this.exp = exp;
 	}
-	
-	
+
 }

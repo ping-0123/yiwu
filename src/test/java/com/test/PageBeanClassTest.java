@@ -21,20 +21,21 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 @ContextConfiguration("classpath:applicationContext.xml")
 public class PageBeanClassTest {
 
-	@Autowired private CheckInsYzwDao checkInsDao;
-	@Autowired private DistributerDao distributerDao;
-	
+	// @Autowired private CheckInsYzwDao checkInsDao;
+	@Autowired
+	private DistributerDao distributerDao;
+
 	@Test
-	public void test(){
+	public void test() {
 		List<LessonYzw> lessons = new ArrayList<>();
 		LessonYzw lesson = new LessonYzw();
 		lessons.add(lesson);
-		PageBean<LessonYzw>  page = new PageBean<LessonYzw>();
+		PageBean<LessonYzw> page = new PageBean<LessonYzw>();
 		page.setData(lessons);
 	}
-	
+
 	@Test
-	public void testFindPageByProperties(){
+	public void testFindPageByProperties() {
 		PageBean<Distributer> page = distributerDao.findPageByProperty("customer.name", "孟，小主持人", 1, 10);
 		System.err.println(page.getList().size());
 		System.err.println(page.getList().get(0).getUsername());

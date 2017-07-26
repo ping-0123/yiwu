@@ -13,10 +13,10 @@ import com.yinzhiwu.yiwu.service.AccountService;
 
 @Service
 public class AccountServiceImpl implements AccountService {
-	
+
 	@Autowired
 	private AccountDao accountDao;
-	
+
 	@Autowired
 	private EmployeeDao employeeDao;
 
@@ -35,18 +35,17 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public YiwuJson<EmployeeApiView> login(String accountName, String password) {
-		YiwuJson<EmployeeApiView>  json = new YiwuJson<>();
+		YiwuJson<EmployeeApiView> json = new YiwuJson<>();
 		try {
-			Account account = accountDao.login(accountName,password);
+			Account account = accountDao.login(accountName, password);
 			EmployeeApiView e = new EmployeeApiView(employeeDao.get(account.getEmployee().getId()));
 			json.setData(e);
 		} catch (DataNotFoundException e) {
 			json.setMsg(e.getMessage());
 			json.setResult(false);
 		}
-		
+
 		return json;
 	}
-	
-	
+
 }

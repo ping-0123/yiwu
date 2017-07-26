@@ -22,5 +22,4 @@ public interface IncomeRecordDao extends IBaseDao<IncomeRecord, Integer> {
 	List<ShareTweetIncomeRecordApiView> getShareTweetRecordApiViews(int beneficiaryId, int[] eventTypeIds,
 			int[] relationTypeIds, int[] incomeTypeIds);
 
-	
 }

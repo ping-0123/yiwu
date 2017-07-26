@@ -9,20 +9,16 @@ import com.yinzhiwu.yiwu.dao.DepartmentDao;
 import com.yinzhiwu.yiwu.entity.yzwOld.Department;
 
 @Repository
-public class DepartmentDaoImplTwo extends BaseDaoImpl<Department, Integer>
-	implements DepartmentDao {
+public class DepartmentDaoImplTwo extends BaseDaoImpl<Department, Integer> implements DepartmentDao {
 
-
-    
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Department> findAllOperationDistricts() {
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("superiorId", 55);
-//		map.put("removed", 0);
-//		return findByProperties(map);
-		String hql = "SELECT new Department(d.id,d.deptName)"
-				+ " FROM Department d "
+		// Map<String, Object> map = new HashMap<>();
+		// map.put("superiorId", 55);
+		// map.put("removed", 0);
+		// return findByProperties(map);
+		String hql = "SELECT new Department(d.id,d.deptName)" + " FROM Department d "
 				+ "WHERE d.deptName LIKE '%区域' AND d.superiorId = 55 AND d.removed=0"
 				+ " order by convert_gbk(d.deptName)";
 		return (List<Department>) getHibernateTemplate().find(hql);
@@ -31,12 +27,9 @@ public class DepartmentDaoImplTwo extends BaseDaoImpl<Department, Integer>
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Department> findStoresByDistrictId(int districtId) {
-		String hql = "SELECT new Department(id,deptName) "
-				+ "FROM Department "
-				+ "WHERE superiorId = :districtId AND removed = 0"
-				+ "ORDER by convert_gbk(deptName)";
-		return (List<Department>) getHibernateTemplate()
-				.findByNamedParam(hql, "districtId", districtId);
+		String hql = "SELECT new Department(id,deptName) " + "FROM Department "
+				+ "WHERE superiorId = :districtId AND removed = 0" + "ORDER by convert_gbk(deptName)";
+		return (List<Department>) getHibernateTemplate().findByNamedParam(hql, "districtId", districtId);
 	}
 
 	@Override
@@ -46,27 +39,25 @@ public class DepartmentDaoImplTwo extends BaseDaoImpl<Department, Integer>
 
 	@Override
 	public void show() {
-		System.out.println("DepartmentDaoImplTwo show method");		
+		System.out.println("DepartmentDaoImplTwo show method");
 	}
-
-
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<String> findCities(){
-		String hql ="select distinct city from Department where city <> '' and city is not null";
+	public List<String> findCities() {
+		String hql = "select distinct city from Department where city <> '' and city is not null";
 		return (List<String>) getHibernateTemplate().find(hql);
 	}
 
 	@Override
 	public List<Department> findAllStores() {
 		List<Department> districts = findAllOperationDistricts();
-		List<Department> stores =new ArrayList<>();
+		List<Department> stores = new ArrayList<>();
 		for (Department district : districts) {
-			List<Department> s= findStoresByDistrictId(district.getId());
+			List<Department> s = findStoresByDistrictId(district.getId());
 			stores.addAll(s);
 		}
 		return stores;
 	}
-	
+
 }

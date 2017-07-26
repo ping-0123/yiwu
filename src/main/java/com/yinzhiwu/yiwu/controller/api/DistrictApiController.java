@@ -18,27 +18,25 @@ import com.yinzhiwu.yiwu.service.DepartmentService;
 
 @CrossOrigin
 @Controller
-@RequestMapping(value="/api/district")
+@RequestMapping(value = "/api/district")
 public class DistrictApiController {
 	@SuppressWarnings("unused")
-	private static final Log logger =
-			LogFactory.getLog(DistrictApiController.class);
-	
+	private static final Log logger = LogFactory.getLog(DistrictApiController.class);
+
 	@Autowired
 	private DepartmentService s;
-	
-	@RequestMapping(value="/list", method={RequestMethod.GET,RequestMethod.POST})
+
+	@RequestMapping(value = "/list", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public List<DepartmentApiView> getDistrictList(){
+	public List<DepartmentApiView> getDistrictList() {
 		return s.findAllOperationDistricts();
 	}
-	
-	
-	@RequestMapping(value="/id/{id}",  method={RequestMethod.GET})
+
+	@RequestMapping(value = "/id/{id}", method = { RequestMethod.GET })
 	@ResponseBody
-	public Department findById(@PathVariable String id){
+	public Department findById(@PathVariable String id) {
 		int intId = Integer.parseInt(id);
 		return s.findById(intId);
 	}
-	
+
 }

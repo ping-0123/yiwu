@@ -6,6 +6,6 @@ import com.yinzhiwu.yiwu.dao.EventTypeDao;
 import com.yinzhiwu.yiwu.entity.type.EventType;
 
 @Repository
-public class EventTypeDaoImpl extends BaseDaoImpl<EventType, Integer> implements EventTypeDao{
+public class EventTypeDaoImpl extends BaseDaoImpl<EventType, Integer> implements EventTypeDao {
 
 }

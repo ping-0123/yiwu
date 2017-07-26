@@ -6,6 +6,6 @@ import com.yinzhiwu.yiwu.dao.DepositDao;
 import com.yinzhiwu.yiwu.entity.income.DepositEvent;
 
 @Repository
-public class DepositDaoImpl extends BaseDaoImpl<DepositEvent,Integer> implements DepositDao {
+public class DepositDaoImpl extends BaseDaoImpl<DepositEvent, Integer> implements DepositDao {
 
 }

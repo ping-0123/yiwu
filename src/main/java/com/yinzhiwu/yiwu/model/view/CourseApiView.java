@@ -6,21 +6,22 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 
 public class CourseApiView {
-	
+
 	private String id;
-	
+
 	private String danceName;
-	
+
 	private String danceGrade;
-	
+
 	private String courseDesc;
-	
-	@JsonFormat(pattern="yyyy-MM-dd")
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date start;
-	
-	public CourseApiView(){};
-	
-	public CourseApiView(CourseYzw c){
+
+	public CourseApiView() {
+	};
+
+	public CourseApiView(CourseYzw c) {
 		this.id = c.getId();
 		this.danceName = c.getDance().getName();
 		this.danceGrade = c.getDanceGrade();
@@ -66,6 +67,5 @@ public class CourseApiView {
 	public void setStart(Date start) {
 		this.start = start;
 	}
-	
-	
+
 }

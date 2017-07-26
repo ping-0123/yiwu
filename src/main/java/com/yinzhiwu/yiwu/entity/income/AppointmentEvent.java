@@ -20,10 +20,8 @@ public class AppointmentEvent extends AbstractAppointmentEvent {
 		super();
 	}
 
-	public AppointmentEvent(Distributer distributer,  Float param, LessonYzw lesson) {
+	public AppointmentEvent(Distributer distributer, Float param, LessonYzw lesson) {
 		super(distributer, EventType.APPOINTMENT, param, lesson);
 	}
-	
-	
 
 }

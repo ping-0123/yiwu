@@ -22,37 +22,39 @@ import com.yinzhiwu.yiwu.service.IncomeRecordService;
 import com.yinzhiwu.yiwu.service.MessageService;
 
 @Service
-public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Integer> implements IncomeRecordService{
-	
+public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integer> implements IncomeRecordService {
+
 	@Autowired
 	private DistributerIncomeService dIncomeService;
-	
-	@Autowired DistributerIncomeDao dIncomeDao;
-	
-	@Autowired IncomeRecordDao incomeRecordDao;
-	
+
+	@Autowired
+	DistributerIncomeDao dIncomeDao;
+
+	@Autowired
+	IncomeRecordDao incomeRecordDao;
+
 	@Autowired
 	private MessageService messageService;
-	
+
 	@Autowired
 	private IncomeFactorDao incomeFactorDao;
-	
+
 	@Autowired
-	public void setBaseDao(IncomeRecordDao incomeRecordDao){
+	public void setBaseDao(IncomeRecordDao incomeRecordDao) {
 		super.setBaseDao(incomeRecordDao);
 	}
-	
+
 	@Override
-	public Integer save(IncomeRecord incomeRecord){
+	public Integer save(IncomeRecord incomeRecord) {
 		Assert.notNull(incomeRecord);
 		Assert.notNull(incomeRecord.getBenificiary());
 		Assert.notNull(incomeRecord.getIncomeType());
-		
-		incomeRecord.setCurrentValue(incomeRecord.getIncomeValue() +
-				dIncomeDao.findCurrentValue(incomeRecord.getBenificiary().getId(), incomeRecord.getIncomeType().getId()));
+
+		incomeRecord.setCurrentValue(incomeRecord.getIncomeValue() + dIncomeDao
+				.findCurrentValue(incomeRecord.getBenificiary().getId(), incomeRecord.getIncomeType().getId()));
 		super.save(incomeRecord);
 		dIncomeService.update_by_record(incomeRecord);
-		if(IncomeType.BROKERAGE.equals(incomeRecord.getIncomeType()))
+		if (IncomeType.BROKERAGE.equals(incomeRecord.getIncomeType()))
 			messageService.save_by_record(incomeRecord);
 		return incomeRecord.getId();
 	}
@@ -63,13 +65,13 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 		try {
 			factors = incomeFactorDao.findByProperty("eventType.id", event.getType().getId());
 		} catch (DataNotFoundException e) {
-//			logger.info(e.getMessage());
-//			logger.info(e);
+			// logger.info(e.getMessage());
+			// logger.info(e);
 			return;
 		}
 		for (IncomeFactor factor : factors) {
 			Distributer benificiary = factor.getRelation().getRelativeDistributer(event.getDistributer());
-			if(benificiary != null && factor.getFactor() != 0f && event.getParam() != 0){
+			if (benificiary != null && factor.getFactor() != 0f && event.getParam() != 0) {
 				IncomeRecord record = new IncomeRecord(event, factor, benificiary);
 				this.save(record);
 			}
@@ -86,10 +88,10 @@ public class IncomeRecordServiceImpl  extends BaseServiceImpl<IncomeRecord, Inte
 			int incomeTypeId) {
 		return incomeRecordDao.getListFaster(observerId, eventTypeId, relationTypeId, incomeTypeId);
 	}
-	
+
 	@Override
-	public List<ShareTweetIncomeRecordApiView> getShareTweetRecordApiViews(
-			int beneficiaryId, int[] eventTypeIds, int[] relationTypeIds, int[] incomeTypeIds){
+	public List<ShareTweetIncomeRecordApiView> getShareTweetRecordApiViews(int beneficiaryId, int[] eventTypeIds,
+			int[] relationTypeIds, int[] incomeTypeIds) {
 		return incomeRecordDao.getShareTweetRecordApiViews(beneficiaryId, eventTypeIds, relationTypeIds, incomeTypeIds);
 	}
 }

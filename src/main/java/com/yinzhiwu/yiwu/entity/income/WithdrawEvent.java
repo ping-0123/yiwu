@@ -15,47 +15,41 @@ import com.yinzhiwu.yiwu.util.MessageTemplate;
 
 @Entity
 @DiscriminatorValue("WithdrawEvent")
-public class WithdrawEvent extends IncomeEvent{
-
+public class WithdrawEvent extends IncomeEvent {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2145281150678264437L;
-	
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_withdrawEvent_capitalAccount_id"))
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_withdrawEvent_capitalAccount_id"))
 	private CapitalAccount capitalAccount;
-	
-	
+
 	public WithdrawEvent(Distributer distributer, EventType type, Float param) {
 		super(distributer, type, param);
 	}
-	
-	public WithdrawEvent(Distributer distributer, EventType type, Float param,CapitalAccount capitalAccount) {
+
+	public WithdrawEvent(Distributer distributer, EventType type, Float param, CapitalAccount capitalAccount) {
 		super(distributer, type, param);
 		this.capitalAccount = capitalAccount;
 	}
-	
-	public WithdrawEvent() {}
+
+	public WithdrawEvent() {
+	}
 
 	@Override
 	public Message generateMessage(IncomeRecord record) {
-		try{
-			return new Message(record.getBenificiary(), MessageTemplate.BrokerageMessage.generate_withdraw_message(
-					this.getOccurTime(), 
-					this.getParam(), 
-					this.getCapitalAccount().getCapitalAccountType().getName(),
-					this.getCapitalAccount().getAccount()));
-		}catch (Exception e) {
+		try {
+			return new Message(record.getBenificiary(),
+					MessageTemplate.BrokerageMessage.generate_withdraw_message(this.getOccurTime(), this.getParam(),
+							this.getCapitalAccount().getCapitalAccountType().getName(),
+							this.getCapitalAccount().getAccount()));
+		} catch (Exception e) {
 			return null;
 		}
 	}
 
-
-	
-	
 	public CapitalAccount getCapitalAccount() {
 		return capitalAccount;
 	}
@@ -64,11 +58,4 @@ public class WithdrawEvent extends IncomeEvent{
 		this.capitalAccount = capitalAccount;
 	}
 
-
-	
-
-
-
-
-	
 }

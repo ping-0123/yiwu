@@ -23,17 +23,15 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 
 	YiwuJson<DistributerApiView> findById(int id);
 
-
 	YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile, String fileSavePath);
 
 	YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(int distributerId);
+
 	void setDefaultCapitalAccount(int distributerId, int accountId) throws DataNotFoundException, Exception;
 
 	YiwuJson<CapitalAccountApiView> getCapitalAccount(int distributerId, String typeName);
 
-
 	YiwuJson<Boolean> judgePhoneNoIsRegistered(String phoneNo);
-
 
 	YiwuJson<DistributerApiView> register2(DistributerRegisterModel m);
 
@@ -44,6 +42,5 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 	String getHeadIconSavePath();
 
 	String getHeadIconUrl();
-
 
 }

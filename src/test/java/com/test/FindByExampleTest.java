@@ -26,18 +26,19 @@ import com.yinzhiwu.yiwu.service.DistributerService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class FindByExampleTest {
-	
-	private static Log LOG  = LogFactory.getLog(FindByExampleTest.class);
+
+	private static Log LOG = LogFactory.getLog(FindByExampleTest.class);
 
 	@Autowired
 	private OrderYzwDao orderDao;
-	
-	@Autowired CustomerYzwDao customerDao;
-	
+
+	@Autowired
+	CustomerYzwDao customerDao;
+
 	@Test
-	public void test(){
+	public void test() {
 		OrderYzw order = new OrderYzw();
-//		order.setPayedAmount(3880f);
+		// order.setPayedAmount(3880f);
 		Contract contract = new Contract();
 		contract.setContractNo("YZW20170601006");
 		order.setContract(contract);
@@ -48,29 +49,28 @@ public class FindByExampleTest {
 		} catch (DataNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	
+
 	@Autowired
 	private DistributerDao distributerDao;
-	
+
 	@Autowired
 	private CapitalAccountDao capitalAccountDao;
-	
+
 	@Test
-	public void test2(){
+	public void test2() {
 		Distributer distributer = new Distributer();
-		
+
 		CapitalAccount account = new CapitalAccount();
 		try {
-			account= capitalAccountDao.get(2000001);
+			account = capitalAccountDao.get(2000001);
 		} catch (DataNotFoundException e1) {
 			LOG.error(e1);
 			e1.printStackTrace();
 		}
 		distributer.setDefaultCapitalAccount(account);
-		
+
 		try {
 			List<Distributer> distributers = distributerDao.findByExample(distributer);
 			System.out.println(distributers.size());
@@ -78,12 +78,12 @@ public class FindByExampleTest {
 			LOG.error(e);
 		}
 	}
-	
+
 	@Autowired
 	private DistributerService distributerService;
-	
+
 	@Test
-	public void test3(){
+	public void test3() {
 		Distributer distributer = new Distributer();
 		CapitalAccount capitalAccount = new CapitalAccount();
 		capitalAccount.setId(2000000);
@@ -94,9 +94,9 @@ public class FindByExampleTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
-	public void test4(){
+	public void test4() {
 		try {
 			Distributer distributer = distributerDao.get(3000002);
 			distributer.setId(3000007);

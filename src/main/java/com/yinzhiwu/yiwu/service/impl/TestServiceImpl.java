@@ -8,14 +8,13 @@ import com.yinzhiwu.yiwu.entity.Test;
 import com.yinzhiwu.yiwu.service.TestService;
 
 @Service
-public class TestServiceImpl extends BaseServiceImpl<Test, Long> implements TestService{
+public class TestServiceImpl extends BaseServiceImpl<Test, Long> implements TestService {
 
-//	@Autowired
-//	private TestDao testDao;
-	
+	// @Autowired
+	// private TestDao testDao;
 
 	@Autowired
-	private void setBaseDao(TestDao testDao){
+	private void setBaseDao(TestDao testDao) {
 		super.setBaseDao(testDao);
 	}
 }

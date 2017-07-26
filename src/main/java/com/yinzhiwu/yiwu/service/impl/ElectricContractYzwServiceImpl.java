@@ -8,13 +8,12 @@ import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
 import com.yinzhiwu.yiwu.service.ElectricContractYzwService;
 
 @Service
-public class ElectricContractYzwServiceImpl extends BaseServiceImpl<ElectricContractYzw	,String> 
-	implements ElectricContractYzwService{
-	
+public class ElectricContractYzwServiceImpl extends BaseServiceImpl<ElectricContractYzw, String>
+		implements ElectricContractYzwService {
+
 	@Autowired
-	public void setBaseDao(ElectricContractYzwDao electricContractYzwDao){
+	public void setBaseDao(ElectricContractYzwDao electricContractYzwDao) {
 		super.setBaseDao(electricContractYzwDao);
 	}
-	
-	
+
 }

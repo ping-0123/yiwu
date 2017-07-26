@@ -15,14 +15,13 @@ import com.yinzhiwu.yiwu.service.IntervalService;
 @Controller
 @RequestMapping("api/interval")
 public class IntervalApiController {
-	
+
 	@Autowired
 	private IntervalService intervalService;
-	
+
 	@ResponseBody
-	@RequestMapping(value="/getAllIntervals", method={RequestMethod.GET})
-	public YiwuJson<List<Interval>> getAllIntervals(){
-		return new YiwuJson<List<Interval>>(
-				intervalService.getAllIntervals());
+	@RequestMapping(value = "/getAllIntervals", method = { RequestMethod.GET })
+	public YiwuJson<List<Interval>> getAllIntervals() {
+		return new YiwuJson<List<Interval>>(intervalService.getAllIntervals());
 	}
 }

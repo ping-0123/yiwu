@@ -21,56 +21,55 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/api/checkIns")
-@Api(value="check-in")
-public class CheckInsApiController extends BaseController{
+@Api(value = "check-in")
+public class CheckInsApiController extends BaseController {
 
-	@Autowired private CheckInsYzwService checkInsYzwService;
-	
+	@Autowired
+	private CheckInsYzwService checkInsYzwService;
+
 	@GetMapping("/lesson/count")
-	@ApiOperation(value="获取学员已上课总节数")
+	@ApiOperation(value = "获取学员已上课总节数")
 	public YiwuJson<Integer> findCountByCustomerId(
-			@ApiParam(value="id of the customer", required =true) int customerId)
-	{
-		try{
-			return new YiwuJson<>(new Integer(checkInsYzwService.findCountByCustomerId(customerId))) ;
-		}catch (Exception e) {
+			@ApiParam(value = "id of the customer", required = true) int customerId) {
+		try {
+			return new YiwuJson<>(new Integer(checkInsYzwService.findCountByCustomerId(customerId)));
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
-	
+
 	@GetMapping("/lesson/list")
-	@ApiOperation(value="获取学员已上课课程列表")
+	@ApiOperation(value = "获取学员已上课课程列表")
 	public YiwuJson<List<LessonApiView>> findByCustomerId(
-			@ApiParam(value="id of the customer", required =true) int customerId)
-	{
-		try{
+			@ApiParam(value = "id of the customer", required = true) int customerId) {
+		try {
 			return checkInsYzwService.findByCustomerId(customerId);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
-	
+
 	@GetMapping("/lesson/pageList")
-	@ApiOperation(value="分页获取学员已上课课程列表")
+	@ApiOperation(value = "分页获取学员已上课课程列表")
 	public YiwuJson<PageBean<LessonApiView>> findPage(
-			@ApiParam(value="id of the customer", required =true) int customerId, 
-			@ApiParam(value="pageNo should be positive", required=true) int pageNo,
-			@ApiParam(value="pageSize should be positive", required=true) int pageSize){
+			@ApiParam(value = "id of the customer", required = true) int customerId,
+			@ApiParam(value = "pageNo should be positive", required = true) int pageNo,
+			@ApiParam(value = "pageSize should be positive", required = true) int pageSize) {
 		try {
-			PageBean<LessonApiView> page = checkInsYzwService.findPageViewByCustomer(customerId,pageNo, pageSize);
+			PageBean<LessonApiView> page = checkInsYzwService.findPageViewByCustomer(customerId, pageNo, pageSize);
 			return new YiwuJson<>(page);
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
-			
+
 	}
-	
+
 	@PostMapping
-	@ApiOperation(value="学员签到")
-	public YiwuJson<CheckInSuccessApiView> saveCustomerCheckIn(int distribuerId, int lessonId){
+	@ApiOperation(value = "学员签到")
+	public YiwuJson<CheckInSuccessApiView> saveCustomerCheckIn(int distribuerId, int lessonId) {
 		try {
-			return new YiwuJson<>(checkInsYzwService.saveCustomerCheckIn(distribuerId,lessonId));
+			return new YiwuJson<>(checkInsYzwService.saveCustomerCheckIn(distribuerId, lessonId));
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}

@@ -17,50 +17,43 @@ import javax.validation.constraints.NotNull;
 import com.yinzhiwu.yiwu.entity.type.ProductType;
 
 @Entity
-@Table(name="yiwu_plan_revenue", uniqueConstraints=
-	@UniqueConstraint(name="uk_PlanRevenue_storeId_year_month_productTypeId", 
-			columnNames={"storeId","year", "month", "productTypeId"}))
+@Table(name = "yiwu_plan_revenue", uniqueConstraints = @UniqueConstraint(name = "uk_PlanRevenue_storeId_year_month_productTypeId", columnNames = {
+		"storeId", "year", "month", "productTypeId" }))
 public class PlanRevenue {
 
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column
 	@NotNull
 	private Integer storeId;
-	
+
 	@Column
 	@NotNull
 	private Integer year;
-	
+
 	@Column
 	@Min(1)
 	@Max(12)
 	private Integer month;
-	
+
 	@ManyToOne
-	@JoinColumn(name="productTypeId" ,
-		foreignKey=@ForeignKey(name="fk_PlanRevenue_productType_id"))
+	@JoinColumn(name = "productTypeId", foreignKey = @ForeignKey(name = "fk_PlanRevenue_productType_id"))
 	private ProductType productType;
-	
+
 	@Column
 	private Double amount;
-	
-	
-	public PlanRevenue(){};
-	
-	
 
-	public PlanRevenue(Integer storeId, Integer year, Integer month,  Double amount) {
+	public PlanRevenue() {
+	};
+
+	public PlanRevenue(Integer storeId, Integer year, Integer month, Double amount) {
 		this.storeId = storeId;
 		this.year = year;
 		this.month = month;
 		this.amount = amount;
 	}
-
-
 
 	public final Integer getId() {
 		return id;
@@ -109,6 +102,5 @@ public class PlanRevenue {
 	public final void setAmount(Double amount) {
 		this.amount = amount;
 	}
-	
-	
+
 }

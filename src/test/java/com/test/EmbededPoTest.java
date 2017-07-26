@@ -17,12 +17,11 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 @ContextConfiguration("classpath:applicationContext.xml")
 public class EmbededPoTest {
 
-	
 	@Autowired
 	private OrderYzwDao orderYzwDao;
-	
+
 	@Test
-	public void testEmbeded(){
+	public void testEmbeded() {
 		OrderYzw order = null;
 		try {
 			order = orderYzwDao.get("20170423035");
@@ -32,8 +31,8 @@ public class EmbededPoTest {
 		}
 		Contract contract = order.getContract();
 		System.out.println(contract.getValidityTimes());
-//		System.out.println(contract.getCustomer().getName());
-//		System.out.println(order.getCustomer().getName());
+		// System.out.println(contract.getCustomer().getName());
+		// System.out.println(order.getCustomer().getName());
 	}
-	
+
 }

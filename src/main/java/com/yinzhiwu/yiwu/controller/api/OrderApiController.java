@@ -23,63 +23,60 @@ import com.yinzhiwu.yiwu.service.OrderService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 
 @RestController
-@RequestMapping(value="/api/order")
+@RequestMapping(value = "/api/order")
 public class OrderApiController {
-	
+
 	@Autowired
 	private OrderService orderService;
-	
-	@Autowired 
+
+	@Autowired
 	private OrderYzwService orderYzwService;
-	
-	@RequestMapping(value="/getDailyOrders",method={RequestMethod.GET, RequestMethod.POST})
-	public ReturnedJson getDailyOrdersByStore(@RequestParam int storeId,
-											@RequestParam Date payedDate,
-											@RequestParam int productTypeId){
-		if (productTypeId==0){
-			return new ReturnedJson(
-					orderService.getDailyOrderByStore(storeId, payedDate));	
-		}else{
-			return new ReturnedJson(
-					orderService.getDailyOrderByStore(storeId, payedDate, productTypeId));
+
+	@RequestMapping(value = "/getDailyOrders", method = { RequestMethod.GET, RequestMethod.POST })
+	public ReturnedJson getDailyOrdersByStore(@RequestParam int storeId, @RequestParam Date payedDate,
+			@RequestParam int productTypeId) {
+		if (productTypeId == 0) {
+			return new ReturnedJson(orderService.getDailyOrderByStore(storeId, payedDate));
+		} else {
+			return new ReturnedJson(orderService.getDailyOrderByStore(storeId, payedDate, productTypeId));
 		}
 	}
-	
-	@GetMapping(value="/list")
-	public YiwuJson<List<OrderAbbrApiView>> findByDistributerId(int distributerId){
+
+	@GetMapping(value = "/list")
+	public YiwuJson<List<OrderAbbrApiView>> findByDistributerId(int distributerId) {
 		return orderYzwService.findByDistributerId(distributerId);
 	}
-	
-	@GetMapping(value="/count")
-	public YiwuJson<Integer> findCount(int customerId){
-		try{
+
+	@GetMapping(value = "/count")
+	public YiwuJson<Integer> findCount(int customerId) {
+		try {
 			int count = orderYzwService.findCountByProperty("customer.id", customerId);
 			return new YiwuJson<>(new Integer(count));
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
-	
-	@GetMapping(value="/{id}")
-	public YiwuJson<OrderApiView> findById(@PathVariable String id){
+
+	@GetMapping(value = "/{id}")
+	public YiwuJson<OrderApiView> findById(@PathVariable String id) {
 		return orderYzwService.findById(id);
 	}
-	
+
 	@PutMapping("/{id}")
-	public YiwuJson<Boolean> modify(OrderYzw order, @PathVariable String id){
-//		if(order.geteContractStatus()){
-//			Contract contract = new Contract();
-//			contract.setStatus("已确认");
-//			order.setContract(contract);
-//		}
+	public YiwuJson<Boolean> modify(OrderYzw order, @PathVariable String id) {
+		// if(order.geteContractStatus()){
+		// Contract contract = new Contract();
+		// contract.setStatus("已确认");
+		// order.setContract(contract);
+		// }
 		try {
 			orderYzwService.modify(id, order);
 		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
 			return new YiwuJson<>(e.getMessage());
 		}
-		if(order.geteContractStatus())
+		if (order.geteContractStatus())
 			return new YiwuJson<>("成功确认订单", new Boolean(true));
 		return new YiwuJson<>(new Boolean(true));
 	}
-	
+
 }

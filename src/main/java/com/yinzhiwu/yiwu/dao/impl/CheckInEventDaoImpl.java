@@ -6,6 +6,6 @@ import com.yinzhiwu.yiwu.dao.CheckInEventDao;
 import com.yinzhiwu.yiwu.entity.income.CheckInEvent;
 
 @Repository
-public class CheckInEventDaoImpl extends BaseDaoImpl<CheckInEvent,Integer> implements CheckInEventDao {
+public class CheckInEventDaoImpl extends BaseDaoImpl<CheckInEvent, Integer> implements CheckInEventDao {
 
 }

@@ -16,11 +16,11 @@ import com.yinzhiwu.yiwu.util.ShareCodeUtil;
 
 @Repository
 public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implements DistributerDao {
-	
+
 	private static final Log logger = LogFactory.getLog(DistributerDaoImpl.class);
 
 	@Override
-	public Integer save(Distributer entity){
+	public Integer save(Distributer entity) {
 		int id = getNextId();
 		logger.debug(id);
 		entity.setId(id);
@@ -33,35 +33,36 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	private int getNextId() {
 		String sql = "select  AUTO_INCREMENT from information_schema.tables where table_name ='yiwu_distributer'";
-		List<Integer> list = getSession().createNativeQuery(sql).addScalar("AUTO_INCREMENT", IntegerType.INSTANCE) .list();
+		List<Integer> list = getSession().createNativeQuery(sql).addScalar("AUTO_INCREMENT", IntegerType.INSTANCE)
+				.list();
 		return list.get(0);
 	}
 
 	@Override
 	public Distributer findByShareCode(String shareCode) throws DataNotFoundException {
 		List<Distributer> distributers = findByProperty("shareCode", shareCode);
-		if(distributers.size()>0)
+		if (distributers.size() > 0)
 			return distributers.get(0);
 		else
-			throw new DataNotFoundException(this.getClass(),"shareCode",shareCode);
+			throw new DataNotFoundException(this.getClass(), "shareCode", shareCode);
 	}
 
 	@Override
 	public Distributer findByPhoneNo(String phoneNo) throws DataNotFoundException {
 		List<Distributer> distributers = findByProperty("phoneNo", phoneNo);
-		if(distributers.size()>0)
+		if (distributers.size() > 0)
 			return distributers.get(0);
 		else
-			throw new DataNotFoundException(this.getClass(),"phoneNo",phoneNo);
+			throw new DataNotFoundException(this.getClass(), "phoneNo", phoneNo);
 	}
 
 	@Override
 	public Distributer findByMemberId(String memeberId) throws DataNotFoundException {
 		List<Distributer> distributers = findByProperty("memeberId", memeberId);
-		if(distributers.size()>0)
+		if (distributers.size() > 0)
 			return distributers.get(0);
 		else
-			throw new DataNotFoundException(this.getClass(),"memeberId",memeberId);
+			throw new DataNotFoundException(this.getClass(), "memeberId", memeberId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -73,37 +74,36 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		logger.debug(exp + "击败的数量：" + counts.get(0).intValue());
 		int sum = findCount();
 		logger.debug("分销人数总数：" + sum);
-		if (sum==0)
+		if (sum == 0)
 			return 0;
 		else
-			return counts.get(0).intValue()/(float)sum;
+			return counts.get(0).intValue() / (float) sum;
 	}
 
 	@Override
 	public Distributer findByWechat(String wechatNo) throws DataNotFoundException {
 		List<Distributer> distributers = findByProperty("wechatNo", wechatNo);
-		if(distributers.size()>0)
+		if (distributers.size() > 0)
 			return distributers.get(0);
 		else
-			throw new DataNotFoundException(this.getClass(),"wechatNo",wechatNo);
+			throw new DataNotFoundException(this.getClass(), "wechatNo", wechatNo);
 	}
 
 	@Override
 	public Distributer findByAccountPassword(String account, String password) throws Exception {
 		String encriptedPassword = SecurityUtil.encryptByMd5(password);
-		List<Distributer> distributers = findByProperties(
-				new String[]{"account", "password"}, 
-				new Object[]{account,encriptedPassword});
-		if (distributers.size()>0)
+		List<Distributer> distributers = findByProperties(new String[] { "account", "password" },
+				new Object[] { account, encriptedPassword });
+		if (distributers.size() > 0)
 			return distributers.get(0);
-		else{
+		else {
 			List<Distributer> distributers2 = findByProperty("account", account);
-			if(distributers2.size()>0)
+			if (distributers2.size() > 0)
 				throw new Exception("password is Incorrect");
 			else
 				throw new Exception("account:" + account + " is not exist");
 		}
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -125,7 +125,7 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	}
 
 	@Override
-	public Distributer findByCustomerId(Integer customerId){
+	public Distributer findByCustomerId(Integer customerId) {
 		List<Distributer> ds;
 		try {
 			ds = findByProperty("customer.id", customerId);
@@ -135,8 +135,5 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		}
 		return ds.get(0);
 	}
-
-
-	
 
 }

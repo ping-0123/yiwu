@@ -18,110 +18,103 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-
 @Entity
-@Table(name="vemployee")
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+@Table(name = "vemployee")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EmployeeYzw extends BaseYzwEntity {
-	
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6739017966853748277L;
-	
+
 	@Id
-	@Column(length=32)
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(length = 32)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(length=128)
+
+	@Column(length = 128)
 	private String user;
-	
-	@Column(length=128)
+
+	@Column(length = 128)
 	private String seegleUserId;
-	
-	@Column(length=128)
+
+	@Column(length = 128)
 	private String name;
-	
-	@Column(length=128)
+
+	@Column(length = 128)
 	private String password;
-	
-	@Column(name="Sex")
+
+	@Column(name = "Sex")
 	private Integer gender;
-	
-	@Column(length=20)
+
+	@Column(length = 20)
 	private String birthday;
-	
-	@Column(length=20)
+
+	@Column(length = 20)
 	private String tel;
-	
-	@Column(length=20)
+
+	@Column(length = 20)
 	private String cellPhone;
-	
-	@Column(length=20)
+
+	@Column(length = 20)
 	private String fax;
-	
-	@Column(length=50)
+
+	@Column(length = 50)
 	private String email;
-	
+
 	@Column
 	private Integer disabled;
-	
-	
+
 	@Column
 	private Integer removed;
-	
+
 	@Column
 	private Integer wparam;
-	
+
 	@Column
 	private Integer lparam;
-	
-	
-	@Column(length=128)
+
+	@Column(length = 128)
 	private String seegleUserName;
-	
-	@Column(length=128)
+
+	@Column(length = 128)
 	private String seegleSerialNum;
-	
+
 	@Column
 	private Integer userType;
-	
-	@Column(length=128)
+
+	@Column(length = 128)
 	private String accessCode;
-	
-	@Column(length=128)
+
+	@Column(length = 128)
 	private String bindMac;
-	
-		
+
 	@Column
 	private String fingerPrintNo;
-	
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="departmentId", foreignKey=
-			@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_employee_department_id"))
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "departmentId", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT, name = "fk_employee_department_id"))
 	private DepartmentYzw department;
-	
+
 	@Column
 	private Integer defaultDuty;
-	
+
 	@Column
 	private Integer outUser;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String clusterServerIp;
-	
+
 	@Column
 	private Integer clusterServerPort;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String clusterToken;
-	
-	@Column(name="Last_Online_TimeStamp")
+
+	@Column(name = "Last_Online_TimeStamp")
 	private Date lastOnlineTimeStamp;
 
-	
 	public EmployeeYzw() {
 		super();
 	}
@@ -174,7 +167,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 		return disabled;
 	}
 
-
 	public Integer getRemoved() {
 		return removed;
 	}
@@ -210,7 +202,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 	public String getFingerPrintNo() {
 		return fingerPrintNo;
 	}
-
 
 	public Integer getDefaultDuty() {
 		return defaultDuty;
@@ -320,7 +311,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 		this.fingerPrintNo = fingerPrintNo;
 	}
 
-
 	public void setDefaultDuty(Integer defaultDuty) {
 		this.defaultDuty = defaultDuty;
 	}
@@ -345,8 +335,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 		this.lastOnlineTimeStamp = lastOnlineTimeStamp;
 	}
 
-
-
 	public DepartmentYzw getDepartment() {
 		return department;
 	}
@@ -354,8 +342,5 @@ public class EmployeeYzw extends BaseYzwEntity {
 	public void setDepartment(DepartmentYzw department) {
 		this.department = department;
 	}
-	
-	
-	
 
 }

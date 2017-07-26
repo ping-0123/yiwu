@@ -16,19 +16,19 @@ import com.yinzhiwu.yiwu.model.view.IncomeRecordApiView;
 @ContextConfiguration("classpath:applicationContext.xml")
 public class DynamicInstantiationTest {
 
-	
-	@Autowired private IncomeRecordDao incomeRecordDao;
-	
+	@Autowired
+	private IncomeRecordDao incomeRecordDao;
+
 	@Test
-	public void test(){
+	public void test() {
 		try {
 			long start = System.currentTimeMillis();
 			IncomeRecordApiView v2 = new IncomeRecordApiView(incomeRecordDao.get(6000061));
 			long middle = System.currentTimeMillis();
-			System.out.println("times of find view directly"  + ( middle - start));
+			System.out.println("times of find view directly" + (middle - start));
 			IncomeRecordApiView v = incomeRecordDao.findApiViewById(6000061);
 			long end = System.currentTimeMillis();
-			System.out.println("times of find view by inderectly" + (end -middle));
+			System.out.println("times of find view by inderectly" + (end - middle));
 		} catch (DataNotFoundException e) {
 			e.printStackTrace();
 		}

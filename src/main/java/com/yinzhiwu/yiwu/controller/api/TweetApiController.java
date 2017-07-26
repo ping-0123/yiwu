@@ -25,22 +25,22 @@ import com.yinzhiwu.yiwu.service.TweetService;
 import com.yinzhiwu.yiwu.util.UrlUtil;
 
 @RestController
-@RequestMapping(value="/api/tweet")
+@RequestMapping(value = "/api/tweet")
 public class TweetApiController extends BaseController {
-	
 
 	@Autowired
-	private TweetService tweetService;	
-	
+	private TweetService tweetService;
+
 	@PostMapping("/save")
-	public YiwuJson<Boolean> save(HttpServletRequest request, @Valid TweetModel m, BindingResult bindingResult){
-		if(bindingResult.hasErrors()){
+	public YiwuJson<TweetModel> save(@Valid TweetModel m, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
 			FieldError fieldError = bindingResult.getFieldError();
-			logger.info(super.getErrorsMessage(bindingResult));
+			if(logger.isDebugEnabled())
+				logger.debug(super.getErrorsMessage(bindingResult));
 			return new YiwuJson<>(fieldError.getField() + ": " + fieldError.getDefaultMessage());
 		}
-		File file = new File(request.getServletContext().getRealPath(UrlUtil.TWEET_COVER_ICON_PATH), 
-					System.currentTimeMillis() + ".jpg");
+		File file = new File(request.getServletContext().getRealPath(UrlUtil.TWEET_COVER_ICON_PATH),
+				System.currentTimeMillis() + ".jpg");
 		try {
 			m.getCoverIcon().transferTo(file);
 		} catch (IllegalStateException | IOException e) {
@@ -48,28 +48,28 @@ public class TweetApiController extends BaseController {
 			return new YiwuJson<>(e.getMessage());
 		}
 		m.setCoverIconUrl(UrlUtil.toTweetCoverIconUrl(file.getName()));
-		try{
+		try {
 			tweetService.save(m);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return new YiwuJson<>("富文本内容请控制在16M内");
 		}
-		
+
 		return new YiwuJson<>(new Boolean(true));
 	}
-	
+
 	@GetMapping("/list")
-	public YiwuJson<List<TweetAbbrApiView>> findList(int tweetTypeId, String title){
+	public YiwuJson<List<TweetAbbrApiView>> findList(int tweetTypeId, String title) {
 		return tweetService.findByTypeByFuzzyTitle(tweetTypeId, title);
 	}
-	
+
 	@Deprecated
 	@GetMapping("/id/{id}")
-	public YiwuJson<TweetApiView> findById(@PathVariable int id){
+	public YiwuJson<TweetApiView> findById(@PathVariable int id) {
 		return tweetService.findById(id);
 	}
-	
+
 	@GetMapping("/{id}")
-	public YiwuJson<TweetApiView> doGet(@PathVariable int id){
+	public YiwuJson<TweetApiView> doGet(@PathVariable int id) {
 		return tweetService.findById(id);
 	}
 }

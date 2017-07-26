@@ -6,7 +6,6 @@ import com.yinzhiwu.yiwu.dao.TweetTypeDao;
 import com.yinzhiwu.yiwu.entity.type.TweetType;
 
 @Repository
-public class TweetTypeDaoImpl extends BaseDaoImpl<TweetType, Integer>  implements TweetTypeDao{
+public class TweetTypeDaoImpl extends BaseDaoImpl<TweetType, Integer> implements TweetTypeDao {
 
-	
 }

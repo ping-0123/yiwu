@@ -16,20 +16,19 @@ public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> 
 
 	@Override
 	public boolean isAppointed(CustomerYzw customer, LessonYzw lesson) {
-		int count =0;
+		int count = 0;
 		try {
-			count = findCountByProperties(
-					new String[]{"lesson.id", "customer.id", "status"}, 
-					new Object[]{lesson.getId(), customer.getId(), AppointStatus.APPONTED});
+			count = findCountByProperties(new String[] { "lesson.id", "customer.id", "status" },
+					new Object[] { lesson.getId(), customer.getId(), AppointStatus.APPONTED });
 		} catch (Exception e) {
 			logger.error(e);
 		}
-		return count>0?true:false;
+		return count > 0 ? true : false;
 	}
 
 	@Override
 	public AppointStatus getAppointmentStatusByCustomerAndLesson(CustomerYzw customer, LessonYzw lesson) {
-		if(isAppointed(customer, lesson))
+		if (isAppointed(customer, lesson))
 			return AppointStatus.APPONTED;
 		else {
 			return AppointStatus.UN_APOINTED;
@@ -44,9 +43,8 @@ public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> 
 	@Override
 	public AppointmentYzw findAppointed(CustomerYzw customer, LessonYzw lesson, AppointStatus status) {
 		try {
-			List<AppointmentYzw> appointments = findByProperties(
-					new String[]{"customer.id", "lesson.id","status" }, 
-					new Object[]{customer.getId(), lesson.getId(), status});
+			List<AppointmentYzw> appointments = findByProperties(new String[] { "customer.id", "lesson.id", "status" },
+					new Object[] { customer.getId(), lesson.getId(), status });
 			return appointments.get(0);
 		} catch (DataNotFoundException e) {
 			return null;

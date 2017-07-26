@@ -6,6 +6,6 @@ import com.yinzhiwu.yiwu.dao.StoreManCallRollDao;
 import com.yinzhiwu.yiwu.entity.yzwOld.StoreManCallRoll;
 
 @Repository
-public class StoreManCallRollDaoImpl extends BaseDaoImpl<StoreManCallRoll,Integer> implements StoreManCallRollDao {
+public class StoreManCallRollDaoImpl extends BaseDaoImpl<StoreManCallRoll, Integer> implements StoreManCallRollDao {
 
 }

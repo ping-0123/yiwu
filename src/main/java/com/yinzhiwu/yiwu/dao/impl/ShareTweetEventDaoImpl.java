@@ -12,22 +12,21 @@ import com.yinzhiwu.yiwu.entity.income.ShareTweetEvent;
 import com.yinzhiwu.yiwu.entity.type.EventType;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
 
-
 @Repository
-public class ShareTweetEventDaoImpl extends BaseDaoImpl<ShareTweetEvent, Integer> implements ShareTweetEventDao{
+public class ShareTweetEventDaoImpl extends BaseDaoImpl<ShareTweetEvent, Integer> implements ShareTweetEventDao {
 
 	@Override
 	public long findDailyShareTimes(Integer distributerId, Date occurTime) {
 		Assert.notNull(occurTime);
-		
-		StringBuilder hql =new StringBuilder("select count(*) from ShareTweetEvent where distributer.id = :distributerId");
+
+		StringBuilder hql = new StringBuilder(
+				"select count(*) from ShareTweetEvent where distributer.id = :distributerId");
 		hql.append(" and occurTime between :start and :end");
 		@SuppressWarnings("unchecked")
-		List<Long> longs = (List<Long>) getHibernateTemplate().findByNamedParam(
-				hql.toString(),
-				new String[]{"distributerId", "start", "end"}, 
-				new Object[]{distributerId, CalendarUtil.getDayBegin(occurTime).getTime(), occurTime});
-		if(null == longs || longs.size() ==0)
+		List<Long> longs = (List<Long>) getHibernateTemplate().findByNamedParam(hql.toString(),
+				new String[] { "distributerId", "start", "end" },
+				new Object[] { distributerId, CalendarUtil.getDayBegin(occurTime).getTime(), occurTime });
+		if (null == longs || longs.size() == 0)
 			return 0;
 		return longs.get(0);
 	}
@@ -43,10 +42,8 @@ public class ShareTweetEventDaoImpl extends BaseDaoImpl<ShareTweetEvent, Integer
 		typeIds.add(EventType.SHARE_TWEET_BY_WECHAT_AFTER_THREE_TIMES_PER_DAY.getId());
 		typeIds.add(EventType.SHARE_TWEET_BY_WECHAT_FIRST_THREE_TIMES_PER_DAY.getId());
 		@SuppressWarnings("unchecked")
-		List<Long> list =   (List<Long>) getHibernateTemplate().findByNamedParam(
-				builder.toString(), 
-				new String[]{"distributerId", "eventTypes"},  
-				new Object[]{distributerId, typeIds});
+		List<Long> list = (List<Long>) getHibernateTemplate().findByNamedParam(builder.toString(),
+				new String[] { "distributerId", "eventTypes" }, new Object[] { distributerId, typeIds });
 		return list.get(0).intValue();
 	}
 

@@ -8,23 +8,24 @@ import com.yinzhiwu.yiwu.entity.Message;
 public class MessageApiView {
 
 	private int id;
-	
-	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date date;
-	
-	private String content;
-	
-	private Message.Status status;
-	
-	
-	public MessageApiView(){};
 
-	public MessageApiView(Message m){
-		this.id= m.getId();
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date date;
+
+	private String content;
+
+	private Message.Status status;
+
+	public MessageApiView() {
+	};
+
+	public MessageApiView(Message m) {
+		this.id = m.getId();
 		this.date = m.getCreateDate();
 		this.content = m.getContent();
 		this.status = m.getStatus();
 	}
+
 	public int getId() {
 		return id;
 	}
@@ -56,6 +57,5 @@ public class MessageApiView {
 	public void setStatus(Message.Status status) {
 		this.status = status;
 	}
-	
-	
+
 }

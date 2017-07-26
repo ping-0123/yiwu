@@ -32,8 +32,8 @@ public class LessonYzw extends BaseYzwEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="courseId", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "courseId", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private CourseYzw course;
 
 	@Column
@@ -48,9 +48,8 @@ public class LessonYzw extends BaseYzwEntity {
 	@Column(name = "courseDesc")
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="storeId", foreignKey=
-			@ForeignKey(name="fk_lesson_store_id", value=ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "storeId", foreignKey = @ForeignKey(name = "fk_lesson_store_id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw store;
 
 	@Column(length = 32)
@@ -59,25 +58,22 @@ public class LessonYzw extends BaseYzwEntity {
 	@Column
 	private Float lessonTime;
 
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name = "yindaoTeacherId", foreignKey=
-			@ForeignKey(name="fk_lesson_dueTeacher_id", value=ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "yindaoTeacherId", foreignKey = @ForeignKey(name = "fk_lesson_dueTeacher_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw dueTeacher;
 
 	@Column(length = 32, name = "yindaoTeacherName")
 	private String dueTeacherName;
 
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="classRoomId", foreignKey=
-			@ForeignKey(name="fk_lesson_classRoom_id", value=ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "classRoomId", foreignKey = @ForeignKey(name = "fk_lesson_classRoom_id", value = ConstraintMode.NO_CONSTRAINT))
 	private ClassRoomYzw classRoom;
 
 	@Column(length = 32)
 	private String classRoomName;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "shidaoTeacherId", foreignKey=
-			@ForeignKey(name="fk_lesson_actualTeacher_id" ,value=ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "shidaoTeacherId", foreignKey = @ForeignKey(name = "fk_lesson_actualTeacher_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw actualTeacherId;
 
 	@Column(name = "shidaoTeacherName", length = 32)
@@ -123,52 +119,50 @@ public class LessonYzw extends BaseYzwEntity {
 	private Integer appointedStudentCount;
 
 	@Embedded
-	@AttributeOverrides({
-			@AttributeOverride(name="connotation",column=@Column(name="neihan")),
-			@AttributeOverride(name="helpInfomation",column=@Column(name="help")),
-			@AttributeOverride(name="introduction",column=@Column(name="jianjie")),
-			@AttributeOverride(name="pictureNo",column=@Column(name="picture")),
-			@AttributeOverride(name="videoUrl",column=@Column(name="video")),
-			@AttributeOverride(name="audioName",column=@Column(name="audio")),
-			@AttributeOverride(name="audioUrl",column=@Column(name="audio_link")),
-			@AttributeOverride(name="danceIntroduction",column=@Column(name="dance_introduction"))})
+	@AttributeOverrides({ @AttributeOverride(name = "connotation", column = @Column(name = "neihan")),
+			@AttributeOverride(name = "helpInfomation", column = @Column(name = "help")),
+			@AttributeOverride(name = "introduction", column = @Column(name = "jianjie")),
+			@AttributeOverride(name = "pictureNo", column = @Column(name = "picture")),
+			@AttributeOverride(name = "videoUrl", column = @Column(name = "video")),
+			@AttributeOverride(name = "audioName", column = @Column(name = "audio")),
+			@AttributeOverride(name = "audioUrl", column = @Column(name = "audio_link")),
+			@AttributeOverride(name = "danceIntroduction", column = @Column(name = "dance_introduction")) })
 	private Connotation connotation;
-	
-//	@Column(name = "neihan")
-//	private String connotation;
 
-//	@Column(name = "help")
-//	private String helpInfomation;
-//
-//	@Column(name = "jianjie")
-//	private String introduction;
-//
-//	@Column(name = "picture")
-//	private String pictureNo;
-//
-//	@Column(name = "video")
-//	private String videoUrl;
-//
-//	@Column(name = "audio")
-//	private String audioName;
-//
-//	@Column(name = "audio_link")
-//	private String audioUrl;
-//
-//	@Column(name = "dance_introduction")
-//	private String danceIntroduction;
+	// @Column(name = "neihan")
+	// private String connotation;
+
+	// @Column(name = "help")
+	// private String helpInfomation;
+	//
+	// @Column(name = "jianjie")
+	// private String introduction;
+	//
+	// @Column(name = "picture")
+	// private String pictureNo;
+	//
+	// @Column(name = "video")
+	// private String videoUrl;
+	//
+	// @Column(name = "audio")
+	// private String audioName;
+	//
+	// @Column(name = "audio_link")
+	// private String audioUrl;
+	//
+	// @Column(name = "dance_introduction")
+	// private String danceIntroduction;
 
 	@Column(name = "QRcode")
 	private String qrCode;
-	
-	public LessonYzw(){
+
+	public LessonYzw() {
 		super();
 	}
 
 	public Integer getId() {
 		return id;
 	}
-
 
 	public Date getLessonDate() {
 		return lessonDate;
@@ -205,7 +199,6 @@ public class LessonYzw extends BaseYzwEntity {
 	public String getDueTeacherName() {
 		return dueTeacherName;
 	}
-
 
 	public String getClassRoomName() {
 		return classRoomName;
@@ -271,7 +264,6 @@ public class LessonYzw extends BaseYzwEntity {
 		return appointedStudentCount;
 	}
 
-	
 	public String getQrCode() {
 		return qrCode;
 	}
@@ -279,7 +271,6 @@ public class LessonYzw extends BaseYzwEntity {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 
 	public void setLessonDate(Date lessonDate) {
 		this.lessonDate = lessonDate;
@@ -381,8 +372,6 @@ public class LessonYzw extends BaseYzwEntity {
 		this.appointedStudentCount = appointedStudentCount;
 	}
 
-	
-
 	public void setQrCode(String qrCode) {
 		this.qrCode = qrCode;
 	}
@@ -410,7 +399,5 @@ public class LessonYzw extends BaseYzwEntity {
 	public void setConnotation(Connotation connotation) {
 		this.connotation = connotation;
 	}
-
-	
 
 }

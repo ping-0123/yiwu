@@ -13,19 +13,15 @@ import com.yinzhiwu.yiwu.service.RevenueService;
 @Controller
 @RequestMapping("/api/revenue")
 public class RevenueApiController {
-	
+
 	@Autowired
-	private RevenueService	revenueService;
+	private RevenueService revenueService;
 
 	@ResponseBody
-	@RequestMapping(value="/getMonthlyRevenue"
-			, method={RequestMethod.GET})
-	public ReturnedJson getMonthlyRevenue(@RequestParam int year,
-										@RequestParam int month,
-										@RequestParam int districtId,
-										@RequestParam int productTypeId){
-		
-		return new ReturnedJson( 
-				revenueService.getMonthlyRevenue(year,month, districtId, productTypeId));
+	@RequestMapping(value = "/getMonthlyRevenue", method = { RequestMethod.GET })
+	public ReturnedJson getMonthlyRevenue(@RequestParam int year, @RequestParam int month, @RequestParam int districtId,
+			@RequestParam int productTypeId) {
+
+		return new ReturnedJson(revenueService.getMonthlyRevenue(year, month, districtId, productTypeId));
 	}
 }

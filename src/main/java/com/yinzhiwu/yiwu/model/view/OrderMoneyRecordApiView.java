@@ -6,42 +6,43 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class OrderMoneyRecordApiView {
 
-	@JsonFormat(pattern="yyyy/MM/dd")
+	@JsonFormat(pattern = "yyyy/MM/dd")
 	private Date payedDate;
-	
+
 	private String memberName;
-	
+
 	private String superDistributerName;
-	
+
 	private float orderAmount;
-	
+
 	private float promotionRate;
-	
+
 	private float inComeBrokerage;
-	
-	public OrderMoneyRecordApiView(){}
-	
-//	public OrderMoneyRecordApiView(MoneyRecord r){
-//		if(r==null)
-//			return;
-//		Distributer contributer = r.getContributor();
-//		if(contributer==null)
-//			return;
-//		this.memberName = contributer.getName();
-//		this.superDistributerName = contributer.getSuperDistributer()==null?
-//				null: contributer.getSuperDistributer().getName();
-//		OrderYzw order = r.getOrder();
-//		if(order !=null){
-//			this.payedDate = order.getPayedDate();
-//		}else
-//			this.payedDate = r.getContributedDate();
-//		
-//		this.orderAmount = r.getContributedValue();
-//		this.promotionRate=r.getIncomeFactor();
-//		this.inComeBrokerage = r.getIncome();
-//		
-//		
-//	}
+
+	public OrderMoneyRecordApiView() {
+	}
+
+	// public OrderMoneyRecordApiView(MoneyRecord r){
+	// if(r==null)
+	// return;
+	// Distributer contributer = r.getContributor();
+	// if(contributer==null)
+	// return;
+	// this.memberName = contributer.getName();
+	// this.superDistributerName = contributer.getSuperDistributer()==null?
+	// null: contributer.getSuperDistributer().getName();
+	// OrderYzw order = r.getOrder();
+	// if(order !=null){
+	// this.payedDate = order.getPayedDate();
+	// }else
+	// this.payedDate = r.getContributedDate();
+	//
+	// this.orderAmount = r.getContributedValue();
+	// this.promotionRate=r.getIncomeFactor();
+	// this.inComeBrokerage = r.getIncome();
+	//
+	//
+	// }
 
 	public Date getPayedDate() {
 		return payedDate;
@@ -62,7 +63,6 @@ public class OrderMoneyRecordApiView {
 	public float getPromotionRate() {
 		return promotionRate;
 	}
-
 
 	public void setPayedDate(Date payedDate) {
 		this.payedDate = payedDate;
@@ -92,6 +92,4 @@ public class OrderMoneyRecordApiView {
 		this.inComeBrokerage = inComeBrokerage;
 	}
 
-
-	
 }

@@ -12,26 +12,24 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel
 public class CapitalAccountApiView {
 
-	@ApiModelProperty(value="分销者Id", required=true)
-	@Min(value=1,message="请输入正确的分销者Id")
+	@ApiModelProperty(value = "分销者Id", required = true)
+	@Min(value = 1, message = "请输入正确的分销者Id")
 	private int distributerId;
-	
+
 	private int accountId;
-	
-	@Min(value=1, message="请输入正确的资金帐号类型Id: 10001表示微信帐号，10002表示支付宝账号")
+
+	@Min(value = 1, message = "请输入正确的资金帐号类型Id: 10001表示微信帐号，10002表示支付宝账号")
 	private int accountTypeId;
-	
+
 	private String accountTypeName;
-	
-	@Length(min=6, max=50)
+
+	@Length(min = 6, max = 50)
 	private String accountName;
-	
-	
-	
+
 	public CapitalAccountApiView() {
 	}
 
-	public CapitalAccountApiView(CapitalAccount c){
+	public CapitalAccountApiView(CapitalAccount c) {
 		this.distributerId = c.getDistributer().getId();
 		this.accountId = c.getId();
 		this.accountName = c.getAccount();
@@ -79,7 +77,4 @@ public class CapitalAccountApiView {
 		this.accountName = accountName;
 	}
 
-
-
-	
 }

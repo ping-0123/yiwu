@@ -13,24 +13,25 @@ import com.yinzhiwu.yiwu.entity.type.EventType;
 @Entity
 @DiscriminatorValue("ShareTweetEvent")
 public class ShareTweetEvent extends IncomeEvent {
-	
+
 	public ShareTweetEvent(Distributer distributer, EventType type, Float param) {
 		super(distributer, type, param);
 	}
 
-	public ShareTweetEvent(){}
+	public ShareTweetEvent() {
+	}
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4733655567988278593L;
 
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeEventShareTweet_tweet_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeEventShareTweet_tweet_id"))
 	private Tweet tweet;
-	
+
 	private Short ordinalOfDay;
 
-	
 	public Tweet getTweet() {
 		return tweet;
 	}
@@ -46,6 +47,5 @@ public class ShareTweetEvent extends IncomeEvent {
 	public void setOrdinalOfDay(Short ordinalOfDay) {
 		this.ordinalOfDay = ordinalOfDay;
 	}
-	
-	
+
 }

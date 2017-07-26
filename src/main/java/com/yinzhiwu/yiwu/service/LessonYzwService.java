@@ -7,7 +7,7 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 
-public interface LessonYzwService extends IBaseService<LessonYzw, Integer>{
+public interface LessonYzwService extends IBaseService<LessonYzw, Integer> {
 
 	YiwuJson<List<LessonApiView>> findByCourseId(String courseId);
 
@@ -16,5 +16,5 @@ public interface LessonYzwService extends IBaseService<LessonYzw, Integer>{
 	Connotation getLastNLessonConnotation(int thisLessonId, int lastN) throws Exception;
 
 	List<LessonApiView> findApiViewByCourseId(String courseId);
-	
+
 }

@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.service.impl;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,25 +20,26 @@ import com.yinzhiwu.yiwu.model.view.TweetApiView;
 import com.yinzhiwu.yiwu.service.TweetService;
 
 @Service
-public class TweetServiceImpl  extends BaseServiceImpl<Tweet, Integer> implements TweetService  {
-	
+public class TweetServiceImpl extends BaseServiceImpl<Tweet, Integer> implements TweetService {
+
 	private static Log log = LogFactory.getLog(TweetServiceImpl.class);
-	
+
 	@Autowired
 	private TweetDao tweetDao;
-	
+
 	@Autowired
 	private BaseTypeDao baseTypeDao;
 
 	@Autowired
-	public void setBaseDao(TweetDao tweetDao){
+	public void setBaseDao(TweetDao tweetDao) {
 		super.setBaseDao(tweetDao);
 	}
-	
+
 	@Override
-	public int save(TweetModel m){
+	public int save(TweetModel m) {
 		Tweet tweet = new Tweet(m);
-//		System.out.println(m.getCoverIconUrl() + "  " + m.getCoverIconUrl().length());
+		// System.out.println(m.getCoverIconUrl() + " " +
+		// m.getCoverIconUrl().length());
 		TweetType type;
 		try {
 			type = (TweetType) baseTypeDao.get(m.getTweetTypeId());
@@ -48,7 +48,6 @@ public class TweetServiceImpl  extends BaseServiceImpl<Tweet, Integer> implement
 			log.warn(e.getMessage());
 		}
 
-		
 		return tweetDao.save(tweet);
 	}
 
@@ -71,6 +70,6 @@ public class TweetServiceImpl  extends BaseServiceImpl<Tweet, Integer> implement
 		} catch (DataNotFoundException e) {
 			return new YiwuJson<>(e.getMessage());
 		}
-	
+
 	}
 }

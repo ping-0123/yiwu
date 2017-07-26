@@ -27,23 +27,22 @@ import com.yinzhiwu.yiwu.service.AppointmentService;
  */
 @Deprecated
 @Service
-public class AppointmentServiceImpl implements AppointmentService{
-	
+public class AppointmentServiceImpl implements AppointmentService {
+
 	private static Log LOG = LogFactory.getLog(AppointmentServiceImpl.class);
-	
+
 	@Autowired
 	private AppointmentDao appointmentDao;
-	
+
 	@Autowired
 	private OrderDao orderDao;
 
 	@Autowired
 	private LessonDao lessonDao;
-	
+
 	@Override
 	public boolean appoint(int customerId, int lessonId) {
-		if(!isAppointable(customerId, lessonId) ||
-				getStatus(customerId, lessonId) == APPOINT_STATUS.APPONTED)
+		if (!isAppointable(customerId, lessonId) || getStatus(customerId, lessonId) == APPOINT_STATUS.APPONTED)
 			return false;
 		Appointment a = new Appointment();
 		a.setCoursehourId(lessonId);
@@ -57,7 +56,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 	@Override
 	public boolean unAppoint(int customerId, int lessonId) {
 		Appointment appointment = getAppointed(customerId, lessonId);
-		if(appointment == null)
+		if (appointment == null)
 			return false;
 		appointment.setStatus("取消");
 		appointmentDao.saveOrUpdate(appointment);
@@ -66,14 +65,12 @@ public class AppointmentServiceImpl implements AppointmentService{
 
 	@Override
 	public APPOINT_STATUS getStatus(int customerId, int lessonId) {
-		if(getAppointed(customerId, lessonId) == null)
+		if (getAppointed(customerId, lessonId) == null)
 			return APPOINT_STATUS.UN_APOINTED;
-		return APPOINT_STATUS.APPONTED;			
+		return APPOINT_STATUS.APPONTED;
 	}
-	
-	
-	
-	private Appointment getAppointed(int customerId, int lessonId){
+
+	private Appointment getAppointed(int customerId, int lessonId) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("customerId", customerId);
 		map.put("lessonId", lessonId);
@@ -87,15 +84,16 @@ public class AppointmentServiceImpl implements AppointmentService{
 		}
 
 	}
-	
-	private boolean isAppointable(int customerId, int lessonId){
-		try{
-			Lesson	l = lessonDao.get(lessonId);
+
+	private boolean isAppointable(int customerId, int lessonId) {
+		try {
+			Lesson l = lessonDao.get(lessonId);
 			List<Order> orders = orderDao.findValidOrders(customerId, l.getSubCourseType());
-			if(orders.size()>0){
-				return true;}
+			if (orders.size() > 0) {
+				return true;
+			}
 			return false;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			LOG.warn(e.getMessage());
 			return false;
 		}

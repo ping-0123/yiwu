@@ -6,9 +6,9 @@ import com.yinzhiwu.yiwu.service.UserService;
 
 //@Configuration
 public class AppConfig {
-	
-	@Bean(name = "myService", initMethod="start", destroyMethod="stop")
-	public UserService userService(){
+
+	@Bean(name = "myService", initMethod = "start", destroyMethod = "stop")
+	public UserService userService() {
 		return new UserServiceImplTwo();
 	}
 }

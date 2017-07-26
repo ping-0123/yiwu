@@ -13,48 +13,46 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.service.DepartmentService;
 
 @Controller
-@RequestMapping(value="/api/store")
+@RequestMapping(value = "/api/store")
 public class StoreApiController {
-	
+
 	@Autowired
 	private DepartmentService departmentService;
-	
-	@RequestMapping(value="/list", method={RequestMethod.GET,RequestMethod.POST})
+
+	@RequestMapping(value = "/list", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public Object getStoreList(@RequestParam int districtId){
+	public Object getStoreList(@RequestParam int districtId) {
 		return departmentService.findStoreInfosByDistrictId(districtId);
 	}
-	
+
 	@Deprecated
-	@GetMapping(value="/id/{id}")
+	@GetMapping(value = "/id/{id}")
 	@ResponseBody
-	public Object getStore(@PathVariable int id){
+	public Object getStore(@PathVariable int id) {
 		return departmentService.findStoreInfoById(id);
 	}
-	
-	@GetMapping(value="/{storeId}")
+
+	@GetMapping(value = "/{storeId}")
 	@ResponseBody
-	public Object getStoreById(@PathVariable int storeId){
+	public Object getStoreById(@PathVariable int storeId) {
 		return departmentService.findStoreInfoById(storeId);
 	}
-	
-	
-	
-	@RequestMapping(value="/getStoresByCity", method={RequestMethod.GET})
+
+	@RequestMapping(value = "/getStoresByCity", method = { RequestMethod.GET })
 	@ResponseBody
-	public Object getStoresByCity(@RequestParam String city){
+	public Object getStoresByCity(@RequestParam String city) {
 		return departmentService.findStoreByCities(city);
 	}
-	
-	@GetMapping(value="/getAllStores")
+
+	@GetMapping(value = "/getAllStores")
 	@ResponseBody
-	public Object getAllStores(){
+	public Object getAllStores() {
 		return departmentService.getAllStores();
 	}
-	
-	@GetMapping(value="/getAllApiStores")
+
+	@GetMapping(value = "/getAllApiStores")
 	@ResponseBody
-	public YiwuJson<?> getAllApiStores(){
+	public YiwuJson<?> getAllApiStores() {
 		return new YiwuJson<>(departmentService.getAllStores());
 	}
 }

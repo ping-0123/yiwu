@@ -11,19 +11,19 @@ import com.yinzhiwu.yiwu.service.DepositService;
 
 @RestController
 @RequestMapping("/api/event/deposit")
-public class DepositApiController extends BaseController{
+public class DepositApiController extends BaseController {
 
 	@Autowired
 	private DepositService depositService;
-	
+
 	@PostMapping
-	public YiwuJson<Boolean> payDeposit(int distributerId,  float amount, boolean fundsFirst){
-		try{
-			depositService.saveDeposit(distributerId , amount, fundsFirst);
-		}catch (Exception e) {
+	public YiwuJson<Boolean> payDeposit(int distributerId, float amount, boolean fundsFirst) {
+		try {
+			depositService.saveDeposit(distributerId, amount, fundsFirst);
+		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
-		
+
 		return new YiwuJson<>(new Boolean(true));
 	}
 }

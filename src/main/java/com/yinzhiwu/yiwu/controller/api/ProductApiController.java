@@ -15,10 +15,10 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.ProductYzwService;
 
 /**
-*@Author ping
-*@Time  创建时间:2017年7月24日下午3:45:31
-*
-*/
+ * @Author ping
+ * @Time 创建时间:2017年7月24日下午3:45:31
+ *
+ */
 
 @RestController
 @RequestMapping("/api/product")
@@ -26,9 +26,9 @@ public class ProductApiController extends BaseController {
 
 	@Autowired
 	private ProductYzwService productService;
-	
-	@GetMapping(value="/list")
-	public ResponseEntity<List<ProductYzw>>  doList(){
+
+	@GetMapping(value = "/list")
+	public ResponseEntity<List<ProductYzw>> doList() {
 		try {
 			List<ProductYzw> products = productService.findAll();
 			return new ResponseEntity<List<ProductYzw>>(products, HttpStatus.OK);

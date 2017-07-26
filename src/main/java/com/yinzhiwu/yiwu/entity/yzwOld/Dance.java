@@ -10,41 +10,40 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vdance")
+@Table(name = "vdance")
 public class Dance {
 
 	@Id
-	@Column(length=32)
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(length = 32)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String id;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String name;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String danceClass;
-	
+
 	@Column
 	private Float remuneration;
-	
-	@Column(name="sf_create_user")
+
+	@Column(name = "sf_create_user")
 	private Integer createUserId;
-	
-	@Column(name="sf_last_change_user")
+
+	@Column(name = "sf_last_change_user")
 	private Integer lastChangeUserId;
-	
-	@Column(name="sf_create_time")
+
+	@Column(name = "sf_create_time")
 	private Date createTime;
-	
-	@Column(name="sf_last_change_time")
+
+	@Column(name = "sf_last_change_time")
 	private Date lastChangeTime;
-	
+
 	private Integer machineCode;
-	
+
 	private Date sf_last_sync_timeStamp;
-	
+
 	private Date sf_last_change_timeStamp;
-	
 
 	public Dance() {
 	}
@@ -142,6 +141,5 @@ public class Dance {
 	public void setSf_last_change_timeStamp(Date sf_last_change_timeStamp) {
 		this.sf_last_change_timeStamp = sf_last_change_timeStamp;
 	}
-	
-	
+
 }

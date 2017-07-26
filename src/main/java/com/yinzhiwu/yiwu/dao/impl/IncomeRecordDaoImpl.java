@@ -25,37 +25,35 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 
 	@Override
 	public int findCountByIncomeTypesByBeneficiary(int benificiaryId, int[] incomeTypeIds) {
-		if(incomeTypeIds.length == 0) return 0;
+		if (incomeTypeIds.length == 0)
+			return 0;
 		List<Integer> ints = new ArrayList<>();
 		for (int i : incomeTypeIds) {
 			ints.add(i);
 		}
-		
+
 		StringBuilder builder = new StringBuilder("select count(*) from IncomeRecord t1 ");
 		builder.append("where t1.benificiary.id = :benificiaryId and t1.incomeType.id in :incomeTypeIds");
 		@SuppressWarnings("unchecked")
 		List<Long> counts = (List<Long>) getHibernateTemplate().findByNamedParam(builder.toString(),
-				new String[]{"benificiaryId", "incomeTypeIds"}, 
-				new Object[]{benificiaryId, ints});
+				new String[] { "benificiaryId", "incomeTypeIds" }, new Object[] { benificiaryId, ints });
 		return counts.get(0).intValue();
 	}
 
 	@Override
 	public IncomeRecord findExpProducedByEvent(Integer id, IncomeType exp) {
-		try{
-			List<IncomeRecord> records = findByProperties(
-					new String[]{"incomeEvent.id", "incomeType.id"},
-					new Object[]{id, exp.getId()});
+		try {
+			List<IncomeRecord> records = findByProperties(new String[] { "incomeEvent.id", "incomeType.id" },
+					new Object[] { id, exp.getId() });
 			return records.get(0);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return null;
 		}
 
 	}
 
-	
 	@Override
-	public IncomeRecordApiView findApiViewById(int id){
+	public IncomeRecordApiView findApiViewById(int id) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT new com.yinzhiwu.springmvc3.model.view.IncomeRecordApiView(");
 		builder.append(" t1.id");
@@ -72,11 +70,9 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 		builder.append(") FROM IncomeRecord t1 ");
 		builder.append(" WHERE t1.id=:incomeRecordId");
 		return getSession().createQuery(builder.toString(), IncomeRecordApiView.class)
-				.setParameter("incomeRecordId", id,IntegerType.INSTANCE)
-				.getSingleResult();
+				.setParameter("incomeRecordId", id, IntegerType.INSTANCE).getSingleResult();
 	}
 
-	
 	@Override
 	public List<IncomeRecordApiView> getListFaster(int observerId, int eventTypeId, int relationTypeId,
 			int incomeTypeId) {
@@ -95,20 +91,19 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 		builder.append(",t1.incomeFactor");
 		builder.append(") FROM IncomeRecord t1 ");
 		builder.append(" WHERE 1=1");
-		if(observerId != -1)
+		if (observerId != -1)
 			builder.append(" AND t1.benificiary.id =" + observerId);
-		if(eventTypeId != -1)
-			builder.append(" AND t1.incomeEvent.type.id =" + eventTypeId );
-		if(relationTypeId != -1)
+		if (eventTypeId != -1)
+			builder.append(" AND t1.incomeEvent.type.id =" + eventTypeId);
+		if (relationTypeId != -1)
 			builder.append(" AND t1.con_ben_relation.id =" + relationTypeId);
-		if(incomeTypeId != -1)
+		if (incomeTypeId != -1)
 			builder.append(" AND t1.incomeType.id = " + incomeTypeId);
-		return getSession().createQuery(builder.toString(), IncomeRecordApiView.class)
-				.getResultList();
+		return getSession().createQuery(builder.toString(), IncomeRecordApiView.class).getResultList();
 	}
-	
+
 	@Override
-	public void testCriteriaQuery(){
+	public void testCriteriaQuery() {
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<IncomeRecord> criteria = builder.createQuery(IncomeRecord.class);
 		Root<IncomeRecord> root = criteria.from(IncomeRecord.class);
@@ -122,30 +117,27 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 	public List<ShareTweetIncomeRecordApiView> getShareTweetRecordApiViews(int beneficiaryId, int[] eventTypeIds,
 			int[] relationTypeIds, int[] incomeTypeIds) {
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
-		CriteriaQuery<ShareTweetIncomeRecordApiView> criteria
-			= builder.createQuery(ShareTweetIncomeRecordApiView.class);
+		CriteriaQuery<ShareTweetIncomeRecordApiView> criteria = builder
+				.createQuery(ShareTweetIncomeRecordApiView.class);
 		Root<ShareTweetEvent> eventFrom = criteria.from(ShareTweetEvent.class);
-		Join<ShareTweetEvent,IncomeRecord> recordJoin = eventFrom.join("incomeRecords", JoinType.LEFT);
-//		Join<ShareTweetEvent, Tweet> tweetJoin = eventJoin.join("tweet", JoinType.LEFT);
-		criteria.select(builder.construct(ShareTweetIncomeRecordApiView.class,
-				recordJoin.get("id"),
-				eventFrom.get("distributer").get("name"),
-				eventFrom.get("occurTime"),
-				eventFrom.get("tweet").get("tweetType").get("name"),
-				eventFrom.get("tweet").get("title"),
-				recordJoin.get("incomeValue")
-				));
-		//where
+		Join<ShareTweetEvent, IncomeRecord> recordJoin = eventFrom.join("incomeRecords", JoinType.LEFT);
+		// Join<ShareTweetEvent, Tweet> tweetJoin = eventJoin.join("tweet",
+		// JoinType.LEFT);
+		criteria.select(builder.construct(ShareTweetIncomeRecordApiView.class, recordJoin.get("id"),
+				eventFrom.get("distributer").get("name"), eventFrom.get("occurTime"),
+				eventFrom.get("tweet").get("tweetType").get("name"), eventFrom.get("tweet").get("title"),
+				recordJoin.get("incomeValue")));
+		// where
 		Predicate condition = builder.equal(recordJoin.get("benificiary").get("id"), beneficiaryId);
-		if(eventTypeIds !=null && eventTypeIds.length> 0){
+		if (eventTypeIds != null && eventTypeIds.length > 0) {
 			logger.debug(eventTypeIds[0]);
 			List<Integer> types = new ArrayList<>();
 			for (int id : eventTypeIds) {
 				types.add(Integer.valueOf(id));
 			}
-			condition = builder.and(condition,recordJoin.get("incomeEvent").get("type").get("id").in(types));
+			condition = builder.and(condition, recordJoin.get("incomeEvent").get("type").get("id").in(types));
 		}
-		if(relationTypeIds !=null && relationTypeIds.length> 0){
+		if (relationTypeIds != null && relationTypeIds.length > 0) {
 			logger.debug(relationTypeIds[0]);
 			List<Integer> relations = new ArrayList<>();
 			for (int i : relationTypeIds) {
@@ -153,7 +145,7 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 			}
 			condition = builder.and(condition, recordJoin.get("con_ben_relation").get("id").in(relations));
 		}
-		if(incomeTypeIds !=null && incomeTypeIds.length> 0){
+		if (incomeTypeIds != null && incomeTypeIds.length > 0) {
 			logger.debug(incomeTypeIds[0]);
 			List<Integer> incomes = new ArrayList<>();
 			for (int i : incomeTypeIds) {
@@ -163,7 +155,7 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 		}
 		criteria.where(condition);
 		List<ShareTweetIncomeRecordApiView> records = getSession().createQuery(criteria).getResultList();
-		
+
 		return records;
 	}
 }

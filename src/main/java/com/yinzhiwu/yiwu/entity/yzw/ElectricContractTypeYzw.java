@@ -11,37 +11,37 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="velectric_contract_type")
+@Table(name = "velectric_contract_type")
 public class ElectricContractTypeYzw {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String description;
-	
+
 	private String content;
-	
+
 	@JsonIgnore
 	private Integer sf_create_user;
-	
+
 	@JsonIgnore
 	private Integer sf_last_change_user;
-	
+
 	@JsonIgnore
 	private Date sf_create_time;
-	
+
 	@JsonIgnore
 	private Date sf_last_change_time;
-	
+
 	@JsonIgnore
 	private Integer machineCode;
-	
+
 	@JsonIgnore
 	private Date sf_last_sync_timeStamp;
-	
-	public ElectricContractTypeYzw(){
-		this.sf_create_user =1;
+
+	public ElectricContractTypeYzw() {
+		this.sf_create_user = 1;
 		this.sf_last_change_user = 1;
 		Date date = new Date();
 		this.sf_create_time = date;
@@ -120,6 +120,5 @@ public class ElectricContractTypeYzw {
 	public void setSf_create_time(Date sf_create_time) {
 		this.sf_create_time = sf_create_time;
 	}
-	
-	
+
 }

@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -17,16 +16,16 @@ import com.yinzhiwu.yiwu.util.MessageTemplate;
 @DiscriminatorValue("RegisterEvent")
 public class RegisterEvent extends IncomeEvent {
 
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3330880531568104632L;
-	
+
 	@Column(length = 32)
 	private String invitaionCode;
-	
-	public RegisterEvent(){}
+
+	public RegisterEvent() {
+	}
 
 	public RegisterEvent(Distributer distributer, EventType type, Float param) {
 		super(distributer, type, param);
@@ -36,8 +35,7 @@ public class RegisterEvent extends IncomeEvent {
 		super(distributer, type, param);
 		this.invitaionCode = invitaionCode;
 	}
-	
-	
+
 	public String getInvitaionCode() {
 		return invitaionCode;
 	}
@@ -48,20 +46,16 @@ public class RegisterEvent extends IncomeEvent {
 
 	@Override
 	public Message generateMessage(IncomeRecord incomeRecord) {
-		assert(incomeRecord != null);
-		assert(incomeRecord.getBenificiary() != null);
-		
-		if(IncomeType.EXP.equals(incomeRecord.getIncomeType()) 
-				&& incomeRecord.getBenificiary().equals(this.getDistributer())){
+		assert (incomeRecord != null);
+		assert (incomeRecord.getBenificiary() != null);
+
+		if (IncomeType.EXP.equals(incomeRecord.getIncomeType())
+				&& incomeRecord.getBenificiary().equals(this.getDistributer())) {
 			String msg = MessageTemplate.generate_register_message();
-			if(StringUtils.hasLength(msg))
+			if (StringUtils.hasLength(msg))
 				return new Message(incomeRecord.getBenificiary(), msg);
 		}
 		return null;
 	}
 
-
-
-
-	
 }

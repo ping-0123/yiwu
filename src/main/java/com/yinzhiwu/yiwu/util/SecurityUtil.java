@@ -7,11 +7,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class SecurityUtil {
-	
+
 	private static final Log logger = LogFactory.getLog(SecurityUtil.class);
-	
+
 	private static final String KEY_MD5 = "MD5";
-	
+
 	private static final int ENCRYPT_LENGTH = 32;
 
 	public static String encryptByMd5(String inputStr) {

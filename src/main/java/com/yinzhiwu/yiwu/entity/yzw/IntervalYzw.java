@@ -9,9 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vinterval")
-public class IntervalYzw  extends BaseYzwEntity{
-	
+@Table(name = "vinterval")
+public class IntervalYzw extends BaseYzwEntity {
+
 	/**
 	 * 
 	 */
@@ -19,25 +19,25 @@ public class IntervalYzw  extends BaseYzwEntity{
 
 	@Id
 	@GeneratedValue
-	@Column(length=32)
+	@Column(length = 32)
 	private String id;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String name;
-	
+
 	@Column
 	private Time start;
-	
+
 	@Column
 	private Time end;
-	
+
 	@Column
 	private float hours;
 
-	public IntervalYzw(){
+	public IntervalYzw() {
 		super();
 	}
-	
+
 	public final String getId() {
 		return id;
 	}
@@ -77,6 +77,5 @@ public class IntervalYzw  extends BaseYzwEntity{
 	public final void setHours(float hours) {
 		this.hours = hours;
 	}
-	
-	
+
 }

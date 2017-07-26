@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vpayed_method")
-public class PayedMethodYzw  extends BaseYzwEntity {
+@Table(name = "vpayed_method")
+public class PayedMethodYzw extends BaseYzwEntity {
 
 	/**
 	 * 
@@ -17,10 +17,10 @@ public class PayedMethodYzw  extends BaseYzwEntity {
 	private static final long serialVersionUID = -3777295403409968930L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String name;
 
 	public int getId() {
@@ -38,7 +38,5 @@ public class PayedMethodYzw  extends BaseYzwEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 
-	
 }

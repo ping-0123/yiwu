@@ -23,9 +23,9 @@ public class AfterAppointCheckInEvent extends CheckInEvent {
 	public AfterAppointCheckInEvent(Distributer distributer, EventType type, Float param, CheckInsYzw checkIn) {
 		super(distributer, type, param, checkIn);
 	}
-	
-	public AfterAppointCheckInEvent(Distributer distributer, Float param, CheckInsYzw checkIn){
-		super(distributer, EventType.CHECK_IN_AFTER_APPOINTMENT, param,checkIn);
+
+	public AfterAppointCheckInEvent(Distributer distributer, Float param, CheckInsYzw checkIn) {
+		super(distributer, EventType.CHECK_IN_AFTER_APPOINTMENT, param, checkIn);
 	}
-	
+
 }

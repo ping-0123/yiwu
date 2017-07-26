@@ -19,20 +19,20 @@ import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 @RestController
 @RequestMapping("/api/employee")
 public class EmployeeApiController {
-	
+
 	@Autowired
 	private EmployeeService employeeService;
-	
+
 	@Autowired
 	private EmployeeYzwService empYzwService;
-	
-	@RequestMapping(value="/getAllCoaches", method={RequestMethod.GET})
-	public List<EmployeeApiView> getAllCoaches(){
+
+	@RequestMapping(value = "/getAllCoaches", method = { RequestMethod.GET })
+	public List<EmployeeApiView> getAllCoaches() {
 		return employeeService.getAllOnJobCoaches();
 	}
-	
-	@GetMapping(value="/list")
-	public YiwuJson<List<EmployeeApiView>> list(EmployeeYzw e){
+
+	@GetMapping(value = "/list")
+	public YiwuJson<List<EmployeeApiView>> list(EmployeeYzw e) {
 		try {
 			List<EmployeeYzw> employees = empYzwService.findByExample(e);
 			List<EmployeeApiView> views = new ArrayList<>();

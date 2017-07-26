@@ -18,20 +18,19 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 @ContextConfiguration("classpath:applicationContext.xml")
 public class OrderYzwDaoTest {
 
-	
 	@Autowired
 	private OrderYzwDaoImpl orderYzwDaoImpl;
-	
+
 	@Test
-	public void test(){
+	public void test() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.MONTH,Calendar.MARCH);
+		calendar.set(Calendar.MONTH, Calendar.MARCH);
 		System.out.println(calendar.getTime());
 		System.out.println(orderYzwDaoImpl.test_find_produce_commission_orders(calendar.getTime()).size());
 	}
-	
+
 	@Test
-	public void testGet(){
+	public void testGet() {
 		String id = "20160514060-4";
 		OrderYzw order = null;
 		try {
@@ -42,5 +41,5 @@ public class OrderYzwDaoTest {
 		}
 		System.out.println(order.getId());
 	}
-	
+
 }

@@ -8,10 +8,10 @@ import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.service.CustomerYzwService;
 
 @Service
-public class CustomerYzwServiceImpl extends BaseServiceImpl<CustomerYzw, Integer> implements CustomerYzwService{
+public class CustomerYzwServiceImpl extends BaseServiceImpl<CustomerYzw, Integer> implements CustomerYzwService {
 
 	@Autowired
-	public void setBaseDao(CustomerYzwDao customerYzwDao){
+	public void setBaseDao(CustomerYzwDao customerYzwDao) {
 		super.setBaseDao(customerYzwDao);
 	}
 }

@@ -10,44 +10,45 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.entity.income.ShareTweetEvent;
 
-public class ShareTweetIncomeRecordApiView implements Serializable{
-	
+public class ShareTweetIncomeRecordApiView implements Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3765087348892278100L;
-	
+
 	private static Log LOG = LogFactory.getLog(ShareTweetIncomeRecordApiView.class);
-	
+
 	private int id;
-	
+
 	private String sharer;
-	
-	@JsonFormat(pattern="yyyy/MM/dd")
+
+	@JsonFormat(pattern = "yyyy/MM/dd")
 	private Date shareDate;
-	
+
 	private String tweetType;
-	
+
 	private String tweetTitle;
-	
+
 	private float exp;
-	
-	public ShareTweetIncomeRecordApiView(){}
-	
-	public ShareTweetIncomeRecordApiView(IncomeRecord record){
-		try{
+
+	public ShareTweetIncomeRecordApiView() {
+	}
+
+	public ShareTweetIncomeRecordApiView(IncomeRecord record) {
+		try {
 			this.id = record.getId();
 			this.sharer = record.getContributor().getName();
 			this.shareDate = record.getRecordTimestamp();
-			ShareTweetEvent event  = (ShareTweetEvent) record.getIncomeEvent();
+			ShareTweetEvent event = (ShareTweetEvent) record.getIncomeEvent();
 			this.tweetType = event.getTweet().getTweetType().getName();
 			this.tweetTitle = event.getTweet().getTitle();
 			this.exp = record.getIncomeValue();
-			
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			LOG.error(e.getMessage());
 		}
-		
+
 	}
 
 	public int getId() {
@@ -108,8 +109,8 @@ public class ShareTweetIncomeRecordApiView implements Serializable{
 		this.tweetTitle = tweetTitle;
 		this.exp = exp;
 	}
-	
-	public ShareTweetIncomeRecordApiView(int id, String sharer){
+
+	public ShareTweetIncomeRecordApiView(int id, String sharer) {
 		this.id = id;
 		this.sharer = sharer;
 	}

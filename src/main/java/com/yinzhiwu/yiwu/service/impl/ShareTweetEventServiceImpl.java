@@ -10,19 +10,18 @@ import com.yinzhiwu.yiwu.entity.type.EventType;
 import com.yinzhiwu.yiwu.service.IncomeEventService;
 import com.yinzhiwu.yiwu.service.ShareTweetEventService;
 
-
 @Service
 public class ShareTweetEventServiceImpl extends BaseServiceImpl<ShareTweetEvent, Integer>
-	implements ShareTweetEventService{
+		implements ShareTweetEventService {
 
 	@Autowired
 	private IncomeEventService incomeEventService;
-	
+
 	@Autowired
 	private ShareTweetEventDao shareTweetEventDao;
-	
+
 	@Autowired
-	private void setBaseDao(ShareTweetEventDao shareTweetEventDao){
+	private void setBaseDao(ShareTweetEventDao shareTweetEventDao) {
 		super.setBaseDao(shareTweetEventDao);
 	}
 
@@ -31,18 +30,18 @@ public class ShareTweetEventServiceImpl extends BaseServiceImpl<ShareTweetEvent,
 		Assert.notNull(e);
 		Assert.notNull(e.getDistributer());
 		Assert.notNull(e.getTweet());
-		
+
 		/*
 		 * set event type
 		 */
 		long times = shareTweetEventDao.findDailyShareTimes(e.getDistributer().getId(), e.getOccurTime());
-		e.setOrdinalOfDay((short)(times + 1));
-		if(times <3)
+		e.setOrdinalOfDay((short) (times + 1));
+		if (times < 3)
 			e.setType(EventType.SHARE_TWEET_BY_WECHAT_FIRST_THREE_TIMES_PER_DAY);
 		else
 			e.setType(EventType.SHARE_TWEET_BY_WECHAT_AFTER_THREE_TIMES_PER_DAY);
-		
+
 		return incomeEventService.save(e);
 	}
-	
+
 }

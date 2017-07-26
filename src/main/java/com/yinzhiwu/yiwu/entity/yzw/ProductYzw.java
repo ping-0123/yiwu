@@ -6,13 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-@Table(name="vproduct")
-public class ProductYzw extends BaseYzwEntity{
+@Table(name = "vproduct")
+public class ProductYzw extends BaseYzwEntity {
 
-	
 	/**
 	 * 
 	 */
@@ -20,40 +17,39 @@ public class ProductYzw extends BaseYzwEntity{
 
 	@Id
 	@GeneratedValue
-	@Column(name="id")
+	@Column(name = "id")
 	private Integer id;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String name;
-	
-	@Column(name="card_type",length=32)
+
+	@Column(name = "card_type", length = 32)
 	private String cardType;
-	
-	@Column(name="customer_type", length=32)
+
+	@Column(name = "customer_type", length = 32)
 	private String customerType;
-	
-	@Column(name="marked_price")
+
+	@Column(name = "marked_price")
 	private Integer markedPrice;
-	
-	@Column(name="useful_life")
+
+	@Column(name = "useful_life")
 	private Short usefulLife;
-	
-	@Column(name="useful_times")
+
+	@Column(name = "useful_times")
 	private Short usefulTimes;
-	
-	@Column(name="obsolete_flag")
+
+	@Column(name = "obsolete_flag")
 	private Boolean isObsolete;
-	
-	@Column(name="DY_RCP", length=32)
+
+	@Column(name = "DY_RCP", length = 32)
 	private String dyRCP;
-	
-	@Column(name="max_leave_times")
+
+	@Column(name = "max_leave_times")
 	private Short maxLeaveTimes;
 
-//	@OneToMany(mappedBy="product")
-//	private List<OrderYzw> orders = new ArrayList<>();
-	
-	
+	// @OneToMany(mappedBy="product")
+	// private List<OrderYzw> orders = new ArrayList<>();
+
 	public Integer getId() {
 		return id;
 	}
@@ -137,7 +133,5 @@ public class ProductYzw extends BaseYzwEntity{
 	public ProductYzw() {
 		super();
 	}
-	
 
-	
 }

@@ -1,21 +1,21 @@
 package com.yinzhiwu.yiwu.model;
 
 public class ReturnedJson {
-	
+
 	private int returnCode;
-	
+
 	private boolean secure;
-	
+
 	private String msg;
-	
+
 	private Object data;
-	
+
 	private boolean result;
-	
-	
-	public ReturnedJson(){};
-	
-	public ReturnedJson(Object data){
+
+	public ReturnedJson() {
+	};
+
+	public ReturnedJson(Object data) {
 		this.returnCode = 200;
 		this.secure = false;
 		this.msg = "success";
@@ -23,8 +23,6 @@ public class ReturnedJson {
 		this.result = true;
 	}
 
-	
-	
 	public ReturnedJson(int returnCode, boolean secure, String msg, Object data, boolean result) {
 		this.returnCode = returnCode;
 		this.secure = secure;
@@ -72,6 +70,5 @@ public class ReturnedJson {
 	public final void setData(Object data) {
 		this.data = data;
 	}
-	
-	
+
 }

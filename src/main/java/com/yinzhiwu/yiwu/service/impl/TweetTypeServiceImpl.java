@@ -15,35 +15,34 @@ import com.yinzhiwu.yiwu.service.TweetTypeService;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
-public class TweetTypeServiceImpl extends BaseServiceImpl<TweetType, Integer> implements TweetTypeService{
-	
+public class TweetTypeServiceImpl extends BaseServiceImpl<TweetType, Integer> implements TweetTypeService {
+
 	private static final Log LOG = LogFactory.getLog(TweetTypeServiceImpl.class);
 
 	@Autowired
 	private TweetTypeDao tweetTypeDao;
-	
+
 	@Autowired
-	public void setBaseDao(TweetTypeDao tweetTypeDao){
+	public void setBaseDao(TweetTypeDao tweetTypeDao) {
 		super.setBaseDao(tweetTypeDao);
 	}
-	
+
 	@Override
-	public YiwuJson<List<TweetTypeApiView>> findAllTweetTypes(){
-		try{
+	public YiwuJson<List<TweetTypeApiView>> findAllTweetTypes() {
+		try {
 			long beforeSelect = System.currentTimeMillis();
 			List<TweetType> types = tweetTypeDao.findAll();
 			long afterSelect = System.currentTimeMillis();
-			LOG.debug("select time: " + (afterSelect-beforeSelect));
+			LOG.debug("select time: " + (afterSelect - beforeSelect));
 			List<TweetTypeApiView> views = new ArrayList<>();
 			for (TweetType t : types) {
 				views.add(new TweetTypeApiView(t));
 			}
 			long afterWrap = System.currentTimeMillis();
-			LOG.debug("wrap Time: " +  (afterWrap-afterSelect));
+			LOG.debug("wrap Time: " + (afterWrap - afterSelect));
 			return new YiwuJson<>(views);
-		}catch (DataNotFoundException e) {
+		} catch (DataNotFoundException e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}

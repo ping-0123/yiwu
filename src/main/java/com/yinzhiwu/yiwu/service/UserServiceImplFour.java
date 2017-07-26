@@ -9,14 +9,14 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 @Service
 public class UserServiceImplFour implements UserService {
-	
+
 	@Autowired
 	private AccountDao dao;
 
 	@Override
 	public void show() {
 		System.out.println("UserServiceImplFour show called.....");
-//		throw new RuntimeException();
+		// throw new RuntimeException();
 	}
 
 	@Override

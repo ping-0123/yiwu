@@ -9,19 +9,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="yiwu_store_info")
+@Table(name = "yiwu_store_info")
 public class StoreInfo {
-	
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer storeId;
-	
+
 	@Column
 	@Embedded
 	private Address address;
-	
-	@Column(length=20)
+
+	@Column(length = 20)
 	private String telePhone;
 
 	public final Integer getStoreId() {
@@ -31,7 +30,6 @@ public class StoreInfo {
 	public final void setStoreId(Integer storeId) {
 		this.storeId = storeId;
 	}
-
 
 	public final String getTelePhone() {
 		return telePhone;
@@ -48,6 +46,5 @@ public class StoreInfo {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
-	
+
 }

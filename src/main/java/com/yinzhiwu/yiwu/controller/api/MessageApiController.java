@@ -15,30 +15,28 @@ import com.yinzhiwu.yiwu.service.MessageService;
 @RestController
 @RequestMapping("/api/message")
 public class MessageApiController {
-	
+
 	@Autowired
 	private MessageService messageService;
-	
+
 	@GetMapping("/list")
-	public YiwuJson<List<MessageApiView>> findByReceiverId(int receiverId)
-	{
-		if(receiverId <=0 )
+	public YiwuJson<List<MessageApiView>> findByReceiverId(int receiverId) {
+		if (receiverId <= 0)
 			return new YiwuJson<>("receiverId 必须大于0");
 		return messageService.findByReceiverId(receiverId);
 	}
-	
-	
+
 	@Deprecated
 	@GetMapping("/id/{id}")
-	public YiwuJson<MessageApiView> findById(@PathVariable int id){
-		if(id<=0)
+	public YiwuJson<MessageApiView> findById(@PathVariable int id) {
+		if (id <= 0)
 			return new YiwuJson<>("message id must be more than zero");
 		return messageService.findById(id);
 	}
-	
+
 	@GetMapping("/{id}")
-	public YiwuJson<MessageApiView> doGet(@PathVariable int id){
-		if(id<=0)
+	public YiwuJson<MessageApiView> doGet(@PathVariable int id) {
+		if (id <= 0)
 			return new YiwuJson<>("message id must be more than zero");
 		return messageService.findById(id);
 	}
