@@ -18,11 +18,12 @@ public class TweetAbbrApiView {
 	};
 
 	public TweetAbbrApiView(Tweet t) {
+		if(t== null) throw new IllegalArgumentException();
 		this.tweetId = t.getId();
-		this.coverIconUrl = t.getCoverIconUrl();
 		this.title = t.getTitle();
 		this.digest = t.getDigest();
-		this.tweetTypeName = t.getTweetType().getName();
+		if(t.getTweetType() != null)
+			this.tweetTypeName = t.getTweetType().getName();
 	}
 
 	public int getTweetId() {

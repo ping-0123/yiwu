@@ -9,6 +9,10 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.yinzhiwu.yiwu.entity.Tweet;
+import com.yinzhiwu.yiwu.entity.TweetContent;
+import com.yinzhiwu.yiwu.entity.type.TweetType;
+
 public class TweetModel {
 
 	@Size(min = 2, max = 10)
@@ -28,11 +32,29 @@ public class TweetModel {
 	@NotNull
 	private MultipartFile coverIcon;
 
+	private String coverImageName;
+	
 	private String coverIconUrl;
 
 	@NotNull
 	private String content;
 
+	public Tweet toTweet(){
+		Tweet tweet = new Tweet();
+		tweet.setAuthor(this.author);
+		tweet.setTitle(this.title);
+		TweetType type = new TweetType();
+		type.setId(this.getTweetTypeId());
+		tweet.setTweetType(type);
+		tweet.setEditDate(this.editDate);
+		tweet.setDigest(this.digest);
+		tweet.setCoverImage(this.coverImageName);
+		TweetContent con = new TweetContent();
+		con.setContent(this.content.getBytes());
+		tweet.setTweetContent(con);
+		return tweet;
+	}
+	
 	public String getAuthor() {
 		return author;
 	}
@@ -95,6 +117,14 @@ public class TweetModel {
 
 	public void setEditDate(Date editDate) {
 		this.editDate = editDate;
+	}
+
+	public String getCoverImageName() {
+		return coverImageName;
+	}
+
+	public void setCoverImageName(String fileName) {
+		this.coverImageName = fileName;
 	}
 
 }

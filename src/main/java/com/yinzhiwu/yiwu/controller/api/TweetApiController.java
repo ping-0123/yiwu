@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.controller.api;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -14,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
+import com.yinzhiwu.yiwu.entity.Tweet;
 import com.yinzhiwu.yiwu.model.TweetModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.TweetAbbrApiView;
 import com.yinzhiwu.yiwu.model.view.TweetApiView;
 import com.yinzhiwu.yiwu.service.TweetService;
+import com.yinzhiwu.yiwu.service.impl.FileService;
 
 @RestController
 @RequestMapping(value = "/api/tweet")
@@ -26,6 +29,7 @@ public class TweetApiController extends BaseController {
 
 	@Autowired
 	private TweetService tweetService;
+	@Autowired private FileService fileService;
 
 	@PostMapping("/save")
 	public YiwuJson<TweetModel> save(@Valid TweetModel m, BindingResult bindingResult) {
@@ -35,7 +39,26 @@ public class TweetApiController extends BaseController {
 				logger.debug(super.getErrorsMessage(bindingResult));
 			return new YiwuJson<>(fieldError.getField() + ": " + fieldError.getDefaultMessage());
 		}
-		return null;
+		
+		if(m.getCoverIcon() != null && m.getCoverIcon().getSize()> 0){
+			try {
+				String fileName = fileService.upload(m.getCoverIcon());
+				m.setCoverImageName(fileName);
+				m.setCoverIconUrl(fileService.getFileUrl(fileName));
+				m.setCoverIcon(null);
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		Tweet tweet = m.toTweet();
+		tweetService.save(tweet);
+		
+		return new YiwuJson<>(m);
 	}
 
 	@GetMapping("/list")
@@ -43,6 +66,11 @@ public class TweetApiController extends BaseController {
 		return tweetService.findByTypeByFuzzyTitle(tweetTypeId, title);
 	}
 
+	/**
+	 * @deprecated {@link TweetApiController#doGet(int)}
+	 * @param id
+	 * @return
+	 */
 	@Deprecated
 	@GetMapping("/id/{id}")
 	public YiwuJson<TweetApiView> findById(@PathVariable int id) {

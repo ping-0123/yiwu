@@ -39,8 +39,8 @@ public class Tweet extends BaseEntity {
 
 	@Column
 	private String digest; // 信息摘要
-
-	private String coverIconUrl;
+	@Column(length=128)
+	private String coverImage;
 
 	private Date editDate;
 
@@ -61,7 +61,7 @@ public class Tweet extends BaseEntity {
 		this.title = m.getTitle();
 		this.author = m.getAuthor();
 		this.digest = m.getDigest();
-		this.coverIconUrl = m.getCoverIconUrl();
+		this.coverImage = m.getCoverIconUrl();
 		this.tweetContent = new TweetContent(m.getContent().getBytes());
 	}
 
@@ -115,16 +115,16 @@ public class Tweet extends BaseEntity {
 		return digest;
 	}
 
-	public String getCoverIconUrl() {
-		return coverIconUrl;
+	public String getCoverImage() {
+		return coverImage;
 	}
 
 	public void setDigest(String digest) {
 		this.digest = digest;
 	}
 
-	public void setCoverIconUrl(String coverIconUrl) {
-		this.coverIconUrl = coverIconUrl;
+	public void setCoverImage(String coverIconUrl) {
+		this.coverImage = coverIconUrl;
 	}
 
 }

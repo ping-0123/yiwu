@@ -26,10 +26,10 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet, Integer> implements
 
 	@Autowired
 	private TweetDao tweetDao;
-
 	@Autowired
 	private BaseTypeDao baseTypeDao;
-
+	@Autowired private FileService fileService;
+	
 	@Autowired
 	public void setBaseDao(TweetDao tweetDao) {
 		super.setBaseDao(tweetDao);
@@ -56,9 +56,15 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet, Integer> implements
 		List<Tweet> tweets = tweetDao.find_by_tweet_type_by_fuzzy_title(tweetTypeId, title);
 		List<TweetAbbrApiView> views = new ArrayList<>();
 		for (Tweet t : tweets) {
-			views.add(new TweetAbbrApiView(t));
+			views.add(_wrapToAbbrApiView(t));
 		}
 		return new YiwuJson<>(views);
+	}
+
+	private TweetAbbrApiView _wrapToAbbrApiView(Tweet t) {
+		TweetAbbrApiView view = new TweetAbbrApiView(t);
+		view.setCoverIconUrl(fileService.getFileUrl(t.getCoverImage()));
+		return view;
 	}
 
 	@Override
@@ -70,6 +76,6 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet, Integer> implements
 		} catch (DataNotFoundException e) {
 			return new YiwuJson<>(e.getMessage());
 		}
-
 	}
+	
 }
