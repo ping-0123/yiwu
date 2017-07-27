@@ -86,6 +86,7 @@ public class DistributerApiController extends BaseController {
 	 */
 	@Deprecated
 	@GetMapping(value = "/getById/{id}")
+	@ApiOperation("使用/api/distributer/{id}")
 	public YiwuJson<DistributerApiView> getDistributerInfo(@PathVariable int id) {
 		return distributerService.findById(id);
 	}
@@ -93,26 +94,6 @@ public class DistributerApiController extends BaseController {
 	@GetMapping(value = "/{id}")
 	public YiwuJson<DistributerApiView> doGet(@PathVariable int id) {
 		return distributerService.findById(id);
-	}
-
-	/**
-	 * @deprecated use {@link DistributerApiController#modify(DistributerModifyModel, int)}
-	 * @param servletRequest
-	 * @param d
-	 * @param bindingResult
-	 * @return
-	 */
-	@Deprecated
-	@PostMapping(value = "/modifyHeadIcon")
-	public YiwuJson<DistributerApiView> modifyHeadIcon(HttpServletRequest servletRequest, @Valid DistributerApiView d,
-			BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			FieldError fieldError = bindingResult.getFieldError();
-			return new YiwuJson<>(fieldError.getField() + " " + fieldError.getDefaultMessage());
-		}
-
-		String parentPath = servletRequest.getServletContext().getRealPath(UrlUtil.HEAD_ICON_PATH);
-		return distributerService.modifyHeadIcon(d.getId(), d.getImage(), parentPath);
 	}
 
 	@GetMapping(value = "/capitalAccount/getDefault")

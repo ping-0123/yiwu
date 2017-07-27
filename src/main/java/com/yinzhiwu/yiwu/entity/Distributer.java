@@ -121,7 +121,7 @@ public class Distributer extends BaseEntity {
 	private Distributer superDistributer;
 
 	// unique
-	@Column(length = 255, name = "headIconUrl")
+	@Column(length = 255)
 	private String headIconName;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
@@ -131,6 +131,11 @@ public class Distributer extends BaseEntity {
 	@JoinColumn(name = "followedByStore_id", foreignKey = @ForeignKey(name = "fk_distributer_followedByStore_id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw followedByStore;
 
+	@ManyToOne
+	@JoinColumn(name="server_id", 
+		foreignKey=@ForeignKey(name="fk_distributer_server_id" , value=ConstraintMode.NO_CONSTRAINT))
+	private EmployeeYzw server;
+	
 	// unique
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributer_defaultCapitalAccount_id"))
@@ -143,6 +148,9 @@ public class Distributer extends BaseEntity {
 	@JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "fk_distributer_customer_id", value = ConstraintMode.NO_CONSTRAINT))
 	private CustomerYzw customer;
 
+	/**
+	 * 如果是内部员工  与 employee关联
+	 */
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributer_employee_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw employee;
@@ -412,6 +420,14 @@ public class Distributer extends BaseEntity {
 
 	public void setDistributerIncomes(List<DistributerIncome> distributerIncomes) {
 		this.distributerIncomes = distributerIncomes;
+	}
+
+	public EmployeeYzw getServer() {
+		return server;
+	}
+
+	public void setServer(EmployeeYzw server) {
+		this.server = server;
 	}
 
 }

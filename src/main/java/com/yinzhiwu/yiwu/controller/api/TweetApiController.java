@@ -45,7 +45,6 @@ public class TweetApiController extends BaseController {
 				String fileName = fileService.upload(m.getCoverIcon());
 				m.setCoverImageName(fileName);
 				m.setCoverIconUrl(fileService.getFileUrl(fileName));
-				m.setCoverIcon(null);
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -54,10 +53,11 @@ public class TweetApiController extends BaseController {
 				e.printStackTrace();
 			}
 		}
-		
 		Tweet tweet = m.toTweet();
 		tweetService.save(tweet);
 		
+		m.setContent(null);
+		m.setCoverIcon(null);
 		return new YiwuJson<>(m);
 	}
 

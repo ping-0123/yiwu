@@ -68,7 +68,8 @@ public class Tweet extends BaseEntity {
 	@Override
 	public void init() {
 		super.init();
-		this.editDate = super.getCreateDate();
+		if(this.editDate == null)
+			this.editDate = super.getCreateDate();
 	}
 
 	public String getTitle() {

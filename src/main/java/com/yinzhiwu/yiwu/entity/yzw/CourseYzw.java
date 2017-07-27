@@ -82,25 +82,45 @@ public class CourseYzw extends BaseYzwEntity {
 	
 	public enum SubCourseType {
 		
-		CLOSED("封闭式", CourseType.CLOSED),
-		OPEN_A("开放式A", CourseType.OPENED),
-		OPEN_B("开放式B", CourseType.OPENED),
-		PRIVATE("私教课", CourseType.PRIVATE);
+		OPEN_A(1,"开放式A", CourseType.OPENED),
+		OPEN_B(2,"开放式B", CourseType.OPENED),
+		CLOSED(3,"封闭式", CourseType.CLOSED),
+		PRIVATE(4,"私教课", CourseType.PRIVATE);
 		
+		private final int id;
 		private final String name;
 		private final CourseType supperType;
 		
-		private SubCourseType(String name , CourseType type){
+		private SubCourseType(int id,String name ,CourseType type){
+			this.id = id;
 			this.name= name;
 			this.supperType= type;
 		}
 
+		public Integer getId() {
+			return id;
+		}
 		public String getName() {
 			return name;
 		}
 
 		public CourseType getSupperType() {
 			return supperType;
+		}
+		
+		public static SubCourseType fromId(Integer id){
+			switch (id) {
+			case 1:
+				return SubCourseType.OPEN_A;
+			case 2:
+				return SubCourseType.OPEN_B;
+			case 3:
+				return SubCourseType.CLOSED;
+			case 4:
+				return SubCourseType.PRIVATE;
+			default:
+				throw new UnsupportedOperationException(id + "is not supported from enum SubCourseType");
+			}
 		}
 		
 		public static SubCourseType fromName(String name){
@@ -118,6 +138,7 @@ public class CourseYzw extends BaseYzwEntity {
 						name + "is not supported from enum SubCourseType");
 			}
 		}
+
 	}
 
 	@Converter
@@ -139,6 +160,24 @@ public class CourseYzw extends BaseYzwEntity {
 		
 	}
 	
+	@Converter
+	public static class SubCourseTypeIntegerConverter implements AttributeConverter<SubCourseType, Integer>{
+
+		@Override
+		public Integer convertToDatabaseColumn(SubCourseType attribute) {
+			if(attribute == null)
+				return null;
+			return attribute.getId();
+		}
+
+		@Override
+		public SubCourseType convertToEntityAttribute(Integer dbData) {
+			if(dbData == null)
+				return null;
+			return SubCourseType.fromId(dbData);
+		}
+		
+	}
 	
 	@Id
 	@Column(length = 32)
@@ -207,10 +246,10 @@ public class CourseYzw extends BaseYzwEntity {
 	@Column(name = "weeks", length = 32)
 	private String weekes;
 
-	@Convert(converter=CourseType.class)
+	@Convert(converter=CourseTypeConverter.class)
 	private CourseType courseType;
 
-	@Convert(converter=SubCourseType.class)
+	@Convert(converter=SubCourseTypeConverter.class)
 	@Column(length =32)
 	private SubCourseType subCourseType;
 

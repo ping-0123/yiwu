@@ -1,10 +1,8 @@
-package com.yinzhiwu.yiwu.model.view;
+package com.yinzhiwu.yiwu.web.purchase.dto;
 
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -23,7 +21,7 @@ import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 *
 */
 
-public class OrderForPurchaseShowApiView {
+public class OrderDto {
 	
 	/**
 	 * 订单建立之后，多少小时之内可以删除
@@ -51,11 +49,11 @@ public class OrderForPurchaseShowApiView {
 	private String salesmanName;
 	private String comment;
 	private boolean deletable;
-	private List<StoreForOrderModifyApiView> validStores = new ArrayList<>();
+	private String validStoresIds;
 	
-	public static OrderForPurchaseShowApiView fromOrder(@NotNull OrderYzw order){
+	public static OrderDto fromOrder(@NotNull OrderYzw order){
 		if(order == null) throw new IllegalArgumentException("order cannot be null");
-		OrderForPurchaseShowApiView v = new OrderForPurchaseShowApiView();
+		OrderDto v = new OrderDto();
 		v.setId(order.getId());
 		CustomerYzw cust = order.getCustomer();
 		if(cust != null)
@@ -69,19 +67,20 @@ public class OrderForPurchaseShowApiView {
 		if(contract != null){
 			v.contractNo = contract.getContractNo();
 			v.courseType = contract.getType();
-			v.subCourseType = contract.getSubType();
+//			v.subCourseType = contract.getSubType();
 			v.status = contract.getStatus();
 			v.startDate = contract.getStart();
 			v.endDate = contract.getEnd();
 			v.validTimes = contract.getValidity();
 			v.remainTimes = (int) contract.getRemainTimes();
+			v.setValidStoresIds(contract.getValidStoreIds());
 		}
 		v.salesmanId = order.getCreateUserId();
 		v.payedDate = order.getPayedDate();
 		v.comment = order.getComments();
 		v.setDeletable();
 		return v;
-		//TODO salesmanName, validStores 未设置
+		//TODO salesmanName
 	}
 	
 	public String getId() {
@@ -104,9 +103,6 @@ public class OrderForPurchaseShowApiView {
 	}
 	public CourseType getCourseType() {
 		return courseType;
-	}
-	public SubCourseType getSubCourseType() {
-		return subCourseType;
 	}
 	public ContractStatus getStatus() {
 		return status;
@@ -153,9 +149,6 @@ public class OrderForPurchaseShowApiView {
 	public void setCourseType(CourseType courseType) {
 		this.courseType = courseType;
 	}
-	public void setSubCourseType(SubCourseType subCourseType) {
-		this.subCourseType = subCourseType;
-	}
 	public void setStatus(ContractStatus status) {
 		this.status = status;
 	}
@@ -189,13 +182,6 @@ public class OrderForPurchaseShowApiView {
 		this.salesmanId = salesmanId;
 	}
 
-	public List<StoreForOrderModifyApiView> getValidStores() {
-		return validStores;
-	}
-
-	public void setValidStores(List<StoreForOrderModifyApiView> validStores) {
-		this.validStores = validStores;
-	}
 
 	public boolean isDeletable() {
 		return deletable;
@@ -212,6 +198,22 @@ public class OrderForPurchaseShowApiView {
 		if(calendar.after(Calendar.getInstance()))
 			setDeletable(true);
 		setDeletable(false);
+	}
+
+	public SubCourseType getSubCourseType() {
+		return subCourseType;
+	}
+
+	public String getValidStoresIds() {
+		return validStoresIds;
+	}
+
+	public void setSubCourseType(SubCourseType subCourseType) {
+		this.subCourseType = subCourseType;
+	}
+
+	public void setValidStoresIds(String validStoresIds) {
+		this.validStoresIds = validStoresIds;
 	}
 
 }

@@ -1,18 +1,12 @@
 package com.yinzhiwu.yiwu.service.impl;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.IBaseDao;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;

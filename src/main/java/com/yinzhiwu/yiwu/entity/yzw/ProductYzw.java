@@ -1,10 +1,14 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseTypeIntegerConverter;
 
 @Entity
 @Table(name = "vproduct")
@@ -46,7 +50,10 @@ public class ProductYzw extends BaseYzwEntity {
 
 	@Column(name = "max_leave_times")
 	private Short maxLeaveTimes;
-
+	
+	@Column(name="product_type_id")
+	@Convert(converter=SubCourseTypeIntegerConverter.class)
+	private SubCourseType type;
 	// @OneToMany(mappedBy="product")
 	// private List<OrderYzw> orders = new ArrayList<>();
 
@@ -132,6 +139,14 @@ public class ProductYzw extends BaseYzwEntity {
 
 	public ProductYzw() {
 		super();
+	}
+
+	public SubCourseType getType() {
+		return type;
+	}
+
+	public void setType(SubCourseType type) {
+		this.type = type;
 	}
 
 }

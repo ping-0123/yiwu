@@ -28,14 +28,18 @@ import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.DistributerModifyModel;
 import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.IncomeEventService;
+import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDistributerDto;
+import com.yinzhiwu.yiwu.web.purchase.dto.EmpDistributerDto;
 
 @Service
 public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer> implements DistributerService {
@@ -127,6 +131,9 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				logger.info("new customer's name is " + customer.getName());
 			}
 		}
+		distributer.setBirthday(customer.getBirthday());
+		distributer.setMemberId(customer.getMemberCard());
+		distributer.setName(customer.getName());
 		distributer.setCustomer(customer);
 		/**
 		 * register to database
@@ -370,6 +377,33 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			return headIconUrl + headIconName;
 		else
 			return "";
+	}
+	
+	
+
+	@Override
+	public EmpDistributerDto employeeLoginByWechat(String wechatNo) throws YiwuException {
+		try {
+			Distributer distributer = distributerDao.findByWechat(wechatNo);
+			if(distributer.getEmployee() == null )
+				throw new YiwuException("非内部员工不能登录系统。");
+			return new EmpDistributerDto(distributer);
+		} catch (DataNotFoundException e) {
+			throw new YiwuException("用户不存在");
+		}
+	}
+
+
+	@Override
+	public PageBean<CustomerDistributerDto> findVisableDistributersByEmployee(int distributerId, int pageNo,
+			int pageSize) {
+		// TODO Auto-generated method stub
+		List<CustomerDistributerDto> views = new ArrayList<>();
+		PageBean<Distributer> page = distributerDao.findPageOfAll(pageNo, pageSize);
+		for (Distributer distributer : page.getData()) {
+			views.add(new CustomerDistributerDto(distributer));
+		}
+		return new PageBean<>(pageSize, pageNo, page.getTotalRecord(), views);
 	}
 
 }

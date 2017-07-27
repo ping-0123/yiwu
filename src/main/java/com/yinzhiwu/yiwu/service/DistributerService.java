@@ -6,12 +6,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.DistributerModifyModel;
 import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
+import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDistributerDto;
+import com.yinzhiwu.yiwu.web.purchase.dto.EmpDistributerDto;
 
 public interface DistributerService extends IBaseService<Distributer, Integer> {
 
@@ -42,5 +46,9 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 	String getHeadIconSavePath();
 
 	String getHeadIconUrl();
+
+	EmpDistributerDto employeeLoginByWechat(String wechatNo) throws YiwuException;
+
+	PageBean<CustomerDistributerDto> findVisableDistributersByEmployee(int distributerId, int pageNo, int pageSize);
 
 }

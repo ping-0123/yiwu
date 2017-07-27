@@ -3,34 +3,25 @@ package com.yinzhiwu.yiwu.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.OneToMany;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.w3c.dom.css.ViewCSS;
 
-import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
-import com.yinzhiwu.yiwu.dao.EmployeeDao;
 import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
+import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
-import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
-import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderAbbrApiView;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
-import com.yinzhiwu.yiwu.model.view.OrderForPurchaseShowApiView;
-import com.yinzhiwu.yiwu.model.view.StoreForOrderModifyApiView;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
+import com.yinzhiwu.yiwu.web.purchase.dto.OrderDto;
 
 @Service
 public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> implements OrderYzwService {
@@ -40,7 +31,6 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 
 	@Autowired
 	private DistributerDao distributerDao;
-	@Autowired private DepartmentYzwDao departmentDao;
 	@Autowired private EmployeeYzwDao employeeDao;
 	
 	@Autowired
@@ -102,32 +92,33 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 
 
 	@Override
-	public PageBean<OrderForPurchaseShowApiView> findPayedOrderPageByCustomerId(int customerId, int pageNo,
+	public PageBean<OrderDto> findPayedOrderPageByCustomerId(int customerId, int pageNo,
 			int pageSize) {
 		PageBean<OrderYzw> orderPage = orderDao.findPayedOrderPageByCustomerId(customerId,  pageNo, pageSize);
+		//TODO
 		return null;
 	}
 
 	@Override
-	public PageBean<OrderForPurchaseShowApiView> findUnpayedOrderPageByCustomerId(int customerId, int pageNo,
+	public PageBean<OrderDto> findUnpayedOrderPageByCustomerId(int customerId, int pageNo,
 			int pageSize) {
 		PageBean<OrderYzw> orderPage = orderDao.findUnpayedOrderPageByCustomerId(customerId,  pageNo, pageSize);
 		if(orderPage == null )
 			return null;
 		if(orderPage.getData() == null || orderPage.getData().size() ==0)
 			return null;
-		List<OrderForPurchaseShowApiView> views = new ArrayList<>();
+		List<OrderDto> views = new ArrayList<>();
 		for (OrderYzw order : orderPage.getList()) {
 			views.add(_wrapToView(order));
 		}
-		PageBean<OrderForPurchaseShowApiView> viewPage = 
+		PageBean<OrderDto> viewPage = 
 				new PageBean<>(orderPage.getPageSize(), orderPage.getCurrentPage(), orderPage.getTotalRecord(), views);
 			
 		return viewPage;
 	}
 
-	private OrderForPurchaseShowApiView _wrapToView(OrderYzw order) {
-		OrderForPurchaseShowApiView view = OrderForPurchaseShowApiView.fromOrder(order);
+	private OrderDto _wrapToView(OrderYzw order) {
+		OrderDto view = OrderDto.fromOrder(order);
 		EmployeeYzw employee = null;
 		
 		try {
@@ -139,21 +130,6 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		
 		if(employee != null)
 			view.setSalesmanName(employee.getName());
-		String storeIds = order.getContract().getValidStoreIds();
-		if(StringUtils.hasLength(storeIds)){
-			String[] ids = storeIds.split(";");
-			for (String id : ids) {
-				try {
-					DepartmentYzw  dept = departmentDao.get(Integer.valueOf(id));
-					//将有效门店添加到视图中返回给客户端
-					view.getValidStores().add(StoreForOrderModifyApiView.fromDepartment(dept));
-				} catch (NumberFormatException | DataNotFoundException e) {
-					if(logger.isDebugEnabled())
-						logger.debug(e.getMessage());
-				}
-				
-			}
-		}
 		
 		return view;
 	}
