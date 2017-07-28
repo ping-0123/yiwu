@@ -67,7 +67,7 @@ public class Distributer extends BaseEntity {
 	 * unique=true, @Formula("concat('E5',
 	 * lpad(id,8,'0'))") @ColumnDefault("concat('E5', lpad(id,8,'0'))")
 	 */
-	@Column(length = 32, nullable = false, updatable = false)
+	@Column(length = 32, nullable = false, updatable = false, name="memberCard")
 	private String memberId;
 
 	@Column(length = 32)
@@ -131,7 +131,7 @@ public class Distributer extends BaseEntity {
 	@JoinColumn(name = "followedByStore_id", foreignKey = @ForeignKey(name = "fk_distributer_followedByStore_id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw followedByStore;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
 	@JoinColumn(name="server_id", 
 		foreignKey=@ForeignKey(name="fk_distributer_server_id" , value=ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw server;

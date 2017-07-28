@@ -6,6 +6,7 @@ import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
+import com.yinzhiwu.yiwu.enums.Gender;
 
 public class EContractDetailApiView {
 
@@ -13,7 +14,7 @@ public class EContractDetailApiView {
 
 	private String customerName;
 
-	private String gender;
+	private Gender gender;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date birthday;
@@ -112,7 +113,7 @@ public class EContractDetailApiView {
 		return customerName;
 	}
 
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
@@ -236,7 +237,7 @@ public class EContractDetailApiView {
 		this.customerName = customerName;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 

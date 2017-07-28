@@ -13,6 +13,7 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
@@ -20,6 +21,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderAbbrApiView;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
+import com.yinzhiwu.yiwu.service.ElectricContractYzwService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderDto;
 
@@ -32,6 +34,7 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 	@Autowired
 	private DistributerDao distributerDao;
 	@Autowired private EmployeeYzwDao employeeDao;
+	@Autowired private ElectricContractYzwService econtractService;
 	
 	@Autowired
 	public void setBaseDao(OrderYzwDao orderYzwDao) {
@@ -134,4 +137,11 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		return view;
 	}
 
+	@Override
+	public String save(OrderYzw order){
+		orderDao.save(order);
+		ElectricContractYzw econtract = new ElectricContractYzw(order);
+		econtractService.save(econtract);
+		return order.getId();
+	}
 }

@@ -7,6 +7,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 public class DistributerRegisterModel {
@@ -30,12 +32,30 @@ public class DistributerRegisterModel {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date birthDay;
 
-	private int followedByStoreId;
+	private Integer followedByStoreId;
 
 	@Size(min = 10, max = 28)
 	private String wechatNo;
 
 	private String invitationCode;
+	
+	public Distributer toDistributer(){
+		Distributer distributer = new Distributer();
+		distributer.setPhoneNo(this.phoneNo);
+		distributer.setUsername(this.username);
+		distributer.setPassword(this.password);
+		distributer.setName(this.name);
+		distributer.setNickName(this.nickName);
+		distributer.setGender(this.gender);
+		distributer.setBirthday(this.birthDay);
+		distributer.setWechatNo(this.wechatNo);
+		if(followedByStoreId != null){
+			DepartmentYzw store = new DepartmentYzw();
+			store.setId(this.followedByStoreId);
+			distributer.setFollowedByStore(store);
+		}
+		return distributer;
+	}
 
 	public String getPhoneNo() {
 		return phoneNo;
@@ -65,7 +85,7 @@ public class DistributerRegisterModel {
 		return birthDay;
 	}
 
-	public int getFollowedByStoreId() {
+	public Integer getFollowedByStoreId() {
 		return followedByStoreId;
 	}
 

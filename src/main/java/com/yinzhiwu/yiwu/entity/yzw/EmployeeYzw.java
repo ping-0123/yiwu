@@ -1,13 +1,12 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -15,13 +14,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.enums.Gender;
 
 @Entity
 @Table(name = "vemployee")
@@ -50,8 +48,9 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@Column(length = 128)
 	private String password;
 
+	@Enumerated
 	@Column(name = "Sex")
-	private Integer gender;
+	private Gender gender;
 
 	@Column(length = 20)
 	private String birthday;
@@ -72,7 +71,7 @@ public class EmployeeYzw extends BaseYzwEntity {
 	private Integer disabled;
 
 	@Column
-	private Integer removed;
+	private Boolean removed = Boolean.FALSE;
 
 	@Column
 	private Integer wparam;
@@ -144,7 +143,7 @@ public class EmployeeYzw extends BaseYzwEntity {
 		return password;
 	}
 
-	public Integer getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
@@ -172,7 +171,7 @@ public class EmployeeYzw extends BaseYzwEntity {
 		return disabled;
 	}
 
-	public Integer getRemoved() {
+	public Boolean getRemoved() {
 		return removed;
 	}
 
@@ -252,7 +251,7 @@ public class EmployeeYzw extends BaseYzwEntity {
 		this.password = password;
 	}
 
-	public void setGender(Integer gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 
@@ -280,7 +279,7 @@ public class EmployeeYzw extends BaseYzwEntity {
 		this.disabled = disabled;
 	}
 
-	public void setRemoved(Integer removed) {
+	public void setRemoved(boolean removed) {
 		this.removed = removed;
 	}
 

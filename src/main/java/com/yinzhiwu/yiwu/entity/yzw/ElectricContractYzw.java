@@ -2,8 +2,11 @@ package com.yinzhiwu.yiwu.entity.yzw;
 
 import java.util.Date;
 
+import javax.persistence.AttributeConverter;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
+import javax.persistence.Convert;
+import javax.persistence.Converter;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -13,13 +16,37 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yinzhiwu.yiwu.enums.Gender;
+import com.yinzhiwu.yiwu.util.NumberToCN;
 
 @Entity
 @Table(name = "velectric_contract")
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 public class ElectricContractYzw {
+	
+	@Converter
+	public static class GenderConverter implements AttributeConverter<Gender, String>{
+
+		@Override
+		public String convertToDatabaseColumn(Gender attribute) {
+			if(attribute == null)
+				return null;
+			return attribute.getCnGender();
+		}
+
+		@Override
+		public Gender convertToEntityAttribute(String dbData) {
+			if(dbData == null || dbData.trim().length() ==0)
+				return null;
+			return Gender.fromCnGender(dbData);
+		}
+		
+	}
 
 	@Id
 	@GeneratedValue(generator = "assigned")
@@ -28,7 +55,9 @@ public class ElectricContractYzw {
 
 	private String customerName;
 
-	private String gender;
+	@Column(length=10)
+	@Convert(converter=GenderConverter.class)
+	private Gender gender;
 
 	private Date birthday;
 
@@ -93,7 +122,7 @@ public class ElectricContractYzw {
 	@JoinColumn(name = "contractType", foreignKey = @ForeignKey(name = "fk_ElectricContract_contractType", value = ConstraintMode.NO_CONSTRAINT))
 	private ElectricContractTypeYzw contractType;
 
-	private Boolean isConfirmed;
+	private Boolean isConfirmed = Boolean.FALSE;
 
 	@JsonIgnore
 	private Integer sf_create_user;
@@ -110,6 +139,45 @@ public class ElectricContractYzw {
 	public ElectricContractYzw() {
 	}
 
+	public ElectricContractYzw(OrderYzw order){
+		if(order == null ) throw new IllegalArgumentException();
+		Contract contract = order.getContract();
+		if(contract == null) throw new IllegalArgumentException("订单" + order.getId() + "不含有会籍合约");
+		this.contractNo 	= contract.getContractNo();
+		
+		CustomerYzw customer =order.getCustomer();
+		if(customer == null) throw new IllegalArgumentException("订单" + order.getId() + "不含客户资料，为无效订单");
+		this.customerName 	= customer.getName();
+		this.gender			= customer.getGender();
+		this.birthday 		= customer.getBirthday();
+		this.identityCardNo = customer.getResidentId();
+		this.mobiePhoneNo 	= customer.getMobilePhone();
+		this.qqNo 			= customer.getQq();
+		this.wechatNo 		= customer.getWeChat();
+		this.customer 		= customer;
+		this.contactAddress = customer.getAddress();
+		this.memberCardNo 	= customer.getMemberCard();
+		this.effectiveStart = contract.getStart();
+		this.effectiveEnd   = contract.getEnd();
+		this.timesOfLesson  = contract.getValidityTimes();
+		this.price			= order.getMarkedPrice();
+		this.amount		 	= order.getMarkedPrice() * order.getCount();
+		this.promotionPrice	= order.getPayedAmount();
+		this.rangeOfApplication=contract.getValidStoreIds();
+		this.supplementalInstruction = order.getComments();
+		this.uppercaseAmount = NumberToCN.number2CNMontrayUnit(order.getPayedAmount());
+		this.lowercaseAmount = String.valueOf(order.getPayedAmount());
+		this.payedDate		= order.getPayedDate();
+		//TODO
+//		this.payedMethod;
+//		this.depositAmount
+//		this.depositDate
+//		this.finalpayment
+//		this.finalDate
+		ProductYzw product = order.getProduct();
+		if(product == null ) throw new IllegalArgumentException("订单" + order.getId() + "不含产品信息，为无效订单");
+		this.contractType = product.getContractType();
+	}
 	public void init() {
 		this.sf_last_change_user = 1;
 		this.sf_create_user = 1;
@@ -126,7 +194,7 @@ public class ElectricContractYzw {
 		return customerName;
 	}
 
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
@@ -262,7 +330,7 @@ public class ElectricContractYzw {
 		this.customerName = customerName;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 

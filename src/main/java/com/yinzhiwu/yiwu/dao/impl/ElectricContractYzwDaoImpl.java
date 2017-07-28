@@ -9,4 +9,9 @@ import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
 public class ElectricContractYzwDaoImpl extends BaseDaoImpl<ElectricContractYzw, String>
 		implements ElectricContractYzwDao {
 
+	@Override
+	public String save(ElectricContractYzw econtract){
+		econtract.init();
+		return (String) getSession().save(econtract);
+	}
 }

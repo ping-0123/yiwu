@@ -13,7 +13,10 @@ public class GeneratorUtil {
 	private static Log log = LogFactory.getLog(GeneratorUtil.class);
 
 	private static final String PREFIX = "E5";
-
+	/**
+	 * 合约号前缀
+	 */
+	private static final String CONTRACT_NO_PREFIX ="YZW";
 	private static final int LENGTH = 8;
 
 	private static final char PADDING_CHAR = '0';
@@ -56,7 +59,7 @@ public class GeneratorUtil {
 	}
 
 	public static String generateContractNo(String orderId) {
-		return "YZW" + orderId;
+		return CONTRACT_NO_PREFIX + orderId;
 	}
 
 	private static String _generate_yzw_id(Date today, int i) {

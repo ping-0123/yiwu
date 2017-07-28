@@ -90,8 +90,10 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 
 	@Override
 	public String save(OrderYzw entity) {
-		entity.setId(GeneratorUtil.generateYzwId(find_last_id()));
-		entity.getContract().setContractNo(GeneratorUtil.generateContractNo(entity.getId()));
+		if(entity.getId() == null)
+			entity.setId(GeneratorUtil.generateYzwId(find_last_id()));
+		if(entity.getContract().getContractNo() == null)
+			entity.getContract().setContractNo(GeneratorUtil.generateContractNo(entity.getId()));
 		return super.save(entity);
 	}
 

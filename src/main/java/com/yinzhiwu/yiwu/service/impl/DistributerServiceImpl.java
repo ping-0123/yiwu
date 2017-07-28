@@ -17,6 +17,7 @@ import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
+import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.dao.ShareTweetEventDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
@@ -27,6 +28,7 @@ import com.yinzhiwu.yiwu.entity.type.EventType;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.DistributerModifyModel;
@@ -64,15 +66,22 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	private OrderYzwDao orderDao;
 	@Autowired
 	private CapitalAccountDao capitalAccountDao;
-
+	@Autowired private EmployeeYzwDao employeeDao;
+//	@Autowired private EmployeeDepartmentYzwService empDeptService;
+	@Autowired private FileService fileService;
+	
 	@Value("${system.headIcon.savePath}")
 	private String headIconSavePath;
 	@Value("${system.headIcon.url}")
 	private String headIconUrl;
 
 	@Override
-	public YiwuJson<Boolean> register(String invitationCode, Distributer distributer) {
-
+	public YiwuJson<DistributerRegisterModel> register(DistributerRegisterModel registerModel) {
+		if(registerModel == null) throw new IllegalArgumentException("入参不能为null");
+		Distributer distributer = registerModel.toDistributer();
+		String message = null;
+		String invitationCode = registerModel.getInvitationCode();
+		
 		/**
 		 * init new distributer' default properties such as "createTime"
 		 */
@@ -81,13 +90,13 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		/**
 		 * verify that the phoneNo has been registered
 		 */
-		if (distributerDao.findCountByPhoneNo(distributer.getPhoneNo()) > 0)
+		if (distributerDao.findCountByPhoneNo(registerModel.getPhoneNo()) > 0)
 			return new YiwuJson<>(distributer.getPhoneNo() + " 该手机号码已经被注册 ");
 
 		/**
 		 * verify that the wechatNo has been registered
 		 */
-		if (distributerDao.findCountByWechatNo(distributer.getWechatNo()) > 0)
+		if (distributerDao.findCountByWechatNo(registerModel.getWechatNo()) > 0)
 			return new YiwuJson<>(distributer.getWechatNo() + " 该微信号已经被注册 ");
 
 		/**
@@ -98,19 +107,19 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				Distributer superDistributer = distributerDao.findByShareCode(invitationCode);
 				distributer.setSuperDistributer(superDistributer);
 			} catch (DataNotFoundException e) {
-				logger.warn(e.getMessage());
+				message = "无效的邀请码:" + invitationCode;
 				distributer.setSuperDistributer(null);
 			}
 
 		/**
 		 * set followed store
 		 */
-		if (distributer.getFollowedByStore() != null)
+		if (registerModel.getFollowedByStoreId() != null)
 			try {
-				DepartmentYzw store = departmentYzwDao.get(distributer.getFollowedByStore().getId());
+				DepartmentYzw store = departmentYzwDao.get(registerModel.getFollowedByStoreId());
 				distributer.setFollowedByStore(store);
 			} catch (DataNotFoundException e) {
-				logger.warn(e.getMessage());
+				message = message + "\n无效的门店Id" + registerModel.getFollowedByStoreId();
 				distributer.setFollowedByStore(null);
 			}
 
@@ -134,7 +143,26 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		distributer.setBirthday(customer.getBirthday());
 		distributer.setMemberId(customer.getMemberCard());
 		distributer.setName(customer.getName());
+		if(distributer.getGender() == null)
+			distributer.setGender(customer.getGender());
+		EmployeeYzw server = customer.getSalesman();
+		if(server != null && !server.getRemoved()){
+			distributer.setServer(server);
+			DepartmentYzw dept = server.getDepartment();
+			if(dept != null && dept.getName() != null && dept.getName().endsWith("店"));
+				distributer.setFollowedByStore(dept);
+		}
 		distributer.setCustomer(customer);
+		
+		/**
+		 * associate with employee 
+		 */
+		EmployeeYzw emp = employeeDao.findByPhoneNo(registerModel.getPhoneNo());
+		if(emp != null){
+			distributer.setEmployee(emp);
+			distributer.setName(emp.getName());
+		}
+			
 		/**
 		 * register to database
 		 */
@@ -165,7 +193,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		/*
 		 * return dto
 		 */
-		return new YiwuJson<>("注册成功!", Boolean.TRUE);
+		return new YiwuJson<>(registerModel);
 	}
 
 	@Override
@@ -319,21 +347,10 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Override
 	public YiwuJson<DistributerModifyModel> modify(int distributerId, DistributerModifyModel model) {
 		Distributer distributer = model.toDistributer();
+		String fileName = null;
 		if (model.getImage() != null && model.getImage().getSize() > 0) {
-			String fileName = System.currentTimeMillis() + "_" + model.getImage().getOriginalFilename();
-			File file = new File(headIconSavePath + fileName);
-			File folder = new File(headIconSavePath);
-			if (!folder.exists()) {
-				folder.mkdirs();
-			}
-
 			try {
-				model.getImage().transferTo(file);
-				distributer.setHeadIconName(fileName);
-				// mutipartFile 不传给前端
-				model.setImage(null);
-				// 放回图片的url给前端, 前端通过url访问图片
-				model.setImageUrl(_getHeadIconUrl(fileName));
+				fileName = fileService.upload(model.getImage());
 			} catch (IllegalStateException e) {
 				logger.error(e);
 				return new YiwuJson<>("服务器内部原因，头像保存失败");
@@ -341,7 +358,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				logger.error(e.getMessage());
 				return new YiwuJson<>("图片保存目录 " + headIconSavePath + " 不存在");
 			}
-
 		}
 
 		try {
@@ -351,6 +367,8 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			return new YiwuJson<>("服务器内部原因， 修改会员资料失败");
 		}
 
+		model.setImage(null);
+		model.setImageUrl(fileService.getFileUrl(fileName));
 		return new YiwuJson<>(model);
 	}
 

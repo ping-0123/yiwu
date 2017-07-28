@@ -16,6 +16,7 @@ import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.service.DepositService;
 import com.yinzhiwu.yiwu.service.IncomeEventService;
+import com.yinzhiwu.yiwu.service.OrderYzwService;
 
 @Service
 public class DepositServiceImpl extends BaseServiceImpl<DepositEvent, Integer> implements DepositService {
@@ -27,7 +28,7 @@ public class DepositServiceImpl extends BaseServiceImpl<DepositEvent, Integer> i
 	private DistributerDao distributerDao;
 
 	@Autowired
-	private OrderYzwDao orderDao;
+	private OrderYzwService orderService;
 
 	@Autowired
 	private ProductYzwDao productDao;
@@ -71,7 +72,7 @@ public class DepositServiceImpl extends BaseServiceImpl<DepositEvent, Integer> i
 		else
 			product = productDao.get_children_deposit_product();
 		OrderYzw order = new OrderYzw(distributer.getCustomer(), product, amount, distributer.getFollowedByStore());
-		orderDao.save(order);
+		orderService.save(order);
 
 		/**
 		 * save deposit event

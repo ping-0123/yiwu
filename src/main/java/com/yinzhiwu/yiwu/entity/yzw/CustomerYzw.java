@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -20,6 +21,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw.GenderConverter;
 import com.yinzhiwu.yiwu.enums.Gender;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
 
@@ -54,7 +56,8 @@ public class CustomerYzw extends BaseYzwEntity {
 	private String name;
 
 	@Column(length = 32, name = "sex")
-	private String gender;
+	@Convert(converter=GenderConverter.class)
+	private Gender gender;
 
 	@Column(length = 32)
 	private String mobilePhone;
@@ -122,17 +125,13 @@ public class CustomerYzw extends BaseYzwEntity {
 	}
 
 	public CustomerYzw(Distributer d) {
-		super();
 		if (d.getBirthday() != null && CalendarUtil.isAudit(d.getBirthday()))
 			this.auditOrChild = "成人";
 		else
 			this.auditOrChild = "少儿";
 		this.isMember = "潜在";
 		this.name = d.getName();
-		if (d.getGender() == Gender.FEMALE)
-			this.gender = "女";
-		else
-			this.gender = "男";
+		this.gender = d.getGender();
 		this.mobilePhone = d.getPhoneNo();
 		this.birthday = d.getBirthday() == null ? new Date() : d.getBirthday();
 		this.age = (int) CalendarUtil.getAge(this.getBirthday());
@@ -164,7 +163,7 @@ public class CustomerYzw extends BaseYzwEntity {
 		return name;
 	}
 
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
@@ -268,7 +267,7 @@ public class CustomerYzw extends BaseYzwEntity {
 		this.name = name;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 

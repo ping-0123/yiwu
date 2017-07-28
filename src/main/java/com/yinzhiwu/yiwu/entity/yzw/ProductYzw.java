@@ -1,17 +1,23 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
+import java.util.Date;
+
 import javax.persistence.Column;
-import javax.persistence.Convert;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseTypeIntegerConverter;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "vproduct")
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 public class ProductYzw extends BaseYzwEntity {
 
 	/**
@@ -51,12 +57,23 @@ public class ProductYzw extends BaseYzwEntity {
 	@Column(name = "max_leave_times")
 	private Short maxLeaveTimes;
 	
-	@Column(name="product_type_id")
-	@Convert(converter=SubCourseTypeIntegerConverter.class)
-	private SubCourseType type;
-	// @OneToMany(mappedBy="product")
-	// private List<OrderYzw> orders = new ArrayList<>();
-
+	@Column(name="organization_code")
+	private String visableDepartmentIds;
+	
+	@Column(name="useful_hours")
+	private Float usefulHours;
+	
+	@Column(name="start_date")
+	private Date startDate;
+	
+	@Column(name="end_date")
+	private Date endDate;
+	
+	@ManyToOne
+	@JoinColumn(name="econtract_type_id", 
+		foreignKey=@ForeignKey(name="fk_product_econtract_type_id", value=ConstraintMode.NO_CONSTRAINT))
+	private ElectricContractTypeYzw contractType;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -141,12 +158,44 @@ public class ProductYzw extends BaseYzwEntity {
 		super();
 	}
 
-	public SubCourseType getType() {
-		return type;
+	public String getVisableDepartmentIds() {
+		return visableDepartmentIds;
 	}
 
-	public void setType(SubCourseType type) {
-		this.type = type;
+	public Float getUsefulHours() {
+		return usefulHours;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public ElectricContractTypeYzw getContractType() {
+		return contractType;
+	}
+
+	public void setVisableDepartmentIds(String visableDepartmentIds) {
+		this.visableDepartmentIds = visableDepartmentIds;
+	}
+
+	public void setUsefulHours(Float usefulHours) {
+		this.usefulHours = usefulHours;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public void setContractType(ElectricContractTypeYzw contractType) {
+		this.contractType = contractType;
 	}
 
 }

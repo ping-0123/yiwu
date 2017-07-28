@@ -2,7 +2,7 @@
 <ehcache>
 	<diskStore path="C:/cache/" />
 	<defaultCache
-		maxElementsInMemory="10000" 
+		maxElementsInMemory="1000" 
 		eternal="false"
 		timeToIdleSeconds="120" 
 		timeToLiveSeconds="120" 
@@ -10,16 +10,16 @@
 		diskPersistent="false"
 		diskExpiryThreadIntervalSeconds="60" />
 		
-		<!--  
 		 <cache   
-         name="com.github.zhangkaitao.shiro.chapter19.entity.Resource"  
-         maxElementsInMemory="1000"  
+         name="com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw"  
+         maxElementsInMemory="150"  
          memoryStoreEvictionPolicy="LRU"   
          eternal="true"   
          diskPersistent="false"  
          overflowToDisk="false"   
          maxElementsOnDisk="1000000" /> 
          
+         <!-- 
         <cache   
          name="com.github.zhangkaitao.shiro.chapter19.entity.User"  
          maxElementsInMemory="1000"  

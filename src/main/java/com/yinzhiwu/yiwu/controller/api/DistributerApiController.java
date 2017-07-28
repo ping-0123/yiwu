@@ -3,13 +3,11 @@ package com.yinzhiwu.yiwu.controller.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,13 +26,13 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.type.CapitalAccountType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.DistributerModifyModel;
+import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 import com.yinzhiwu.yiwu.service.DistributerService;
-import com.yinzhiwu.yiwu.util.UrlUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -57,18 +55,18 @@ public class DistributerApiController extends BaseController {
 	}
 
 	@PostMapping(value = "")
-	public YiwuJson<Boolean> register(@Valid Distributer m, String invitationCode, BindingResult bindingResult) {
+	public YiwuJson<DistributerRegisterModel> register(@Valid DistributerRegisterModel m, String invitationCode, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new YiwuJson<>(getErrorsMessage(bindingResult));
 		}
 		try {
-			return distributerService.register(invitationCode, m);
+			return distributerService.register(m);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
-
+	
+	
 	@PostMapping(value = "/loginByWechat")
 	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String wechatNo) {
 		return distributerService.loginByWechat(wechatNo);

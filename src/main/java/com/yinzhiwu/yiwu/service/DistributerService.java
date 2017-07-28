@@ -19,7 +19,7 @@ import com.yinzhiwu.yiwu.web.purchase.dto.EmpDistributerDto;
 
 public interface DistributerService extends IBaseService<Distributer, Integer> {
 
-	YiwuJson<Boolean> register(String invitationCode, Distributer distributer);
+	YiwuJson<DistributerRegisterModel> register(DistributerRegisterModel m);
 
 	YiwuJson<DistributerApiView> loginByWechat(String wechatNo);
 

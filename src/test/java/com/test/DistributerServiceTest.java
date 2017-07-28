@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.enums.Gender;
+import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 import com.yinzhiwu.yiwu.service.DistributerService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -34,15 +34,28 @@ public class DistributerServiceTest {
 		String phonePre = "18803332";
 		String wechatNoPre = "wechatNo";
 		for (int i = 140; i < 150; i++) {
-			Distributer d = new Distributer();
+			DistributerRegisterModel d = new DistributerRegisterModel();
 			d.setPhoneNo(phonePre + String.format("%03d", i));
 			d.setPassword("suning0987");
 			d.setGender(Gender.FEMALE);
 			d.setWechatNo(wechatNoPre + String.format("%03d", i));
 
 			String invatationCode = "e3inzouy";
-			distributerService.register(invatationCode, d);
+			d.setInvitationCode(invatationCode);
+			distributerService.register(d);
 		}
 
+	}
+	
+	@Test
+	public void saveEmployeeRegister(){
+		DistributerRegisterModel model = new DistributerRegisterModel();
+		model.setPhoneNo("18258252477");
+		model.setPassWord("suning0987");
+		model.setGender(Gender.MALE);
+		model.setWechatNo("wwwwwwwwwwwwww");
+		model.setInvitationCode("e3it4owu");
+		distributerService.register(model);
+		
 	}
 }

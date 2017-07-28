@@ -17,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.Assert;
 
@@ -26,6 +28,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 
 @Entity
 @Table(name = "vorder")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class OrderYzw extends BaseYzwEntity {
 
 	/**

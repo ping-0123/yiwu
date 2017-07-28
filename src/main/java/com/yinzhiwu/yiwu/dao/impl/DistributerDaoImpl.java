@@ -25,7 +25,8 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		logger.debug(id);
 		entity.setId(id);
 		entity.setPassword(SecurityUtil.encryptByMd5(entity.getPassword()));
-		entity.setMemberId(GeneratorUtil.generateMemberId(id));
+		if(entity.getMemberId() == null)
+			entity.setMemberId(GeneratorUtil.generateMemberId(id));
 		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
 		return super.save(entity);
 	}

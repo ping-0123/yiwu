@@ -4,6 +4,7 @@ package com.yinzhiwu.yiwu.web.purchase.dto;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -14,6 +15,8 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
 *@Author ping
@@ -29,9 +32,20 @@ public class OrderDto {
 	private static final int DELETABLE_AFTER_HOURS = 24;
 	
 	private String id;
+	@Min(1)
+	@ApiModelProperty(value="客户Id", required=true)
+	private Integer customerId;
 	private String memberCard;
+	@Min(1)
+	@ApiModelProperty(required=true)
+	private Integer productId;
 	private String productName;
 	private Float markedPrice;
+	@Min(1)
+	@ApiModelProperty(value="购买产品的数量", required=true)
+	private Integer count;
+	@ApiModelProperty(value="折扣")
+	private Float discount;
 	private Float payedAmount;
 	private String contractNo;
 	private CourseType courseType;
@@ -45,11 +59,22 @@ public class OrderDto {
 	private Date payedDate;
 	private Integer validTimes;
 	private Integer remainTimes;
+	
+	@Min(1)
+	@ApiModelProperty(required=true)
 	private Integer salesmanId;
 	private String salesmanName;
 	private String comment;
-	private boolean deletable;
+	
+	@Min(1)
+	@ApiModelProperty(value="交易门店", required=true)
+	private Integer storeId;
+	
+	@NotNull
+	@ApiModelProperty(required=true)
 	private String validStoresIds;
+	private boolean modifiable;
+	
 	
 	public static OrderDto fromOrder(@NotNull OrderYzw order){
 		if(order == null) throw new IllegalArgumentException("order cannot be null");
@@ -78,7 +103,7 @@ public class OrderDto {
 		v.salesmanId = order.getCreateUserId();
 		v.payedDate = order.getPayedDate();
 		v.comment = order.getComments();
-		v.setDeletable();
+		v.setModifiable();
 		return v;
 		//TODO salesmanName
 	}
@@ -183,21 +208,13 @@ public class OrderDto {
 	}
 
 
-	public boolean isDeletable() {
-		return deletable;
-	}
-
-	public void setDeletable(boolean deletable) {
-		this.deletable = deletable;
-	}
-	
-	public void setDeletable(){
+	public void setModifiable(){
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(this.payedDate);
 		calendar.add(Calendar.HOUR, DELETABLE_AFTER_HOURS);
 		if(calendar.after(Calendar.getInstance()))
-			setDeletable(true);
-		setDeletable(false);
+			setModifiable(true);
+		setModifiable(false);
 	}
 
 	public SubCourseType getSubCourseType() {
@@ -214,6 +231,46 @@ public class OrderDto {
 
 	public void setValidStoresIds(String validStoresIds) {
 		this.validStoresIds = validStoresIds;
+	}
+
+	public Integer getCustomerId() {
+		return customerId;
+	}
+
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public Float getDiscount() {
+		return discount;
+	}
+
+	public boolean isModifiable() {
+		return modifiable;
+	}
+
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+	public void setDiscount(Float discount) {
+		this.discount = discount;
+	}
+
+	public void setModifiable(boolean modifiable) {
+		this.modifiable = modifiable;
 	}
 
 }

@@ -1,20 +1,35 @@
 package com.yinzhiwu.yiwu.web.purchase.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
+import com.yinzhiwu.yiwu.service.CustomerYzwService;
+import com.yinzhiwu.yiwu.service.DepartmentYzwService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
+import com.yinzhiwu.yiwu.service.ProductYzwService;
 import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDistributerDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.EmpDistributerDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderDto;
+import com.yinzhiwu.yiwu.web.purchase.dto.StoreDto;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -31,6 +46,9 @@ public class PurchaseApiController  extends BaseController{
 
 	@Autowired private OrderYzwService orderSerivice;
 	@Autowired private DistributerService distributerService;
+	@Autowired private DepartmentYzwService departmentService;
+	@Autowired private ProductYzwService productService;
+	@Autowired private CustomerYzwService customerService;
 	
 	@GetMapping(value="/order/list")
 	@ApiOperation(value="获取客户的订单列表")
@@ -86,6 +104,52 @@ public class PurchaseApiController  extends BaseController{
 		PageBean<CustomerDistributerDto> page = distributerService.findVisableDistributersByEmployee(distributerId, pageNo, pageSize);
 		//TODO 
 		return new YiwuJson<>(page);
+	}
+	
+	@GetMapping(value="/store/list")
+	@ApiOperation(value="获取门店列表")
+	public YiwuJson<List<StoreDto>> findVisableStores(int empDistributerId){
+		List<DepartmentYzw> depts;
+		try {
+			depts = departmentService.findAll();
+		} catch (DataNotFoundException e) {
+			if(logger.isDebugEnabled())
+				logger.debug(e.getMessage());
+			return new YiwuJson<>(e.getMessage());
+		}
+		List<StoreDto> stores = new ArrayList<>();
+		for (DepartmentYzw dept : depts) {
+			stores.add(new StoreDto(dept));
+		}
+		return new YiwuJson<>(stores);
+	}
+	
+	@GetMapping(value="/subCourseType/list")
+	@ApiOperation(value="获取所有的产品中类,\"开放式A\", \"开放式B\", \"封闭式\", \"私教课\", 产品中类可以决定产品大类")
+	public YiwuJson<List<SubCourseType>> getAllSubCourseTypes(){
+		List<SubCourseType> types = Arrays.asList(SubCourseType.values());
+		return new YiwuJson<>(types);
+	}
+	
+	@GetMapping(value="/product/list")
+	@ApiOperation(value="获取产品列表")
+	public YiwuJson<List<ProductYzw>> findValidProducts(){
+		try {
+			List<ProductYzw> products = productService.findAll();
+			return new YiwuJson<>(products);
+		} catch (DataNotFoundException e) {
+			if(logger.isDebugEnabled())
+				logger.debug(e.getMessage());
+			return new YiwuJson<>(e.getMessage());
+		}
+	}
+	
+	@PostMapping(value="/order")
+	@ApiOperation(value="下单， 生成一个新的订单")
+	public YiwuJson<OrderDto> save(@Valid OrderDto order, BindingResult result){
+		if(result.hasErrors())
+			return new YiwuJson<>(super.getErrorsMessage(result));
+		return null;
 	}
 	
 	

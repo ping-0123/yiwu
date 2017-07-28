@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.entity.income;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,18 +28,18 @@ public class DistributerIncome extends BaseEntity {
 	 */
 	private static final long serialVersionUID = 1220405621432715846L;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributerIncome_distributer_id"))
 	private Distributer distributer;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributerIncome_incomeType_id"))
 	private IncomeType incomeType;
 
 	@Min(0)
 	private Float income;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_dIncome_incomeGrade_id"))
 	private IncomeGrade incomeGrade;
 
