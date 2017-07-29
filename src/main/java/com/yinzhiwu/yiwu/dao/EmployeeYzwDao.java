@@ -10,6 +10,6 @@ import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 
 public interface EmployeeYzwDao extends IBaseDao<EmployeeYzw, Integer> {
 
-	EmployeeYzw findByPhoneNo(String phoneNo);
+	EmployeeYzw findByPhoneNo(String phoneNo) throws Exception;
 
 }

@@ -143,6 +143,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		distributer.setBirthday(customer.getBirthday());
 		distributer.setMemberId(customer.getMemberCard());
 		distributer.setName(customer.getName());
+		distributer.setCustomerType(customer.getCustomerAgeType());
 		if(distributer.getGender() == null)
 			distributer.setGender(customer.getGender());
 		EmployeeYzw server = customer.getSalesman();
@@ -157,7 +158,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		/**
 		 * associate with employee 
 		 */
-		EmployeeYzw emp = employeeDao.findByPhoneNo(registerModel.getPhoneNo());
+		EmployeeYzw emp =null;
+		try {
+			emp = employeeDao.findByPhoneNo(registerModel.getPhoneNo());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if(emp != null){
 			distributer.setEmployee(emp);
 			distributer.setName(emp.getName());

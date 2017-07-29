@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
-import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
+import com.yinzhiwu.yiwu.entity.yzw.ProductYzw.ProductCardType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
@@ -29,6 +30,8 @@ import com.yinzhiwu.yiwu.service.ProductYzwService;
 import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDistributerDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.EmpDistributerDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderDto;
+import com.yinzhiwu.yiwu.web.purchase.dto.OrderSaveDto;
+import com.yinzhiwu.yiwu.web.purchase.dto.ProductDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.StoreDto;
 
 import io.swagger.annotations.ApiOperation;
@@ -106,21 +109,19 @@ public class PurchaseApiController  extends BaseController{
 		return new YiwuJson<>(page);
 	}
 	
-	@GetMapping(value="/store/list")
-	@ApiOperation(value="获取门店列表")
-	public YiwuJson<List<StoreDto>> findVisableStores(int empDistributerId){
-		List<DepartmentYzw> depts;
-		try {
-			depts = departmentService.findAll();
-		} catch (DataNotFoundException e) {
-			if(logger.isDebugEnabled())
-				logger.debug(e.getMessage());
-			return new YiwuJson<>(e.getMessage());
-		}
-		List<StoreDto> stores = new ArrayList<>();
-		for (DepartmentYzw dept : depts) {
-			stores.add(new StoreDto(dept));
-		}
+	@GetMapping(value="/store/list/visable")
+	@ApiOperation(value="获取操作人可见门店列表")
+	public YiwuJson<List<StoreDto>> findVisableStores(
+			@ApiParam(value="内部员工Id, 非与之关联的distributerId")int employeeId){
+		
+		List<StoreDto> stores = departmentService.findVisableStoresByEmployee(employeeId);
+		return new YiwuJson<>(stores);
+	}
+	
+	@GetMapping(value="/store/list/all")
+	@ApiOperation(value="获取员工所在公司的所有的门店列表")
+	public YiwuJson<List<StoreDto>> findAllStores(int employeeId){
+		List<StoreDto> stores = departmentService.findAllStores(employeeId);
 		return new YiwuJson<>(stores);
 	}
 	
@@ -131,25 +132,39 @@ public class PurchaseApiController  extends BaseController{
 		return new YiwuJson<>(types);
 	}
 	
+	@GetMapping(value="/productCardType/list")
+	@ApiOperation(value="获取所有产品卡类型")
+	public List<ProductCardType> getAllProductCardTypes(){
+		return Arrays.asList(ProductCardType.values());
+	}
+	
+	@GetMapping(value="/customerAgeType/list")
+	@ApiOperation(value="获取客户类型， 少儿？成人")
+	public List<CustomerAgeType> getAllCustomerAgeTypes(){
+		return Arrays.asList(CustomerAgeType.values());
+	}
+	
 	@GetMapping(value="/product/list")
 	@ApiOperation(value="获取产品列表")
-	public YiwuJson<List<ProductYzw>> findValidProducts(){
-		try {
-			List<ProductYzw> products = productService.findAll();
+	public YiwuJson<List<ProductDto>> findValidProducts(
+			int employeeId, ProductCardType cardType, CustomerAgeType ageType){
+		
+			List<ProductDto> products = productService.findVisableDtoBycardAndAgeType(employeeId,cardType, ageType);
 			return new YiwuJson<>(products);
-		} catch (DataNotFoundException e) {
-			if(logger.isDebugEnabled())
-				logger.debug(e.getMessage());
-			return new YiwuJson<>(e.getMessage());
-		}
 	}
 	
 	@PostMapping(value="/order")
 	@ApiOperation(value="下单， 生成一个新的订单")
-	public YiwuJson<OrderDto> save(@Valid OrderDto order, BindingResult result){
+	public YiwuJson<OrderSaveDto> save(@Valid OrderSaveDto order, BindingResult result){
 		if(result.hasErrors())
 			return new YiwuJson<>(super.getErrorsMessage(result));
-		return null;
+		try {
+			String orderId= orderSerivice.save(order);
+			order.setOrderId(orderId);
+		} catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
+		return new YiwuJson<>(order);
 	}
 	
 	

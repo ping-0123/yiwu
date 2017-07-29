@@ -1,6 +1,11 @@
 package com.yinzhiwu.yiwu.service;
 
+import java.util.List;
+
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
+import com.yinzhiwu.yiwu.entity.yzw.ProductYzw.ProductCardType;
+import com.yinzhiwu.yiwu.web.purchase.dto.ProductDto;
 
 /**
  * @Author ping
@@ -9,5 +14,8 @@ import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
  */
 
 public interface ProductYzwService extends IBaseService<ProductYzw, Integer> {
+
+	List<ProductDto> findVisableDtoBycardAndAgeType(int employeeId, ProductCardType cardType, CustomerAgeType ageType);
+
 
 }

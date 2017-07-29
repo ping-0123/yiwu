@@ -20,7 +20,7 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
  */
 public interface IBaseDao<T, PK extends Serializable> {
 
-	public T get(PK id) throws DataNotFoundException;
+	public T get(PK id);
 
 	public PK save(T entity);
 
@@ -36,7 +36,7 @@ public interface IBaseDao<T, PK extends Serializable> {
 
 	public List<T> findByProperties(Map<String, Object> param) throws DataNotFoundException;
 
-	public List<T> findByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException;
+	public List<T> findByProperties(String[] propertyNames, Object[] values);
 
 	public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception;
 
@@ -89,5 +89,6 @@ public interface IBaseDao<T, PK extends Serializable> {
 	PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize);
 
 	PageBean<T> findPageByProperty(String propertyName, Object value, int pageNo, int pageSize);
+
 
 }

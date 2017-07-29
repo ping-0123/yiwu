@@ -13,7 +13,7 @@ import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 public class StoreDto {
 	private Integer id;
 	private String name;
-	private Boolean isDefault;
+	private Boolean selected = Boolean.FALSE;
 	
 	public static StoreDto fromDepartment(@NotNull DepartmentYzw dept){
 		if(dept == null) throw new IllegalArgumentException("dept cannot be null");
@@ -30,6 +30,7 @@ public class StoreDto {
 		this.name = dept.getName();
 	}
 	
+	
 	public int getId() {
 		return id;
 	}
@@ -43,16 +44,22 @@ public class StoreDto {
 		this.name = name;
 	}
 
-	public Boolean getIsDefault() {
-		return isDefault;
-	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public void setIsDefault(Boolean isDefault) {
-		this.isDefault = isDefault;
+	public Boolean getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
+	}
+
+	public StoreDto(Integer id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 	
 	

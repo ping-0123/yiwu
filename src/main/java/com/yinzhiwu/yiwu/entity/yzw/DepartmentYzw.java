@@ -16,10 +16,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import net.sf.ehcache.constructs.refreshahead.ThreadedWorkQueue;
+
 @Entity
 @Table(name = "vdepartment")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-public class DepartmentYzw extends BaseYzwEntity {
+public class DepartmentYzw extends BaseYzwEntity{
 
 	/**
 	 * 
@@ -51,7 +53,7 @@ public class DepartmentYzw extends BaseYzwEntity {
 	private String description;
 
 	@Column
-	private Integer removed;
+	private Boolean removed = Boolean.FALSE;
 
 	@Column
 	private Integer flag;
@@ -105,7 +107,7 @@ public class DepartmentYzw extends BaseYzwEntity {
 		return description;
 	}
 
-	public Integer getRemoved() {
+	public Boolean getRemoved() {
 		return removed;
 	}
 
@@ -169,7 +171,7 @@ public class DepartmentYzw extends BaseYzwEntity {
 		this.description = description;
 	}
 
-	public void setRemoved(Integer removed) {
+	public void setRemoved(Boolean removed) {
 		this.removed = removed;
 	}
 
@@ -203,6 +205,13 @@ public class DepartmentYzw extends BaseYzwEntity {
 
 	public void setProvince(String province) {
 		this.province = province;
+	}
+
+	public boolean isContain(DepartmentYzw dept){
+		if(dept == null) throw new IllegalArgumentException();
+		if(dept.getPath().contains(this.getId().toString()))
+			return true;
+		return false;
 	}
 
 	// @OneToMany(mappedBy="department")

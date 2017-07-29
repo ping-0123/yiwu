@@ -203,7 +203,6 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer> imple
 				view.setCheckedInStatus(CheckedInStatus.UN_KNOWN);
 		}
 
-		try {
 			Date checkedInTime = checkInsDao.findByProperties(new String[] { "lessonId", "teacherId" },
 					new Object[] { l.getLessonId().toString(), l.getActualTeacherId() }).get(0).getCreateTime();
 			logger.debug("start test checkin time of lesson" + l.getLessonId() + " " + l.getLessonDesc());
@@ -224,9 +223,6 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer> imple
 				view.setCheckedInStatus(CheckedInStatus.PATCHED);
 			} else
 				view.setCheckedInStatus(CheckedInStatus.CHECKED);
-		} catch (DataNotFoundException e) {
-			view.setCheckedInStatus(CheckedInStatus.UN_CHECKED);
-		}
 
 		return view;
 	}

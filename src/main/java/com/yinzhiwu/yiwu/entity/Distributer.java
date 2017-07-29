@@ -36,6 +36,7 @@ import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.enums.Gender;
 import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 
@@ -47,7 +48,7 @@ import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 @Table(name = "yiwu_distributer", uniqueConstraints = {
-		@UniqueConstraint(name = "uk_distributer_memberId", columnNames = { "memberId" }),
+		@UniqueConstraint(name = "uk_distributer_memberId", columnNames = { "memberCard" }),
 		@UniqueConstraint(name = "uk_distributer_account", columnNames = { "username" }),
 		@UniqueConstraint(name = "uk_distributer_wechatNo", columnNames = "wechatNO"),
 		@UniqueConstraint(name = "uk_distributer_phoneNo", columnNames = "phoneNo"),
@@ -67,7 +68,7 @@ public class Distributer extends BaseEntity {
 	 * unique=true, @Formula("concat('E5',
 	 * lpad(id,8,'0'))") @ColumnDefault("concat('E5', lpad(id,8,'0'))")
 	 */
-	@Column(length = 32, nullable = false, updatable = false, name="memberCard")
+	@Column(name="memberCard",length = 32, nullable = false, updatable = false )
 	private String memberId;
 
 	@Column(length = 32)
@@ -112,6 +113,10 @@ public class Distributer extends BaseEntity {
 	@Enumerated(EnumType.ORDINAL)
 	private Gender gender;
 
+	@Column(name="childOrAdult")
+	@Enumerated(EnumType.ORDINAL)
+	private CustomerAgeType customerType;
+	
 	// unique
 	@Column(length = 10, updatable = false)
 	private String shareCode;
@@ -430,4 +435,13 @@ public class Distributer extends BaseEntity {
 		this.server = server;
 	}
 
+	public CustomerAgeType getCustomerType() {
+		return customerType;
+	}
+
+	public void setCustomerType(CustomerAgeType customerType) {
+		this.customerType = customerType;
+	}
+
+	
 }

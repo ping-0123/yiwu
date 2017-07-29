@@ -1,5 +1,8 @@
 package com.yinzhiwu.yiwu.dao;
 
+import java.util.List;
+
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeDepartmentYzw;
 
 /**
@@ -9,5 +12,8 @@ import com.yinzhiwu.yiwu.entity.yzw.EmployeeDepartmentYzw;
 */
 
 public interface EmployeeDepartmentYzwDao extends IBaseDao<EmployeeDepartmentYzw, Integer> {
+
+
+	List<DepartmentYzw> findDepartmentsByEmployee(int employeeId);
 	
 }

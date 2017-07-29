@@ -119,7 +119,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public OrderYzw get(String id) throws DataNotFoundException {
+	public OrderYzw get(String id) {
 		// 1.select courseId from vorder
 		String hql = "select o.course from OrderYzw o  where o.id = :id";
 		List<CourseYzw> courses = (List<CourseYzw>) getHibernateTemplate().findByNamedParam(hql, "id", id);

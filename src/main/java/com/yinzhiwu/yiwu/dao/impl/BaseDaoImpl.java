@@ -77,12 +77,9 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 
 	}
 
-	public T get(PK id) throws DataNotFoundException {
+	public T get(PK id) {
 		Assert.notNull(id, "id is required");
-		T t = (T) getHibernateTemplate().get(entityClass, id);
-		if (t == null)
-			throw new DataNotFoundException(entityClass, "id", id);
-		return t;
+		return getSession().get(entityClass, id);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -234,23 +231,33 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> findByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException {
-		StringBuilder builder = new StringBuilder("FROM " + entityClass.getSimpleName() + " WHERE 1=1");
-		Map<String, Object> map = new HashMap<>();
-		for (int i = 0; i < propertyNames.length; i++) {
-			if (StringUtils.hasLength(propertyNames[i])) {
-				String valString = propertyNames[i].replace(".", "");
-				builder.append(" and " + propertyNames[i] + "=:" + valString);
-				map.put(valString, values[i]);
+	public List<T> findByProperties(String[] propertyNames, Object[] values) {
+		if(propertyNames.length != values.length){
+			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
+		}
+		String[] properties = new String[propertyNames.length];
+		StringBuilder builder = new StringBuilder();
+		builder.append("FROM " + entityClass.getSimpleName());
+		builder.append(" WHERE 1=1");
+		for(int i = 0; i<propertyNames.length; i++){
+			if(StringUtils.hasLength(propertyNames[i])){
+				properties[i] = propertyNames[i].replace(".", "");
+				builder.append(" AND " + propertyNames[i] + "=:" +properties[i]);
+			}else {
+				throw new IllegalArgumentException("属性名不能为空为null");
 			}
 		}
-
-		List<T> list = (List<T>) getHibernateTemplate().findByNamedParam(builder.toString(),
-				map.keySet().toArray(new String[] {}), map.values().toArray(new Object[] {}));
-		if (list == null || list.size() == 0)
-			throw new DataNotFoundException();
+		
+		 Query<T> query = getSession().createQuery(builder.toString(), entityClass);
+		 for(int j=0; j<properties.length;j++){
+			 query.setParameter(properties[j], values[j]);
+		 }
+		 
+		 List<T> list = query.getResultList();
+//		List<T> list =   (List<T>) getHibernateTemplate().findByNamedParam(
+//				builder.toString(), properties, values);
+		if(list == null) return new ArrayList<>();
 		return list;
 	}
 

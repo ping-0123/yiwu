@@ -8,6 +8,7 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderAbbrApiView;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderDto;
+import com.yinzhiwu.yiwu.web.purchase.dto.OrderSaveDto;
 
 public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 
@@ -18,5 +19,7 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 	PageBean<OrderDto> findPayedOrderPageByCustomerId(int customerId, int pageNo, int pageSize);
 
 	PageBean<OrderDto> findUnpayedOrderPageByCustomerId(int customerId, int pageNo, int pageSize);
+
+	String save(OrderSaveDto order) throws Exception;
 
 }

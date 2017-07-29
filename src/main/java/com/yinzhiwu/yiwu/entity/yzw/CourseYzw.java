@@ -36,7 +36,10 @@ public class CourseYzw extends BaseYzwEntity {
 	public enum CourseType{
 		CLOSED("封闭式"),
 		OPENED("开放式"),
-		PRIVATE("私教课");
+		PRIVATE("私教课"),
+		GRADE_EXAM("考级"),
+		REFERENCE_ORDER("已订单为准");
+		
 		
 		private final String name;
 		public String getName(){
@@ -54,6 +57,10 @@ public class CourseYzw extends BaseYzwEntity {
 				return CourseType.OPENED;
 				case "私教课":
 					return CourseType.PRIVATE;
+				case "考级":
+					return CourseType.GRADE_EXAM;
+				case "已订单为准":
+					return CourseType.REFERENCE_ORDER;
 				default:
 					throw new UnsupportedOperationException(name + "is not supported for enum CourseType");
 			}
@@ -65,7 +72,9 @@ public class CourseYzw extends BaseYzwEntity {
 
 		@Override
 		public String convertToDatabaseColumn(CourseType attribute) {
-			if(attribute == null)
+			if(attribute == null 
+					|| attribute == CourseType.GRADE_EXAM 
+					|| attribute == CourseType.REFERENCE_ORDER)
 				return null;
 			return attribute.getName();
 		}

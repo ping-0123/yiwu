@@ -2,10 +2,12 @@ package com.yinzhiwu.yiwu.entity.yzw;
 
 import java.util.Date;
 
+import javax.persistence.AttributeConverter;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Convert;
+import javax.persistence.Converter;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -34,6 +36,50 @@ public class CustomerYzw extends BaseYzwEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = -1246891395254977126L;
+	
+	public enum CustomerAgeType{
+		
+		CHILDREN("少儿"),
+		ADULT("成人");
+		
+		private final String name;
+		private CustomerAgeType(String name){
+			this.name = name;
+		}
+		public String getName() {
+			return name;
+		}
+		
+		public static CustomerAgeType fromName(String name){
+			switch (name) {
+			case "少儿":
+				return CustomerAgeType.CHILDREN;
+			case "成人":
+				return CustomerAgeType.ADULT;
+			default:
+				throw new UnsupportedOperationException(name + "not supported for enum CustomerAgeType");
+			}
+		}
+	}
+	
+	@Converter
+	public static class CustomerAgeTypeConverter implements AttributeConverter<CustomerAgeType, String>{
+
+		@Override
+		public String convertToDatabaseColumn(CustomerAgeType attribute) {
+			if(attribute == null)
+				return null;
+			return attribute.getName();
+		}
+
+		@Override
+		public CustomerAgeType convertToEntityAttribute(String dbData) {
+			if(dbData == null || "".equals(dbData.trim()))
+				return null;
+			return CustomerAgeType.fromName(dbData);
+		}
+		
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +89,9 @@ public class CustomerYzw extends BaseYzwEntity {
 	@JoinColumn(name = "salesmanId", foreignKey = @ForeignKey(name = "fk_customerYzw_salesman_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw salesman;
 
+	@Convert(converter=CustomerAgeTypeConverter.class)
 	@Column(length = 32, name = "audit_child")
-	private String auditOrChild;
+	private CustomerAgeType customerAgeType;
 
 	@Column(length = 32)
 	private String isMember;
@@ -126,9 +173,9 @@ public class CustomerYzw extends BaseYzwEntity {
 
 	public CustomerYzw(Distributer d) {
 		if (d.getBirthday() != null && CalendarUtil.isAudit(d.getBirthday()))
-			this.auditOrChild = "成人";
+			this.customerAgeType = CustomerAgeType.ADULT;
 		else
-			this.auditOrChild = "少儿";
+			this.customerAgeType = CustomerAgeType.CHILDREN;
 		this.isMember = "潜在";
 		this.name = d.getName();
 		this.gender = d.getGender();
@@ -147,9 +194,6 @@ public class CustomerYzw extends BaseYzwEntity {
 		return salesman;
 	}
 
-	public String getAuditOrChild() {
-		return auditOrChild;
-	}
 
 	public String getIsMember() {
 		return isMember;
@@ -251,10 +295,6 @@ public class CustomerYzw extends BaseYzwEntity {
 		this.salesman = salesman;
 	}
 
-	public void setAuditOrChild(String auditOrChild) {
-		this.auditOrChild = auditOrChild;
-	}
-
 	public void setIsMember(String isMember) {
 		this.isMember = isMember;
 	}
@@ -345,6 +385,14 @@ public class CustomerYzw extends BaseYzwEntity {
 
 	public void setEarnest(Float earnest) {
 		this.earnest = earnest;
+	}
+
+	public CustomerAgeType getCustomerAgeType() {
+		return customerAgeType;
+	}
+
+	public void setCustomerAgeType(CustomerAgeType customerAgeType) {
+		this.customerAgeType = customerAgeType;
 	}
 
 }

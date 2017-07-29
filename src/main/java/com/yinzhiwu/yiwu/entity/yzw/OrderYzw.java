@@ -4,9 +4,12 @@ import java.sql.Blob;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.persistence.AttributeConverter;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
+import javax.persistence.Convert;
+import javax.persistence.Converter;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,7 +38,57 @@ public class OrderYzw extends BaseYzwEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = -8473575190806095432L;
+	
+	public enum VipAttributer{
+		NEW_CARD("新卡"),
+		NEW_MEMBER("新入会员"),
+		RENEW_MEMBER("续费会员"),
+		RECOMMEND_MEMBER("推荐会员");
+		
+		private final String name;
 
+		public String getName() {
+			return name;
+		}
+		private VipAttributer(String name){
+			this.name = name;
+		}
+		
+		public static VipAttributer fromName(String name){
+			switch (name) {
+			case "新卡":
+				return NEW_CARD;
+			case "新入会员":
+				return VipAttributer.NEW_MEMBER;
+			case "续费会员":
+				return VipAttributer.RENEW_MEMBER;
+			case "推荐会员":
+				return VipAttributer.RECOMMEND_MEMBER;
+			default:
+				throw new UnsupportedOperationException(name + "not support for enum VipAttributer");
+			}
+		}
+	}
+	
+	@Converter
+	public static class VipAttributerConverter implements AttributeConverter<VipAttributer, String>{
+
+		@Override
+		public String convertToDatabaseColumn(VipAttributer attribute) {
+			if(attribute == null)
+				return null;
+			return attribute.getName();
+		}
+
+		@Override
+		public VipAttributer convertToEntityAttribute(String dbData) {
+			if(dbData ==null || "".equals(dbData.trim()))
+				return null;
+			return VipAttributer.fromName(dbData);
+		}
+		
+	}
+	
 	@Id
 	@GeneratedValue(generator = "assigned")
 	@GenericGenerator(name = "assigned", strategy = "assigned")
@@ -78,8 +131,9 @@ public class OrderYzw extends BaseYzwEntity {
 	@JoinColumn(name = "store_id", foreignKey = @ForeignKey(name = "fk_order_store_id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw store;
 
+	@Convert(converter=VipAttributerConverter.class)
 	@Column(length = 32, name = "vip_attr")
-	private String vipAttr;
+	private VipAttributer vipAttr;
 
 	@Embedded
 	private Contract contract;
@@ -168,7 +222,7 @@ public class OrderYzw extends BaseYzwEntity {
 		this.payedAmount = payAmount;
 		this.discount = (payedAmount / this.markedPrice);
 		this.setStore(dept);
-		this.vipAttr = "推荐会员";
+		this.vipAttr = VipAttributer.RECOMMEND_MEMBER;
 
 		// 合约
 		Contract contract = new Contract();
@@ -241,7 +295,7 @@ public class OrderYzw extends BaseYzwEntity {
 		return store;
 	}
 
-	public String getVipAttr() {
+	public VipAttributer getVipAttr() {
 		return vipAttr;
 	}
 
@@ -321,7 +375,7 @@ public class OrderYzw extends BaseYzwEntity {
 		this.store = store;
 	}
 
-	public void setVipAttr(String vipAttr) {
+	public void setVipAttr(VipAttributer vipAttr) {
 		this.vipAttr = vipAttr;
 	}
 
