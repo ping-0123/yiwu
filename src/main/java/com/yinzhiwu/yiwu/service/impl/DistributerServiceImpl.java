@@ -17,6 +17,7 @@ import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
+import com.yinzhiwu.yiwu.dao.EmployeeDepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.dao.ShareTweetEventDao;
@@ -40,7 +41,7 @@ import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.IncomeEventService;
-import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDistributerDto;
+import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.EmpDistributerDto;
 
 @Service
@@ -67,8 +68,9 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Autowired
 	private CapitalAccountDao capitalAccountDao;
 	@Autowired private EmployeeYzwDao employeeDao;
-//	@Autowired private EmployeeDepartmentYzwService empDeptService;
+	@Autowired private EmployeeDepartmentYzwDao empDeptDao;
 	@Autowired private FileService fileService;
+//	@Autowired private EmployeePostYzwDao empPostDao;
 	
 	@Value("${system.headIcon.savePath}")
 	private String headIconSavePath;
@@ -114,14 +116,10 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		/**
 		 * set followed store
 		 */
-		if (registerModel.getFollowedByStoreId() != null)
-			try {
+		if (registerModel.getFollowedByStoreId() != null){
 				DepartmentYzw store = departmentYzwDao.get(registerModel.getFollowedByStoreId());
 				distributer.setFollowedByStore(store);
-			} catch (DataNotFoundException e) {
-				message = message + "\n无效的门店Id" + registerModel.getFollowedByStoreId();
-				distributer.setFollowedByStore(null);
-			}
+		}
 
 		/**
 		 * associate with customer
@@ -199,18 +197,16 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		/*
 		 * return dto
 		 */
-		return new YiwuJson<>(registerModel);
+		YiwuJson<DistributerRegisterModel> yiwu = new YiwuJson<>(registerModel);
+		yiwu.setMsg(message);
+		return yiwu;
 	}
 
 	@Override
 	public YiwuJson<DistributerApiView> findById(int id) {
-		try {
-			Distributer distributer = distributerDao.get(id);
-			DistributerApiView view = _wrapDaoToApiView(distributer);
-			return new YiwuJson<>(view);
-		} catch (DataNotFoundException e) {
-			return new YiwuJson<>(e.getMessage());
-		}
+		Distributer distributer = distributerDao.get(id);
+		DistributerApiView view = _wrapDaoToApiView(distributer);
+		return new YiwuJson<>(view);
 	}
 
 	@Override
@@ -249,7 +245,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Deprecated
 	@Override
 	public YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile, String fileSavePath) {
-		try {
 			Distributer distributer = distributerDao.get(id);
 			String imageName = distributer.getMemberId() + ".jpg";
 			File imageFile = new File(fileSavePath, imageName);
@@ -263,9 +258,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			float rate = distributerIncomeDao.get_beat_rate(IncomeType.EXP,
 					distributer.getDistributerIncome(IncomeType.EXP).getIncome());
 			return new YiwuJson<>(new DistributerApiView(distributer, rate));
-		} catch (DataNotFoundException e) {
-			return new YiwuJson<>(e.getMessage());
-		}
 	}
 
 	@Override
@@ -283,20 +275,16 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 
 	@Override
 	public YiwuJson<CapitalAccountApiView> getCapitalAccount(int distributerId, String typeName) {
-		try {
-			YiwuJson<CapitalAccountApiView> yiwuJson = new YiwuJson<>();
-			Distributer d = distributerDao.get(distributerId);
-			Set<CapitalAccount> accounts = d.getCapitalAccounts();
-			for (CapitalAccount a : accounts) {
-				if (typeName.equals(a.getCapitalAccountType().getName())) {
-					yiwuJson.setData(new CapitalAccountApiView(a));
-					break;
-				}
+		YiwuJson<CapitalAccountApiView> yiwuJson = new YiwuJson<>();
+		Distributer d = distributerDao.get(distributerId);
+		Set<CapitalAccount> accounts = d.getCapitalAccounts();
+		for (CapitalAccount a : accounts) {
+			if (typeName.equals(a.getCapitalAccountType().getName())) {
+				yiwuJson.setData(new CapitalAccountApiView(a));
+				break;
 			}
-			return yiwuJson;
-		} catch (DataNotFoundException e) {
-			return new YiwuJson<>(e.getMessage());
 		}
+		return yiwuJson;
 	}
 
 	@Override
@@ -419,15 +407,29 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 
 
 	@Override
-	public PageBean<CustomerDistributerDto> findVisableDistributersByEmployee(int distributerId, int pageNo,
-			int pageSize) {
-		// TODO Auto-generated method stub
-		List<CustomerDistributerDto> views = new ArrayList<>();
-		PageBean<Distributer> page = distributerDao.findPageOfAll(pageNo, pageSize);
-		for (Distributer distributer : page.getData()) {
-			views.add(new CustomerDistributerDto(distributer));
-		}
-		return new PageBean<>(pageSize, pageNo, page.getTotalRecord(), views);
+	public PageBean<CustomerDto> findVisableDistributersByEmployee(int distributerId, String key,  int pageNo,
+			int pageSize) throws YiwuException {
+		//必须,找出自己的employeeId
+		Distributer distributer = distributerDao.get(distributerId);
+		if(distributer == null) throw new YiwuException("无效的distributerId: " + distributerId);
+		EmployeeYzw employee = distributer.getEmployee();
+		if(employee == null ) throw new YiwuException(distributerId + " 非内部员工, 不允许查询");
+		Integer employeeId = employee.getId();
+		
+		//1. 找出我管辖的门店 
+		List<Integer> storeIds = new ArrayList<>();
+		storeIds = departmentYzwDao.findStoreIdsByEmplyee(employeeId);
+		
+		//2. 找出下属的员工(含自己)
+		List<Integer> employeeIds = new ArrayList<>();
+		employeeIds = empDeptDao.findEmployeesUnderDepts(storeIds);
+		
+		//3. 所管辖的员工的distributerId;  (含自己)
+		List<Integer> distributerIds = new ArrayList<>();
+		distributerIds = distributerDao.findIdsByemployees(employeeIds);
+		
+		PageBean<CustomerDto> page = distributerDao.findDtoPageByDistributerByKey(storeIds, employeeIds, distributerIds, key, pageNo, pageSize);
+		return page;
 	}
 
 }

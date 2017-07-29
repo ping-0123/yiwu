@@ -9,14 +9,15 @@ import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 *
 */
 
-public class CustomerDistributerDto {
+public class CustomerDto {
 
 	 private int customerId;
 	 private String name;
 	 private String phoneNo;
 	 
-	 public static CustomerDistributerDto fromDistributer(Distributer d){
-		 CustomerDistributerDto v = new CustomerDistributerDto();
+	 
+	 public static CustomerDto fromDistributer(Distributer d){
+		 CustomerDto v = new CustomerDto();
 		 v.setName(d.getName());
 		 v.setPhoneNo(d.getPhoneNo());
 		 CustomerYzw c = d.getCustomer();
@@ -26,8 +27,8 @@ public class CustomerDistributerDto {
 		 return v;
 	 }
 	 
-	 public CustomerDistributerDto(){}
-	 public CustomerDistributerDto(Distributer distributer){
+	 public CustomerDto(){}
+	 public CustomerDto(Distributer distributer){
 		 if(distributer == null) throw new IllegalArgumentException();
 		 this.name = distributer.getName();
 		 this.phoneNo = distributer.getPhoneNo();
@@ -52,6 +53,12 @@ public class CustomerDistributerDto {
 		this.name = name;
 	}
 	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+	public CustomerDto(int customerId, String name, String phoneNo) {
+		this.customerId = customerId;
+		this.name = name;
 		this.phoneNo = phoneNo;
 	}
 	 

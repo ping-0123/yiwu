@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.ProductYzwDao;
-import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
+import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw.ProductCardType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.web.purchase.dto.ProductDto;
 
 @Repository
@@ -19,20 +17,12 @@ public class ProductYzwDaoImpl extends BaseDaoImpl<ProductYzw, Integer> implemen
 
 	@Override
 	public ProductYzw get_audit_deposit_product() {
-		try {
-			return get(117);
-		} catch (DataNotFoundException e) {
-			return null;
-		}
+		return get(117);
 	}
 
 	@Override
 	public ProductYzw get_children_deposit_product() {
-		try {
 			return get(118);
-		} catch (DataNotFoundException e) {
-			return null;
-		}
 	}
 
 	@Override

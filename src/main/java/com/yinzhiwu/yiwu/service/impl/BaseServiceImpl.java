@@ -33,12 +33,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 
 	@Override
 	public T get(PK id) {
-		try {
-			return baseDao.get(id);
-		} catch (DataNotFoundException e) {
-			logger.info(e.getMessage());
-			return null;
-		}
+		return baseDao.get(id);
 	}
 
 	@Override
@@ -88,6 +83,11 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	@Override
 	public void delete(T entity) {
 		baseDao.delete(entity);
+	}
+	
+	@Override
+	public void delete(PK id){
+		baseDao.delete(id);
 	}
 
 	@Override

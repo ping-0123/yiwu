@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.Connotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
@@ -49,14 +48,10 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 
 	@Override
 	public Connotation getLastNLessonConnotation(int thisLessonId, int lastN) throws Exception {
-		try {
-			LessonYzw thislesson = lessonDao.get(thisLessonId);
-			LessonYzw lesson = lessonDao.findLastNLesson(thislesson, lastN);
-			if (lesson != null)
-				return lesson.getConnotation();
-		} catch (DataNotFoundException e) {
-			throw new Exception("未找到id为" + thisLessonId + "的课时");
-		}
+		LessonYzw thislesson = lessonDao.get(thisLessonId);
+		LessonYzw lesson = lessonDao.findLastNLesson(thislesson, lastN);
+		if (lesson != null)
+			return lesson.getConnotation();
 		return null;
 	}
 }

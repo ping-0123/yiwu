@@ -27,8 +27,8 @@ public interface IBaseService<T, PK extends Serializable> {
 
 	public List<T> findByExample(T entity) throws DataNotFoundException;
 
-	void delete(T entit);
-
+	public void delete(T entit);
+	public void delete(PK id);
 	public PK save(T entity);
 
 	void deleteById(PK id);

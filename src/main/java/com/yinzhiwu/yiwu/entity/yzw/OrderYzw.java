@@ -20,8 +20,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.Assert;
 
@@ -31,13 +29,14 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 
 @Entity
 @Table(name = "vorder")
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+//@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class OrderYzw extends BaseYzwEntity {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8473575190806095432L;
+	public static final int DELETABLE_AFTER_HOURS = 24;
 	
 	public enum VipAttributer{
 		NEW_CARD("新卡"),
@@ -249,6 +248,19 @@ public class OrderYzw extends BaseYzwEntity {
 	public void init() {
 		super.init();
 		this.payedDate = super.getCreateTime();
+	}
+	
+	public boolean isOperatable() throws Exception{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(this.getCreateTime());
+		Calendar currentCalendar = Calendar.getInstance();
+		calendar.add(Calendar.HOUR_OF_DAY, OrderYzw.DELETABLE_AFTER_HOURS);
+		if(calendar.compareTo(currentCalendar)<0){
+			throw new Exception("24小时之前生成的订单不能修改删除");
+		}
+		if(ContractStatus.UN_PAYED != this.getContract().getStatus())
+			throw new Exception("已支付订单不能删除");
+		return true;
 	}
 
 	public String getId() {

@@ -53,6 +53,22 @@ public class EmployeeDepartmentYzwDaoImpl extends BaseDaoImpl<EmployeeDepartment
 		if(depts == null ) return new ArrayList<>();
 		return depts;
 	}
+
+	@Override
+	public List<Integer> findEmployeesUnderDepts(List<Integer> storeIds) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" SELECT DISTINCT t1.employee.id");
+		hql.append(" FROM EmployeeDepartmentYzw t1");
+		hql.append(" WHERE t1.removed=:removed");
+		hql.append(" AND t1.department.id in :deptIds");
+		List<Integer> list = getSession().createQuery(hql.toString(), Integer.class)
+				.setParameter("removed", false)
+				.setParameter("deptIds", storeIds)
+				.getResultList();
+		if(list == null)
+			list = new ArrayList<>();
+		return list;
+	}
 	
 	
 

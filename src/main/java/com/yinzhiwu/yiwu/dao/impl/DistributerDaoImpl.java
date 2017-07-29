@@ -1,18 +1,20 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.util.GeneratorUtil;
 import com.yinzhiwu.yiwu.util.SecurityUtil;
 import com.yinzhiwu.yiwu.util.ShareCodeUtil;
+import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
 
 @Repository
 public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implements DistributerDao {
@@ -34,9 +36,9 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	private int getNextId() {
 		String sql = "select  AUTO_INCREMENT from information_schema.tables where table_name ='yiwu_distributer'";
-		List<Integer> list = getSession().createNativeQuery(sql).addScalar("AUTO_INCREMENT", IntegerType.INSTANCE)
-				.list();
-		return list.get(0);
+		List<Integer> ints = getSession().createNativeQuery(sql, Integer.class)
+				.getResultList();
+		return ints.get(0);
 	}
 
 	@Override
@@ -135,6 +137,46 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 			return null;
 		}
 		return ds.get(0);
+	}
+
+	@Override
+	public PageBean<CustomerDto> findDtoPageByDistributerByKey(List<Integer> storeIds, List<Integer> employeeIds,
+			List<Integer> distributerIds, String key, int pageNo, int pageSize) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" SELECT new com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto");
+		hql.append("(t1.customer.id, t1.name, t1.phoneNo)");
+		hql.append(" FROM Distributer t1");
+		hql.append(" WHERE ");
+		if(key!=null && key.trim().length() > 0){
+			hql.append(" (t1.name like '%"  + key + "%'");
+			hql.append(" OR t1.phoneNo like '%" + key + "%')");
+			hql.append(" AND");
+		}
+		hql.append("(");
+		if(distributerIds.size()> 0)
+			hql.append(" t1.superDistributer.id in :superIds");
+		if(employeeIds.size()> 0)
+			hql.append(" OR t1.server.id in :serverIds");
+		if(storeIds.size()> 0)
+			hql.append(" OR t1.followedByStore.id in :storeIds");
+		hql.append(")");
+		
+
+		return null;
+	}
+
+	@Override
+	public List<Integer> findIdsByemployees(List<Integer> employeeIds) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" SELECT DISTINCT d.ids");
+		hql.append(" FROM Distributer d");
+		hql.append(" WHERE d.server.id in :serverIds");
+		List<Integer> list = getSession().createQuery(hql.toString(), Integer.class)
+				.setParameter("serverIds", employeeIds)
+				.getResultList();
+		if(list == null)
+			list = new ArrayList<>();
+		return list;
 	}
 
 }

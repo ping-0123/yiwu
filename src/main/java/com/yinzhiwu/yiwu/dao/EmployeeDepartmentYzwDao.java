@@ -15,5 +15,7 @@ public interface EmployeeDepartmentYzwDao extends IBaseDao<EmployeeDepartmentYzw
 
 
 	List<DepartmentYzw> findDepartmentsByEmployee(int employeeId);
+
+	List<Integer> findEmployeesUnderDepts(List<Integer> storeIds);
 	
 }

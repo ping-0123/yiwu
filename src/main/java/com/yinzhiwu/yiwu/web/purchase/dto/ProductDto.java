@@ -1,9 +1,7 @@
 package com.yinzhiwu.yiwu.web.purchase.dto;
 
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
-
-import javax.validation.constraints.Null;
-
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractTypeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw.ProductCardType;
@@ -25,7 +23,7 @@ public class ProductDto {
 	private Short usefulTimes;
 	private Float usefulHours;
 	private Integer contractTypeId;
-	private String contractTypeName;
+	private CourseType contractType;
 	
 	public ProductDto(){}
 	public ProductDto(ProductYzw p){
@@ -40,13 +38,13 @@ public class ProductDto {
 		ElectricContractTypeYzw eContractType = p.getContractType();
 		if(eContractType != null){
 			this.contractTypeId = eContractType.getId();
-			this.contractTypeName = eContractType.getDescription();
+			this.contractType = eContractType.getContractType();
 		}
 	}
 	
 	public ProductDto(Integer id, String name, ProductCardType cardType, CustomerAgeType customerType,
 			Integer markedPrice, Short usefulLife, Short usefulTimes, Float usefulHours, Integer contractTypeId,
-			String contractTypeName) {
+			CourseType contractTypeName) {
 		this.id = id;
 		this.name = name;
 		this.cardType = cardType;
@@ -56,7 +54,7 @@ public class ProductDto {
 		this.usefulTimes = usefulTimes;
 		this.usefulHours = usefulHours;
 		this.contractTypeId = contractTypeId;
-		this.contractTypeName = contractTypeName;
+		this.contractType = contractTypeName;
 	}
 	
 	public Integer getId() {
@@ -86,8 +84,8 @@ public class ProductDto {
 	public Integer getContractTypeId() {
 		return contractTypeId;
 	}
-	public String getContractTypeName() {
-		return contractTypeName;
+	public CourseType getContractTypeName() {
+		return contractType;
 	}
 	public void setId(Integer id) {
 		this.id = id;
@@ -116,8 +114,8 @@ public class ProductDto {
 	public void setContractTypeId(Integer contractTypeId) {
 		this.contractTypeId = contractTypeId;
 	}
-	public void setContractTypeName(String contractTypeName) {
-		this.contractTypeName = contractTypeName;
+	public void setContractTypeName(CourseType contractTypeName) {
+		this.contractType = contractTypeName;
 	}
 	
 	

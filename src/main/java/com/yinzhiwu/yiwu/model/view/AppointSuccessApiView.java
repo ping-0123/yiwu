@@ -62,7 +62,7 @@ public class AppointSuccessApiView {
 				this.remainDays = (int) ((this.contractEndDate.getTime() - System.currentTimeMillis())
 						/ (24 * 1000 * 3600));
 				this.validityTimes = contract.getValidityTimes();
-				this.remainTimes = (int) contract.getRemainTimes();
+				this.remainTimes =  contract.getRemainTimes().intValue();
 			}
 		}
 	}

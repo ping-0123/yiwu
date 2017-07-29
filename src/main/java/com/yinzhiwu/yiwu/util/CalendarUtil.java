@@ -3,8 +3,6 @@ package com.yinzhiwu.yiwu.util;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.apache.log4j.chainsaw.Main;
-
 public class CalendarUtil {
 
 	public static boolean isAudit(Date birthday) {

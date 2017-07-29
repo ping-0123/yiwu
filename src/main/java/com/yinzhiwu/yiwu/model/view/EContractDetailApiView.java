@@ -6,6 +6,7 @@ import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 public class EContractDetailApiView {
@@ -70,7 +71,7 @@ public class EContractDetailApiView {
 
 	private Date finalDate;
 
-	private String type;
+	private CourseType type;
 
 	private String context;
 
@@ -105,7 +106,7 @@ public class EContractDetailApiView {
 		this.depositDate = e.getDepositDate();
 		this.finalAmount = e.getFinalAmount();
 		this.finalDate = e.getFinalDate();
-		this.type = e.getContractType().getDescription();
+		this.type = e.getContractType().getContractType();
 		this.context = e.getContractType().getContent();
 	}
 
@@ -221,7 +222,7 @@ public class EContractDetailApiView {
 		return finalDate;
 	}
 
-	public String getType() {
+	public CourseType getType() {
 		return type;
 	}
 
@@ -341,7 +342,7 @@ public class EContractDetailApiView {
 		this.finalDate = finalDate;
 	}
 
-	public void setType(String type) {
+	public void setType(CourseType type) {
 		this.type = type;
 	}
 

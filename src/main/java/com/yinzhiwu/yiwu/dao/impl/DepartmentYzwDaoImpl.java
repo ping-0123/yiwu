@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
-import com.yinzhiwu.yiwu.web.purchase.dto.StoreDto;
 
 @Repository
 public class DepartmentYzwDaoImpl extends BaseDaoImpl<DepartmentYzw, Integer> implements DepartmentYzwDao {
@@ -67,6 +66,24 @@ public class DepartmentYzwDaoImpl extends BaseDaoImpl<DepartmentYzw, Integer> im
 				.getResultList();
 		if(stores == null) return new ArrayList<>();
 		return stores;
+	}
+
+	@Override
+	public List<Integer> findStoreIdsByEmplyee(int employeeId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" SELECT d.id");
+		hql.append(" FROME DepartmentYzw d");
+		hql.append(" WHERE (d.manager1.id = :manager1");
+		hql.append(" OR d.manager2.id = :manager2)");
+		hql.append(" AND d.removed = :removed");
+		List<Integer> list = getSession().createQuery(hql.toString(), Integer.class)
+				.setParameter("manager1", employeeId)
+				.setParameter("manager2", employeeId)
+				.setParameter("removed", false)
+				.getResultList();
+		if(list == null)
+			list = new ArrayList<>();
+		return list;
 	}
 
 }

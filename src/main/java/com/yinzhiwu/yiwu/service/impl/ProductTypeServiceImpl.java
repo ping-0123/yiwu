@@ -28,11 +28,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 	@Override
 	public ProductType findById(Integer id) {
-		try {
-			return productTypeDao.get(id);
-		} catch (DataNotFoundException e) {
-			return null;
-		}
+		return productTypeDao.get(id);
 	}
 
 }

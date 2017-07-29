@@ -127,13 +127,6 @@ public class Contract {
 		return contractNo;
 	}
 
-	public int getValidity() {
-		return validity;
-	}
-
-	public int getValidityTimes() {
-		return validityTimes;
-	}
 
 	public Date getStart() {
 		return start;
@@ -143,9 +136,6 @@ public class Contract {
 		return end;
 	}
 
-	public float getRemainTimes() {
-		return remainTimes;
-	}
 
 	public CourseType getType() {
 		return type;
@@ -213,6 +203,18 @@ public class Contract {
 
 	public void setStatus(ContractStatus status) {
 		this.status = status;
+	}
+
+	public Integer getValidity() {
+		return validity;
+	}
+
+	public Integer getValidityTimes() {
+		return validityTimes;
+	}
+
+	public Float getRemainTimes() {
+		return remainTimes;
 	}
 
 }

@@ -184,11 +184,17 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 
 	@Override
 	public PageBean<OrderYzw> findPayedOrderPageByCustomerId(int customerId, int pageNo, int pageSize) {
-		return null;
+		StringBuilder hql = new StringBuilder();
+		hql.append(" FROM OrderYzw t1");
+		hql.append(" WHERE customer.id = " + customerId);
+		hql.append(" AND contract.status <> '" + Contract.ContractStatus.UN_PAYED.getStatus() + "'");
+		
+		return findPageByHql(hql.toString(), pageNo, pageSize);
 	}
 
 	@Override
 	public PageBean<OrderYzw> findUnpayedOrderPageByCustomerId(int customerId, int pageNo, int pageSize) {
+
 		return findPageByProperties(
 				new String[]{"customer.id", "contract.status"}, 
 				new Object[]{customerId, Contract.ContractStatus.UN_PAYED},

@@ -73,7 +73,7 @@ public class CheckInSuccessApiView {
 		this.contractStartDate = contract.getStart();
 		this.contractEndDate = contract.getEnd();
 		this.validityTimes = contract.getValidityTimes();
-		this.remainTimes = (int) contract.getRemainTimes();
+		this.remainTimes = contract.getRemainTimes().intValue();
 	}
 
 	public Integer getTimes() {

@@ -106,22 +106,23 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 	}
 
 
-	@Override
-	public PageBean<OrderDto> findPayedOrderPageByCustomerId(int customerId, int pageNo,
-			int pageSize) {
-		PageBean<OrderYzw> orderPage = orderDao.findPayedOrderPageByCustomerId(customerId,  pageNo, pageSize);
-		//TODO
-		return null;
-	}
 
 	@Override
-	public PageBean<OrderDto> findUnpayedOrderPageByCustomerId(int customerId, int pageNo,
+	public PageBean<OrderDto> findPageByCustomer(int customerId, boolean isPayed, int pageNo,
 			int pageSize) {
-		PageBean<OrderYzw> orderPage = orderDao.findUnpayedOrderPageByCustomerId(customerId,  pageNo, pageSize);
+		
+		PageBean<OrderYzw> orderPage = null;
+		if(isPayed)
+			orderPage = orderDao.findPayedOrderPageByCustomerId(customerId, pageNo, pageSize);
+		else
+			orderPage = orderDao.findUnpayedOrderPageByCustomerId(customerId,  pageNo, pageSize);
+		
+		//空值检查
 		if(orderPage == null )
 			return null;
 		if(orderPage.getData() == null || orderPage.getData().size() ==0)
 			return null;
+		
 		List<OrderDto> views = new ArrayList<>();
 		for (OrderYzw order : orderPage.getList()) {
 			views.add(_wrapToView(order));
@@ -206,4 +207,28 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		order.setContract(contract);
 		return order;
 	}
+
+	@Override
+	public void modify(String id, OrderSaveDto orderDto) throws Exception {
+		OrderYzw source = orderDao.get(id);
+		if( modifiable(source)){
+			OrderYzw order = _wrapToOrder(orderDto);
+			super.modify(source, order);
+		}
+	}
+
+	private boolean modifiable(OrderYzw source) throws Exception {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(source.getCreateTime());
+		Calendar currentCalendar = Calendar.getInstance();
+		calendar.add(Calendar.HOUR_OF_DAY, OrderYzw.DELETABLE_AFTER_HOURS);
+		if(calendar.compareTo(currentCalendar)<0){
+			throw new Exception("24小时之前生成的订单不能修改删除");
+		}
+		if(ContractStatus.UN_PAYED != source.getContract().getStatus())
+			throw new Exception("已支付订单不能删除");
+		return true;
+	}
+	
+	
 }

@@ -29,7 +29,7 @@ public class OrderDto {
 	/**
 	 * 订单建立之后，多少小时之内可以删除
 	 */
-	private static final int DELETABLE_AFTER_HOURS = 24;
+	
 	
 	private String id;
 	@Min(1)
@@ -81,23 +81,29 @@ public class OrderDto {
 		OrderDto v = new OrderDto();
 		v.setId(order.getId());
 		CustomerYzw cust = order.getCustomer();
-		if(cust != null)
+		if(cust != null){
+			v.setCustomerId(cust.getId());
 			v.setMemberCard(cust.getMemberCard());
+		}
 		ProductYzw prod = order.getProduct();
-		if(prod != null)
+		if(prod != null){
+			v.setProductId(prod.getId());
 			v.setProductName(order.getProduct().getName());
+		}
 		v.markedPrice = order.getMarkedPrice();
+		v.setCount(order.getCount());
+		v.setDiscount(order.getDiscount());
 		v.payedAmount = order.getPayedAmount();
 		Contract contract = order.getContract();
 		if(contract != null){
 			v.contractNo = contract.getContractNo();
 			v.courseType = contract.getType();
-//			v.subCourseType = contract.getSubType();
+			v.subCourseType = contract.getSubType();
 			v.status = contract.getStatus();
 			v.startDate = contract.getStart();
 			v.endDate = contract.getEnd();
-			v.validTimes = contract.getValidity();
-			v.remainTimes = (int) contract.getRemainTimes();
+			v.validTimes = contract.getValidityTimes();
+			v.remainTimes =  contract.getRemainTimes().intValue();
 			v.setValidStoresIds(contract.getValidStoreIds());
 		}
 		v.salesmanId = order.getCreateUserId();
@@ -211,7 +217,7 @@ public class OrderDto {
 	public void setModifiable(){
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(this.payedDate);
-		calendar.add(Calendar.HOUR, DELETABLE_AFTER_HOURS);
+		calendar.add(Calendar.HOUR, OrderYzw.DELETABLE_AFTER_HOURS);
 		if(calendar.after(Calendar.getInstance()))
 			setModifiable(true);
 		setModifiable(false);
@@ -271,6 +277,14 @@ public class OrderDto {
 
 	public void setModifiable(boolean modifiable) {
 		this.modifiable = modifiable;
+	}
+
+	public Integer getStoreId() {
+		return storeId;
+	}
+
+	public void setStoreId(Integer storeId) {
+		this.storeId = storeId;
 	}
 
 }

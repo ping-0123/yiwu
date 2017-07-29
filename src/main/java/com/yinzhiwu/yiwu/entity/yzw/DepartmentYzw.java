@@ -16,8 +16,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import net.sf.ehcache.constructs.refreshahead.ThreadedWorkQueue;
-
 @Entity
 @Table(name = "vdepartment")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
@@ -43,11 +41,15 @@ public class DepartmentYzw extends BaseYzwEntity{
 	@Column
 	private String path;
 
-	@Column
-	private Integer manager1;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="manager1", foreignKey=@ForeignKey(
+			name="fk_department_manager1", value=ConstraintMode.NO_CONSTRAINT))
+	private EmployeeYzw manager1;
 
-	@Column
-	private Integer manager2;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="manager2",foreignKey=
+			@ForeignKey(name="fk_department_manager2", value = ConstraintMode.NO_CONSTRAINT))
+	private EmployeeYzw manager2;
 
 	@Column(length = 200)
 	private String description;
@@ -95,11 +97,11 @@ public class DepartmentYzw extends BaseYzwEntity{
 		return path;
 	}
 
-	public Integer getManager1() {
+	public EmployeeYzw getManager1() {
 		return manager1;
 	}
 
-	public Integer getManager2() {
+	public EmployeeYzw getManager2() {
 		return manager2;
 	}
 
@@ -159,11 +161,11 @@ public class DepartmentYzw extends BaseYzwEntity{
 		this.path = path;
 	}
 
-	public void setManager1(Integer manager1) {
+	public void setManager1(EmployeeYzw manager1) {
 		this.manager1 = manager1;
 	}
 
-	public void setManager2(Integer manager2) {
+	public void setManager2(EmployeeYzw manager2) {
 		this.manager2 = manager2;
 	}
 

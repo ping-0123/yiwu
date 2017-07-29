@@ -6,7 +6,6 @@ import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.DepositDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
-import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.dao.ProductYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.income.DepositEvent;

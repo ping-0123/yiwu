@@ -362,7 +362,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		if (pageSize <= 0)
 			pageSize = PageBean.DEFAULT_PAGE_SIZE;
 
-		int totalRecords = findCountByHql(_get_count_hql(hql));
+		int totalRecords = findCountByHql(_generateFindCountHql(hql));
 		if (totalRecords == 0)
 			return new PageBean<>(pageSize, pageNo, totalRecords, new ArrayList<>());
 
@@ -373,15 +373,15 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 
 		return new PageBean<>(pageSize, pageNo, totalRecords, list);
 	}
+	
+	
 
-	public PageBean<T> findPageByHql(String hql, int pageNo, int pageSize, String[] namedParams, Object[] values) {
+	protected PageBean<T> findPageByHqlWithParams(String hql, int pageNo, int pageSize, String[] namedParams, Object[] values) {
 		Assert.hasLength(hql, "hql is not correct.");
 
-		if (pageNo <= 0)
-			pageNo = 1;
-		if (pageSize <= 0)
-			pageSize = PageBean.DEFAULT_PAGE_SIZE;
-		int totalRecords = findCountByHql(_get_count_hql(hql), namedParams, values);
+		if (pageNo <= 0) pageNo = 1;
+		if (pageSize <= 0) pageSize = PageBean.DEFAULT_PAGE_SIZE;
+		int totalRecords = findCountByHql(_generateFindCountHql(hql), namedParams, values);
 		if (totalRecords == 0)
 			return new PageBean<>(pageSize, pageNo, totalRecords, new ArrayList<>());
 
@@ -398,6 +398,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		List<T> list = query.getResultList();
 		return new PageBean<>(pageSize, pageNo, totalRecords, list);
 	}
+	
 
 	private int findCountByHql(String hql, String[] namedParams, Object[] values) {
 		Query<Integer> query = getSession().createQuery(hql, Integer.class);
@@ -422,7 +423,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		}
 	}
 
-	private String _get_count_hql(String hql) {
+	private String _generateFindCountHql(String hql) {
 		int i = hql.toUpperCase().indexOf("FROM");
 		return "SELECT COUNT(*) " + hql.substring(i);
 	}

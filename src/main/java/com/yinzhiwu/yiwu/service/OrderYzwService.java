@@ -16,10 +16,12 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 
 	YiwuJson<OrderApiView> findById(String id);
 
-	PageBean<OrderDto> findPayedOrderPageByCustomerId(int customerId, int pageNo, int pageSize);
-
-	PageBean<OrderDto> findUnpayedOrderPageByCustomerId(int customerId, int pageNo, int pageSize);
 
 	String save(OrderSaveDto order) throws Exception;
+
+	PageBean<OrderDto> findPageByCustomer(int customerId, boolean isPayed, int pageNo, int pageSize);
+
+	void modify(String id, OrderSaveDto order) throws Exception;
+
 
 }

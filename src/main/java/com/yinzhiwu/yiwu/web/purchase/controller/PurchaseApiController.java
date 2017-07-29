@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.web.purchase.controller;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,26 +7,29 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
-import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
+import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw.ProductCardType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
-import com.yinzhiwu.yiwu.service.CustomerYzwService;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 import com.yinzhiwu.yiwu.service.ProductYzwService;
-import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDistributerDto;
+import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.EmpDistributerDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderSaveDto;
@@ -51,17 +53,12 @@ public class PurchaseApiController  extends BaseController{
 	@Autowired private DistributerService distributerService;
 	@Autowired private DepartmentYzwService departmentService;
 	@Autowired private ProductYzwService productService;
-	@Autowired private CustomerYzwService customerService;
+//	@Autowired private CustomerYzwService customerService;
 	
 	@GetMapping(value="/order/list")
 	@ApiOperation(value="获取客户的订单列表")
 	public YiwuJson<PageBean<OrderDto>> getOrderList(int customerId, boolean isPayed, int pageNo, int pageSize){
-		PageBean<OrderDto> orderPage = null;
-		if(isPayed)
-			orderPage = orderSerivice.findPayedOrderPageByCustomerId(customerId, pageNo, pageSize);
-		else
-			orderPage = orderSerivice.findUnpayedOrderPageByCustomerId(customerId,pageNo, pageSize);
-		return new YiwuJson<>(orderPage);
+		return new YiwuJson<>(orderSerivice.findPageByCustomer(customerId, isPayed, pageNo, pageSize));
 	}
 	
 	@PostMapping(value="/login")
@@ -90,21 +87,21 @@ public class PurchaseApiController  extends BaseController{
 	 */
 	@GetMapping(value="/distributer/list")
 	@ApiOperation(value="获取客户列表")
-	public YiwuJson<PageBean<CustomerDistributerDto>> findDistributersByEmployee(
+	public YiwuJson<PageBean<CustomerDto>> findDistributersByEmployee(
 			@ApiParam(value="内部员工的在分销系统注册后产生的distributer表Id, 非employeeId") 
 			int distributerId, int pageNo, int pageSize){
-		PageBean<CustomerDistributerDto> views = distributerService.findVisableDistributersByEmployee(distributerId, pageNo, pageSize);
+		PageBean<CustomerDto> views = distributerService.findVisableDistributersByEmployee(distributerId, pageNo, pageSize);
 		return new YiwuJson<>(views);
 	}
 	
 	@GetMapping(value="/distributer/list/seach")
 	@ApiOperation(value="输入手机号码或者姓名搜索客户")
-	public YiwuJson<PageBean<CustomerDistributerDto>> seachVisableDistributersByNameOrPhoneNo(
+	public YiwuJson<PageBean<CustomerDto>> seachVisableDistributersByNameOrPhoneNo(
 			@ApiParam(value="用户的姓名或者手机号码， 支持模糊搜索")
 			String key, 
 			@ApiParam(value="内部员工的在分销系统注册后产生的distributer表Id, 非employeeId") 
 			int distributerId, int pageNo, int pageSize){
-		PageBean<CustomerDistributerDto> page = distributerService.findVisableDistributersByEmployee(distributerId, pageNo, pageSize);
+		PageBean<CustomerDto> page = distributerService.findVisableDistributersByEmployee(distributerId, pageNo, pageSize);
 		//TODO 
 		return new YiwuJson<>(page);
 	}
@@ -127,9 +124,17 @@ public class PurchaseApiController  extends BaseController{
 	
 	@GetMapping(value="/subCourseType/list")
 	@ApiOperation(value="获取所有的产品中类,\"开放式A\", \"开放式B\", \"封闭式\", \"私教课\", 产品中类可以决定产品大类")
-	public YiwuJson<List<SubCourseType>> getAllSubCourseTypes(){
-		List<SubCourseType> types = Arrays.asList(SubCourseType.values());
-		return new YiwuJson<>(types);
+	public YiwuJson<List<SubCourseType>> getAllSubCourseTypes(int productId){
+		ProductYzw product = productService.get(productId);
+		if(product == null ) return new YiwuJson<>("无效产品Id" + productId);
+		CourseType courseType = null;
+		if(product.getContractType() != null)
+			courseType = product.getContractType().getContractType();
+		if(courseType == null || courseType == CourseType.GRADE_EXAM 
+				|| courseType == CourseType.REFERENCE_ORDER)
+			return new YiwuJson<>("无须选择中类");
+		
+		return new YiwuJson<>(SubCourseType.fromCourseType(courseType));
 	}
 	
 	@GetMapping(value="/productCardType/list")
@@ -165,6 +170,30 @@ public class PurchaseApiController  extends BaseController{
 			return new YiwuJson<>(e.getMessage());
 		}
 		return new YiwuJson<>(order);
+	}
+	
+	@PutMapping(value="/order/{id}")
+	@ApiOperation(value="修改订单")
+	public YiwuJson<OrderSaveDto> modify(@PathVariable String id, OrderSaveDto order){
+		try {
+			orderSerivice.modify(id, order);
+			return new YiwuJson<>(order);
+		} catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
+	}
+	
+	@DeleteMapping(value="/order/{id}")
+	@ApiOperation(value="删除订单")
+	public YiwuJson<Boolean> delete(@PathVariable String id){
+		OrderYzw order = orderSerivice.get(id);
+		try {
+			if(order.isOperatable())
+				orderSerivice.delete(order);
+			return new YiwuJson<>(Boolean.TRUE);
+		} catch (Exception e) {
+			return new YiwuJson<>(e.getMessage());
+		}
 	}
 	
 	

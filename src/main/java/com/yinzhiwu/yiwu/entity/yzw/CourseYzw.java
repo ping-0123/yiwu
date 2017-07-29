@@ -1,7 +1,9 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.AttributeOverride;
@@ -146,6 +148,15 @@ public class CourseYzw extends BaseYzwEntity {
 				throw new UnsupportedOperationException(
 						name + "is not supported from enum SubCourseType");
 			}
+		}
+		
+		public static List<SubCourseType> fromCourseType(CourseType type){
+			List<SubCourseType> subs = new ArrayList<>();
+			for (SubCourseType sub : SubCourseType.values()) {
+				if(sub.getSupperType() == type)
+					subs.add(sub);
+			}
+			return subs;
 		}
 
 	}

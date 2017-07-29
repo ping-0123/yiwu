@@ -14,7 +14,7 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
-import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDistributerDto;
+import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.EmpDistributerDto;
 
 public interface DistributerService extends IBaseService<Distributer, Integer> {
@@ -49,6 +49,7 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 
 	EmpDistributerDto employeeLoginByWechat(String wechatNo) throws YiwuException;
 
-	PageBean<CustomerDistributerDto> findVisableDistributersByEmployee(int distributerId, int pageNo, int pageSize);
+
+	PageBean<CustomerDto> findVisableDistributersByEmployee(int distributerId, String key, int pageNo, int pageSize) throws YiwuException;
 
 }
