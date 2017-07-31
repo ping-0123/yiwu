@@ -72,7 +72,7 @@ public class DepartmentYzwDaoImpl extends BaseDaoImpl<DepartmentYzw, Integer> im
 	public List<Integer> findStoreIdsByEmplyee(int employeeId) {
 		StringBuilder hql = new StringBuilder();
 		hql.append(" SELECT d.id");
-		hql.append(" FROME DepartmentYzw d");
+		hql.append(" FROM DepartmentYzw d");
 		hql.append(" WHERE (d.manager1.id = :manager1");
 		hql.append(" OR d.manager2.id = :manager2)");
 		hql.append(" AND d.removed = :removed");

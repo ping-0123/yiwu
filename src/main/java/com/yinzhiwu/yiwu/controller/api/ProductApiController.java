@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.ProductYzwService;
 
 /**
@@ -29,11 +28,7 @@ public class ProductApiController extends BaseController {
 
 	@GetMapping(value = "/list")
 	public ResponseEntity<List<ProductYzw>> doList() {
-		try {
-			List<ProductYzw> products = productService.findAll();
-			return new ResponseEntity<List<ProductYzw>>(products, HttpStatus.OK);
-		} catch (DataNotFoundException e) {
-			return new ResponseEntity<List<ProductYzw>>(HttpStatus.NOT_FOUND);
-		}
+		List<ProductYzw> products = productService.findAll();
+		return new ResponseEntity<List<ProductYzw>>(products, HttpStatus.OK);
 	}
 }

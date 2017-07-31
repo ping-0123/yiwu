@@ -8,16 +8,19 @@ import org.springframework.stereotype.Repository;
 import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 @Repository
 public class DistributerIncomeDaoImpl extends BaseDaoImpl<DistributerIncome, Integer> implements DistributerIncomeDao {
 
 	@Override
-	public DistributerIncome find_by_distributer_by_income_type(Integer distributerId, Integer incomeTypeId)
-			throws DataNotFoundException {
-		return findByProperties(new String[] { "distributer.id", "incomeType.id" },
-				new Object[] { distributerId, incomeTypeId }).get(0);
+	public DistributerIncome find_by_distributer_by_income_type(Integer distributerId, Integer incomeTypeId) {
+		
+		List<DistributerIncome> incomes = findByProperties(
+				new String[] { "distributer.id", "incomeType.id" },
+				new Object[] { distributerId, incomeTypeId });
+		if(incomes.size() > 0)
+			return incomes.get(0);
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")

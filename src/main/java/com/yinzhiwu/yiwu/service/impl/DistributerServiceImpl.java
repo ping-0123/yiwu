@@ -124,34 +124,25 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		/**
 		 * associate with customer
 		 */
-		CustomerYzw customer;
-		try {
-			customer = customerYzwDao.findByPhoneNo(distributer.getPhoneNo());
-		} catch (DataNotFoundException e) {
-			logger.info("no customer accociate with the distributer whose phoneNo is " + distributer.getPhoneNo());
-			try {
-				customer = customerYzwDao.findByWeChat(distributer.getWechatNo());
-			} catch (DataNotFoundException e1) {
-				logger.info(
-						"no customer accociate with the distributer whose wechatNo is " + distributer.getWechatNo());
-				customer = new CustomerYzw(distributer);
-				logger.info("new customer's name is " + customer.getName());
+		CustomerYzw customer = customerYzwDao.findByPhoneNo(distributer.getPhoneNo());
+		if(customer == null)
+			customer = customerYzwDao.findByWeChat(distributer.getWechatNo());
+		if(customer != null){
+			distributer.setBirthday(customer.getBirthday());
+			distributer.setMemberId(customer.getMemberCard());
+			distributer.setName(customer.getName());
+			distributer.setCustomerType(customer.getCustomerAgeType());
+			if(distributer.getGender() == null)
+				distributer.setGender(customer.getGender());
+			EmployeeYzw server = customer.getSalesman();
+			if(server != null && !server.getRemoved()){
+				distributer.setServer(server);
+				DepartmentYzw dept = server.getDepartment();
+				if(dept != null && dept.getName() != null && dept.getName().endsWith("店"));
+					distributer.setFollowedByStore(dept);
 			}
+			distributer.setCustomer(customer);
 		}
-		distributer.setBirthday(customer.getBirthday());
-		distributer.setMemberId(customer.getMemberCard());
-		distributer.setName(customer.getName());
-		distributer.setCustomerType(customer.getCustomerAgeType());
-		if(distributer.getGender() == null)
-			distributer.setGender(customer.getGender());
-		EmployeeYzw server = customer.getSalesman();
-		if(server != null && !server.getRemoved()){
-			distributer.setServer(server);
-			DepartmentYzw dept = server.getDepartment();
-			if(dept != null && dept.getName() != null && dept.getName().endsWith("店"));
-				distributer.setFollowedByStore(dept);
-		}
-		distributer.setCustomer(customer);
 		
 		/**
 		 * associate with employee 

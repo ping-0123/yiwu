@@ -2,7 +2,6 @@ package com.yinzhiwu.yiwu.service;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -13,7 +12,7 @@ public interface IBaseService<T, PK extends Serializable> {
 
 	public void saveOrUpdate(T entity);
 
-	public List<T> findAll() throws DataNotFoundException;
+	public List<T> findAll() ;
 
 	public List<T> findByProperty(String propertyName, Object value);
 
@@ -21,9 +20,7 @@ public interface IBaseService<T, PK extends Serializable> {
 
 	public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception;
 
-	public List<T> findByProperties(Map<String, Object> propertyMap) throws DataNotFoundException;
-
-	public List<T> findByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException;
+	public List<T> findByProperties(String[] propertyNames, Object[] values) ;
 
 	public List<T> findByExample(T entity) throws DataNotFoundException;
 

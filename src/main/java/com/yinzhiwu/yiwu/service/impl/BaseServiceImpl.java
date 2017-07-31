@@ -1,9 +1,7 @@
 package com.yinzhiwu.yiwu.service.impl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,17 +45,13 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	}
 
 	@Override
-	public List<T> findAll() throws DataNotFoundException {
+	public List<T> findAll()  {
 		return baseDao.findAll();
 	}
 
 	@Override
 	public List<T> findByProperty(String propertyName, Object value) {
-		try {
-			return baseDao.findByProperty(propertyName, value);
-		} catch (DataNotFoundException e) {
-			return new ArrayList<>();
-		}
+		return baseDao.findByProperty(propertyName, value);
 	}
 
 	@Override
@@ -65,18 +59,14 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		return baseDao.findCountByProperty(propertyName, value);
 	}
 
-	@Override
-	public List<T> findByProperties(Map<String, Object> propertyMap) throws DataNotFoundException {
-		return baseDao.findByProperties(propertyMap);
-	}
 
 	@Override
-	public List<T> findByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException {
+	public List<T> findByProperties(String[] propertyNames, Object[] values) {
 		return baseDao.findByProperties(propertyNames, values);
 	}
 
 	@Override
-	public List<T> findByExample(T entity) throws DataNotFoundException {
+	public List<T> findByExample(T entity) {
 		return baseDao.findByExample(entity);
 	}
 

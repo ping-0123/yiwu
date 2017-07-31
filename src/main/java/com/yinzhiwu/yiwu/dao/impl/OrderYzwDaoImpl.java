@@ -99,22 +99,12 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 
 	@Override
 	public List<OrderYzw> findByCustomer(CustomerYzw customer) {
-		try {
-			return findByProperty("customer.id", customer.getId());
-		} catch (DataNotFoundException e) {
-			LOG.error(e);
-			return new ArrayList<>();
-		}
+		return findByProperty("customer.id", customer.getId());
 	}
 
 	@Override
 	public List<OrderYzw> findByCustomerId(int customerId) {
-		try {
-			return findByProperty("customer.id", customerId);
-		} catch (DataNotFoundException e) {
-			LOG.error(e);
-			return new ArrayList<>();
-		}
+		return findByProperty("customer.id", customerId);
 	}
 
 	@SuppressWarnings("unchecked")

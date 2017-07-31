@@ -213,7 +213,7 @@ public class Distributer extends BaseEntity {
 		this.name = m.getName();
 		this.nickName = m.getNickName();
 		this.gender = m.getGender();
-		this.birthday = m.getBirthDay();
+		this.birthday = m.getBirthday();
 		DepartmentYzw d = new DepartmentYzw();
 		d.setId(m.getFollowedByStoreId());
 		this.setFollowedByStore(d);

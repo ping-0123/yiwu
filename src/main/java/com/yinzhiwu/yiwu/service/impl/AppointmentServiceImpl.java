@@ -71,15 +71,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 
 	private Appointment getAppointed(int customerId, int lessonId) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("customerId", customerId);
-		map.put("lessonId", lessonId);
-		map.put("status", "预约");
-		List<Appointment> appointments;
-		try {
-			appointments = appointmentDao.findByProperties(map);
+		List<Appointment> appointments = appointmentDao.findByProperties(
+				new String[]{"customerId","lessonId","status"},
+				new Object[]{customerId, lessonId, "预约"});
+		if(appointments.size() > 0)
 			return appointments.get(0);
-		} catch (DataNotFoundException e) {
+		else {
 			return null;
 		}
 

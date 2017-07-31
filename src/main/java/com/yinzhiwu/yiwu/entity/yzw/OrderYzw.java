@@ -88,6 +88,11 @@ public class OrderYzw extends BaseYzwEntity {
 		
 	}
 	
+	public enum EContractStatus{
+		UNCONFIRMED,
+		CONFIRMED
+	}
+	
 	@Id
 	@GeneratedValue(generator = "assigned")
 	@GenericGenerator(name = "assigned", strategy = "assigned")
@@ -203,6 +208,9 @@ public class OrderYzw extends BaseYzwEntity {
 	@Column(name = "e_contract_picture_flag")
 	private Integer eContractPictureFlag;
 
+	/**
+	 * 在数据库中， 0未确认合约，1 已确认合约
+	 */
 	@Column(name = "e_contract_status")
 	private Boolean eContractStatus;
 

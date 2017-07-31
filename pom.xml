@@ -5,7 +5,7 @@
   <artifactId>yiwu</artifactId>
   <packaging>war</packaging>
   <version>1.2.2</version>
-  <name>yiwu Maven Webapp</name>
+  <name>yiwu</name>
   <url>http://maven.apache.org</url>
   
   <profiles>

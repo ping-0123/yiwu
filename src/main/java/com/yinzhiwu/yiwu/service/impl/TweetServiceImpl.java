@@ -3,8 +3,6 @@ package com.yinzhiwu.yiwu.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +19,6 @@ import com.yinzhiwu.yiwu.service.TweetService;
 @Service
 public class TweetServiceImpl extends BaseServiceImpl<Tweet, Integer> implements TweetService {
 
-	private static Log log = LogFactory.getLog(TweetServiceImpl.class);
-
 	@Autowired
 	private TweetDao tweetDao;
 	@Autowired
@@ -37,7 +33,7 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet, Integer> implements
 	@Override
 	public int save(TweetModel m) {
 		Tweet tweet = new Tweet(m);
-		// System.out.println(m.getCoverIconUrl() + " " +
+		// System.out.println(m.getCo	erIconUrl() + " " +
 		// m.getCoverIconUrl().length());
 		TweetType type;
 		type = (TweetType) baseTypeDao.get(m.getTweetTypeId());

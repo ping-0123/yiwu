@@ -57,6 +57,7 @@ public class EmployeeDepartmentYzwDaoImpl extends BaseDaoImpl<EmployeeDepartment
 	@Override
 	public List<Integer> findEmployeesUnderDepts(List<Integer> storeIds) {
 		StringBuilder hql = new StringBuilder();
+		List<String> properties = new ArrayList<>();
 		hql.append(" SELECT DISTINCT t1.employee.id");
 		hql.append(" FROM EmployeeDepartmentYzw t1");
 		hql.append(" WHERE t1.removed=:removed");

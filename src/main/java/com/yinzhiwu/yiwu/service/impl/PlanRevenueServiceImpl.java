@@ -11,7 +11,6 @@ import com.yinzhiwu.yiwu.dao.DepartmentDao;
 import com.yinzhiwu.yiwu.dao.PlanRevenueDao;
 import com.yinzhiwu.yiwu.entity.PlanRevenue;
 import com.yinzhiwu.yiwu.entity.yzwOld.Department;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.PlanRevenueApiModel;
 import com.yinzhiwu.yiwu.service.PlanRevenueService;
 
@@ -76,28 +75,20 @@ public class PlanRevenueServiceImpl implements PlanRevenueService {
 
 	@Override
 	public List<PlanRevenueApiModel> findAll() {
-		try {
-			List<PlanRevenueApiModel> planModels = new ArrayList<>();
-			for (PlanRevenue plan : prDao.findAll()) {
-				planModels.add(new PlanRevenueApiModel(departmentDao, plan));
-			}
-			return planModels;
-		} catch (DataNotFoundException e) {
-			return new ArrayList<>();
+		List<PlanRevenueApiModel> planModels = new ArrayList<>();
+		for (PlanRevenue plan : prDao.findAll()) {
+			planModels.add(new PlanRevenueApiModel(departmentDao, plan));
 		}
+		return planModels;
 	}
 
 	@Override
 	public List<PlanRevenueApiModel> findByExample(PlanRevenue plan) {
-		try {
-			List<PlanRevenueApiModel> planModels = new ArrayList<>();
-			for (PlanRevenue p : prDao.findByExample(plan)) {
-				planModels.add(new PlanRevenueApiModel(departmentDao, p));
-			}
-			return planModels;
-		} catch (DataNotFoundException e) {
-			return new ArrayList<>();
+		List<PlanRevenueApiModel> planModels = new ArrayList<>();
+		for (PlanRevenue p : prDao.findByExample(plan)) {
+			planModels.add(new PlanRevenueApiModel(departmentDao, p));
 		}
+		return planModels;
 	}
 
 	@Override

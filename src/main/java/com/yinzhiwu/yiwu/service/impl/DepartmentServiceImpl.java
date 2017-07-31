@@ -13,7 +13,6 @@ import com.yinzhiwu.yiwu.dao.DepartmentDao;
 import com.yinzhiwu.yiwu.dao.StoreInfoDao;
 import com.yinzhiwu.yiwu.entity.StoreInfo;
 import com.yinzhiwu.yiwu.entity.yzwOld.Department;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.Store;
 import com.yinzhiwu.yiwu.model.view.DepartmentApiView;
 import com.yinzhiwu.yiwu.service.DepartmentService;
@@ -95,18 +94,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	@Override
 	public List<Store> findStoreByCities(String city) {
-		try {
-			List<Department> deptList = departmentDao.findByProperty("city", city);
-			List<Store> storeList = new ArrayList<>();
-			for (Department d : deptList) {
-				Store s = new Store(d);
-				storeList.add(s);
-			}
-			return storeList;
-		} catch (DataNotFoundException e) {
-			LOG.warn(e);
-			return new ArrayList<>();
+		List<Department> deptList = departmentDao.findByProperty("city", city);
+		List<Store> storeList = new ArrayList<>();
+		for (Department d : deptList) {
+			Store s = new Store(d);
+			storeList.add(s);
 		}
+		return storeList;
 
 	}
 

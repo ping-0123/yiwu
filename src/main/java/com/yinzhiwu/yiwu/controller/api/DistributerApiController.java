@@ -24,7 +24,6 @@ import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.type.CapitalAccountType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.DistributerModifyModel;
 import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
@@ -54,8 +53,9 @@ public class DistributerApiController extends BaseController {
 		dataBinder.setDisallowedFields("birthDay");
 	}
 
-	@PostMapping(value = "")
-	public YiwuJson<DistributerRegisterModel> register(@Valid DistributerRegisterModel m, String invitationCode, BindingResult bindingResult) {
+	@PostMapping
+	@ApiOperation("注册新用户")
+	public YiwuJson<DistributerRegisterModel> register(@Valid DistributerRegisterModel m, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new YiwuJson<>(getErrorsMessage(bindingResult));
 		}
@@ -121,13 +121,9 @@ public class DistributerApiController extends BaseController {
 		if (accountTypeId == -1) {
 			accounts = capitalAccountService.findByProperty("distributer.id", distributerId);
 		} else {
-			try {
-				accounts = capitalAccountService.findByProperties(
-						new String[] { "distributer.id", "capitalAccountType.id" },
-						new Object[] { distributerId, accountTypeId });
-			} catch (DataNotFoundException e) {
-				accounts = new ArrayList<>();
-			}
+			accounts = capitalAccountService.findByProperties(
+					new String[] { "distributer.id", "capitalAccountType.id" },
+					new Object[] { distributerId, accountTypeId });
 		}
 		for (CapitalAccount capitalAccount : accounts) {
 			views.add(new CapitalAccountApiView(capitalAccount));

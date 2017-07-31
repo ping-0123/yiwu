@@ -2,16 +2,13 @@ package com.yinzhiwu.yiwu.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.OrderDao;
 import com.yinzhiwu.yiwu.entity.yzwOld.Customer;
 import com.yinzhiwu.yiwu.entity.yzwOld.Order;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.view.OrderOldApiView;
 
 @Repository
@@ -118,15 +115,10 @@ public class OrderDaoImpl extends BaseDaoImpl<Order, String> implements OrderDao
 
 	@Override
 	public List<Order> findValidOrders(int customerId, String subType) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("customerId", customerId);
-		map.put("productSubType", subType);
-		map.put("checkedStatus", "已审核");
-		try {
-			return findByProperties(map);
-		} catch (DataNotFoundException e) {
-			return new ArrayList<>();
-		}
+		
+		return findByProperties(
+				new String[]{"customerId", "productSubType", "checkedStatus"},  
+				new Object[]{customerId, subType, "已审核"});
 	}
 
 	@Override

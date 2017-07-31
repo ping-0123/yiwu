@@ -8,7 +8,6 @@ import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.dao.IncomeGradeDao;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.DistributerIncomeService;
 
 @Service
@@ -33,11 +32,9 @@ public class DistributerIncomeServiceImpl extends BaseServiceImpl<DistributerInc
 		/**
 		 * get the influenced distributer's income by the record
 		 */
-		DistributerIncome dIncome;
-		try {
-			dIncome = dIncomeDao.find_by_distributer_by_income_type(record.getBenificiary().getId(),
-					record.getIncomeType().getId());
-		} catch (DataNotFoundException e) {
+		DistributerIncome dIncome  = dIncomeDao.find_by_distributer_by_income_type(record.getBenificiary().getId(),
+				record.getIncomeType().getId());
+		if(dIncome == null ){
 			dIncome = new DistributerIncome(record.getBenificiary(), record.getIncomeType(),
 					incomeGradeDao.find_lowest_grade_by_income_type(record.getIncomeType().getId()));
 		}

@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 
 @Repository
@@ -20,11 +18,8 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 
 	@Override
 	public List<LessonYzw> findByCourseId(String courseId) {
-		try {
-			return findByProperty("course.id", courseId);
-		} catch (DataNotFoundException e) {
-			return new ArrayList<>();
-		}
+		
+			return  findByProperty("course.id", courseId);
 	}
 
 	@Override

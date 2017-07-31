@@ -21,7 +21,7 @@ public class EmployeeYzwDaoImpl extends BaseDaoImpl<EmployeeYzw,Integer> impleme
 			List<EmployeeYzw> emps =findByProperties(
 					new String[]{"cellPhone", "removed"}, 
 					new Object[]{phoneNo, false});
-			if(emps == null)
+			if(emps == null || emps.size() == 0 )
 				return null;
 			if(emps.size()> 1){
 				logger.error(phoneNo + "在 employee表中重复");

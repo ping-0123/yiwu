@@ -7,9 +7,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.persistence.Embedded;
@@ -33,7 +31,7 @@ import com.yinzhiwu.yiwu.entity.BaseEntity;
 import com.yinzhiwu.yiwu.entity.yzw.BaseYzwEntity;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
-import com.yinzhiwu.yiwu.util.ReflectUtil;
+import com.yinzhiwu.yiwu.util.ReflectUtils;
 
 /**
  * 
@@ -97,56 +95,39 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> findByProperty(String propertyName, Object value) throws DataNotFoundException {
-		String hql = "from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
-		List<T> list = (List<T>) getHibernateTemplate().findByNamedParam(hql, "value", value);
-		if (list == null || list.size() == 0)
-			throw new DataNotFoundException(entityClass, propertyName, value);
+	public List<T> findByProperty(String propertyName, Object value) {
+		Assert.hasText(propertyName, "属性名不能为空");
+		
+		String hql = "FROM " + entityClass.getSimpleName() + " t1 WHERE  t1." + propertyName + " =:property";
+		List<T> list = getSession().createQuery(hql, entityClass)
+				.setParameter("property", value)
+				.getResultList();
+		
+		if (list == null)
+			list = new ArrayList<>();
 		return list;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public int findCountByProperty(String propertyName, Object value) {
-		String hql = "select count(*) from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
-		try {
-			List<Long> l = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "value", value);
-			return l.get(0).intValue();
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			return 0;
-		}
+		Assert.hasText(propertyName, "属性名不能为空");
+		
+		String hql = "SELECT COUNT(*) FROM " + entityClass.getSimpleName() + " WHERE " + propertyName + " =:property";
+		return getSession().createQuery(hql, Long.class)
+				.setParameter("property", value)
+				.getSingleResult()
+				.intValue();
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<T> findByProperties(Map<String, Object> map) throws DataNotFoundException {
-		Map<String, Object> v_map = new HashMap<>();
-		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
-		for (String string : map.keySet()) {
-			if (null != string && !"".equals(string)) {
-				String valString = string.replace(".", "");
-				hql.append(" and " + string + "=:" + valString);
-				v_map.put(valString, map.get(string));
-			}
-		}
 
-		List<T> list = (List<T>) getHibernateTemplate().findByNamedParam(hql.toString(),
-				v_map.keySet().toArray(new String[] {}), v_map.values().toArray(new Object[] {}));
-		if (list == null || list.size() == 0)
-			throw new DataNotFoundException();
-		return list;
-	}
-
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> findAll() throws DataNotFoundException {
-		String hql = "from " + entityClass.getSimpleName();
-		List<T> list = (List<T>) getHibernateTemplate().find(hql);
-		if (list == null || list.size() == 0)
-			throw new DataNotFoundException();
+	public List<T> findAll(){
+		String hql = "FROM " + entityClass.getSimpleName();
+		List<T> list = getSession().createQuery(hql, entityClass) 
+				.getResultList();
+		
+		if(list == null) list = new ArrayList<>();
 		return list;
 	}
 
@@ -195,11 +176,11 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 
 	@Override
-	public List<T> findByExample(T entity) throws DataNotFoundException {
+	public List<T> findByExample(T entity){
 		Assert.notNull(entity, "entity is required");
+		
 		List<T> list = getHibernateTemplate().findByExample(entity);
-		if (list == null || list.size() == 0)
-			throw new DataNotFoundException();
+		if(list == null) list = new ArrayList<>();
 		return list;
 	}
 
@@ -218,17 +199,13 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public int findCount() {
-		String hql = "select count(*) from " + entityClass.getSimpleName();
-		try {
-			List<Long> sums = (List<Long>) getHibernateTemplate().find(hql);
-			return sums.get(0).intValue();
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			return 0;
-		}
+		String hql = "SELECT COUNT(*) FROM " + entityClass.getSimpleName();
+		return getSession().createQuery(hql, Long.class)
+				.getSingleResult()
+				.intValue();
+		
 	}
 
 	@Override
@@ -279,9 +256,13 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 				throw new IllegalArgumentException("属性名不能为空为null");
 			}
 		}
-		@SuppressWarnings("unchecked")
-		List<Long> count = (List<Long>) getHibernateTemplate().findByNamedParam(builder.toString(), properties, values);
-		return count.get(0).intValue();
+		
+		 Query<Long> query = getSession().createQuery(builder.toString(), Long.class);
+		 for(int j=0; j<properties.length;j++){
+			 query.setParameter(properties[j], values[j]);
+		 }
+		 
+		 return query.getSingleResult().intValue();
 	}
 
 	@Override
@@ -376,7 +357,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	
 	
 
-	protected PageBean<T> findPageByHqlWithParams(String hql, int pageNo, int pageSize, String[] namedParams, Object[] values) {
+	protected <R> PageBean<R> findPageByHqlWithParams(
+			String hql,  String[] namedParams, Object[] values, int pageNo, int pageSize) {
 		Assert.hasLength(hql, "hql is not correct.");
 
 		if (pageNo <= 0) pageNo = 1;
@@ -385,7 +367,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		if (totalRecords == 0)
 			return new PageBean<>(pageSize, pageNo, totalRecords, new ArrayList<>());
 
-		Query<T> query = getSession().createQuery(hql, entityClass);
+		Query<?> query = getSession().createQuery(hql);
 		query.setFirstResult((pageNo - 1) * pageSize);
 		query.setMaxResults(pageSize);
 		if (namedParams != null && namedParams.length > 0) {
@@ -395,7 +377,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 				query.setParameter(namedParams[i], values[i]);
 			}
 		}
-		List<T> list = query.getResultList();
+		@SuppressWarnings("unchecked")
+		List<R> list =  (List<R>) query.getResultList();
 		return new PageBean<>(pageSize, pageNo, totalRecords, list);
 	}
 	
@@ -412,15 +395,11 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return query.getSingleResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	public int findCountByHql(String hql) {
-		try {
-			List<Long> list = (List<Long>) getHibernateTemplate().find(hql);
-			return list.get(0).intValue();
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			return 0;
-		}
+		Assert.hasText(hql, "hql不能为空");
+		return getSession().createQuery(hql, Long.class)
+				.getSingleResult()
+				.intValue();
 	}
 
 	private String _generateFindCountHql(String hql) {
@@ -448,7 +427,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 
 	private <E> E modifySourceEntityProperties(E source, E target) throws IllegalAccessException {
-		Field[] fields = ReflectUtil.getAllFields(source.getClass());
+		Field[] fields = ReflectUtils.getAllFields(source.getClass());
 		for (Field f : fields) {
 			f.setAccessible(true);
 			if (// 静态属性不变

@@ -4,12 +4,10 @@ import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 public interface DistributerIncomeDao extends IBaseDao<DistributerIncome, Integer> {
 
-	DistributerIncome find_by_distributer_by_income_type(Integer distributerId, Integer incomeTypeId)
-			throws DataNotFoundException;
+	DistributerIncome find_by_distributer_by_income_type(Integer distributerId, Integer incomeTypeId);
 
 	Float get_beat_rate(IncomeType incomeType, float expValue);
 

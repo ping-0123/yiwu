@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.DistributerDao;
@@ -33,12 +34,12 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		return super.save(entity);
 	}
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
 	private int getNextId() {
-		String sql = "select  AUTO_INCREMENT from information_schema.tables where table_name ='yiwu_distributer'";
-		List<Integer> ints = getSession().createNativeQuery(sql, Integer.class)
+		String sql = "SELECT  AUTO_INCREMENT FROM information_schema.tables WHERE table_name ='yiwu_distributer'";
+		@SuppressWarnings({ "unchecked", "deprecation" })
+		List<Integer> ints = getSession().createNativeQuery(sql).addScalar("AUTO_INCREMENT", IntegerType.INSTANCE)
 				.getResultList();
-		return ints.get(0);
+		return ints.get(0).intValue();
 	}
 
 	@Override
@@ -129,14 +130,11 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 
 	@Override
 	public Distributer findByCustomerId(Integer customerId) {
-		List<Distributer> ds;
-		try {
-			ds = findByProperty("customer.id", customerId);
-		} catch (DataNotFoundException e) {
-			logger.info(e);
+		List<Distributer> ds =  findByProperty("customer.id", customerId);
+		if(ds.size() > 0)
+			return ds.get(0);
+		else
 			return null;
-		}
-		return ds.get(0);
 	}
 
 	@Override
@@ -153,16 +151,20 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 			hql.append(" AND");
 		}
 		hql.append("(");
-		if(distributerIds.size()> 0)
+//		if(distributerIds.size()> 0)
 			hql.append(" t1.superDistributer.id in :superIds");
-		if(employeeIds.size()> 0)
+//		if(employeeIds.size()> 0)
 			hql.append(" OR t1.server.id in :serverIds");
-		if(storeIds.size()> 0)
+//		if(storeIds.size()> 0)
 			hql.append(" OR t1.followedByStore.id in :storeIds");
 		hql.append(")");
 		
 
-		return null;
+		return super.findPageByHqlWithParams(hql.toString(), 
+				new String[]{"superIds", "serverIds", "storeIds"},
+				new Object[]{distributerIds, employeeIds, storeIds},
+				pageNo,
+				pageSize);
 	}
 
 	@Override

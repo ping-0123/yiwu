@@ -90,7 +90,13 @@ public class PurchaseApiController  extends BaseController{
 	public YiwuJson<PageBean<CustomerDto>> findDistributersByEmployee(
 			@ApiParam(value="内部员工的在分销系统注册后产生的distributer表Id, 非employeeId") 
 			int distributerId, int pageNo, int pageSize){
-		PageBean<CustomerDto> views = distributerService.findVisableDistributersByEmployee(distributerId, pageNo, pageSize);
+		PageBean<CustomerDto> views;
+		try {
+			views = distributerService.findVisableDistributersByEmployee(distributerId, null, pageNo, pageSize);
+		} catch (YiwuException e) {
+			e.printStackTrace();
+			return new YiwuJson<>(e.getMessage());
+		}
 		return new YiwuJson<>(views);
 	}
 	
@@ -101,8 +107,13 @@ public class PurchaseApiController  extends BaseController{
 			String key, 
 			@ApiParam(value="内部员工的在分销系统注册后产生的distributer表Id, 非employeeId") 
 			int distributerId, int pageNo, int pageSize){
-		PageBean<CustomerDto> page = distributerService.findVisableDistributersByEmployee(distributerId, pageNo, pageSize);
-		//TODO 
+		PageBean<CustomerDto> page;
+		try {
+			page = distributerService.findVisableDistributersByEmployee(distributerId, key,pageNo, pageSize);
+		} catch (YiwuException e) {
+			e.printStackTrace();
+			return new YiwuJson<>(e.getMessage());
+		}
 		return new YiwuJson<>(page);
 	}
 	

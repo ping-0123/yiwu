@@ -41,14 +41,7 @@ public class PurchaseEventServiceImpl extends BaseServiceImpl<PurchaseEvent, Int
 		Assert.notNull(order);
 		Assert.notNull(order.getCustomer());
 
-		Distributer distributer;
-		try {
-			distributer = distributerDao.findByProperty("customer.id", order.getCustomer().getId()).get(0);
-		} catch (DataNotFoundException e) {
-			logger.debug(e.getMessage());
-			e.printStackTrace();
-			return;
-		}
+		Distributer distributer = distributerDao.findByProperty("customer.id", order.getCustomer().getId()).get(0);
 		// float amount = orderDao.get_effective_brockerage_base(order);
 		PurchaseEvent event = new PurchaseEvent(distributer, order);
 		incomeEventService.save(event);

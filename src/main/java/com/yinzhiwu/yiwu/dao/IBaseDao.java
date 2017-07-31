@@ -2,7 +2,6 @@ package com.yinzhiwu.yiwu.dao;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -26,19 +25,17 @@ public interface IBaseDao<T, PK extends Serializable> {
 
 	public void saveOrUpdate(T entity);
 
-	public List<T> findAll() throws DataNotFoundException;
+	public List<T> findAll();
 
 	public int findCount();
 
-	public List<T> findByProperty(String propertyName, Object value) throws DataNotFoundException;
+	public List<T> findByProperty(String propertyName, Object value);
 
 	public int findCountByProperty(String propertyName, Object value);
 
-	public List<T> findByProperties(Map<String, Object> param) throws DataNotFoundException;
-
 	public List<T> findByProperties(String[] propertyNames, Object[] values);
 
-	public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception;
+	public int findCountByProperties(String[] propertyNames, Object[] values);
 
 	/**
 	 * 如果T中的某一成员变量的class为@Entity注解, 则查询时忽略该属性， 即查询语句没有表的关联
@@ -47,7 +44,7 @@ public interface IBaseDao<T, PK extends Serializable> {
 	 * @return
 	 * @throws DataNotFoundException
 	 */
-	public List<T> findByExample(T entity) throws DataNotFoundException;
+	public List<T> findByExample(T entity);
 
 	void delete(T entit);
 

@@ -11,13 +11,18 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.enums.Gender;
 
+import io.swagger.annotations.ApiModelProperty;
+
+
 public class DistributerRegisterModel {
 
+	@ApiModelProperty(value="手机号码", required=true)
 	@Pattern(regexp = "^1\\d{10}$", message = "请输入正确的11位手机号码")
 	private String phoneNo;
 
 	private String username;
 
+	@ApiModelProperty(value="密码" ,required=true)
 	@Pattern(regexp = "^[a-zA-Z]\\w{5,17}$", message = "密码必须由字母开头，有字母，数字，下划线组成的6-18位字符")
 	private String password;
 
@@ -25,15 +30,17 @@ public class DistributerRegisterModel {
 
 	private String nickName;
 
+	@ApiModelProperty(value="姓名", allowableValues="{MALE, FEMALE}", required=true)
 	@NotNull
 	private Gender gender;
 
 	// @Past
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date birthDay;
+	@JsonFormat(pattern = "yyyy-MM-dd:HH:mm:ss", timezone="GMT+8")
+	private Date birthday;
 
 	private Integer followedByStoreId;
 
+	@ApiModelProperty(value="微信openId", required=true)
 	@Size(min = 10, max = 28)
 	private String wechatNo;
 
@@ -47,7 +54,7 @@ public class DistributerRegisterModel {
 		distributer.setName(this.name);
 		distributer.setNickName(this.nickName);
 		distributer.setGender(this.gender);
-		distributer.setBirthday(this.birthDay);
+		distributer.setBirthday(this.birthday);
 		distributer.setWechatNo(this.wechatNo);
 		if(followedByStoreId != null){
 			DepartmentYzw store = new DepartmentYzw();
@@ -81,8 +88,8 @@ public class DistributerRegisterModel {
 		return gender;
 	}
 
-	public Date getBirthDay() {
-		return birthDay;
+	public Date getBirthday() {
+		return birthday;
 	}
 
 	public Integer getFollowedByStoreId() {
@@ -121,8 +128,8 @@ public class DistributerRegisterModel {
 		this.gender = gender;
 	}
 
-	public void setBirthDay(Date birthDay) {
-		this.birthDay = birthDay;
+	public void setBirthday(Date birthDay) {
+		this.birthday = birthDay;
 	}
 
 	public void setFollowedByStoreId(int followedByStoreId) {

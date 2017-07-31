@@ -14,7 +14,6 @@ import com.yinzhiwu.yiwu.entity.income.IncomeEvent;
 import com.yinzhiwu.yiwu.entity.income.IncomeFactor;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.view.IncomeRecordApiView;
 import com.yinzhiwu.yiwu.model.view.ShareTweetIncomeRecordApiView;
 import com.yinzhiwu.yiwu.service.DistributerIncomeService;
@@ -61,14 +60,7 @@ public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integ
 
 	@Override
 	public void save_records_produced_by_event(IncomeEvent event) {
-		List<IncomeFactor> factors;
-		try {
-			factors = incomeFactorDao.findByProperty("eventType.id", event.getType().getId());
-		} catch (DataNotFoundException e) {
-			// logger.info(e.getMessage());
-			// logger.info(e);
-			return;
-		}
+		List<IncomeFactor> factors =  incomeFactorDao.findByProperty("eventType.id", event.getType().getId());
 		for (IncomeFactor factor : factors) {
 			Distributer benificiary = factor.getRelation().getRelativeDistributer(event.getDistributer());
 			if (benificiary != null && factor.getFactor() != 0f && event.getParam() != 0) {
