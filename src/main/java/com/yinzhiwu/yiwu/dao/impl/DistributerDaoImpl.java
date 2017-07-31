@@ -76,7 +76,7 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		logger.debug("传入的经验值是：" + exp);
 		List<Long> counts = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "exp", exp);
 		logger.debug(exp + "击败的数量：" + counts.get(0).intValue());
-		int sum = findCount();
+		int sum = findCount().intValue();
 		logger.debug("分销人数总数：" + sum);
 		if (sum == 0)
 			return 0;
@@ -120,12 +120,12 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 
 	@Override
 	public int findCountByPhoneNo(String phoneNo) {
-		return findCountByProperty("phoneNo", phoneNo);
+		return findCountByProperty("phoneNo", phoneNo).intValue();
 	}
 
 	@Override
 	public int findCountByWechatNo(String wechatNo) {
-		return findCountByProperty("wechatNo", wechatNo);
+		return findCountByProperty("wechatNo", wechatNo).intValue();
 	}
 
 	@Override
@@ -140,6 +140,16 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	@Override
 	public PageBean<CustomerDto> findDtoPageByDistributerByKey(List<Integer> storeIds, List<Integer> employeeIds,
 			List<Integer> distributerIds, String key, int pageNo, int pageSize) {
+		int quantity  = 0;
+		if(employeeIds != null && employeeIds.size() > 0)
+			quantity++;
+		if(storeIds !=null && storeIds.size()> 0)
+			quantity++;
+		if(distributerIds !=null && distributerIds.size()> 0)
+			quantity++;
+		String[] properties = new String[quantity];
+		Object[] values = new Object[quantity];
+		
 		StringBuilder hql = new StringBuilder();
 		hql.append(" SELECT new com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto");
 		hql.append("(t1.customer.id, t1.name, t1.phoneNo)");
@@ -150,19 +160,35 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 			hql.append(" OR t1.phoneNo like '%" + key + "%')");
 			hql.append(" AND");
 		}
-		hql.append("(");
-//		if(distributerIds.size()> 0)
-			hql.append(" t1.superDistributer.id in :superIds");
-//		if(employeeIds.size()> 0)
-			hql.append(" OR t1.server.id in :serverIds");
-//		if(storeIds.size()> 0)
-			hql.append(" OR t1.followedByStore.id in :storeIds");
-		hql.append(")");
+		if(quantity > 0){
+			int i = 0;
+			hql.append("(1=0");
+			if(distributerIds != null && distributerIds.size()> 0){
+				hql.append(" OR t1.superDistributer.id in :superIds");
+				properties[i] = "superIds";
+				values[i] = distributerIds;
+				i++;
+			}
+			if(employeeIds != null && employeeIds.size()> 0){
+				hql.append(" OR t1.server.id in :serverIds");
+				properties[i] = "serverIds";
+				values[i] = employeeIds;
+				i++;
+			}
+			if(storeIds != null && storeIds.size()> 0){
+				hql.append(" OR t1.followedByStore.id in :storeIds");
+				properties[i] = "storeIds";
+				values[i] = storeIds;
+				i++;
+			}
+			
+			hql.append(")");
+		}
 		
 
 		return super.findPageByHqlWithParams(hql.toString(), 
-				new String[]{"superIds", "serverIds", "storeIds"},
-				new Object[]{distributerIds, employeeIds, storeIds},
+				properties,
+				values,
 				pageNo,
 				pageSize);
 	}
@@ -170,7 +196,7 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	@Override
 	public List<Integer> findIdsByemployees(List<Integer> employeeIds) {
 		StringBuilder hql = new StringBuilder();
-		hql.append(" SELECT DISTINCT d.ids");
+		hql.append(" SELECT DISTINCT d.id");
 		hql.append(" FROM Distributer d");
 		hql.append(" WHERE d.server.id in :serverIds");
 		List<Integer> list = getSession().createQuery(hql.toString(), Integer.class)

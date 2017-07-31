@@ -185,14 +185,20 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer> imple
 
 		if ("封闭式".equals(l.getCourseType())) {
 			// 添加店员点名人数
-			view.setStoreManCallRollCount(scrDao.findCountByProperty("lessonId", l.getLessonId().toString()));
+			view.setStoreManCallRollCount(
+					scrDao.findCountByProperty("lessonId",l.getLessonId().toString())
+					.intValue());
 
 			// 添加老师点名人数
-			view.setTeacherCallRollCount(tcrDao.findCountByProperty("lessonId", l.getLessonId()));
+			view.setTeacherCallRollCount(
+					tcrDao.findCountByProperty("lessonId", l.getLessonId())
+					.intValue());
 		}
 
 		// 添加总课次和当前上课进度
-		view.setSumTimesOfCourse(lessonDao.findCountByProperty("courseid", l.getCourseid()));
+		view.setSumTimesOfCourse(
+				lessonDao.findCountByProperty("courseid", l.getCourseid())
+				.intValue());
 		view.setOrderInCourse(lessonDao.findOrderInCourse(l));
 
 		// 添加刷卡状态

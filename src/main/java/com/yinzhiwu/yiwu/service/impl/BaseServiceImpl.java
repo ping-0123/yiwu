@@ -55,7 +55,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	}
 
 	@Override
-	public int findCountByProperty(String propertyName, Object value) {
+	public Long findCountByProperty(String propertyName, Object value) {
 		return baseDao.findCountByProperty(propertyName, value);
 	}
 
@@ -146,7 +146,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	}
 
 	@Override
-	public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception {
+	public Long findCountByProperties(String[] propertyNames, Object[] values) throws Exception {
 		return baseDao.findCountByProperties(propertyNames, values);
 	}
 

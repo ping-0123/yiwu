@@ -26,7 +26,7 @@ public class DistributerIncomeDaoImpl extends BaseDaoImpl<DistributerIncome, Int
 	@SuppressWarnings("unchecked")
 	@Override
 	public Float get_beat_rate(IncomeType incomeType, float incomeValue) {
-		int sumCount = findCountByProperty("incomeType.id", incomeType.getId());
+		int sumCount = findCountByProperty("incomeType.id", incomeType.getId()).intValue();
 		if (sumCount == 0)
 			return 0f;
 

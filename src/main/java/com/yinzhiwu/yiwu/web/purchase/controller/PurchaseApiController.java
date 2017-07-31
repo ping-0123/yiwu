@@ -134,8 +134,8 @@ public class PurchaseApiController  extends BaseController{
 	}
 	
 	@GetMapping(value="/subCourseType/list")
-	@ApiOperation(value="获取所有的产品中类,\"开放式A\", \"开放式B\", \"封闭式\", \"私教课\", 产品中类可以决定产品大类")
-	public YiwuJson<List<SubCourseType>> getAllSubCourseTypes(int productId){
+	@ApiOperation(value="根据产品Id获取所有的产品中类类型,\"开放式A\", \"开放式B\", \"封闭式\", \"私教课\", 产品中类可以决定产品大类")
+	public YiwuJson<List<SubCourseType>> getPossibleSubCourseTypesOfProduct(int productId){
 		ProductYzw product = productService.get(productId);
 		if(product == null ) return new YiwuJson<>("无效产品Id" + productId);
 		CourseType courseType = null;
@@ -147,6 +147,13 @@ public class PurchaseApiController  extends BaseController{
 		
 		return new YiwuJson<>(SubCourseType.fromCourseType(courseType));
 	}
+	
+	@GetMapping(value="/subCourseType/list/all")
+	@ApiOperation(value="获取所有的产品中类")
+	public List<SubCourseType>  getAllSubCourseTypes(){
+		return Arrays.asList(SubCourseType.values());
+	}
+	
 	
 	@GetMapping(value="/productCardType/list")
 	@ApiOperation(value="获取所有产品卡类型")

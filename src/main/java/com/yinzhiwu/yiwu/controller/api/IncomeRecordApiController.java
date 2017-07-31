@@ -131,7 +131,7 @@ public class IncomeRecordApiController extends BaseController {
 
 	@GetMapping("/count")
 	@ApiOperation(value = "获取经验,基金,佣金等收益记录数量")
-	public YiwuJson<Integer> getCount(@ApiParam(value = "id of distributer", required = true) int observerId,
+	public YiwuJson<Long> getCount(@ApiParam(value = "id of distributer", required = true) int observerId,
 			@ApiParam(value = "id of event type [10003： 注册(不带邀请码),10004：注册（带邀请码), "
 					+ "10005:分享推文(前三次), 10006:分享推文(非前三次),10007：购买音之舞产品,"
 					+ "10008:用基金支付定金,10009:用佣金支付定金, 10010:产生利息, 10011:提现,"
@@ -157,9 +157,9 @@ public class IncomeRecordApiController extends BaseController {
 		}
 
 		try {
-			int count = incomeRecordService.findCountByProperties(properties.toArray(new String[properties.size()]),
+			Long count = incomeRecordService.findCountByProperties(properties.toArray(new String[properties.size()]),
 					values.toArray());
-			return new YiwuJson<>(new Integer(count));
+			return new YiwuJson<>(count);
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}

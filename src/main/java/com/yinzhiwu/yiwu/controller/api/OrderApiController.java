@@ -47,10 +47,10 @@ public class OrderApiController {
 	}
 
 	@GetMapping(value = "/count")
-	public YiwuJson<Integer> findCount(int customerId) {
+	public YiwuJson<Long> findCount(int customerId) {
 		try {
-			int count = orderYzwService.findCountByProperty("customer.id", customerId);
-			return new YiwuJson<>(new Integer(count));
+			Long count = orderYzwService.findCountByProperty("customer.id", customerId);
+			return new YiwuJson<>(count);
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}

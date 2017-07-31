@@ -16,9 +16,9 @@ public interface IBaseService<T, PK extends Serializable> {
 
 	public List<T> findByProperty(String propertyName, Object value);
 
-	public int findCountByProperty(String propertyName, Object value);
+	public Long findCountByProperty(String propertyName, Object value);
 
-	public int findCountByProperties(String[] propertyNames, Object[] values) throws Exception;
+	public Long findCountByProperties(String[] propertyNames, Object[] values) throws Exception;
 
 	public List<T> findByProperties(String[] propertyNames, Object[] values) ;
 

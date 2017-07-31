@@ -9,7 +9,6 @@ import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 @Repository
 public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> implements AppointmentYzwDao {
@@ -17,13 +16,12 @@ public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> 
 	@Override
 	public boolean isAppointed(CustomerYzw customer, LessonYzw lesson) {
 		int count = 0;
-		try {
-			count = findCountByProperties(new String[] { "lesson.id", "customer.id", "status" },
-					new Object[] { lesson.getId(), customer.getId(), AppointStatus.APPONTED });
-		} catch (Exception e) {
-			logger.error(e);
-		}
-		return count > 0 ? true : false;
+		count = findCountByProperties(
+				new String[] { "lesson.id", "customer.id", "status" },
+				new Object[] { lesson.getId(), customer.getId(), AppointStatus.APPONTED })
+				.intValue();
+			
+		return count > 0 ? true :false;
 	}
 
 	@Override

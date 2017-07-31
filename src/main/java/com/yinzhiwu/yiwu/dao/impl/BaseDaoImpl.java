@@ -91,6 +91,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			return (PK) getHibernateTemplate().save(entity);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -110,14 +111,13 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 
 	@Override
-	public int findCountByProperty(String propertyName, Object value) {
+	public Long findCountByProperty(String propertyName, Object value) {
 		Assert.hasText(propertyName, "属性名不能为空");
 		
 		String hql = "SELECT COUNT(*) FROM " + entityClass.getSimpleName() + " WHERE " + propertyName + " =:property";
 		return getSession().createQuery(hql, Long.class)
 				.setParameter("property", value)
-				.getSingleResult()
-				.intValue();
+				.getSingleResult();
 	}
 
 
@@ -137,7 +137,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
 		Root<T> root = criteria.from(entityClass);
 		criteria.select(root);
-		int totalSize = findCount();
+		int totalSize = findCount().intValue();
 		return findPageByCriteria(criteria, pageNo, pageSize, totalSize);
 	}
 
@@ -200,11 +200,10 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 
 	@Override
-	public int findCount() {
+	public Long findCount() {
 		String hql = "SELECT COUNT(*) FROM " + entityClass.getSimpleName();
 		return getSession().createQuery(hql, Long.class)
-				.getSingleResult()
-				.intValue();
+				.getSingleResult();
 		
 	}
 
@@ -239,7 +238,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 
 	@Override
-	public int findCountByProperties(String[] propertyNames, Object[] values) {
+	public Long findCountByProperties(String[] propertyNames, Object[] values) {
 		if (propertyNames.length != values.length) {
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
@@ -262,7 +261,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			 query.setParameter(properties[j], values[j]);
 		 }
 		 
-		 return query.getSingleResult().intValue();
+		 return query.getSingleResult();
 	}
 
 	@Override
@@ -291,7 +290,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		// countCriteria.where(predicate);
 		// Long totalSize =
 		// getSession().createQuery(countCriteria).getSingleResult();
-		int totalSize = findCountByProperties(propertyNames, values);
+		int totalSize = findCountByProperties(propertyNames, values).intValue();
 
 		return findPageByCriteria(criteria, pageNo, pageSize, totalSize);
 	}
@@ -363,7 +362,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 
 		if (pageNo <= 0) pageNo = 1;
 		if (pageSize <= 0) pageSize = PageBean.DEFAULT_PAGE_SIZE;
-		int totalRecords = findCountByHql(_generateFindCountHql(hql), namedParams, values);
+		int totalRecords = findCountByHqlWithParameters(_generateFindCountHql(hql), namedParams, values);
 		if (totalRecords == 0)
 			return new PageBean<>(pageSize, pageNo, totalRecords, new ArrayList<>());
 
@@ -383,8 +382,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 	
 
-	private int findCountByHql(String hql, String[] namedParams, Object[] values) {
-		Query<Integer> query = getSession().createQuery(hql, Integer.class);
+	private int findCountByHqlWithParameters(String hql, String[] namedParams, Object[] values) {
+		Query<Long> query = getSession().createQuery(hql, Long.class);
 		if (namedParams != null && namedParams.length > 0) {
 			if (namedParams.length != values.length)
 				throw new IllegalArgumentException("the size of namedparams should equal to the size of values");
@@ -392,7 +391,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 				query.setParameter(namedParams[i], values[i]);
 			}
 		}
-		return query.getSingleResult();
+		return query.getSingleResult().intValue();
 	}
 
 	public int findCountByHql(String hql) {

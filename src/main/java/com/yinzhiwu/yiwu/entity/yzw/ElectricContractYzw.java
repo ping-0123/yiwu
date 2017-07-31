@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.AttributeConverter;
@@ -22,7 +23,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.enums.Gender;
-import com.yinzhiwu.yiwu.util.NumberToCN;
 
 @Entity
 @Table(name = "velectric_contract")
@@ -100,10 +100,10 @@ public class ElectricContractYzw {
 
 	// 大写金额
 	@Column(name = "uppcaseAmount")
-	private String uppercaseAmount;
+	private BigDecimal uppercaseAmount;
 
 	// 小写金额
-	private String lowercaseAmount;
+	private BigDecimal lowercaseAmount;
 
 	private Date payedDate;
 
@@ -165,8 +165,8 @@ public class ElectricContractYzw {
 		this.promotionPrice	= order.getPayedAmount();
 		this.rangeOfApplication=contract.getValidStoreIds();
 		this.supplementalInstruction = order.getComments();
-		this.uppercaseAmount = NumberToCN.number2CNMontrayUnit(order.getPayedAmount());
-		this.lowercaseAmount = String.valueOf(order.getPayedAmount());
+		this.uppercaseAmount = BigDecimal.valueOf(order.getPayedAmount());
+		this.lowercaseAmount = BigDecimal.valueOf(order.getPayedAmount());
 		this.payedDate		= order.getPayedDate();
 		//TODO
 //		this.payedMethod;
@@ -270,11 +270,11 @@ public class ElectricContractYzw {
 		return supplementalInstruction;
 	}
 
-	public String getUppercaseAmount() {
+	public BigDecimal getUppercaseAmount() {
 		return uppercaseAmount;
 	}
 
-	public String getLowercaseAmount() {
+	public BigDecimal getLowercaseAmount() {
 		return lowercaseAmount;
 	}
 
@@ -406,11 +406,11 @@ public class ElectricContractYzw {
 		this.supplementalInstruction = supplementalInstruction;
 	}
 
-	public void setUppercaseAmount(String uppercaseAmount) {
+	public void setUppercaseAmount(BigDecimal uppercaseAmount) {
 		this.uppercaseAmount = uppercaseAmount;
 	}
 
-	public void setLowercaseAmount(String lowercaseAmount) {
+	public void setLowercaseAmount(BigDecimal lowercaseAmount) {
 		this.lowercaseAmount = lowercaseAmount;
 	}
 

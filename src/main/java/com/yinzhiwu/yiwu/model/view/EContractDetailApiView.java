@@ -5,8 +5,8 @@ import java.util.Date;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
+import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 public class EContractDetailApiView {
@@ -98,8 +98,8 @@ public class EContractDetailApiView {
 		this.promotionPrice = e.getPromotionPrice();
 		this.rangeOfApplication = e.getRangeOfApplication();
 		this.supplementalInstruction = e.getSupplementalInstruction();
-		this.uppercaseAmount = e.getUppercaseAmount();
-		this.lowercaseAmount = e.getLowercaseAmount();
+		this.uppercaseAmount = String.valueOf(e.getUppercaseAmount());
+		this.lowercaseAmount = String.valueOf(e.getLowercaseAmount());
 		this.payedDate = e.getPayedDate();
 		this.payedMethod = e.getPayedMethod();
 		this.depositAmount = e.getDepositAmount();

@@ -9,7 +9,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -142,8 +141,10 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				if(dept != null && dept.getName() != null && dept.getName().endsWith("店"));
 					distributer.setFollowedByStore(dept);
 			}
-			distributer.setCustomer(customer);
+		}else {
+			customer = new CustomerYzw(distributer);
 		}
+		distributer.setCustomer(customer);
 		
 		/**
 		 * associate with employee 
@@ -318,9 +319,15 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				v.setSumBrokerageIncome(income.getAccumulativeIncome());
 				v.setSumShareTweetTimes(shareTweeetEventDao.findShareTweetTimes(income.getDistributer().getId()));
 				v.setSumMemberCount(
-						distributerDao.findCountByProperty("superDistributer.id", income.getDistributer().getId()));
+						distributerDao.findCountByProperty(
+								"superDistributer.id", 
+								income.getDistributer().getId())
+						.intValue());
 				v.setSumOrderCount(
-						orderDao.findCountByProperty("customer.id", income.getDistributer().getCustomer().getId()));
+						orderDao.findCountByProperty(
+								"customer.id", 
+								income.getDistributer().getCustomer().getId())
+						.intValue());
 				v.setHeadIconUrl(_getHeadIconUrl(income.getDistributer().getHeadIconName()));
 			} catch (Exception e) {
 				logger.error(e);

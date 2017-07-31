@@ -80,7 +80,58 @@ public class CustomerYzw extends BaseYzwEntity {
 		}
 		
 	}
+	
+	public enum MemberStatus{
+		MEMBER("会员"),
+		POTENTIAL("潜在"),
+		LOST("流失"),
+		FORBIDDEN("禁用");
+		
+		private final String status;
 
+		public String getStatus() {
+			return status;
+		}
+		
+		private MemberStatus(String status){
+			this.status = status;
+		}
+		
+		public static MemberStatus fromStatus(String status){
+			switch (status) {
+			case "会员":
+				return MemberStatus.MEMBER;
+			case "潜在":
+				return MemberStatus.POTENTIAL;
+			case "流失":
+				return LOST;
+			case "禁用":
+				return FORBIDDEN;
+			default:
+				throw new UnsupportedOperationException(status + "not supported for enum MemberStatus");
+			}
+		}
+	}
+
+	@Converter
+	public static class MemberStatusCoverter implements AttributeConverter<MemberStatus, String>{
+
+		@Override
+		public String convertToDatabaseColumn(MemberStatus attribute) {
+			if(attribute == null)
+				return null;
+			return attribute.getStatus();
+		}
+
+		@Override
+		public MemberStatus convertToEntityAttribute(String dbData) {
+			if(dbData== null || "".equals(dbData.trim()))
+				return null;
+			return MemberStatus.fromStatus(dbData);
+		}
+		
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -93,8 +144,9 @@ public class CustomerYzw extends BaseYzwEntity {
 	@Column(length = 32, name = "audit_child")
 	private CustomerAgeType customerAgeType;
 
+	@Convert(converter=MemberStatusCoverter.class)
 	@Column(length = 32)
-	private String isMember;
+	private MemberStatus isMember;
 
 	@Column(length = 32)
 	private String memberCard;
@@ -176,7 +228,7 @@ public class CustomerYzw extends BaseYzwEntity {
 			this.customerAgeType = CustomerAgeType.ADULT;
 		else
 			this.customerAgeType = CustomerAgeType.CHILDREN;
-		this.isMember = "潜在";
+		this.isMember = MemberStatus.POTENTIAL;
 		this.name = d.getName();
 		this.gender = d.getGender();
 		this.mobilePhone = d.getPhoneNo();
@@ -195,7 +247,7 @@ public class CustomerYzw extends BaseYzwEntity {
 	}
 
 
-	public String getIsMember() {
+	public MemberStatus getIsMember() {
 		return isMember;
 	}
 
@@ -295,7 +347,7 @@ public class CustomerYzw extends BaseYzwEntity {
 		this.salesman = salesman;
 	}
 
-	public void setIsMember(String isMember) {
+	public void setIsMember(MemberStatus isMember) {
 		this.isMember = isMember;
 	}
 
