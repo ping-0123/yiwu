@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.util.Calendar;
 import java.util.Date;
@@ -239,7 +240,7 @@ public class OrderYzw extends BaseYzwEntity {
 		contract.setStart(calendar.getTime());
 		calendar.add(Calendar.MONTH, product.getUsefulLife());
 		contract.setEnd(calendar.getTime());
-		contract.setRemainTimes(product.getUsefulTimes());
+		contract.setRemainTimes(BigDecimal.valueOf(product.getUsefulTimes()));
 		if ("成人".equals(cust.getAddress())) {
 			contract.setType(CourseType.OPENED);
 			contract.setSubType(SubCourseType.OPEN_B);

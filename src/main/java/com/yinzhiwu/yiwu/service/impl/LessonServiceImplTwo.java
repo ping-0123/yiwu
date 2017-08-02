@@ -202,33 +202,25 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer> imple
 		view.setOrderInCourse(lessonDao.findOrderInCourse(l));
 
 		// 添加刷卡状态
-		if ((l.getLessonDate().compareTo(CalendarUtil.getTodayBegin().getTime()) >= 0)) {
+		if (l.getActualTeacherId() == null || l.getActualTeacherId() <= 0) {
 			if ("未审核".equals(l.getLessonStatus()) || l.getLessonDate() == null || "".equals(l.getLessonStatus())) {
-				view.setCheckedInStatus(CheckedInStatus.UN_CHECKED);
+				view.setCheckedInStatus(CheckedInStatus.NON_CHECKABLE);
 			} else
-				view.setCheckedInStatus(CheckedInStatus.UN_KNOWN);
-		}
-
-			Date checkedInTime = checkInsDao.findByProperties(new String[] { "lessonId", "teacherId" },
-					new Object[] { l.getLessonId().toString(), l.getActualTeacherId() }).get(0).getCreateTime();
-			logger.debug("start test checkin time of lesson" + l.getLessonId() + " " + l.getLessonDesc());
-			logger.debug("the time of coach check in :" + checkedInTime);
-			Calendar end = Calendar.getInstance();
-			end.setTime(l.getLessonDate());
-			Calendar endTime = Calendar.getInstance();
-			endTime.setTime(l.getEndTime());
-			end.set(end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DAY_OF_MONTH),
-					endTime.get(Calendar.HOUR_OF_DAY), endTime.get(Calendar.MINUTE), endTime.get(Calendar.SECOND));
-			// end.setTimeInMillis(l.getLessonDate().getTime() +
-			// l.getEndTime().getTime());
-			logger.debug("lesson date is: " + l.getLessonDate());
-			logger.debug("lesson end time is " + l.getEndTime());
-			logger.debug("The end Time of lesson:" + end.getTime());
-			// 如果刷卡时间比课程结束时间大 则是补刷
-			if (checkedInTime.compareTo(end.getTime()) >= 0) {
+				view.setCheckedInStatus(CheckedInStatus.UN_CHECKED);
+		}else{
+			
+			Date checkedInTime = checkInsDao.findByProperties(
+					new String[] { "lessonId", "teacherId" },
+					new Object[] { l.getLessonId().toString(), l.getActualTeacherId() })
+					.get(0)
+					.getCreateTime();
+			Date lessonStart = l.getStartDateTime();
+			// 如果刷卡时间比上课时间大 则是补刷
+			if (checkedInTime.compareTo(lessonStart) >= 0) {
 				view.setCheckedInStatus(CheckedInStatus.PATCHED);
 			} else
 				view.setCheckedInStatus(CheckedInStatus.CHECKED);
+		}
 
 		return view;
 	}

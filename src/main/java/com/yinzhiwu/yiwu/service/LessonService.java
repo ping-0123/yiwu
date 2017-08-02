@@ -12,4 +12,5 @@ public interface LessonService extends IBaseService<Lesson, Integer> {
 	public List<LessonList> findLessonWeekList(int storeId, String courseType, String teacherName, String danceCatagory,
 			Date date, String wechat);
 
+
 }

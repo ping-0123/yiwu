@@ -34,7 +34,7 @@ public class AppointmentYzw {
 			case "取消":
 				return AppointStatus.UN_APOINTED;
 			default:
-				throw new UnsupportedOperationException(status + "is not supported");
+				throw new UnsupportedOperationException(status + "is not supported for enum AppointStatus");
 			}
 		}
 

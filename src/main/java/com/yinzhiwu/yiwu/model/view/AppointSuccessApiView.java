@@ -6,6 +6,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.income.AbstractAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 
@@ -19,7 +20,7 @@ public class AppointSuccessApiView {
 	private String storeName;
 	private String lessonName;
 	private String danceName;
-	private String courseType;
+	private SubCourseType subCourseType;
 	private String coachName;
 	@JsonFormat(pattern = "yyyy年MM月dd日")
 	private Date lessonDate;
@@ -51,7 +52,7 @@ public class AppointSuccessApiView {
 				this.lessonName = lesson.getName();
 				if (lesson.getCourse() != null)
 					this.danceName = lesson.getCourse().getDanceDesc();
-				this.courseType = lesson.getSubCourseType();
+				this.subCourseType = lesson.getSubCourseType();
 				this.coachName = lesson.getDueTeacherName();
 				this.lessonDate = lesson.getLessonDate();
 				this.startTime = lesson.getStartTime();
@@ -68,7 +69,7 @@ public class AppointSuccessApiView {
 	}
 
 	public AppointSuccessApiView(Integer times, Float exp, String city, String storeName, String lessonName,
-			String danceName, String courseType, String coachName, Date lessonDate, Time startTime, Time endTime,
+			String danceName, SubCourseType subCourseType, String coachName, Date lessonDate, Time startTime, Time endTime,
 			String contractNo, Date contractStartDate, Date contractEndDate, Integer validityTimes,
 			Integer remainTimes) {
 		super();
@@ -78,7 +79,7 @@ public class AppointSuccessApiView {
 		this.storeName = storeName;
 		this.lessonName = lessonName;
 		this.danceName = danceName;
-		this.courseType = courseType;
+		this.subCourseType = subCourseType;
 		this.coachName = coachName;
 		this.lessonDate = lessonDate;
 		this.startTime = startTime;
@@ -118,9 +119,6 @@ public class AppointSuccessApiView {
 		return danceName;
 	}
 
-	public String getCourseType() {
-		return courseType;
-	}
 
 	public String getCoachName() {
 		return coachName;
@@ -182,9 +180,6 @@ public class AppointSuccessApiView {
 		this.danceName = danceName;
 	}
 
-	public void setCourseType(String courseType) {
-		this.courseType = courseType;
-	}
 
 	public void setCoachName(String coachName) {
 		this.coachName = coachName;
@@ -228,6 +223,14 @@ public class AppointSuccessApiView {
 
 	public void setRemainDays(Integer remainDays) {
 		this.remainDays = remainDays;
+	}
+
+	public SubCourseType getSubCourseType() {
+		return subCourseType;
+	}
+
+	public void setSubCourseType(SubCourseType subCourseType) {
+		this.subCourseType = subCourseType;
 	}
 
 }

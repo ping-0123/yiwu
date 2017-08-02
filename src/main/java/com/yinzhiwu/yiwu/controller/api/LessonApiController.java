@@ -5,15 +5,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.Connotation;
@@ -33,8 +32,8 @@ import io.swagger.annotations.ApiParam;
  * @date 2017-03-20
  */
 
-@CrossOrigin
-@Controller
+@CrossOrigin(value="*")
+@RestController
 @RequestMapping(value = "api/lesson")
 public class LessonApiController extends BaseController {
 
@@ -91,11 +90,12 @@ public class LessonApiController extends BaseController {
 		return new YiwuJson<>("不存在前" + lastN + "课时");
 	}
 
-	@RequestMapping(value = "weeklist", method = { RequestMethod.POST, RequestMethod.GET })
-	@ResponseBody
-	public Object getLessonWeekList(@RequestParam int storeId, @RequestParam String courseType,
-			@RequestParam String teacherName, @RequestParam String danceCatagory, @RequestParam Date date,
-			@RequestParam String weChat) {
+	@RequestMapping(value = "/weeklist",method={RequestMethod.GET,RequestMethod.POST})
+	@ApiOperation(value="获取一周课表")
+	public Object getLessonWeekList(
+			 int storeId,  String courseType,
+			 String teacherName,  String danceCatagory,  Date date,
+			 String weChat) {
 
 		if (date == null) {
 			date = new Date();
@@ -103,7 +103,7 @@ public class LessonApiController extends BaseController {
 		return lessonService.findLessonWeekList(storeId, courseType, teacherName, danceCatagory, date, weChat);
 	}
 
-	@RequestMapping(value = "arrangePriviteLesson", method = { RequestMethod.POST })
+	@RequestMapping(value = "/arrangePriviteLesson", method = { RequestMethod.POST })
 	public void arrangePriviteLesson(@ModelAttribute Lesson lesson) {
 		lessonService.save(lesson);
 	}

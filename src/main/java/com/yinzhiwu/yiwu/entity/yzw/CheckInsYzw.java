@@ -10,11 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import com.yinzhiwu.yiwu.entity.income.CheckInEvent;
 
 @Entity
 @Table(name = "vcheck_ins")
@@ -59,8 +56,8 @@ public class CheckInsYzw extends BaseYzwEntity {
 	@Column
 	private String uncallrollReason;
 
-	@OneToOne(mappedBy = "checkIn")
-	private CheckInEvent event;
+//	@OneToOne(mappedBy = "checkIn", fetch=FetchType.LAZY)
+//	private CheckInEvent event;
 
 	public CheckInsYzw() {
 	}
@@ -158,12 +155,12 @@ public class CheckInsYzw extends BaseYzwEntity {
 		this.uncallrollReason = uncallrollReason;
 	}
 
-	public CheckInEvent getEvent() {
-		return event;
-	}
-
-	public void setEvent(CheckInEvent event) {
-		this.event = event;
-	}
+//	public CheckInEvent getEvent() {
+//		return event;
+//	}
+//
+//	public void setEvent(CheckInEvent event) {
+//		this.event = event;
+//	}
 
 }

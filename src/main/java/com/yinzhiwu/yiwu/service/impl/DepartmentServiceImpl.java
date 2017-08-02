@@ -13,8 +13,8 @@ import com.yinzhiwu.yiwu.dao.DepartmentDao;
 import com.yinzhiwu.yiwu.dao.StoreInfoDao;
 import com.yinzhiwu.yiwu.entity.StoreInfo;
 import com.yinzhiwu.yiwu.entity.yzwOld.Department;
-import com.yinzhiwu.yiwu.model.Store;
 import com.yinzhiwu.yiwu.model.view.DepartmentApiView;
+import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.service.DepartmentService;
 
 @Service
@@ -61,11 +61,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public List<Store> findStoreInfosByDistrictId(int districtId) {
+	public List<StoreApiView> findStoreInfosByDistrictId(int districtId) {
 		List<Department> deptList = departmentDao.findStoresByDistrictId(districtId);
-		List<Store> storeList = new ArrayList<>();
+		List<StoreApiView> storeList = new ArrayList<>();
 		for (Department d : deptList) {
-			Store s = new Store();
+			StoreApiView s = new StoreApiView();
 			s.setId(d.getId());
 			s.setName(d.getDeptName());
 			try {
@@ -83,21 +83,21 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public Store findStoreInfoById(int id) {
+	public StoreApiView findStoreInfoById(int id) {
 		Department dept = departmentDao.findById(id);
 		StoreInfo sf = storeInfoDao.get(id);
-		Store s = new Store(sf);
+		StoreApiView s = new StoreApiView(sf);
 		s.setName(dept.getDeptName());
 		return s;
 
 	}
 
 	@Override
-	public List<Store> findStoreByCities(String city) {
+	public List<StoreApiView> findStoreByCities(String city) {
 		List<Department> deptList = departmentDao.findByProperty("city", city);
-		List<Store> storeList = new ArrayList<>();
+		List<StoreApiView> storeList = new ArrayList<>();
 		for (Department d : deptList) {
-			Store s = new Store(d);
+			StoreApiView s = new StoreApiView(d);
 			storeList.add(s);
 		}
 		return storeList;
@@ -105,11 +105,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public List<Store> getAllStores() {
+	public List<StoreApiView> getAllStores() {
 		List<Department> depts = departmentDao.findAllStores();
-		List<Store> stores = new ArrayList<>();
+		List<StoreApiView> stores = new ArrayList<>();
 		for (Department dept : depts) {
-			stores.add(new Store(dept));
+			stores.add(new StoreApiView(dept));
 		}
 
 		return stores;

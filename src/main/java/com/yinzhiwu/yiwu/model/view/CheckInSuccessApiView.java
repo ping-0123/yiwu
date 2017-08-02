@@ -13,6 +13,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 
 public class CheckInSuccessApiView {
 
@@ -24,7 +25,7 @@ public class CheckInSuccessApiView {
 	private String storeName;
 	private String lessonName;
 	private String danceName;
-	private String courseType;
+	private CourseType courseType;
 	private String coachName;
 	@JsonFormat(pattern = "yyyy年MM月dd日")
 	private Date lessonDate;
@@ -168,7 +169,7 @@ public class CheckInSuccessApiView {
 		return lessonName;
 	}
 
-	public String getCourseType() {
+	public CourseType getCourseType() {
 		return courseType;
 	}
 
@@ -176,7 +177,7 @@ public class CheckInSuccessApiView {
 		this.lessonName = lessonName;
 	}
 
-	public void setCourseType(String courseType) {
+	public void setCourseType(CourseType courseType) {
 		this.courseType = courseType;
 	}
 
@@ -197,7 +198,7 @@ public class CheckInSuccessApiView {
 	}
 
 	public CheckInSuccessApiView(Integer times, Float exp, String city, String storeName, String lessonName,
-			String courseType, String coachName, Date lessonDate, Time startTime, Time endTime, String contractNo,
+			CourseType courseType, String coachName, Date lessonDate, Time startTime, Time endTime, String contractNo,
 			Date contractStartDate, Date contractEndDate, Integer validityTimes, Integer remainTimes) {
 		super();
 		this.times = times;

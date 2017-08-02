@@ -12,8 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "vclassroom")
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 public class ClassRoomYzw extends BaseYzwEntity {
 
 	/**
@@ -22,7 +26,7 @@ public class ClassRoomYzw extends BaseYzwEntity {
 	private static final long serialVersionUID = -5491370511452100257L;
 
 	@Id
-	@Column(length = 32, name = "roomId")
+	@Column(length = 32, name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String id;
 

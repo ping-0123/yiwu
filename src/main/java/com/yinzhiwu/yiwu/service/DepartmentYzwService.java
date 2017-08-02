@@ -3,6 +3,8 @@ package com.yinzhiwu.yiwu.service;
 import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.model.view.DepartmentApiView;
+import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.web.purchase.dto.StoreDto;
 
 /**
@@ -16,5 +18,8 @@ public interface DepartmentYzwService extends IBaseService<DepartmentYzw, Intege
 	List<StoreDto> findAllStores(int employeeId);
 
 	List<StoreDto> findVisableStoresByEmployee(int employeeId);
+
+	List<DepartmentApiView> findAllOperationDistricts();
+	List<StoreApiView> findStoreApiViewsUnderOrganization(Integer districtId);
 
 }

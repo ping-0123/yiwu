@@ -20,10 +20,11 @@ import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.entity.income.UnAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.model.view.AppointSuccessApiView;
 import com.yinzhiwu.yiwu.service.AppointmentEventService;
 import com.yinzhiwu.yiwu.service.IncomeEventService;
@@ -65,30 +66,35 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 
 	@Override
 	public AppointSuccessApiView saveAppoint(int distributerId, int lessonId) throws Exception {
+		
 		Distributer distributer = distributerDao.get(distributerId);
 		LessonYzw lesson = lessonDao.get(lessonId);
-
 		CustomerYzw customer = distributer.getCustomer();
+		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
+				customer.getId(),
+				lesson.getSubCourseType());
+
 		if (isAppointed(customer, lesson))
 			throw new Exception("您已预约课程：" + lesson.getName() + "无须重复预约");
-		// 判断卡权益是否可以预约
-		if (!isAppointable(customer, lesson))
-			throw new Exception("您不能预约课程" + lesson.getName() + "请购买音之舞\"" + lesson.getSubCourseType() + "\"类舞蹈卡");
-		// 判断当前时间是否可以预约
+		//仅开放式课程可以预约
+		if(lesson.getCourseType() != CourseType.OPENED)
+			throw new Exception("仅开放式课程可以预约");
+		//判断上课时间是否已过
 		if ((new Date()).after(lesson.getStartDateTime()))
-			throw new Exception("课程已经开始， 请直接去上课吧， 下次一定记得预约哦");
+			throw new Exception("上课时间已过， 不能预约");
+		// 判断卡权益是否可以预约
+		//TODO 有漏洞, 客户预约后，剩余次数并没有减掉，而是要上完课签到之后第二天才能减掉  也就是说剩余次数为1可以预约很多次课.
+		if (contract == null)
+			throw new Exception("您不能预约课程" + lesson.getName() + "请购买音之舞\"" + lesson.getSubCourseType() + "\"类舞蹈卡");
+		
+		
 		AppointmentYzw appoint = new AppointmentYzw(lesson, customer);
 		appointmentDao.save(appoint);
-		AppointmentEvent event = new AppointmentEvent(distributer, 1f, lesson);
-		save(event);
+		AppointmentEvent event = new AppointmentEvent(distributer,  lesson);
+		this.save(event);
 		// return
 		IncomeRecord record = incomeRecordDao.findExpProducedByEvent(event.getId(), IncomeType.EXP);
-		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(customer.getId(),
-				lesson.getSubCourseType());
-		if (contract != null) {
-			return new AppointSuccessApiView(event, contract, record.getIncomeValue());
-		}
-		return null;
+		return new AppointSuccessApiView(event, contract, record.getIncomeValue());
 	}
 
 	@Override
@@ -136,9 +142,10 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	 * @return
 	 */
 	private boolean isAppointable(CustomerYzw customer, LessonYzw lesson) {
-		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(customer.getId(),
+		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
+				customer.getId(),
 				lesson.getSubCourseType());
-		return (contract != null) ? true : false;
+		return contract != null;
 	}
 
 }

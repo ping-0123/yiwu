@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,8 +14,11 @@ import org.springframework.stereotype.Repository;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
+import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -134,18 +138,37 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	}
 
 	@Override
-	public Contract find_valid_contract_by_customer_by_subCourseType(int customerId, String subCourseType) {
+	public Contract find_valid_contract_by_customer_by_subCourseType(int customerId, SubCourseType subCourseType) {
 		StringBuilder hql = new StringBuilder();
-		hql.append(
-				"select t1.contract from OrderYzw t1 where t1.contract.status='已审核' and t1.contract.subType=:subCourseType");
-		hql.append(" and t1.contract.remainTimes>=1 and t1.contract.end >= :currdate");
-		hql.append(" order by contract.end");
-		@SuppressWarnings("unchecked")
-		List<Contract> contracts = (List<Contract>) getHibernateTemplate().findByNamedParam(hql.toString(),
-				new String[] { "subCourseType", "currdate" }, new Object[] { subCourseType, new Date() });
-		if (contracts == null || contracts.size() == 0)
+		hql.append(" SELECT t1.contract");
+		hql.append(" FROM OrderYzw t1");
+		hql.append(" WHERE t1.contract.status = :contractStatus");
+		hql.append(" AND t1.customer.id=:customerId");
+		hql.append(" AND t1.contract.subType= :subCourseType");
+		hql.append(" AND t1.contract.remainTimes>=:remainTimes");
+		hql.append(" AND t1.contract.end >=:curdate");
+		hql.append(" ORDER BY t1.contract.end");
+//		hql.append(
+//				"select t1.contract from OrderYzw t1 where t1.contract.status='已审核' and t1.contract.subType=:subCourseType");
+//		hql.append(" and t1.contract.remainTimes>=1 and t1.contract.end >= :currdate");
+//		hql.append(" order by contract.end");
+//		@SuppressWarnings("unchecked")
+//		List<Contract> contracts = (List<Contract>) getHibernateTemplate().findByNamedParam(hql.toString(),
+//				new String[] { "subCourseType", "currdate" }, new Object[] { subCourseType, new Date() });
+//		if (contracts == null || contracts.size() == 0)
+//			return null;
+		List<Contract> contracts =   getSession().createQuery(hql.toString(), Contract.class)
+				.setParameter("contractStatus", ContractStatus.CHECKED)
+				.setParameter("customerId", 	customerId)
+				.setParameter("subCourseType", 	subCourseType)
+				.setParameter("remainTimes", 	BigDecimal.valueOf(1))
+				.setParameter("curdate", 		new Date())
+				.getResultList();
+		if(contracts != null && contracts.size()> 0)
+			return contracts.get(0);
+		else 
 			return null;
-		return contracts.get(0);
+		
 	}
 
 	@Override
@@ -156,18 +179,30 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		return orders.get(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<OrderYzw> findAllLastDayOrders() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_MONTH, -1);
-		String hql = "FROM OrderYzw WHERE payedDate BETWEEN :start and :end and product.name like '%卡%' ";
-		logger.debug("start is " + CalendarUtil.getDayBegin(calendar).getTime());
-		logger.debug("end is " + CalendarUtil.getDayEnd(calendar).getTime());
-		List<OrderYzw> orders = (List<OrderYzw>) getHibernateTemplate().findByNamedParam(hql,
-				new String[] { "start", "end" }, new Object[] { CalendarUtil.getDayBegin(calendar).getTime(),
-						CalendarUtil.getDayEnd(calendar).getTime() });
-		if (orders == null || orders.size() == 0)
+		calendar.add(Calendar.DAY_OF_MONTH, -2);
+		StringBuilder hql = new StringBuilder();
+		hql.append("FROM OrderYzw t1");
+		hql.append(" WHERE t1.payedDate BETWEEN :start AND :end");
+		hql.append(" AND t1.product.contractType.contractType in :contractTypes");
+//		String hql = "FROM OrderYzw WHERE payedDate BETWEEN :start and :end and product.name like '%卡%' ";
+		if(logger.isDebugEnabled()){
+			logger.debug("start is " + CalendarUtil.getDayBegin(calendar).getTime());
+			logger.debug("end is " + CalendarUtil.getDayEnd(calendar).getTime());
+		}
+//		List<OrderYzw> orders = (List<OrderYzw>) getHibernateTemplate().findByNamedParam(hql,
+//				new String[] { "start", "end" }, new Object[] { CalendarUtil.getDayBegin(calendar).getTime(),
+//						CalendarUtil.getDayEnd(calendar).getTime() });
+		
+		List<OrderYzw> orders = getSession().createQuery(hql.toString(), OrderYzw.class)
+				.setParameter("start", 			CalendarUtil.getDayBegin(calendar).getTime())
+				.setParameter("end", 			CalendarUtil.getDayEnd(calendar).getTime())
+				.setParameter("contractTypes", 	CourseType.getEffectiveCourseTypes())
+				.getResultList();
+		
+		if (orders == null)
 			return new ArrayList<>();
 		return orders;
 	}

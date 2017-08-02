@@ -25,10 +25,11 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	@Override
 	public Integer save(Distributer entity) {
 		int id = getNextId();
-		logger.debug(id);
+		if(logger.isDebugEnabled())
+			logger.debug("new Id for Distributer is : " + id);
 		entity.setId(id);
 		entity.setPassword(SecurityUtil.encryptByMd5(entity.getPassword()));
-		if(entity.getMemberId() == null)
+		if(entity.getMemberId() == null || "".equals(entity.getMemberId().trim()))
 			entity.setMemberId(GeneratorUtil.generateMemberId(id));
 		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
 		return super.save(entity);
@@ -37,7 +38,8 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	private int getNextId() {
 		String sql = "SELECT  AUTO_INCREMENT FROM information_schema.tables WHERE table_name ='yiwu_distributer'";
 		@SuppressWarnings({ "unchecked", "deprecation" })
-		List<Integer> ints = getSession().createNativeQuery(sql).addScalar("AUTO_INCREMENT", IntegerType.INSTANCE)
+		List<Integer> ints = getSession().createNativeQuery(sql)
+				.addScalar("AUTO_INCREMENT", IntegerType.INSTANCE)
 				.getResultList();
 		return ints.get(0).intValue();
 	}

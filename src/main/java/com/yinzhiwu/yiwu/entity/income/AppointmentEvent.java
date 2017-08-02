@@ -24,4 +24,9 @@ public class AppointmentEvent extends AbstractAppointmentEvent {
 		super(distributer, EventType.APPOINTMENT, param, lesson);
 	}
 
+	public AppointmentEvent(Distributer distributer, LessonYzw lesson) {
+		super(distributer, EventType.APPOINTMENT, 1f, lesson);
+		
+	}
+
 }

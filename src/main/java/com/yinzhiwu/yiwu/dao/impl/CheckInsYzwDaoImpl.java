@@ -116,4 +116,19 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 		return false;
 	}
 
+	@Override
+	public Date findCheckInTimeByProperties(Integer lessonId, Integer actualTeacherId) {
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT t1.createTime");
+		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" WHERE t1.lesson.id =:lessonId");
+		hql.append(" AND t1.teacher.id =:teacherId");
+		return  getSession().createQuery(hql.toString(), Date.class)
+				.setParameter("lessonId", lessonId)
+				.setParameter("teacherId", actualTeacherId)
+				.getResultList()
+				.get(0);
+	}
+
 }

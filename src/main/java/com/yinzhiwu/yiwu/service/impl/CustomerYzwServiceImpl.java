@@ -14,4 +14,12 @@ public class CustomerYzwServiceImpl extends BaseServiceImpl<CustomerYzw, Integer
 	public void setBaseDao(CustomerYzwDao customerYzwDao) {
 		super.setBaseDao(customerYzwDao);
 	}
+	
+	@Autowired private CustomerYzwDao customerYzwDao;
+
+	@Override
+	public CustomerYzw findByWechat(String wechat) {
+		return customerYzwDao.findByWeChat(wechat);
+	}
+
 }

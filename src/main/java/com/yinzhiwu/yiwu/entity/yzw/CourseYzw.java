@@ -24,10 +24,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "vcourse")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class CourseYzw extends BaseYzwEntity {
 
 	/**
@@ -51,6 +54,17 @@ public class CourseYzw extends BaseYzwEntity {
 			this.name = name;
 		}
 		
+		/**
+		 * 
+		 * @return 可以用于排课的课程类型
+		 */
+		public static List<CourseType>  getEffectiveCourseTypes(){
+			List<CourseType> types = new ArrayList<>();
+			types.add(CourseType.CLOSED);
+			types.add(CourseType.OPENED);
+			types.add(CourseType.PRIVATE);
+			return types;
+		}
 		public static CourseType fromName(String name){
 			switch (name) {
 				case "封闭式":

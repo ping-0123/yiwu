@@ -119,9 +119,9 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		/*
 		 * return
 		 */
-		checkIn.setEvent((CheckInEvent) event);
+//		checkIn.setEvent((CheckInEvent) event);
 		// OrderYzw order = orderDao.findByContractNO(checkIn.getContractNo());
-		return new CheckInSuccessApiView(checkIn.getEvent(), contract);
+		return new CheckInSuccessApiView((CheckInEvent) event, contract);
 	}
 
 }

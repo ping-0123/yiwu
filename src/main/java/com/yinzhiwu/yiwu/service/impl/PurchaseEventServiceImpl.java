@@ -53,7 +53,8 @@ public class PurchaseEventServiceImpl extends BaseServiceImpl<PurchaseEvent, Int
 	@Override
 	public void saveAllLastDayPurchaseEvents() {
 		List<OrderYzw> orders = orderDao.findAllLastDayOrders();
-		logger.debug("总共有多少订单" + orders.size());
+		if(logger.isDebugEnabled())
+			logger.debug("总共有多少订单" + orders.size());
 		for (OrderYzw order : orders) {
 			savePurchaseEvent(order);
 		}

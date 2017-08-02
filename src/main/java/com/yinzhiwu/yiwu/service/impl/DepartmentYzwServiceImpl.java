@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.EmployeeDepartmentYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.model.view.DepartmentApiView;
+import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
 import com.yinzhiwu.yiwu.web.purchase.dto.StoreDto;
 
@@ -61,6 +63,16 @@ public class DepartmentYzwServiceImpl extends BaseServiceImpl<DepartmentYzw, Int
 			dtos.add(new StoreDto(store));
 		}
 		return dtos;
+	}
+
+	@Override
+	public List<DepartmentApiView> findAllOperationDistricts() {
+		return departmentDao.findAllOperationDistricts();
+	}
+
+	@Override
+	public List<StoreApiView> findStoreApiViewsUnderOrganization(Integer districtId) {
+		return departmentDao.findStoreApiViewsUnderOrganization(districtId);
 	}
 	
 }

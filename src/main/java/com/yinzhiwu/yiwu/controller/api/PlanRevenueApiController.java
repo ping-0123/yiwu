@@ -24,8 +24,8 @@ import com.yinzhiwu.yiwu.entity.PlanRevenue;
 import com.yinzhiwu.yiwu.entity.type.ProductType;
 import com.yinzhiwu.yiwu.model.PlanRevenueApiModel;
 import com.yinzhiwu.yiwu.model.ReturnedJson;
-import com.yinzhiwu.yiwu.model.Store;
 import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.service.DepartmentService;
 import com.yinzhiwu.yiwu.service.PlanRevenueService;
 import com.yinzhiwu.yiwu.service.ProductTypeService;
@@ -140,9 +140,9 @@ public class PlanRevenueApiController {
 	}
 
 	@ModelAttribute("allStores")
-	public List<Store> getAllStores2() {
-		List<Store> stores = new ArrayList<>();
-		stores.add(new Store(0, "所有", "", ""));
+	public List<StoreApiView> getAllStores2() {
+		List<StoreApiView> stores = new ArrayList<>();
+		stores.add(new StoreApiView(0, "所有", "", ""));
 		stores.addAll(departmentService.getAllStores());
 		return stores;
 	}
@@ -156,8 +156,8 @@ public class PlanRevenueApiController {
 	}
 
 	@ModelAttribute("stores")
-	public List<Store> getAllStores() {
-		List<Store> stores = new ArrayList<>();
+	public List<StoreApiView> getAllStores() {
+		List<StoreApiView> stores = new ArrayList<>();
 		stores.addAll(departmentService.getAllStores());
 		return stores;
 	}

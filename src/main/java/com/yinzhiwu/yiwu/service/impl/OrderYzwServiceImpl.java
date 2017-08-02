@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -201,10 +202,10 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		contract.setStatus(ContractStatus.UN_PAYED);
 		if(dto.getUsefulTimes() == null){
 			contract.setValidityTimes(product.getUsefulTimes());
-			contract.setRemainTimes(product.getUsefulTimes());
+			contract.setRemainTimes(BigDecimal.valueOf(product.getUsefulTimes()));
 		}else{
 			contract.setValidityTimes(dto.getUsefulTimes());
-			contract.setRemainTimes(dto.getUsefulTimes());
+			contract.setRemainTimes(BigDecimal.valueOf(dto.getUsefulTimes()));
 		}
 		if(dto.getContractStartDate() == null)
 			contract.setStart(date);

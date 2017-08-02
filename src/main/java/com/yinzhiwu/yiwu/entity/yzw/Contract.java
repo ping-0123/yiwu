@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.AttributeConverter;
@@ -103,7 +104,7 @@ public class Contract {
 	private Date end;
 
 	@Column(name = "remain_times")
-	private Float remainTimes;
+	private BigDecimal remainTimes;
 
 	@Column(name = "product_type", length=32)
 	@Convert(converter=CourseYzw.CourseTypeConverter.class)
@@ -169,9 +170,6 @@ public class Contract {
 		this.end = end;
 	}
 
-	public void setRemainTimes(float remainTimes) {
-		this.remainTimes = remainTimes;
-	}
 
 	public void setType(CourseType type) {
 		this.type = type;
@@ -197,10 +195,6 @@ public class Contract {
 		this.validityTimes = validityTimes;
 	}
 
-	public void setRemainTimes(Float remainTimes) {
-		this.remainTimes = remainTimes;
-	}
-
 	public void setStatus(ContractStatus status) {
 		this.status = status;
 	}
@@ -213,8 +207,13 @@ public class Contract {
 		return validityTimes;
 	}
 
-	public Float getRemainTimes() {
+	public BigDecimal getRemainTimes() {
 		return remainTimes;
 	}
+
+	public void setRemainTimes(BigDecimal remainTimes) {
+		this.remainTimes = remainTimes;
+	}
+
 
 }

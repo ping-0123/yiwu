@@ -344,6 +344,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		if (model.getImage() != null && model.getImage().getSize() > 0) {
 			try {
 				fileName = fileService.upload(model.getImage());
+				distributer.setHeadIconName(fileName);
 			} catch (IllegalStateException e) {
 				logger.error(e);
 				return new YiwuJson<>("服务器内部原因，头像保存失败");

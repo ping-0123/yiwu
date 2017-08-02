@@ -213,6 +213,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
 		String[] properties = new String[propertyNames.length];
+		
 		StringBuilder builder = new StringBuilder();
 		builder.append("FROM " + entityClass.getSimpleName());
 		builder.append(" WHERE 1=1");
