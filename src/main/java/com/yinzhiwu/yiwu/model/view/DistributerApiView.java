@@ -42,10 +42,10 @@ public class DistributerApiView implements Serializable {
 
 	private String headIconUrl;
 	
-	@JsonFormat(pattern="yyyy-MM-dd", locale="GMT+8")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
 	private Date birthDay;
 
-	@JsonFormat(pattern = "yyyy-MM-dd", locale="GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date registerDate;
 
 	private float neededExpForUpdate;

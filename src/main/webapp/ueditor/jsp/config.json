@@ -6,36 +6,36 @@
     "imageCompressEnable": true,
     "imageCompressBorder": 1600,
     "imageInsertAlign": "none", 
-    "imageUrlPrefix": "http://192.168.0.115:8080/yiwu", 
-    "imagePathFormat": "/resources/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", 
+    "imageUrlPrefix": "http://yzw.chenksoft.com:8080/", 
+    "imagePathFormat": "../resources/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", 
 
     "scrawlActionName": "uploadscrawl", 
     "scrawlFieldName": "upfile", 
-    "scrawlPathFormat": "/resources/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", 
+    "scrawlPathFormat": "../resources/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", 
     "scrawlMaxSize": 2048000, 
-    "scrawlUrlPrefix": "http://localhost:8080/yiwu", 
+    "scrawlUrlPrefix": "http://yzw.chenksoft.com:8080/", 
     "scrawlInsertAlign": "none",
 
     
     "snapscreenActionName": "uploadimage", 
-    "snapscreenPathFormat": "/resources/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", 
-    "snapscreenUrlPrefix": "http://localhost:8080/yiwu", 
+    "snapscreenPathFormat": "../resources/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", 
+    "snapscreenUrlPrefix": "http://yzw.chenksoft.com:8080/", 
     "snapscreenInsertAlign": "none", 
 
     
     "catcherLocalDomain": ["127.0.0.1", "localhost", "img.baidu.com"],
     "catcherActionName": "catchimage", 
     "catcherFieldName": "source", 
-    "catcherPathFormat": "/resources/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", 
-    "catcherUrlPrefix": "http://localhost:8080/yiwu", 
+    "catcherPathFormat": "../resources/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", 
+    "catcherUrlPrefix": "http://yzw.chenksoft.com:8080/", 
     "catcherMaxSize": 2048000, 
     "catcherAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"], 
 
     
     "videoActionName": "uploadvideo", 
     "videoFieldName": "upfile", 
-    "videoPathFormat": "/resources/jsp/upload/video/{yyyy}{mm}{dd}/{time}{rand:6}", 
-    "videoUrlPrefix": "http://localhost:8080/yiwu", 
+    "videoPathFormat": "../resources/jsp/upload/video/{yyyy}{mm}{dd}/{time}{rand:6}", 
+    "videoUrlPrefix": "http://yzw.chenksoft.com:8080/", 
     "videoMaxSize": 102400000, 
     "videoAllowFiles": [
         ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
@@ -44,8 +44,8 @@
     
     "fileActionName": "uploadfile", 
     "fileFieldName": "upfile", 
-    "filePathFormat": "/resources/jsp/upload/file/{yyyy}{mm}{dd}/{time}{rand:6}", 
-    "fileUrlPrefix": "http://localhost:8080/yiwu", 
+    "filePathFormat": "../resources/jsp/upload/file/{yyyy}{mm}{dd}/{time}{rand:6}", 
+    "fileUrlPrefix": "http://yzw.chenksoft.com:8080/", 
     "fileMaxSize": 51200000, 
     "fileAllowFiles": [
         ".png", ".jpg", ".jpeg", ".gif", ".bmp",
@@ -57,16 +57,16 @@
 
     
     "imageManagerActionName": "listimage", 
-    "imageManagerListPath": "/resources/jsp/upload/image/", 
+    "imageManagerListPath": "../resources/jsp/upload/image/", 
     "imageManagerListSize": 20, 
-    "imageManagerUrlPrefix": "http://localhost:8080/yiwu", 
+    "imageManagerUrlPrefix": "http://yzw.chenksoft.com:8080/", 
     "imageManagerInsertAlign": "none", 
     "imageManagerAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"], 
 
     
     "fileManagerActionName": "listfile", 
-    "fileManagerListPath": "/resources/jsp/upload/file/", 
-    "fileManagerUrlPrefix": "http://localhost:8080/yiwu", 
+    "fileManagerListPath": "../resources/jsp/upload/file/", 
+    "fileManagerUrlPrefix": "http://yzw.chenksoft.com:8080/", 
     "fileManagerListSize": 20, 
     "fileManagerAllowFiles": [
         ".png", ".jpg", ".jpeg", ".gif", ".bmp",
