@@ -224,10 +224,12 @@ public class CustomerYzw extends BaseYzwEntity {
 	}
 
 	public CustomerYzw(Distributer d) {
-		if (d.getBirthday() != null && CalendarUtil.isAudit(d.getBirthday()))
-			this.customerAgeType = CustomerAgeType.ADULT;
-		else
-			this.customerAgeType = CustomerAgeType.CHILDREN;
+		if (d.getBirthday() != null){
+			if( CalendarUtil.isAudit(d.getBirthday()))
+				this.customerAgeType = CustomerAgeType.ADULT;
+			else
+				this.customerAgeType = CustomerAgeType.CHILDREN;
+		}
 		this.isMember = MemberStatus.POTENTIAL;
 		this.name = d.getName();
 		this.gender = d.getGender();
@@ -236,6 +238,9 @@ public class CustomerYzw extends BaseYzwEntity {
 		this.age = (int) CalendarUtil.getAge(this.getBirthday());
 		this.weChat = d.getWechatNo();
 		this.sourceOfCustomer = "微信";
+		this.salesman = d.getServer();
+		
+		this.init();
 	}
 
 	public Integer getId() {

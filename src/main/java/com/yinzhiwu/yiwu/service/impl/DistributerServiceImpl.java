@@ -104,14 +104,14 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		/**
 		 * set super proxy distributer
 		 */
-		if (StringUtils.hasLength(invitationCode))
-			try {
-				Distributer superDistributer = distributerDao.findByShareCode(invitationCode);
+		if (StringUtils.hasLength(invitationCode)){
+			Distributer superDistributer = distributerDao.findByShareCode(invitationCode);
+			if(superDistributer != null){
 				distributer.setSuperDistributer(superDistributer);
-			} catch (DataNotFoundException e) {
+				distributer.setServer(superDistributer.getEmployee());
+			}else
 				message = "无效的邀请码:" + invitationCode;
-				distributer.setSuperDistributer(null);
-			}
+		}
 
 		/**
 		 * set followed store
@@ -120,6 +120,21 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				DepartmentYzw store = departmentYzwDao.get(registerModel.getFollowedByStoreId());
 				distributer.setFollowedByStore(store);
 		}
+		
+		/**
+		 * associate with employee 
+		 */
+		EmployeeYzw emp =null;
+		try {
+			emp = employeeDao.findByPhoneNo(registerModel.getPhoneNo());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(emp != null){
+			distributer.setEmployee(emp);
+			distributer.setName(emp.getName());
+		}
+			
 
 		/**
 		 * associate with customer
@@ -146,20 +161,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		}
 		distributer.setCustomer(customer);
 		
-		/**
-		 * associate with employee 
-		 */
-		EmployeeYzw emp =null;
-		try {
-			emp = employeeDao.findByPhoneNo(registerModel.getPhoneNo());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if(emp != null){
-			distributer.setEmployee(emp);
-			distributer.setName(emp.getName());
-		}
-			
+		
 		/**
 		 * register to database
 		 */

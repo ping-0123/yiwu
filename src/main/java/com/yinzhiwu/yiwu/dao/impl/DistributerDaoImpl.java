@@ -48,12 +48,11 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	}
 
 	@Override
-	public Distributer findByShareCode(String shareCode) throws DataNotFoundException {
+	public Distributer findByShareCode(String shareCode){
 		List<Distributer> distributers = findByProperty("shareCode", shareCode);
-		if (distributers.size() > 0)
+		if(distributers.size() > 0 )
 			return distributers.get(0);
-		else
-			throw new DataNotFoundException(this.getClass(), "shareCode", shareCode);
+		return null;
 	}
 
 	@Override

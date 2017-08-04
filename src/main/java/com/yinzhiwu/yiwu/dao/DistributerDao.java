@@ -9,7 +9,7 @@ import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
 
 public interface DistributerDao extends IBaseDao<Distributer, Integer> {
 
-	public Distributer findByShareCode(String shareCode) throws DataNotFoundException;
+	public Distributer findByShareCode(String shareCode);
 
 	public Distributer findByPhoneNo(String phoneNo) throws DataNotFoundException;
 
