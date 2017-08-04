@@ -55,7 +55,7 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 	@Override
 	public IncomeRecordApiView findApiViewById(int id) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("SELECT new com.yinzhiwu.springmvc3.model.view.IncomeRecordApiView(");
+		builder.append("SELECT new com.yinzhiwu.yiwu.model.view.IncomeRecordApiView(");
 		builder.append(" t1.id");
 		builder.append(",t1.recordTimestamp");
 		builder.append(",t1.incomeEvent.type.name");
@@ -77,7 +77,7 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 	public List<IncomeRecordApiView> getListFaster(int observerId, int eventTypeId, int relationTypeId,
 			int incomeTypeId) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("SELECT new com.yinzhiwu.springmvc3.model.view.IncomeRecordApiView(");
+		builder.append("SELECT new com.yinzhiwu.yiwu.model.view.IncomeRecordApiView(");
 		builder.append(" t1.id");
 		builder.append(",t1.recordTimestamp");
 		builder.append(",t1.incomeEvent.type.name");

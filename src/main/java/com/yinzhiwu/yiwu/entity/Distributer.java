@@ -66,6 +66,7 @@ public class Distributer extends BaseEntity {
 	private static final long serialVersionUID = -8400038437062433347L;
 
 	/**
+	 * 会员卡号
 	 * unique=true, @Formula("concat('E5',
 	 * lpad(id,8,'0'))") @ColumnDefault("concat('E5', lpad(id,8,'0'))")
 	 */
