@@ -17,11 +17,18 @@ public class CalendarUtil {
 
 	}
 
-	public static long getAge(Date birthday) {
+	public static long getAge(Date birthDay) {
 		Calendar today = Calendar.getInstance();
-		Calendar bir = Calendar.getInstance();
-		bir.setTime(birthday);
-		long age = (today.getTimeInMillis() - bir.getTimeInMillis()) / (1000 * 3600 * 24 * 365);
+		Calendar birthday = Calendar.getInstance();
+		birthday.setTime(birthDay);
+		long age = today.get(Calendar.YEAR) - birthday.get(Calendar.YEAR);
+		if(today.get(Calendar.MONTH) <= birthday.get(Calendar.MONTH)){
+			if(today.get(Calendar.MONTH) == birthday.get(Calendar.MONTH)){
+				if(today.get(Calendar.DAY_OF_MONTH) < birthday.get(Calendar.DAY_OF_MONTH))
+					age--;
+			}else
+				age--;
+		}
 		return age;
 	}
 

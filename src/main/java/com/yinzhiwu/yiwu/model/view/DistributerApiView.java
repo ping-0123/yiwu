@@ -41,6 +41,9 @@ public class DistributerApiView implements Serializable {
 	private String shareCode;
 
 	private String headIconUrl;
+	
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private Date birthDay;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date registerDate;
@@ -74,6 +77,7 @@ public class DistributerApiView implements Serializable {
 		this.memeberId = d.getMemberId();
 		this.shareCode = d.getShareCode();
 		this.headIconUrl = UrlUtil.toHeadIcomUrl(d.getHeadIconName());
+		this.birthDay = d.getBirthday();
 		this.registerDate = d.getRegistedTime();
 		this.beatRate = 0f;
 
@@ -111,6 +115,7 @@ public class DistributerApiView implements Serializable {
 		this.phoneNo = d.getPhoneNo();
 		this.memeberId = d.getMemberId();
 		this.shareCode = d.getShareCode();
+		this.birthDay = d.getBirthday();
 		this.registerDate = d.getRegistedTime();
 		this.beatRate = rate;
 
@@ -259,6 +264,14 @@ public class DistributerApiView implements Serializable {
 
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
+	}
+
+	public Date getBirthDay() {
+		return birthDay;
+	}
+
+	public void setBirthDay(Date birthDay) {
+		this.birthDay = birthDay;
 	}
 
 }

@@ -238,6 +238,7 @@ public class CustomerYzw extends BaseYzwEntity {
 		this.age = (int) CalendarUtil.getAge(this.getBirthday());
 		this.weChat = d.getWechatNo();
 		this.sourceOfCustomer = "微信";
+		/**since 1.2.3  添加服务归属*/
 		this.salesman = d.getServer();
 		
 		this.init();
