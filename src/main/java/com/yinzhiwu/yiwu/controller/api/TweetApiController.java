@@ -23,6 +23,8 @@ import com.yinzhiwu.yiwu.model.view.TweetApiView;
 import com.yinzhiwu.yiwu.service.TweetService;
 import com.yinzhiwu.yiwu.service.impl.FileService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/api/tweet")
 public class TweetApiController extends BaseController {
@@ -73,6 +75,7 @@ public class TweetApiController extends BaseController {
 	 */
 	@Deprecated
 	@GetMapping("/id/{id}")
+	@ApiOperation(value="使用 /api/tweet/{id} 接口")
 	public YiwuJson<TweetApiView> findById(@PathVariable int id) {
 		return tweetService.findById(id);
 	}
