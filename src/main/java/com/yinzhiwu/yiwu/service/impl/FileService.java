@@ -50,6 +50,6 @@ public class FileService {
 	}
 
 	private String _generateFileName(String originalFilename) {
-		return System.currentTimeMillis() + "_" + originalFilename; 
+		return System.currentTimeMillis()  + originalFilename.substring(originalFilename.lastIndexOf(".")); 
 	}
 }

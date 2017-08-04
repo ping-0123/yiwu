@@ -1,5 +1,6 @@
 package com.test;
 
+import java.io.File;
 import java.util.Calendar;
 
 import org.junit.Test;
@@ -24,4 +25,12 @@ public class CalendarUtilTest {
 		System.out.println(calendar.getTime());
 		System.out.println(CalendarUtil.getAge(calendar.getTime()));
 	}
+	
+		@Test
+	   public  void test(){
+	      File f =new File("TileTest.java");
+	      String fileName=f.getName();
+	      String prefix=fileName.substring(fileName.lastIndexOf(".")+1);
+	      System.out.println(prefix);
+	  }
 }
