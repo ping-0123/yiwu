@@ -6,20 +6,20 @@
     "imageCompressEnable": true,
     "imageCompressBorder": 1600,
     "imageInsertAlign": "none", 
-    "imageUrlPrefix": "/yiwu", 
+    "imageUrlPrefix": "http://192.168.0.115:8080/yiwu", 
     "imagePathFormat": "/resources/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", 
 
     "scrawlActionName": "uploadscrawl", 
     "scrawlFieldName": "upfile", 
     "scrawlPathFormat": "/resources/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", 
     "scrawlMaxSize": 2048000, 
-    "scrawlUrlPrefix": "/yiwu", 
+    "scrawlUrlPrefix": "http://localhost:8080/yiwu", 
     "scrawlInsertAlign": "none",
 
     
     "snapscreenActionName": "uploadimage", 
     "snapscreenPathFormat": "/resources/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", 
-    "snapscreenUrlPrefix": "/yiwu", 
+    "snapscreenUrlPrefix": "http://localhost:8080/yiwu", 
     "snapscreenInsertAlign": "none", 
 
     
@@ -27,7 +27,7 @@
     "catcherActionName": "catchimage", 
     "catcherFieldName": "source", 
     "catcherPathFormat": "/resources/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", 
-    "catcherUrlPrefix": "/yiwu", 
+    "catcherUrlPrefix": "http://localhost:8080/yiwu", 
     "catcherMaxSize": 2048000, 
     "catcherAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"], 
 
@@ -35,7 +35,7 @@
     "videoActionName": "uploadvideo", 
     "videoFieldName": "upfile", 
     "videoPathFormat": "/resources/jsp/upload/video/{yyyy}{mm}{dd}/{time}{rand:6}", 
-    "videoUrlPrefix": "/yiwu", 
+    "videoUrlPrefix": "http://localhost:8080/yiwu", 
     "videoMaxSize": 102400000, 
     "videoAllowFiles": [
         ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
@@ -45,7 +45,7 @@
     "fileActionName": "uploadfile", 
     "fileFieldName": "upfile", 
     "filePathFormat": "/resources/jsp/upload/file/{yyyy}{mm}{dd}/{time}{rand:6}", 
-    "fileUrlPrefix": "/yiwu", 
+    "fileUrlPrefix": "http://localhost:8080/yiwu", 
     "fileMaxSize": 51200000, 
     "fileAllowFiles": [
         ".png", ".jpg", ".jpeg", ".gif", ".bmp",
@@ -59,14 +59,14 @@
     "imageManagerActionName": "listimage", 
     "imageManagerListPath": "/resources/jsp/upload/image/", 
     "imageManagerListSize": 20, 
-    "imageManagerUrlPrefix": "/yiwu", 
+    "imageManagerUrlPrefix": "http://localhost:8080/yiwu", 
     "imageManagerInsertAlign": "none", 
     "imageManagerAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"], 
 
     
     "fileManagerActionName": "listfile", 
     "fileManagerListPath": "/resources/jsp/upload/file/", 
-    "fileManagerUrlPrefix": "/yiwu", 
+    "fileManagerUrlPrefix": "http://localhost:8080/yiwu", 
     "fileManagerListSize": 20, 
     "fileManagerAllowFiles": [
         ".png", ".jpg", ".jpeg", ".gif", ".bmp",

@@ -56,7 +56,8 @@ import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 		// @UniqueConstraint(name="uk_distributer_headIconName",
 		// columnNames="headIconName"),
 		@UniqueConstraint(name = "fuk_distributer_customer_id", columnNames = "customer_id"),
-		@UniqueConstraint(name = "fuk_distributer_defaultCapitalAccount_id", columnNames = "defaultCapitalAccount_id") })
+		@UniqueConstraint(name = "fuk_distributer_defaultCapitalAccount_id", columnNames = "defaultCapitalAccount_id"),
+		@UniqueConstraint(name = "fuk_distributer_employee_id", columnNames="employee_id" )})
 public class Distributer extends BaseEntity {
 
 	/**

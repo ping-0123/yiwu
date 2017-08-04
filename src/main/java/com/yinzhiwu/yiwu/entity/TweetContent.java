@@ -23,7 +23,9 @@ public class TweetContent extends BaseEntity {
 	@Column(name = "content", columnDefinition = "MediumBlob")
 	private byte[] content;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "tweetContent")
+	@OneToOne(fetch = FetchType.LAZY, 
+			cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+			mappedBy = "tweetContent")
 	private Tweet tweet;
 
 	public TweetContent() {
