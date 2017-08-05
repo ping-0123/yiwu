@@ -1,7 +1,6 @@
 package com.yinzhiwu.yiwu.entity;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -34,18 +33,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
-import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.enums.Gender;
 import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
+import com.yinzhiwu.yiwu.util.CalendarUtil;
 
 /**
  * 
  * @author ping
  *
  */
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 @Table(name = "yiwu_distributer", uniqueConstraints = {
 		@UniqueConstraint(name = "uk_distributer_memberId", columnNames = { "memberCard" }),
@@ -117,7 +116,7 @@ public class Distributer extends BaseEntity {
 
 	@Column(name="childOrAdult")
 	@Enumerated(EnumType.ORDINAL)
-	private CustomerAgeType customerType;
+	private CustomerAgeType customerAgeType;
 	
 	// unique
 	@Column(length = 10, updatable = false)
@@ -223,11 +222,7 @@ public class Distributer extends BaseEntity {
 	}
 
 	public int getAge() {
-		Calendar today = Calendar.getInstance();
-		Calendar bir = Calendar.getInstance();
-		bir.setTime(birthday);
-		long age = (today.getTimeInMillis() - bir.getTimeInMillis()) / (1000 * 3600 * 24 * 365);
-		return (int) age;
+		return (int) CalendarUtil.getAge(this.getBirthday());
 	}
 
 	public boolean isAudit() {
@@ -437,13 +432,14 @@ public class Distributer extends BaseEntity {
 		this.server = server;
 	}
 
-	public CustomerAgeType getCustomerType() {
-		return customerType;
+	public CustomerAgeType getCustomerAgeType() {
+		return customerAgeType;
 	}
 
-	public void setCustomerType(CustomerAgeType customerType) {
-		this.customerType = customerType;
+	public void setCustomerAgeType(CustomerAgeType customerAgeType) {
+		this.customerAgeType = customerAgeType;
 	}
+
 
 	
 }

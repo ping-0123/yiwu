@@ -2,7 +2,6 @@ package init;
 
 import java.lang.reflect.Field;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,7 +23,7 @@ public class TypeTest {
 	@Autowired
 	public BaseTypeService baseTypeService;
 
-	@Test
+//	@Test
 	public void initTypes() {
 
 		Class<?>[] classes = new Class<?>[] { EventType.class, RelationType.class, IncomeType.class, TweetType.class,

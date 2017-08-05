@@ -39,5 +39,19 @@ public class IncomeType extends BaseType {
 			return false;
 		return this.getName().equals(another.getName()) ? true : false;
 	}
+	
+	@javax.persistence.Transient
+	public String getChineseName(){
+		switch (this.getName()) {
+		case "EXP":
+			return "经验";
+		case "FUNDS":
+			return "基金";
+		case "BROKERAGE":
+			return "佣金";
+		default:
+			return "";
+		}
+	}
 
 }

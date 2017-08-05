@@ -3,6 +3,8 @@ package com.yinzhiwu.yiwu.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.yinzhiwu.yiwu.entity.type.IncomeType;
+
 public class MessageTemplate {
 
 	public static class BrokerageMessage {
@@ -31,6 +33,12 @@ public class MessageTemplate {
 		}
 	}
 
+	public static String generate_update_grade_message(String incomeTypeName, String gradeName){
+		StringBuilder builder = new StringBuilder();
+		builder.append("您的").append(incomeTypeName).append("等级升到了").append(gradeName);
+		return builder.toString();
+	}
+	
 	public static String generate_register_message() {
 		return "欢迎您加入音之舞";
 	}

@@ -2,7 +2,6 @@ package com.yinzhiwu.yiwu.model;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -22,16 +21,16 @@ public class DistributerRegisterModel {
 
 	private String username;
 
-	@ApiModelProperty(value="密码" ,required=true)
-	@Pattern(regexp = "^[a-zA-Z]\\w{5,17}$", message = "密码必须由字母开头，有字母，数字，下划线组成的6-18位字符")
+	@ApiModelProperty(value="密码" ,required=false)
+//	@Pattern(regexp = "^[a-zA-Z]\\w{5,17}$", message = "密码必须由字母开头，有字母，数字，下划线组成的6-18位字符")
 	private String password;
 
 	private String name;
 
 	private String nickName;
 
-	@ApiModelProperty(value="姓名", allowableValues="{MALE, FEMALE}", required=true)
-	@NotNull
+	@ApiModelProperty(value="姓名", allowableValues="{MALE, FEMALE}", required=false)
+//	@NotNull
 	private Gender gender;
 
 	// @Past

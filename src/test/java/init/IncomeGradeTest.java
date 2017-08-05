@@ -20,7 +20,7 @@ public class IncomeGradeTest {
 	@Autowired
 	private IncomeGradeService incomeGradeService;
 
-	@Test
+//	@Test
 	public void insertIncomeGrades() {
 		IncomeGrade nextGrade = null;
 

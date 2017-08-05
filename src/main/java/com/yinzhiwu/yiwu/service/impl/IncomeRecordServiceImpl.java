@@ -49,8 +49,10 @@ public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integ
 		Assert.notNull(incomeRecord.getBenificiary());
 		Assert.notNull(incomeRecord.getIncomeType());
 
-		incomeRecord.setCurrentValue(incomeRecord.getIncomeValue() + dIncomeDao
-				.findCurrentValue(incomeRecord.getBenificiary().getId(), incomeRecord.getIncomeType().getId()));
+		incomeRecord.setCurrentValue(incomeRecord.getIncomeValue() 
+				+ dIncomeDao.findCurrentValue(
+						incomeRecord.getBenificiary().getId(), 
+						incomeRecord.getIncomeType().getId()));
 		super.save(incomeRecord);
 		dIncomeService.update_by_record(incomeRecord);
 		if (IncomeType.BROKERAGE.equals(incomeRecord.getIncomeType()))

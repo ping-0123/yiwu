@@ -18,6 +18,8 @@ public class CalendarUtil {
 	}
 
 	public static long getAge(Date birthDay) {
+		if(birthDay == null ) throw new IllegalArgumentException("birthDay can not be null");
+		
 		Calendar today = Calendar.getInstance();
 		Calendar birthday = Calendar.getInstance();
 		birthday.setTime(birthDay);

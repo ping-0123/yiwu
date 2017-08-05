@@ -24,6 +24,9 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 
 	@Override
 	public Integer save(Distributer entity) {
+		entity.init();
+		
+		//与Id有关的初始化
 		int id = getNextId();
 		if(logger.isDebugEnabled())
 			logger.debug("new Id for Distributer is : " + id);
@@ -35,9 +38,11 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 			entity.getCustomer().setMemberCard(memberCard);
 		}
 		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
+		
 		return super.save(entity);
 	}
 
+	
 	private int getNextId() {
 		String sql = "SELECT  AUTO_INCREMENT FROM information_schema.tables WHERE table_name ='yiwu_distributer'";
 		@SuppressWarnings({ "unchecked", "deprecation" })

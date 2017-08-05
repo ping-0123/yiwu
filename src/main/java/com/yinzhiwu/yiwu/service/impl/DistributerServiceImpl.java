@@ -146,7 +146,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			distributer.setBirthday(customer.getBirthday());
 			distributer.setMemberId(customer.getMemberCard());
 			distributer.setName(customer.getName());
-			distributer.setCustomerType(customer.getCustomerAgeType());
+			distributer.setCustomerAgeType(customer.getCustomerAgeType());
 			if(distributer.getGender() == null)
 				distributer.setGender(customer.getGender());
 			EmployeeYzw server = customer.getSalesman();
@@ -200,6 +200,8 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Override
 	public YiwuJson<DistributerApiView> findById(int id) {
 		Distributer distributer = distributerDao.get(id);
+		if(distributer == null)
+			return new YiwuJson<>("未找到id为" + id + "的客户");
 		DistributerApiView view = _wrapDaoToApiView(distributer);
 		return new YiwuJson<>(view);
 	}

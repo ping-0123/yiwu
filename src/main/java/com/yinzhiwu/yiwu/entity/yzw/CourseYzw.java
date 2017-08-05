@@ -30,7 +30,6 @@ import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "vcourse")
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class CourseYzw extends BaseYzwEntity {
 
 	/**

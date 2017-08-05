@@ -15,15 +15,16 @@ public class PayedMethodYzw extends BaseYzwEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = -3777295403409968930L;
+	public static final PayedMethodYzw INNER_PAYED_METHOD = new PayedMethodYzw(7,"程序内部专用");
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@Column(length = 32)
 	private String name;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -31,7 +32,7 @@ public class PayedMethodYzw extends BaseYzwEntity {
 		return name;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -39,4 +40,10 @@ public class PayedMethodYzw extends BaseYzwEntity {
 		this.name = name;
 	}
 
+	
+	public PayedMethodYzw(){}
+	public PayedMethodYzw(Integer id, String name){
+		this.id = id;
+		this.name= name;
+	}
 }

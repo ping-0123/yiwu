@@ -23,7 +23,7 @@ public class OrderPayedMethodYzw extends BaseYzwEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "orderId", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT, name = "fk_orderPayedMethod_order_id"))
@@ -34,13 +34,11 @@ public class OrderPayedMethodYzw extends BaseYzwEntity {
 	private PayedMethodYzw payedMethod;
 
 	@Column
-	private float amount;
+	private Float amount;
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public int getId() {
+	
+	
+	public Integer getId() {
 		return id;
 	}
 
@@ -52,11 +50,11 @@ public class OrderPayedMethodYzw extends BaseYzwEntity {
 		return payedMethod;
 	}
 
-	public float getAmount() {
+	public Float getAmount() {
 		return amount;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -68,8 +66,18 @@ public class OrderPayedMethodYzw extends BaseYzwEntity {
 		this.payedMethod = payedMethod;
 	}
 
-	public void setAmount(float amount) {
+	public void setAmount(Float amount) {
 		this.amount = amount;
 	}
 
+	public OrderPayedMethodYzw() {
+	}
+
+	public OrderPayedMethodYzw(OrderYzw order, PayedMethodYzw payedMethod, Float amount) {
+		this.order = order;
+		this.payedMethod = payedMethod;
+		this.amount = amount;
+	}
+
+	
 }

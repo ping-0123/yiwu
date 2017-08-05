@@ -6,9 +6,12 @@ import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.dao.IncomeGradeDao;
+import com.yinzhiwu.yiwu.dao.MessageDao;
+import com.yinzhiwu.yiwu.entity.Message;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.service.DistributerIncomeService;
+import com.yinzhiwu.yiwu.util.MessageTemplate;
 
 @Service
 public class DistributerIncomeServiceImpl extends BaseServiceImpl<DistributerIncome, Integer>
@@ -16,6 +19,7 @@ public class DistributerIncomeServiceImpl extends BaseServiceImpl<DistributerInc
 
 	@Autowired
 	private DistributerIncomeDao dIncomeDao;
+	@Autowired private MessageDao messageDao;
 
 	@Autowired
 	private IncomeGradeDao incomeGradeDao;
@@ -48,8 +52,14 @@ public class DistributerIncomeServiceImpl extends BaseServiceImpl<DistributerInc
 		 * update distributer's income grade
 		 */
 		try {
-			if (dIncome.getIncome() >= dIncome.getIncomeGrade().getUpgradeNeededValue())
+			if (dIncome.getIncome() >= dIncome.getIncomeGrade().getUpgradeNeededValue()){
 				dIncome.setIncomeGrade(dIncome.getIncomeGrade().getNextGrade());
+				//产生升级消息
+				messageDao.save(new Message(dIncome.getDistributer(),
+						MessageTemplate.generate_update_grade_message(
+								dIncome.getIncomeType().getChineseName(), 
+								dIncome.getIncomeGrade().getName())));
+			}
 		} catch (NullPointerException e) {
 			logger.info("distributer: " + dIncome.getDistributer().getId() + "'s " + dIncome.getIncomeType().getName()
 					+ " income grade is the upest grade");

@@ -29,7 +29,7 @@ public class Message extends BaseEntity {
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_Message_receiver_id"))
 	private Distributer receiver;
 
-	private Status status;
+	private Status status = Status.UNREAD;
 
 	private String content;
 

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
+import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.service.DepositService;
 
@@ -19,6 +20,8 @@ public class DepositApiController extends BaseController {
 	@PostMapping
 	public YiwuJson<Boolean> payDeposit(int distributerId, float amount, boolean fundsFirst) {
 		try {
+			if(amount <=0)
+				throw new YiwuException("提现金额不能少于零");
 			depositService.saveDeposit(distributerId, amount, fundsFirst);
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
