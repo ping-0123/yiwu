@@ -15,7 +15,7 @@ public class PayedMethodYzw extends BaseYzwEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = -3777295403409968930L;
-	public static final PayedMethodYzw INNER_PAYED_METHOD = new PayedMethodYzw(7,"程序内部专用");
+	public static final PayedMethodYzw INNER_PAYED_METHOD = new PayedMethodYzw(10007,"程序内部专用");
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

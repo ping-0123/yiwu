@@ -12,4 +12,6 @@ public interface EmployeeYzwDao extends IBaseDao<EmployeeYzw, Integer> {
 
 	EmployeeYzw findByPhoneNo(String phoneNo) throws Exception;
 
+	EmployeeYzw findByTel(String phoneNo);
+
 }

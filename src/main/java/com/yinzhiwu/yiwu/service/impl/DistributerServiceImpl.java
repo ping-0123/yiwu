@@ -82,44 +82,18 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		if(registerModel == null) throw new IllegalArgumentException("入参不能为null");
 		Distributer distributer = registerModel.toDistributer();
 		String message = null;
-		String invitationCode = registerModel.getInvitationCode();
+		String invitationCode = null;
 		
-		/**
-		 * init new distributer' default properties such as "createTime"
-		 */
+		 // init new distributer' default properties such as "createTime"
 		distributer.init();
-
-		/**
-		 * verify that the phoneNo has been registered
-		 */
+		
+		 //verify that the phoneNo has been registered
 		if (distributerDao.findCountByPhoneNo(registerModel.getPhoneNo()) > 0)
 			return new YiwuJson<>(distributer.getPhoneNo() + " 该手机号码已经被注册 ");
 
-		/**
-		 * verify that the wechatNo has been registered
-		 */
+		 // verify that the wechatNo has been registered
 		if (distributerDao.findCountByWechatNo(registerModel.getWechatNo()) > 0)
 			return new YiwuJson<>(distributer.getWechatNo() + " 该微信号已经被注册 ");
-
-		/**
-		 * set super proxy distributer
-		 */
-		if (StringUtils.hasLength(invitationCode)){
-			Distributer superDistributer = distributerDao.findByShareCode(invitationCode);
-			if(superDistributer != null){
-				distributer.setSuperDistributer(superDistributer);
-				distributer.setServer(superDistributer.getEmployee());
-			}else
-				message = "无效的邀请码:" + invitationCode;
-		}
-
-		/**
-		 * set followed store
-		 */
-		if (registerModel.getFollowedByStoreId() != null){
-				DepartmentYzw store = departmentYzwDao.get(registerModel.getFollowedByStoreId());
-				distributer.setFollowedByStore(store);
-		}
 		
 		/**
 		 * associate with employee 
@@ -133,9 +107,41 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		if(emp != null){
 			distributer.setEmployee(emp);
 			distributer.setName(emp.getName());
-		}
+			//自我服务
+			distributer.setServer(emp);
+			distributer.setFollowedByStore(emp.getDepartment());
+			//公司员工不能有上级归属
+			distributer.setSuperDistributer(null);
+		}else{
 			
+		/**
+		 * associate with the phoneNo of store
+		 */
+			emp = employeeDao.findByTel(registerModel.getPhoneNo());
+			if(emp != null){
+				//公司手机帐号不能有上级
+				distributer.setSuperDistributer(null);
+				//自我服务
+				distributer.setServer(emp);
+				distributer.setFollowedByStore(emp.getDepartment());
+			}
+		}
+		/**
+		 * set super proxy distributer
+		 */
+		if(emp == null ){
+			invitationCode = registerModel.getInvitationCode();
+			if (StringUtils.hasLength(invitationCode)){
+				Distributer superDistributer = distributerDao.findByShareCode(invitationCode);
+				if(superDistributer != null){
+					distributer.setSuperDistributer(superDistributer);
+					distributer.setServer(superDistributer.getEmployee());
+				}else
+					message = "无效的邀请码:" + invitationCode;
+			}
+		}
 
+		
 		/**
 		 * associate with customer
 		 */
