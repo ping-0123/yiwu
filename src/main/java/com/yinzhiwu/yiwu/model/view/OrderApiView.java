@@ -24,11 +24,11 @@ public class OrderApiView {
 	private int validityTimes;
 
 	// 合约开始日期
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date contractStart;
 
 	// 合约结束日期
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date contractEnd;
 
 	private String checkedStatus;

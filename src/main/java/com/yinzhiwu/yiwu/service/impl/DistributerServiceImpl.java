@@ -124,6 +124,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				//自我服务
 				distributer.setServer(emp);
 				distributer.setFollowedByStore(emp.getDepartment());
+				//TODO 增加该手机号码是哪个门店的， 现在是谁在使用
 			}
 		}
 		/**

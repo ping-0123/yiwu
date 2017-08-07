@@ -73,10 +73,8 @@ public class Distributer extends BaseEntity {
 	private String memberId;
 
 	@Column(length = 32)
-	@Size(min = 2, max = 32)
 	private String name;
 
-	@Size(min = 2, max = 32)
 	@Column(length = 32)
 	private String nickName; // 默认是会员Id
 

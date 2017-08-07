@@ -61,7 +61,7 @@ public class DepositServiceImpl extends BaseServiceImpl<DepositEvent, Integer> i
 			throw new Exception("请输入非负的定金金额");
 		Distributer distributer = distributerDao.get(distributerId);
 		if(distributer == null)
-			throw new YiwuException("未找到distributerId为：" + distributerId+ "的客户");
+			throw new YiwuException("未找到distributerId为：" + distributerId+ "的分销者");
 		CustomerYzw customer = distributer.getCustomer();
 		if(customer == null ) {
 			if(logger.isDebugEnabled())
@@ -110,23 +110,23 @@ public class DepositServiceImpl extends BaseServiceImpl<DepositEvent, Integer> i
 		/**
 		 * save deposit event
 		 */
-		if (!fundsFirst) {
-			if (amount > brokerage)
-				throw new Exception("您的账户佣金余额不足");
-			brokerageDeposit = new DepositEvent(distributer, EventType.PAY_DEPOSIT_BY_BROKERAGE, amount, order);
-			incomeEventService.save(brokerageDeposit);
-		} else if (amount <= funds) {
-			fundsDepoist = new DepositEvent(distributer, EventType.PAY_DEPOSIT_BY_FUNDS, amount, order);
+		float fundsPayed , brokeragePayed;
+		if(fundsFirst){
+			fundsPayed=amount>funds?funds:amount;
+			brokeragePayed = amount>fundsPayed?amount-fundsPayed:0f;
+		}else{
+			brokeragePayed = amount>brokerage?brokerage:amount;
+			fundsPayed	 = amount>brokeragePayed?amount-brokeragePayed:0f;
+		}
+		if(fundsPayed> 0f){
+			fundsDepoist = new DepositEvent(distributer, EventType.PAY_DEPOSIT_BY_FUNDS, fundsPayed, order);
 			incomeEventService.save(fundsDepoist);
-		} else {
-			float fundsAmount = funds;
-			float brokerageAmount = amount - funds;
-			fundsDepoist = new DepositEvent(distributer, EventType.PAY_DEPOSIT_BY_FUNDS, fundsAmount, order);
-			brokerageDeposit = new DepositEvent(distributer, EventType.PAY_DEPOSIT_BY_BROKERAGE, brokerageAmount,
-					order);
-			incomeEventService.save(fundsDepoist);
+		}
+		if(brokeragePayed>0f){
+			brokerageDeposit = new DepositEvent(distributer, EventType.PAY_DEPOSIT_BY_BROKERAGE, brokeragePayed, order);
 			incomeEventService.save(brokerageDeposit);
 		}
 
+//		Thread.sleep(1000);
 	}
 }

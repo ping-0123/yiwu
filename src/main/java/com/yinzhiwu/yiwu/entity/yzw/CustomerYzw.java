@@ -230,8 +230,9 @@ public class CustomerYzw extends BaseYzwEntity {
 		this.name = d.getName();
 		this.gender = d.getGender();
 		this.mobilePhone = d.getPhoneNo();
-		this.birthday = d.getBirthday() == null ? new Date() : d.getBirthday();
-		this.age = (int) CalendarUtil.getAge(this.getBirthday());
+		this.birthday = d.getBirthday();
+		if(this.birthday != null)
+			this.age = (int) CalendarUtil.getAge(this.getBirthday());
 		this.weChat = d.getWechatNo();
 		this.sourceOfCustomer = "微信";
 		/**since 1.2.3  添加服务归属*/

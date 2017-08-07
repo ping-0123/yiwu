@@ -124,7 +124,7 @@
             <tx:method name="load*" propagation="SUPPORTS" />  
             <tx:method name="search*" propagation="SUPPORTS" />  
             <tx:method name="datagrid*" propagation="SUPPORTS" />  
-            <tx:method name="login*"/>
+            <tx:method name="login*" propagation="REQUIRED"/>
             <tx:method name="register" propagation="REQUIRED"/>
             <tx:method name="share*" />
         </tx:attributes>  

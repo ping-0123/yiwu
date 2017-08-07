@@ -10,20 +10,25 @@ import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.service.DepositService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api/event/deposit")
 public class DepositApiController extends BaseController {
 
 	@Autowired
 	private DepositService depositService;
+//	@Autowired private DistributerService distributerService;
 
 	@PostMapping
+	@ApiOperation(value="支付定金")
 	public YiwuJson<Boolean> payDeposit(int distributerId, float amount, boolean fundsFirst) {
 		try {
 			if(amount <=0)
 				throw new YiwuException("提现金额不能少于零");
 			depositService.saveDeposit(distributerId, amount, fundsFirst);
 		} catch (Exception e) {
+			logger.error(e);
 			return new YiwuJson<>(e.getMessage());
 		}
 
