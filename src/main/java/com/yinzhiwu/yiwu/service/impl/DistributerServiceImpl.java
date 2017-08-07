@@ -121,7 +121,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			if(emp != null){
 				//公司手机帐号不能有上级
 				distributer.setSuperDistributer(null);
-				//自我服务
+				//自我服务 目前作为该手机号码是谁在使用， 归哪个门店使用的判断依据
 				distributer.setServer(emp);
 				distributer.setFollowedByStore(emp.getDepartment());
 				//TODO 增加该手机号码是哪个门店的， 现在是谁在使用
@@ -182,23 +182,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		else
 			event = new RegisterEvent(distributer, EventType.REGISTER_WITH_INVATATION_CODE, 1f, invitationCode);
 		incomeEventService.save(event);
-		/**
-		 * get distributer's current exp income value and beat rate for return
-		 */
-		// float expValue =0f;
-		// try {
-		// expValue = distributerIncomeDao.findCountByProperties(
-		// new String[]{"distributer.id", "incomeType.id"},
-		// new Object[]{distributer.getId(), IncomeType.EXP.getId()});
-		// } catch (Exception e) {
-		// logger.warn(e.getLocalizedMessage());
-		// }
-		//// float beatRate =
-		// distributerIncomeDao.get_beat_rate(IncomeType.EXP,expValue);
-
-		/*
-		 * return dto
-		 */
+		
 		YiwuJson<DistributerRegisterModel> yiwu = new YiwuJson<>(registerModel);
 		yiwu.setMsg(message);
 		return yiwu;
