@@ -29,7 +29,6 @@ import com.yinzhiwu.yiwu.model.LessonList;
 import com.yinzhiwu.yiwu.model.LessonOldApiView;
 import com.yinzhiwu.yiwu.model.LessonOldApiView.CheckedInStatus;
 import com.yinzhiwu.yiwu.service.LessonService;
-import com.yinzhiwu.yiwu.util.CalendarUtil;
 
 /**
  * 
@@ -124,16 +123,10 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer> imple
 		Date startDate = ca.getTime();
 		ca.add(Calendar.DAY_OF_WEEK, 6);
 		Date endDate = ca.getTime();
+		
 		List<LessonOldApiView> views = new ArrayList<>();
-
-		List<Lesson> lessons = new ArrayList<>();
-		try {
-			lessons = lessonDao.findLessonWeekList(storeId, courseType, teacherName, danceCatagory, startDate, endDate);
-		} catch (DataNotFoundException e) {
-			logger.warn(e.getMessage());
-		}
-
-		if (lessons.size() != 0) {
+		List<Lesson> lessons = lessonDao.findLessonWeekList(storeId, courseType, teacherName, danceCatagory, startDate, endDate);
+		if (lessons.size() > 0) {
 			for (Lesson l : lessons) {
 				LessonOldApiView view = _wrap_to_api_view(c, l);
 				views.add(view);

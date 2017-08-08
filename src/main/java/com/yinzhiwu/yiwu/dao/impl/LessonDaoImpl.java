@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer> implements Lesso
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Lesson> findLessonWeekList(int storeId, String courseType, String teacherName, String danceCatagory,
-			Date startDate, Date endDate) throws DataNotFoundException {
+			Date startDate, Date endDate) {
 
 		StringBuilder hql = new StringBuilder("" + " FROM Lesson l"
 				+ " WHERE lessonDate between :startDate and :endDate" + " and courseType <> '私教课'");
@@ -44,10 +45,12 @@ public class LessonDaoImpl extends BaseDaoImpl<Lesson, Integer> implements Lesso
 		hql.append(" order by lessonDate, startTime");
 
 		// LOG.info(getHibernateTemplate().getSessionFactory().getCurrentSession().hashCode());
-		List<Lesson> lessons = (List<Lesson>) getHibernateTemplate().findByNamedParam(hql.toString(),
-				new String[] { "startDate", "endDate" }, new Object[] { startDate, endDate });
-		if (null == lessons || lessons.size() == 0)
-			throw new DataNotFoundException();
+		List<Lesson> lessons = (List<Lesson>) getHibernateTemplate().findByNamedParam(
+				hql.toString(),
+				new String[] { "startDate", "endDate" }, 
+				new Object[] { startDate, endDate });
+		if (null == lessons)
+			return new ArrayList<Lesson>();
 		return lessons;
 	}
 

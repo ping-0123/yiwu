@@ -145,8 +145,8 @@ public class LessonServiceImpl extends BaseServiceImpl<Lesson, Integer> implemen
 				lm.add(ml);
 
 			}
-		} catch (DataNotFoundException e1) {
-			e1.printStackTrace();
+		}catch (Exception e) {
+			logger.error(e.getMessage());
 		}
 
 		return wrapLessonWeekList(lm, startDate);

@@ -28,7 +28,6 @@ public class Account {
 	@OneToOne
 	@JoinColumn(name = "employee_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Employee employee;
-
 	// uk
 	@Column(name = "account", length = 32, nullable = false)
 	private String account;
