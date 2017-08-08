@@ -21,8 +21,8 @@ import com.yinzhiwu.yiwu.entity.income.UnAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.view.AppointSuccessApiView;
@@ -135,12 +135,13 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	}
 
 	/**
-	 * 存在一些问题 需要把当天已经预约的， 已经刷卡了的次数去掉
+	 * 
 	 * 
 	 * @param customer
 	 * @param lesson
 	 * @return
 	 */
+	//TODO 存在一些问题 需要把当天已经预约的， 已经刷卡了的次数去掉
 	private boolean isAppointable(CustomerYzw customer, LessonYzw lesson) {
 		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
 				customer.getId(),
