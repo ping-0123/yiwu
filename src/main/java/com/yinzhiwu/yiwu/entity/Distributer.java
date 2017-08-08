@@ -158,6 +158,16 @@ public class Distributer extends BaseEntity {
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributer_employee_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw employee;
 
+	//公司手机号码 属于哪个门店
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(foreignKey=@ForeignKey(name="fk_distributer_department_id", value=ConstraintMode.NO_CONSTRAINT))
+	private DepartmentYzw department;
+	
+	//公司的手机号码 是哪个雇员的使用
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(foreignKey=@ForeignKey(name="fk_distributer_user_id", value=ConstraintMode.NO_CONSTRAINT))
+	private EmployeeYzw user;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "superDistributer")
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -435,6 +445,22 @@ public class Distributer extends BaseEntity {
 
 	public void setCustomerAgeType(CustomerAgeType customerAgeType) {
 		this.customerAgeType = customerAgeType;
+	}
+
+	public DepartmentYzw getDepartment() {
+		return department;
+	}
+
+	public EmployeeYzw getUser() {
+		return user;
+	}
+
+	public void setDepartment(DepartmentYzw department) {
+		this.department = department;
+	}
+
+	public void setUser(EmployeeYzw user) {
+		this.user = user;
 	}
 
 
