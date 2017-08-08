@@ -20,6 +20,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
@@ -90,9 +91,9 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		CustomerYzw customer = distributer.getCustomer();
 		if (customer == null)
 			throw new YiwuException(distributer.getId() + "客户不存在");
-		if ("封闭式".equals(lesson.getCourseType()))
+		if (CourseType.CLOSED.equals(lesson.getCourseType()))
 			throw new YiwuException("封闭式课程无须刷卡");
-		if (!"开放式".equals(lesson.getCourseType()))
+		if (!CourseType.OPENED.equals(lesson.getCourseType()))
 			throw new YiwuException("非开放式课程请在E5pc端按指纹刷卡");
 		/**
 		 * 判断是否已刷卡
