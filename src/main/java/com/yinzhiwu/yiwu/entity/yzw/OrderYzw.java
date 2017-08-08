@@ -2,10 +2,8 @@ package com.yinzhiwu.yiwu.entity.yzw;
 
 import java.math.BigDecimal;
 import java.sql.Blob;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.CascadeType;
@@ -21,7 +19,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;

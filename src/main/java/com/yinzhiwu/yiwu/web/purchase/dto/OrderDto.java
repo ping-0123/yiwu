@@ -15,6 +15,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
+import com.yinzhiwu.yiwu.entity.yzw.ProductYzw.ProductCardType;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -41,6 +42,8 @@ public class OrderDto {
 	private Integer productId;
 	private String productName;
 	private Float markedPrice;
+	private ProductCardType productCardType;
+	private String productCardTypeName;
 	@Min(1)
 	@ApiModelProperty(value="购买产品的数量", required=true)
 	private Integer count;
@@ -89,6 +92,8 @@ public class OrderDto {
 		if(prod != null){
 			v.setProductId(prod.getId());
 			v.setProductName(order.getProduct().getName());
+			v.setProductCardType(prod.getCardType());
+			v.setProductCardTypeName(prod.getCardType().getName());
 		}
 		v.markedPrice = order.getMarkedPrice();
 		v.setCount(order.getCount());
@@ -285,6 +290,22 @@ public class OrderDto {
 
 	public void setStoreId(Integer storeId) {
 		this.storeId = storeId;
+	}
+
+	public ProductCardType getProductCardType() {
+		return productCardType;
+	}
+
+	public void setProductCardType(ProductCardType productCardType) {
+		this.productCardType = productCardType;
+	}
+
+	public String getProductCardTypeName() {
+		return productCardTypeName;
+	}
+
+	public void setProductCardTypeName(String productCardTypeName) {
+		this.productCardTypeName = productCardTypeName;
 	}
 
 }

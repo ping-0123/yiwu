@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.hibernate.sql.ordering.antlr.GeneratedOrderByFragmentRendererTokenTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +23,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw.ProductCardType;
+import com.yinzhiwu.yiwu.entity.yzwOld.Order;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -188,6 +190,15 @@ public class PurchaseApiController  extends BaseController{
 			return new YiwuJson<>(e.getMessage());
 		}
 		return new YiwuJson<>(order);
+	}
+	
+	@GetMapping(value="/order/{id}")
+	@ApiOperation(value="获取订单详情")
+	public YiwuJson<OrderDto> findById(@PathVariable String id){
+		OrderYzw order = orderSerivice.get(id);
+		if(order != null)
+			return new YiwuJson<>(OrderDto.fromOrder(order));
+		return new YiwuJson<>("无效的订单Id" + id);
 	}
 	
 	@PutMapping(value="/order/{id}")

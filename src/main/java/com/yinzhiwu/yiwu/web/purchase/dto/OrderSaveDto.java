@@ -44,6 +44,7 @@ public class OrderSaveDto {
 	@ApiModelProperty(required=true)
 	private Integer productId;
 	
+	
 	@NotNull
 	@ApiModelProperty(required=true)
 	private SubCourseType middleProductType;
