@@ -17,7 +17,7 @@ public class ConcurrenceTest {
 
 //	@Autowired DepositService depositService;
 	
-	@Test
+//	@Test
 	public void test(){
 		Thread  t1 = new DepositThread();
 		Thread t2 = new DepositThread();

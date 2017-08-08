@@ -23,7 +23,7 @@ public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implem
 	public CustomerYzw findByPhoneNo(String phoneNo) {
 		List<CustomerYzw> list = findByProperty("mobilePhone", phoneNo);
 		if (list.size() > 0)
-			return list.get(0);
+			return list.get(list.size() -1);
 		else
 			return null;
 	}

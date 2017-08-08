@@ -1,6 +1,5 @@
 package com.test;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,7 +16,7 @@ public class DistributerServiceTest {
 	@Autowired
 	private DistributerService distributerService;
 
-	@Test
+//	@Test
 	public void testValueInjection() {
 		System.err.println(distributerService.getHeadIconSavePath());
 		System.err.println(distributerService.getHeadIconUrl());
@@ -29,7 +28,7 @@ public class DistributerServiceTest {
 		}
 	}
 
-	@Test
+//	@Test
 	public void saveRegister() {
 		String phonePre = "18803332";
 		String wechatNoPre = "wechatNo";
@@ -47,7 +46,7 @@ public class DistributerServiceTest {
 
 	}
 	
-	@Test
+//	@Test
 	public void saveEmployeeRegister(){
 		DistributerRegisterModel model = new DistributerRegisterModel();
 		model.setPhoneNo("18258252477");

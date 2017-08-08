@@ -70,9 +70,6 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		Distributer distributer = distributerDao.get(distributerId);
 		LessonYzw lesson = lessonDao.get(lessonId);
 		CustomerYzw customer = distributer.getCustomer();
-		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
-				customer.getId(),
-				lesson.getSubCourseType());
 
 		if (isAppointed(customer, lesson))
 			throw new Exception("您已预约课程：" + lesson.getName() + "无须重复预约");
@@ -83,6 +80,9 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		if ((new Date()).after(lesson.getStartDateTime()))
 			throw new Exception("上课时间已过， 不能预约");
 		// 判断卡权益是否可以预约
+		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
+				customer.getId(),
+				lesson.getSubCourseType());
 		//TODO 有漏洞, 客户预约后，剩余次数并没有减掉，而是要上完课签到之后第二天才能减掉  也就是说剩余次数为1可以预约很多次课.
 		if (contract == null)
 			throw new Exception("您不能预约课程\"" + lesson.getName() + "\"\n请购买音之舞\"" + lesson.getSubCourseType().getName() + "\"类舞蹈卡");
