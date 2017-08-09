@@ -14,13 +14,11 @@ import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.income.AfterAppointCheckInEvent;
 import com.yinzhiwu.yiwu.entity.income.CheckInEvent;
-import com.yinzhiwu.yiwu.entity.income.IncomeEvent;
-import com.yinzhiwu.yiwu.entity.income.WithoutAppointCheckInEvent;
 import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
@@ -98,13 +96,10 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		//判断是否已经预约
 		if(! appointmentDao.isAppointed(customer, lesson))
 			throw new YiwuException("未预约不能刷卡上课");
-		/**
-		 * 判断是否已刷卡
-		 */
+		//判断是否已刷卡
 		if (checkInsYzwDao.isCheckedIn(customer.getMemberCard(), lesson.getId()))
 			throw new YiwuException("已刷卡， 无须重复刷卡");
-		
-		//是否能刷卡
+		//判断是否能刷卡
 		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
 				customer.getId(),
 				lesson.getSubCourseType());
@@ -125,12 +120,6 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 //			event = new WithoutAppointCheckInEvent(distributer, 1f, checkIn);
 		AfterAppointCheckInEvent event = new AfterAppointCheckInEvent(distributer, 1f, checkIn);
 		incomeEventService.save(event);
-
-		/*
-		 * return
-		 */
-//		checkIn.setEvent((CheckInEvent) event);
-		// OrderYzw order = orderDao.findByContractNO(checkIn.getContractNo());
 		return new CheckInSuccessApiView((CheckInEvent) event, contract);
 	}
 
