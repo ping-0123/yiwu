@@ -6,8 +6,6 @@ import com.yinzhiwu.yiwu.dao.CourseYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 
 @Repository
-public class CourseYzwDaoImpl extends BaseDaoImpl<CourseYzw,String> implements CourseYzwDao {
+public class CourseYzwDaoImpl extends BaseDaoImpl<CourseYzw, String> implements CourseYzwDao {
 
-
-	
 }

@@ -3,11 +3,14 @@ package com.yinzhiwu.yiwu.entity.yzw;
 import java.sql.Time;
 import java.util.Date;
 
+import javax.persistence.AttributeConverter;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
+import javax.persistence.Convert;
+import javax.persistence.Converter;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,6 +22,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseTypeConverter;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseTypeConverter;
+
 @Entity
 @Table(name = "vlesson")
 public class LessonYzw extends BaseYzwEntity {
@@ -27,13 +35,61 @@ public class LessonYzw extends BaseYzwEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = -1007567421844511100L;
+	
+	public enum LessonStatus{
+		UN_CHECKED("未审核"),
+		ARRANGED("已排课"),
+		FINISHED("已开课");
+		
+		private final String status;
+
+		public String getStatus() {
+			return status;
+		}
+		
+		private LessonStatus(String status){
+			this.status = status;
+		}
+		
+		public static LessonStatus fromStatus(String status){
+			switch (status) {
+			case "未审核":
+				return LessonStatus.UN_CHECKED;
+			case "已排课":
+				return LessonStatus.ARRANGED;
+			case "已开课":
+				return LessonStatus.FINISHED;
+			default:
+				throw new UnsupportedOperationException(status + " not supported for enum LessonStatus");
+			}
+		}
+	}
+	
+	@Converter
+	public static class LessonStatusConverter implements AttributeConverter<LessonStatus, String>{
+
+		@Override
+		public String convertToDatabaseColumn(LessonStatus attribute) {
+			if(attribute ==null)
+				return null;
+			return attribute.getStatus();
+		}
+
+		@Override
+		public LessonStatus convertToEntityAttribute(String dbData) {
+			if(dbData == null || "".equals(dbData.trim()))
+				return null;
+			return LessonStatus.fromStatus(dbData);
+		}
+		
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="courseId", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "courseId", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private CourseYzw course;
 
 	@Column
@@ -48,9 +104,8 @@ public class LessonYzw extends BaseYzwEntity {
 	@Column(name = "courseDesc")
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="storeId", foreignKey=
-			@ForeignKey(name="fk_lesson_store_id", value=ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "storeId", foreignKey = @ForeignKey(name = "fk_lesson_store_id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw store;
 
 	@Column(length = 32)
@@ -59,38 +114,38 @@ public class LessonYzw extends BaseYzwEntity {
 	@Column
 	private Float lessonTime;
 
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name = "yindaoTeacherId", foreignKey=
-			@ForeignKey(name="fk_lesson_dueTeacher_id", value=ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "yindaoTeacherId", foreignKey = @ForeignKey(name = "fk_lesson_dueTeacher_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw dueTeacher;
 
 	@Column(length = 32, name = "yindaoTeacherName")
 	private String dueTeacherName;
 
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="classRoomId", foreignKey=
-			@ForeignKey(name="fk_lesson_classRoom_id", value=ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "classRoomId", foreignKey = @ForeignKey(name = "fk_lesson_classRoom_id", value = ConstraintMode.NO_CONSTRAINT))
 	private ClassRoomYzw classRoom;
 
 	@Column(length = 32)
 	private String classRoomName;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "shidaoTeacherId", foreignKey=
-			@ForeignKey(name="fk_lesson_actualTeacher_id" ,value=ConstraintMode.NO_CONSTRAINT))
-	private EmployeeYzw actualTeacherId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "shidaoTeacherId", foreignKey = @ForeignKey(name = "fk_lesson_actualTeacher_id", value = ConstraintMode.NO_CONSTRAINT))
+	private EmployeeYzw actualTeacher;
 
 	@Column(name = "shidaoTeacherName", length = 32)
 	private String actualTeacherName;
 
 	@Column(length = 32)
-	private String lessonStatus;
+	@Convert(converter=LessonStatusConverter.class)
+	private LessonStatus lessonStatus;
 
 	@Column(length = 32)
-	private String courseType;
+	@Convert(converter=CourseTypeConverter.class)
+	private CourseType courseType;
 
 	@Column(length = 64)
-	private String subCourseType;
+	@Convert(converter=SubCourseTypeConverter.class)
+	private SubCourseType subCourseType;
 
 	@Column(name = "flag_delete")
 	private Integer isDelete;
@@ -123,52 +178,50 @@ public class LessonYzw extends BaseYzwEntity {
 	private Integer appointedStudentCount;
 
 	@Embedded
-	@AttributeOverrides({
-			@AttributeOverride(name="connotation",column=@Column(name="neihan")),
-			@AttributeOverride(name="helpInfomation",column=@Column(name="help")),
-			@AttributeOverride(name="introduction",column=@Column(name="jianjie")),
-			@AttributeOverride(name="pictureNo",column=@Column(name="picture")),
-			@AttributeOverride(name="videoUrl",column=@Column(name="video")),
-			@AttributeOverride(name="audioName",column=@Column(name="audio")),
-			@AttributeOverride(name="audioUrl",column=@Column(name="audio_link")),
-			@AttributeOverride(name="danceIntroduction",column=@Column(name="dance_introduction"))})
+	@AttributeOverrides({ @AttributeOverride(name = "connotation", column = @Column(name = "neihan")),
+			@AttributeOverride(name = "helpInfomation", column = @Column(name = "help")),
+			@AttributeOverride(name = "introduction", column = @Column(name = "jianjie")),
+			@AttributeOverride(name = "pictureNo", column = @Column(name = "picture")),
+			@AttributeOverride(name = "videoUrl", column = @Column(name = "video")),
+			@AttributeOverride(name = "audioName", column = @Column(name = "audio")),
+			@AttributeOverride(name = "audioUrl", column = @Column(name = "audio_link")),
+			@AttributeOverride(name = "danceIntroduction", column = @Column(name = "dance_introduction")) })
 	private Connotation connotation;
-	
-//	@Column(name = "neihan")
-//	private String connotation;
 
-//	@Column(name = "help")
-//	private String helpInfomation;
-//
-//	@Column(name = "jianjie")
-//	private String introduction;
-//
-//	@Column(name = "picture")
-//	private String pictureNo;
-//
-//	@Column(name = "video")
-//	private String videoUrl;
-//
-//	@Column(name = "audio")
-//	private String audioName;
-//
-//	@Column(name = "audio_link")
-//	private String audioUrl;
-//
-//	@Column(name = "dance_introduction")
-//	private String danceIntroduction;
+	// @Column(name = "neihan")
+	// private String connotation;
+
+	// @Column(name = "help")
+	// private String helpInfomation;
+	//
+	// @Column(name = "jianjie")
+	// private String introduction;
+	//
+	// @Column(name = "picture")
+	// private String pictureNo;
+	//
+	// @Column(name = "video")
+	// private String videoUrl;
+	//
+	// @Column(name = "audio")
+	// private String audioName;
+	//
+	// @Column(name = "audio_link")
+	// private String audioUrl;
+	//
+	// @Column(name = "dance_introduction")
+	// private String danceIntroduction;
 
 	@Column(name = "QRcode")
 	private String qrCode;
-	
-	public LessonYzw(){
+
+	public LessonYzw() {
 		super();
 	}
 
 	public Integer getId() {
 		return id;
 	}
-
 
 	public Date getLessonDate() {
 		return lessonDate;
@@ -206,28 +259,27 @@ public class LessonYzw extends BaseYzwEntity {
 		return dueTeacherName;
 	}
 
-
 	public String getClassRoomName() {
 		return classRoomName;
 	}
 
-	public EmployeeYzw getActualTeacherId() {
-		return actualTeacherId;
+	public EmployeeYzw getActualTeacher() {
+		return actualTeacher;
 	}
 
 	public String getActualTeacherName() {
 		return actualTeacherName;
 	}
 
-	public String getLessonStatus() {
+	public LessonStatus getLessonStatus() {
 		return lessonStatus;
 	}
 
-	public String getCourseType() {
+	public CourseType getCourseType() {
 		return courseType;
 	}
 
-	public String getSubCourseType() {
+	public SubCourseType getSubCourseType() {
 		return subCourseType;
 	}
 
@@ -271,7 +323,6 @@ public class LessonYzw extends BaseYzwEntity {
 		return appointedStudentCount;
 	}
 
-	
 	public String getQrCode() {
 		return qrCode;
 	}
@@ -279,7 +330,6 @@ public class LessonYzw extends BaseYzwEntity {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 
 	public void setLessonDate(Date lessonDate) {
 		this.lessonDate = lessonDate;
@@ -322,22 +372,22 @@ public class LessonYzw extends BaseYzwEntity {
 	}
 
 	public void setActualTeacherId(EmployeeYzw actualTeacherId) {
-		this.actualTeacherId = actualTeacherId;
+		this.actualTeacher = actualTeacherId;
 	}
 
 	public void setActualTeacherName(String actualTeacherName) {
 		this.actualTeacherName = actualTeacherName;
 	}
 
-	public void setLessonStatus(String lessonStatus) {
+	public void setLessonStatus(LessonStatus lessonStatus) {
 		this.lessonStatus = lessonStatus;
 	}
 
-	public void setCourseType(String courseType) {
+	public void setCourseType(CourseType courseType) {
 		this.courseType = courseType;
 	}
 
-	public void setSubCourseType(String subCourseType) {
+	public void setSubCourseType(SubCourseType subCourseType) {
 		this.subCourseType = subCourseType;
 	}
 
@@ -381,8 +431,6 @@ public class LessonYzw extends BaseYzwEntity {
 		this.appointedStudentCount = appointedStudentCount;
 	}
 
-	
-
 	public void setQrCode(String qrCode) {
 		this.qrCode = qrCode;
 	}
@@ -410,7 +458,5 @@ public class LessonYzw extends BaseYzwEntity {
 	public void setConnotation(Connotation connotation) {
 		this.connotation = connotation;
 	}
-
-	
 
 }

@@ -6,9 +6,6 @@ import com.yinzhiwu.yiwu.dao.StoreInfoDao;
 import com.yinzhiwu.yiwu.entity.StoreInfo;
 
 @Repository
-public class StoreInfoDaoImpl 
-	extends BaseDaoImpl<StoreInfo, Integer>
-	implements StoreInfoDao
-{
-	
+public class StoreInfoDaoImpl extends BaseDaoImpl<StoreInfo, Integer> implements StoreInfoDao {
+
 }

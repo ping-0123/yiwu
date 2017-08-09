@@ -9,7 +9,7 @@ import com.yinzhiwu.yiwu.entity.yzwOld.Course;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 @Repository
-public class CourseDaoImpl extends BaseDaoImpl<Course, String> implements CourseDao{
+public class CourseDaoImpl extends BaseDaoImpl<Course, String> implements CourseDao {
 
 	@Override
 	public List<Course> findByProperty(String propertyName, Object value) {

@@ -16,11 +16,11 @@ public class CityApiController {
 
 	@Autowired
 	private CityService cityService;
-	
-	@GetMapping(value="/getCities")
+
+	@GetMapping(value = "/getCities")
 	@ResponseBody
-	public List<String> getCities(){
+	public List<String> getCities() {
 		return cityService.getCities();
 	}
-	
+
 }

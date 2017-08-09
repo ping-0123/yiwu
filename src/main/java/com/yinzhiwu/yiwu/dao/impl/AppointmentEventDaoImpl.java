@@ -6,6 +6,7 @@ import com.yinzhiwu.yiwu.dao.AppointmentEventDao;
 import com.yinzhiwu.yiwu.entity.income.AbstractAppointmentEvent;
 
 @Repository
-public class AppointmentEventDaoImpl extends BaseDaoImpl<AbstractAppointmentEvent,Integer> implements AppointmentEventDao{
+public class AppointmentEventDaoImpl extends BaseDaoImpl<AbstractAppointmentEvent, Integer>
+		implements AppointmentEventDao {
 
 }

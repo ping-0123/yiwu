@@ -10,10 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class QuartzTest {
-	
-	
+
 	@Test
-	public void test(){
+	public void test() {
 	}
 
 }

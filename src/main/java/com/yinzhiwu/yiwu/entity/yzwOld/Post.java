@@ -10,55 +10,54 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vpost")
+@Table(name = "vpost")
 public class Post {
 
-	
 	@Id
-	@Column(length=32)
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(length = 32)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column
 	private Integer type;
-	
-	@Column(length=50)
+
+	@Column(length = 50)
 	private String name;
-	
-	@Column(length=200)
+
+	@Column(length = 200)
 	private String description;
-	
+
 	@Column
 	private Integer creator;
-	
+
 	@Column
 	private Integer lastChanger;
-	
+
 	@Column
 	private Date createTime;
-	
+
 	@Column
 	private Date lastChangeTime;
-	
+
 	@Column
 	private Integer removed;
-	
+
 	@Column
 	private Integer flag;
-	
+
 	@Column
 	private Integer wparam;
-	
+
 	@Column
 	private Integer lparam;
-	
+
 	@Column
 	private Integer machineCode;
-	
-	@Column(name="Sf_Last_Sync_TimeStamp")
+
+	@Column(name = "Sf_Last_Sync_TimeStamp")
 	private Date lastSyncTimeStamp;
-	
-	@Column(name="SF_Last_Change_Timestamp")
+
+	@Column(name = "SF_Last_Change_Timestamp")
 	private Date lastChangeTimeStamp;
 
 	public final Integer getId() {
@@ -180,7 +179,5 @@ public class Post {
 	public final void setLastChangeTimeStamp(Date lastChangeTimeStamp) {
 		this.lastChangeTimeStamp = lastChangeTimeStamp;
 	}
-	
-	
-	
+
 }

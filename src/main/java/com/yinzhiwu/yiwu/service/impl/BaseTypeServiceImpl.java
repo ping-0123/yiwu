@@ -9,12 +9,10 @@ import com.yinzhiwu.yiwu.entity.type.BaseType;
 import com.yinzhiwu.yiwu.service.BaseTypeService;
 
 @Service
-public class BaseTypeServiceImpl extends BaseServiceImpl<BaseType, Integer> implements BaseTypeService{
+public class BaseTypeServiceImpl extends BaseServiceImpl<BaseType, Integer> implements BaseTypeService {
 
-	
 	@Autowired
-	public void setBaseTypeDao(@Qualifier("baseTypeDaoImpl") BaseTypeDao baseTypeDao)
-	{
+	public void setBaseTypeDao(@Qualifier("baseTypeDaoImpl") BaseTypeDao baseTypeDao) {
 		super.setBaseDao(baseTypeDao);
 	}
 }

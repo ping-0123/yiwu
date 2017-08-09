@@ -5,116 +5,117 @@ import java.util.Date;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
+import com.yinzhiwu.yiwu.enums.Gender;
 
 public class EContractDetailApiView {
 
 	private String contractNo;
-	
-	private String customerName;
-	
-	private String gender;
-	
-	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date birthday;
-	
-	private String identityCardNo;
-	
-	private String mobiePhoneNo;
-	
-	private String qqNo;
-	
-	private String wechatNo;
-	
-	private Integer customerId; 
-	
-	private String contactAddress;
-	
-	private String homeAddress;
-	
-	private String recommendMemberCardNo;
-	
-	private String memberCardNo;
-	
-	private Date effectiveStart;
-	
-	private Date effectiveEnd;
-	
-	private int timesOfLesson;
-	
-	private float price;
-	
-	private float amount;
-	
-	private float promotionPrice;
-	
-	private String rangeOfApplication;
-	
-	private String supplementalInstruction;
-	
-	private String uppercaseAmount;
-	
-	//小写金额
-	private String lowercaseAmount;
-	
-	private Date payedDate;
-	
-	private String payedMethod;
-	
-	private Float depositAmount;
-	
-	private Date depositDate;
-	
-	private Float finalAmount;
-	
-	private Date finalDate;
-	
 
-	
-	private String type;
-	
+	private String customerName;
+
+	private Gender gender;
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date birthday;
+
+	private String identityCardNo;
+
+	private String mobiePhoneNo;
+
+	private String qqNo;
+
+	private String wechatNo;
+
+	private Integer customerId;
+
+	private String contactAddress;
+
+	private String homeAddress;
+
+	private String recommendMemberCardNo;
+
+	private String memberCardNo;
+
+	private Date effectiveStart;
+
+	private Date effectiveEnd;
+
+	private int timesOfLesson;
+
+	private float price;
+
+	private float amount;
+
+	private float promotionPrice;
+
+	private String rangeOfApplication;
+
+	private String supplementalInstruction;
+
+	private String uppercaseAmount;
+
+	// 小写金额
+	private String lowercaseAmount;
+
+	private Date payedDate;
+
+	private String payedMethod;
+
+	private Float depositAmount;
+
+	private Date depositDate;
+
+	private Float finalAmount;
+
+	private Date finalDate;
+
+	private CourseType type;
+
 	private String context;
-	
-	public EContractDetailApiView(ElectricContractYzw e){
+
+	public EContractDetailApiView(ElectricContractYzw e) {
 		Assert.notNull(e);
-		this.contractNo		= e.getContractNo();
-		this.customerName 	= e.getCustomerName();
-		this.gender 		= e.getGender();
-		this.birthday 		= e.getBirthday();
+		this.contractNo = e.getContractNo();
+		this.customerName = e.getCustomerName();
+		this.gender = e.getGender();
+		this.birthday = e.getBirthday();
 		this.identityCardNo = e.getIdentityCardNo();
-		this.mobiePhoneNo 	= e.getMobiePhoneNo();
-		this.qqNo			= e.getQqNo();
-		this.wechatNo		=e.getWechatNo();
-		this.customerId		=e.getCustomer().getId();
-		this.contactAddress	=e.getContactAddress();
-		this.homeAddress 	=e.getHomeAddress();
-		this.recommendMemberCardNo	=e.getRecommendMemberCardNo();
-		this.memberCardNo	=e.getMemberCardNo();
-		this.effectiveStart	=e.getEffectiveStart();
-		this.effectiveEnd	=e.getEffectiveEnd();
-		this.timesOfLesson	=e.getTimesOfLesson();
-		this.price			=e.getPrice();
-		this.amount			=e.getAmount();
-		this.promotionPrice	=e.getPromotionPrice();
-		this.rangeOfApplication	=e.getRangeOfApplication();
-		this.supplementalInstruction =e.getSupplementalInstruction();
-		this.uppercaseAmount	=e.getUppercaseAmount();
-		this.lowercaseAmount	=e.getLowercaseAmount();
-		this.payedDate			=e.getPayedDate();
-		this.payedMethod		=e.getPayedMethod();
-		this.depositAmount		=e.getDepositAmount();
-		this.depositDate		=e.getDepositDate();
-		this.finalAmount		=e.getFinalAmount();
-		this.finalDate			=e.getFinalDate();
-		this.type				=e.getContractType().getDescription();
-		this.context			=e.getContractType().getContent();
+		this.mobiePhoneNo = e.getMobiePhoneNo();
+		this.qqNo = e.getQqNo();
+		this.wechatNo = e.getWechatNo();
+		this.customerId = e.getCustomer().getId();
+		this.contactAddress = e.getContactAddress();
+		this.homeAddress = e.getHomeAddress();
+		this.recommendMemberCardNo = e.getRecommendMemberCardNo();
+		this.memberCardNo = e.getMemberCardNo();
+		this.effectiveStart = e.getEffectiveStart();
+		this.effectiveEnd = e.getEffectiveEnd();
+		this.timesOfLesson = e.getTimesOfLesson();
+		this.price = e.getPrice();
+		this.amount = e.getAmount();
+		this.promotionPrice = e.getPromotionPrice();
+		this.rangeOfApplication = e.getRangeOfApplication();
+		this.supplementalInstruction = e.getSupplementalInstruction();
+		this.uppercaseAmount = String.valueOf(e.getUppercaseAmount());
+		this.lowercaseAmount = String.valueOf(e.getLowercaseAmount());
+		this.payedDate = e.getPayedDate();
+		this.payedMethod = e.getPayedMethod();
+		this.depositAmount = e.getDepositAmount();
+		this.depositDate = e.getDepositDate();
+		this.finalAmount = e.getFinalAmount();
+		this.finalDate = e.getFinalDate();
+		if(e.getContractType() !=null)
+			this.type = e.getContractType().getContractType();
+		this.context = e.getContractType().getContent();
 	}
 
 	public String getCustomerName() {
 		return customerName;
 	}
 
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
@@ -222,8 +223,7 @@ public class EContractDetailApiView {
 		return finalDate;
 	}
 
-
-	public String getType() {
+	public CourseType getType() {
 		return type;
 	}
 
@@ -239,7 +239,7 @@ public class EContractDetailApiView {
 		this.customerName = customerName;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 
@@ -343,8 +343,7 @@ public class EContractDetailApiView {
 		this.finalDate = finalDate;
 	}
 
-
-	public void setType(String type) {
+	public void setType(CourseType type) {
 		this.type = type;
 	}
 
@@ -360,6 +359,4 @@ public class EContractDetailApiView {
 		this.finalAmount = finalAmount;
 	}
 
-	
-	
 }

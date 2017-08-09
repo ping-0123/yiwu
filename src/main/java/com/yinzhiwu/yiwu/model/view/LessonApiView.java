@@ -15,54 +15,54 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 
-public class LessonApiView  implements DtoCriteria<LessonYzw>{
-	
+public class LessonApiView implements DtoCriteria<LessonYzw> {
+
 	private static final Log logger = LogFactory.getLog(LessonApiView.class);
 
 	private Integer id;
-	
+
 	private String name;
-	
+
 	private String courseId;
-	
+
 	private String danceName;
-	
+
 	private String danceGrade;
-	
+
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date date;
-	
-	@JsonFormat(pattern="HH:mm")
+
+	@JsonFormat(pattern = "HH:mm")
 	private Time start;
-	
+
 	@JsonFormat(pattern = "HH:mm")
 	private Time end;
-	
+
 	private String storeName;
-	
+
 	private String dueTeacher;
-	
+
 	public LessonApiView() {
 	}
 
-	public LessonApiView(LessonYzw l){
+	public LessonApiView(LessonYzw l) {
 		this.id = l.getId();
-		this.name= l.getName();
+		this.name = l.getName();
 		this.date = l.getLessonDate();
 		this.start = l.getStartTime();
 		this.end = l.getEndTime();
 		this.storeName = l.getStoreName();
-		this.dueTeacher =l.getDueTeacherName();
-		try{
+		this.dueTeacher = l.getDueTeacherName();
+		try {
 			CourseYzw course = l.getCourse();
 			this.courseId = course.getId();
 			this.danceName = course.getDanceDesc();
 			this.danceGrade = course.getDanceGrade();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -143,25 +143,15 @@ public class LessonApiView  implements DtoCriteria<LessonYzw>{
 		this.danceGrade = danceGrade;
 	}
 
-
-
 	@Override
 	public CriteriaQuery<LessonApiView> getDtoCriteria(Session session, Class<?> sourceEntityClass) {
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<LessonApiView> criteria = builder.createQuery(LessonApiView.class);
 		Root<?> lesson = criteria.from(sourceEntityClass);
-		criteria.select(builder.construct(LessonApiView.class,
-				lesson.get("id"),
-				lesson.get("name"),
-				lesson.get("course").get("id"),
-				lesson.get("course").get("danceDesc"),
-				lesson.get("course").get("danceGrade"),
-				lesson.get("lessonDate"),
-				lesson.get("startTime"),
-				lesson.get("endTime"),
-				lesson.get("storeName"),
-				lesson.get("dueTeacherName")
-				));
+		criteria.select(builder.construct(LessonApiView.class, lesson.get("id"), lesson.get("name"),
+				lesson.get("course").get("id"), lesson.get("course").get("danceDesc"),
+				lesson.get("course").get("danceGrade"), lesson.get("lessonDate"), lesson.get("startTime"),
+				lesson.get("endTime"), lesson.get("storeName"), lesson.get("dueTeacherName")));
 		return criteria;
 	}
 
@@ -170,18 +160,10 @@ public class LessonApiView  implements DtoCriteria<LessonYzw>{
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<LessonApiView> criteria = builder.createQuery(LessonApiView.class);
 		Root<?> lesson = criteria.from(LessonYzw.class);
-		criteria.select(builder.construct(LessonApiView.class,
-				lesson.get("id"),
-				lesson.get("name"),
-				lesson.get("course").get("id"),
-				lesson.get("course").get("danceDesc"),
-				lesson.get("course").get("danceGrade"),
-				lesson.get("lessonDate"),
-				lesson.get("startTime"),
-				lesson.get("endTime"),
-				lesson.get("storeName"),
-				lesson.get("dueTeacherName")
-				));
+		criteria.select(builder.construct(LessonApiView.class, lesson.get("id"), lesson.get("name"),
+				lesson.get("course").get("id"), lesson.get("course").get("danceDesc"),
+				lesson.get("course").get("danceGrade"), lesson.get("lessonDate"), lesson.get("startTime"),
+				lesson.get("endTime"), lesson.get("storeName"), lesson.get("dueTeacherName")));
 		return criteria;
 	}
 
@@ -203,6 +185,5 @@ public class LessonApiView  implements DtoCriteria<LessonYzw>{
 		this.storeName = storeName;
 		this.dueTeacher = dueTeacher;
 	}
-	
-	
+
 }

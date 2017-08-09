@@ -10,145 +10,142 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name="vorder")
+@Table(name = "vorder")
 public class Order {
 
 	@Id
-	@Column(length=32)
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(length = 32)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String id;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String memberCardNo;
-	
-	@Column(name="product_id")
+
+	@Column(name = "product_id")
 	private Integer productId;
-	
+
 	@Column
 	private Float markedPrice;
-	
+
 	@Column
 	private Float preferential;
-	
+
 	@Column
 	private Integer count;
-	
+
 	@Column
 	private Float discount;
-	
+
 	@Column
 	private Float payedAmount;
-	
-	@Column(name="customer_id")
+
+	@Column(name = "customer_id")
 	private Integer customerId;
-	
-//	@DateTimeFormat(pattern="yyyy-MM-dd")
-	@Column(name="payed_date")
+
+	// @DateTimeFormat(pattern="yyyy-MM-dd")
+	@Column(name = "payed_date")
 	private java.sql.Date payedDate;
-	
-	@Column(name="course_id",length=32)
+
+	@Column(name = "course_id", length = 32)
 	private String courseId;
-	
-	@Column(name="checked_status", length=32)
+
+	@Column(name = "checked_status", length = 32)
 	private String checkedStatus;
-	
-	@Column(name="store_id")
+
+	@Column(name = "store_id")
 	private Integer storeId;
-	
-	@Column(length=32, name="vip_attr")
+
+	@Column(length = 32, name = "vip_attr")
 	private String vipAttr;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String contractNo;
-	
+
 	@Column
 	private Integer validity;
-	
-	@Column(name="validity_times")
+
+	@Column(name = "validity_times")
 	private Integer validityTimes;
-	
+
 	@Column
 	private Date startDate;
-	
+
 	@Column
 	private Date endDate;
-	
-	@Column(name="remain_times")
+
+	@Column(name = "remain_times")
 	private Float remainTimes;
-	
-	@Column(length=32, name="product_type")
+
+	@Column(length = 32, name = "product_type")
 	private String productType;
-	
-	@Column(length=32, name="product_subType")
+
+	@Column(length = 32, name = "product_subType")
 	private String productSubType;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String recommender;
-	
-	@Column(name="valid_storeids")
+
+	@Column(name = "valid_storeids")
 	private String validStoreIds;
-	
+
 	@Column
 	private String pic;
-	
-	@Column(name="ask_for_leave_flag")
+
+	@Column(name = "ask_for_leave_flag")
 	private Integer askForLeaveFlag;
-	
+
 	@Column
 	private String comments;
-	
-	@Column(length=32, name="relative_SD")
+
+	@Column(length = 32, name = "relative_SD")
 	private String relativeSD;
-	
-	@Column(length=32 ,name="check_privilege")
+
+	@Column(length = 32, name = "check_privilege")
 	private String checkPrivilege;
-	
-	@Column(length=32, name="current_status")
+
+	@Column(length = 32, name = "current_status")
 	private String currentStatus;
-	
-	@Column(name="remain_hours")
+
+	@Column(name = "remain_hours")
 	private float remainHours;
-	
-	@Column(name="audit_flag")
+
+	@Column(name = "audit_flag")
 	private Boolean isAuditedByFinance;
-	
-	@Column(name="e_contract_text")
+
+	@Column(name = "e_contract_text")
 	private Blob eContractText;
-	
-	@Column(name="e_contract_address")
+
+	@Column(name = "e_contract_address")
 	private String econtractAddress;
-	
-	@Column(name="e_contract_picture_flag")
+
+	@Column(name = "e_contract_picture_flag")
 	private int eContractPictureFlag;
-	
-	@Column(name="e_contract_status")
+
+	@Column(name = "e_contract_status")
 	private int eContractStatus;
-	
-	
-	@Column(name="sf_create_user")
+
+	@Column(name = "sf_create_user")
 	private Integer createUserId;
-	
-	@Column(name="sf_last_change_user")
+
+	@Column(name = "sf_last_change_user")
 	private Integer lastChangeUserId;
-	
-	@Column(name="sf_create_time")
+
+	@Column(name = "sf_create_time")
 	private Date createTime;
-	
-	@Column(name="sf_last_change_time")
+
+	@Column(name = "sf_last_change_time")
 	private Date lastChangeTime;
-	
+
 	@Column
 	private Integer machineCode;
-	
-	@Column(name="sf_last_sync_TimeStamp")
+
+	@Column(name = "sf_last_sync_TimeStamp")
 	private Date lastSyncTimeStamp;
-	
-	@Column(name="sf_last_change_timestamp")
+
+	@Column(name = "sf_last_change_timestamp")
 	private Date lastChangeTimeStamp;
 
-	
 	public final String getId() {
 		return id;
 	}
@@ -389,7 +386,6 @@ public class Order {
 		this.currentStatus = currentStatus;
 	}
 
-
 	public final Integer getCreateUserId() {
 		return createUserId;
 	}
@@ -485,6 +481,5 @@ public class Order {
 	public void seteContractStatus(int eContractStatus) {
 		this.eContractStatus = eContractStatus;
 	}
-	
-	
+
 }

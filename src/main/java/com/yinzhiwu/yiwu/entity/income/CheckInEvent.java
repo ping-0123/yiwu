@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.entity.income;
 import javax.persistence.ConstraintMode;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -20,8 +21,8 @@ public abstract class CheckInEvent extends IncomeEvent {
 	 */
 	private static final long serialVersionUID = 6137944108496433914L;
 
-	@OneToOne
-	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private CheckInsYzw checkIn;
 
 	public CheckInsYzw getCheckIn() {
@@ -37,11 +38,11 @@ public abstract class CheckInEvent extends IncomeEvent {
 
 	public CheckInEvent(Distributer distributer, EventType type, Float param, CheckInsYzw checkIn) {
 		super(distributer, type, param);
-		this.checkIn= checkIn;
+		this.checkIn = checkIn;
 	}
-	
-	public CheckInEvent(Distributer distributer,  Float param, CheckInsYzw checkIn) {
+
+	public CheckInEvent(Distributer distributer, Float param, CheckInsYzw checkIn) {
 		super(distributer, null, param);
-		this.checkIn= checkIn;
+		this.checkIn = checkIn;
 	}
 }

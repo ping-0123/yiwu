@@ -12,18 +12,20 @@ import com.yinzhiwu.yiwu.service.IncomeEventService;
 @Repository
 public class CheckInEventServiceImpl extends BaseServiceImpl<CheckInEvent, Integer> implements CheckInEventService {
 
-	@Autowired public void setBaseDao(CheckInEventDao checkInEventDao){
+	@Autowired
+	public void setBaseDao(CheckInEventDao checkInEventDao) {
 		super.setBaseDao(checkInEventDao);
 	}
-	
-	@Autowired private IncomeEventService incomeEventService;
-	
+
+	@Autowired
+	private IncomeEventService incomeEventService;
+
 	@Override
-	public Integer save(CheckInEvent event){
+	public Integer save(CheckInEvent event) {
 		Assert.notNull(event);
 		Assert.notNull(event.getType());
 		Assert.notNull(event.getDistributer());
-		
+
 		return incomeEventService.save(event);
 	}
 }

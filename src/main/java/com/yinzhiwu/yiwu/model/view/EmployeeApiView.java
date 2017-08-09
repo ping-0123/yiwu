@@ -6,14 +6,14 @@ import com.yinzhiwu.yiwu.entity.yzwOld.Employee;
 public class EmployeeApiView {
 
 	private int id;
-	
+
 	private String name;
 
-	public EmployeeApiView(Employee e){
+	public EmployeeApiView(Employee e) {
 		this.id = e.getId();
-		this.name= e.getName();
+		this.name = e.getName();
 	}
-	
+
 	public EmployeeApiView() {
 	}
 
@@ -42,6 +42,5 @@ public class EmployeeApiView {
 	public final void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 }

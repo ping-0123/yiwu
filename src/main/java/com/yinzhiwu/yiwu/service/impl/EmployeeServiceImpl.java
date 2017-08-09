@@ -9,15 +9,12 @@ import com.yinzhiwu.yiwu.dao.EmployeeDao;
 import com.yinzhiwu.yiwu.model.view.EmployeeApiView;
 import com.yinzhiwu.yiwu.service.EmployeeService;
 
-
-
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-	
+
 	@Autowired
 	private EmployeeDao employeeDao;
 
-	
 	@Override
 	public List<EmployeeApiView> getAllOnJobCoaches() {
 		return employeeDao.findAllOnJobCoach();

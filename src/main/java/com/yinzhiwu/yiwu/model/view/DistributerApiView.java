@@ -16,59 +16,60 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.util.UrlUtil;
 
-public class DistributerApiView implements Serializable{
+public class DistributerApiView implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1063578788280665376L;
-	
-	private static final Log LOG= LogFactory.getLog(DistributerApiView.class);
+
+	private static final Log LOG = LogFactory.getLog(DistributerApiView.class);
 
 	@Min(1)
 	private int id;
-	
+
 	private int expGradeNo;
-	
+
 	private String name;
-	
+
 	private String nickName;
-	
+
 	private String phoneNo;
-	
+
 	private String memeberId;
-	
+
 	private String shareCode;
-	
+
 	private String headIconUrl;
 	
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
+	private Date birthDay;
+
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date registerDate;
-	
+
 	private float neededExpForUpdate;
-	
+
 	private float brokerage;
-	
+
 	private float funds;
-	
+
 	private int customerId;
-	
+
 	@NotNull
 	@JsonIgnore
 	private MultipartFile image;
-	
-	
+
 	private float beatRate;
 
 	public DistributerApiView() {
 	}
-	
+
 	public DistributerApiView(int id) {
 		this.id = id;
 	}
-	
-	public DistributerApiView(Distributer d)
-	{
+
+	public DistributerApiView(Distributer d) {
 		this.id = d.getId();
 		this.name = d.getName();
 		this.nickName = d.getNickName();
@@ -76,71 +77,71 @@ public class DistributerApiView implements Serializable{
 		this.memeberId = d.getMemberId();
 		this.shareCode = d.getShareCode();
 		this.headIconUrl = UrlUtil.toHeadIcomUrl(d.getHeadIconName());
+		this.birthDay = d.getBirthday();
 		this.registerDate = d.getRegistedTime();
 		this.beatRate = 0f;
-		
-		try{
+
+		try {
 			this.brokerage = d.getDistributerIncome(IncomeType.BROKERAGE).getIncome();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			LOG.error(e.getMessage());
 		}
-		
-		try{
+
+		try {
 			this.funds = d.getDistributerIncome(IncomeType.FUNDS).getIncome();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			LOG.error(e.getMessage());
 		}
-		
-		try{
+
+		try {
 			this.expGradeNo = d.getDistributerIncome(IncomeType.EXP).getIncomeGrade().getGradeNo();
 			this.neededExpForUpdate = d.getDistributerIncome(IncomeType.EXP).getIncomeGrade().getUpgradeNeededValue()
-					-d.getDistributerIncome(IncomeType.EXP).getIncome();
-		}catch (Exception e) {
+					- d.getDistributerIncome(IncomeType.EXP).getIncome();
+		} catch (Exception e) {
 			LOG.error(e.getMessage());
 		}
-		
-		try{
+
+		try {
 			this.customerId = d.getCustomer().getId();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			LOG.equals(e.getMessage());
 		}
 	}
 
-	
-	
-	public DistributerApiView(Distributer d, Float rate){
+	public DistributerApiView(Distributer d, Float rate) {
 		this.id = d.getId();
 		this.name = d.getName();
 		this.nickName = d.getNickName();
 		this.phoneNo = d.getPhoneNo();
 		this.memeberId = d.getMemberId();
 		this.shareCode = d.getShareCode();
+		this.birthDay = d.getBirthday();
 		this.registerDate = d.getRegistedTime();
 		this.beatRate = rate;
-		
-		try{
+
+		try {
 			this.brokerage = d.getDistributerIncome(IncomeType.BROKERAGE).getIncome();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			LOG.error(e.getMessage());
 		}
-		
-		try{
+
+		try {
 			this.funds = d.getDistributerIncome(IncomeType.FUNDS).getIncome();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			LOG.error(e.getMessage());
 		}
-		
-		try{
+
+		try {
 			this.expGradeNo = d.getDistributerIncome(IncomeType.EXP).getIncomeGrade().getGradeNo();
 			this.neededExpForUpdate = d.getDistributerIncome(IncomeType.EXP).getIncomeGrade().getUpgradeNeededValue()
-					-d.getDistributerIncome(IncomeType.EXP).getIncome();
-		}catch (Exception e) {
+					- d.getDistributerIncome(IncomeType.EXP).getIncome();
+		} catch (Exception e) {
 			LOG.error(e.getMessage());
 		}
-		
-		try{
+
+		try {
 			this.customerId = d.getCustomer().getId();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			LOG.equals(e.getMessage());
 		}
 	}
@@ -264,6 +265,13 @@ public class DistributerApiView implements Serializable{
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
-	
-	
+
+	public Date getBirthDay() {
+		return birthDay;
+	}
+
+	public void setBirthDay(Date birthDay) {
+		this.birthDay = birthDay;
+	}
+
 }

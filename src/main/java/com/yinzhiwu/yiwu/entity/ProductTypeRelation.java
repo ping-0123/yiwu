@@ -14,21 +14,19 @@ import javax.persistence.UniqueConstraint;
 import com.yinzhiwu.yiwu.entity.type.ProductType;
 
 @Entity
-@Table(name="yiwu_product_type_relation",uniqueConstraints={
-		@UniqueConstraint(name="uk_ProductTypeRelation_productId", columnNames="productId")})
+@Table(name = "yiwu_product_type_relation", uniqueConstraints = {
+		@UniqueConstraint(name = "uk_ProductTypeRelation_productId", columnNames = "productId") })
 public class ProductTypeRelation {
-	
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column
 	private Integer productId;
-	
+
 	@ManyToOne
-	@JoinColumn(name="product_type_id", nullable =false, foreignKey=
-		@ForeignKey(name="fk_ProductTypeRelation_ProductType_id"))
+	@JoinColumn(name = "product_type_id", nullable = false, foreignKey = @ForeignKey(name = "fk_ProductTypeRelation_ProductType_id"))
 	private ProductType type;
 
 	public Integer getId() {
@@ -53,7 +51,6 @@ public class ProductTypeRelation {
 
 	public void setType(ProductType type) {
 		this.type = type;
-	}	
-	
-	
+	}
+
 }

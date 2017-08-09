@@ -9,7 +9,7 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 
 @Entity
 @DiscriminatorValue("UnAppointmentEvent")
-public class UnAppointmentEvent extends AbstractAppointmentEvent{
+public class UnAppointmentEvent extends AbstractAppointmentEvent {
 
 	/**
 	 * 
@@ -23,7 +23,5 @@ public class UnAppointmentEvent extends AbstractAppointmentEvent{
 	public UnAppointmentEvent(Distributer distributer, Float param, LessonYzw lesson) {
 		super(distributer, EventType.UN_APPOINTMENT, param, lesson);
 	}
-	
-	
 
 }

@@ -9,64 +9,66 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 
 public class OrderApiView {
-	
+
 	private Log LOG = LogFactory.getLog(OrderApiView.class);
-	
+
 	private String id;
-	
+
 	private String contractNo;
-	
-	private String productType;
-	
+
+	private CourseType productType;
+
 	private int validityTimes;
-	
-	//合约开始日期
-	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date contractStart; 
-	
-	//合约结束日期
-	@JsonFormat(pattern="yyyy-MM-dd")
+
+	// 合约开始日期
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
+	private Date contractStart;
+
+	// 合约结束日期
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date contractEnd;
-	
+
 	private String checkedStatus;
-	
+
 	private String courseId;
-	
+
 	private String courseName;
-	
+
 	private String courseStore;
-	
+
 	private Date courseStartDate;
-	
+
 	private Boolean eContractStatus;
-	
-	public OrderApiView(){};
-	
-	public OrderApiView(OrderYzw o){
-		if(o == null)
+
+	public OrderApiView() {
+	};
+
+	public OrderApiView(OrderYzw o) {
+		if (o == null)
 			return;
 		this.id = o.getId();
 		Contract contract = o.getContract();
-		if(contract != null){
-			this.contractNo		 = contract.getContractNo();
-			this.validityTimes	 = contract.getValidityTimes();
-			this.contractStart	 = contract.getStart();
-			this.contractEnd 	 = contract.getEnd();
-			this.productType 	 = contract.getType();
-			this.checkedStatus	 = contract.getStatus().getStatus();
+		if (contract != null) {
+			this.contractNo = contract.getContractNo();
+			this.validityTimes = contract.getValidityTimes();
+			this.contractStart = contract.getStart();
+			this.contractEnd = contract.getEnd();
+			this.productType = contract.getType();
+			this.checkedStatus = contract.getStatus().getStatus();
 		}
-		
-		CourseYzw course= o.getCourse();
-		try{
-			if(course != null){
+
+		CourseYzw course = o.getCourse();
+		try {
+			if (course != null) {
 				this.courseId = course.getId();
 				this.courseName = course.getName();
 				this.courseStore = course.getStoreName();
 				this.courseStartDate = course.getStartDate();
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			LOG.warn(e.getMessage());
 		}
 		this.eContractStatus = o.geteContractStatus();
@@ -79,7 +81,6 @@ public class OrderApiView {
 	public String getContractNo() {
 		return contractNo;
 	}
-
 
 	public int getValidityTimes() {
 		return validityTimes;
@@ -113,7 +114,6 @@ public class OrderApiView {
 		this.contractNo = contractNo;
 	}
 
-
 	public void setValidityTimes(int validityTimes) {
 		this.validityTimes = validityTimes;
 	}
@@ -138,11 +138,11 @@ public class OrderApiView {
 		this.courseStore = courseStore;
 	}
 
-	public String getProductType() {
+	public CourseType getProductType() {
 		return productType;
 	}
 
-	public void setProductType(String productType) {
+	public void setProductType(CourseType productType) {
 		this.productType = productType;
 	}
 
@@ -170,5 +170,4 @@ public class OrderApiView {
 		this.checkedStatus = checkedStatus;
 	}
 
-	
 }

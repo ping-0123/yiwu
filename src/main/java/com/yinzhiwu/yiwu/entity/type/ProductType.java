@@ -9,27 +9,24 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="yiwu_product_type", uniqueConstraints=
-		@UniqueConstraint(name="uk_ProductType_name", columnNames="name"))
+@Table(name = "yiwu_product_type", uniqueConstraints = @UniqueConstraint(name = "uk_ProductType_name", columnNames = "name"))
 public class ProductType {
 
-	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	
-	//uk
-	@Column(name="name", nullable=false)
+
+	// uk
+	@Column(name = "name", nullable = false)
 	private String name;
-	
-	public ProductType(){};
-	
+
+	public ProductType() {
+	};
+
 	public ProductType(Integer id, String name) {
 		this.id = id;
 		this.name = name;
 	}
-
 
 	public final Integer getId() {
 		return id;
@@ -51,6 +48,5 @@ public class ProductType {
 	public String toString() {
 		return name;
 	}
-	
-	
+
 }

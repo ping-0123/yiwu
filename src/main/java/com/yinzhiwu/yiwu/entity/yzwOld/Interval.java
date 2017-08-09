@@ -10,40 +10,40 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vinterval")
+@Table(name = "vinterval")
 public class Interval {
-	
+
 	@Id
 	@GeneratedValue
-	@Column(length=32)
+	@Column(length = 32)
 	private String id;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String name;
-	
+
 	@Column
 	private Time start;
-	
+
 	@Column
 	private Time end;
-	
+
 	@Column
 	private float hours;
 
 	private int sf_create_user;
-	
+
 	private int sf_last_change_user;
-	
+
 	private Date sf_create_time;
-	
+
 	private Date sf_last_change_time;
-	
+
 	private int machineCode;
-	
+
 	private Date sf_last_sync_timeStamp;
-	
-	private Date  sf_last_change_timeStamp;
-	
+
+	private Date sf_last_change_timeStamp;
+
 	public final String getId() {
 		return id;
 	}
@@ -128,7 +128,6 @@ public class Interval {
 		this.machineCode = machineCode;
 	}
 
-
 	public void setSf_last_change_timeStamp(Date sf_last_change_timeStamp) {
 		this.sf_last_change_timeStamp = sf_last_change_timeStamp;
 	}
@@ -140,6 +139,5 @@ public class Interval {
 	public void setSf_last_sync_timeStamp(Date sf_last_sync_timeStamp) {
 		this.sf_last_sync_timeStamp = sf_last_sync_timeStamp;
 	}
-	
-	
+
 }

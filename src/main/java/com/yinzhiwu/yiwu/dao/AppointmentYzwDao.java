@@ -5,7 +5,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
 
-public interface AppointmentYzwDao extends IBaseDao<AppointmentYzw,Integer>{
+public interface AppointmentYzwDao extends IBaseDao<AppointmentYzw, Integer> {
 
 	boolean isAppointed(CustomerYzw customer, LessonYzw lesson);
 

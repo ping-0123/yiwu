@@ -8,9 +8,10 @@ import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.MessageApiView;
 
-public interface MessageService  extends IBaseService<Message, Integer>{
+public interface MessageService extends IBaseService<Message, Integer> {
 
-	public void saveBrockerageIncomeMessage(Distributer receiver, String customerName, float consumeValue, float inComeValue);
+	public void saveBrockerageIncomeMessage(Distributer receiver, String customerName, float consumeValue,
+			float inComeValue);
 
 	public YiwuJson<List<MessageApiView>> findByReceiverId(int receiverId);
 
@@ -23,6 +24,7 @@ public interface MessageService  extends IBaseService<Message, Integer>{
 
 	/**
 	 * Brokerage 的变动才会产生消息
+	 * 
 	 * @param incomeRecord
 	 */
 	public void save_by_record(IncomeRecord incomeRecord);

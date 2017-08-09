@@ -12,18 +12,13 @@ import com.yinzhiwu.yiwu.model.view.LessonApiView;
 
 public interface CheckInsYzwService extends IBaseService<CheckInsYzw, Integer> {
 
-
 	YiwuJson<List<LessonApiView>> findByCustomerId(int customerId);
 
 	int findCountByCustomerId(int customerId);
 
-
-	CheckInSuccessApiView saveCustomerCheckIn(int distributerId, int lessonId) throws YiwuException, DataNotFoundException;
-
+	CheckInSuccessApiView saveCustomerCheckIn(int distributerId, int lessonId)
+			throws YiwuException, DataNotFoundException;
 
 	PageBean<LessonApiView> findPageViewByCustomer(int customerId, int pageNo, int pageSize) throws Exception;
-
-
-
 
 }

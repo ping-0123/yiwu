@@ -15,6 +15,11 @@
     	</p>
     	
     	<p>
+    	<label for="editDate">日期:</label>
+    	<input id="editDate" type="date"  name="editDate" /> <br/>
+    	</p>
+    	
+    	<p>
     		<label for="author">标题:</label>
     	<input id="title" name="title" type="text"  />
     	</p>
@@ -47,7 +52,7 @@
     	</p>
     	
         <!-- 加载编辑器的容器 -->
-        <script id="container" name="content" type="text/plain">请输入内容</script>
+        <script id="container" name="content" type="text/plain"></script>
         <p>
         	<input id="reset" type="reset"  />  
         	<input id="submit" type="submit"  />
@@ -69,7 +74,7 @@
     <script type="text/javascript">
     $.ajax({
 		type:"GET",
-		url: baseApiUrl + "/api/types/tweetType/list",
+		url:  "../api/types/tweetType/list",
 		async:true,
 		cache:false,
 		success:function(data){

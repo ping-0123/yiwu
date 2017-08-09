@@ -13,10 +13,11 @@ import com.yinzhiwu.yiwu.dao.IncomeRecordDao;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class CriteriaTest {
-	@Autowired private IncomeRecordDao incomeRecordDao;
-	
+	@Autowired
+	private IncomeRecordDao incomeRecordDao;
+
 	@Test
-	public void test(){
+	public void test() {
 		incomeRecordDao.getShareTweetRecordApiViews(3000050, null, null, null);
 	}
 }

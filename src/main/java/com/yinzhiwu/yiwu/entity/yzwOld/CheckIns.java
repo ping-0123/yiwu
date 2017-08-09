@@ -10,60 +10,59 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vcheck_ins")
+@Table(name = "vcheck_ins")
 public class CheckIns {
-	
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String memberCard;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String lessonId;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String contract;
-	
+
 	@Column
 	private Integer teacherId;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String comsumeSd;
-	
+
 	@Column
 	private Short flag;
-	
+
 	@Column
 	private String isRetroactive;
-	
+
 	@Column
 	private Short storemanCallroll;
-	
+
 	@Column
 	private String uncallrollReason;
-	
-	@Column(name="sf_create_user")
+
+	@Column(name = "sf_create_user")
 	private Integer createUserId;
-	
-	@Column(name="sf_last_change_user")
+
+	@Column(name = "sf_last_change_user")
 	private Integer lastChangeUserId;
-	
-	@Column(name="sf_create_time")
+
+	@Column(name = "sf_create_time")
 	private Date createTime;
-	
-	@Column(name="sf_last_change_time")
+
+	@Column(name = "sf_last_change_time")
 	private Date lastChangeTime;
-	
+
 	@Column
 	private Integer machineCode;
-	
-	@Column(name="sf_last_sync_timeStamp")
+
+	@Column(name = "sf_last_sync_timeStamp")
 	private Date lastSyncTimeStamp;
-	
-	@Column(name="sf_last_change_timeStamp")
+
+	@Column(name = "sf_last_change_timeStamp")
 	private Date lastChangeTimeStamp;
 
 	public final int getId() {
@@ -201,6 +200,5 @@ public class CheckIns {
 	public final void setLastChangeTimeStamp(Date lastChangeTimeStamp) {
 		this.lastChangeTimeStamp = lastChangeTimeStamp;
 	}
-	
-	
+
 }

@@ -13,56 +13,57 @@ import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 
 public class CheckInSuccessApiView {
 
 	private Integer times;
 	private Float exp;
-	
-	//课程信息
+
+	// 课程信息
 	private String city;
 	private String storeName;
 	private String lessonName;
 	private String danceName;
-	private String courseType;
+	private CourseType courseType;
 	private String coachName;
-	@JsonFormat(pattern="yyyy年MM月dd日")
+	@JsonFormat(pattern = "yyyy年MM月dd日")
 	private Date lessonDate;
-	@JsonFormat(pattern="HH:mm")
+	@JsonFormat(pattern = "HH:mm")
 	private Time startTime;
-	@JsonFormat(pattern="HH:mm")
+	@JsonFormat(pattern = "HH:mm")
 	private Time endTime;
-	//合约信息
+	// 合约信息
 	private String contractNo;
 	private Date contractStartDate;
 	private Date contractEndDate;
 	private Integer validityTimes;
 	private Integer remainTimes;
-	
+
 	public CheckInSuccessApiView() {
 		super();
 	}
-	
-	public CheckInSuccessApiView(CheckInEvent event, Contract contract){
+
+	public CheckInSuccessApiView(CheckInEvent event, Contract contract) {
 		Assert.notNull(event);
 		Assert.notNull(event.getCheckIn());
 		Assert.notNull(event.getCheckIn().getLesson());
 		Assert.notNull(contract);
 		Assert.isTrue(event.getCheckIn().getContractNo().equals(contract.getContractNo()));
-		
+
 		CheckInsYzw checkIn = event.getCheckIn();
-		this.times =(int) event.getParam().floatValue();
+		this.times = (int) event.getParam().floatValue();
 		IncomeRecord record = event.getAppointedIncomeRecord(IncomeType.EXP);
-		if(record != null)
+		if (record != null)
 			exp = record.getIncomeValue();
 		LessonYzw lesson = checkIn.getLesson();
 		DepartmentYzw store = lesson.getStore();
-		if(store !=null){
+		if (store != null) {
 			this.storeName = store.getName();
 			this.city = store.getCity();
 		}
 		this.lessonName = lesson.getName();
-		if(lesson.getCourse() != null)
+		if (lesson.getCourse() != null )
 			this.danceName = lesson.getCourse().getDanceDesc();
 		this.courseType = lesson.getCourseType();
 		this.coachName = lesson.getDueTeacherName();
@@ -73,52 +74,65 @@ public class CheckInSuccessApiView {
 		this.contractStartDate = contract.getStart();
 		this.contractEndDate = contract.getEnd();
 		this.validityTimes = contract.getValidityTimes();
-		this.remainTimes = (int) contract.getRemainTimes();
+		this.remainTimes = contract.getRemainTimes().intValue();
 	}
-	
-	
+
 	public Integer getTimes() {
 		return times;
 	}
+
 	public Float getExp() {
 		return exp;
 	}
+
 	public String getCity() {
 		return city;
 	}
+
 	public String getStoreName() {
 		return storeName;
 	}
+
 	public String getCoachName() {
 		return coachName;
 	}
+
 	public Date getLessonDate() {
 		return lessonDate;
 	}
+
 	public Time getStartTime() {
 		return startTime;
 	}
+
 	public Time getEndTime() {
 		return endTime;
 	}
+
 	public String getContractNo() {
 		return contractNo;
 	}
+
 	public Integer getValidityTimes() {
 		return validityTimes;
 	}
+
 	public Integer getRemainTimes() {
 		return remainTimes;
 	}
+
 	public void setTimes(Integer times) {
 		this.times = times;
 	}
+
 	public void setExp(Float exp) {
 		this.exp = exp;
 	}
+
 	public void setCity(String city) {
 		this.city = city;
 	}
+
 	public void setStoreName(String storeName) {
 		this.storeName = storeName;
 	}
@@ -126,34 +140,44 @@ public class CheckInSuccessApiView {
 	public void setCoachName(String coachName) {
 		this.coachName = coachName;
 	}
+
 	public void setLessonDate(Date lessonDate) {
 		this.lessonDate = lessonDate;
 	}
+
 	public void setStartTime(Time startTime) {
 		this.startTime = startTime;
 	}
+
 	public void setEndTime(Time endTime) {
 		this.endTime = endTime;
 	}
+
 	public void setContractNo(String contractNo) {
 		this.contractNo = contractNo;
 	}
+
 	public void setValidityTimes(Integer validityTimes) {
 		this.validityTimes = validityTimes;
 	}
+
 	public void setRemainTimes(Integer remainTimes) {
 		this.remainTimes = remainTimes;
 	}
+
 	public String getLessonName() {
 		return lessonName;
 	}
-	public String getCourseType() {
+
+	public CourseType getCourseType() {
 		return courseType;
 	}
+
 	public void setLessonName(String lessonName) {
 		this.lessonName = lessonName;
 	}
-	public void setCourseType(String courseType) {
+
+	public void setCourseType(CourseType courseType) {
 		this.courseType = courseType;
 	}
 
@@ -174,7 +198,7 @@ public class CheckInSuccessApiView {
 	}
 
 	public CheckInSuccessApiView(Integer times, Float exp, String city, String storeName, String lessonName,
-			String courseType, String coachName, Date lessonDate, Time startTime, Time endTime, String contractNo,
+			CourseType courseType, String coachName, Date lessonDate, Time startTime, Time endTime, String contractNo,
 			Date contractStartDate, Date contractEndDate, Integer validityTimes, Integer remainTimes) {
 		super();
 		this.times = times;
@@ -201,7 +225,5 @@ public class CheckInSuccessApiView {
 	public void setDanceName(String danceName) {
 		this.danceName = danceName;
 	}
-	
-	
-	
+
 }

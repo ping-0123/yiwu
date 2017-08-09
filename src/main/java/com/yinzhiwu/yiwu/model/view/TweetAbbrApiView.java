@@ -3,26 +3,27 @@ package com.yinzhiwu.yiwu.model.view;
 import com.yinzhiwu.yiwu.entity.Tweet;
 
 public class TweetAbbrApiView {
-	
+
 	private int tweetId;
-	
+
 	private String coverIconUrl;
-	
+
 	private String title;
-	
+
 	private String digest;
-	
+
 	private String tweetTypeName;
-	
-	public TweetAbbrApiView(){
+
+	public TweetAbbrApiView() {
 	};
-	
-	public TweetAbbrApiView(Tweet t){
+
+	public TweetAbbrApiView(Tweet t) {
+		if(t== null) throw new IllegalArgumentException();
 		this.tweetId = t.getId();
-		this.coverIconUrl = t.getCoverIconUrl();
-		this.title =t.getTitle();
+		this.title = t.getTitle();
 		this.digest = t.getDigest();
-		this.tweetTypeName = t.getTweetType().getName();
+		if(t.getTweetType() != null)
+			this.tweetTypeName = t.getTweetType().getName();
 	}
 
 	public int getTweetId() {
@@ -64,6 +65,5 @@ public class TweetAbbrApiView {
 	public void setTweetTypeName(String tweetTypeName) {
 		this.tweetTypeName = tweetTypeName;
 	}
-	
-	
+
 }

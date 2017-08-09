@@ -16,43 +16,42 @@ import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.type.RelationType;
 
 @Entity
-@Table(name="yiwu_income_record")
+@Table(name = "yiwu_income_record")
 public class IncomeRecord extends BaseEntity {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4478053780652759400L;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(nullable=false, foreignKey=@ForeignKey(name="fk_incomeRecord_event_id"))
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_event_id"))
 	private IncomeEvent incomeEvent;
-	
+
 	@ManyToOne
-	@JoinColumn(nullable=false, foreignKey=@ForeignKey(name="fk_incomeRecord_incomeType_id"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_incomeType_id"))
 	private IncomeType incomeType;
-	
+
 	private Date recordTimestamp;
-	
+
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeRecord_contributor_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeRecord_contributor_id"))
 	private Distributer contributor;
-	
-	
+
 	private Float contributedValue;
-	
+
 	@ManyToOne
-	@JoinColumn(nullable=false,foreignKey=@ForeignKey(name="fk_incomeRecord_benificiary_id"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_benificiary_id"))
 	private Distributer benificiary;
-	
+
 	private Float incomeFactor;
-	
+
 	private Float incomeValue;
-	
+
 	private Float currentValue;
-	
+
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeRecord_relationType_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeRecord_relationType_id"))
 	private RelationType con_ben_relation;
 
 	public IncomeRecord(IncomeEvent event2, IncomeFactor factor, Distributer benificiary) {
@@ -68,12 +67,13 @@ public class IncomeRecord extends BaseEntity {
 		this.con_ben_relation = factor.getRelation();
 	}
 
-	public IncomeRecord(){}
-	
-	public Message generateMessage(){
-		try{
+	public IncomeRecord() {
+	}
+
+	public Message generateMessage() {
+		try {
 			return this.incomeEvent.generateMessage(this);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -110,7 +110,6 @@ public class IncomeRecord extends BaseEntity {
 		return con_ben_relation;
 	}
 
-
 	public void setIncomeType(IncomeType incomeType) {
 		this.incomeType = incomeType;
 	}
@@ -143,11 +142,9 @@ public class IncomeRecord extends BaseEntity {
 		this.con_ben_relation = con_ben_relation;
 	}
 
-
 	public IncomeEvent getIncomeEvent() {
 		return incomeEvent;
 	}
-
 
 	public void setIncomeEvent(IncomeEvent incomeEvent) {
 		this.incomeEvent = incomeEvent;
@@ -160,6 +157,5 @@ public class IncomeRecord extends BaseEntity {
 	public void setCurrentValue(Float currentValue) {
 		this.currentValue = currentValue;
 	}
-	
-	
+
 }

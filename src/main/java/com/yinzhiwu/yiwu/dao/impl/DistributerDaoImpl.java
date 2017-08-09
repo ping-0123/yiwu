@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -10,58 +11,71 @@ import org.springframework.stereotype.Repository;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.util.GeneratorUtil;
 import com.yinzhiwu.yiwu.util.SecurityUtil;
 import com.yinzhiwu.yiwu.util.ShareCodeUtil;
+import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
 
 @Repository
 public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implements DistributerDao {
-	
+
 	private static final Log logger = LogFactory.getLog(DistributerDaoImpl.class);
 
 	@Override
-	public Integer save(Distributer entity){
+	public Integer save(Distributer entity) {
+		entity.init();
+		
+		//与Id有关的初始化
 		int id = getNextId();
-		logger.debug(id);
+		if(logger.isDebugEnabled())
+			logger.debug("new Id for Distributer is : " + id);
 		entity.setId(id);
 		entity.setPassword(SecurityUtil.encryptByMd5(entity.getPassword()));
-		entity.setMemberId(GeneratorUtil.generateMemberId(id));
+		if(entity.getMemberId() == null || "".equals(entity.getMemberId().trim())){
+			String memberCard = GeneratorUtil.generateMemberId(id);
+			entity.setMemberId(memberCard);
+			entity.getCustomer().setMemberCard(memberCard);
+		}
 		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
+		
 		return super.save(entity);
 	}
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	
 	private int getNextId() {
-		String sql = "select  AUTO_INCREMENT from information_schema.tables where table_name ='yiwu_distributer'";
-		List<Integer> list = getSession().createNativeQuery(sql).addScalar("AUTO_INCREMENT", IntegerType.INSTANCE) .list();
-		return list.get(0);
+		String sql = "SELECT  AUTO_INCREMENT FROM information_schema.tables WHERE table_name ='yiwu_distributer'";
+		@SuppressWarnings({ "unchecked", "deprecation" })
+		List<Integer> ints = getSession().createNativeQuery(sql)
+				.addScalar("AUTO_INCREMENT", IntegerType.INSTANCE)
+				.getResultList();
+		return ints.get(0).intValue();
 	}
 
 	@Override
-	public Distributer findByShareCode(String shareCode) throws DataNotFoundException {
+	public Distributer findByShareCode(String shareCode){
 		List<Distributer> distributers = findByProperty("shareCode", shareCode);
-		if(distributers.size()>0)
+		if(distributers.size() > 0 )
 			return distributers.get(0);
-		else
-			throw new DataNotFoundException(this.getClass(),"shareCode",shareCode);
+		return null;
 	}
 
 	@Override
 	public Distributer findByPhoneNo(String phoneNo) throws DataNotFoundException {
 		List<Distributer> distributers = findByProperty("phoneNo", phoneNo);
-		if(distributers.size()>0)
+		if (distributers.size() > 0)
 			return distributers.get(0);
 		else
-			throw new DataNotFoundException(this.getClass(),"phoneNo",phoneNo);
+			throw new DataNotFoundException(this.getClass(), "phoneNo", phoneNo);
 	}
 
 	@Override
 	public Distributer findByMemberId(String memeberId) throws DataNotFoundException {
 		List<Distributer> distributers = findByProperty("memeberId", memeberId);
-		if(distributers.size()>0)
+		if (distributers.size() > 0)
 			return distributers.get(0);
 		else
-			throw new DataNotFoundException(this.getClass(),"memeberId",memeberId);
+			throw new DataNotFoundException(this.getClass(), "memeberId", memeberId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -71,39 +85,38 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		logger.debug("传入的经验值是：" + exp);
 		List<Long> counts = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "exp", exp);
 		logger.debug(exp + "击败的数量：" + counts.get(0).intValue());
-		int sum = findCount();
+		int sum = findCount().intValue();
 		logger.debug("分销人数总数：" + sum);
-		if (sum==0)
+		if (sum == 0)
 			return 0;
 		else
-			return counts.get(0).intValue()/(float)sum;
+			return counts.get(0).intValue() / (float) sum;
 	}
 
 	@Override
 	public Distributer findByWechat(String wechatNo) throws DataNotFoundException {
 		List<Distributer> distributers = findByProperty("wechatNo", wechatNo);
-		if(distributers.size()>0)
+		if (distributers.size() > 0)
 			return distributers.get(0);
 		else
-			throw new DataNotFoundException(this.getClass(),"wechatNo",wechatNo);
+			throw new DataNotFoundException(this.getClass(), "wechatNo", wechatNo);
 	}
 
 	@Override
 	public Distributer findByAccountPassword(String account, String password) throws Exception {
 		String encriptedPassword = SecurityUtil.encryptByMd5(password);
-		List<Distributer> distributers = findByProperties(
-				new String[]{"account", "password"}, 
-				new Object[]{account,encriptedPassword});
-		if (distributers.size()>0)
+		List<Distributer> distributers = findByProperties(new String[] { "account", "password" },
+				new Object[] { account, encriptedPassword });
+		if (distributers.size() > 0)
 			return distributers.get(0);
-		else{
+		else {
 			List<Distributer> distributers2 = findByProperty("account", account);
-			if(distributers2.size()>0)
+			if (distributers2.size() > 0)
 				throw new Exception("password is Incorrect");
 			else
 				throw new Exception("account:" + account + " is not exist");
 		}
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -116,27 +129,91 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 
 	@Override
 	public int findCountByPhoneNo(String phoneNo) {
-		return findCountByProperty("phoneNo", phoneNo);
+		return findCountByProperty("phoneNo", phoneNo).intValue();
 	}
 
 	@Override
 	public int findCountByWechatNo(String wechatNo) {
-		return findCountByProperty("wechatNo", wechatNo);
+		return findCountByProperty("wechatNo", wechatNo).intValue();
 	}
 
 	@Override
-	public Distributer findByCustomerId(Integer customerId){
-		List<Distributer> ds;
-		try {
-			ds = findByProperty("customer.id", customerId);
-		} catch (DataNotFoundException e) {
-			logger.info(e);
+	public Distributer findByCustomerId(Integer customerId) {
+		List<Distributer> ds =  findByProperty("customer.id", customerId);
+		if(ds.size() > 0)
+			return ds.get(0);
+		else
 			return null;
-		}
-		return ds.get(0);
 	}
 
+	@Override
+	public PageBean<CustomerDto> findDtoPageByDistributerByKey(List<Integer> storeIds, List<Integer> employeeIds,
+			List<Integer> distributerIds, String key, int pageNo, int pageSize) {
+		int quantity  = 0;
+		if(employeeIds != null && employeeIds.size() > 0)
+			quantity++;
+		if(storeIds !=null && storeIds.size()> 0)
+			quantity++;
+		if(distributerIds !=null && distributerIds.size()> 0)
+			quantity++;
+		String[] properties = new String[quantity];
+		Object[] values = new Object[quantity];
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append(" SELECT new com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto");
+		hql.append("(t1.customer.id, t1.name, t1.phoneNo)");
+		hql.append(" FROM Distributer t1");
+		hql.append(" WHERE ");
+		if(key!=null && key.trim().length() > 0){
+			hql.append(" (t1.name like '%"  + key + "%'");
+			hql.append(" OR t1.phoneNo like '%" + key + "%')");
+			hql.append(" AND");
+		}
+		if(quantity > 0){
+			int i = 0;
+			hql.append("(1=0");
+			if(distributerIds != null && distributerIds.size()> 0){
+				hql.append(" OR t1.superDistributer.id in :superIds");
+				properties[i] = "superIds";
+				values[i] = distributerIds;
+				i++;
+			}
+			if(employeeIds != null && employeeIds.size()> 0){
+				hql.append(" OR t1.server.id in :serverIds");
+				properties[i] = "serverIds";
+				values[i] = employeeIds;
+				i++;
+			}
+			if(storeIds != null && storeIds.size()> 0){
+				hql.append(" OR t1.followedByStore.id in :storeIds");
+				properties[i] = "storeIds";
+				values[i] = storeIds;
+				i++;
+			}
+			
+			hql.append(")");
+		}
+		
 
-	
+		return super.findPageByHqlWithParams(hql.toString(), 
+				properties,
+				values,
+				pageNo,
+				pageSize);
+	}
+
+	@Override
+	public List<Integer> findIdsByemployees(List<Integer> employeeIds) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" SELECT DISTINCT d.id");
+		hql.append(" FROM Distributer d");
+		hql.append(" WHERE d.server.id in :serverIds");
+		List<Integer> list = getSession().createQuery(hql.toString(), Integer.class)
+				.setParameter("serverIds", employeeIds)
+				.getResultList();
+		if(list == null)
+			list = new ArrayList<>();
+		return list;
+	}
 
 }

@@ -16,13 +16,13 @@ import com.yinzhiwu.yiwu.service.LessonService;
 @ContextConfiguration("classpath:applicationContext.xml")
 public class SqlDateTest {
 	private static final Log logger = LogFactory.getLog(SqlDateTest.class);
-	
+
 	@Autowired
-	@Qualifier(value="lessonServiceImplTwo")
+	@Qualifier(value = "lessonServiceImplTwo")
 	private LessonService lessonService;
-	
+
 	@Test
-	public void test(){
+	public void test() {
 		Lesson lesson = lessonService.get(202400);
 		logger.info(lesson.getLessonDate());
 	}

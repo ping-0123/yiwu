@@ -11,14 +11,16 @@ import com.yinzhiwu.yiwu.entity.type.EventType;
 import com.yinzhiwu.yiwu.service.IncomeFactorService;
 
 @Service
-public class IncomeFactorServiceImpl extends BaseServiceImpl<IncomeFactor, Integer> implements IncomeFactorService{
-	
+public class IncomeFactorServiceImpl extends BaseServiceImpl<IncomeFactor, Integer> implements IncomeFactorService {
+
 	@Autowired
-	public void setBaseDao(IncomeFactorDao incomeFactorDao){
+	public void setBaseDao(IncomeFactorDao incomeFactorDao) {
 		super.setBaseDao(incomeFactorDao);
 	}
-	@Autowired private IncomeFactorDao incomeFactorDao;
-	
+
+	@Autowired
+	private IncomeFactorDao incomeFactorDao;
+
 	@Override
 	public List<EventType> getEventTypes(int incomeTypeId) {
 		return incomeFactorDao.findEventTypes(incomeTypeId);

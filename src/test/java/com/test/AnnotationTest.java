@@ -14,13 +14,13 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 @RunWith(BlockJUnit4ClassRunner.class)
 public class AnnotationTest {
 
-	private  int i = 0;
-	
+	private int i = 0;
+
 	@Test
-	public void testGetAnnotations(){
+	public void testGetAnnotations() {
 		Field[] fields = Distributer.class.getDeclaredFields();
 		System.out.println(fields.length);
-		int i=0;
+		int i = 0;
 		for (Field field : fields) {
 			field.setAccessible(true);
 			Annotation[] annotations = field.getAnnotations();
@@ -30,9 +30,9 @@ public class AnnotationTest {
 			System.out.println(i++);
 		}
 	}
-	
+
 	@Test
-	public void test(){
+	public void test() {
 		Field[] fields = Distributer.class.getDeclaredFields();
 		for (Field field : fields) {
 			System.out.println(field.getDeclaredAnnotation(OneToMany.class));

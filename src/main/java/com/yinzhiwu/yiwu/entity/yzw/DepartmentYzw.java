@@ -13,69 +13,71 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="vdepartment")
-public class DepartmentYzw extends BaseYzwEntity {
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-	
+@Entity
+@Table(name = "vdepartment")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+public class DepartmentYzw extends BaseYzwEntity{
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2093904107877155678L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="Id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "Id")
 	private Integer id;
-	
-	@Column(length=50, name="Name" )
+
+	@Column(length = 50, name = "Name")
 	private String name;
-	
-	@ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	@JoinColumn(name="superiorId", foreignKey=
-			@ForeignKey(name="fk_department_superior_Id", value=ConstraintMode.NO_CONSTRAINT))
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "superiorId", foreignKey = @ForeignKey(name = "fk_department_superior_Id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw superior;
-	
+
 	@Column
 	private String path;
-	
-	@Column
-	private Integer manager1;
-	
-	@Column
-	private Integer manager2;
-	
-	@Column(length=200)
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="manager1", foreignKey=@ForeignKey(
+			name="fk_department_manager1", value=ConstraintMode.NO_CONSTRAINT))
+	private EmployeeYzw manager1;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="manager2",foreignKey=
+			@ForeignKey(name="fk_department_manager2", value = ConstraintMode.NO_CONSTRAINT))
+	private EmployeeYzw manager2;
+
+	@Column(length = 200)
 	private String description;
-	
-
 
 	@Column
-	private Integer removed;
-	
+	private Boolean removed = Boolean.FALSE;
+
 	@Column
 	private Integer flag;
-	
+
 	@Column
 	private Integer wparam;
-	
+
 	@Column
 	private Integer lparam;
-	
 
-		
-	@Column(length=32)
+	@Column(length = 32)
 	private String operationDistrict;
-	
-	@Column(length=16)
+
+	@Column(length = 16)
 	private String city;
-	
-	@Column(length=16)
+
+	@Column(length = 16)
 	private String officialAccount;
-	
+
 	@Column
 	private String logo;
-	
+
 	@Column
 	private String province;
 
@@ -95,11 +97,11 @@ public class DepartmentYzw extends BaseYzwEntity {
 		return path;
 	}
 
-	public Integer getManager1() {
+	public EmployeeYzw getManager1() {
 		return manager1;
 	}
 
-	public Integer getManager2() {
+	public EmployeeYzw getManager2() {
 		return manager2;
 	}
 
@@ -107,7 +109,7 @@ public class DepartmentYzw extends BaseYzwEntity {
 		return description;
 	}
 
-	public Integer getRemoved() {
+	public Boolean getRemoved() {
 		return removed;
 	}
 
@@ -159,11 +161,11 @@ public class DepartmentYzw extends BaseYzwEntity {
 		this.path = path;
 	}
 
-	public void setManager1(Integer manager1) {
+	public void setManager1(EmployeeYzw manager1) {
 		this.manager1 = manager1;
 	}
 
-	public void setManager2(Integer manager2) {
+	public void setManager2(EmployeeYzw manager2) {
 		this.manager2 = manager2;
 	}
 
@@ -171,7 +173,7 @@ public class DepartmentYzw extends BaseYzwEntity {
 		this.description = description;
 	}
 
-	public void setRemoved(Integer removed) {
+	public void setRemoved(Boolean removed) {
 		this.removed = removed;
 	}
 
@@ -206,11 +208,18 @@ public class DepartmentYzw extends BaseYzwEntity {
 	public void setProvince(String province) {
 		this.province = province;
 	}
-	
-//	@OneToMany(mappedBy="department")
-//	List<EmployeeYzw> employees = new ArrayList<>();
-	
-//	@OneToMany(mappedBy="superior")
-//	List<DepartmentYzw> subordinates = new ArrayList<>();
-	
+
+	public boolean isContain(DepartmentYzw dept){
+		if(dept == null) throw new IllegalArgumentException();
+		if(dept.getPath().contains(this.getId().toString()))
+			return true;
+		return false;
+	}
+
+	// @OneToMany(mappedBy="department")
+	// List<EmployeeYzw> employees = new ArrayList<>();
+
+	// @OneToMany(mappedBy="superior")
+	// List<DepartmentYzw> subordinates = new ArrayList<>();
+
 }

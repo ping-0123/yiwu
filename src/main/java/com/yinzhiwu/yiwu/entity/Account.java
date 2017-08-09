@@ -15,26 +15,24 @@ import javax.persistence.UniqueConstraint;
 import com.yinzhiwu.yiwu.entity.yzwOld.Employee;
 
 @Entity
-@Table(name="yiwu_account", uniqueConstraints={
-		@UniqueConstraint(name="uk_Account_employeeId", columnNames="employee_id"),
-		@UniqueConstraint(name="uk_Account_account", columnNames="account")})
+@Table(name = "yiwu_account", uniqueConstraints = {
+		@UniqueConstraint(name = "uk_Account_employeeId", columnNames = "employee_id"),
+		@UniqueConstraint(name = "uk_Account_account", columnNames = "account") })
 public class Account {
-	
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	//uk
+
+	// uk
 	@OneToOne
-	@JoinColumn(name="employee_id", nullable=false, foreignKey=@ForeignKey(ConstraintMode.NO_CONSTRAINT))  
+	@JoinColumn(name = "employee_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Employee employee;
-	
-	//uk
-	@Column(name="account",length=32, nullable=false) 
+	// uk
+	@Column(name = "account", length = 32, nullable = false)
 	private String account;
-	
-	@Column(length=50)
+
+	@Column(length = 50)
 	private String password;
 
 	public final Integer getId() {
@@ -44,7 +42,6 @@ public class Account {
 	public final void setId(Integer id) {
 		this.id = id;
 	}
-
 
 	public final String getAccount() {
 		return account;
@@ -69,7 +66,5 @@ public class Account {
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
-	
-	
-	
+
 }

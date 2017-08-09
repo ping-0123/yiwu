@@ -6,9 +6,8 @@ import org.hibernate.type.StringType;
 
 public class MySQLExtendDialect extends MySQLDialect {
 
-	public MySQLExtendDialect(){  
-        super();  
-        registerFunction("convert_gbk",   
-                 new SQLFunctionTemplate(new StringType(), "convert(?1 using gbk)"));  
-    }  
+	public MySQLExtendDialect() {
+		super();
+		registerFunction("convert_gbk", new SQLFunctionTemplate(new StringType(), "convert(?1 using gbk)"));
+	}
 }

@@ -8,7 +8,7 @@ import com.yinzhiwu.yiwu.entity.type.EventType;
 
 @Entity
 @DiscriminatorValue("YieldInterestEvent")
-public class YieldInterestEvent extends IncomeEvent{
+public class YieldInterestEvent extends IncomeEvent {
 
 	/**
 	 * 
@@ -25,5 +25,5 @@ public class YieldInterestEvent extends IncomeEvent{
 	public YieldInterestEvent(Distributer distributer, Float param) {
 		super(distributer, EventType.YIELD_INTEREST, param);
 	}
-	
+
 }

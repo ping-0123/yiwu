@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/jiguang")
 public class JiguangController {
-	
+
 	@GetMapping("/verify")
-	public String verify(@RequestParam String echostr ){
+	public String verify(@RequestParam String echostr) {
 		return echostr;
 	}
 

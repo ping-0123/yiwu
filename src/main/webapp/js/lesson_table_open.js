@@ -161,7 +161,7 @@ function loadStores(v_districtId){
 	var v_data=v_param;
 	var v_curDate = format(new Date(), 'yyyy-MM-dd');
 	$.ajax({ 
-			type: "POST", 	
+			type: "GET", 	
 			url: url,
 			dataType: "json",
 			data:v_data,

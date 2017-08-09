@@ -6,6 +6,6 @@ import com.yinzhiwu.yiwu.dao.IncomeEventDao;
 import com.yinzhiwu.yiwu.entity.income.IncomeEvent;
 
 @Repository
-public class IncomeEventDaoImpl extends BaseDaoImpl<IncomeEvent,Integer> implements IncomeEventDao{
+public class IncomeEventDaoImpl extends BaseDaoImpl<IncomeEvent, Integer> implements IncomeEventDao {
 
 }

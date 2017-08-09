@@ -62,18 +62,18 @@
 		
 		function register(){
 				var v_url = "api/distributer";
-				var v_data = {phoneNo:'18048901612',
+				var v_data = {phoneNo:'18000110020',
 							password:'suning0987',
 							gender:'MALE',
 							birthday:'2000-01-01',
-							'followedByStore.id':'63',
-							wechatNo:'oIgTGwx1Qiz333csesd965h8012',
+							followedByStoreId:'63',
+							wechatNo:'oIgTGwx1Qiz333csesd965h0020',
 					};
 	
 			
 			$.ajax({ 
 				type: "POST", 	
-				url: v_baseUrl+v_url,
+				url: "http://localhost:8080/yiwu/api/distributer",
 				data:v_data,
 				dataType: "json",
 				timeout:50000,

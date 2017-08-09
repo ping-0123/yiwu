@@ -13,9 +13,9 @@ import com.yinzhiwu.yiwu.service.CustomerService;
 
 @Repository
 public class CustomerServiceImpl implements CustomerService {
-	
+
 	private static final Log logger = LogFactory.getLog(CustomerServiceImpl.class);
-	
+
 	@Autowired
 	@Qualifier("customerDaoImpl")
 	private CustomerDao customerDao;

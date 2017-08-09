@@ -9,39 +9,38 @@ import com.yinzhiwu.yiwu.service.UserService;
 
 @Service
 public class UserServiceImplOne implements UserService {
-	
-	
-//	public void afterPropertiesSet() throws Exception {
-//		System.out.println("UserServiceImplOne  afterPropertiesSet " );
-//	}
-	
+
+	// public void afterPropertiesSet() throws Exception {
+	// System.out.println("UserServiceImplOne afterPropertiesSet " );
+	// }
+
 	@SuppressWarnings("unused")
 	@Autowired
 	private AccountDao dao;
 
 	public void show() {
 		System.out.println("UserServiceImplOne called..." + this.hashCode());
-//		userDao.show();
+		// userDao.show();
 	}
 
-//	public void destroy() throws Exception {
-//		System.out.println("UserServiceImplOne   destroy ");
-//	}
-	
-//	public void defaultInit(){
-//		System.out.println("UserServiceImplOne  defaultInit");
-//	}
-//	
-//	public void defaultDestroy(){
-//		System.out.println("UserServiceImplOne  defaultDestroy");
-//	}
-//	
-	
-	public void start(){
+	// public void destroy() throws Exception {
+	// System.out.println("UserServiceImplOne destroy ");
+	// }
+
+	// public void defaultInit(){
+	// System.out.println("UserServiceImplOne defaultInit");
+	// }
+	//
+	// public void defaultDestroy(){
+	// System.out.println("UserServiceImplOne defaultDestroy");
+	// }
+	//
+
+	public void start() {
 		System.out.println("UserServiceImplOne start called......");
 	}
-	
-	public void stop(){
+
+	public void stop() {
 		System.out.println("UserServiceImplOne stop called.......");
 	}
 

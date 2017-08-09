@@ -7,9 +7,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.persistence.Embedded;
@@ -33,141 +31,116 @@ import com.yinzhiwu.yiwu.entity.BaseEntity;
 import com.yinzhiwu.yiwu.entity.yzw.BaseYzwEntity;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
-import com.yinzhiwu.yiwu.util.ReflectUtil;
-
-
+import com.yinzhiwu.yiwu.util.ReflectUtils;
 
 /**
  * 
  * @author ping
  * @Version 2017年7月5日下午4:07:15
  *
- * @param <T> the entity type
- * @param <PK> the entity's primary key type
+ * @param <T>
+ *            the entity type
+ * @param <PK>
+ *            the entity's primary key type
  */
-public abstract class BaseDaoImpl<T,PK extends Serializable> 
-		extends HibernateDaoSupport implements IBaseDao<T, PK> {
-	
-	private Class<T> entityClass;  
-    protected SessionFactory sessionFactory;  
-      
-    @SuppressWarnings("unchecked")
-	public BaseDaoImpl() {  
-        this.entityClass = null;  
-        Class<?> c = getClass();  
-        Type type = c.getGenericSuperclass();  
-        if (type instanceof ParameterizedType) {  
-            Type[] parameterizedType = ((ParameterizedType) type).getActualTypeArguments();  
-            this.entityClass = (Class<T>) parameterizedType[0];  
-        }  
-    }  
-      
-    @Resource  
-    public void setHibernateSessionFactory(SessionFactory sessionFactory) {  
-        this.sessionFactory = sessionFactory; 
-        super.setSessionFactory(sessionFactory);
-    }  
-  
-    protected Session getSession() {  
-    	try {
-    		 return getHibernateTemplate().getSessionFactory().getCurrentSession();  
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			return null;
-		}
-       
-    }  
-  
-    public T get(PK id) throws DataNotFoundException {  
-        Assert.notNull(id, "id is required"); 
-    	T t = (T) getHibernateTemplate().get(entityClass, id);  
-    	if(t==null)
-    		throw  new DataNotFoundException(entityClass,"id", id);
-    	return t;
-    } 
-  
-	@SuppressWarnings("unchecked")
-	public PK save(T entity)  {  
-        Assert.notNull(entity, "entity is required");  
-        try {
-        	if(entity instanceof BaseEntity)
-        		((BaseEntity) entity).init();
-        	if(entity instanceof BaseYzwEntity)
-        		((BaseYzwEntity) entity).init();
-        	return (PK) getHibernateTemplate().save(entity);  
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			return null;
-		}
-    }
+public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements IBaseDao<T, PK> {
+
+	private Class<T> entityClass;
+	protected SessionFactory sessionFactory;
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public List<T> findByProperty(String propertyName, Object value) throws DataNotFoundException {
-		String hql = "from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
-		List<T> list =  (List<T>) getHibernateTemplate().findByNamedParam(hql, "value", value);
-		if(list==null || list.size() ==0)
-			throw new DataNotFoundException(entityClass, propertyName, value);
-		return list;
+	public BaseDaoImpl() {
+		this.entityClass = null;
+		Class<?> c = getClass();
+		Type type = c.getGenericSuperclass();
+		if (type instanceof ParameterizedType) {
+			Type[] parameterizedType = ((ParameterizedType) type).getActualTypeArguments();
+			this.entityClass = (Class<T>) parameterizedType[0];
+		}
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public int findCountByProperty(String propertyName, Object value) {
-		String hql = "select count(*) from " + entityClass.getSimpleName() + " where " + propertyName + " =:value";
+	@Resource
+	public void setHibernateSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+		super.setSessionFactory(sessionFactory);
+	}
+
+	protected Session getSession() {
 		try {
-			List<Long> l = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "value", value);
-			return l.get(0).intValue();
+			return getHibernateTemplate().getSessionFactory().getCurrentSession();
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return 0;
+			return null;
 		}
+
+	}
+
+	public T get(PK id) {
+		Assert.notNull(id, "id is required");
+		return getSession().get(entityClass, id);
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public List<T> findByProperties(Map<String, Object> map) throws DataNotFoundException {
-		Map<String, Object> v_map = new HashMap<>();
-		StringBuilder hql = new StringBuilder("from " + entityClass.getSimpleName() + " where 1=1");
-		for (String string : map.keySet()) {
-			if(null != string && !"".equals(string)){
-				String valString = string.replace(".", "");
-				hql.append(" and " + string + "=:" + valString);
-				v_map.put(valString, map.get(string));
-			}
+	public PK save(T entity) {
+		Assert.notNull(entity, "entity is required");
+		try {
+			if (entity instanceof BaseEntity)
+				((BaseEntity) entity).init();
+			if (entity instanceof BaseYzwEntity)
+				((BaseYzwEntity) entity).init();
+			return (PK) getHibernateTemplate().save(entity);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return null;
 		}
+	}
+
+	@Override
+	public List<T> findByProperty(String propertyName, Object value) {
+		Assert.hasText(propertyName, "属性名不能为空");
 		
-		List<T>  list = (List<T>) getHibernateTemplate().findByNamedParam(
-				hql.toString(), 
-				v_map.keySet().toArray(new String[] {}),
-				v_map.values().toArray(new Object[] {}));
-		if(list==null || list.size() ==0)
-			throw new DataNotFoundException();
+		String hql = "FROM " + entityClass.getSimpleName() + " t1 WHERE  t1." + propertyName + " =:property";
+		List<T> list = getSession().createQuery(hql, entityClass)
+				.setParameter("property", value)
+				.getResultList();
+		
+		if (list == null)
+			list = new ArrayList<>();
 		return list;
 	}
-	
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> findAll() throws DataNotFoundException {
-		String hql = "from "+  entityClass.getSimpleName();
-		List<T> list =  (List<T>) getHibernateTemplate().find(hql);
-		if(list==null || list.size() ==0)
-			throw new DataNotFoundException();
+	public Long findCountByProperty(String propertyName, Object value) {
+		Assert.hasText(propertyName, "属性名不能为空");
+		
+		String hql = "SELECT COUNT(*) FROM " + entityClass.getSimpleName() + " WHERE " + propertyName + " =:property";
+		return getSession().createQuery(hql, Long.class)
+				.setParameter("property", value)
+				.getSingleResult();
+	}
+
+
+	@Override
+	public List<T> findAll(){
+		String hql = "FROM " + entityClass.getSimpleName();
+		List<T> list = getSession().createQuery(hql, entityClass) 
+				.getResultList();
+		
+		if(list == null) list = new ArrayList<>();
 		return list;
 	}
-	
-	
+
 	@Override
-	public PageBean<T> findPageOfAll(int pageNo, int pageSize){
+	public PageBean<T> findPageOfAll(int pageNo, int pageSize) {
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
 		Root<T> root = criteria.from(entityClass);
 		criteria.select(root);
-		int totalSize = findCount();
+		int totalSize = findCount().intValue();
 		return findPageByCriteria(criteria, pageNo, pageSize, totalSize);
 	}
-	
+
 	@Override
 	public void saveOrUpdate(T entity) {
 		Assert.notNull(entity, "entity is required");
@@ -181,99 +154,68 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 	@Override
 	public void delete(T entity) {
 		Assert.notNull(entity, "entity is required");
-		try{
+		try {
 			getHibernateTemplate().delete(entity);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
-		
+
 	}
 
 	@Override
 	public void delete(PK id) {
 		Assert.notNull(id, "id is required");
-		try{
+		try {
 			T entity = get(id);
-			if (entity !=null){
+			if (entity != null) {
 				delete(entity);
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
 	}
 
-
-
 	@Override
-	public List<T> findByExample(T entity) throws DataNotFoundException {
+	public List<T> findByExample(T entity){
 		Assert.notNull(entity, "entity is required");
-		List<T> list =   getHibernateTemplate().findByExample(entity);
-		if(list==null || list.size() ==0)
-			throw new DataNotFoundException();
+		
+		List<T> list = getHibernateTemplate().findByExample(entity);
+		if(list == null) list = new ArrayList<>();
 		return list;
-	}  
-	
-	
-	
+	}
+
 	@Override
-	public void update(T entity){
+	public void update(T entity) {
 		Assert.notNull(entity, "entity is required");
-		try{
-			if(entity instanceof BaseEntity)
-				((BaseEntity) entity).beforeUpdate();;
-			if(entity instanceof BaseYzwEntity)
+		try {
+			if (entity instanceof BaseEntity)
+				((BaseEntity) entity).beforeUpdate();
+			;
+			if (entity instanceof BaseYzwEntity)
 				((BaseYzwEntity) entity).beforeUpdate();
 			getHibernateTemplate().update(entity);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public int findCount() {
-		String hql = "select count(*) from " + entityClass.getSimpleName();
-		try{
-			List<Long> sums =   (List<Long>) getHibernateTemplate().find(hql);
-			return sums.get(0).intValue();
-		}catch (Exception e) {
-			logger.error(e.getMessage());
-			return 0;
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<T> findByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException {
-		StringBuilder builder = new StringBuilder("FROM " + entityClass.getSimpleName() + " WHERE 1=1");
-		Map<String,Object> map = new HashMap<>();
-		for(int i = 0; i<propertyNames.length; i++){
-			if(StringUtils.hasLength(propertyNames[i])){
-				String valString = propertyNames[i].replace(".", "");
-				builder.append(" and " + propertyNames[i] + "=:" + valString);
-				map.put(valString, values[i]);
-			}
-		}
+	public Long findCount() {
+		String hql = "SELECT COUNT(*) FROM " + entityClass.getSimpleName();
+		return getSession().createQuery(hql, Long.class)
+				.getSingleResult();
 		
-		List<T> list =  (List<T>) getHibernateTemplate().findByNamedParam(
-				builder.toString(), 
-				map.keySet().toArray(new String[] {}),
-				map.values().toArray(new Object[] {}));
-		if(list==null || list.size() ==0)
-			throw new DataNotFoundException();
-		return list;
 	}
 
-	
 	@Override
-	public int findCountByProperties(String[] propertyNames, Object[] values){
+	public List<T> findByProperties(String[] propertyNames, Object[] values) {
 		if(propertyNames.length != values.length){
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
 		String[] properties = new String[propertyNames.length];
+		
 		StringBuilder builder = new StringBuilder();
-		builder.append("SELECT COUNT(*)");
-		builder.append(" FROM " + entityClass.getSimpleName());
+		builder.append("FROM " + entityClass.getSimpleName());
 		builder.append(" WHERE 1=1");
 		for(int i = 0; i<propertyNames.length; i++){
 			if(StringUtils.hasLength(propertyNames[i])){
@@ -283,199 +225,235 @@ public abstract class BaseDaoImpl<T,PK extends Serializable>
 				throw new IllegalArgumentException("属性名不能为空为null");
 			}
 		}
-		@SuppressWarnings("unchecked")
-		List<Long> count =   (List<Long>) getHibernateTemplate().findByNamedParam(
-				builder.toString(), properties, values);
-		return count.get(0).intValue();
+		
+		 Query<T> query = getSession().createQuery(builder.toString(), entityClass);
+		 for(int j=0; j<properties.length;j++){
+			 query.setParameter(properties[j], values[j]);
+		 }
+		 
+		 List<T> list = query.getResultList();
+//		List<T> list =   (List<T>) getHibernateTemplate().findByNamedParam(
+//				builder.toString(), properties, values);
+		if(list == null) return new ArrayList<>();
+		return list;
 	}
-	
+
 	@Override
-	public PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize){
-		if(propertyNames.length != values.length){
+	public Long findCountByProperties(String[] propertyNames, Object[] values) {
+		if (propertyNames.length != values.length) {
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
-		if(Arrays.asList(propertyNames).contains(null)) throw new IllegalArgumentException("属性名不可能为null");
+		String[] properties = new String[propertyNames.length];
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT COUNT(*)");
+		builder.append(" FROM " + entityClass.getSimpleName());
+		builder.append(" WHERE 1=1");
+		for (int i = 0; i < propertyNames.length; i++) {
+			if (StringUtils.hasLength(propertyNames[i])) {
+				properties[i] = propertyNames[i].replace(".", "");
+				builder.append(" AND " + propertyNames[i] + "=:" + properties[i]);
+			} else {
+				throw new IllegalArgumentException("属性名不能为空为null");
+			}
+		}
 		
+		 Query<Long> query = getSession().createQuery(builder.toString(), Long.class);
+		 for(int j=0; j<properties.length;j++){
+			 query.setParameter(properties[j], values[j]);
+		 }
+		 
+		 return query.getSingleResult();
+	}
+
+	@Override
+	public PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize) {
+		if (propertyNames.length != values.length) {
+			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
+		}
+		if (Arrays.asList(propertyNames).contains(null))
+			throw new IllegalArgumentException("属性名不可能为null");
+
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
 		Root<T> root = criteria.from(entityClass);
 		criteria.select(root);
 		Predicate predicate = null;
-		for(int i=0; i< propertyNames.length; i++){
+		for (int i = 0; i < propertyNames.length; i++) {
 			Predicate condition = builder.equal(_getPath(root, propertyNames[i]), values[i]);
-			predicate =(predicate == null)?condition:builder.and(predicate,condition);
+			predicate = (predicate == null) ? condition : builder.and(predicate, condition);
 		}
 		criteria.where(predicate);
-		
-		//查询数量
-//		CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
-//		countCriteria.from(entityClass);
-//		countCriteria.select(builder.count(root));
-//		countCriteria.where(predicate);
-//		Long totalSize = getSession().createQuery(countCriteria).getSingleResult();
-		int totalSize = findCountByProperties(propertyNames, values);
-		
-		return  findPageByCriteria(criteria, pageNo, pageSize, totalSize);
+
+		// 查询数量
+		// CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
+		// countCriteria.from(entityClass);
+		// countCriteria.select(builder.count(root));
+		// countCriteria.where(predicate);
+		// Long totalSize =
+		// getSession().createQuery(countCriteria).getSingleResult();
+		int totalSize = findCountByProperties(propertyNames, values).intValue();
+
+		return findPageByCriteria(criteria, pageNo, pageSize, totalSize);
 	}
-	
+
 	@Override
-	public PageBean<T> findPageByProperty(String propertyName, Object value, int pageNo, int pageSize){
-		if(!StringUtils.hasLength(propertyName)) throw new IllegalArgumentException("propertyName 不能为空" );
-		String[] properties = new String[]{propertyName};
-		Object[] values = new Object[]{value};
+	public PageBean<T> findPageByProperty(String propertyName, Object value, int pageNo, int pageSize) {
+		if (!StringUtils.hasLength(propertyName))
+			throw new IllegalArgumentException("propertyName 不能为空");
+		String[] properties = new String[] { propertyName };
+		Object[] values = new Object[] { value };
 		return findPageByProperties(properties, values, pageNo, pageSize);
 	}
-	
-	private <X> Path<?> _getPath(Path<X> path, String propertyName){
+
+	private <X> Path<?> _getPath(Path<X> path, String propertyName) {
 		Path<?> result;
-		if(propertyName.contains(".")){
+		if (propertyName.contains(".")) {
 			String[] properties = propertyName.split("\\.");
 			result = path.get(properties[0]);
-			for(int i=1;i<properties.length; i++){
-				result=result.get(properties[i]);
+			for (int i = 1; i < properties.length; i++) {
+				result = result.get(properties[i]);
 			}
-		}else {
+		} else {
 			result = path.get(propertyName);
 		}
 		return result;
 	}
 
 	@Override
-	public <R> PageBean<R> findPageByCriteria(CriteriaQuery<R> criteria, int pageNo, int pageSize, int totalSize){
-		if(pageNo<=0) pageNo = 1;
-		if(pageSize<=0) pageSize = PageBean.DEFAULT_PAGE_SIZE;
+	public <R> PageBean<R> findPageByCriteria(CriteriaQuery<R> criteria, int pageNo, int pageSize, int totalSize) {
+		if(totalSize <=0)
+			return null;
+		if (pageNo <= 0)
+			pageNo = 1;
+		if (pageSize <= 0)
+			pageSize = PageBean.DEFAULT_PAGE_SIZE;
 		Query<R> query = getSession().createQuery(criteria);
-		query.setFirstResult(((pageNo-1) * pageSize));
+		query.setFirstResult(((pageNo - 1) * pageSize));
 		query.setMaxResults(pageSize);
 		List<R> list = query.getResultList();
-		
-		return new PageBean<>(pageSize, pageNo,totalSize,list);
+
+		return new PageBean<>(pageSize, pageNo, totalSize, list);
 	}
 
-	
 	@Override
-	public PageBean<T> findPageByHql(String hql, int pageNo, int pageSize){
+	public PageBean<T> findPageByHql(String hql, int pageNo, int pageSize) {
 		Assert.hasLength(hql);
-		if(pageNo <=0)
-			pageNo =1;
-		if(pageSize<=0)
+		if (pageNo <= 0)
+			pageNo = 1;
+		if (pageSize <= 0)
 			pageSize = PageBean.DEFAULT_PAGE_SIZE;
-		
-		int totalRecords =  findCountByHql(_get_count_hql(hql));
-		if(totalRecords ==0)
+
+		int totalRecords = findCountByHql(_generateFindCountHql(hql));
+		if (totalRecords == 0)
 			return new PageBean<>(pageSize, pageNo, totalRecords, new ArrayList<>());
-		
-		Query<T> query = getSession().createQuery(hql,entityClass);
-		query.setFirstResult((pageNo-1) * pageSize);
+
+		Query<T> query = getSession().createQuery(hql, entityClass);
+		query.setFirstResult((pageNo - 1) * pageSize);
 		query.setMaxResults(pageSize);
-		List<T> list =(List<T>) query.getResultList();
-		
-		return new PageBean<>(pageSize, pageNo, totalRecords,list);
-	}
-	
-	
-	public PageBean<T> findPageByHql(String hql, int pageNo, int pageSize, String[] namedParams, Object[] values){
-		Assert.hasLength(hql, "hql is not correct.");
-		
-		if(pageNo<=0) pageNo = 1;
-		if(pageSize<=0) pageSize = PageBean.DEFAULT_PAGE_SIZE;
-		int totalRecords =  findCountByHql(_get_count_hql(hql), namedParams, values);
-		if(totalRecords ==0)
-			return new PageBean<>(pageSize, pageNo, totalRecords, new ArrayList<>());
-		
-		Query<T> query =getSession().createQuery(hql, entityClass );
-		query.setFirstResult((pageNo-1) * pageSize);
-		query.setMaxResults(pageSize);
-		if(namedParams != null && namedParams.length>0){
-			if(namedParams.length != values.length)
-				throw new IllegalArgumentException("the size of namedparams should equal to the size of values");
-			for (int i=0; i<namedParams.length; i++) {
-				query.setParameter(namedParams[i], values[i]);
-			}
-		}
-		List<T> list = query.getResultList();
+		List<T> list = (List<T>) query.getResultList();
+
 		return new PageBean<>(pageSize, pageNo, totalRecords, list);
 	}
-		
+	
+	
 
-	private int findCountByHql(String hql, String[] namedParams, Object[] values) {
-		Query<Integer>  query = getSession().createQuery(hql, Integer.class);
-		if(namedParams != null && namedParams.length>0){
-			if(namedParams.length != values.length)
+	protected <R> PageBean<R> findPageByHqlWithParams(
+			String hql,  String[] namedParams, Object[] values, int pageNo, int pageSize) {
+		Assert.hasLength(hql, "hql is not correct.");
+
+		if (pageNo <= 0) pageNo = 1;
+		if (pageSize <= 0) pageSize = PageBean.DEFAULT_PAGE_SIZE;
+		int totalRecords = findCountByHqlWithParameters(_generateFindCountHql(hql), namedParams, values);
+		if (totalRecords == 0)
+			return new PageBean<>(pageSize, pageNo, totalRecords, new ArrayList<>());
+
+		Query<?> query = getSession().createQuery(hql);
+		query.setFirstResult((pageNo - 1) * pageSize);
+		query.setMaxResults(pageSize);
+		if (namedParams != null && namedParams.length > 0) {
+			if (namedParams.length != values.length)
 				throw new IllegalArgumentException("the size of namedparams should equal to the size of values");
-			for (int i=0; i<namedParams.length; i++) {
+			for (int i = 0; i < namedParams.length; i++) {
 				query.setParameter(namedParams[i], values[i]);
 			}
 		}
-		return query.getSingleResult();
+		@SuppressWarnings("unchecked")
+		List<R> list =  (List<R>) query.getResultList();
+		return new PageBean<>(pageSize, pageNo, totalRecords, list);
 	}
 	
-	
-	@SuppressWarnings("unchecked")
-	public int findCountByHql(String hql){
-		try{
-			List<Long> list=   (List<Long>) getHibernateTemplate().find(hql);
-			return list.get(0).intValue();
-		}catch (Exception e) {
-			logger.error(e.getMessage());
-			return 0;
+
+	private int findCountByHqlWithParameters(String hql, String[] namedParams, Object[] values) {
+		Query<Long> query = getSession().createQuery(hql, Long.class);
+		if (namedParams != null && namedParams.length > 0) {
+			if (namedParams.length != values.length)
+				throw new IllegalArgumentException("the size of namedparams should equal to the size of values");
+			for (int i = 0; i < namedParams.length; i++) {
+				query.setParameter(namedParams[i], values[i]);
+			}
 		}
+		return query.getSingleResult().intValue();
 	}
-	
-	private String _get_count_hql(String hql){
+
+	public int findCountByHql(String hql) {
+		Assert.hasText(hql, "hql不能为空");
+		return getSession().createQuery(hql, Long.class)
+				.getSingleResult()
+				.intValue();
+	}
+
+	private String _generateFindCountHql(String hql) {
 		int i = hql.toUpperCase().indexOf("FROM");
 		return "SELECT COUNT(*) " + hql.substring(i);
 	}
-	
+
 	@SuppressWarnings("unused")
-	private Throwable _get_root_Exception(Throwable e)
-	{
+	private Throwable _get_root_Exception(Throwable e) {
 		Throwable next = e.getCause();
-		if(next == null)
+		if (next == null)
 			return e;
 		else
 			return _get_root_Exception(next);
 	}
-	
+
 	@Override
-	public void modify(T source, T target) throws IllegalArgumentException, IllegalAccessException{
+	public void modify(T source, T target) throws IllegalArgumentException, IllegalAccessException {
 		Assert.notNull(source);
 		Assert.notNull(target);
-		
+
 		source = modifySourceEntityProperties(source, target);
-		
+
 		update(source);
 	}
 
 	private <E> E modifySourceEntityProperties(E source, E target) throws IllegalAccessException {
-		Field[] fields = ReflectUtil.getAllFields(source.getClass());
+		Field[] fields = ReflectUtils.getAllFields(source.getClass());
 		for (Field f : fields) {
 			f.setAccessible(true);
-			if(//静态属性不变
-					!Modifier.isStatic(f.getModifiers()) 
+			if (// 静态属性不变
+			!Modifier.isStatic(f.getModifiers())
 					// target属性为null ,source 对应的属性不变
-					&&f.get(target)!=null
-					//Id 主键不改变
+					&& f.get(target) != null
+					// Id 主键不改变
 					&& f.getDeclaredAnnotation(Id.class) == null
-					//属性值相同无须改变
+					// 属性值相同无须改变
 					&& !f.get(target).equals(f.get(source))
-					//排除OneToMany 映射
+					// 排除OneToMany 映射
 					&& f.getDeclaredAnnotation(OneToMany.class) == null)
-				if(f.getDeclaredAnnotation(Embedded.class) != null){
+				if (f.getDeclaredAnnotation(Embedded.class) != null) {
 					f.set(source, modifySourceEntityProperties(f.get(source), f.get(target)));
-				}else
+				} else
 					f.set(source, f.get(target));
 		}
 		return source;
 	}
-	
+
 	@Override
-	public void modify(PK id, T target) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException{
+	public void modify(PK id, T target) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException {
 		Assert.notNull(id);
 		Assert.notNull(target);
-		
+
 		T source = get(id);
 		modify(source, target);
 	}
 }
-

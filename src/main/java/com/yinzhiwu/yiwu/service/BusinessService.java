@@ -11,5 +11,4 @@ public interface BusinessService {
 
 	YiwuJson<List<SumRecordApiView>> getTopThreePerfomance();
 
-
 }

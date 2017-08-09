@@ -14,21 +14,21 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/event/withdraw")
-@Api(value="withdraw")
+@Api(value = "withdraw")
 public class WithdrawApiController extends BaseController {
-	
+
 	@Autowired
 	private WithdrawEventService withdrawEventService;
-	
+
 	@PostMapping
-	@ApiOperation(value="提现操作")
-	public YiwuJson<Boolean> withdraw(int distributerId, int accountId, float amount){
-		try{
-			withdrawEventService.saveWithdraw(distributerId, accountId,amount);
-		}catch (Exception e) {
+	@ApiOperation(value = "提现操作")
+	public YiwuJson<Boolean> withdraw(int distributerId, int accountId, float amount) {
+		try {
+			withdrawEventService.saveWithdraw(distributerId, accountId, amount);
+		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
-		
+
 		return new YiwuJson<>(new Boolean(true));
 	}
 

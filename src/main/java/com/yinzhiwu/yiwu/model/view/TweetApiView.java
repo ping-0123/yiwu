@@ -9,23 +9,24 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.Tweet;
 
 public class TweetApiView {
-	
+
 	private static Log log = LogFactory.getLog(TweetApiView.class);
-	
+
 	private int id;
-	
+
 	private String title;
-	
+
 	private String author;
-	
+
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date editDate;
-	
+
 	private String contentHtml;
 
-	public TweetApiView(){}
-	
-	public TweetApiView(Tweet t){
+	public TweetApiView() {
+	}
+
+	public TweetApiView(Tweet t) {
 		this.id = t.getId();
 		this.title = t.getTitle();
 		this.author = t.getAuthor();
@@ -34,7 +35,7 @@ public class TweetApiView {
 		this.contentHtml = new String(t.getTweetContent().getContent());
 		log.info("after getContent");
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -50,8 +51,6 @@ public class TweetApiView {
 	public Date getEditDate() {
 		return editDate;
 	}
-
-
 
 	public void setId(int id) {
 		this.id = id;
@@ -77,7 +76,4 @@ public class TweetApiView {
 		this.contentHtml = contentHtml;
 	}
 
-	
-	
-	
 }

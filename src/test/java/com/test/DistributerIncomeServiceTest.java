@@ -11,20 +11,22 @@ import com.yinzhiwu.yiwu.service.DistributerIncomeService;
 import com.yinzhiwu.yiwu.service.IncomeRecordService;
 
 /**
-*@Author ping
-*@Time  创建时间:2017年7月15日下午3:26:05
-*
-*/
+ * @Author ping
+ * @Time 创建时间:2017年7月15日下午3:26:05
+ *
+ */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class DistributerIncomeServiceTest {
-	
-	@Autowired private DistributerIncomeService distributerIncomeService;
-	@Autowired private IncomeRecordService incomeRecordService;
-	
+
+	@Autowired
+	private DistributerIncomeService distributerIncomeService;
+	@Autowired
+	private IncomeRecordService incomeRecordService;
+
 	@Test
-	public void test(){
+	public void test() {
 		IncomeRecord record = incomeRecordService.get(6000167);
 		distributerIncomeService.update_by_record(record);
 	}

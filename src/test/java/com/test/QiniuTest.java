@@ -26,9 +26,9 @@ import com.yinzhiwu.yiwu.qiniu.Qiniu;
 @SuppressWarnings("unused")
 @RunWith(BlockJUnit4ClassRunner.class)
 public class QiniuTest {
-	
+
 	private static Log LOG = LogFactory.getLog(QuartzTest.class);
-	
+
 	private String accessKey = Qiniu.ACCESS_KEY;
 	private String secretKey = Qiniu.SECRET_KEY;
 	private String bucket = Qiniu.BUCKET;
@@ -37,46 +37,46 @@ public class QiniuTest {
 	private UploadManager uploadManager = new UploadManager(cfg);
 	private Auth auth = Auth.create(accessKey, secretKey);
 	private String upToken = auth.uploadToken(bucket);
-	
-	private String filePath ="C:\\Users\\ping\\Pictures\\yiwu测试\\android学员端闪退.jpg";
+
+	private String filePath = "C:\\Users\\ping\\Pictures\\yiwu测试\\android学员端闪退.jpg";
 
 	private String sqlFilePath = "C:\\Users\\ping\\Documents\\asas.sql";
 	private String sampleVideo = "C:\\Users\\Public\\Videos\\Sample Videos\\Wildlife.wmv";
-	private String wugui="C:\\Users\\ping\\Videos\\wugui.mp4";
-	
+	private String wugui = "C:\\Users\\ping\\Videos\\wugui.mp4";
+
 	@Test
-	public void testResourceLoader(){
+	public void testResourceLoader() {
 		System.out.println(Qiniu.ACCESS_KEY);
 		System.out.println(Qiniu.ACCESS_KEY);
 		System.out.println(Qiniu.SECRET_KEY);
 		System.out.println(Qiniu.BUCKET);
 		System.out.println(Qiniu.CDN_URL);
 	}
-	
+
 	@Test
-	public void testReturnBody(){
+	public void testReturnBody() {
 		Auth auth = Auth.create(Qiniu.ACCESS_KEY, Qiniu.ACCESS_KEY);
 		StringMap putPolicy = new StringMap();
-		putPolicy.put("returnBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"bucket\":\"$(bucket)\",\"fsize\":$(fsize)}");
+		putPolicy.put("returnBody",
+				"{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"bucket\":\"$(bucket)\",\"fsize\":$(fsize)}");
 		long expireSeconds = 3600;
 		String upToken = auth.uploadToken(Qiniu.BUCKET, null, expireSeconds, putPolicy);
 		System.out.println(upToken);
 	}
-	
-	
+
 	@Test
-	public void uploadFromLocalFile(){
-		
+	public void uploadFromLocalFile() {
+
 		String key = "video-wugui.mp4";
-		
-		try{
+
+		try {
 			Response response = uploadManager.put(wugui, key, upToken);
-			
+
 			DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-			
+
 			System.out.println(putRet.key);
 			System.out.println(putRet.hash);
-		}catch (QiniuException e) {
+		} catch (QiniuException e) {
 			Response r = e.response;
 			System.err.println(r.toString());
 			try {
@@ -86,15 +86,15 @@ public class QiniuTest {
 			}
 		}
 	}
-	
+
 	@Test
-	public void uploadBytes(){
+	public void uploadBytes() {
 		String key = "bytes";
 		try {
 			byte[] uploadBytes = "杭州音之舞科技有限公司".getBytes("utf-8");
 			Response response = uploadManager.put(uploadBytes, key, upToken);
 			DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-			System.out.println(putRet.key);	
+			System.out.println(putRet.key);
 			System.out.println(putRet.hash);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -107,19 +107,19 @@ public class QiniuTest {
 				e1.printStackTrace();
 			}
 		}
-		
+
 	}
-	
+
 	@Test
-	public void uploadInputStream(){
+	public void uploadInputStream() {
 		String key = "yzw2\\inputStream";
 		try {
 			byte[] uploadBytes = "杭州音之舞科技有限公司".getBytes("utf-8");
 			ByteArrayInputStream stream = new ByteArrayInputStream(uploadBytes);
-//			Response response = uploadManager.put(uploadBytes, key, upToken);
+			// Response response = uploadManager.put(uploadBytes, key, upToken);
 			Response response = uploadManager.put(stream, key, upToken, null, null);
 			DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-			System.out.println(putRet.key);	
+			System.out.println(putRet.key);
 			System.out.println(putRet.hash);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -132,12 +132,12 @@ public class QiniuTest {
 				e1.printStackTrace();
 			}
 		}
-		
+
 	}
-	
+
 	@Test
-	public void getFileStatus(){
-		String key="video/wugui.mp4";
+	public void getFileStatus() {
+		String key = "video/wugui.mp4";
 		BucketManager bucketManager = new BucketManager(auth, cfg);
 		try {
 			FileInfo info = bucketManager.stat(bucket, key);
@@ -149,15 +149,14 @@ public class QiniuTest {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	@Test
-	public void callBack(){
-		String uploadToken = auth.uploadToken(bucket, null, 10000, new StringMap()
-				.put("callbackUrl", "http://www.yinzhiwu.com:9090/yiwu/api/distributer/loginByWechat")
-				.put("callbackBody", "wechatNo=oIgTGwy8pL7MDj4H_jNVGO4uJGIE"));
-//				.put("callbackBody", "url="+ Qiniu.BASE_URL + "${key}" ));
-		
+	public void callBack() {
+		String uploadToken = auth.uploadToken(bucket, null, 10000,
+				new StringMap().put("callbackUrl", "http://www.yinzhiwu.com:9090/yiwu/api/distributer/loginByWechat")
+						.put("callbackBody", "wechatNo=oIgTGwy8pL7MDj4H_jNVGO4uJGIE"));
+		// .put("callbackBody", "url="+ Qiniu.BASE_URL + "${key}" ));
+
 		try {
 			Response response = uploadManager.put(filePath, "ping.jpg", uploadToken);
 			LOG.info(response.bodyString());

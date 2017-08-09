@@ -17,10 +17,10 @@ public class ProductTypeApiController {
 
 	@Autowired
 	private ProductTypeService ptServie;
-	
+
 	@GetMapping("/getAll")
 	@ResponseBody
-	public ReturnedJson getAll(){
+	public ReturnedJson getAll() {
 		List<?> l = ptServie.findAll();
 		return new ReturnedJson(l);
 	}

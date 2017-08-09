@@ -5,23 +5,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yinzhiwu.yiwu.dao.DepartmentDao;
 import com.yinzhiwu.yiwu.entity.PlanRevenue;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.entity.type.ProductType;
+import com.yinzhiwu.yiwu.entity.yzwOld.Department;
 
 public class PlanRevenueApiModel {
 	private int id;
-	
+
 	private int storeId;
-	
+
 	private String storeName;
-	
+
 	private int year;
-	
+
 	private int month;
-	
+
 	private int productTypeId;
-	
+
 	private String productTypeName;
-	
+
 	private Double amount;
 
 	public final int getId() {
@@ -91,22 +92,20 @@ public class PlanRevenueApiModel {
 	public PlanRevenueApiModel() {
 	}
 
-	public PlanRevenueApiModel(@Autowired DepartmentDao dao, PlanRevenue plan){
+	public PlanRevenueApiModel(@Autowired DepartmentDao dao, PlanRevenue plan) {
 		this.id = plan.getId();
 		this.storeId = plan.getStoreId();
-		try {
-			this.storeName = dao.get(this.storeId).getDeptName();
-		} catch (DataNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		this.year=plan.getYear();
+		Department dept = dao.get(this.storeId);
+		if(dept != null)
+			this.storeName = dept.getDeptName();
+		this.year = plan.getYear();
 		this.month = plan.getMonth();
-		this.productTypeId = plan.getProductType().getId();
-		this.productTypeName = plan.getProductType().getName();
+		ProductType type = plan.getProductType();
+		if(type != null){
+			this.productTypeId = type.getId();
+			this.productTypeName = type.getName();
+		}
 		this.amount = plan.getAmount();
 	}
-	
-	
-}
 
+}

@@ -10,50 +10,52 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 
 public class IncomeRecordApiView {
-	
+
 	private static Log LOG = LogFactory.getLog(IncomeRecordApiView.class);
 
 	private int id;
-	
-	@JsonFormat(pattern="yyyy/MM/dd")
+
+	@JsonFormat(pattern = "yyyy/MM/dd")
 	private Date date;
-	
+
 	private String eventTypeName;
-	
+
 	private String memberName;
-	
+
 	private String memberId;
-	
+
 	private String superMemberName;
-	
+
 	private String incomeTypeName;
-	
+
 	private float incomeValue;
-	
+
 	private float payedAmount;
-	
+
 	private float currentValue;
-	
+
 	private float factor;
-	
-	
-	public IncomeRecordApiView(){}
-	
+
+	public IncomeRecordApiView() {
+	}
+
 	public IncomeRecordApiView(IncomeRecord r) {
 		Assert.notNull(r);
 		Assert.notNull(r.getContributor());
-		
+
 		this.id = r.getId();
 		this.date = r.getRecordTimestamp();
-		try{this.eventTypeName = r.getIncomeEvent().getType().getName();
-		}catch (Exception e) {
-			LOG.error(e.getMessage());}
-		
+		try {
+			this.eventTypeName = r.getIncomeEvent().getType().getName();
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+		}
+
 		this.memberId = r.getContributor().getMemberId();
 		this.memberName = r.getContributor().getName();
-		if(r.getContributor().getSuperDistributer() != null)
+		if (r.getContributor().getSuperDistributer() != null)
 			this.superMemberName = r.getContributor().getSuperDistributer().getName();
-		if(r.getIncomeType() !=null)
+		if (r.getIncomeType() != null)
 			this.incomeTypeName = r.getIncomeType().getName();
 		this.incomeValue = r.getIncomeValue();
 		this.payedAmount = r.getContributedValue();
@@ -61,7 +63,6 @@ public class IncomeRecordApiView {
 		this.factor = r.getIncomeFactor();
 	}
 
-	
 	public int getId() {
 		return id;
 	}
@@ -74,7 +75,6 @@ public class IncomeRecordApiView {
 		return superMemberName;
 	}
 
-
 	public float getFactor() {
 		return factor;
 	}
@@ -86,8 +86,6 @@ public class IncomeRecordApiView {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
-
 
 	public void setSuperMemberName(String superMemberName) {
 		this.superMemberName = superMemberName;
@@ -141,7 +139,6 @@ public class IncomeRecordApiView {
 		return eventTypeName;
 	}
 
-
 	public void setEventTypeName(String eventTypeName) {
 		this.eventTypeName = eventTypeName;
 	}
@@ -154,23 +151,14 @@ public class IncomeRecordApiView {
 		this.currentValue = currentValue;
 	}
 
-	public IncomeRecordApiView(int id, Date date, String eventTypeName){
+	public IncomeRecordApiView(int id, Date date, String eventTypeName) {
 		this.id = id;
 		this.date = date;
 		this.eventTypeName = eventTypeName;
 	}
-	
-	public IncomeRecordApiView(
-			int id, 
-			Date date, 
-			String eventTypeName, 
-			String memberName, 
-			String memberId,
-			String superMemberName, 
-			String incomeTypeName, 
-			float incomeValue, 
-			float payedAmount, 
-			float currentValue,
+
+	public IncomeRecordApiView(int id, Date date, String eventTypeName, String memberName, String memberId,
+			String superMemberName, String incomeTypeName, float incomeValue, float payedAmount, float currentValue,
 			float factor) {
 		super();
 		this.id = id;
@@ -186,8 +174,4 @@ public class IncomeRecordApiView {
 		this.factor = factor;
 	}
 
-
-	
-	
-	
 }

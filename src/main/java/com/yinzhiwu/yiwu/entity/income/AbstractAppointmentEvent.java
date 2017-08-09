@@ -15,15 +15,15 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 
 @Entity
 @DiscriminatorValue("AbstractAppointmentEvent")
-public  abstract class AbstractAppointmentEvent extends IncomeEvent {
+public abstract class AbstractAppointmentEvent extends IncomeEvent {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1879128304199492944L;
-	
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
-	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private LessonYzw lesson;
 
 	public LessonYzw getLesson() {
@@ -43,6 +43,4 @@ public  abstract class AbstractAppointmentEvent extends IncomeEvent {
 		this.lesson = lesson;
 	}
 
-	
-	
 }

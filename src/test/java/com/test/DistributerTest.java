@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class DistributerTest {
-	
+
 	@Test
-	public void testNativeSql(){
-//		System.out.println(distributerDao.getNextId());
+	public void testNativeSql() {
+		// System.out.println(distributerDao.getNextId());
 	}
 
 }

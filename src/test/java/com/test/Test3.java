@@ -19,54 +19,49 @@ import com.yinzhiwu.yiwu.util.ShareCodeUtil;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class Test3 {
-	
+
 	@Autowired
 	private EmployeeDao empDao;
-	
-	
+
 	@Test
-	public void testEmpDao(){
+	public void testEmpDao() {
 		List<EmployeeApiView> emps = empDao.findAllOnJobCoach();
 		System.out.println(emps.size());
 	}
-	
-	
+
 	@Autowired
 	private DistributerService distributerService;
-	
-	
-	//@Test
-	public void testOneToOne(){
+
+	// @Test
+	public void testOneToOne() {
 		Customer customer = new Customer();
 		customer.setId(21);
 		Distributer d = new Distributer();
-//		d.setCustomer(customer);
+		// d.setCustomer(customer);
 		d.setId(21);
 		d.setShareCode(ShareCodeUtil.toSerialCode(d.getId()));
 		d.setMemberId("aaa");
 		System.out.println(d.getCreateDate());
 		distributerService.save(d);
 	}
-	
+
 	@Test
-	public void testShareCodeUtil(){
+	public void testShareCodeUtil() {
 		String shareCode = ShareCodeUtil.toSerialCode(2);
 		System.out.println(shareCode);
 		System.out.println(ShareCodeUtil.codeToId("sfsfss"));
 	}
-	
 
 	@Test
-	public void testGenerateMemberId(){
+	public void testGenerateMemberId() {
 		System.out.println(GeneratorUtil.generateMemberId(10));
 	}
-	
-//	@Test
-//	public void testRecordTypeService(){
-//		ExpRecordType recordType = new ExpRecordType("注册2", 10);
-//		recordType.setComments("二级客户注册获取经验值");
-//		recordTypeService.save(recordType);
-//	}
-	
-	
+
+	// @Test
+	// public void testRecordTypeService(){
+	// ExpRecordType recordType = new ExpRecordType("注册2", 10);
+	// recordType.setComments("二级客户注册获取经验值");
+	// recordTypeService.save(recordType);
+	// }
+
 }

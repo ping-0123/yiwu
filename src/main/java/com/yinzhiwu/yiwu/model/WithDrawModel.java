@@ -4,28 +4,23 @@ import javax.validation.constraints.Min;
 
 public class WithDrawModel {
 
-	
-
 	@Min(1)
 	private int distributerId;
-	
+
 	@Min(1)
 	private int accountId;
-	
+
 	@Min(0)
 	private float amount;
-	
 
 	public WithDrawModel() {
 	}
-	
-	
+
 	public WithDrawModel(int distributerId, int accountid, float amount) {
 		this.distributerId = distributerId;
 		this.accountId = accountid;
 		this.amount = amount;
 	}
-	
 
 	public int getDistributerId() {
 		return distributerId;
@@ -51,6 +46,4 @@ public class WithDrawModel {
 		this.amount = amount;
 	}
 
-
-	
 }

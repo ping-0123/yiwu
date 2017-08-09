@@ -5,14 +5,12 @@ import java.sql.Date;
 public class RevenueModel {
 
 	private Integer storeId;
-	
+
 	private String storeName;
 
 	private Date date;
-	
+
 	private Double amount;
-	
-	
 
 	public RevenueModel(Integer storeId, String storeName, Date date, Double amount) {
 		this.storeId = storeId;
@@ -55,6 +53,5 @@ public class RevenueModel {
 	public final void setAmount(Double amount) {
 		this.amount = amount;
 	}
-	
-	
+
 }

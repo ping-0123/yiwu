@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
-
 import java.util.Date;
 
 import javax.persistence.AttributeConverter;
@@ -21,24 +20,24 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="vappointment")
+@Table(name = "vappointment")
 public class AppointmentYzw {
-	
-	public enum AppointStatus{
-		APPONTED("预约"),
-		UN_APOINTED("取消");
+
+	public enum AppointStatus {
+		APPONTED("预约"), UN_APOINTED("取消");
 		private final String status;
 
-		public static AppointStatus fromStatus(String status){
+		public static AppointStatus fromStatus(String status) {
 			switch (status) {
 			case "预约":
 				return AppointStatus.APPONTED;
 			case "取消":
 				return AppointStatus.UN_APOINTED;
 			default:
-				throw new UnsupportedOperationException(status + "is not supported");
+				throw new UnsupportedOperationException(status + "is not supported for enum AppointStatus");
 			}
 		}
+
 		public String getStatus() {
 			return status;
 		}
@@ -46,86 +45,86 @@ public class AppointmentYzw {
 		private AppointStatus(String status) {
 			this.status = status;
 		}
-		
+
 	}
-	
+
 	@Converter
-	public static class AppointStatusConverter implements AttributeConverter<AppointStatus, String>{
+	public static class AppointStatusConverter implements AttributeConverter<AppointStatus, String> {
 
 		@Override
 		public String convertToDatabaseColumn(AppointStatus attribute) {
-			if(attribute ==null)
+			if (attribute == null)
 				return null;
 			return attribute.getStatus();
 		}
 
 		@Override
 		public AppointStatus convertToEntityAttribute(String dbData) {
-			if(dbData ==null)
+			if (dbData == null)
 				return null;
 			return AppointStatus.fromStatus(dbData);
 		}
-		
+
 	}
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="courseHourId", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "courseHourId", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private LessonYzw lesson;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="customerId", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customerId", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private CustomerYzw customer;
-	
-	@Column(name="status")
-	@Convert(converter=AppointStatusConverter.class)
+
+	@Column(name = "status")
+	@Convert(converter = AppointStatusConverter.class)
 	private AppointStatus status;
-	
+
 	@JsonIgnore
-	@Column(name="sf_create_user")
+	@Column(name = "sf_create_user")
 	private Integer createUserId;
-	
+
 	@JsonIgnore
-	@Column(name="sf_last_change_user")
+	@Column(name = "sf_last_change_user")
 	private Integer lastChangeUserId;
-	
+
 	@JsonIgnore
-	@Column(name="sf_create_time")
-	private  Date createTime;
-	
+	@Column(name = "sf_create_time")
+	private Date createTime;
+
 	@JsonIgnore
-	@Column(name="sf_last_change_time")
+	@Column(name = "sf_last_change_time")
 	private Date lastChangeTime;
-	
+
 	@JsonIgnore
 	@Column
 	private Integer machinecode;
-	
+
 	@JsonIgnore
-	@Column(name="sf_Last_Sync_TimeStamp")
+	@Column(name = "sf_Last_Sync_TimeStamp")
 	private Date lastSyncTimeStamp;
-	
-	
-	public AppointmentYzw(){};
-	public AppointmentYzw(LessonYzw lesson, CustomerYzw customer){
+
+	public AppointmentYzw() {
+	};
+
+	public AppointmentYzw(LessonYzw lesson, CustomerYzw customer) {
 		init();
 		this.lesson = lesson;
 		this.customer = customer;
 	};
-	
+
 	protected void init() {
 		this.createUserId = 1;
 		Date date = new Date();
 		this.createTime = date;
-		this.lastChangeUserId =1;
-		this.lastChangeTime=date;
-		this.lastSyncTimeStamp =date;
+		this.lastChangeUserId = 1;
+		this.lastChangeTime = date;
+		this.lastSyncTimeStamp = date;
 		this.status = AppointStatus.APPONTED;
 	}
-	
 
 	public final Integer getId() {
 		return id;
@@ -135,7 +134,6 @@ public class AppointmentYzw {
 		this.id = id;
 	}
 
-		
 	public final Integer getCreateUserId() {
 		return createUserId;
 	}
@@ -184,35 +182,28 @@ public class AppointmentYzw {
 		this.lastSyncTimeStamp = lastSyncTimeStamp;
 	}
 
-
 	public LessonYzw getLesson() {
 		return lesson;
 	}
-
 
 	public CustomerYzw getCustomer() {
 		return customer;
 	}
 
-
 	public AppointStatus getStatus() {
 		return status;
 	}
-
 
 	public void setLesson(LessonYzw lesson) {
 		this.lesson = lesson;
 	}
 
-
 	public void setCustomer(CustomerYzw customer) {
 		this.customer = customer;
 	}
 
-
 	public void setStatus(AppointStatus status) {
 		this.status = status;
 	}
-	
-	
+
 }

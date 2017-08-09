@@ -6,6 +6,6 @@ import com.yinzhiwu.yiwu.dao.WithdrawEventDao;
 import com.yinzhiwu.yiwu.entity.income.WithdrawEvent;
 
 @Repository
-public class WithDrawEventDaoImpl extends BaseDaoImpl<WithdrawEvent,Integer> implements  WithdrawEventDao{
+public class WithDrawEventDaoImpl extends BaseDaoImpl<WithdrawEvent, Integer> implements WithdrawEventDao {
 
 }

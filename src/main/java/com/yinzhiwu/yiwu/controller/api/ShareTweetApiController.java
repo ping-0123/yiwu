@@ -19,32 +19,32 @@ public class ShareTweetApiController extends BaseController {
 
 	@Autowired
 	private ShareTweetEventService shareTweetEventService;
-	
+
 	@PostMapping
-	public YiwuJson<Boolean> doPost(int distributerId, int tweetId){
+	public YiwuJson<Boolean> doPost(int distributerId, int tweetId) {
 		Distributer d = new Distributer();
 		d.setId(distributerId);
 		Tweet tweet = new Tweet();
 		tweet.setId(tweetId);
-		
+
 		ShareTweetEvent event = new ShareTweetEvent(d, null, 1f);
 		event.init();
 		event.setTweet(tweet);
-		
-		try{
+
+		try {
 			shareTweetEventService.save(event);
 			return new YiwuJson<>(new Boolean(true));
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
-	
+
 	@GetMapping("/count")
-	public YiwuJson<Integer> findCount(int distributerId){
-		try{
-			int count = shareTweetEventService.findCountByProperty("distributer.id", distributerId);
-			return new YiwuJson<>(new Integer(count));
-		}catch (Exception e) {
+	public YiwuJson<Long> findCount(int distributerId) {
+		try {
+			Long count = shareTweetEventService.findCountByProperty("distributer.id", distributerId);
+			return new YiwuJson<>(count);
+		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}

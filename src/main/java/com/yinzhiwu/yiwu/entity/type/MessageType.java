@@ -17,14 +17,13 @@ public class MessageType extends BaseType {
 	 * 
 	 */
 	private static final long serialVersionUID = 8807718393731720615L;
-	
-	@OneToMany(mappedBy="messageType")
+
+	@OneToMany(mappedBy = "messageType")
 	private List<Message> messages = new ArrayList<>();
 
 	public MessageType() {
 		super();
 	}
-
 
 	public List<Message> getMessages() {
 		return messages;
@@ -33,7 +32,5 @@ public class MessageType extends BaseType {
 	public void setMessages(List<Message> messages) {
 		this.messages = messages;
 	}
-	
-	
 
 }

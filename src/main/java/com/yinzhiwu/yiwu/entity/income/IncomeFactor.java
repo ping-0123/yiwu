@@ -13,7 +13,7 @@ import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.type.RelationType;
 
 @Entity
-@Table(name="yiwu_income_factor")
+@Table(name = "yiwu_income_factor")
 public class IncomeFactor extends BaseEntity {
 
 	/**
@@ -21,28 +21,26 @@ public class IncomeFactor extends BaseEntity {
 	 */
 	private static final long serialVersionUID = 8480309517203173801L;
 
-	@Column(name="delete_flag")
+	@Column(name = "delete_flag")
 	private Boolean deleteFlag = Boolean.FALSE;
-	
+
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeFactor_eventType_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeFactor_eventType_id"))
 	private EventType eventType;
-	
+
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeFactor_type_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeFactor_type_id"))
 	private IncomeType incomeType;
-	
+
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_incomeFactor_relation_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeFactor_relation_id"))
 	private RelationType relation;
-	
+
 	private Float factor;
 
-	
 	public EventType getEventType() {
 		return eventType;
 	}
-
 
 	public RelationType getRelation() {
 		return relation;
@@ -56,7 +54,6 @@ public class IncomeFactor extends BaseEntity {
 		this.eventType = eventType;
 	}
 
-
 	public void setRelation(RelationType relation) {
 		this.relation = relation;
 	}
@@ -65,20 +62,16 @@ public class IncomeFactor extends BaseEntity {
 		this.factor = factor;
 	}
 
-
 	public IncomeType getIncomeType() {
 		return incomeType;
 	}
-
 
 	public void setIncomeType(IncomeType type) {
 		this.incomeType = type;
 	}
 
-
 	public IncomeFactor() {
 	}
-
 
 	public IncomeFactor(EventType eventType, IncomeType incomeType, RelationType relation, Float factor) {
 		this.eventType = eventType;
@@ -87,16 +80,12 @@ public class IncomeFactor extends BaseEntity {
 		this.factor = factor;
 	}
 
-
 	public Boolean getDeleteFlag() {
 		return deleteFlag;
 	}
 
-
 	public void setDeleteFlag(Boolean deleteFlag) {
 		this.deleteFlag = deleteFlag;
 	}
-	
-	
-	
+
 }

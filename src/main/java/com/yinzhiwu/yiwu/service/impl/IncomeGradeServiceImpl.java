@@ -8,11 +8,11 @@ import com.yinzhiwu.yiwu.entity.income.IncomeGrade;
 import com.yinzhiwu.yiwu.service.IncomeGradeService;
 
 @Service
-public class IncomeGradeServiceImpl  extends BaseServiceImpl<IncomeGrade, Integer> implements IncomeGradeService{
+public class IncomeGradeServiceImpl extends BaseServiceImpl<IncomeGrade, Integer> implements IncomeGradeService {
 
 	@Autowired
-	public void setBaseDao(IncomeGradeDao incomeGradeDao){
+	public void setBaseDao(IncomeGradeDao incomeGradeDao) {
 		super.setBaseDao(incomeGradeDao);
 	}
-	
+
 }

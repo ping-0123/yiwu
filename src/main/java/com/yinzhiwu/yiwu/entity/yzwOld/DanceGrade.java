@@ -8,14 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vdance_grade")
+@Table(name = "vdance_grade")
 public class DanceGrade {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String name;
 
 	public DanceGrade() {
@@ -42,6 +42,4 @@ public class DanceGrade {
 		this.name = name;
 	}
 
-	
-	
 }

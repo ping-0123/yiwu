@@ -11,178 +11,176 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vcourse")
+@Table(name = "vcourse")
 public class Course {
-	
-	@Id
-	@Column(length=32,name="id")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private String courseId;
-	
-	@Column(length=128, name="name")
-	private String courseDesc;
-	
-	@Column(length =32, name="dance_id")
-	private String danceId;
-	
 
-	@Column(length =32)
+	@Id
+	@Column(length = 32, name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private String courseId;
+
+	@Column(length = 128, name = "name")
+	private String courseDesc;
+
+	@Column(length = 32, name = "dance_id")
+	private String danceId;
+
+	@Column(length = 32)
 	private String danceDesc;
-	
-	@Column(name="store_id")
+
+	@Column(name = "store_id")
 	private Integer storeId;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String storeName;
-	
-	@Column(name="teacher_id")
+
+	@Column(name = "teacher_id")
 	private Integer teacherId;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String teacherName;
-	
-	@Column(length=32, name="interval_id")
+
+	@Column(length = 32, name = "interval_id")
 	private String intervalId;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String intervalDesc;
-	
+
 	@Column
 	private Time startTime;
-	
+
 	@Column
 	private Time endTime;
-	
+
 	@Column
 	private Date startDate;
-	
+
 	@Column
 	private Date endDate;
-	
+
 	@Column
 	private Float sumCourseHours;
-	
-	@Column(length=32, name="classRoom_id")
+
+	@Column(length = 32, name = "classRoom_id")
 	private String classRoomId;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String classRoomName;
-	
-	@Column(name="sf_create_user")
+
+	@Column(name = "sf_create_user")
 	private Integer createUserId;
-	
-	@Column(name="sf_last_change_user")
+
+	@Column(name = "sf_last_change_user")
 	private Integer lastChangeUserId;
-	
-	@Column(name="sf_create_time")
+
+	@Column(name = "sf_create_time")
 	private Date createTime;
-	
-	@Column(name="sf_last_change_time")
+
+	@Column(name = "sf_last_change_time")
 	private Date lastChangeTime;
-	
+
 	@Column
 	private Integer machineCode;
-	
-	@Column(name="sf_last_sync_timeStamp")
+
+	@Column(name = "sf_last_sync_timeStamp")
 	private Date lastSyncTimeStamp;
-	
-	@Column(name="weeklyCourseHours")
+
+	@Column(name = "weeklyCourseHours")
 	private Float weekCourseHours;
-	
-	@Column(name="delete_flag")
+
+	@Column(name = "delete_flag")
 	private Integer isDeleted;
-	
-	@Column(name="weeks", length=32)
+
+	@Column(name = "weeks", length = 32)
 	private String weekes;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String courseType;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String subCourseType;
-	
-	
-	@Column(length=32,name="monInterval_id")
+
+	@Column(length = 32, name = "monInterval_id")
 	private String monIntervalId;
-	
-	@Column(length=32, name="monRoom_id")
+
+	@Column(length = 32, name = "monRoom_id")
 	private String monRoomId;
-	
-	@Column(length=32, name="tueInterval_id")
+
+	@Column(length = 32, name = "tueInterval_id")
 	private String tueIntervalId;
-	
-	@Column(length=32, name="tueRoom_id")
+
+	@Column(length = 32, name = "tueRoom_id")
 	private String tueRoomId;
-	
-	@Column(length=32, name="wedInterval_id")
+
+	@Column(length = 32, name = "wedInterval_id")
 	private String wedIntervalId;
-	
-	@Column(length=32, name="wedRoom_id")
+
+	@Column(length = 32, name = "wedRoom_id")
 	private String wedRoomId;
-	
-	@Column(length=32, name="thuInterval_id")
+
+	@Column(length = 32, name = "thuInterval_id")
 	private String thuIntervalId;
-	
-	@Column(length=32, name="thuRoom_id")
+
+	@Column(length = 32, name = "thuRoom_id")
 	private String thuRoomId;
-	
-	@Column(length=32, name="friInterval_id")
+
+	@Column(length = 32, name = "friInterval_id")
 	private String friIntervalId;
-	
-	@Column(length=32, name="friRoom_id")
+
+	@Column(length = 32, name = "friRoom_id")
 	private String friRoomId;
-	
-	@Column(length=32, name="satInterval_id")
+
+	@Column(length = 32, name = "satInterval_id")
 	private String satIntervalId;
-	
-	@Column(length=32, name="satRoom_id")
+
+	@Column(length = 32, name = "satRoom_id")
 	private String satRoomId;
-	
-	@Column(length=32, name="sunInterval_id")
+
+	@Column(length = 32, name = "sunInterval_id")
 	private String sunIntervalId;
-	
-	@Column(length=32, name="sunRoom_id")
+
+	@Column(length = 32, name = "sunRoom_id")
 	private String sunRoomId;
-	
-	@Column(length=32, name="status")
+
+	@Column(length = 32, name = "status")
 	private String courseStatus;
-	
+
 	@Column
 	private Integer studentCount;
-	
-	@Column(name="sf_last_change_timeStamp")
+
+	@Column(name = "sf_last_change_timeStamp")
 	private Date lastChangeTimeStamp;
-	
-	@Column(name="include_holeday_flag")
+
+	@Column(name = "include_holeday_flag")
 	private Integer isHolidayIncluded;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String danceGrade;
-	
-	@Column(name="ShenheRen")
+
+	@Column(name = "ShenheRen")
 	private Integer auditorId;
-	
+
 	@Column
 	private String connotation;
-	
-	@Column(name="help")
+
+	@Column(name = "help")
 	private String helpInformation;
-	
+
 	@Column
 	private String briefIntroduction;
-	
-	@Column(name="picture")
+
+	@Column(name = "picture")
 	private String pictureNo;
-	
+
 	@Column
 	private String videoUrl;
-	
-	@Column(name="audio")
+
+	@Column(name = "audio")
 	private String audioName;
-	
+
 	@Column
 	private String audioUrl;
-	
+
 	@Column
 	private String danceIntroduction;
 
@@ -410,8 +408,6 @@ public class Course {
 		this.subCourseType = subCourseType;
 	}
 
-	
-
 	public final String getWedIntervalId() {
 		return wedIntervalId;
 	}
@@ -635,7 +631,5 @@ public class Course {
 	public void setTueRoomId(String tueRoomId) {
 		this.tueRoomId = tueRoomId;
 	}
-	
 
-	
 }

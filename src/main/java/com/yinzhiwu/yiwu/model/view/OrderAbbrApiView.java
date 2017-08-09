@@ -7,16 +7,17 @@ import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 public class OrderAbbrApiView {
 
 	private String id;
-	
+
 	private String productName;
-	
+
 	private Date buyDate;
-	
-	public OrderAbbrApiView(){};
-	
-	public OrderAbbrApiView(OrderYzw o){
+
+	public OrderAbbrApiView() {
+	};
+
+	public OrderAbbrApiView(OrderYzw o) {
 		this.id = o.getId();
-		this.productName=o.getProduct().getName();
+		this.productName = o.getProduct().getName();
 		this.buyDate = o.getPayedDate();
 	}
 
@@ -43,6 +44,5 @@ public class OrderAbbrApiView {
 	public void setBuyDate(Date buyDate) {
 		this.buyDate = buyDate;
 	}
-	
-	
+
 }

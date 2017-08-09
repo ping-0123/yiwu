@@ -8,14 +8,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class EContractTest {
-	
-//	@Autowired
-//	private ElectricContractYzwService electricContractYzwService;
-//	
+
+	// @Autowired
+	// private ElectricContractYzwService electricContractYzwService;
+	//
 	@Test
-	public void test(){
+	public void test() {
 		System.out.println("YZW20170410049");
-//		ElectricContractYzw e = electricContractYzwService.get("YZW20170410049");
-//		System.out.println(e.getContract().getContractNo());
+		// ElectricContractYzw e =
+		// electricContractYzwService.get("YZW20170410049");
+		// System.out.println(e.getContract().getContractNo());
 	}
 }

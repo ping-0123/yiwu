@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.service.impl;
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -16,9 +15,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderDao orderDao;
-	
+
 	@Override
-	public List<OrderOldApiView> getDailyOrderByStore(int storeId, Date payedDate, int productTypeId){
+	public List<OrderOldApiView> getDailyOrderByStore(int storeId, Date payedDate, int productTypeId) {
 		return orderDao.findDailyOrderByStore(storeId, payedDate, productTypeId);
 	}
 

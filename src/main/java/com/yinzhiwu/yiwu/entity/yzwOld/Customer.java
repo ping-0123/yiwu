@@ -15,111 +15,109 @@ import com.yinzhiwu.yiwu.enums.Gender;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
 
 @Entity
-@Table(name="vcustomer")
+@Table(name = "vcustomer")
 public class Customer {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column
-	private Integer salesmanId;
-	
-	@Column(length=32, name="audit_child")
-	private String auditOrChild;
-	
-	@Column(length=32)
-	private String isMember;
-	
-	@Column(length=32)
-	private String memberCard;
-	
-	@Column(length=32)
-	private String name;
-	
-	@Column(length=32, name="sex")
-	private String gender;
-	
-	@Column(length=32)
-	private String mobilePhone;
-	
-	@Column(length=32)
-	private String residentId;
-	
 
 	@Column
-	@JsonFormat(pattern ="yyyy-MM-dd")
+	private Integer salesmanId;
+
+	@Column(length = 32, name = "audit_child")
+	private String auditOrChild;
+
+	@Column(length = 32)
+	private String isMember;
+
+	@Column(length = 32)
+	private String memberCard;
+
+	@Column(length = 32)
+	private String name;
+
+	@Column(length = 32, name = "sex")
+	private String gender;
+
+	@Column(length = 32)
+	private String mobilePhone;
+
+	@Column(length = 32)
+	private String residentId;
+
+	@Column
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date birthday;
-	
+
 	@Column
 	private Integer age;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String qq;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String weChat;
-	
-	@Column(length=128)
+
+	@Column(length = 128)
 	private String address;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String company;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String profession;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String interesting;
-	
-	@Column(length=255)
+
+	@Column(length = 255)
 	private String photo;
-	
-	@Column(length=32, name="customer_level")
+
+	@Column(length = 32, name = "customer_level")
 	private String customerLevel;
-	
-	@Column(length=32 , name="source_of_customer")
+
+	@Column(length = 32, name = "source_of_customer")
 	private String sourceOfCustomer;
-	
-	@Column(name="date_of_next_track")
+
+	@Column(name = "date_of_next_track")
 	private Date DayOfNextTrack;
-	
-	@Column(name="times_of_untrack")
+
+	@Column(name = "times_of_untrack")
 	private Integer timesOfUntrack;
-	
-	@Column(name="times_of_remainder_course")
+
+	@Column(name = "times_of_remainder_course")
 	private Integer timesOfRemainderCourse;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String password;
-	
+
 	@Column
 	private Integer credit;
-	
+
 	@Column
 	private Float earnest;
-	
-	@Column(name="sf_create_user")
+
+	@Column(name = "sf_create_user")
 	private Integer createUserId;
-	
-	@Column(name="sf_last_change_user")
+
+	@Column(name = "sf_last_change_user")
 	private Integer lastChangeUser;
-	
-	@Column(name="sf_create_time")
+
+	@Column(name = "sf_create_time")
 	private Date createTime;
-	
-	@Column(name="sf_last_change_time")
+
+	@Column(name = "sf_last_change_time")
 	private Date lastChangeTime;
-	
+
 	@Column
 	private Integer machineCode;
-	
-	@Column(name="sf_Last_Sync_TimeStamp")
+
+	@Column(name = "sf_Last_Sync_TimeStamp")
 	private Date lastSyncTimeStamp;
-	
-	@Column(name="sf_last_change_timestamp")
+
+	@Column(name = "sf_last_change_timestamp")
 	private Date lastChangeTimestamp;
-	
 
 	public final Integer getId() {
 		return id;
@@ -388,29 +386,28 @@ public class Customer {
 	public Customer() {
 		super();
 	}
-	
-	public Customer(Distributer d){
-		if(d.getBirthday() != null && CalendarUtil.isAudit(d.getBirthday()))
-			this.auditOrChild="成人";
+
+	public Customer(Distributer d) {
+		if (d.getBirthday() != null && CalendarUtil.isAudit(d.getBirthday()))
+			this.auditOrChild = "成人";
 		else
-			this.auditOrChild="少儿";
+			this.auditOrChild = "少儿";
 		this.isMember = "潜在";
 		this.name = d.getName();
-		if(d.getGender()==Gender.FEMALE)
-			this.gender="女";
+		if (d.getGender() == Gender.FEMALE)
+			this.gender = "女";
 		else
-			this.gender="男";
+			this.gender = "男";
 		this.mobilePhone = d.getPhoneNo();
 		this.birthday = new java.sql.Date(d.getBirthday().getTime());
 		this.age = (int) CalendarUtil.getAge(d.getBirthday());
 		this.weChat = d.getWechatNo();
 		this.sourceOfCustomer = "微信";
-		this.createTime= d.getCreateDate();
-		this.lastChangeTime=(Date) d.getLastModifiedDate();
-		this.lastSyncTimeStamp=(Date) d.getLastModifiedDate();
+		this.createTime = d.getCreateDate();
+		this.lastChangeTime = (Date) d.getLastModifiedDate();
+		this.lastSyncTimeStamp = (Date) d.getLastModifiedDate();
 		this.lastChangeTimestamp = (Date) d.getLastModifiedDate();
-		this.createUserId =d.getId();
+		this.createUserId = d.getId();
 	}
-	
-	
+
 }

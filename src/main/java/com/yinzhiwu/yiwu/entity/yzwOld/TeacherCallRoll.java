@@ -10,60 +10,60 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vteacher_callroll")
+@Table(name = "vteacher_callroll")
 public class TeacherCallRoll {
-	
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String memberCard;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String courseType;
-	
+
 	@Column
 	private Integer lessonId;
-	
+
 	@Column
 	private Integer callroll;
-	
-	@Column(length=32)
+
+	@Column(length = 32)
 	private String studentName;
-	
+
 	@Column
 	private Integer slotCardId;
-	
+
 	@Column
 	private Integer memberId;
-	
+
 	@Column
 	private String unCallRollReason;
-	
+
 	@Column
 	private Integer isFilledUp;
-	
-	@Column(name="createUserid")
+
+	@Column(name = "createUserid")
 	private Integer createUserId;
-	
+
 	@Column
 	private Integer lastChangeUserId;
-	
+
 	@Column
 	private Date createTime;
-	
+
 	@Column
 	private Date lastChangeTime;
-	
+
 	@Column
 	private Date lastChangeTimeStamp;
-	
+
 	@Column
 	private Integer machineCode;
-	
-	@Column Date lastSyncTimeStamp;
+
+	@Column
+	Date lastSyncTimeStamp;
 
 	public final Integer getId() {
 		return id;
@@ -200,8 +200,5 @@ public class TeacherCallRoll {
 	public final void setLastSyncTimeStamp(Date lastSyncTimeStamp) {
 		this.lastSyncTimeStamp = lastSyncTimeStamp;
 	}
-	
-	
-	
-		
+
 }

@@ -7,6 +7,7 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 public interface CourseDao extends IBaseDao<Course, String> {
 
-	 public List<Course> findByProperty(String propertyName, Object value);
-	 public Course findById(String id) throws DataNotFoundException;
+	public List<Course> findByProperty(String propertyName, Object value);
+
+	public Course findById(String id) throws DataNotFoundException;
 }

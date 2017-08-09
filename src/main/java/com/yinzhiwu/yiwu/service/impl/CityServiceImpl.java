@@ -15,7 +15,7 @@ public class CityServiceImpl implements CityService {
 	@Autowired
 	@Qualifier("departmentDaoImplTwo")
 	private DepartmentDao departmentDao;
-	
+
 	@Override
 	public List<String> getCities() {
 		return departmentDao.findCities();

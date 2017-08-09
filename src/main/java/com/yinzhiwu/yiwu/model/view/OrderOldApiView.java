@@ -3,25 +3,25 @@ package com.yinzhiwu.yiwu.model.view;
 import java.sql.Date;
 
 public class OrderOldApiView {
-	
+
 	private Date recordDate;
-	
+
 	private String productName;
-	
+
 	private float marckedPrice;
-	
+
 	private int count;
-	
+
 	private float payedAmount;
-	
+
 	private String payedMethod;
-	
+
 	private String customerName;
-	
+
 	private String auditOrChild;
-	
-	private String  vipAttr;
-	
+
+	private String vipAttr;
+
 	private String salesmanName;
 
 	public final Date getRecordDate() {
@@ -103,6 +103,5 @@ public class OrderOldApiView {
 	public final void setSalesmanName(String salesmanName) {
 		this.salesmanName = salesmanName;
 	}
-	
-	
+
 }

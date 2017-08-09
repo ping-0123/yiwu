@@ -16,11 +16,11 @@ public class AccountApiController {
 
 	@Autowired
 	private AccountService accountService;
-	
+
 	@ResponseBody
 	@PostMapping("/login")
-	public YiwuJson<?> login(@RequestParam String account, @RequestParam String password){
-		
-		return accountService.login(account,password);
+	public YiwuJson<?> login(@RequestParam String account, @RequestParam String password) {
+
+		return accountService.login(account, password);
 	}
 }
