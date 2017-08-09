@@ -40,7 +40,7 @@ public class CourseYzw extends BaseYzwEntity {
 		OPENED("开放式"),
 		PRIVATE("私教课"),
 		GRADE_EXAM("考级"),
-		REFERENCE_ORDER("已订单为准");
+		REFERENCE_ORDER("以订单为准");
 		
 		
 		private final String name;
@@ -72,7 +72,7 @@ public class CourseYzw extends BaseYzwEntity {
 					return CourseType.PRIVATE;
 				case "考级":
 					return CourseType.GRADE_EXAM;
-				case "已订单为准":
+				case "以订单为准":
 					return CourseType.REFERENCE_ORDER;
 				default:
 					throw new UnsupportedOperationException(name + "is not supported for enum CourseType");

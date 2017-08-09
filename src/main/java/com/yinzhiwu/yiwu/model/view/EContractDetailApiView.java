@@ -106,7 +106,8 @@ public class EContractDetailApiView {
 		this.depositDate = e.getDepositDate();
 		this.finalAmount = e.getFinalAmount();
 		this.finalDate = e.getFinalDate();
-		this.type = e.getContractType().getContractType();
+		if(e.getContractType() !=null)
+			this.type = e.getContractType().getContractType();
 		this.context = e.getContractType().getContent();
 	}
 
