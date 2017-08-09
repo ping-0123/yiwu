@@ -15,13 +15,10 @@ public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> 
 
 	@Override
 	public boolean isAppointed(CustomerYzw customer, LessonYzw lesson) {
-		int count = 0;
-		count = findCountByProperties(
+		long count = findCountByProperties(
 				new String[] { "lesson.id", "customer.id", "status" },
-				new Object[] { lesson.getId(), customer.getId(), AppointStatus.APPONTED })
-				.intValue();
-			
-		return count > 0 ? true :false;
+				new Object[] { lesson.getId(), customer.getId(), AppointStatus.APPONTED });
+		return count > 0 ;
 	}
 
 	@Override

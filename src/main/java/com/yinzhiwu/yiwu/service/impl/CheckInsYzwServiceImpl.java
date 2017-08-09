@@ -95,6 +95,9 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 			throw new YiwuException("封闭式课程无须刷卡");
 		if (CourseType.OPENED != lesson.getCourseType())
 			throw new YiwuException("非开放式课程请在E5pc端按指纹刷卡");
+		//判断是否已经预约
+		if(! appointmentDao.isAppointed(customer, lesson))
+			throw new YiwuException("未预约不能刷卡上课");
 		/**
 		 * 判断是否已刷卡
 		 */
@@ -115,11 +118,12 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		/**
 		 * 判断是否预约, 并保存刷卡事件
 		 */
-		IncomeEvent event = null;
-		if (appointmentDao.isAppointed(customer, lesson)) {
-			event = new AfterAppointCheckInEvent(distributer, 1f, checkIn);
-		} else
-			event = new WithoutAppointCheckInEvent(distributer, 1f, checkIn);
+//		IncomeEvent event = null;
+////		if (appointmentDao.isAppointed(customer, lesson)) {
+////			event = new AfterAppointCheckInEvent(distributer, 1f, checkIn);
+////		} else
+//			event = new WithoutAppointCheckInEvent(distributer, 1f, checkIn);
+		AfterAppointCheckInEvent event = new AfterAppointCheckInEvent(distributer, 1f, checkIn);
 		incomeEventService.save(event);
 
 		/*
