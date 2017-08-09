@@ -91,16 +91,17 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		CustomerYzw customer = distributer.getCustomer();
 		if (customer == null)
 			throw new YiwuException(distributer.getId() + "客户不存在");
-		if (CourseType.CLOSED.equals(lesson.getCourseType()))
+		if (CourseType.CLOSED== lesson.getCourseType())
 			throw new YiwuException("封闭式课程无须刷卡");
-		if (!CourseType.OPENED.equals(lesson.getCourseType()))
+		if (CourseType.OPENED != lesson.getCourseType())
 			throw new YiwuException("非开放式课程请在E5pc端按指纹刷卡");
 		/**
 		 * 判断是否已刷卡
 		 */
 		if (checkInsYzwDao.isCheckedIn(customer, lesson))
 			throw new YiwuException("已刷卡， 无须重复刷卡");
-		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(customer.getId(),
+		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
+				customer.getId(),
 				lesson.getSubCourseType());
 		if (contract == null)
 			throw new YiwuException("你没有购买音之舞相关产品， 不能刷卡");
