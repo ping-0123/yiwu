@@ -74,8 +74,8 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		if (isAppointed(customer, lesson))
 			throw new Exception("您已预约课程：" + lesson.getName() + "无须重复预约");
 		//仅开放式课程可以预约
-		if(lesson.getCourseType() != CourseType.OPENED)
-			throw new Exception("仅开放式课程可以预约");
+		if(CourseType.CLOSED == lesson.getCourseType()  )
+			throw new Exception("封闭式课程无须预约");
 		//判断上课时间是否已过
 		if ((new Date()).after(lesson.getStartDateTime()))
 			throw new Exception("上课时间已过， 不能预约");

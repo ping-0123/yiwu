@@ -219,16 +219,16 @@
     	<resource>
     		<directory>src/main/resources</directory>
     		<excludes>
-    			<exclude>environment/development/*</exclude>
-    			<exclude>environment/test/*</exclude>
-    			<exclude>environment/production/*</exclude>
+    			<exclude>environment/development/**</exclude>
+    			<exclude>environment/test/**</exclude>
+    			<exclude>environment/production/**</exclude>
     			<exclude>dbscripts/**</exclude>
     			<exclude>examples/*</exclude>
     		</excludes>
     	</resource>
     	<resource>
     		<directory>src/main/resources/environment/${environment}</directory>
-    	 	<targetPath>properties</targetPath>
+    	 	<targetPath></targetPath>
     	</resource>
     </resources>
     <plugins>

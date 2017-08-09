@@ -168,4 +168,21 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 				.intValue();
 	}
 
+	@Override
+	public LessonYzw get(Integer id) {
+		LessonYzw lesson = getSession().get(LessonYzw.class, id);
+		if(lesson == null) return null;
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT COUNT(t1.course)");
+		hql.append(" FROM LessonYzw t1");
+		hql.append(" WHERE t1.id = :id");
+		Long count = getSession().createQuery(hql.toString(), Long.class)
+				.setParameter("id", id)
+				.getSingleResult();
+		if(count ==0 )
+			lesson.setCourse(null);
+		return lesson;
+	}
+
 }
