@@ -247,15 +247,14 @@
     	
    		 <plugin>
 	            <groupId>org.apache.tomcat.maven</groupId>
-		        <artifactId>tomcat7-maven-plugin</artifactId>
+		        <artifactId>tomcat-maven-plugin</artifactId>
 		        <version>2.2</version>
 	              <configuration>
-	                      <url>http://localhost:8080/manager/html</url>
-	                      <server>tomcat</server> -->
+	                      <url>http://localhost:8080/manager</url>
+	                      <server>tomcat</server> 
 	                      <username>tomcat</username>
 	                      <password>tomcat</password>
-	                      <charset>UTF-8</charset> 
-	                      <path>/yiwu</path>
+	                      <charset>UTF-8</charset>
 	              </configuration>
          </plugin>
          

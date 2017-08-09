@@ -98,13 +98,17 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		/**
 		 * 判断是否已刷卡
 		 */
-		if (checkInsYzwDao.isCheckedIn(customer, lesson))
+		if (checkInsYzwDao.isCheckedIn(customer.getMemberCard(), lesson.getId()))
 			throw new YiwuException("已刷卡， 无须重复刷卡");
+		
+		//是否能刷卡
 		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
 				customer.getId(),
 				lesson.getSubCourseType());
 		if (contract == null)
-			throw new YiwuException("你没有购买音之舞相关产品， 不能刷卡");
+			throw new YiwuException("你没有购买音之舞\"" + lesson.getSubCourseType().getName()+  "\"类舞蹈卡,不能刷卡");
+		
+		
 		// 刷卡
 		CheckInsYzw checkIn = new CheckInsYzw(customer.getMemberCard(), lesson, contract.getContractNo(), null);
 		super.save(checkIn);

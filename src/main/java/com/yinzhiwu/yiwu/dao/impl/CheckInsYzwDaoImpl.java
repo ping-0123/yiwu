@@ -131,4 +131,12 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 				.get(0);
 	}
 
+	@Override
+	public boolean isCheckedIn(String memberCard, Integer id) {
+		long quantity = findCountByProperties(
+				new String[]{"memberCard", "lesson.id"},
+				new Object[]{memberCard, id});
+		return quantity>0;
+	}
+
 }
