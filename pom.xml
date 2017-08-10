@@ -254,7 +254,6 @@
 	                      <server>tomcat</server> 
 	                      <username>tomcat</username>
 	                      <password>tomcat</password>
-	                      <charset>UTF-8</charset>
 	              </configuration>
          </plugin>
          

@@ -90,7 +90,7 @@
 		               <!-- 强制Hibernate以更人性化的格式将数据存入二级缓存 -->  
 		      <prop key="hibernate.cache.use_structured_entries">true</prop>  
 		      <!-- Hibernate将收集有助于性能调节的统计数据 -->  
-		      <prop key="hibernate.generate_statistics">false</prop>  
+		      <prop key="hibernate.generate_statistics">true</prop>  
             </props>  
         </property>  
     </bean>  
@@ -134,5 +134,5 @@
         												execution(* com.yinzhiwu.yiwu..*ServiceImpl.*(..))" />  
         <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />  
     </aop:config>  
-  	<import resource="applicationContext-*.xml"/>
+  	<import resource="classpath:applicationContext-*.xml"/>
  </beans>

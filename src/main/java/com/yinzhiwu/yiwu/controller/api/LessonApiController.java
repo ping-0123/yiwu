@@ -96,7 +96,7 @@ public class LessonApiController extends BaseController {
 			 int storeId,  String courseType,
 			 String teacherName,  String danceCatagory,  Date date,
 			 String weChat) {
-
+		
 		if (date == null) {
 			date = new Date();
 		}

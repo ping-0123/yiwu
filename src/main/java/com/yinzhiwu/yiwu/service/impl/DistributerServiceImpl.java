@@ -148,9 +148,9 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		/**
 		 * associate with customer
 		 */
-		CustomerYzw customer = customerYzwDao.findByWeChat(distributer.getWechatNo());
+		CustomerYzw customer = customerYzwDao.findByPhoneNo(distributer.getPhoneNo());
 		if(customer == null)
-			customer = customerYzwDao.findByPhoneNo(distributer.getPhoneNo());
+			customer = customerYzwDao.findByWeChat(distributer.getWechatNo());
 		if(customer != null){
 			distributer.setBirthday(customer.getBirthday());
 			distributer.setMemberId(customer.getMemberCard());

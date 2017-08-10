@@ -3,13 +3,12 @@ package com.yinzhiwu.yiwu.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.util.GeneratorUtil;
@@ -19,8 +18,6 @@ import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
 
 @Repository
 public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implements DistributerDao {
-
-	private static final Log logger = LogFactory.getLog(DistributerDaoImpl.class);
 
 	@Override
 	public Integer save(Distributer entity) {
@@ -214,6 +211,20 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		if(list == null)
 			list = new ArrayList<>();
 		return list;
+	}
+
+
+	@Override
+	public CustomerYzw findCustomerByWechat(String wechatNo) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" SELECT t1.customer");
+		hql.append(" FROM Distributer t1");
+		hql.append(" WHERE t1.wechatNo = :wechatNo");
+		
+		List<CustomerYzw> customers = getSession().createQuery(hql.toString(),CustomerYzw.class)
+				.setParameter("wechatNo", wechatNo)
+				.getResultList();
+		return (customers.size()> 0)?customers.get(0):null;
 	}
 
 }
