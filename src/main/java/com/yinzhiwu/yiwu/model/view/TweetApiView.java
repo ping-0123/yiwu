@@ -31,9 +31,7 @@ public class TweetApiView {
 		this.title = t.getTitle();
 		this.author = t.getAuthor();
 		this.editDate = t.getEditDate();
-		log.info("befor getcontent");
 		this.contentHtml = new String(t.getTweetContent().getContent());
-		log.info("after getContent");
 	}
 
 	public int getId() {
