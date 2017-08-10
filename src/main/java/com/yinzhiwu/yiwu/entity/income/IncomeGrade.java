@@ -55,7 +55,7 @@ public class IncomeGrade extends BaseEntity {
 	public IncomeGrade() {
 		super();
 	}
-
+	
 	public String getName() {
 		return name;
 	}
