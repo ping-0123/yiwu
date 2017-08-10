@@ -3,11 +3,6 @@ package com.yinzhiwu.yiwu.model.view;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -23,9 +18,6 @@ public class DistributerApiView implements Serializable {
 	 */
 	private static final long serialVersionUID = -1063578788280665376L;
 
-	private static final Log LOG = LogFactory.getLog(DistributerApiView.class);
-
-	@Min(1)
 	private int id;
 
 	private String name;
@@ -57,7 +49,6 @@ public class DistributerApiView implements Serializable {
 
 	private int customerId;
 
-	@NotNull
 	@JsonIgnore
 	private MultipartFile image;
 

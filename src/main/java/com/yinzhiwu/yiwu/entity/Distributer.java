@@ -191,12 +191,12 @@ public class Distributer extends BaseEntity {
 	@Override
 	public void init() {
 		super.init();
-		if (!StringUtils.hasLength(this.getName()))
-			setName(getPhoneNo());
-		if (!StringUtils.hasLength(getUsername()))
-			setUsername(getPhoneNo());
-		if (!StringUtils.hasLength(getNickName()))
-			setNickName(getPhoneNo());
+//		if (!StringUtils.hasLength(this.getName()))
+//			setName(getPhoneNo());
+//		if (!StringUtils.hasLength(getUsername()))
+//			setUsername(getPhoneNo());
+//		if (!StringUtils.hasLength(getNickName()))
+//			setNickName(getPhoneNo());
 		if (!StringUtils.hasLength(getPassword()))
 			this.password = "yzw123456";
 		this.registedTime = super.getCreateDate();

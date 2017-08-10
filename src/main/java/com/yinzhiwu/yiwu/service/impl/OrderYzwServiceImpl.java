@@ -18,6 +18,7 @@ import com.yinzhiwu.yiwu.dao.ProductYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
@@ -94,6 +95,11 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 			throw new DataNotFoundException("id=" + id + " 的订单不存在");
 		if (/** !source.geteContractStatus() && */
 		entity.geteContractStatus()) {
+			if(null == entity.getCourse()){
+				CourseYzw course = new CourseYzw();
+				course.setId("");
+				entity.setCourse(course);
+			}
 			if (entity.getContract() == null) {
 				Contract con = new Contract();
 				entity.setContract(con);

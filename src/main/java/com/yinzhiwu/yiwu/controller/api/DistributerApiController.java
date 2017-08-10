@@ -58,7 +58,7 @@ public class DistributerApiController extends BaseController {
 	public YiwuJson<DistributerRegisterModel> register(@Valid DistributerRegisterModel m, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new YiwuJson<>(getErrorsMessage(bindingResult));
-		}
+		} 
 		try {
 			return distributerService.register(m);
 		} catch (Exception e) {

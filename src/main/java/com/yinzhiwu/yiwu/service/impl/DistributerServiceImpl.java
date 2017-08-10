@@ -85,7 +85,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		String invitationCode = null;
 		
 		 // init new distributer' default properties such as "createTime"
-		distributer.init();
+//		distributer.init();
 		
 		 //verify that the phoneNo has been registered
 		if (distributerDao.findCountByPhoneNo(registerModel.getPhoneNo()) > 0)
@@ -98,6 +98,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		/**
 		 * associate with employee 
 		 */
+		//设置superdistributer, server, folloedByStore
 		EmployeeYzw emp =null;
 		try {
 			emp = employeeDao.findByPhoneNo(registerModel.getPhoneNo());
@@ -138,7 +139,14 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				Distributer superDistributer = distributerDao.findByShareCode(invitationCode);
 				if(superDistributer != null){
 					distributer.setSuperDistributer(superDistributer);
-					distributer.setServer(superDistributer.getEmployee());
+					EmployeeYzw server = superDistributer.getEmployee();
+					if(server != null){
+						distributer.setServer(server);
+						DepartmentYzw dept = server.getDepartment();
+						if(dept != null && dept.getName() != null && dept.getName().endsWith("店"));
+							distributer.setFollowedByStore(dept);
+					}
+					
 				}else
 					message = "无效的邀请码:" + invitationCode;
 			}
@@ -148,9 +156,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		/**
 		 * associate with customer
 		 */
-		CustomerYzw customer = customerYzwDao.findByPhoneNo(distributer.getPhoneNo());
-		if(customer == null)
-			customer = customerYzwDao.findByWeChat(distributer.getWechatNo());
+		CustomerYzw customer = _matchCustomer(registerModel);
 		if(customer != null){
 			distributer.setBirthday(customer.getBirthday());
 			distributer.setMemberId(customer.getMemberCard());
@@ -188,6 +194,16 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		YiwuJson<DistributerRegisterModel> yiwu = new YiwuJson<>(registerModel);
 		yiwu.setMsg(message);
 		return yiwu;
+	}
+
+	private CustomerYzw _matchCustomer(DistributerRegisterModel registerModel) {
+		CustomerYzw customer = customerYzwDao.findByPhoneByWechat(registerModel.getPhoneNo(), registerModel.getWechatNo());
+		if(customer == null){
+			customer = customerYzwDao.findByPhoneNo(registerModel.getPhoneNo());
+		}
+		if(customer == null)
+			customer = customerYzwDao.findByWeChat(registerModel.getWechatNo());
+		return customer;
 	}
 
 	@Override

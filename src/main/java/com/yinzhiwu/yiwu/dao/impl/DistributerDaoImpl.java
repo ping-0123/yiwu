@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -33,9 +34,14 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 			String memberCard = GeneratorUtil.generateMemberId(id);
 			entity.setMemberId(memberCard);
 			entity.getCustomer().setMemberCard(memberCard);
+			if(! StringUtils.hasLength(entity.getCustomer().getName()))
+				entity.getCustomer().setName(memberCard);
 		}
 		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
 		
+		entity.setUsername(entity.getMemberId());
+		entity.setNickName(entity.getMemberId());
+		entity.setName(entity.getMemberId());
 		return super.save(entity);
 	}
 

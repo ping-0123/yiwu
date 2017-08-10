@@ -7,4 +7,6 @@ public interface CustomerYzwDao extends IBaseDao<CustomerYzw, Integer> {
 
 	public CustomerYzw findByPhoneNo(String phoneNo);
 
+	public CustomerYzw findByPhoneByWechat(String phoneNo, String wechatNo);
+
 }
