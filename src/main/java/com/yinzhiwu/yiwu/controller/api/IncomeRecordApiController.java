@@ -157,7 +157,8 @@ public class IncomeRecordApiController extends BaseController {
 		}
 
 		try {
-			Long count = incomeRecordService.findCountByProperties(properties.toArray(new String[properties.size()]),
+			Long count = incomeRecordService.findCountByProperties(
+					properties.toArray(new String[properties.size()]),
 					values.toArray());
 			return new YiwuJson<>(count);
 		} catch (Exception e) {

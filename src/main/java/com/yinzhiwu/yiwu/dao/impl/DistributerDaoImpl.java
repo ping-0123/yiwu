@@ -30,8 +30,8 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 			logger.debug("new Id for Distributer is : " + id);
 		entity.setId(id);
 		entity.setPassword(SecurityUtil.encryptByMd5(entity.getPassword()));
+		String memberCard = GeneratorUtil.generateMemberId(id);
 		if(entity.getMemberId() == null || "".equals(entity.getMemberId().trim())){
-			String memberCard = GeneratorUtil.generateMemberId(id);
 			entity.setMemberId(memberCard);
 			entity.getCustomer().setMemberCard(memberCard);
 			if(! StringUtils.hasLength(entity.getCustomer().getName()))
@@ -39,9 +39,13 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		}
 		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
 		
-		entity.setUsername(entity.getMemberId());
-		entity.setNickName(entity.getMemberId());
-		entity.setName(entity.getMemberId());
+		if(!StringUtils.hasLength(entity.getUsername()))
+			entity.setUsername(memberCard);
+		if(!StringUtils.hasLength(entity.getNickName()))
+			entity.setNickName(memberCard);
+		if(!StringUtils.hasLength(entity.getName()))
+			entity.setName(memberCard);
+		
 		return super.save(entity);
 	}
 

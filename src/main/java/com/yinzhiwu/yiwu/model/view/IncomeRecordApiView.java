@@ -24,6 +24,10 @@ public class IncomeRecordApiView {
 
 	private String memberId;
 
+	private String phoneNo;
+	
+	private String customerName;
+
 	private String superMemberName;
 
 	private String incomeTypeName;
@@ -51,6 +55,8 @@ public class IncomeRecordApiView {
 			LOG.error(e.getMessage());
 		}
 
+		this.phoneNo = r.getContributor().getPhoneNo();
+		this.customerName = r.getContributor().getCustomer().getName();
 		this.memberId = r.getContributor().getMemberId();
 		this.memberName = r.getContributor().getName();
 		if (r.getContributor().getSuperDistributer() != null)
@@ -172,6 +178,22 @@ public class IncomeRecordApiView {
 		this.payedAmount = payedAmount;
 		this.currentValue = currentValue;
 		this.factor = factor;
+	}
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 
 }
