@@ -242,7 +242,7 @@ public class Distributer extends BaseEntity {
 	public Float getIncomeValue(IncomeType type) {
 		List<DistributerIncome> incomes = this.getDistributerIncomes();
 		if (null == incomes || incomes.size() == 0)
-			return null;
+			return 0f;
 
 		for (DistributerIncome income : incomes) {
 			if (type.equals(income.getIncomeType()))

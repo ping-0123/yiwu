@@ -81,7 +81,7 @@ public class Contract {
 
 		@Override
 		public ContractStatus convertToEntityAttribute(String arg0) {
-			if (arg0 == null)
+			if (arg0 == null || "".equals(arg0.trim()))
 				return null;
 			return ContractStatus.fromStatus(arg0);
 		}
