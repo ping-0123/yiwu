@@ -70,18 +70,8 @@ public class DistributerApiView implements Serializable {
 		this.shareCode = d.getShareCode();
 		this.birthDay = d.getBirthday();
 		this.registerDate = d.getRegistedTime();
-
-		DistributerIncome brokerageIncome =d.getDistributerIncome(IncomeType.BROKERAGE);
-		if(brokerageIncome== null)
-			this.brokerage = 0f;
-		else
-			this.brokerage=brokerageIncome.getIncome();
-
-		DistributerIncome fundsIncome =d.getDistributerIncome(IncomeType.FUNDS);
-		if(fundsIncome== null)
-			this.brokerage = 0f;
-		else
-			this.brokerage=fundsIncome.getIncome();
+		this.brokerage = d.getIncomeValue(IncomeType.BROKERAGE);
+		this.funds = d.getIncomeValue(IncomeType.FUNDS);
 		
 		DistributerIncome expIncome =d.getDistributerIncome(IncomeType.EXP);
 		if(expIncome!= null){
@@ -112,9 +102,9 @@ public class DistributerApiView implements Serializable {
 
 		DistributerIncome fundsIncome =d.getDistributerIncome(IncomeType.FUNDS);
 		if(fundsIncome== null)
-			this.brokerage = 0f;
+			this.funds = 0f;
 		else
-			this.brokerage=fundsIncome.getIncome();
+			this.funds=fundsIncome.getIncome();
 		
 		DistributerIncome expIncome =d.getDistributerIncome(IncomeType.EXP);
 		if(expIncome!= null){
