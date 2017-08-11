@@ -187,14 +187,10 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append("FROM OrderYzw t1");
 		hql.append(" WHERE t1.payedDate BETWEEN :start AND :end");
 		hql.append(" AND t1.product.contractType.contractType in :contractTypes");
-//		String hql = "FROM OrderYzw WHERE payedDate BETWEEN :start and :end and product.name like '%卡%' ";
 		if(logger.isDebugEnabled()){
 			logger.debug("start is " + CalendarUtil.getDayBegin(calendar).getTime());
 			logger.debug("end is " + CalendarUtil.getDayEnd(calendar).getTime());
 		}
-//		List<OrderYzw> orders = (List<OrderYzw>) getHibernateTemplate().findByNamedParam(hql,
-//				new String[] { "start", "end" }, new Object[] { CalendarUtil.getDayBegin(calendar).getTime(),
-//						CalendarUtil.getDayEnd(calendar).getTime() });
 		
 		List<OrderYzw> orders = getSession().createQuery(hql.toString(), OrderYzw.class)
 				.setParameter("start", 			CalendarUtil.getDayBegin(calendar).getTime())
