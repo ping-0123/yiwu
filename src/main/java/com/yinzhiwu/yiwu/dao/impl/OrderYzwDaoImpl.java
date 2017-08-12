@@ -13,12 +13,12 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
+import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
-import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -33,8 +33,6 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public String find_last_id() {
-		// String sql = "select id from vorder order by sf_create_time desc
-		// limit 1";
 		String sql = "SELECT cast(max(cast(id as signed)) as char) FROM vorder";
 		List<String> list = getSession().createNativeQuery(sql).list();
 		if (list.size() > 0)
@@ -148,15 +146,6 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(" AND t1.contract.remainTimes>=:remainTimes");
 		hql.append(" AND t1.contract.end >=:curdate");
 		hql.append(" ORDER BY t1.contract.end");
-//		hql.append(
-//				"select t1.contract from OrderYzw t1 where t1.contract.status='已审核' and t1.contract.subType=:subCourseType");
-//		hql.append(" and t1.contract.remainTimes>=1 and t1.contract.end >= :currdate");
-//		hql.append(" order by contract.end");
-//		@SuppressWarnings("unchecked")
-//		List<Contract> contracts = (List<Contract>) getHibernateTemplate().findByNamedParam(hql.toString(),
-//				new String[] { "subCourseType", "currdate" }, new Object[] { subCourseType, new Date() });
-//		if (contracts == null || contracts.size() == 0)
-//			return null;
 		List<Contract> contracts =   getSession().createQuery(hql.toString(), Contract.class)
 				.setParameter("contractStatus", ContractStatus.CHECKED)
 				.setParameter("customerId", 	customerId)

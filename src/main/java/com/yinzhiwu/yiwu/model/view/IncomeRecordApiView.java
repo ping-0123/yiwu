@@ -164,6 +164,7 @@ public class IncomeRecordApiView {
 	}
 
 	public IncomeRecordApiView(int id, Date date, String eventTypeName, String memberName, String memberId,
+			 String phoneNo, String customerName,
 			String superMemberName, String incomeTypeName, float incomeValue, float payedAmount, float currentValue,
 			float factor) {
 		super();
@@ -172,6 +173,8 @@ public class IncomeRecordApiView {
 		this.eventTypeName = eventTypeName;
 		this.memberName = memberName;
 		this.memberId = memberId;
+		this.phoneNo = phoneNo;
+		this.customerName  = customerName;
 		this.superMemberName = superMemberName;
 		this.incomeTypeName = incomeTypeName;
 		this.incomeValue = incomeValue;

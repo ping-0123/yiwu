@@ -77,19 +77,23 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 	public List<IncomeRecordApiView> getListFaster(int observerId, int eventTypeId, int relationTypeId,
 			int incomeTypeId) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("SELECT new com.yinzhiwu.yiwu.model.view.IncomeRecordApiView(");
+		builder.append("SELECT new com.yinzhiwu.yiwu.model.view.IncomeRecordApiView");
+		builder.append("(");
 		builder.append(" t1.id");
 		builder.append(",t1.recordTimestamp");
 		builder.append(",t1.incomeEvent.type.name");
 		builder.append(",t1.contributor.name");
 		builder.append(",t1.contributor.memberId");
+		builder.append(",t1.contributor.phoneNo");
+		builder.append(",t1.contributor.customer.name");
 		builder.append(",t1.contributor.superDistributer.name");
 		builder.append(",t1.incomeType.name");
 		builder.append(",t1.incomeValue");
 		builder.append(",t1.contributedValue");
 		builder.append(",t1.currentValue");
 		builder.append(",t1.incomeFactor");
-		builder.append(") FROM IncomeRecord t1 ");
+		builder.append(")");
+		builder.append(" FROM IncomeRecord t1 ");
 		builder.append(" WHERE 1=1");
 		if (observerId != -1)
 			builder.append(" AND t1.benificiary.id =" + observerId);
@@ -99,7 +103,9 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 			builder.append(" AND t1.con_ben_relation.id =" + relationTypeId);
 		if (incomeTypeId != -1)
 			builder.append(" AND t1.incomeType.id = " + incomeTypeId);
-		return getSession().createQuery(builder.toString(), IncomeRecordApiView.class).getResultList();
+		
+		return getSession().createQuery(builder.toString(), IncomeRecordApiView.class)
+				.getResultList();
 	}
 
 	@Override
