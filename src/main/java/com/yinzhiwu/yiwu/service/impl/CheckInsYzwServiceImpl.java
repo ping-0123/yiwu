@@ -12,7 +12,7 @@ import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
-import com.yinzhiwu.yiwu.entity.income.AfterAppointCheckInEvent;
+import com.yinzhiwu.yiwu.entity.income.CheckInAfterAppointEvent;
 import com.yinzhiwu.yiwu.entity.income.CheckInEvent;
 import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
@@ -118,7 +118,7 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 ////			event = new AfterAppointCheckInEvent(distributer, 1f, checkIn);
 ////		} else
 //			event = new WithoutAppointCheckInEvent(distributer, 1f, checkIn);
-		AfterAppointCheckInEvent event = new AfterAppointCheckInEvent(distributer, 1f, checkIn);
+		CheckInAfterAppointEvent event = new CheckInAfterAppointEvent(distributer, 1f, checkIn);
 		incomeEventService.save(event);
 		return new CheckInSuccessApiView((CheckInEvent) event, contract);
 	}
