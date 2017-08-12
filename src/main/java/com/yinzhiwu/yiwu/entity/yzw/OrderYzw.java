@@ -30,7 +30,6 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 
 @Entity
 @Table(name = "vorder")
-//@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class OrderYzw extends BaseYzwEntity {
 
 	/**

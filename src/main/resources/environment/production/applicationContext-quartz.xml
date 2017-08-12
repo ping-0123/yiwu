@@ -22,7 +22,7 @@
 	</bean>   
 	<bean id="orderBrockerageJobTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
 	    <property name="jobDetail" ref="orderBrockerageJobDetail" />  
-	    <property name="cronExpression" value="0 10 19 * * ? *" />     <!-- 每日4点 -->
+	    <property name="cronExpression" value="0 0 15 * * ?" />     <!-- 每日4点 -->
 	</bean>
 	
 	<!-- 产生利息 -->

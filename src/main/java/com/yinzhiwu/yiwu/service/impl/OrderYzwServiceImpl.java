@@ -55,6 +55,7 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		super.setBaseDao(orderYzwDao);
 	}
 
+	
 	@Override
 	public YiwuJson<List<OrderAbbrApiView>> findByDistributerId(int distributerId) {
 		try {
