@@ -9,22 +9,21 @@ import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 
 @Entity
 @DiscriminatorValue("AfterAppointCheckInEvent")
-public class AfterAppointCheckInEvent extends CheckInEvent {
+public class CheckInAfterAppointEvent extends CheckInEvent {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3379778955663790355L;
 
-	public AfterAppointCheckInEvent() {
-		super();
+	public CheckInAfterAppointEvent() {
 	}
 
-	public AfterAppointCheckInEvent(Distributer distributer, EventType type, Float param, CheckInsYzw checkIn) {
+	public CheckInAfterAppointEvent(Distributer distributer, EventType type, Float param, CheckInsYzw checkIn) {
 		super(distributer, type, param, checkIn);
 	}
 
-	public AfterAppointCheckInEvent(Distributer distributer, Float param, CheckInsYzw checkIn) {
+	public CheckInAfterAppointEvent(Distributer distributer, Float param, CheckInsYzw checkIn) {
 		super(distributer, EventType.CHECK_IN_AFTER_APPOINTMENT, param, checkIn);
 	}
 

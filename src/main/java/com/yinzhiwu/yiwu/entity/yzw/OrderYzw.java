@@ -30,7 +30,6 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 
 @Entity
 @Table(name = "vorder")
-//@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class OrderYzw extends BaseYzwEntity {
 
 	/**
@@ -128,7 +127,7 @@ public class OrderYzw extends BaseYzwEntity {
 	@Column(name = "payed_date")
 	private Date payedDate;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "course_id", foreignKey = @ForeignKey(name = "fk_order_course_id", value = ConstraintMode.NO_CONSTRAINT))
 	private CourseYzw course;
 

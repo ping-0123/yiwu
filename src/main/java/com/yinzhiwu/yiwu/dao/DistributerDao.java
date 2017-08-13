@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.dao;
 import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
@@ -38,4 +39,6 @@ public interface DistributerDao extends IBaseDao<Distributer, Integer> {
 			List<Integer> distributerIds, String key, int pageNo, int pageSize);
 
 	public List<Integer> findIdsByemployees(List<Integer> employeeIds);
+
+	public CustomerYzw findCustomerByWechat(String wechatNO);
 }

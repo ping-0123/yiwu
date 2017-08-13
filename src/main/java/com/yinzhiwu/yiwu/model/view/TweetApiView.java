@@ -2,15 +2,11 @@ package com.yinzhiwu.yiwu.model.view;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.Tweet;
 
 public class TweetApiView {
 
-	private static Log log = LogFactory.getLog(TweetApiView.class);
 
 	private int id;
 
@@ -31,9 +27,7 @@ public class TweetApiView {
 		this.title = t.getTitle();
 		this.author = t.getAuthor();
 		this.editDate = t.getEditDate();
-		log.info("befor getcontent");
 		this.contentHtml = new String(t.getTweetContent().getContent());
-		log.info("after getContent");
 	}
 
 	public int getId() {

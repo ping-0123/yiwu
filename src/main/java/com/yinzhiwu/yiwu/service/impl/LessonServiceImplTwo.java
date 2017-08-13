@@ -16,13 +16,14 @@ import com.yinzhiwu.yiwu.dao.CheckInsDao;
 import com.yinzhiwu.yiwu.dao.ClassRoomDao;
 import com.yinzhiwu.yiwu.dao.CourseDao;
 import com.yinzhiwu.yiwu.dao.CustomerDao;
+import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.dao.LessonDao;
 import com.yinzhiwu.yiwu.dao.OrderDao;
 import com.yinzhiwu.yiwu.dao.StoreManCallRollDao;
 import com.yinzhiwu.yiwu.dao.TeacherCallRollDao;
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzwOld.ClassRoom;
 import com.yinzhiwu.yiwu.entity.yzwOld.Course;
-import com.yinzhiwu.yiwu.entity.yzwOld.Customer;
 import com.yinzhiwu.yiwu.entity.yzwOld.Lesson;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.LessonList;
@@ -55,7 +56,8 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer> imple
 	private StoreManCallRollDao scrDao;
 	@Autowired
 	private TeacherCallRollDao tcrDao;
-
+	@Autowired private DistributerDao distributerDao;
+	
 	@Autowired
 	@Qualifier("customerDaoImpl")
 	private CustomerDao customerDao;
@@ -105,13 +107,7 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer> imple
 	public List<LessonList> findLessonWeekList(int storeId, String courseType, String teacherName, String danceCatagory,
 			Date date, String wechat) {
 
-		Customer c = null;
-		try {
-			c = customerDao.findByWeChat(wechat);
-		} catch (DataNotFoundException e) {
-			logger.debug(e.getStackTrace());
-		}
-
+		CustomerYzw customer = distributerDao.findCustomerByWechat(wechat);
 		// 获取周一到周日所对应的日期
 		Calendar ca = Calendar.getInstance();
 		ca.setTime(date);
@@ -128,7 +124,7 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer> imple
 		List<Lesson> lessons = lessonDao.findLessonWeekList(storeId, courseType, teacherName, danceCatagory, startDate, endDate);
 		if (lessons.size() > 0) {
 			for (Lesson l : lessons) {
-				LessonOldApiView view = _wrap_to_api_view(c, l);
+				LessonOldApiView view = _wrap_to_api_view(customer, l);
 				views.add(view);
 			}
 		}
@@ -136,7 +132,7 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer> imple
 		return wrapLessonWeekList(views, startDate);
 	}
 
-	private LessonOldApiView _wrap_to_api_view(Customer c, Lesson l) {
+	private LessonOldApiView _wrap_to_api_view(CustomerYzw customer, Lesson l) {
 		logger.debug("start wrap lesson + " + l.getLessonDesc());
 
 		LessonOldApiView view = new LessonOldApiView(l);
@@ -166,9 +162,9 @@ public class LessonServiceImplTwo extends BaseServiceImpl<Lesson, Integer> imple
 			view.setAppointedStudentCount(appointedDao.getAppointedStudentCount(l.getLessonId()));
 
 		// 添加预约状态
-		if (c != null) {
+		if (customer != null) {
 			if ("开放式".equals(l.getCourseType()))
-				view.setAttendedStatus(appointedDao.findStatus(l.getLessonId(), c.getId()));
+				view.setAttendedStatus(appointedDao.findStatus(l.getLessonId(), customer.getId()));
 		}
 
 		// 添加签到人数

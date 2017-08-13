@@ -18,6 +18,7 @@ import com.yinzhiwu.yiwu.dao.ProductYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
@@ -54,6 +55,7 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		super.setBaseDao(orderYzwDao);
 	}
 
+	
 	@Override
 	public YiwuJson<List<OrderAbbrApiView>> findByDistributerId(int distributerId) {
 		try {
@@ -70,6 +72,7 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 			}
 			return new YiwuJson<>(views);
 		} catch (Exception e) {
+			logger.debug(e);
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
@@ -94,6 +97,11 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 			throw new DataNotFoundException("id=" + id + " 的订单不存在");
 		if (/** !source.geteContractStatus() && */
 		entity.geteContractStatus()) {
+			if(null == entity.getCourse()){
+				CourseYzw course = new CourseYzw();
+				course.setId("");
+				entity.setCourse(course);
+			}
 			if (entity.getContract() == null) {
 				Contract con = new Contract();
 				entity.setContract(con);
@@ -149,18 +157,24 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		ElectricContractYzw econtract = new ElectricContractYzw(order);
 		econtractService.save(econtract);
 		//修改客户资料
+		/**
+		 * 
+		 
 		EmployeeYzw salesman = employeeDao.get(order.getCreateUserId());
 		CustomerYzw customer = order.getCustomer();
 		customer.setSalesman(salesman);
 		customerDao.update(customer);
+		*/
 		//修改distributer资料
+		/**
+		 * 
 		Distributer distributer = distributerDao.findByCustomerId(order.getCustomer().getId());
 		if(distributer == null)
 			throw new RuntimeException("该用户尚未注册到E5系统");
 		distributer.setFollowedByStore(order.getStore());
 		distributer.setServer(salesman);
 		distributerDao.update(distributer);
-
+		 */
 		return order.getId();
 	}
 

@@ -3,18 +3,13 @@ package com.yinzhiwu.yiwu.model.view;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
-import com.yinzhiwu.yiwu.util.UrlUtil;
 
 public class DistributerApiView implements Serializable {
 
@@ -23,12 +18,7 @@ public class DistributerApiView implements Serializable {
 	 */
 	private static final long serialVersionUID = -1063578788280665376L;
 
-	private static final Log LOG = LogFactory.getLog(DistributerApiView.class);
-
-	@Min(1)
 	private int id;
-
-	private int expGradeNo;
 
 	private String name;
 
@@ -48,6 +38,9 @@ public class DistributerApiView implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date registerDate;
 
+	private float exp;
+	private int expGradeNo;
+	
 	private float neededExpForUpdate;
 
 	private float brokerage;
@@ -56,7 +49,6 @@ public class DistributerApiView implements Serializable {
 
 	private int customerId;
 
-	@NotNull
 	@JsonIgnore
 	private MultipartFile image;
 
@@ -76,36 +68,19 @@ public class DistributerApiView implements Serializable {
 		this.phoneNo = d.getPhoneNo();
 		this.memeberId = d.getMemberId();
 		this.shareCode = d.getShareCode();
-		this.headIconUrl = UrlUtil.toHeadIcomUrl(d.getHeadIconName());
 		this.birthDay = d.getBirthday();
 		this.registerDate = d.getRegistedTime();
-		this.beatRate = 0f;
-
-		try {
-			this.brokerage = d.getDistributerIncome(IncomeType.BROKERAGE).getIncome();
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
+		this.brokerage = d.getIncomeValue(IncomeType.BROKERAGE);
+		this.funds = d.getIncomeValue(IncomeType.FUNDS);
+		
+		DistributerIncome expIncome =d.getDistributerIncome(IncomeType.EXP);
+		if(expIncome!= null){
+			this.expGradeNo = expIncome.getIncomeGrade().getGradeNo();
+			this.exp = expIncome.getIncome();
+			this.neededExpForUpdate = expIncome.getIncomeGrade().getUpgradeNeededValue() - this.exp;
 		}
 
-		try {
-			this.funds = d.getDistributerIncome(IncomeType.FUNDS).getIncome();
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
-		}
-
-		try {
-			this.expGradeNo = d.getDistributerIncome(IncomeType.EXP).getIncomeGrade().getGradeNo();
-			this.neededExpForUpdate = d.getDistributerIncome(IncomeType.EXP).getIncomeGrade().getUpgradeNeededValue()
-					- d.getDistributerIncome(IncomeType.EXP).getIncome();
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
-		}
-
-		try {
-			this.customerId = d.getCustomer().getId();
-		} catch (Exception e) {
-			LOG.equals(e.getMessage());
-		}
+		this.customerId = d.getCustomer().getId();
 	}
 
 	public DistributerApiView(Distributer d, Float rate) {
@@ -119,31 +94,26 @@ public class DistributerApiView implements Serializable {
 		this.registerDate = d.getRegistedTime();
 		this.beatRate = rate;
 
-		try {
-			this.brokerage = d.getDistributerIncome(IncomeType.BROKERAGE).getIncome();
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
+		DistributerIncome brokerageIncome =d.getDistributerIncome(IncomeType.BROKERAGE);
+		if(brokerageIncome== null)
+			this.brokerage = 0f;
+		else
+			this.brokerage=brokerageIncome.getIncome();
+
+		DistributerIncome fundsIncome =d.getDistributerIncome(IncomeType.FUNDS);
+		if(fundsIncome== null)
+			this.funds = 0f;
+		else
+			this.funds=fundsIncome.getIncome();
+		
+		DistributerIncome expIncome =d.getDistributerIncome(IncomeType.EXP);
+		if(expIncome!= null){
+			this.expGradeNo = expIncome.getIncomeGrade().getGradeNo();
+			this.exp = expIncome.getIncome();
+			this.neededExpForUpdate = expIncome.getIncomeGrade().getUpgradeNeededValue() - this.exp;
 		}
 
-		try {
-			this.funds = d.getDistributerIncome(IncomeType.FUNDS).getIncome();
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
-		}
-
-		try {
-			this.expGradeNo = d.getDistributerIncome(IncomeType.EXP).getIncomeGrade().getGradeNo();
-			this.neededExpForUpdate = d.getDistributerIncome(IncomeType.EXP).getIncomeGrade().getUpgradeNeededValue()
-					- d.getDistributerIncome(IncomeType.EXP).getIncome();
-		} catch (Exception e) {
-			LOG.error(e.getMessage());
-		}
-
-		try {
-			this.customerId = d.getCustomer().getId();
-		} catch (Exception e) {
-			LOG.equals(e.getMessage());
-		}
+		this.customerId = d.getCustomer().getId();
 	}
 
 	public float getBeatRate() {
@@ -272,6 +242,14 @@ public class DistributerApiView implements Serializable {
 
 	public void setBirthDay(Date birthDay) {
 		this.birthDay = birthDay;
+	}
+
+	public float getExp() {
+		return exp;
+	}
+
+	public void setExp(float exp) {
+		this.exp = exp;
 	}
 
 }

@@ -94,7 +94,7 @@ public class CourseYzw extends BaseYzwEntity {
 
 		@Override
 		public CourseType convertToEntityAttribute(String dbData) {
-			if(dbData == null)
+			if(dbData == null || "".equals(dbData.trim()))
 				return null;
 			return CourseType.fromName(dbData);
 		}
