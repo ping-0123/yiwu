@@ -1,7 +1,9 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Column;
@@ -29,6 +31,7 @@ public class Contract {
 		EXPIRED("到期"),
 		UN_KNOWN("");
 
+		
 		private final String status;
 
 		public String getStatus() {
@@ -37,6 +40,17 @@ public class Contract {
 
 		private ContractStatus(String status) {
 			this.status = status;
+		}
+		
+		public static List<ContractStatus> getUnExpiredStatus(){
+			List<ContractStatus> status = new ArrayList<Contract.ContractStatus>();
+			status.add(ContractStatus.UN_VERIFIED);
+			status.add(VERIFIED);
+			status.add(UN_CHECKED);
+			status.add(CHECKED);
+			
+			return status;
+			
 		}
 
 		public static ContractStatus fromStatus(String status) {
