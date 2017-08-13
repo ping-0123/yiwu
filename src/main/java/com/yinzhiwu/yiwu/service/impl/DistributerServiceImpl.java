@@ -100,6 +100,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		 */
 		//设置superdistributer, server, folloedByStore
 		EmployeeYzw emp =null;
+		EmployeeYzw company = null;
 		try {
 			emp = employeeDao.findByPhoneNo(registerModel.getPhoneNo());
 		} catch (Exception e) {
@@ -118,22 +119,22 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		/**
 		 * associate with the phoneNo of store
 		 */
-			emp = employeeDao.findByTel(registerModel.getPhoneNo());
-			if(emp != null){
+			company = employeeDao.findByTel(registerModel.getPhoneNo());
+			if(company != null){
 				//公司手机帐号不能有上级
 				distributer.setSuperDistributer(null);
 				//自我服务 目前作为该手机号码是谁在使用， 归哪个门店使用的判断依据
-				distributer.setServer(emp);
-				distributer.setFollowedByStore(emp.getDepartment());
+				distributer.setServer(company);
+				distributer.setFollowedByStore(company.getDepartment());
 				// 增加该手机号码是哪个门店的， 现在是谁在使用
-				distributer.setDepartment(emp.getDepartment());
-				distributer.setUser(emp);
+				distributer.setDepartment(company.getDepartment());
+				distributer.setUser(company);
 			}
 		}
 		/**
 		 * set super proxy distributer
 		 */
-		if(emp == null ){
+		if(emp == null && company ==null){
 			invitationCode = registerModel.getInvitationCode();
 			if (StringUtils.hasLength(invitationCode)){
 				Distributer superDistributer = distributerDao.findByShareCode(invitationCode);
