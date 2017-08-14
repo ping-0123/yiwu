@@ -63,6 +63,12 @@ public class Distributer extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -8400038437062433347L;
 
+	public static enum Role{
+		CUSTOMER,
+		EMPLOYEE,
+		COMPANY;
+	}
+	
 	/**
 	 * 会员卡号
 	 * unique=true, @Formula("concat('E5',
@@ -167,6 +173,9 @@ public class Distributer extends BaseEntity {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_distributer_user_id", value=ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw user;
+	
+	@Enumerated(EnumType.STRING)
+	private Role role;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "superDistributer")
@@ -461,6 +470,14 @@ public class Distributer extends BaseEntity {
 
 	public void setUser(EmployeeYzw user) {
 		this.user = user;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 

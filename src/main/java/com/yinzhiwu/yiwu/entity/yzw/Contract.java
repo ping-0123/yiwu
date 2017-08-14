@@ -45,9 +45,9 @@ public class Contract {
 		public static List<ContractStatus> getUnExpiredStatus(){
 			List<ContractStatus> status = new ArrayList<Contract.ContractStatus>();
 			status.add(ContractStatus.UN_VERIFIED);
-			status.add(VERIFIED);
-			status.add(UN_CHECKED);
-			status.add(CHECKED);
+			status.add(ContractStatus.VERIFIED);
+			status.add(ContractStatus.UN_CHECKED);
+			status.add(ContractStatus.CHECKED);
 			
 			return status;
 			

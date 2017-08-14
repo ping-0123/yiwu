@@ -62,7 +62,8 @@ public class DistributerApiController extends BaseController {
 		try {
 			return distributerService.register(m);
 		} catch (Exception e) {
-			logger.error(e);
+			e.printStackTrace();
+			logger.error(e.getStackTrace());
 			return new YiwuJson<>(e.getMessage());
 		}
 	}

@@ -44,8 +44,12 @@ public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implem
 			for (CustomerYzw customer : customers) {
 				if(existValidOpenTypeContracts(customer.getId()))
 					return customer;
+			}
+			for (CustomerYzw customer : customers) {
 				if(existValidPrivateTypeContracts(customer.getId()))
 					return customer;
+			}
+			for (CustomerYzw customer : customers) {
 				if(existValidClosedTypeContracts(customer.getId()))
 					return customer;
 			}
@@ -57,10 +61,10 @@ public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implem
 		return existValidContracts(customerId, CourseType.OPENED);
 	}
 	private boolean existValidPrivateTypeContracts(Integer customerId) {
-		return existValidContracts(customerId, CourseType.OPENED);
+		return existValidContracts(customerId, CourseType.PRIVATE);
 	}
 	private boolean existValidClosedTypeContracts(Integer customerId) {
-		return existValidContracts(customerId, CourseType.OPENED);
+		return existValidContracts(customerId, CourseType.CLOSED);
 	}
 
 	private boolean existValidContracts(Integer customerId, CourseType courseType) {
@@ -74,8 +78,8 @@ public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implem
 		hql.append(" AND t1.contract.end >=:curdate");
 		Long count =   getSession().createQuery(hql.toString(), Long.class)
 				.setParameter("customerId", 	customerId)
-				.setParameter("validContractStatus", ContractStatus.getUnExpiredStatus())
-				.setParameter("subCourseType", 	courseType)
+				.setParameter("unExpirecdContractStatus", ContractStatus.getUnExpiredStatus())
+				.setParameter("courseType", 	courseType)
 				.setParameter("remainTimes", 	BigDecimal.valueOf(1))
 				.setParameter("curdate", 		new Date())
 				.getSingleResult();

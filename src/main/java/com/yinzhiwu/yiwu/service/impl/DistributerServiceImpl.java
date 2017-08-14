@@ -23,6 +23,7 @@ import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.dao.ShareTweetEventDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.Distributer.Role;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.income.RegisterEvent;
 import com.yinzhiwu.yiwu.entity.type.EventType;
@@ -107,6 +108,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			e.printStackTrace();
 		}
 		if(emp != null){
+			distributer.setRole(Role.EMPLOYEE);;
 			distributer.setEmployee(emp);
 			distributer.setName(emp.getName());
 			//自我服务
@@ -121,6 +123,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		 */
 			company = employeeDao.findByTel(registerModel.getPhoneNo());
 			if(company != null){
+				distributer.setRole(Role.COMPANY);
 				//公司手机帐号不能有上级
 				distributer.setSuperDistributer(null);
 				//自我服务 目前作为该手机号码是谁在使用， 归哪个门店使用的判断依据
@@ -135,12 +138,15 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		 * set super proxy distributer
 		 */
 		if(emp == null && company ==null){
+			distributer.setRole(Role.CUSTOMER);
 			invitationCode = registerModel.getInvitationCode();
 			if (StringUtils.hasLength(invitationCode)){
 				Distributer superDistributer = distributerDao.findByShareCode(invitationCode);
 				if(superDistributer != null){
 					distributer.setSuperDistributer(superDistributer);
 					EmployeeYzw server = superDistributer.getEmployee();
+					if(server == null)
+						server = superDistributer.getServer();
 					if(server != null){
 						distributer.setServer(server);
 						DepartmentYzw dept = server.getDepartment();
