@@ -27,4 +27,7 @@ public class CheckInAfterAppointEvent extends CheckInEvent {
 		super(distributer, EventType.CHECK_IN_AFTER_APPOINTMENT, param, checkIn);
 	}
 
+	public CheckInAfterAppointEvent(Distributer distributer, CheckInsYzw checkIn){
+		super(distributer, EventType.CHECK_IN_AFTER_APPOINTMENT, 1f, checkIn);
+	}
 }

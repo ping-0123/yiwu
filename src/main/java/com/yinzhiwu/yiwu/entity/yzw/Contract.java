@@ -106,19 +106,19 @@ public class Contract {
 
 	private Integer validity;
 
-	@Column(name = "validity_times")
-	private Integer validityTimes;
-
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "startdate")
 	private Date start;
-
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "endDate")
 	private Date end;
-
+	
+	@Column(name = "validity_times")
+	private Integer validityTimes;
 	@Column(name = "remain_times")
 	private BigDecimal remainTimes;
+	@Column(name="with_hold_times")
+	private Short withHoldTimes = 0;
 
 	@Column(name = "product_type", length=32)
 	@Convert(converter=CourseYzw.CourseTypeConverter.class)
@@ -227,6 +227,14 @@ public class Contract {
 
 	public void setRemainTimes(BigDecimal remainTimes) {
 		this.remainTimes = remainTimes;
+	}
+
+	public Short getWithHoldTimes() {
+		return withHoldTimes;
+	}
+
+	public void setWithHoldTimes(Short withHoldTimes) {
+		this.withHoldTimes = withHoldTimes;
 	}
 
 

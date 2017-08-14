@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.ConstraintMode;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -42,7 +43,7 @@ public class IncomeEvent extends BaseEntity {
 	private Date occurTime;
 
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_event_type_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_event_type_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EventType type;
 
 	private Float param;

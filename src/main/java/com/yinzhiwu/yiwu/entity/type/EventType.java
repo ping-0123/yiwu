@@ -32,10 +32,11 @@ public class EventType extends BaseType {
 	public static final EventType YIELD_INTEREST = new EventType(10010, "YIELD_INTEREST");
 	public static final EventType WITHDRAW = new EventType(10011, "WITHDRAW");
 	public static final EventType APPOINTMENT = new EventType(10027, "APPOINTMENT");
+	public static final EventType UN_APPOINTMENT = new EventType(10030, "UN_APPOINTMENT");
 	public static final EventType CHECK_IN_AFTER_APPOINTMENT = new EventType(10028, "CHECK_IN_AFTER_APPOINTMENT");
 	public static final EventType CHECK_IN_WITHOUT_APPOINTMENT = new EventType(10029, "CHECK_IN_WITHOUT_APPOINTMENT");
-	public static final EventType UN_APPOINTMENT = new EventType(10030, "UN_APPOINTMENT");
-
+	public static final EventType BREAK_APPOINTMENT =  new EventType(10031, "BREAK_APPOINTMENT");
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "eventType")
 	private List<IncomeFactor> incomeFactors = new ArrayList<>();

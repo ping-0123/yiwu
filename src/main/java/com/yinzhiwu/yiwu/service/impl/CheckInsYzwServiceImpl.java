@@ -14,6 +14,8 @@ import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.income.CheckInAfterAppointEvent;
 import com.yinzhiwu.yiwu.entity.income.CheckInEvent;
+import com.yinzhiwu.yiwu.entity.income.CheckInWithoutAppointEvent;
+import com.yinzhiwu.yiwu.entity.income.IncomeEvent;
 import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
@@ -94,8 +96,8 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 //		if (CourseType.OPENED != lesson.getCourseType())
 //			throw new YiwuException("非开放式课程请在E5pc端按指纹刷卡");
 		//判断是否已经预约
-		if(! appointmentDao.isAppointed(customer, lesson))
-			throw new YiwuException("未预约不能刷卡上课");
+//		if(! appointmentDao.isAppointed(customer, lesson))
+//			throw new YiwuException("未预约不能刷卡上课");
 		//判断是否已刷卡
 		if (checkInsYzwDao.isCheckedIn(customer.getMemberCard(), lesson.getId()))
 			throw new YiwuException("已刷卡， 无须重复刷卡");
@@ -109,16 +111,15 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		
 		// 刷卡
 		CheckInsYzw checkIn = new CheckInsYzw(customer.getMemberCard(), lesson, contract.getContractNo(), null);
-		super.save(checkIn);
+		checkInsYzwDao.save(checkIn);
 		/**
 		 * 判断是否预约, 并保存刷卡事件
 		 */
-//		IncomeEvent event = null;
-////		if (appointmentDao.isAppointed(customer, lesson)) {
-////			event = new AfterAppointCheckInEvent(distributer, 1f, checkIn);
-////		} else
-//			event = new WithoutAppointCheckInEvent(distributer, 1f, checkIn);
-		CheckInAfterAppointEvent event = new CheckInAfterAppointEvent(distributer, 1f, checkIn);
+		IncomeEvent event = null;
+		if (appointmentDao.isAppointed(customer, lesson)) {
+			event = new CheckInAfterAppointEvent(distributer, checkIn);
+		} else
+			event = new CheckInWithoutAppointEvent(distributer,checkIn);
 		incomeEventService.save(event);
 		return new CheckInSuccessApiView((CheckInEvent) event, contract);
 	}

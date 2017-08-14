@@ -58,7 +58,7 @@ public abstract class BaseType implements Serializable {
 	public boolean equals(BaseType another) {
 		if (another == null)
 			return false;
-		return this.name.equals(another.getName()) ? true : false;
+		return this.id ==another.getId();
 	}
 
 	public Integer getId() {

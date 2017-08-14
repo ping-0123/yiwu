@@ -106,9 +106,11 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		if (appointment == null)
 			throw new Exception("您尚未预约课程\"" + lesson.getName() + "\", 不能做取消操作");
 		// 判断是否可以取消预约
+		Calendar start = Calendar.getInstance();
+		start.setTime(lesson.getStartDateTime());
+		start.add(Calendar.HOUR, -2);
 		Calendar currentTime = Calendar.getInstance();
-		currentTime.add(Calendar.HOUR, 2);
-		if (currentTime.after(lesson.getStartDateTime())) {
+		if (currentTime.after(start)) {
 			throw new Exception("开课前两小时内不能取消预约");
 		}
 		appointment.setStatus(AppointStatus.UN_APOINTED);
@@ -149,4 +151,8 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		return contract != null;
 	}
 
+	
+	public void saveAllLastDayBreakAppointments(){
+		
+	}
 }

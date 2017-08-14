@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.entity.income;
 
+import javax.persistence.ConstraintMode;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -27,7 +28,7 @@ public class ShareTweetEvent extends IncomeEvent {
 	private static final long serialVersionUID = -4733655567988278593L;
 
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeEventShareTweet_tweet_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeEventShareTweet_tweet_id", value = ConstraintMode.NO_CONSTRAINT))
 	private Tweet tweet;
 
 	private Short ordinalOfDay;

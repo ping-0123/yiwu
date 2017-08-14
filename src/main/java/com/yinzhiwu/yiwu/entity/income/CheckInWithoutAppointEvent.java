@@ -21,12 +21,11 @@ public class CheckInWithoutAppointEvent extends CheckInEvent{
 	 * 
 	 */
 	private static final long serialVersionUID = -8513241558566265626L;
-
 	public CheckInWithoutAppointEvent() {
 	}
 
-	public CheckInWithoutAppointEvent(Distributer distributer, Float param, CheckInsYzw checkIn) {
-		super(distributer, EventType.CHECK_IN_WITHOUT_APPOINTMENT,param,checkIn);
+	public CheckInWithoutAppointEvent(Distributer distributer, CheckInsYzw checkIn) {
+		super(distributer, EventType.CHECK_IN_WITHOUT_APPOINTMENT,1f,checkIn);
 	}
 
 	

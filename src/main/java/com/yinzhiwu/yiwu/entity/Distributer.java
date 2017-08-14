@@ -153,14 +153,14 @@ public class Distributer extends BaseEntity {
 	/**
 	 * 根据手机号码 或者微信号做唯一性关联
 	 */
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "fk_distributer_customer_id", value = ConstraintMode.NO_CONSTRAINT))
 	private CustomerYzw customer;
 
 	/**
 	 * 如果是内部员工  与 employee关联
 	 */
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributer_employee_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw employee;
 
@@ -192,20 +192,13 @@ public class Distributer extends BaseEntity {
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<Message> messages = new ArrayList<>();
 
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	@JsonIgnore
-	@OneToMany(mappedBy = "distributer", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "distributer",fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
 	private List<DistributerIncome> distributerIncomes = new ArrayList<>();
 
 	@Override
 	public void init() {
 		super.init();
-//		if (!StringUtils.hasLength(this.getName()))
-//			setName(getPhoneNo());
-//		if (!StringUtils.hasLength(getUsername()))
-//			setUsername(getPhoneNo());
-//		if (!StringUtils.hasLength(getNickName()))
-//			setNickName(getPhoneNo());
 		if (!StringUtils.hasLength(getPassword()))
 			this.password = "yzw123456";
 		this.registedTime = super.getCreateDate();
