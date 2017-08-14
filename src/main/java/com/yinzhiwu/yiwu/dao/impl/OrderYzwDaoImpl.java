@@ -149,7 +149,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(" WHERE t1.contract.status = :contractStatus");
 		hql.append(" AND t1.customer.id=:customerId");
 		hql.append(" AND t1.contract.subType= :subCourseType");
-		hql.append(" AND t1.contract.remainTimes>=:remainTimes");
+		hql.append(" AND t1.contract.remainTimes >=:remainTimes");
 		hql.append(" AND t1.contract.end >=:curdate");
 		hql.append(" ORDER BY t1.contract.end");
 		List<Contract> contracts =   getSession().createQuery(hql.toString(), Contract.class)

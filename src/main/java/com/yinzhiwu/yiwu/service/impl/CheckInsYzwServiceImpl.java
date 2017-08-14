@@ -1,11 +1,13 @@
 package com.yinzhiwu.yiwu.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.util.concurrent.ExecutionError;
 import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
@@ -101,6 +103,12 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		//判断是否已刷卡
 		if (checkInsYzwDao.isCheckedIn(customer.getMemberCard(), lesson.getId()))
 			throw new YiwuException("已刷卡， 无须重复刷卡");
+		//上课时间是否已已过
+		Calendar end = Calendar.getInstance();
+		end.setTime(lesson.getStartDateTime());
+		end.add(Calendar.MINUTE, lesson.getLessonMinutes());
+		if(Calendar.getInstance().after(end))
+			throw new YiwuException("课程已结束");
 		//判断是否能刷卡
 		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
 				customer.getId(),

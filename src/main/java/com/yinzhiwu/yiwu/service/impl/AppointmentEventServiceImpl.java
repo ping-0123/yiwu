@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import com.google.common.util.concurrent.ExecutionError;
 import com.yinzhiwu.yiwu.dao.AppointmentEventDao;
 import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
+import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.dao.IncomeRecordDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
@@ -50,6 +52,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	private OrderYzwDao orderDao;
 	@Autowired
 	private IncomeRecordDao incomeRecordDao;
+	@Autowired CheckInsYzwDao checkInsDao;
 
 	/**
 	 * 调用该函数前，先判断是否满足预约， 取消预约条件
@@ -79,6 +82,9 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		//判断上课时间是否已过
 		if ((new Date()).after(lesson.getStartDateTime()))
 			throw new Exception("上课时间已过， 不能预约");
+		//判断是否已签到
+		if(checkInsDao.isCheckedIn(customer.getMemberCard(), lesson.getId()))
+			throw new Exception("您已签到");
 		// 判断卡权益是否可以预约
 		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
 				customer.getId(),
@@ -113,6 +119,9 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		if (currentTime.after(start)) {
 			throw new Exception("开课前两小时内不能取消预约");
 		}
+		if(checkInsDao.isCheckedIn(customer.getMemberCard(), lesson.getId()))
+			throw new Exception("您已签到");
+		
 		appointment.setStatus(AppointStatus.UN_APOINTED);
 		appointmentDao.update(appointment);
 		UnAppointmentEvent event = new UnAppointmentEvent(distributer, 1f, lesson);
