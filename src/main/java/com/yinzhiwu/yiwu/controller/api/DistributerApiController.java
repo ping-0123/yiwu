@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.controller.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.yinzhiwu.yiwu.context.Constants;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -53,7 +55,7 @@ public class DistributerApiController extends BaseController {
 		dataBinder.setDisallowedFields("birthDay");
 	}
 
-	@PostMapping
+	@PostMapping(value="register.do")
 	@ApiOperation("注册新用户")
 	public YiwuJson<DistributerRegisterModel> register(@Valid DistributerRegisterModel m, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
@@ -70,7 +72,14 @@ public class DistributerApiController extends BaseController {
 	
 	
 	@PostMapping(value = "/loginByWechat")
-	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String wechatNo) {
+	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String wechatNo, HttpSession session) {
+		Distributer distributer = distributerService.findByWechatNo(wechatNo);
+		if(distributer == null )
+			return new YiwuJson<>("您的微信号尚未注册， 请注册");
+		session.setAttribute(Constants.CURRENT_USER, distributer);
+		if(logger.isDebugEnabled())
+			logger.debug(distributer.getName());
+		//TODO 简化返回逻辑
 		return distributerService.loginByWechat(wechatNo);
 	}
 

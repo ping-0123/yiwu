@@ -3,8 +3,6 @@ package com.yinzhiwu.yiwu.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.yinzhiwu.yiwu.entity.type.IncomeType;
-
 public class MessageTemplate {
 
 	public static class BrokerageMessage {

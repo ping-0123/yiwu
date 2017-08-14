@@ -101,12 +101,12 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	}
 
 	@Override
-	public Distributer findByWechat(String wechatNo) throws DataNotFoundException {
+	public Distributer findByWechat(String wechatNo){
 		List<Distributer> distributers = findByProperty("wechatNo", wechatNo);
 		if (distributers.size() > 0)
 			return distributers.get(0);
 		else
-			throw new DataNotFoundException(this.getClass(), "wechatNo", wechatNo);
+			return null;
 	}
 
 	@Override

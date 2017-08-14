@@ -10,6 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yinzhiwu.yiwu.context.UserContext;
+import com.yinzhiwu.yiwu.entity.Distributer;
 
 
 @MappedSuperclass
@@ -60,13 +62,19 @@ public abstract class BaseYzwEntity implements Serializable {
 	}
 
 	public void init() {
-		this.createUserId = 1;
 		Date date = new Date();
 		this.createTime = date;
-		this.lastChangeUserId = 1;
 		this.lastChangeTime = date;
 		this.lastChangeTimestamp = date;
 		this.lastSyncTimeStamp = date;
+		Distributer distributer = UserContext.getUser();
+		if(distributer != null){
+			this.createUserId = distributer.getId();
+			this.lastChangeUserId = distributer.getId();
+		}else{
+			this.createUserId = 1;
+			this.lastChangeUserId = 1;
+		}
 	}
 
 	public void beforeUpdate() {
@@ -74,6 +82,9 @@ public abstract class BaseYzwEntity implements Serializable {
 		this.lastChangeTime = date;
 		this.lastChangeTimestamp = date;
 		this.lastSyncTimeStamp = date;
+		Distributer distributer = UserContext.getUser();
+		if(distributer != null)
+			this.lastChangeUserId = distributer.getId();
 	}
 
 	public Integer getCreateUserId() {

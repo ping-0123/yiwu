@@ -18,7 +18,7 @@ public interface DistributerDao extends IBaseDao<Distributer, Integer> {
 
 	public float getBeatRate(float exp);
 
-	public Distributer findByWechat(String wechatNo) throws DataNotFoundException;
+	public Distributer findByWechat(String wechatNo);
 
 	public Distributer findByAccountPassword(String account, String password) throws Exception;
 

@@ -224,14 +224,11 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 
 	@Override
 	public YiwuJson<DistributerApiView> loginByWechat(String wechatNo) {
-		try {
-			Distributer distributer = distributerDao.findByWechat(wechatNo);
-			DistributerApiView view = _wrapDaoToApiView(distributer);
-			return new YiwuJson<>(view);
-
-		} catch (DataNotFoundException e) {
-			return new YiwuJson<>(e.getMessage());
-		}
+		Distributer distributer = distributerDao.findByWechat(wechatNo);
+		if(distributer == null)
+			return new YiwuJson<>("您尚未注册");
+		DistributerApiView view = _wrapDaoToApiView(distributer);
+		return new YiwuJson<>(view);
 	}
 
 	@Override
@@ -415,14 +412,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 
 	@Override
 	public EmpDistributerDto employeeLoginByWechat(String wechatNo) throws YiwuException {
-		try {
-			Distributer distributer = distributerDao.findByWechat(wechatNo);
-			if(distributer.getEmployee() == null )
-				throw new YiwuException("非内部员工不能登录系统。");
-			return new EmpDistributerDto(distributer);
-		} catch (DataNotFoundException e) {
-			throw new YiwuException("用户不存在");
-		}
+		Distributer distributer = distributerDao.findByWechat(wechatNo);
+		if(distributer == null)
+			throw new YiwuException("您尚未注册");
+		if(distributer.getEmployee() == null )
+			throw new YiwuException("非内部员工不能登录系统。");
+		return new EmpDistributerDto(distributer);
 	}
 
 
@@ -450,6 +445,11 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		
 		PageBean<CustomerDto> page = distributerDao.findDtoPageByDistributerByKey(storeIds, employeeIds, distributerIds, key, pageNo, pageSize);
 		return page;
+	}
+
+	@Override
+	public Distributer findByWechatNo(String wechatNo) {
+		return distributerDao.findByWechat(wechatNo);
 	}
 
 }
