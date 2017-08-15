@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.yinzhiwu.yiwu.context.Constants;
-import com.yinzhiwu.yiwu.context.UserContext;
+import com.yinzhiwu.yiwu.context.ThreadContext;
 import com.yinzhiwu.yiwu.entity.Distributer;
 
 /**
@@ -33,16 +33,23 @@ public class ApiUserFilter extends OncePerRequestFilter {
 		if(request.getServletPath().contains(LOGIN_API_URL)
 				|| request.getServletPath().contains(ERROR_API_URL)
 				|| request.getServletPath().contains(REGISTER_API_URL))
+		{
 			filterChain.doFilter(request, response);
+			return;
+		}
 		
 		HttpSession session = request.getSession();
 		Distributer distributer = (Distributer) session.getAttribute(Constants.CURRENT_USER);
-		if(distributer!= null && distributer instanceof Distributer){
-			UserContext.setUser((Distributer) distributer);
-			filterChain.doFilter(request, response);
-		}else {
-			request.getRequestDispatcher(ERROR_UNLOGIN_API_URL).forward(request, response);
-		}
+		//TODO 加强权限控制
+//		if(distributer!= null && distributer instanceof Distributer){
+//			UserContext.setUser((Distributer) distributer);
+//			filterChain.doFilter(request, response);
+//		}else {
+//			request.getRequestDispatcher(ERROR_UNLOGIN_API_URL).forward(request, response);
+//		}
+		if(distributer !=null)
+			ThreadContext.setUser((Distributer) distributer);
+		filterChain.doFilter(request, response);
 	}
 
 }

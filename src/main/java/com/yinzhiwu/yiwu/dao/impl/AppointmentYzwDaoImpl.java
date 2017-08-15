@@ -37,8 +37,11 @@ public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> 
 
 	@Override
 	public AppointmentYzw findAppointed(CustomerYzw customer, LessonYzw lesson, AppointStatus status) {
-		List<AppointmentYzw> appointments = findByProperties(new String[] { "customer.id", "lesson.id", "status" },
+		List<AppointmentYzw> appointments = findByProperties(
+				new String[] { "customer.id", "lesson.id", "status" },
 				new Object[] { customer.getId(), lesson.getId(), status });
+		if(appointments.size() ==0 )
+			return null;
 		return appointments.get(0);
 	}
 

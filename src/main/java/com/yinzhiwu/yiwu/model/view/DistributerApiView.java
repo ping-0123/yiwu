@@ -3,11 +3,9 @@ package com.yinzhiwu.yiwu.model.view;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.Distributer.Role;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
 
@@ -19,39 +17,23 @@ public class DistributerApiView implements Serializable {
 	private static final long serialVersionUID = -1063578788280665376L;
 
 	private int id;
-
 	private String name;
-
 	private String nickName;
-
 	private String phoneNo;
-
-	private String memeberId;
-
+	private String memberCard;
 	private String shareCode;
-
 	private String headIconUrl;
-	
 	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
 	private Date birthDay;
-
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date registerDate;
-
 	private float exp;
 	private int expGradeNo;
-	
 	private float neededExpForUpdate;
-
 	private float brokerage;
-
 	private float funds;
-
 	private int customerId;
-
-	@JsonIgnore
-	private MultipartFile image;
-
+	private int empoyeeId;
 	private float beatRate;
 
 	public DistributerApiView() {
@@ -66,7 +48,7 @@ public class DistributerApiView implements Serializable {
 		this.name = d.getName();
 		this.nickName = d.getNickName();
 		this.phoneNo = d.getPhoneNo();
-		this.memeberId = d.getMemberId();
+		this.memberCard = d.getMemberCard();
 		this.shareCode = d.getShareCode();
 		this.birthDay = d.getBirthday();
 		this.registerDate = d.getRegistedTime();
@@ -81,6 +63,8 @@ public class DistributerApiView implements Serializable {
 		}
 
 		this.customerId = d.getCustomer().getId();
+		if(Role.EMPLOYEE == d.getRole())
+			this.empoyeeId = d.getEmployee().getId();
 	}
 
 	public DistributerApiView(Distributer d, Float rate) {
@@ -88,23 +72,13 @@ public class DistributerApiView implements Serializable {
 		this.name = d.getName();
 		this.nickName = d.getNickName();
 		this.phoneNo = d.getPhoneNo();
-		this.memeberId = d.getMemberId();
+		this.memberCard = d.getMemberCard();
 		this.shareCode = d.getShareCode();
 		this.birthDay = d.getBirthday();
 		this.registerDate = d.getRegistedTime();
 		this.beatRate = rate;
-
-		DistributerIncome brokerageIncome =d.getDistributerIncome(IncomeType.BROKERAGE);
-		if(brokerageIncome== null)
-			this.brokerage = 0f;
-		else
-			this.brokerage=brokerageIncome.getIncome();
-
-		DistributerIncome fundsIncome =d.getDistributerIncome(IncomeType.FUNDS);
-		if(fundsIncome== null)
-			this.funds = 0f;
-		else
-			this.funds=fundsIncome.getIncome();
+		this.brokerage = d.getIncomeValue(IncomeType.BROKERAGE);
+		this.funds = d.getIncomeValue(IncomeType.FUNDS);
 		
 		DistributerIncome expIncome =d.getDistributerIncome(IncomeType.EXP);
 		if(expIncome!= null){
@@ -140,9 +114,6 @@ public class DistributerApiView implements Serializable {
 		return nickName;
 	}
 
-	public String getMemeberId() {
-		return memeberId;
-	}
 
 	public String getShareCode() {
 		return shareCode;
@@ -154,10 +125,6 @@ public class DistributerApiView implements Serializable {
 
 	public float getNeededExpForUpdate() {
 		return neededExpForUpdate;
-	}
-
-	public MultipartFile getImage() {
-		return image;
 	}
 
 	public void setId(int id) {
@@ -176,9 +143,6 @@ public class DistributerApiView implements Serializable {
 		this.nickName = nickName;
 	}
 
-	public void setMemeberId(String memeberId) {
-		this.memeberId = memeberId;
-	}
 
 	public void setShareCode(String shareCode) {
 		this.shareCode = shareCode;
@@ -190,10 +154,6 @@ public class DistributerApiView implements Serializable {
 
 	public void setNeededExpForUpdate(float neededExpForUpdate) {
 		this.neededExpForUpdate = neededExpForUpdate;
-	}
-
-	public void setImage(MultipartFile image) {
-		this.image = image;
 	}
 
 	public Date getRegisterDate() {
@@ -250,6 +210,44 @@ public class DistributerApiView implements Serializable {
 
 	public void setExp(float exp) {
 		this.exp = exp;
+	}
+
+	public int getEmpoyeeId() {
+		return empoyeeId;
+	}
+
+	public void setEmpoyeeId(int empoyeeId) {
+		this.empoyeeId = empoyeeId;
+	}
+
+	public DistributerApiView(int id, String name, String nickName, String phoneNo, String memeberId, String shareCode,
+			String headIconUrl, Date birthDay, Date registerDate, float exp, int expGradeNo, float neededExpForUpdate,
+			float brokerage, float funds, int customerId, int empoyeeId, float beatRate) {
+		this.id = id;
+		this.name = name;
+		this.nickName = nickName;
+		this.phoneNo = phoneNo;
+		this.memberCard = memeberId;
+		this.shareCode = shareCode;
+		this.headIconUrl = headIconUrl;
+		this.birthDay = birthDay;
+		this.registerDate = registerDate;
+		this.exp = exp;
+		this.expGradeNo = expGradeNo;
+		this.neededExpForUpdate = neededExpForUpdate;
+		this.brokerage = brokerage;
+		this.funds = funds;
+		this.customerId = customerId;
+		this.empoyeeId = empoyeeId;
+		this.beatRate = beatRate;
+	}
+
+	public String getMemberCard() {
+		return memberCard;
+	}
+
+	public void setMemberCard(String memberCard) {
+		this.memberCard = memberCard;
 	}
 
 }

@@ -10,7 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.yinzhiwu.yiwu.context.UserContext;
+import com.yinzhiwu.yiwu.context.ThreadContext;
 import com.yinzhiwu.yiwu.entity.Distributer;
 
 
@@ -67,7 +67,7 @@ public abstract class BaseYzwEntity implements Serializable {
 		this.lastChangeTime = date;
 		this.lastChangeTimestamp = date;
 		this.lastSyncTimeStamp = date;
-		Distributer distributer = UserContext.getUser();
+		Distributer distributer = ThreadContext.getUser();
 		if(distributer != null){
 			this.createUserId = distributer.getId();
 			this.lastChangeUserId = distributer.getId();
@@ -82,7 +82,7 @@ public abstract class BaseYzwEntity implements Serializable {
 		this.lastChangeTime = date;
 		this.lastChangeTimestamp = date;
 		this.lastSyncTimeStamp = date;
-		Distributer distributer = UserContext.getUser();
+		Distributer distributer = ThreadContext.getUser();
 		if(distributer != null)
 			this.lastChangeUserId = distributer.getId();
 	}

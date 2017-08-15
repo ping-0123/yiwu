@@ -57,7 +57,7 @@ public class IncomeRecordApiView {
 
 		this.phoneNo = r.getContributor().getPhoneNo();
 		this.customerName = r.getContributor().getCustomer().getName();
-		this.memberId = r.getContributor().getMemberId();
+		this.memberId = r.getContributor().getMemberCard();
 		this.memberName = r.getContributor().getName();
 		if (r.getContributor().getSuperDistributer() != null)
 			this.superMemberName = r.getContributor().getSuperDistributer().getName();

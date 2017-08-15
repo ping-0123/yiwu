@@ -166,7 +166,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		CustomerYzw customer = _matchCustomer(registerModel);
 		if(customer != null){
 			distributer.setBirthday(customer.getBirthday());
-			distributer.setMemberId(customer.getMemberCard());
+			distributer.setMemberCard(customer.getMemberCard());
 			distributer.setName(customer.getName());
 			distributer.setCustomerAgeType(customer.getCustomerAgeType());
 			if(distributer.getGender() == null)
@@ -256,7 +256,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Override
 	public YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile, String fileSavePath) {
 			Distributer distributer = distributerDao.get(id);
-			String imageName = distributer.getMemberId() + ".jpg";
+			String imageName = distributer.getMemberCard() + ".jpg";
 			File imageFile = new File(fileSavePath, imageName);
 			try {
 				multipartFile.transferTo(imageFile);

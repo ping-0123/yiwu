@@ -51,8 +51,6 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 		@UniqueConstraint(name = "uk_distributer_wechatNo", columnNames = "wechatNO"),
 		@UniqueConstraint(name = "uk_distributer_phoneNo", columnNames = "phoneNo"),
 		@UniqueConstraint(name = "uk_distributer_shareCode", columnNames = "shareCode"),
-		// @UniqueConstraint(name="uk_distributer_headIconName",
-		// columnNames="headIconName"),
 		@UniqueConstraint(name = "fuk_distributer_customer_id", columnNames = "customer_id"),
 		@UniqueConstraint(name = "fuk_distributer_defaultCapitalAccount_id", columnNames = "defaultCapitalAccount_id"),
 		@UniqueConstraint(name = "fuk_distributer_employee_id", columnNames="employee_id" )})
@@ -75,7 +73,7 @@ public class Distributer extends BaseEntity {
 	 * lpad(id,8,'0'))") @ColumnDefault("concat('E5', lpad(id,8,'0'))")
 	 */
 	@Column(name="memberCard",length = 32, nullable = false, updatable = false )
-	private String memberId;
+	private String memberCard;
 
 	@Column(length = 32)
 	private String name;
@@ -86,7 +84,6 @@ public class Distributer extends BaseEntity {
 	/**
 	 * @Pattern(regexp="(\\p{Alpha}|\\d|_){5,31}") @NotNull unique
 	 */
-
 	@Column(length = 32, insertable = true, updatable = false)
 	private String username; // 默认是手机号
 
@@ -153,14 +150,14 @@ public class Distributer extends BaseEntity {
 	/**
 	 * 根据手机号码 或者微信号做唯一性关联
 	 */
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "fk_distributer_customer_id", value = ConstraintMode.NO_CONSTRAINT))
 	private CustomerYzw customer;
 
 	/**
 	 * 如果是内部员工  与 employee关联
 	 */
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributer_employee_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw employee;
 
@@ -263,14 +260,6 @@ public class Distributer extends BaseEntity {
 				return income;
 		}
 		return null;
-	}
-
-	public String getMemberId() {
-		return memberId;
-	}
-
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
 	}
 
 	public String getShareCode() {
@@ -471,6 +460,14 @@ public class Distributer extends BaseEntity {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public String getMemberCard() {
+		return memberCard;
+	}
+
+	public void setMemberCard(String memberCard) {
+		this.memberCard = memberCard;
 	}
 
 

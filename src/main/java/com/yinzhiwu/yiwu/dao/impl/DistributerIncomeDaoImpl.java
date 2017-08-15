@@ -23,18 +23,22 @@ public class DistributerIncomeDaoImpl extends BaseDaoImpl<DistributerIncome, Int
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Float get_beat_rate(IncomeType incomeType, float incomeValue) {
 		int sumCount = findCountByProperty("incomeType.id", incomeType.getId()).intValue();
 		if (sumCount == 0)
 			return 0f;
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT COUNT(1)");
+		hql.append(" FROM DistributerIncome t1");
+		hql.append(" WHERE t1.incomeType.id=:incomeTypeId");
+		hql.append(" AND t1.income<=:income");
+		long count = getSession().createQuery(hql.toString(), Long.class)
+				.setParameter("incomeTypeId", incomeType.getId())
+				.setParameter("income", incomeValue)
+				.getSingleResult();
 
-		String hql = "select count(*) from DistributerIncome where incomeType.id=:incomeTypeId and income<=:income";
-		List<Long> counts = (List<Long>) getHibernateTemplate().findByNamedParam(hql,
-				new String[] { "incomeTypeId", "income" }, new Object[] { incomeType.getId(), incomeValue });
-
-		return counts.get(0) / (float) sumCount;
+		return count / (float) sumCount;
 	}
 
 	@SuppressWarnings("unchecked")

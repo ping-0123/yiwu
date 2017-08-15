@@ -28,7 +28,7 @@ public class AppointmentApiController extends BaseController {
 	@PostMapping(value = "/appoint")
 	@ApiOperation(value = "预约课程")
 	public YiwuJson<AppointSuccessApiView> appointLesson(
-			@ApiParam(required = true) int distributerId,
+			@ApiParam(required = false) Integer distributerId,
 			@ApiParam(required = true) int lessonId) {
 		try {
 			return new YiwuJson<>(appointmentEventService.saveAppoint(distributerId, lessonId));
@@ -40,7 +40,8 @@ public class AppointmentApiController extends BaseController {
 
 	@PostMapping(value = "/unAppoint")
 	@ApiOperation(value = "取消课程预约")
-	public YiwuJson<AppointSuccessApiView> unAppointLesson(@ApiParam(required = true) int distributerId,
+	public YiwuJson<AppointSuccessApiView> unAppointLesson(
+			@ApiParam(required = true) Integer distributerId,
 			@ApiParam(required = true) int lessonId) {
 		try {
 			return new YiwuJson<>(appointmentEventService.saveUnAppoint(distributerId, lessonId));

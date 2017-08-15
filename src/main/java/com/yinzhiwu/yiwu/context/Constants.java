@@ -8,4 +8,6 @@ package com.yinzhiwu.yiwu.context;
 
 public class Constants {
 	 public static final String CURRENT_USER = "current_user";
+	 public static final String CURRENT_DISTRIBUTER = "current_distributer";
+	 public static final String CURRENT_DISTRIBUTER_VIWE = "current_distributer_view";
 }

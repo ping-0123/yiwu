@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +38,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/distributer")
 @Api(value = "distributer")
@@ -55,7 +54,7 @@ public class DistributerApiController extends BaseController {
 		dataBinder.setDisallowedFields("birthDay");
 	}
 
-	@PostMapping(value="register.do")
+	@PostMapping(value="/register.do")
 	@ApiOperation("注册新用户")
 	public YiwuJson<DistributerRegisterModel> register(@Valid DistributerRegisterModel m, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
@@ -71,16 +70,13 @@ public class DistributerApiController extends BaseController {
 	}
 	
 	
-	@PostMapping(value = "/loginByWechat")
+	@GetMapping(value = "/loginByWechat")
+	@ApiOperation(value ="使用微信openId登录")
 	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String wechatNo, HttpSession session) {
-		Distributer distributer = distributerService.findByWechatNo(wechatNo);
-		if(distributer == null )
-			return new YiwuJson<>("您的微信号尚未注册， 请注册");
-		session.setAttribute(Constants.CURRENT_USER, distributer);
-		if(logger.isDebugEnabled())
-			logger.debug(distributer.getName());
-		//TODO 简化返回逻辑
-		return distributerService.loginByWechat(wechatNo);
+		 YiwuJson<DistributerApiView> json = distributerService.loginByWechat(wechatNo);
+		 if(json.getData() != null)
+			 session.setAttribute(Constants.CURRENT_DISTRIBUTER_VIWE, json.getData());
+		 return json;
 	}
 
 	@PostMapping(value = "/loginByAccount")
@@ -100,8 +96,14 @@ public class DistributerApiController extends BaseController {
 		return distributerService.findById(id);
 	}
 
+	@GetMapping(value="/getInfo.do")
+	public YiwuJson<DistributerApiView> getInfo(HttpSession session){
+		DistributerApiView view =  (DistributerApiView) session.getAttribute(Constants.CURRENT_DISTRIBUTER_VIWE);
+		return new YiwuJson<>(view);
+	}
+	
 	@GetMapping(value = "/{id}")
-	public YiwuJson<DistributerApiView> doGet(@PathVariable int id) {
+	public YiwuJson<DistributerApiView> doGet(@PathVariable int id, HttpSession session) {
 		return distributerService.findById(id);
 	}
 
