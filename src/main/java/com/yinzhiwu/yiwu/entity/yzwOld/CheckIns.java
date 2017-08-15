@@ -20,13 +20,13 @@ public class CheckIns {
 	@Column(length = 32)
 	private String memberCard;
 
-	@Column(length = 32)
+	@Column(length = 32, name="lesson_id")
 	private String lessonId;
 
-	@Column(length = 32)
+	@Column(length = 32, name="contractNo")
 	private String contract;
 
-	@Column
+	@Column(name="teacher_id")
 	private Integer teacherId;
 
 	@Column(length = 32)

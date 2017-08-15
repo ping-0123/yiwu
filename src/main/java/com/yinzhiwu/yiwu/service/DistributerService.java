@@ -54,4 +54,6 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 
 	Distributer findByWechatNo(String wechatNo);
 
+	float getExpWinRate(Distributer distributer);
+
 }

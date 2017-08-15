@@ -149,7 +149,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(" WHERE t1.contract.status = :contractStatus");
 		hql.append(" AND t1.customer.id=:customerId");
 		hql.append(" AND t1.contract.subType= :subCourseType");
-		hql.append(" AND t1.contract.remainTimes >=:remainTimes");
+		hql.append(" AND t1.contract.remainTimes - t1.contract.withHoldTimes >=:remainTimes");
 		hql.append(" AND t1.contract.end >=:curdate");
 		hql.append(" ORDER BY t1.contract.end");
 		List<Contract> contracts =   getSession().createQuery(hql.toString(), Contract.class)
@@ -292,6 +292,35 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 			int pageSize) {
 		updateLingLingContractDates();
 		return super.findPageByHqlWithParams(hql, namedParams, values, pageNo, pageSize);
+	}
+
+	@Override
+	public int updateContractWithHoldTimes(String contractNo, int i) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("UPDATE OrderYzw t1");
+		hql.append(" SET t1.contract.withHoldTimes = t1.contract.withHoldTimes +:times");
+		hql.append(" WHERE t1.contract.contractNo = :contractNo");
+		
+		return  getSession().createQuery(hql.toString())
+				.setParameter("times",(short)i)
+				.setParameter("contractNo", contractNo)
+				.executeUpdate();
+	}
+
+	@Override
+	public Contract findContractByContractNo(String contractNo) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT t1.contract");
+		hql.append(" FROM OrderYzw t1");
+		hql.append(" WHERE t1.contract.contractNo = :contractNo");
+		
+		List<Contract> contracts = getSession().createQuery(hql.toString(), Contract.class)
+				.setParameter("contractNo", contractNo)
+				.getResultList();
+		if(contracts.size() ==0)
+			return null;
+		return contracts.get(0);
+			
 	}
 	
 	

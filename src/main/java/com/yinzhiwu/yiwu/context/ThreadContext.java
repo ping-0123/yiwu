@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.context;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -16,18 +17,23 @@ public class ThreadContext {
 	private static ThreadLocal<Map<String, Object>> tl = new ThreadLocal<>();
 	
 	public static void setUser(Distributer user){
-		tl.get().put(Constants.CURRENT_USER, user);
+		_getSureMap().put(Constants.CURRENT_USER, user);
 	}
 	
 	public static Distributer getUser(){
-		return (Distributer) tl.get().get(Constants.CURRENT_USER);
+		return (Distributer) _getSureMap().get(Constants.CURRENT_USER);
 	}
 	
 	public static void setDistributer(DistributerApiView view){
-		tl.get().put(Constants.CURRENT_DISTRIBUTER_VIWE, view);
+		_getSureMap().put(Constants.CURRENT_DISTRIBUTER_VIWE, view);
 	}
 	public static DistributerApiView getDistributer(){
-		return (DistributerApiView) tl.get().get(Constants.CURRENT_DISTRIBUTER_VIWE);
+		return (DistributerApiView) _getSureMap().get(Constants.CURRENT_DISTRIBUTER_VIWE);
 	}
 	
+	private static Map<String, Object> _getSureMap(){
+		if(tl.get() == null)
+			tl.set(new HashMap<>());
+		return tl.get();
+	}
 }

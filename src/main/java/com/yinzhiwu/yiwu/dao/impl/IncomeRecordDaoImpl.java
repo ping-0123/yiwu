@@ -60,7 +60,7 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 		builder.append(",t1.recordTimestamp");
 		builder.append(",t1.incomeEvent.type.name");
 		builder.append(",t1.contributor.name");
-		builder.append(",t1.contributor.memberId");
+		builder.append(",t1.contributor.memberCard");
 		builder.append(",t1.contributor.superDistributer.name");
 		builder.append(",t1.incomeType.name");
 		builder.append(",t1.incomeValue");
@@ -83,7 +83,7 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 		builder.append(",t1.recordTimestamp");
 		builder.append(",t1.incomeEvent.type.name");
 		builder.append(",t1.contributor.name");
-		builder.append(",t1.contributor.memberId");
+		builder.append(",t1.contributor.memberCard");
 		builder.append(",t1.contributor.phoneNo");
 		builder.append(",t1.contributor.customer.name");
 		builder.append(",t1.contributor.superDistributer.name");

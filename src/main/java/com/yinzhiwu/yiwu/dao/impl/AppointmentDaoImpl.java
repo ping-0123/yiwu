@@ -15,7 +15,7 @@ public class AppointmentDaoImpl extends BaseDaoImpl<Appointment, Integer> implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public int getAppointedStudentCount(int lessonId) {
-		String hql = "select count(*) from Appointment where courseHourId = :lessonId and status = '预约'";
+		String hql = "select count(1) from Appointment where coursehourId = :lessonId and status = '预约'";
 		List<Long> list = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "lessonId", lessonId);
 		return (list.get(0)).intValue();
 	}

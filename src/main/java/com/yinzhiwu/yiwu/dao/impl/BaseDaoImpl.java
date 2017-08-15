@@ -114,7 +114,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	public Long findCountByProperty(String propertyName, Object value) {
 		Assert.hasText(propertyName, "属性名不能为空");
 		
-		String hql = "SELECT COUNT(*) FROM " + entityClass.getSimpleName() + " WHERE " + propertyName + " =:property";
+		String hql = "SELECT COUNT(1) FROM " + entityClass.getSimpleName() + " WHERE " + propertyName + " =:property";
 		return getSession().createQuery(hql, Long.class)
 				.setParameter("property", value)
 				.getSingleResult();
@@ -245,7 +245,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		}
 		String[] properties = new String[propertyNames.length];
 		StringBuilder builder = new StringBuilder();
-		builder.append("SELECT COUNT(*)");
+		builder.append("SELECT COUNT(1)");
 		builder.append(" FROM " + entityClass.getSimpleName());
 		builder.append(" WHERE 1=1");
 		for (int i = 0; i < propertyNames.length; i++) {

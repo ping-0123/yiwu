@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.google.common.util.concurrent.ExecutionError;
 import com.yinzhiwu.yiwu.dao.AppointmentEventDao;
 import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
@@ -94,8 +93,9 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 			throw new Exception("您不能预约课程\"" + lesson.getName() + "\"\n请购买音之舞\"" + lesson.getSubCourseType().getName() + "\"类舞蹈卡");
 		
 		
-		AppointmentYzw appoint = new AppointmentYzw(lesson, customer);
+		AppointmentYzw appoint = new AppointmentYzw(lesson, distributer, contract.getContractNo());
 		appointmentDao.save(appoint);
+		orderDao.updateContractWithHoldTimes(contract.getContractNo(), 1);
 		AppointmentEvent event = new AppointmentEvent(distributer,  lesson);
 		this.save(event);
 		// return
@@ -124,9 +124,12 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		
 		appointment.setStatus(AppointStatus.UN_APOINTED);
 		appointmentDao.update(appointment);
+		orderDao.updateContractWithHoldTimes(appointment.getContractNo(), -1);
+		
 		UnAppointmentEvent event = new UnAppointmentEvent(distributer, 1f, lesson);
 		save(event);
 
+		//TODO 返回逻辑做出修改
 		IncomeRecord record = incomeRecordDao.findExpProducedByEvent(event.getId(), IncomeType.EXP);
 		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(customer.getId(),
 				lesson.getSubCourseType());

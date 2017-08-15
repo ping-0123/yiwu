@@ -244,6 +244,11 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		}
 	}
 
+	@Override
+	public float getExpWinRate(Distributer distributer){
+		return distributerIncomeDao.get_beat_rate(IncomeType.EXP, distributer.getIncomeValue(IncomeType.EXP));
+	}
+	
 	private DistributerApiView _wrapDaoToApiView(Distributer distributer) {
 		float rate = distributerIncomeDao.get_beat_rate(IncomeType.EXP,
 				distributer.getDistributerIncome(IncomeType.EXP).getIncome());

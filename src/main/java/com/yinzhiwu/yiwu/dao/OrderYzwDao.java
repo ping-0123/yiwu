@@ -35,4 +35,8 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 
 	public PageBean<OrderYzw> findUnpayedOrderPageByCustomerId(int customerId, int pageNo, int pageSize);
 
+	public int updateContractWithHoldTimes(String contractNo, int i);
+
+	public Contract findContractByContractNo(String contractNo);
+
 }

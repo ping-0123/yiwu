@@ -33,6 +33,7 @@ import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 import com.yinzhiwu.yiwu.service.DistributerService;
+import com.yinzhiwu.yiwu.service.impl.FileService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,6 +49,8 @@ public class DistributerApiController extends BaseController {
 	private DistributerService distributerService;
 	@Autowired
 	private CapitalAccountService capitalAccountService;
+	@Autowired
+	private FileService fileService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
@@ -70,13 +73,20 @@ public class DistributerApiController extends BaseController {
 	}
 	
 	
-	@GetMapping(value = "/loginByWechat")
+	@PostMapping(value = "/loginByWechat")
 	@ApiOperation(value ="使用微信openId登录")
 	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String wechatNo, HttpSession session) {
-		 YiwuJson<DistributerApiView> json = distributerService.loginByWechat(wechatNo);
-		 if(json.getData() != null)
-			 session.setAttribute(Constants.CURRENT_DISTRIBUTER_VIWE, json.getData());
-		 return json;
+		Distributer distributer = distributerService.findByWechatNo(wechatNo);
+		if(distributer == null)
+			return new YiwuJson<>("您尚未注册");
+		session.setAttribute(Constants.CURRENT_USER, distributer);
+		
+		DistributerApiView view = new DistributerApiView(distributer);
+		view.setHeadIconUrl(fileService.getFileUrl(distributer.getHeadIconName()));
+		view.setBeatRate(distributerService.getExpWinRate(distributer));
+		session.setAttribute(Constants.CURRENT_DISTRIBUTER_VIWE, view);
+		
+		 return new YiwuJson<>(view);
 	}
 
 	@PostMapping(value = "/loginByAccount")
@@ -97,7 +107,8 @@ public class DistributerApiController extends BaseController {
 	}
 
 	@GetMapping(value="/getInfo.do")
-	public YiwuJson<DistributerApiView> getInfo(HttpSession session){
+	@ApiOperation("获取个人信息")
+	public YiwuJson<DistributerApiView> getInfo(@ApiParam(required=false) HttpSession session){
 		DistributerApiView view =  (DistributerApiView) session.getAttribute(Constants.CURRENT_DISTRIBUTER_VIWE);
 		return new YiwuJson<>(view);
 	}
@@ -109,7 +120,7 @@ public class DistributerApiController extends BaseController {
 
 	@GetMapping(value = "/capitalAccount/getDefault")
 	@ApiOperation(value = "获取默认的提现帐号")
-	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(int distributerId) {
+	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(Integer distributerId) {
 		return distributerService.getDefaultCapitalAccount(distributerId);
 	}
 

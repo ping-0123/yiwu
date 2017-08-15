@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.yinzhiwu.yiwu.entity.Distributer;
+
 @Entity
 @Table(name = "vcheck_ins")
 public class CheckInsYzw extends BaseYzwEntity {
@@ -25,20 +27,24 @@ public class CheckInsYzw extends BaseYzwEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@ManyToOne
+	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	private Distributer distributer;
 
 	@Column(length = 32)
 	private String memberCard;
 
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "lessonId", foreignKey = @ForeignKey(name = "fk_checkIns_lesson_id", value = ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "lesson_id", foreignKey = @ForeignKey(name = "fk_checkIns_lesson_id", value = ConstraintMode.NO_CONSTRAINT))
 	private LessonYzw lesson;
 
-	@Column(length = 32, name = "contract")
+	@Column(length = 32, name = "contractNo")
 	private String contractNo;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "teacherId", foreignKey = @ForeignKey(name = "fk_checkIns_teacher_id", value = ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "teacher_id", foreignKey = @ForeignKey(name = "fk_checkIns_teacher_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw teacher;
 
 	@Column(length = 32)
@@ -70,6 +76,12 @@ public class CheckInsYzw extends BaseYzwEntity {
 		this.teacher = teacher;
 	}
 
+	public CheckInsYzw(Distributer distributer, LessonYzw lesson, String contractNo){
+		this.distributer = distributer;
+		this.memberCard = distributer.getMemberCard();
+		this.lesson = lesson;
+		this.contractNo = contractNo;
+	}
 	@Override
 	public void init() {
 		super.init();
@@ -153,6 +165,14 @@ public class CheckInsYzw extends BaseYzwEntity {
 
 	public void setUncallrollReason(String uncallrollReason) {
 		this.uncallrollReason = uncallrollReason;
+	}
+
+	public Distributer getDistributer() {
+		return distributer;
+	}
+
+	public void setDistributer(Distributer distributer) {
+		this.distributer = distributer;
 	}
 
 //	public CheckInEvent getEvent() {

@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.util.concurrent.ExecutionError;
 import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
@@ -84,6 +83,8 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 	@Override
 	public CheckInSuccessApiView saveCustomerCheckIn(int distributerId, int lessonId)
 			throws YiwuException, DataNotFoundException {
+		
+		boolean isAppointed = false;
 		Distributer distributer = distibuterDao.get(distributerId);
 		if (distributer == null)
 			throw new YiwuException(distributerId + "用户不存在.");
@@ -95,8 +96,7 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 			throw new YiwuException(distributer.getId() + "客户不存在");
 		if (CourseType.CLOSED== lesson.getCourseType())
 			throw new YiwuException("封闭式课程无须刷卡");
-//		if (CourseType.OPENED != lesson.getCourseType())
-//			throw new YiwuException("非开放式课程请在E5pc端按指纹刷卡");
+
 		//判断是否已经预约
 //		if(! appointmentDao.isAppointed(customer, lesson))
 //			throw new YiwuException("未预约不能刷卡上课");
@@ -109,27 +109,38 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		end.add(Calendar.MINUTE, lesson.getLessonMinutes());
 		if(Calendar.getInstance().after(end))
 			throw new YiwuException("课程已结束");
-		//判断是否能刷卡
-		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
-				customer.getId(),
-				lesson.getSubCourseType());
-		if (contract == null)
-			throw new YiwuException("你没有购买音之舞\"" + lesson.getSubCourseType().getName()+  "\"类舞蹈卡,不能刷卡");
-		
+		//获取已经预约的会籍合约
+		String contractNo = appointmentDao.getAppointedContractNo(distributer.getId(), lesson.getId());
+		if(contractNo != null)
+			isAppointed = true;
+		else{
+			//判断是否能刷卡
+			Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
+					customer.getId(),
+					lesson.getSubCourseType());
+			if (contract == null)
+				throw new YiwuException("你没有购买音之舞\"" + lesson.getSubCourseType().getName()+  "\"类舞蹈卡,不能刷卡");
+			contractNo = contract.getContractNo();
+		}
+			
 		
 		// 刷卡
-		CheckInsYzw checkIn = new CheckInsYzw(customer.getMemberCard(), lesson, contract.getContractNo(), null);
+		CheckInsYzw checkIn = new CheckInsYzw(distributer, lesson, contractNo);
 		checkInsYzwDao.save(checkIn);
 		/**
 		 * 判断是否预约, 并保存刷卡事件
 		 */
 		IncomeEvent event = null;
-		if (appointmentDao.isAppointed(customer, lesson)) {
+		if (isAppointed) {
 			event = new CheckInAfterAppointEvent(distributer, checkIn);
-		} else
+		} else{
 			event = new CheckInWithoutAppointEvent(distributer,checkIn);
+			orderDao.updateContractWithHoldTimes(contractNo, 1);
+		}
 		incomeEventService.save(event);
-		return new CheckInSuccessApiView((CheckInEvent) event, contract);
+		
+		
+		return new CheckInSuccessApiView((CheckInEvent) event, orderDao.findContractByContractNo(contractNo));
 	}
 
 }

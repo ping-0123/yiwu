@@ -23,10 +23,10 @@ public class Appointment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column
+	@Column(name="lesson_id")
 	private Integer coursehourId;
 
-	@Column
+	@Column(name="customer_id")
 	private Integer customerId;
 
 	@Column(length = 4, name = "status")

@@ -15,4 +15,6 @@ public interface AppointmentYzwDao extends IBaseDao<AppointmentYzw, Integer> {
 
 	AppointmentYzw findAppointed(CustomerYzw customer, LessonYzw lesson, AppointStatus status);
 
+	String getAppointedContractNo(Integer distributerId, Integer lessonId);
+
 }

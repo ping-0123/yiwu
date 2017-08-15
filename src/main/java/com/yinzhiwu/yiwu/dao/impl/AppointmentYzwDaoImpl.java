@@ -45,4 +45,21 @@ public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> 
 		return appointments.get(0);
 	}
 
+	@Override
+	public String getAppointedContractNo(Integer distributerId, Integer lessonId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT t1.contractNo");
+		hql.append(" FROM AppointmentYzw t1");
+		hql.append(" WHERE t1.lesson.id = :lessonId");
+		hql.append(" AND t1.distributer.id = :distributerId");
+		hql.append(" AND t1.status =:status");
+		
+		return getSession().createQuery(hql.toString(), String.class)
+				.setParameter("lessonId", lessonId)
+				.setParameter("distributerId", distributerId)
+				.setParameter("status", AppointStatus.APPONTED)
+				.getSingleResult();
+	
+	}
+
 }
