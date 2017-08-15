@@ -322,6 +322,15 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		return contracts.get(0);
 			
 	}
+
+	@Override
+	public int cleanWithHoldTimes() {
+		StringBuilder hql = new StringBuilder();
+		hql.append("UPDATE OrderYzw t1");
+		hql.append(" SET t1.contract.withHoldTimes = 0");
+		hql.append(" WHERE t1.contract.withHoldTimes <> 0");
+		return getSession().createQuery(hql.toString()).executeUpdate();
+	}
 	
 	
 	

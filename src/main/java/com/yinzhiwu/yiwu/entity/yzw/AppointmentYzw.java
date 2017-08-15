@@ -19,7 +19,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.entity.Distributer;
-import com.yinzhiwu.yiwu.entity.yzwOld.Lesson;
 
 @Entity
 @Table(name = "vappointment")

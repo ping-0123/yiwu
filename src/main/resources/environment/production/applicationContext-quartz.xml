@@ -22,7 +22,7 @@
 	</bean>   
 	<bean id="orderBrockerageJobTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
 	    <property name="jobDetail" ref="orderBrockerageJobDetail" />  
-	    <property name="cronExpression" value="0 0 4 * * ?" />     <!-- 每日4点 -->
+	    <property name="cronExpression" value="0 0 4 * * ? *" />     <!-- 每日4点 -->
 	</bean>
 	
 	<!-- 产生利息 -->
@@ -34,6 +34,16 @@
 	    <property name="jobDetail" ref="yieldInterestJobDetail" />  
 	    <property name="cronExpression" value="0 0 3 * * ? *" />     <!-- 每日3点 -->
 	</bean> 
+	
+	<!-- 约课爽约惩罚 -->
+	<bean name="breakAppointmentJobDetail"    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+	    <property name="targetObject" ref="appointmentEventServiceImpl" />  
+	    <property name="targetMethod" value="saveAllLastDayBreakAppointments" />   
+	</bean>   
+	<bean id="breakAppointmentJobTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+	    <property name="jobDetail" ref="breakAppointmentJobDetail" />  
+	    <property name="cronExpression" value="0 0 5 * * ? *" />     <!-- 每日5点 -->
+	</bean> 
 
  	<!-- ### 配置创建定配置 Quartz 调度器的 SchedulerFactoryBean ### -->
  	<!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->  
@@ -42,6 +52,7 @@
 	        <list>  
 	            <ref bean="orderBrockerageJobDetail" />
 	            <ref bean="yieldInterestJobDetail" />
+	            <ref bean="breakAppointmentJobDetail"/>
 	        </list>  
 	    </property>  
 	  
@@ -49,6 +60,7 @@
 	        <list>  
 	            <ref bean="orderBrockerageJobTrigger" />
 	        	<ref bean="yieldInterestJobTrigger"  />
+	        	<ref bean="breakAppointmentJobTrigger"  />
 	        </list>  
 	    </property>  
 	</bean>  

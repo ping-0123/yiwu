@@ -23,6 +23,8 @@ public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer> {
 
 	Date findCheckInTimeByProperties(Integer lessonId, Integer actualTeacherId);
 
-	boolean isCheckedIn(String memberCard, Integer id);
+	boolean isCheckedIn(String memberCard, Integer lessonId);
+
+	boolean isCheckedIn(Integer distributerId, Integer lessonId);
 
 }

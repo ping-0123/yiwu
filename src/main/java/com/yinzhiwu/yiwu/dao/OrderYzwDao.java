@@ -39,4 +39,6 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 
 	public Contract findContractByContractNo(String contractNo);
 
+	public int cleanWithHoldTimes();
+
 }

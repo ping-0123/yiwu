@@ -9,4 +9,6 @@ public interface AppointmentEventService extends IBaseService<AbstractAppointmen
 
 	AppointSuccessApiView saveUnAppoint(int distributerId, int lessonId) throws Exception;
 
+	void saveAllLastDayBreakAppointments();
+
 }

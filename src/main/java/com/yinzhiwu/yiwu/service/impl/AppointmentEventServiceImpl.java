@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.service.impl;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.income.AbstractAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.AppointmentEvent;
+import com.yinzhiwu.yiwu.entity.income.BreakAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.entity.income.UnAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
@@ -164,7 +166,15 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	}
 
 	
+	@Override
 	public void saveAllLastDayBreakAppointments(){
-		
+		List<AppointmentYzw> appointments = appointmentDao.findLastDayAppointments();
+		for (AppointmentYzw appointment : appointments) {
+			if(! checkInsDao.isCheckedIn(appointment.getDistributer().getId(), appointment.getLesson().getId())){
+				AbstractAppointmentEvent event = new BreakAppointmentEvent(appointment.getDistributer(), appointment.getLesson());
+				incomeEventService.save(event);
+			}
+		}
+		orderDao.cleanWithHoldTimes();
 	}
 }

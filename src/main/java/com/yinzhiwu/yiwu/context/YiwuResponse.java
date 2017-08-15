@@ -7,5 +7,5 @@ package com.yinzhiwu.yiwu.context;
 */
 
 public class YiwuResponse {
-
+	
 }
