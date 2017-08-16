@@ -29,8 +29,6 @@ public class ProductTest {
 	@Test
 	public void test(){
 		List<ProductDto> dtos = productDao.findByCardTypeByAgeTypeByCompany(1, ProductCardType.CHILDREN_MEMBER_CARD, CustomerAgeType.ADULT);
-		System.err.println(dtos.get(0).getContractTypeName());
-		System.err.println(dtos.get(100).getCardType());
 		System.err.println(dtos.size());
 		
 	}

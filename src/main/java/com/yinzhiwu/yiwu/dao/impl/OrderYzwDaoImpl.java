@@ -329,6 +329,8 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append("UPDATE OrderYzw t1");
 		hql.append(" SET t1.contract.withHoldTimes = 0");
 		hql.append(" WHERE t1.contract.withHoldTimes <> 0");
+		hql.append(" AND t1.contract.withHoldTimes IS NULL");
+		
 		return getSession().createQuery(hql.toString()).executeUpdate();
 	}
 	
