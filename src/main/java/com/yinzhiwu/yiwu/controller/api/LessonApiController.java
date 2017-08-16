@@ -20,9 +20,12 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzwOld.Lesson;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
+import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
+import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 import com.yinzhiwu.yiwu.service.LessonService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -128,4 +131,13 @@ public class LessonApiController extends BaseController {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
+	
+	@ResponseBody
+	@GetMapping(value = "/courseType/private")
+	@ApiOperation("根据会籍合约获取私教课课程列表")
+	public YiwuJson<List<PrivateLessonApiView>> findByContractNo(String contractNo)
+	{
+		return lessonYzwService.findPrivateLessonApiViewsByContracNo(contractNo);
+	}
+	
 }

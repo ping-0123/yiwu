@@ -25,6 +25,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto;
 import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto.CheckedInStatus;
+import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
 @Service
@@ -182,5 +183,13 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		dto.setOrderInCourse(lessonDao.findOrderInCourse(lesson));
 		
 		return dto;
+	}
+
+	@Override
+	public YiwuJson<List<PrivateLessonApiView>> findPrivateLessonApiViewsByContracNo(String contractNo) {
+		List<PrivateLessonApiView> views = lessonDao.findPrivateLessonApiViewsByContracNo(contractNo);
+		if(views.size() == 0)
+			return YiwuJson.createByErrorMessage("未找到会籍合约为" + contractNo + "的私教课");
+		return YiwuJson.createBySuccess(views);
 	}
 }

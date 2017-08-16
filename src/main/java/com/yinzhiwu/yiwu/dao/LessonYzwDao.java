@@ -6,6 +6,7 @@ import java.util.List;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
+import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 
 public interface LessonYzwDao extends IBaseDao<LessonYzw, Integer> {
 
@@ -19,4 +20,6 @@ public interface LessonYzwDao extends IBaseDao<LessonYzw, Integer> {
 			Date start, Date end);
 
 	Integer findOrderInCourse(LessonYzw lesson);
+
+	List<PrivateLessonApiView> findPrivateLessonApiViewsByContracNo(String contractNo);
 }

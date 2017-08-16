@@ -7,6 +7,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderAbbrApiView;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
+import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderSaveDto;
 
@@ -22,6 +23,8 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 	PageBean<OrderDto> findPageByCustomer(int customerId, boolean isPayed, int pageNo, int pageSize);
 
 	void modify(String id, OrderSaveDto order) throws Exception;
+
+	YiwuJson<List<PrivateContractApiView>> getPrivateContractsByCustomer(Integer customerId);
 
 
 }

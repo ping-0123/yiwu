@@ -9,6 +9,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
+import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
 
 public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 	public String find_last_id();
@@ -40,5 +41,7 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 	public Contract findContractByContractNo(String contractNo);
 
 	public int cleanWithHoldTimes();
+
+	public List<PrivateContractApiView> getPrivateContractsByCustomer(Integer customerId);
 
 }

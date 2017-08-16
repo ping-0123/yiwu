@@ -18,8 +18,11 @@ import com.yinzhiwu.yiwu.model.ReturnedJson;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.OrderAbbrApiView;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
+import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
 import com.yinzhiwu.yiwu.service.OrderService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
+
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value = "/api/order")
@@ -78,4 +81,10 @@ public class OrderApiController {
 		return new YiwuJson<>(new Boolean(true));
 	}
 
+	@GetMapping(value="/contract/type/private")
+	@ApiOperation(value="获取客户所有的私教课会籍合约")
+	public YiwuJson<List<PrivateContractApiView>> getPrivateContracts(Integer customerId){
+		
+		return orderYzwService.getPrivateContractsByCustomer(customerId);
+	}
 }

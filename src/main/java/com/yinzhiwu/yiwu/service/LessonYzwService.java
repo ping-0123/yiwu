@@ -8,6 +8,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
+import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 
 public interface LessonYzwService extends IBaseService<LessonYzw, Integer> {
 
@@ -21,5 +22,7 @@ public interface LessonYzwService extends IBaseService<LessonYzw, Integer> {
 
 	Object findWeeklyLessons(int storeId, CourseType courseType, String teacherName, String danceCatagory, Date date,
 			String weChat);
+
+	YiwuJson<List<PrivateLessonApiView>> findPrivateLessonApiViewsByContracNo(String contractNo);
 
 }

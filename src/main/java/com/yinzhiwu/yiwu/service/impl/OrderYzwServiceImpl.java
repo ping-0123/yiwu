@@ -31,6 +31,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderAbbrApiView;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
+import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
 import com.yinzhiwu.yiwu.service.ElectricContractYzwService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderDto;
@@ -257,6 +258,15 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		if(ContractStatus.UN_PAYED != source.getContract().getStatus())
 			throw new Exception("已支付订单不能删除");
 		return true;
+	}
+
+
+	@Override
+	public YiwuJson<List<PrivateContractApiView>> getPrivateContractsByCustomer(Integer customerId) {
+		List<PrivateContractApiView> views = orderDao.getPrivateContractsByCustomer(customerId);
+		if(views.size() ==0)
+			return YiwuJson.createByErrorMessage("您没有购买过私教课产品");
+		return YiwuJson.createBySuccess(views);
 	}
 	
 	

@@ -22,6 +22,7 @@ import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
+import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
 import com.yinzhiwu.yiwu.util.GeneratorUtil;
 
@@ -230,11 +231,17 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		getSession().createNativeQuery(sql).executeUpdate();
 	}
 
-	
+	private  int cleanNullCourseIds(){
+		StringBuilder hql = new StringBuilder();
+		hql.append("UPDATE OrderYzw t1");
+		hql.append(" SET t1.course.id = ''");
+		hql.append(" WHERE t1.course.id IS NULL");
+		return getSession().createQuery(hql.toString()).executeUpdate();
+	}
 	
 	
 	@Override
-	public List<OrderYzw> findByProperty(String propertyName, Object value) {
+ 	public List<OrderYzw> findByProperty(String propertyName, Object value) {
 		updateLingLingContractDates();
 		return super.findByProperty(propertyName, value);
 	}
@@ -315,6 +322,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 
 	@Override
 	public Contract findContractByContractNo(String contractNo) {
+		cleanNullCourseIds();
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT t1.contract");
 		hql.append(" FROM OrderYzw t1");
@@ -338,6 +346,29 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(" AND t1.contract.withHoldTimes IS NULL");
 		
 		return getSession().createQuery(hql.toString()).executeUpdate();
+	}
+
+	@Override
+	public List<PrivateContractApiView> getPrivateContractsByCustomer(Integer customerId) {
+		logger.info("cleanNullCourseId count is " + cleanNullCourseIds());
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT new com.yinzhiwu.yiwu.model.view.PrivateContractApiView");
+		hql.append("(");
+		hql.append(" t1.contract.contractNo");
+		hql.append(",t1.product.name");
+		hql.append(",t1.contract.start");
+		hql.append(",t1.contract.end");
+		hql.append(")");
+		hql.append(" FROM OrderYzw t1");
+		hql.append(" WHERE t1.customer.id =:customerId");
+		hql.append(" AND t1.contract.type =:privateCourseType");
+		hql.append(" ORDER BY t1.payedDate DESC");
+		
+		return getSession().createQuery(hql.toString(), PrivateContractApiView.class)
+				.setParameter("customerId", customerId)
+				.setParameter("privateCourseType", CourseType.PRIVATE)
+				.getResultList();
+		
 	}
 	
 	

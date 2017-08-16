@@ -64,6 +64,7 @@ public class YiwuJson<T> {
 	private YiwuJson(int returnCode, T data){
 		this.returnCode = returnCode;
 		this.secure = false;
+		this.data = data;
 		this.result = this.isSuccess();
 	}
 	

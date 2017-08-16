@@ -17,6 +17,7 @@ import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
+import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 
 @Repository
 public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements LessonYzwDao {
@@ -183,6 +184,31 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		if(count ==0 )
 			lesson.setCourse(null);
 		return lesson;
+	}
+
+	@Override
+	public List<PrivateLessonApiView> findPrivateLessonApiViewsByContracNo(String contractNo) {
+		Assert.hasLength(contractNo);
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT new com.yinzhiwu.yiwu.model.view.PrivateLessonApiView");
+		hql.append("(");
+		hql.append("t1.id");
+		hql.append(",t1.name");
+		hql.append(",t1.dueTeacherName");
+		hql.append(",t1.lessonDate");
+		hql.append(",t1.startTime");
+		hql.append(",t1.endTime");
+		hql.append(")");
+		hql.append(" FROM LessonYzw t1");
+		hql.append(" WHERE t1.courseType = :privateCourseType");
+		hql.append(" AND t1.appointedContract like :contractNo");
+		hql.append(" ORDER BY t1.lessonDate");
+		
+		return getSession().createQuery(hql.toString(), PrivateLessonApiView.class)
+				.setParameter("privateCourseType", CourseType.PRIVATE)
+				.setParameter("contractNo", "%"+contractNo + "%")
+				.getResultList();
 	}
 
 }

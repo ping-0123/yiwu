@@ -37,7 +37,7 @@ public class IncomeEvent extends BaseEntity {
 	private static final long serialVersionUID = 1318050842407338699L;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_event_distributer_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_event_distributer_id", value=ConstraintMode.NO_CONSTRAINT))
 	private Distributer distributer;
 
 	private Date occurTime;
