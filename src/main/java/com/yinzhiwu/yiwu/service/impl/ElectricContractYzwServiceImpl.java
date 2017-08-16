@@ -2,9 +2,13 @@ package com.yinzhiwu.yiwu.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.ElectricContractYzwDao;
+import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
+import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
+import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.service.ElectricContractYzwService;
 
 @Service
@@ -16,4 +20,25 @@ public class ElectricContractYzwServiceImpl extends BaseServiceImpl<ElectricCont
 		super.setBaseDao(electricContractYzwDao);
 	}
 
+	@Autowired private OrderYzwDao orderYzwDao;
+	
+	@Override
+	public ElectricContractYzw get(String contractNo) {
+		Assert.hasLength(contractNo);
+		
+		ElectricContractYzw econtract =  super.get(contractNo);
+		if(econtract == null){
+			try {
+				OrderYzw order = orderYzwDao.findByContractNO(contractNo);
+				econtract = new ElectricContractYzw(order);
+				super.save(econtract);
+			} catch (YiwuException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return econtract;
+	}
+
+	
 }

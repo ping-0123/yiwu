@@ -24,8 +24,10 @@ public class AppointmentDaoImpl extends BaseDaoImpl<Appointment, Integer> implem
 	@Override
 	public LessonOldApiView.AttendedStatus findStatus(int lessonId, int customerId) {
 		String hql = "select count(*) from Appointment where coursehourId = :lessonId and customerId = :customerId and status = '预约'";
-		List<Long> list = (List<Long>) getHibernateTemplate().findByNamedParam(hql,
-				new String[] { "lessonId", "customerId" }, new Object[] { lessonId, customerId });
+		List<Long> list = (List<Long>) getHibernateTemplate().findByNamedParam(
+				hql,
+				new String[] { "lessonId", "customerId" }, 
+				new Object[] { lessonId, customerId });
 		return list.get(0).intValue() > 0 ? LessonOldApiView.AttendedStatus.APPONTED
 				: LessonOldApiView.AttendedStatus.UN_APOINTED;
 	}

@@ -167,11 +167,17 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	}
 
 	@Override
-	public OrderYzw findByContractNO(String contractNo) throws YiwuException, DataNotFoundException {
+	public OrderYzw findByContractNO(String contractNo) throws YiwuException{
 		List<OrderYzw> orders = findByProperty("contract.contractNo", contractNo);
-		if (orders.size() > 1)
+		switch (orders.size()) {
+		case 0:
+			return null;
+		case 1:
+			return orders.get(0);
+		default:
+			logger.error("会籍合约：" + contractNo + "重复");
 			throw new YiwuException("会籍合约：" + contractNo + "重复");
-		return orders.get(0);
+		}
 	}
 
 	@Override

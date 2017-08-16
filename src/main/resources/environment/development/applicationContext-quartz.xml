@@ -42,7 +42,7 @@
 	</bean>   
 	<bean id="breakAppointmentJobTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
 	    <property name="jobDetail" ref="breakAppointmentJobDetail" />  
-	    <property name="cronExpression" value="0 0/2 * * * ?" />     <!-- 每日5点 -->
+	    <property name="cronExpression" value="0 0 8 * * ? *" />     <!-- 每日5点 -->
 	</bean> 
 
  	<!-- ### 配置创建定配置 Quartz 调度器的 SchedulerFactoryBean ### -->

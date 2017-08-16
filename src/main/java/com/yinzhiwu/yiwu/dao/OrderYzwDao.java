@@ -27,7 +27,7 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 
 	public Contract find_valid_contract_by_customer_by_subCourseType(int customerId, SubCourseType subCourseType);
 
-	public OrderYzw findByContractNO(String contractNo) throws DataNotFoundException, YiwuException;
+	public OrderYzw findByContractNO(String contractNo) throws YiwuException;
 
 	public List<OrderYzw> findAllLastDayOrders();
 
