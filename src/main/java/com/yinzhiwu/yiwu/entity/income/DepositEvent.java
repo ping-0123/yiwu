@@ -2,7 +2,6 @@ package com.yinzhiwu.yiwu.entity.income;
 
 import javax.persistence.CascadeType;
 import javax.persistence.ConstraintMode;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
@@ -15,7 +14,6 @@ import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.util.MessageTemplate;
 
 @Entity
-@DiscriminatorValue("DepositEvent")
 public class DepositEvent extends IncomeEvent {
 
 	/**

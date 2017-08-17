@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.ConstraintMode;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -15,7 +13,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.entity.BaseEntity;
@@ -25,10 +22,7 @@ import com.yinzhiwu.yiwu.entity.type.EventType;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
 
 @Entity
-@Table(name = "yiwu_income_event")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "event_type")
-@DiscriminatorValue("IncomeEvent")
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public class IncomeEvent extends BaseEntity {
 
 	/**
@@ -37,13 +31,13 @@ public class IncomeEvent extends BaseEntity {
 	private static final long serialVersionUID = 1318050842407338699L;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_event_distributer_id", value=ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(foreignKey = @ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
 	private Distributer distributer;
 
 	private Date occurTime;
 
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_event_type_id", value = ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private EventType type;
 
 	private Float param;

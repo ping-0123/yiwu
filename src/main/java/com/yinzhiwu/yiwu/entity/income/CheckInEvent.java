@@ -5,6 +5,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
@@ -13,6 +15,7 @@ import com.yinzhiwu.yiwu.entity.type.EventType;
 import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 
 @Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue("CheckInEvent")
 public abstract class CheckInEvent extends IncomeEvent {
 

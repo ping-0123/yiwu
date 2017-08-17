@@ -1,13 +1,11 @@
 package com.yinzhiwu.yiwu.entity.income;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.type.EventType;
 
 @Entity
-@DiscriminatorValue("YieldInterestEvent")
 public class YieldInterestEvent extends IncomeEvent {
 
 	/**

@@ -20,13 +20,12 @@ public class BreakAppointmentEvent extends AbstractAppointmentEvent {
 	/**
 	 * 
 	 */
-	
+	private static final long serialVersionUID = 4686468937773714117L;
 
-	private static final long serialVersionUID = 1L;
+
 
 	public BreakAppointmentEvent() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public BreakAppointmentEvent(Distributer distributer, LessonYzw lesson) {

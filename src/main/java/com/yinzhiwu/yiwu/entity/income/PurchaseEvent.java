@@ -1,7 +1,6 @@
 package com.yinzhiwu.yiwu.entity.income;
 
 import javax.persistence.ConstraintMode;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -15,7 +14,6 @@ import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.util.MessageTemplate;
 
 @Entity
-@DiscriminatorValue("PurchaseEvent")
 public class PurchaseEvent extends IncomeEvent {
 
 	/**

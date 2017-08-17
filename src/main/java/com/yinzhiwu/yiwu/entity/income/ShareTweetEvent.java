@@ -1,7 +1,6 @@
 package com.yinzhiwu.yiwu.entity.income;
 
 import javax.persistence.ConstraintMode;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
@@ -12,7 +11,6 @@ import com.yinzhiwu.yiwu.entity.Tweet;
 import com.yinzhiwu.yiwu.entity.type.EventType;
 
 @Entity
-@DiscriminatorValue("ShareTweetEvent")
 public class ShareTweetEvent extends IncomeEvent {
 
 	public ShareTweetEvent(Distributer distributer, EventType type, Float param) {

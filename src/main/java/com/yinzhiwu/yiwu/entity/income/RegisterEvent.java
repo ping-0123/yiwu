@@ -1,7 +1,6 @@
 package com.yinzhiwu.yiwu.entity.income;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import org.springframework.util.StringUtils;
@@ -13,7 +12,6 @@ import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.util.MessageTemplate;
 
 @Entity
-@DiscriminatorValue("RegisterEvent")
 public class RegisterEvent extends IncomeEvent {
 
 	/**
