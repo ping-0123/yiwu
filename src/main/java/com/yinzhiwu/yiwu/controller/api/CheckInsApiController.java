@@ -67,9 +67,9 @@ public class CheckInsApiController extends BaseController {
 
 	@PostMapping
 	@ApiOperation(value = "学员签到")
-	public YiwuJson<CheckInSuccessApiView> saveCustomerCheckIn(int distribuerId, int lessonId) {
+	public YiwuJson<CheckInSuccessApiView> saveCustomerCheckIn(int distributerId, int lessonId) {
 		try {
-			return new YiwuJson<>(checkInsYzwService.saveCustomerCheckIn(distribuerId, lessonId));
+			return new YiwuJson<>(checkInsYzwService.saveCustomerCheckIn(distributerId, lessonId));
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}

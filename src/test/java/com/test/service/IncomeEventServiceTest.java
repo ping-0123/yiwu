@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.TestBase;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
+import com.yinzhiwu.yiwu.dao.IncomeEventDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.income.BreakAppointmentEvent;
@@ -23,12 +24,18 @@ public class IncomeEventServiceTest extends TestBase{
 	@Autowired private IncomeEventService incomeEventService;
 	@Autowired private DistributerDao distributerDao;
 	@Autowired private LessonYzwDao lessonDao;
-	
+	@Autowired private IncomeEventDao incomeEventDao;
 	@Test
 	public void testSave(){
 		Distributer distributer = distributerDao.get(3000116);
 		LessonYzw lesson = lessonDao.get(172387);
 		IncomeEvent event = new BreakAppointmentEvent(distributer, lesson);
 		incomeEventService.save(event);
+	}
+	
+	@Test
+	public void testGet(){
+		IncomeEvent event = incomeEventDao.get(9);
+		System.out.println(event);
 	}
 }

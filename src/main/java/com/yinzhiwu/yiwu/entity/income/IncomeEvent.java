@@ -23,7 +23,7 @@ import com.yinzhiwu.yiwu.entity.type.IncomeType;
 
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public class IncomeEvent extends BaseEntity {
+public abstract class IncomeEvent extends BaseEntity {
 
 	/**
 	 * 

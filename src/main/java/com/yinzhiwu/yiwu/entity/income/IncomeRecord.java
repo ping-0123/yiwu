@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.entity.income;
 
 import java.util.Date;
 
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -25,7 +26,7 @@ public class IncomeRecord extends BaseEntity {
 	private static final long serialVersionUID = 4478053780652759400L;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_event_id"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_event_id", value = ConstraintMode.NO_CONSTRAINT))
 	private IncomeEvent incomeEvent;
 
 	@ManyToOne
