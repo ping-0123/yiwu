@@ -3,6 +3,7 @@ package init;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,7 +22,7 @@ public class IncomeFactorTest {
 	@Autowired
 	public IncomeFactorService incomeFactorService;
 
-	// @Test
+//	 @Test
 	public void initIncomeFactor() {
 		List<IncomeFactor> factors = new ArrayList<>();
 		factors.add(new IncomeFactor(EventType.REGISTER_WITHOUT_INVATATION_CODE, IncomeType.EXP,
@@ -61,5 +62,10 @@ public class IncomeFactorTest {
 		for (IncomeFactor incomeFactor : factors) {
 			incomeFactorService.save(incomeFactor);
 		}
+	}
+	
+	@Test
+	public void test(){
+		System.out.println("error");
 	}
 }

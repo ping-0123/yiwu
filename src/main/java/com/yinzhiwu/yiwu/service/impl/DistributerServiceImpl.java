@@ -181,6 +181,8 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		}else {
 			customer = new CustomerYzw(distributer);
 		}
+		//同步distributer 和 customer的手机号码
+		customer.setMobilePhone(distributer.getPhoneNo());
 		distributer.setCustomer(customer);
 		
 		

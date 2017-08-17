@@ -454,6 +454,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		Assert.notNull(target);
 
 		T source = get(id);
+		if(source == null )
+			throw new DataNotFoundException(entityClass, "id", id);
 		modify(source, target);
 	}
 }

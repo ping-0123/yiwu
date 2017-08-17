@@ -37,13 +37,16 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 
 	@Override
 	public int findCountByCustomerId(int customerId) {
-		StringBuilder builder = new StringBuilder(
-				"select count(*) from CheckInsYzw t1 join OrderYzw t2 on(t1.contractNo = t2.contract.contractNo)");
-		builder.append("where t2.customer.id =:customerId");
-		@SuppressWarnings("unchecked")
-		List<Long> counts = (List<Long>) getHibernateTemplate().findByNamedParam(builder.toString(), "customerId",
-				customerId);
-		return counts.get(0).intValue();
+		StringBuilder hql = new StringBuilder();
+		hql.append(" SELECT COUNT(1)");
+		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" JOIN OrderYzw t2 ON (t1.contractNo = t2.contract.contractNo)");
+		hql.append(" WHERE t2.customer.id =:customerId");
+		
+		return getSession().createQuery(hql.toString(),Long.class)
+				.setParameter("customerId", customerId)
+				.getSingleResult()
+				.intValue();
 	}
 
 	@SuppressWarnings("unchecked")

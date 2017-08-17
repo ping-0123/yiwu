@@ -1,9 +1,17 @@
 package com.yinzhiwu.yiwu.model;
 
+import java.io.Serializable;
+
 import org.springframework.util.StringUtils;
 
-public class YiwuJson<T> {
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+public class YiwuJson<T> implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7000760666908532411L;
 	private int 	returnCode;
 	private boolean secure = false;
 	private String	msg;
@@ -106,7 +114,7 @@ public class YiwuJson<T> {
         return new YiwuJson<T>(errorCode,errorMessage);
     }
 
-	
+	@JsonIgnore
     public boolean isSuccess(){
         return this.returnCode == ReturnCode.SUCCESS.getCode();
     }
