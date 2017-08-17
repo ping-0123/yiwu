@@ -6,12 +6,14 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.type.EventType;
 import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 
 @Entity
+@PrimaryKeyJoinColumn(name="id")
 public abstract class CheckInEvent extends IncomeEvent {
 
 	/**

@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -14,6 +15,7 @@ import com.yinzhiwu.yiwu.entity.type.EventType;
 import com.yinzhiwu.yiwu.util.MessageTemplate;
 
 @Entity
+@PrimaryKeyJoinColumn(name="id")
 public class WithdrawEvent extends IncomeEvent {
 
 	/**

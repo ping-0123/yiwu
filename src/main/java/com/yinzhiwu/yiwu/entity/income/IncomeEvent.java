@@ -22,7 +22,7 @@ import com.yinzhiwu.yiwu.entity.type.EventType;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
 
 @Entity
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class IncomeEvent extends BaseEntity {
 
 	/**
@@ -42,9 +42,9 @@ public abstract class IncomeEvent extends BaseEntity {
 
 	private Float param;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "incomeEvent")
-	private List<IncomeRecord> incomeRecords = new ArrayList<>();
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "incomeEvent")
+//	private List<IncomeRecord> incomeRecords = new ArrayList<>();
 
 	public IncomeEvent() {
 	};
@@ -62,15 +62,15 @@ public abstract class IncomeEvent extends BaseEntity {
 		this.occurTime = super.getCreateDate();
 	}
 
-	public IncomeRecord getAppointedIncomeRecord(IncomeType type) {
-		if (this.incomeRecords == null || this.incomeRecords.size() == 0)
-			return null;
-		for (IncomeRecord incomeRecord : incomeRecords) {
-			if (IncomeType.EXP.equals(incomeRecord.getIncomeType()))
-				return incomeRecord;
-		}
-		return null;
-	}
+//	public IncomeRecord getAppointedIncomeRecord(IncomeType type) {
+//		if (this.incomeRecords == null || this.incomeRecords.size() == 0)
+//			return null;
+//		for (IncomeRecord incomeRecord : incomeRecords) {
+//			if (IncomeType.EXP.equals(incomeRecord.getIncomeType()))
+//				return incomeRecord;
+//		}
+//		return null;
+//	}
 
 	public Message generateMessage(IncomeRecord incomeRecord) {
 		return null;
@@ -108,12 +108,5 @@ public abstract class IncomeEvent extends BaseEntity {
 		this.param = param;
 	}
 
-	public List<IncomeRecord> getIncomeRecords() {
-		return incomeRecords;
-	}
-
-	public void setIncomeRecords(List<IncomeRecord> incomeRecords) {
-		this.incomeRecords = incomeRecords;
-	}
 
 }

@@ -1,11 +1,13 @@
 package com.yinzhiwu.yiwu.entity.income;
 
 import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.type.EventType;
 
 @Entity
+@PrimaryKeyJoinColumn(name="id")
 public class YieldInterestEvent extends IncomeEvent {
 
 	/**

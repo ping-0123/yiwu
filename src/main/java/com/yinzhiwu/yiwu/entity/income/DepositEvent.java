@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Message;
@@ -14,6 +15,7 @@ import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.util.MessageTemplate;
 
 @Entity
+@PrimaryKeyJoinColumn(name="id")
 public class DepositEvent extends IncomeEvent {
 
 	/**

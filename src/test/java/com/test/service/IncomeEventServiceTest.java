@@ -35,7 +35,7 @@ public class IncomeEventServiceTest extends TestBase{
 	
 	@Test
 	public void testGet(){
-		IncomeEvent event = incomeEventDao.get(9);
+		IncomeEvent event = incomeEventDao.get(17);
 		System.out.println(event);
 	}
 }

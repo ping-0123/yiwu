@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Tweet;
 import com.yinzhiwu.yiwu.entity.type.EventType;
 
 @Entity
+@PrimaryKeyJoinColumn(name="id")
 public class ShareTweetEvent extends IncomeEvent {
 
 	public ShareTweetEvent(Distributer distributer, EventType type, Float param) {

@@ -1,14 +1,14 @@
 package com.yinzhiwu.yiwu.entity.income;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.type.EventType;
 import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 
 @Entity
-@DiscriminatorValue("AfterAppointCheckInEvent")
+@PrimaryKeyJoinColumn(name="id")
 public class CheckInAfterAppointEvent extends CheckInEvent {
 
 	/**

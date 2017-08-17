@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.entity.income;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import org.springframework.util.StringUtils;
 
@@ -12,6 +13,7 @@ import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.util.MessageTemplate;
 
 @Entity
+@PrimaryKeyJoinColumn(name="id")
 public class RegisterEvent extends IncomeEvent {
 
 	/**

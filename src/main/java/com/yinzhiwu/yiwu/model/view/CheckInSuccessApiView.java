@@ -7,13 +7,11 @@ import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.income.CheckInEvent;
-import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
-import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 
 public class CheckInSuccessApiView {
 
@@ -53,9 +51,9 @@ public class CheckInSuccessApiView {
 
 		CheckInsYzw checkIn = event.getCheckIn();
 		this.times = (int) event.getParam().floatValue();
-		IncomeRecord record = event.getAppointedIncomeRecord(IncomeType.EXP);
-		if (record != null)
-			exp = record.getIncomeValue();
+//		IncomeRecord record = event.getAppointedIncomeRecord(IncomeType.EXP);
+//		if (record != null)
+//			exp = record.getIncomeValue();
 		LessonYzw lesson = checkIn.getLesson();
 		DepartmentYzw store = lesson.getStore();
 		if (store != null) {
@@ -200,7 +198,6 @@ public class CheckInSuccessApiView {
 	public CheckInSuccessApiView(Integer times, Float exp, String city, String storeName, String lessonName,
 			CourseType courseType, String coachName, Date lessonDate, Time startTime, Time endTime, String contractNo,
 			Date contractStartDate, Date contractEndDate, Integer validityTimes, Integer remainTimes) {
-		super();
 		this.times = times;
 		this.exp = exp;
 		this.city = city;
