@@ -142,7 +142,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	}
 
 	@Override
-	public Contract find_valid_contract_by_customer_by_subCourseType(int customerId, SubCourseType subCourseType) {
+	public Contract findCheckedContractByCustomerIdAndSubCourseType(int customerId, SubCourseType subCourseType) {
 		updateLingLingContractDates();
 		StringBuilder hql = new StringBuilder();
 		hql.append(" SELECT t1.contract");

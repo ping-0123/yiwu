@@ -87,7 +87,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		if(checkInsDao.isCheckedIn(customer.getMemberCard(), lesson.getId()))
 			throw new Exception("您已签到");
 		// 判断卡权益是否可以预约
-		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
+		Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(
 				customer.getId(),
 				lesson.getSubCourseType());
 		//TODO 有漏洞, 客户预约后，剩余次数并没有减掉，而是要上完课签到之后第二天才能减掉  也就是说剩余次数为1可以预约很多次课.
@@ -133,7 +133,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 
 		//TODO 返回逻辑做出修改
 		IncomeRecord record = incomeRecordDao.findExpProducedByEvent(event.getId(), IncomeType.EXP);
-		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(customer.getId(),
+		Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(customer.getId(),
 				lesson.getSubCourseType());
 		if (contract != null) {
 			return new AppointSuccessApiView(event, contract, record.getIncomeValue());
@@ -159,7 +159,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	 */
 	//TODO 存在一些问题 需要把当天已经预约的， 已经刷卡了的次数去掉
 	private boolean isAppointable(CustomerYzw customer, LessonYzw lesson) {
-		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
+		Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(
 				customer.getId(),
 				lesson.getSubCourseType());
 		return contract != null;

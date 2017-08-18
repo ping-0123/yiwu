@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.service.impl;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
+import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
@@ -46,7 +46,9 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 	private DistributerDao distibuterDao;
 	@Autowired
 	private LessonYzwDao lessonDao;
-
+	@Autowired
+	private CustomerYzwDao customerDao;
+	
 	@Autowired
 	public void setBaseDao(CheckInsYzwDao checkInsYzwDao) {
 		super.setBaseDao(checkInsYzwDao);
@@ -58,26 +60,23 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 	}
 
 	@Override
+	public int findCheckedInLessonsCountOfCustomer(int customerId) {
+		String memberCard = customerDao.get(customerId).getMemberCard();
+		return checkInsYzwDao.findCheckedInLessonsCountByMemeberCard(memberCard);
+	}
+	
+	@Override
 	public YiwuJson<List<LessonApiView>> findByCustomerId(int customerId) {
-		List<String> contractNos = orderDao.find_contractNos_by_customer_id(customerId);
-		if (contractNos.size() == 0)
-			return new YiwuJson<>("客户" + customerId + "尚未购买任何音之舞产品");
-		List<LessonYzw> lessons = checkInsYzwDao.findByContractNos(contractNos);
-		if (lessons == null || lessons.size() == 0)
-			return new YiwuJson<>("没有上课记录");
-		List<LessonApiView> views = new ArrayList<>();
-		for (LessonYzw l : lessons) {
-			views.add(new LessonApiView(l));
-		}
-		return new YiwuJson<>(views);
+		String memberCard = customerDao.get(customerId).getMemberCard();
+		List<LessonApiView> lessonApiViews = checkInsYzwDao.findLessonApiViewsByMemeberCard(memberCard);
+		return YiwuJson.createBySuccess(lessonApiViews);
 	}
 
 	@Override
-	public PageBean<LessonApiView> findPageViewByCustomer(int customerId, int pageNo, int pageSize) throws Exception {
-		List<String> contractNos = orderDao.find_contractNos_by_customer_id(customerId);
-		if (contractNos.size() == 0)
-			throw new Exception("客户" + customerId + "尚未购买任何音之舞产品");
-		return checkInsYzwDao.findPageByContractNos(contractNos, pageNo, pageSize);
+	public PageBean<LessonApiView> findPageViewByCustomer(int customerId, Integer pageNo, Integer pageSize) {
+		String memberCard = customerDao.get(customerId).getMemberCard();
+		return checkInsYzwDao.findPageCheckedInLessonApiViewsByMemberCard(memberCard, pageNo, pageSize);
+
 	}
 
 	@Override
@@ -115,7 +114,7 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 			isAppointed = true;
 		else{
 			//判断是否能刷卡
-			Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
+			Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(
 					customer.getId(),
 					lesson.getSubCourseType());
 			if (contract == null)
@@ -142,5 +141,7 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		
 		return new CheckInSuccessApiView((CheckInEvent) event, orderDao.findContractByContractNo(contractNo));
 	}
+
+
 
 }

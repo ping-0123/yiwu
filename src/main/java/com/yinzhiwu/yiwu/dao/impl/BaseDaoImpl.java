@@ -404,7 +404,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 
 	private String _generateFindCountHql(String hql) {
 		int i = hql.toUpperCase().indexOf("FROM");
-		return "SELECT COUNT(*) " + hql.substring(i);
+		return "SELECT COUNT(1) " + hql.substring(i);
 	}
 
 	@SuppressWarnings("unused")
@@ -457,5 +457,68 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		if(source == null )
 			throw new DataNotFoundException(entityClass, "id", id);
 		modify(source, target);
+	}
+	
+	
+	@Override
+	public <R> PageBean<R> findPage(String hql, Class<R> resultClass,  String[] namedParameters, Object[] values, int pageNum, int pageSize ){
+		Assert.hasLength(hql);
+		if(namedParameters.length != values.length){
+			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");}
+		if(Arrays.asList(namedParameters).contains(null)) throw new IllegalArgumentException("hql的命名参数不能为null");
+		int totalRecords = findCount(_generateFindCountHql(hql), namedParameters, values);
+		if(totalRecords == 0)
+			return new PageBean<>(pageSize, pageNum, totalRecords, new ArrayList<>());
+		
+		if(pageNum <=0) pageNum =PageBean.DEFAULT_PAGE_NO;
+		if(pageSize<=0) pageSize = PageBean.DEFAULT_PAGE_SIZE;
+		int offset = (pageNum-1) * pageSize ;
+		Query<R> query = getSession().createQuery(hql, resultClass)
+				.setFirstResult(offset)
+				.setMaxResults(pageSize);
+		for(int i=0; i<namedParameters.length; i++){
+			query.setParameter(namedParameters[i], values[i]);
+		}
+		List<R> list = query.getResultList();
+		
+		return new PageBean<>(pageSize, pageNum, totalRecords,list);
+	}
+	
+	@Override
+	public <R> PageBean<R> findPage(String hql, Class<R> resultClass, String namedParameter, Object value, int pageNum, int PageSize){
+		if(namedParameter == null || "".equals(namedParameter.trim()))
+			throw new IllegalArgumentException("hql的命名参数不能为null");
+		String[] namedParameters = {namedParameter};
+		Object[] values = {value};
+		return findPage(hql, resultClass, namedParameters, values, pageNum, PageSize);
+	}
+		
+	/**
+	 * 
+	 * @param hql 必须是"SELECT COUNT(1) FROM"开头
+	 * @param namedParameters
+	 * @param values
+	 * @return
+	 */
+	protected int findCount(String hql, String[] namedParameters, Object[] values) {
+		Query<Long> query = getSession().createQuery(hql, Long.class);
+		for(int i=0; i<namedParameters.length; i++){
+			query.setParameter(namedParameters[i], values[i]);
+		}
+		return query.getSingleResult().intValue();
+	}
+	
+	/**
+	 * 
+	 * @param hql 必须是"SELECT COUNT(1) FROM"开头
+	 * @param namedParameter
+	 * @param value
+	 * @return
+	 */
+	protected int findCount(String hql, String namedParameter, Object value) {
+		return getSession().createQuery(hql, Long.class)
+				.setParameter(namedParameter, value)
+				.getSingleResult()
+				.intValue();
 	}
 }

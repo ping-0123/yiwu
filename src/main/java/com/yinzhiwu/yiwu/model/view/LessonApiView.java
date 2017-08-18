@@ -12,9 +12,12 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 
+@JsonInclude(value= Include.NON_NULL)
 public class LessonApiView implements DtoCriteria<LessonYzw> {
 
 	private static final Log logger = LogFactory.getLog(LessonApiView.class);
@@ -29,7 +32,7 @@ public class LessonApiView implements DtoCriteria<LessonYzw> {
 
 	private String danceGrade;
 
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date date;
 
 	@JsonFormat(pattern = "HH:mm")
@@ -45,6 +48,13 @@ public class LessonApiView implements DtoCriteria<LessonYzw> {
 	public LessonApiView() {
 	}
 
+	public LessonApiView(Integer id, String name, Date date, String teacherName, String storeName){
+		this.id = id;
+		this.name = name;
+		this.date = date;
+		this.dueTeacher = teacherName;
+		this.storeName = storeName;
+	}
 	public LessonApiView(LessonYzw l) {
 		this.id = l.getId();
 		this.name = l.getName();

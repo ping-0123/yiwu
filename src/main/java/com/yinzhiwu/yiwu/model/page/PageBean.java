@@ -13,6 +13,8 @@ public class PageBean<T> {
 
 	public static final int DEFAULT_PAGE_SIZE = 10;
 
+	public static final int DEFAULT_PAGE_NO = 1;
+
 	private int pageSize; // 每页显示多少条记录
 
 	private int currentPage; // 当前第几页数据
