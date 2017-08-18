@@ -22,7 +22,8 @@ public class OrderApiView {
 	private CourseType productType;
 
 	private int validityTimes;
-
+	private int remainTimes;
+	private int withHoldTimes;
 	// 合约开始日期
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date contractStart;
@@ -54,6 +55,8 @@ public class OrderApiView {
 		if (contract != null) {
 			this.contractNo = contract.getContractNo();
 			this.validityTimes = contract.getValidityTimes();
+			this.remainTimes = contract.getRemainTimes();
+			this.withHoldTimes = contract.getWithHoldTimes();
 			this.contractStart = contract.getStart();
 			this.contractEnd = contract.getEnd();
 			this.productType = contract.getType();
@@ -168,6 +171,22 @@ public class OrderApiView {
 
 	public void setCheckedStatus(String checkedStatus) {
 		this.checkedStatus = checkedStatus;
+	}
+
+	public int getRemainTimes() {
+		return remainTimes;
+	}
+
+	public int getWithHoldTimes() {
+		return withHoldTimes;
+	}
+
+	public void setRemainTimes(int remainTimes) {
+		this.remainTimes = remainTimes;
+	}
+
+	public void setWithHoldTimes(int withHoldTimes) {
+		this.withHoldTimes = withHoldTimes;
 	}
 
 }
