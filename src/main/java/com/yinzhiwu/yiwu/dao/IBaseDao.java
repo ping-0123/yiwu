@@ -87,11 +87,5 @@ public interface IBaseDao<T, PK extends Serializable> {
 
 	PageBean<T> findPageByProperty(String propertyName, Object value, int pageNo, int pageSize);
 
-	<R> PageBean<R> findPage(String hql, Class<R> resultClass, String[] namedParameters, Object[] values, int pageNum,
-			int pageSize);
-
-	<R> PageBean<R> findPage(String hql, Class<R> resultClass, String namedParameter, Object value, int pageNum,
-			int PageSize);
-
 
 }

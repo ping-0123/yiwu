@@ -47,7 +47,7 @@ public class IncomeEvent extends BaseEntity {
 	private EventType type;
 
 	private Float param;
-
+	private String comments;
 	@JsonIgnore
 	@OneToMany(mappedBy = "incomeEvent")
 	private List<IncomeRecord> incomeRecords = new ArrayList<>();
@@ -120,6 +120,14 @@ public class IncomeEvent extends BaseEntity {
 
 	public void setIncomeRecords(List<IncomeRecord> incomeRecords) {
 		this.incomeRecords = incomeRecords;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 }

@@ -34,7 +34,7 @@ public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer> {
 	 * @param memberCard
 	 * @return
 	 */
-	PageBean<LessonApiView> findPageCheckedInLessonApiViewsByMemberCard(String memberCard, int pageNo, int pageSize);
+	PageBean<LessonApiView> findPageCheckedInLessonApiViewsByMemberCard(String memberCard, Integer pageNo, Integer pageSize);
 
 	int findCheckedInLessonsCountByMemeberCard(String memberCard);
 

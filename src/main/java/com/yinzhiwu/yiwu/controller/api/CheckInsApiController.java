@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
@@ -33,10 +34,10 @@ public class CheckInsApiController extends BaseController {
 			@ApiParam(value = "id of the customer", required = true) int customerId) {
 		try {
 			int count = checkInsYzwService.findCheckedInLessonsCountOfCustomer(customerId);
-			return new YiwuJson<>(new Integer(count));
+			return YiwuJson.createBySuccess(Integer.valueOf(count));
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return new YiwuJson<>(e.getMessage());
+			return YiwuJson.createByErrorMessage(e.getMessage());
 		}
 	}
 
@@ -55,13 +56,11 @@ public class CheckInsApiController extends BaseController {
 	@ApiOperation(value = "分页获取学员已上课课程列表")
 	public YiwuJson<PageBean<LessonApiView>> findPage(
 			@ApiParam(value = "id of the customer", required = true) int customerId,
-			@ApiParam(value = "pageNo should be positive", required = false) Integer pageNo,
-			@ApiParam(value = "pageSize should be positive", required = false) Integer pageSize) {
-		
-		if(pageNo == null)
-			pageNo = PageBean.DEFAULT_PAGE_NO;
-		if(pageSize ==null)
-			pageSize = PageBean.DEFAULT_PAGE_SIZE;
+			@ApiParam(value = "pageNo should be positive", required = false)
+			@RequestParam(value="pageNo", defaultValue = "1") int pageNo,
+			@ApiParam(value = "pageSize should be positive", required = false) 
+			@RequestParam(value="pageSize", defaultValue = "2") int pageSize) 
+	{
 		try {
 			PageBean<LessonApiView> page = checkInsYzwService.findPageViewByCustomer(customerId, pageNo, pageSize);
 			return YiwuJson.createBySuccess(page);

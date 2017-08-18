@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
+import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
@@ -199,15 +200,20 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		hql.append(",t1.lessonDate");
 		hql.append(",t1.startTime");
 		hql.append(",t1.endTime");
+		hql.append(",t2.status");
 		hql.append(")");
 		hql.append(" FROM LessonYzw t1");
+		hql.append(" LEFT JOIN AppointmentYzw t2 WITH t1.id = t2.lesson.id AND t2.contractNo=:AppointedContractNo AND t2.status = :AppointmentStatus");
 		hql.append(" WHERE t1.courseType = :privateCourseType");
 		hql.append(" AND t1.appointedContract like :contractNo");
+//		hql.append(" AND t2.contractNo=:AppointedContractNo");
+//		hql.append(" AND t2.status = :AppointmentStatus");
 		hql.append(" ORDER BY t1.lessonDate");
-		
 		return getSession().createQuery(hql.toString(), PrivateLessonApiView.class)
 				.setParameter("privateCourseType", CourseType.PRIVATE)
 				.setParameter("contractNo", "%"+contractNo + "%")
+				.setParameter("AppointedContractNo", contractNo)
+				.setParameter("AppointmentStatus", AppointStatus.APPONTED)
 				.getResultList();
 	}
 

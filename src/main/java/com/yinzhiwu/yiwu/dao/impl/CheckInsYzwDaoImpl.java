@@ -171,7 +171,7 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 	}
 
 	@Override
-	public PageBean<LessonApiView> findPageCheckedInLessonApiViewsByMemberCard(String memberCard, int pageNo, int pageSize) {
+	public PageBean<LessonApiView> findPageCheckedInLessonApiViewsByMemberCard(String memberCard, Integer pageNo, Integer pageSize) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT new com.yinzhiwu.yiwu.model.view.LessonApiView");
 		hql.append("(");

@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
 
 /**
 *@Author ping
@@ -22,20 +23,33 @@ public class PrivateLessonApiView {
 	private Time start;
 	@JsonFormat(pattern="HH:mm")
 	private Time end;
+	private AppointStatus appointStatus;
 	private int praises;
 	private int comments;
 	
 	public PrivateLessonApiView() {
 	}
-
+	
 	public PrivateLessonApiView(int id, String name, String teacherName, Date date, Date start, Date end) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.teacherName = teacherName;
 		this.date = date;
 		this.start = (Time) start;
 		this.end = (Time) end;
+	}
+
+	public PrivateLessonApiView(int id, String name, String teacherName, Date date, Date start, Date end, AppointStatus status) {
+		this.id = id;
+		this.name = name;
+		this.teacherName = teacherName;
+		this.date = date;
+		this.start = (Time) start;
+		this.end = (Time) end;
+		if(start == null)
+			this.appointStatus = AppointStatus.UN_APOINTED;
+		else
+			this.appointStatus = status;
 	}
 
 	public int getId() {
@@ -101,6 +115,15 @@ public class PrivateLessonApiView {
 	public void setComments(int comments) {
 		this.comments = comments;
 	}
+
+	public AppointStatus getAppointStatus() {
+		return appointStatus;
+	}
+
+	public void setAppointStatus(AppointStatus appointStatus) {
+		this.appointStatus = appointStatus;
+	}
+
 	
 	
 }

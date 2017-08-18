@@ -33,6 +33,8 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.util.ReflectUtils;
 
+import javassist.bytecode.InstructionPrinter;
+
 /**
  * 
  * @author ping
@@ -460,8 +462,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 	
 	
-	@Override
-	public <R> PageBean<R> findPage(String hql, Class<R> resultClass,  String[] namedParameters, Object[] values, int pageNum, int pageSize ){
+	protected <R> PageBean<R> findPage(String hql, Class<R> resultClass,  String[] namedParameters, Object[] values, Integer pageNum, Integer pageSize ){
 		Assert.hasLength(hql);
 		if(namedParameters.length != values.length){
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");}
@@ -470,8 +471,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		if(totalRecords == 0)
 			return new PageBean<>(pageSize, pageNum, totalRecords, new ArrayList<>());
 		
-		if(pageNum <=0) pageNum =PageBean.DEFAULT_PAGE_NO;
-		if(pageSize<=0) pageSize = PageBean.DEFAULT_PAGE_SIZE;
+		if(pageNum == null || pageNum <=0) pageNum =PageBean.DEFAULT_PAGE_NO;
+		if(pageSize == null || pageSize<=0) pageSize = PageBean.DEFAULT_PAGE_SIZE;
 		int offset = (pageNum-1) * pageSize ;
 		Query<R> query = getSession().createQuery(hql, resultClass)
 				.setFirstResult(offset)
@@ -484,8 +485,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return new PageBean<>(pageSize, pageNum, totalRecords,list);
 	}
 	
-	@Override
-	public <R> PageBean<R> findPage(String hql, Class<R> resultClass, String namedParameter, Object value, int pageNum, int PageSize){
+	protected <R> PageBean<R> findPage(String hql, Class<R> resultClass, String namedParameter, Object value, Integer pageNum, Integer PageSize){
 		if(namedParameter == null || "".equals(namedParameter.trim()))
 			throw new IllegalArgumentException("hql的命名参数不能为null");
 		String[] namedParameters = {namedParameter};
