@@ -164,7 +164,7 @@ public class YiwuJson<T> implements Serializable {
 		this.msg = msg;
 	}
 
-	private enum ReturnCode{
+	public enum ReturnCode{
 		SUCCESS(0, "success"),
 		ERROR(1001, "error"),
 		NEED_LOGIN(1002, "need login"),

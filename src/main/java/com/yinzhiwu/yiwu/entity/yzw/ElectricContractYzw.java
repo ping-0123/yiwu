@@ -24,6 +24,9 @@ import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.enums.Gender;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel
 @Entity
 @Table(name = "velectric_contract")
 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)

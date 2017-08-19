@@ -12,7 +12,7 @@ import javax.persistence.MappedSuperclass;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.context.ThreadContext;
+import com.yinzhiwu.yiwu.context.UserContext;
 
 /**
  * name rule foreign key: fk_{table name}_{foreign key column name} foreign key
@@ -64,7 +64,7 @@ public abstract class BaseEntity implements Serializable {
 		Date date = new Date();
 		this.createDate = date;
 		this.lastModifiedDate = date;
-		Distributer distributer = ThreadContext.getUser();
+		Distributer distributer = UserContext.getUser();
 		if(distributer != null){
 			this.createUserId = distributer.getId();
 			this.lastModifiedUserId = distributer.getId();
@@ -77,7 +77,7 @@ public abstract class BaseEntity implements Serializable {
 	public void beforeUpdate() {
 		Date date = new Date();
 		this.lastModifiedDate = date;
-		Distributer distributer = ThreadContext.getUser();
+		Distributer distributer = UserContext.getUser();
 		if(distributer !=null)
 			this.lastModifiedUserId = distributer.getId();
 		else {

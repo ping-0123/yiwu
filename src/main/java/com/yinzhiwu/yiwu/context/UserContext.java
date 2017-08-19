@@ -12,7 +12,7 @@ import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 *
 */
 
-public class ThreadContext {
+public class UserContext {
 
 	private static ThreadLocal<Map<String, Object>> tl = new ThreadLocal<>();
 	

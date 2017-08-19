@@ -78,6 +78,7 @@ public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> 
 		hql.append("FROM AppointmentYzw t1");
 		hql.append(" WHERE t1.lesson.lessonDate BETWEEN :start AND :end");
 		hql.append(" AND t1.status = :status");
+		hql.append(" AND t1.distributer.id IS NOT NULL");
 		
 		return getSession().createQuery(hql.toString(), AppointmentYzw.class)
 				.setParameter("start", start)

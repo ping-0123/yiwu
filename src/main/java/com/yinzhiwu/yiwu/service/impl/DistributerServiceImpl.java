@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.dao.EmployeeDepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
-import com.yinzhiwu.yiwu.dao.OrderYzwDao;
+import com.yinzhiwu.yiwu.dao.IncomeRecordDao;
 import com.yinzhiwu.yiwu.dao.ShareTweetEventDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -65,9 +66,8 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Autowired
 	private ShareTweetEventDao shareTweeetEventDao;
 	@Autowired
-	private OrderYzwDao orderDao;
-	@Autowired
 	private CapitalAccountDao capitalAccountDao;
+	@Autowired private IncomeRecordDao incomeRecordDao;
 	@Autowired private EmployeeYzwDao employeeDao;
 	@Autowired private EmployeeDepartmentYzwDao empDeptDao;
 	@Autowired private FileService fileService;
@@ -113,7 +113,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			distributer.setName(emp.getName());
 			//自我服务
 			distributer.setServer(emp);
-			distributer.setFollowedByStore(emp.getDepartment());
+			distributer.setFollowedByStore(empDeptDao.findOneDepartmentByEmployee(emp.getId()));
 			//公司员工不能有上级归属
 			distributer.setSuperDistributer(null);
 		}else{
@@ -128,9 +128,9 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				distributer.setSuperDistributer(null);
 				//自我服务 目前作为该手机号码是谁在使用， 归哪个门店使用的判断依据
 				distributer.setServer(company);
-				distributer.setFollowedByStore(company.getDepartment());
+				distributer.setFollowedByStore(empDeptDao.findOneDepartmentByEmployee(company.getId()));
 				// 增加该手机号码是哪个门店的， 现在是谁在使用
-				distributer.setDepartment(company.getDepartment());
+				distributer.setDepartment(distributer.getFollowedByStore());
 				distributer.setUser(company);
 			}
 		}
@@ -149,9 +149,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 						server = superDistributer.getServer();
 					if(server != null){
 						distributer.setServer(server);
-						DepartmentYzw dept = server.getDepartment();
-						if(dept != null && dept.getName() != null && dept.getName().endsWith("店"));
-							distributer.setFollowedByStore(dept);
+						distributer.setFollowedByStore(empDeptDao.findOneDepartmentByEmployee(server.getId()));
 					}
 					
 				}else
@@ -200,9 +198,9 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			event = new RegisterEvent(distributer, EventType.REGISTER_WITH_INVATATION_CODE, 1f, invitationCode);
 		incomeEventService.save(event);
 		
-		YiwuJson<DistributerRegisterModel> yiwu = new YiwuJson<>(registerModel);
-		yiwu.setMsg(message);
-		return yiwu;
+//		YiwuJson<DistributerRegisterModel> yiwu = new YiwuJson<>(registerModel);
+//		yiwu.setMsg(message);
+		return YiwuJson.createBySuccessMessage("注册成功");
 	}
 
 	private CustomerYzw _matchCustomer(DistributerRegisterModel registerModel) {
@@ -252,10 +250,11 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	}
 	
 	private DistributerApiView _wrapDaoToApiView(Distributer distributer) {
-		float rate = distributerIncomeDao.get_beat_rate(IncomeType.EXP,
+		float rate = distributerIncomeDao.get_beat_rate(
+				IncomeType.EXP,
 				distributer.getDistributerIncome(IncomeType.EXP).getIncome());
 		DistributerApiView view = new DistributerApiView(distributer, rate);
-		view.setHeadIconUrl(_getHeadIconUrl(distributer.getHeadIconName()));
+		view.setHeadIconUrl(fileService.getHeadImageUrl( distributer.getHeadIconName()));
 		return view;
 	}
 
@@ -342,17 +341,17 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				v.setRegisterDate(income.getDistributer().getRegistedTime());
 				v.setSumBrokerageIncome(income.getAccumulativeIncome());
 				v.setSumShareTweetTimes(shareTweeetEventDao.findShareTweetTimes(income.getDistributer().getId()));
-				v.setSumMemberCount(
-						distributerDao.findCountByProperty(
-								"superDistributer.id", 
-								income.getDistributer().getId())
+				v.setSumMemberCount(distributerDao.findCountByProperty(
+						"superDistributer.id", 
+						income.getDistributer().getId())
 						.intValue());
-				v.setSumOrderCount(
-						orderDao.findCountByProperty(
-								"customer.id", 
-								income.getDistributer().getCustomer().getId())
+				v.setSumOrderCount(incomeRecordDao.findCountBy_incomeTypes_relationTypes_eventTypes_benificiary(
+						income.getDistributer().getId(), 
+						Arrays.asList(new Integer[]{10007}), 
+						Arrays.asList(new Integer[]{10016,10017}), 
+						Arrays.asList(new Integer[]{10014}))
 						.intValue());
-				v.setHeadIconUrl(_getHeadIconUrl(income.getDistributer().getHeadIconName()));
+				v.setHeadIconUrl(fileService.getHeadImageUrl((income.getDistributer().getHeadIconName())));
 			} catch (Exception e) {
 				logger.error(e);
 			}
@@ -408,14 +407,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		this.headIconUrl = headIconUrl;
 	}
 
-	private String _getHeadIconUrl(String headIconName) {
-		if (StringUtils.hasLength(headIconName))
-			return headIconUrl + headIconName;
-		else
-			return "";
-	}
-	
-	
 
 	@Override
 	public EmpDistributerDto employeeLoginByWechat(String wechatNo) throws YiwuException {

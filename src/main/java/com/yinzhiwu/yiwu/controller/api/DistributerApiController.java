@@ -78,7 +78,7 @@ public class DistributerApiController extends BaseController {
 	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String wechatNo, HttpSession session) {
 		Distributer distributer = distributerService.findByWechatNo(wechatNo);
 		if(distributer == null)
-			return new YiwuJson<>("您尚未注册");
+			return YiwuJson.createByErrorMessage("您尚未注册");
 		session.setAttribute(Constants.CURRENT_USER, distributer);
 		
 		DistributerApiView view = new DistributerApiView(distributer);
@@ -214,9 +214,9 @@ public class DistributerApiController extends BaseController {
 	@ApiOperation("修改会员个人资料")
 	public YiwuJson<DistributerModifyModel> modify(DistributerModifyModel model, @PathVariable int distributerId) {
 		if (model == null)
-			return new YiwuJson<>("没有需要修改的项");
+			return YiwuJson.createByErrorMessage("没有需要修改的项");
 		if (model.getImage() != null && model.getImage().getSize() > 500 * 1024)
-			return new YiwuJson<>("您上传的头像太大， 请保存在500Kb以下");
+			return YiwuJson.createByErrorMessage("您上传的头像太大， 请保存在500Kb以下");
 
 		return distributerService.modify(distributerId, model);
 

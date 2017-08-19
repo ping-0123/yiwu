@@ -10,6 +10,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.hibernate.query.Query;
 import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 
@@ -163,5 +164,39 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 		List<ShareTweetIncomeRecordApiView> records = getSession().createQuery(criteria).getResultList();
 
 		return records;
+	}
+
+	@Override
+	public Long findCountBy_incomeTypes_relationTypes_eventTypes_benificiary(int observerId, List<Integer> eventTypeIds,
+			List<Integer> relationTypeIds, List<Integer> incomeTypeIds) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT COUNT(1)");
+		hql.append(" FROM IncomeRecord t1");
+		hql.append(" WHERE t1.benificiary.id=:benificiaryId");
+		List<String> namedParameters = new ArrayList<>();
+		List<Object> values  = new ArrayList<>();
+		namedParameters.add("benificiaryId");
+		values.add(observerId);
+		if(eventTypeIds != null && relationTypeIds.size()> 0){
+			hql.append(" AND t1.incomeEvent.type.id IN :eventTypeIds");
+			namedParameters.add("eventTypeIds");
+			values.add(eventTypeIds);
+		}
+		if(relationTypeIds != null && relationTypeIds.size()> 0){
+			hql.append(" AND t1.con_ben_relation.id IN :relationTypeIds");
+			namedParameters.add("relationTypeIds");
+			values.add(relationTypeIds);
+		}
+		if(incomeTypeIds != null && incomeTypeIds.size()> 0){
+			hql.append(" AND t1.incomeType.id IN :incomeTypeIds");
+			namedParameters.add("incomeTypeIds");
+			values.add(incomeTypeIds);
+		}
+		
+		Query<Long> query = getSession().createQuery(hql.toString(), Long.class);
+		for(int i=0; i< namedParameters.size(); i++){
+			query.setParameter(namedParameters.get(i), values.get(i));
+		}
+		return query.getSingleResult();
 	}
 }

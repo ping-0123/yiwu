@@ -7,7 +7,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Min;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -36,7 +35,6 @@ public class DistributerIncome extends BaseEntity {
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributerIncome_incomeType_id"))
 	private IncomeType incomeType;
 
-	@Min(0)
 	private Float income;
 
 	@ManyToOne(fetch=FetchType.LAZY)

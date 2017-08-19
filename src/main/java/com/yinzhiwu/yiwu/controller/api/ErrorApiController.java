@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.YiwuJson.ReturnCode;
 
 /**
 *@Author ping
@@ -13,10 +14,10 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 */
 @RestController
 @RequestMapping(value="/api/error")
-public class ErrorApi {
+public class ErrorApiController {
 
 	@GetMapping(value="/unlogin")
 	public YiwuJson<String> error(){
-		return new YiwuJson<>("您尚未登录");
+		return YiwuJson.createByErrorCodeMessage(ReturnCode.NEED_LOGIN.getCode(), ReturnCode.NEED_LOGIN.getDesc());
 	}
 }

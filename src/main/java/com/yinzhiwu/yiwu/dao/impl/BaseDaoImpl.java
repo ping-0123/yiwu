@@ -467,7 +467,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		if(namedParameters.length != values.length){
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");}
 		if(Arrays.asList(namedParameters).contains(null)) throw new IllegalArgumentException("hql的命名参数不能为null");
-		int totalRecords = findCount(_generateFindCountHql(hql), namedParameters, values);
+		int totalRecords = findCount(_generateFindCountHql(hql), namedParameters, values).intValue();
 		if(totalRecords == 0)
 			return new PageBean<>(pageSize, pageNum, totalRecords, new ArrayList<>());
 		
@@ -500,12 +500,12 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	 * @param values
 	 * @return
 	 */
-	protected int findCount(String hql, String[] namedParameters, Object[] values) {
+	protected Long findCount(String hql, String[] namedParameters, Object[] values) {
 		Query<Long> query = getSession().createQuery(hql, Long.class);
 		for(int i=0; i<namedParameters.length; i++){
 			query.setParameter(namedParameters[i], values[i]);
 		}
-		return query.getSingleResult().intValue();
+		return query.getSingleResult();
 	}
 	
 	/**
@@ -515,10 +515,9 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	 * @param value
 	 * @return
 	 */
-	protected int findCount(String hql, String namedParameter, Object value) {
+	protected Long findCount(String hql, String namedParameter, Object value) {
 		return getSession().createQuery(hql, Long.class)
 				.setParameter(namedParameter, value)
-				.getSingleResult()
-				.intValue();
+				.getSingleResult();
 	}
 }

@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.controller.api;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
@@ -138,54 +140,44 @@ public class IncomeRecordApiController extends BaseController {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
-
-	
-	
-	
 	@GetMapping("/count")
-	@ApiOperation(value = "获取经验,基金,佣金等收益记录数量")
-	public YiwuJson<Long> getCount(
+	@ApiOperation(value = "获取经验,基金,佣金等收益记录数量	\n"
+			+ "获取一级客户数量: ?observerId={distributerId}&eventTypeIds=10004&relationTypeIds=10016&incomeTypeIds=10012  \n"
+			+ "获取二级客户数量:	?observerId={distributerId}&eventTypeIds=10004&relationTypeIds=10017&incomeTypeIds=10012	\n"
+			+ "获取一级客户成交单数: ?observerId={distributerId}&eventTypeIds=10007&relationTypeIds=10016&incomeTypeIds=10014	\n"
+			+ "获取二级客户成交单数: ?observerId={distributerId}&eventTypeIds=10007&relationTypeIds=10017&incomeTypeIds=10014	\n"
+			+ "获取一级+二级客户成交单数: ?observerId={distributerId}&eventTypeIds=10007&relationTypeIds=10016,10017&incomeTypeIds=10014	\n"
+			+ "获取一级客户转发微信次数: ?observerId={distributerId}&eventTypeIds=10005&relationTypeIds=10016&incomeTypeIds=10012	\n"
+			+ "获取本人转发微信的次数: ?observerId={distributerId}&eventTypeIds=10005&relationTypeIds=10015,10006&incomeTypeIds=10012	\n"
+			)
+	public YiwuJson<Long> findCount(
 			@ApiParam(value = "id of distributer", required = true)
-			int observerId,
+			Integer observerId,
 			@ApiParam(value = "id of event type [10003： 注册(不带邀请码),10004：注册（带邀请码), "
 					+ "10005:分享推文(前三次), 10006:分享推文(非前三次),10007：购买音之舞产品,"
 					+ "10008:用基金支付定金,10009:用佣金支付定金, 10010:产生利息, 10011:提现,"
-					+ "10027:预约, 10030:取消预约, 10028:签到（预约后), 10029:签到（未预约）, -1:全部]", required = true) 
-			int eventTypeId,
+					+ "10027:预约, 10030:取消预约, 10028:签到（预约后), 10029:签到（未预约）]", required = false) 
+			Integer[] eventTypeIds,
 			@ApiParam(value = "id of the relation betweet event subject and observer; "
-					+ "10015：本人和本人,10016：本人上一级,10017：本人和上两级, -1 表示全部", required = true)
-			int relationTypeId,
-			@ApiParam(value = "收益类型Id； 10012:经验收益类型, 10013:基金收益类型, 10014：佣金收益类型 , -1:全部类型", required = true) 
-			int incomeTypeId) 
-	
+					+ "10015：本人和本人,10016：本人上一级,10017：本人和上两级", required = false)
+			Integer[] relationTypeIds,
+			@ApiParam(value = "收益类型Id； 10012:经验收益类型, 10013:基金收益类型, 10014：佣金收益类型 ", required = false) 
+			Integer[] incomeTypeIds) 
 	{
-		List<String> properties = new ArrayList<>();
-		List<Object> values = new ArrayList<>();
-		properties.add("benificiary.id");
-		values.add(observerId);
-		if (eventTypeId != -1) {
-			properties.add("incomeEvent.type.id");
-			values.add(eventTypeId);
-		}
-		if (relationTypeId != -1) {
-			properties.add("con_ben_relation.id");
-			values.add(relationTypeId);
-		}
-		if (incomeTypeId != -1) {
-			properties.add("incomeType.id");
-			values.add(incomeTypeId);
-		}
-
-		try {
-			Long count = incomeRecordService.findCountByProperties(
-					properties.toArray(new String[properties.size()]),
-					values.toArray());
-			return new YiwuJson<>(count);
-		} catch (Exception e) {
-			return new YiwuJson<>(e.getMessage());
-		}
+		List<Integer> events = new ArrayList<>();
+		List<Integer> relations = new ArrayList<>();
+		List<Integer> types = new ArrayList<>();
+		if(eventTypeIds.length > 0)
+			events = Arrays.asList(eventTypeIds);
+		if(relationTypeIds.length> 0)
+			relations = Arrays.asList(relationTypeIds);
+		if(incomeTypeIds.length> 0)
+			types = Arrays.asList(incomeTypeIds);
+		return incomeRecordService.findCountBy_incomeTypes_relationTypes_eventTypes_benificiary(
+				UserContext.getUser().getId(), events, relations, types);
 	}
-
+	
+	
 	/**
 	 * 根据收益类型获取收益记录数量
 	 * 

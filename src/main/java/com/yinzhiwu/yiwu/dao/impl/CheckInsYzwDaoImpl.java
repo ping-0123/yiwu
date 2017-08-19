@@ -198,7 +198,7 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 		hql.append(" WHERE t1.memberCard = :memberCard");
 		hql.append(" AND t1.lesson.actualTeacher.id IS NOT NULL");
 		hql.append(" AND t1.lesson.actualTeacher.id <>  0");
-		return findCount(hql.toString(), "memberCard", memberCard);
+		return findCount(hql.toString(), "memberCard", memberCard).intValue();
 	}
 
 }

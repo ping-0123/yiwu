@@ -14,6 +14,7 @@ import com.yinzhiwu.yiwu.entity.income.IncomeEvent;
 import com.yinzhiwu.yiwu.entity.income.IncomeFactor;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
+import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.IncomeRecordApiView;
 import com.yinzhiwu.yiwu.model.view.ShareTweetIncomeRecordApiView;
 import com.yinzhiwu.yiwu.service.DistributerIncomeService;
@@ -87,5 +88,12 @@ public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integ
 	public List<ShareTweetIncomeRecordApiView> getShareTweetRecordApiViews(int beneficiaryId, int[] eventTypeIds,
 			int[] relationTypeIds, int[] incomeTypeIds) {
 		return incomeRecordDao.getShareTweetRecordApiViews(beneficiaryId, eventTypeIds, relationTypeIds, incomeTypeIds);
+	}
+
+	@Override
+	public YiwuJson<Long> findCountBy_incomeTypes_relationTypes_eventTypes_benificiary(int observerId,
+			List<Integer> eventTypeIds, List<Integer> relationTypeIds, List<Integer> incomeTypeIds) {
+		Long count = incomeRecordDao.findCountBy_incomeTypes_relationTypes_eventTypes_benificiary(observerId, eventTypeIds, relationTypeIds, incomeTypeIds);
+		return YiwuJson.createBySuccess(count);
 	}
 }
