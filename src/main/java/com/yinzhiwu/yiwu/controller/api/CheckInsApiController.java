@@ -55,11 +55,14 @@ public class CheckInsApiController extends BaseController {
 	@GetMapping("/lesson/pageList")
 	@ApiOperation(value = "分页获取学员已上课课程列表")
 	public YiwuJson<PageBean<LessonApiView>> findPage(
-			@ApiParam(value = "id of the customer", required = true) int customerId,
+			@ApiParam(value = "id of the customer", required = true)
+			int customerId,
 			@ApiParam(value = "pageNo should be positive", required = false)
-			@RequestParam(value="pageNo", defaultValue = "1") int pageNo,
+			@RequestParam(value="pageNo", defaultValue = "1") 
+			int pageNo,
 			@ApiParam(value = "pageSize should be positive", required = false) 
-			@RequestParam(value="pageSize", defaultValue = "2") int pageSize) 
+			@RequestParam(value="pageSize", defaultValue = "10") 
+			int pageSize) 
 	{
 		try {
 			PageBean<LessonApiView> page = checkInsYzwService.findPageViewByCustomer(customerId, pageNo, pageSize);

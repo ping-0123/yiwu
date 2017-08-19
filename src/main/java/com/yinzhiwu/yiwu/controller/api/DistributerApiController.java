@@ -57,7 +57,7 @@ public class DistributerApiController extends BaseController {
 		dataBinder.setDisallowedFields("birthDay");
 	}
 
-	@PostMapping(value="/register.do")
+	@RequestMapping(value="/register.do", method={RequestMethod.POST})
 	@ApiOperation("注册新用户")
 	public YiwuJson<DistributerRegisterModel> register(@Valid DistributerRegisterModel m, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
@@ -73,7 +73,7 @@ public class DistributerApiController extends BaseController {
 	}
 	
 	
-	@PostMapping(value = "/loginByWechat")
+	@RequestMapping(value = "/loginByWechat", method={RequestMethod.GET,RequestMethod.POST})
 	@ApiOperation(value ="使用微信openId登录")
 	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String wechatNo, HttpSession session) {
 		Distributer distributer = distributerService.findByWechatNo(wechatNo);
@@ -108,9 +108,11 @@ public class DistributerApiController extends BaseController {
 
 	@GetMapping(value="/getInfo.do")
 	@ApiOperation("获取个人信息")
-	public YiwuJson<DistributerApiView> getInfo(@ApiParam(required=false) HttpSession session){
+	public YiwuJson<?> getInfo(@ApiParam(required=false) HttpSession session){
 		DistributerApiView view =  (DistributerApiView) session.getAttribute(Constants.CURRENT_DISTRIBUTER_VIWE);
-		return new YiwuJson<>(view);
+		if(view == null )
+			return YiwuJson.createByErrorMessage("请登录");
+		return YiwuJson.createBySuccess(view);
 	}
 	
 	@GetMapping(value = "/{id}")
