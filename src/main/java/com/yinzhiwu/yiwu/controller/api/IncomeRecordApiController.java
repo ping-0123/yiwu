@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
@@ -174,7 +173,7 @@ public class IncomeRecordApiController extends BaseController {
 		if(incomeTypeIds.length> 0)
 			types = Arrays.asList(incomeTypeIds);
 		return incomeRecordService.findCountBy_incomeTypes_relationTypes_eventTypes_benificiary(
-				UserContext.getUser().getId(), events, relations, types);
+				observerId, events, relations, types);
 	}
 	
 	

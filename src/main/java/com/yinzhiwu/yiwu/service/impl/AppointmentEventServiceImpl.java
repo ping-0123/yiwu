@@ -168,7 +168,6 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	
 	@Override
 	public void saveAllLastDayBreakAppointments(){
-		orderDao.cleanWithHoldTimes();
 		List<AppointmentYzw> appointments = appointmentDao.findLastDayAppointments();
 		for (AppointmentYzw appointment : appointments) {
 			if(! checkInsDao.isCheckedIn(appointment.getDistributer().getId(), appointment.getLesson().getId())){
@@ -176,5 +175,6 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 				incomeEventService.save(event);
 			}
 		}
+		orderDao.cleanWithHoldTimes();
 	}
 }
