@@ -7,9 +7,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.controller.BaseController;
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
@@ -45,17 +48,17 @@ public class IncomeRecordApiController extends BaseController {
 	@ApiOperation(value = "根据事件获取经验,基金,佣金等收益记录列表")
 	public YiwuJson<List<IncomeRecordApiView>> getList(
 			@ApiParam(value = "id of distributer", required = true)
-			int observerId,
+			Integer observerId,
 			@ApiParam(value = "id of event type [10003： 注册(不带邀请码),10004：注册（带邀请码), "
 					+ "10005:分享推文(前三次), 10006:分享推文(非前三次),10007：购买音之舞产品,"
 					+ "10008:用基金支付定金,10009:用佣金支付定金, 10010:产生利息, 10011:提现,"
 					+ "10027:预约, 10030:取消预约, 10028:签到（预约后), 10029:签到（未预约）, -1:全部]", required = true) 
-			int eventTypeId,
+			Integer eventTypeId,
 			@ApiParam(value = "事件当事人与观察者(本环境中相当于收益人)的关系 Id; "
 					+ "10015：当事人和本人,10016：当事人上一级,10017：当事人和上两级, -1 表示全部", required = true) 
-			int relationTypeId,
+			Integer relationTypeId,
 			@ApiParam(value = "收益类型Id； 10012:经验收益类型, 10013:基金收益类型, 10014：佣金收益类型 , -1:全部类型", required = true) 
-			int incomeTypeId) {
+			Integer incomeTypeId) {
 
 		List<String> properties = new ArrayList<>();
 		List<Object> values = new ArrayList<>();
@@ -150,7 +153,8 @@ public class IncomeRecordApiController extends BaseController {
 			+ "获取本人转发微信的次数: ?observerId={distributerId}&eventTypeIds=10005&relationTypeIds=10015,10006&incomeTypeIds=10012	\n"
 			)
 	public YiwuJson<Long> findCount(
-			@ApiParam(value = "id of distributer", required = true)
+			@ApiParam(value = "id of distributer", required = false)
+			@RequestParam(name="observerId", defaultValue="0")
 			Integer observerId,
 			@ApiParam(value = "id of event type [10003： 注册(不带邀请码),10004：注册（带邀请码), "
 					+ "10005:分享推文(前三次), 10006:分享推文(非前三次),10007：购买音之舞产品,"
@@ -166,6 +170,10 @@ public class IncomeRecordApiController extends BaseController {
 		List<Integer> events = new ArrayList<>();
 		List<Integer> relations = new ArrayList<>();
 		List<Integer> types = new ArrayList<>();
+		Distributer user = UserContext.getUser();
+		int distributerId = observerId;
+		if(user !=null)
+			distributerId = user.getId();
 		if(eventTypeIds.length > 0)
 			events = Arrays.asList(eventTypeIds);
 		if(relationTypeIds.length> 0)
@@ -173,7 +181,7 @@ public class IncomeRecordApiController extends BaseController {
 		if(incomeTypeIds.length> 0)
 			types = Arrays.asList(incomeTypeIds);
 		return incomeRecordService.findCountBy_incomeTypes_relationTypes_eventTypes_benificiary(
-				observerId, events, relations, types);
+				distributerId, events, relations, types);
 	}
 	
 	

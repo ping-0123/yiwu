@@ -13,6 +13,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.query.Query;
 import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import com.yinzhiwu.yiwu.dao.IncomeRecordDao;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
@@ -177,18 +178,27 @@ public class IncomeRecordDaoImpl extends BaseDaoImpl<IncomeRecord, Integer> impl
 		List<Object> values  = new ArrayList<>();
 		namedParameters.add("benificiaryId");
 		values.add(observerId);
-		if(eventTypeIds != null && relationTypeIds.size()> 0){
-			hql.append(" AND t1.incomeEvent.type.id IN :eventTypeIds");
+		if(!CollectionUtils.isEmpty(eventTypeIds)){
+			if(eventTypeIds.size()==1)
+				hql.append(" AND t1.incomeEvent.type.id = :eventTypeIds");
+			else
+				hql.append(" AND t1.incomeEvent.type.id IN :eventTypeIds");
 			namedParameters.add("eventTypeIds");
 			values.add(eventTypeIds);
 		}
-		if(relationTypeIds != null && relationTypeIds.size()> 0){
-			hql.append(" AND t1.con_ben_relation.id IN :relationTypeIds");
+		if(!CollectionUtils.isEmpty(relationTypeIds)){
+			if(relationTypeIds.size() ==1)
+				hql.append(" AND t1.con_ben_relation.id = :relationTypeIds");
+			else
+				hql.append(" AND t1.con_ben_relation.id IN :relationTypeIds");
 			namedParameters.add("relationTypeIds");
 			values.add(relationTypeIds);
 		}
 		if(incomeTypeIds != null && incomeTypeIds.size()> 0){
-			hql.append(" AND t1.incomeType.id IN :incomeTypeIds");
+			if(incomeTypeIds.size()==1)
+				hql.append(" AND t1.incomeType.id = :incomeTypeIds");
+			else
+				hql.append(" AND t1.incomeType.id IN :incomeTypeIds");
 			namedParameters.add("incomeTypeIds");
 			values.add(incomeTypeIds);
 		}
