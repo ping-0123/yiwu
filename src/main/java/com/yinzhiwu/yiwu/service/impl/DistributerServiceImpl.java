@@ -84,17 +84,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		Distributer distributer = registerModel.toDistributer();
 		String message = null;
 		String invitationCode = null;
-		
-		 // init new distributer' default properties such as "createTime"
-//		distributer.init();
-		
 		 //verify that the phoneNo has been registered
 		if (distributerDao.findCountByPhoneNo(registerModel.getPhoneNo()) > 0)
-			return new YiwuJson<>(distributer.getPhoneNo() + " 该手机号码已经被注册 ");
-
+			return YiwuJson.createByErrorMessage(distributer.getPhoneNo() + " 该手机号码已经被注册 ");
 		 // verify that the wechatNo has been registered
 		if (distributerDao.findCountByWechatNo(registerModel.getWechatNo()) > 0)
-			return new YiwuJson<>(distributer.getWechatNo() + " 该微信号已经被注册 ");
+			return YiwuJson.createByErrorMessage(distributer.getWechatNo() + " 该微信号已经被注册 ");
 		
 		/**
 		 * associate with employee 
@@ -151,9 +146,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 						distributer.setServer(server);
 						distributer.setFollowedByStore(empDeptDao.findOneDepartmentByEmployee(server.getId()));
 					}
-					
-				}else
-					message = "无效的邀请码:" + invitationCode;
+				}
 			}
 		}
 
@@ -198,8 +191,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			event = new RegisterEvent(distributer, EventType.REGISTER_WITH_INVATATION_CODE, 1f, invitationCode);
 		incomeEventService.save(event);
 		
-//		YiwuJson<DistributerRegisterModel> yiwu = new YiwuJson<>(registerModel);
-//		yiwu.setMsg(message);
 		return YiwuJson.createBySuccessMessage("注册成功");
 	}
 

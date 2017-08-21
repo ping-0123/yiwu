@@ -33,8 +33,6 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.util.ReflectUtils;
 
-import javassist.bytecode.InstructionPrinter;
-
 /**
  * 
  * @author ping

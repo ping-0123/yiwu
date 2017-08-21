@@ -45,7 +45,7 @@
 		<url-pattern>/api/*</url-pattern> 
 	</filter-mapping> 
 
-	<!--  用户权限过滤  --> 
+	<!--  用户权限过滤  
 	<filter>
 		<filter-name>apiUserFilter</filter-name>
 		<filter-class>com.yinzhiwu.yiwu.web.filter.ApiUserFilter</filter-class>
@@ -53,7 +53,7 @@
 	<filter-mapping>
 		<filter-name>apiUserFilter</filter-name>
 		<url-pattern>/api/*</url-pattern>
-	</filter-mapping> 
+	</filter-mapping>  --> 
 
 	<!--org.springframework.web.filter.HiddenHttpMethodFilter:可以把Post请求转变为put和delete请求 -->
 	<filter>

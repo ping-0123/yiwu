@@ -34,11 +34,9 @@ public class FileApiController extends BaseController {
 			String url = fileService.upload(file);
 			view.setUrl(url);
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
 		return view;
 	}

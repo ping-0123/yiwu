@@ -101,7 +101,9 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 			entity.setId(GeneratorUtil.generateYzwId(find_last_id()));
 		if(entity.getContract().getContractNo() == null)
 			entity.getContract().setContractNo(GeneratorUtil.generateContractNo(entity.getId()));
-		return super.save(entity);
+		super.save(entity);
+		cleanNullCourseIds();
+		return entity.getId();
 	}
 
 	@Override
@@ -328,12 +330,10 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(" FROM OrderYzw t1");
 		hql.append(" WHERE t1.contract.contractNo = :contractNo");
 		
-		List<Contract> contracts = getSession().createQuery(hql.toString(), Contract.class)
+		return getSession().createQuery(hql.toString(), Contract.class)
 				.setParameter("contractNo", contractNo)
-				.getResultList();
-		if(contracts.size() ==0)
-			return null;
-		return contracts.get(0);
+				.setMaxResults(1)
+				.getSingleResult();
 			
 	}
 
@@ -369,6 +369,31 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 				.setParameter("privateCourseType", CourseType.PRIVATE)
 				.getResultList();
 		
+	}
+
+	@Override
+	public void modify(OrderYzw source, OrderYzw target) throws IllegalArgumentException, IllegalAccessException {
+		super.modify(source, target);
+		cleanNullCourseIds();
+	}
+
+	@Override
+	public void modify(String id, OrderYzw target)
+			throws DataNotFoundException, IllegalArgumentException, IllegalAccessException {
+		super.modify(id, target);
+		cleanNullCourseIds();
+	}
+
+	@Override
+	public void saveOrUpdate(OrderYzw entity) {
+		super.saveOrUpdate(entity);
+		cleanNullCourseIds();
+	}
+
+	@Override
+	public void update(OrderYzw entity) {
+		super.update(entity);
+		cleanNullCourseIds();
 	}
 	
 	

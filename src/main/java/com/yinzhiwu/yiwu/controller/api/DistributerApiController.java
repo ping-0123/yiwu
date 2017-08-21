@@ -75,7 +75,7 @@ public class DistributerApiController extends BaseController {
 	
 	@RequestMapping(value = "/loginByWechat", method={RequestMethod.GET,RequestMethod.POST})
 	@ApiOperation(value ="使用微信openId登录")
-	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String wechatNo, HttpSession session) {
+	public YiwuJson<?> loginByWechat(@RequestParam String wechatNo, HttpSession session) {
 		Distributer distributer = distributerService.findByWechatNo(wechatNo);
 		if(distributer == null)
 			return YiwuJson.createByErrorMessage("您尚未注册");
@@ -86,7 +86,7 @@ public class DistributerApiController extends BaseController {
 		view.setBeatRate(distributerService.getExpWinRate(distributer));
 		session.setAttribute(Constants.CURRENT_DISTRIBUTER_VIWE, view);
 		
-		 return new YiwuJson<>(view);
+		 return YiwuJson.createBySuccess(view);
 	}
 
 	@PostMapping(value = "/loginByAccount")

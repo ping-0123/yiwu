@@ -170,7 +170,10 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	public void saveAllLastDayBreakAppointments(){
 		List<AppointmentYzw> appointments = appointmentDao.findLastDayAppointments();
 		for (AppointmentYzw appointment : appointments) {
-			if(! checkInsDao.isCheckedIn(appointment.getDistributer().getId(), appointment.getLesson().getId())){
+			if(appointment.getDistributer()!=null 
+					&& appointment.getLesson() !=null
+					&& !checkInsDao.isCheckedIn(appointment.getDistributer().getId(), appointment.getLesson().getId()))
+			{
 				AbstractAppointmentEvent event = new BreakAppointmentEvent(appointment.getDistributer(), appointment.getLesson());
 				incomeEventService.save(event);
 			}
