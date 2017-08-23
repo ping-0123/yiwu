@@ -42,7 +42,6 @@ public class OrderYzwDaoTest  extends TestBase{
 	public void testFindCheckableContractsOfCustomerAndLesson(){
 		CustomerYzw customer = customerDao.get(33897);
 		Calendar calendar = Calendar.getInstance();
-//		calendar.add(Calendar.DAY_OF_MONTH, 15);
 		calendar.set(Calendar.MONTH, Calendar.SEPTEMBER);
 		calendar.set(Calendar.DAY_OF_MONTH, 9);
 		List<LessonYzw> lessons = lessonDao.findByProperties(

@@ -1,5 +1,7 @@
 package com.test.service;
 
+import org.junit.Test;
+
 import com.test.TestBase;
 
 /**
@@ -10,4 +12,8 @@ import com.test.TestBase;
 
 public class CheckInsYzwServiceTest extends TestBase{
 
+	@Test
+	public void test(){
+		System.out.println("hello world");
+	}
 }
