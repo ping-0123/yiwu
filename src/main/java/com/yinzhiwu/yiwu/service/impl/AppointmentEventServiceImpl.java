@@ -87,13 +87,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		if(checkInsDao.isCheckedIn(customer.getMemberCard(), lesson.getId()))
 			throw new Exception("您已签到");
 		// 判断卡权益是否可以预约
-		Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(
-				customer.getId(),
-				lesson.getSubCourseType());
-		//TODO 有漏洞, 客户预约后，剩余次数并没有减掉，而是要上完课签到之后第二天才能减掉  也就是说剩余次数为1可以预约很多次课.
-		if (contract == null)
-			throw new Exception("您不能预约课程\"" + lesson.getName() + "\"\n请购买音之舞\"" + lesson.getSubCourseType().getName() + "\"类舞蹈卡");
-		
+		Contract contract = orderDao.findCheckableContractOfCustomerAndLesson(customer, lesson);
 		
 		AppointmentYzw appoint = new AppointmentYzw(lesson, distributer, contract.getContractNo());
 		appointmentDao.save(appoint);

@@ -114,11 +114,7 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 			isAppointed = true;
 		else{
 			//判断是否能刷卡
-			Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(
-					customer.getId(),
-					lesson.getSubCourseType());
-			if (contract == null)
-				throw new YiwuException("你没有购买音之舞\"" + lesson.getSubCourseType().getName()+  "\"类舞蹈卡,不能刷卡");
+			Contract contract = orderDao.findCheckableContractOfCustomerAndLesson(customer, lesson);
 			contractNo = contract.getContractNo();
 		}
 			
@@ -137,7 +133,6 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 			orderDao.updateContractWithHoldTimes(contractNo, 1);
 		}
 		incomeEventService.save(event);
-		
 		
 		return new CheckInSuccessApiView((CheckInEvent) event, orderDao.findContractByContractNo(contractNo));
 	}

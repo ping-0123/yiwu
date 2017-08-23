@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 import org.hibernate.type.LongType;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
@@ -18,6 +19,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
@@ -155,19 +157,90 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(" AND t1.contract.remainTimes - t1.contract.withHoldTimes >=:remainTimes");
 		hql.append(" AND t1.contract.end >=:curdate");
 		hql.append(" ORDER BY t1.contract.end");
-		List<Contract> contracts =   getSession().createQuery(hql.toString(), Contract.class)
+		List<Contract> contracts =    getSession().createQuery(hql.toString(), Contract.class)
 				.setParameter("contractStatus", ContractStatus.CHECKED)
 				.setParameter("customerId", 	customerId)
 				.setParameter("subCourseType", 	subCourseType)
 				.setParameter("remainTimes", 	BigDecimal.valueOf(1))
 				.setParameter("curdate", 		new Date())
+				.setMaxResults(1)
 				.getResultList();
-		if(contracts != null && contracts.size()> 0)
+			if(contracts.size() ==0)
+				return null;
 			return contracts.get(0);
-		else 
-			return null;
 		
 	}
+	
+	@Override
+	public Contract findCheckableContractOfCustomerAndLesson(CustomerYzw customer, LessonYzw lesson) throws YiwuException{
+		Assert.notNull(customer);
+		Assert.notNull(lesson);
+		
+		updateLingLingContractDates();
+		StringBuilder hql = new StringBuilder();
+		hql.append(" SELECT t1.contract");
+		hql.append(" FROM OrderYzw t1");
+		hql.append(" WHERE t1.contract.status = :contractStatus");
+		hql.append(" AND t1.customer.id=:customerId");
+		hql.append(" AND t1.contract.subType= :subCourseType");
+		hql.append(" AND t1.contract.remainTimes - t1.contract.withHoldTimes >=:remainTimes");
+		hql.append(" AND :lessonDate BETWEEN t1.contract.start AND t1.contract.end");
+		hql.append(" AND FIND_IN_SET(:storeId , REPLACE(REPLACE(t1.contract.validStoreIds,';',','), ' ', ''))>0");
+		hql.append(" ORDER BY t1.contract.end");
+			
+		List<Contract> contracts =    getSession().createQuery(hql.toString(), Contract.class)
+					.setParameter("contractStatus", ContractStatus.CHECKED)
+					.setParameter("customerId", 	customer.getId())
+					.setParameter("subCourseType", 	lesson.getSubCourseType())
+					.setParameter("remainTimes", 	BigDecimal.valueOf(1))
+					.setParameter("lessonDate", lesson.getLessonDate())
+					.setParameter("storeId", String.valueOf(lesson.getStore().getId()))
+					.setMaxResults(1)
+					.getResultList();
+		if(contracts.size()==0){
+			StringBuilder strBuilder = new StringBuilder();
+			strBuilder.append("您不能预约或签到课程\"").append(lesson.getName()).append("\n");
+			strBuilder.append("原因可能有:\n");
+			strBuilder.append("1.您没有音之舞\"").append(lesson.getSubCourseType().getName()).append("\"类会籍合约\n");
+			strBuilder.append("2.您所签到课程的上课日期不在会籍合约的有效日期范围内\n");
+			strBuilder.append("3.您的会籍合约已失效， 即\"有效次数-剩余次数-待扣次数=0\"\n");
+			strBuilder.append("4.您的会籍合约使用范围不包含\"").append(lesson.getStore().getName()).append("\"\n");
+			throw new YiwuException(strBuilder.toString());
+		}
+		return contracts.get(0);
+		
+	}
+	
+	@Override
+	public Contract findValidContractsByCustomerIdAndSubCourseTypeAndValidStore(int customerId, SubCourseType subCourseType, int storeId) {
+		updateLingLingContractDates();
+		StringBuilder hql = new StringBuilder();
+		hql.append(" SELECT t1.contract");
+		hql.append(" FROM OrderYzw t1");
+		hql.append(" WHERE t1.contract.status = :contractStatus");
+		hql.append(" AND t1.customer.id=:customerId");
+		hql.append(" AND t1.contract.subType= :subCourseType");
+		hql.append(" AND t1.contract.remainTimes - t1.contract.withHoldTimes >=:remainTimes");
+		hql.append(" AND t1.contract.start <= :curdate_start");
+		hql.append(" AND t1.contract.end >= :curdate_end");
+		hql.append(" AND FIND_IN_SET(:storeId , REPLACE(t1.contract.validStoreIds,';',','))>0");
+		hql.append(" ORDER BY t1.contract.end");
+		List<Contract> contracts =    getSession().createQuery(hql.toString(), Contract.class)
+				.setParameter("contractStatus", ContractStatus.CHECKED)
+				.setParameter("customerId", 	customerId)
+				.setParameter("subCourseType", 	subCourseType)
+				.setParameter("remainTimes", 	BigDecimal.valueOf(1))
+				.setParameter("curdate_start", 		new Date())
+				.setParameter("curdate_end", new Date())
+				.setParameter("storeId", String.valueOf(storeId))
+				.setMaxResults(1)
+				.getResultList();
+		if(contracts.size()==0)
+			return null;
+		return contracts.get(0);
+		
+	}
+	
 
 	@Override
 	public OrderYzw findByContractNO(String contractNo) throws YiwuException{

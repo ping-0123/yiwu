@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
@@ -43,5 +44,10 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 	public int cleanWithHoldTimes();
 
 	public List<PrivateContractApiView> getPrivateContractsByCustomer(Integer customerId);
+
+	Contract findValidContractsByCustomerIdAndSubCourseTypeAndValidStore(int customerId, SubCourseType subCourseType,
+			int storeId);
+
+	Contract findCheckableContractOfCustomerAndLesson(CustomerYzw customer, LessonYzw lesson) throws YiwuException;
 
 }

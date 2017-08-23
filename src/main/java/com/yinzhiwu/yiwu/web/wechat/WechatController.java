@@ -2,7 +2,11 @@ package com.yinzhiwu.yiwu.web.wechat;
 
 import java.util.Arrays;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.util.SecurityUtil;
@@ -14,14 +18,17 @@ import com.yinzhiwu.yiwu.util.SecurityUtil;
 */
 
 @RestController
+@RequestMapping("/wechat")
 public class WechatController {
 
 	private static final String TOKEN = "wildghost";
 	
-	@GetMapping(value="/wechat")
-	public String validate(String signature, String timestamp, String nonce, String echostr){
-		if(_checkSignature(signature, timestamp, nonce))
-			return echostr;
+	@GetMapping
+	public String validate(
+	HttpServletRequest request)
+	{
+		String echostr =request.getParameter("echostr");
+		System.out.println("echostr is:" + echostr);	
 		return echostr;
 	}
 	
