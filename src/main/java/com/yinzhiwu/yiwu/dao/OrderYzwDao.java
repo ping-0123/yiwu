@@ -48,6 +48,13 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 	Contract findValidContractsByCustomerIdAndSubCourseTypeAndValidStore(int customerId, SubCourseType subCourseType,
 			int storeId);
 
+	/**
+	 * 
+	 * @param customer 客户
+	 * @param lesson 课时
+	 * @return 客户的一个可以预约该课时的会籍合约,如果该客户有多个会籍合约约满足要求， 则返回最先结束的哪个会籍合约
+	 * @throws YiwuException 没有找到满足条件的会籍合约， 则提示可能的原因
+	 */
 	Contract findCheckableContractOfCustomerAndLesson(CustomerYzw customer, LessonYzw lesson) throws YiwuException;
 
 }
