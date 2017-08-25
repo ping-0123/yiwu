@@ -463,12 +463,19 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	protected <R> PageBean<R> findPage(String hql, Class<R> resultClass,  String[] namedParameters, Object[] values, Integer pageNum, Integer pageSize ){
 		Assert.hasLength(hql);
 		if(namedParameters.length != values.length){
-			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");}
-		if(Arrays.asList(namedParameters).contains(null)) throw new IllegalArgumentException("hql的命名参数不能为null");
+			IllegalArgumentException exception = new IllegalArgumentException("传入的属性名和属性值数量不一致");
+			logger.error(exception.getMessage(), exception);
+			throw exception;
+			}
+		if(Arrays.asList(namedParameters).contains(null)) {
+			IllegalArgumentException exception=  new IllegalArgumentException("hql的命名参数不能为null");
+			logger.error(exception.getMessage(), exception);
+			throw exception;
+		}
+		
 		int totalRecords = findCount(_generateFindCountHql(hql), namedParameters, values).intValue();
 		if(totalRecords == 0)
 			return new PageBean<>(pageSize, pageNum, totalRecords, new ArrayList<>());
-		
 		if(pageNum == null || pageNum <=0) pageNum =PageBean.DEFAULT_PAGE_NO;
 		if(pageSize == null || pageSize<=0) pageSize = PageBean.DEFAULT_PAGE_SIZE;
 		int offset = (pageNum-1) * pageSize ;

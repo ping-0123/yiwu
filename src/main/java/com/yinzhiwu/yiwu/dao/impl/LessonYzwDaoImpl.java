@@ -17,8 +17,10 @@ import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
+import com.yinzhiwu.yiwu.util.CalendarUtil;
 
 @Repository
 public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements LessonYzwDao {
@@ -215,6 +217,42 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 				.setParameter("AppointedContractNo", contractNo)
 				.setParameter("AppointmentStatus", AppointStatus.APPONTED)
 				.getResultList();
+	}
+
+	@Override
+	public PageBean<LessonApiView> findPageOfClosedLessonApiViewByStoreIdAndLessonDate(Integer storeId, Date date,
+			int pageNo, int pageSize) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT new com.yinzhiwu.yiwu.model.view.LessonApiView");
+		hql.append("(");
+		hql.append("t1.id");
+		hql.append(",t1.name");
+		hql.append(",t2.id");
+		hql.append(",t2.danceDesc");
+		hql.append(",t2.danceGrade");
+		hql.append(",t1.lessonDate");
+		hql.append(",t1.startTime");
+		hql.append(",t1.endTime");
+		hql.append(",t1.store.id");
+		hql.append(",t1.storeName");
+		hql.append(",t1.dueTeacherName");
+		hql.append(",t1.actualTeacherName");
+		hql.append(",t1.connotation.pictureNo");
+		hql.append(")");
+		hql.append(" FROM LessonYzw t1");
+		hql.append(" LEFT JOIN t1.course t2");
+		hql.append(" WHERE t1.courseType=:closedCourseType");
+		hql.append(" AND t1.store.id =:storeId");
+		hql.append(" AND t1.lessonDate = :lessonDate");
+		hql.append(" ORDER BY t1.startTime");
+		
+		return findPage(
+				hql.toString(),
+				LessonApiView.class,
+				new String[]{"closedCourseType", "storeId", "lessonDate"},
+				new Object[]{CourseType.CLOSED, storeId, CalendarUtil.getDayBegin(date).getTime()},
+				pageNo, 
+				pageSize);
 	}
 
 }
