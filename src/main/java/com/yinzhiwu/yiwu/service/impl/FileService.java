@@ -20,6 +20,8 @@ public class FileService {
 	private String path;
 	@Value("${system.file.url}")
 	private String url;
+	@Value("${system.file.default_head_image_name}")
+	private String defaultHeadImageName;
 	
 	/**
 	 * 保存文件后返回保存的文件名， 如果需要返回Url方便直接访问使用{@link FileService#getFileUrl(String)}
@@ -46,9 +48,16 @@ public class FileService {
 	 * @return
 	 */
 	public String getFileUrl(String fileName) {
+		if(null==fileName || "".equals(fileName.trim()))
+			return "";
 		return url + fileName;
 	}
-
+	
+	public String getHeadImageUrl(String headImageName){
+		if(null==headImageName || "".equals(headImageName.trim()))
+			headImageName=  defaultHeadImageName;
+		return url + headImageName;
+	}
 	private String _generateFileName(String originalFilename) {
 		return System.currentTimeMillis() 
 				+ originalFilename.substring(originalFilename.lastIndexOf(".")); 

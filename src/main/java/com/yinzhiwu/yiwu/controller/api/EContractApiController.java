@@ -14,6 +14,8 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.EContractDetailApiView;
 import com.yinzhiwu.yiwu.service.ElectricContractYzwService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api/e-contract")
 public class EContractApiController extends BaseController {
@@ -22,6 +24,7 @@ public class EContractApiController extends BaseController {
 	private ElectricContractYzwService electricContractYzwService;
 
 	@GetMapping("/{contractNo}")
+	@ApiOperation(value="获取合同信息")
 	public YiwuJson<EContractDetailApiView> get(@PathVariable String contractNo) {
 		try {
 			ElectricContractYzw eContract = electricContractYzwService.get(contractNo);

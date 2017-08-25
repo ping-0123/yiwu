@@ -16,7 +16,7 @@ public class GeneratorUtil {
 	/**
 	 * 合约号前缀
 	 */
-	private static final String CONTRACT_NO_PREFIX ="YZW";
+	private static final String CONTRACT_NO_PREFIX ="E5";
 	private static final int LENGTH = 8;
 
 	private static final char PADDING_CHAR = '0';

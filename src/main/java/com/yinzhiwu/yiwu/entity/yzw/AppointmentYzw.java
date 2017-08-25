@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yinzhiwu.yiwu.entity.Distributer;
 
 @Entity
 @Table(name = "vappointment")
@@ -72,13 +73,20 @@ public class AppointmentYzw {
 	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "courseHourId", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "lesson_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private LessonYzw lesson;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "customerId", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "customer_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private CustomerYzw customer;
-
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	private Distributer distributer;
+	
+	@Column(length=32)
+	private String contractNo;
+	
 	@Column(name = "status")
 	@Convert(converter = AppointStatusConverter.class)
 	private AppointStatus status;
@@ -115,6 +123,14 @@ public class AppointmentYzw {
 		this.lesson = lesson;
 		this.customer = customer;
 	};
+	
+	public AppointmentYzw(LessonYzw lesson , Distributer distributer, String contractNo){
+		init();
+		this.distributer =distributer;
+		this.customer = distributer.getCustomer();
+		this.lesson = lesson;
+		this.contractNo = contractNo;
+	}
 
 	protected void init() {
 		this.createUserId = 1;
@@ -204,6 +220,22 @@ public class AppointmentYzw {
 
 	public void setStatus(AppointStatus status) {
 		this.status = status;
+	}
+
+	public Distributer getDistributer() {
+		return distributer;
+	}
+
+	public String getContractNo() {
+		return contractNo;
+	}
+
+	public void setDistributer(Distributer distributer) {
+		this.distributer = distributer;
+	}
+
+	public void setContractNo(String contractNo) {
+		this.contractNo = contractNo;
 	}
 
 }

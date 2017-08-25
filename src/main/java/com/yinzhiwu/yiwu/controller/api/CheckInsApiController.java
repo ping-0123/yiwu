@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
@@ -29,13 +30,14 @@ public class CheckInsApiController extends BaseController {
 
 	@GetMapping("/lesson/count")
 	@ApiOperation(value = "获取学员已上课总节数")
-	public YiwuJson<Integer> findCountByCustomerId(
+	public YiwuJson<?> findCountByCustomerId(
 			@ApiParam(value = "id of the customer", required = true) int customerId) {
 		try {
-			return new YiwuJson<>(new Integer(checkInsYzwService.findCountByCustomerId(customerId)));
+			int count = checkInsYzwService.findCheckedInLessonsCountOfCustomer(customerId);
+			return YiwuJson.createBySuccess(Integer.valueOf(count));
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return new YiwuJson<>(e.getMessage());
+			return YiwuJson.createByErrorMessage(e.getMessage());
 		}
 	}
 
@@ -53,14 +55,21 @@ public class CheckInsApiController extends BaseController {
 	@GetMapping("/lesson/pageList")
 	@ApiOperation(value = "分页获取学员已上课课程列表")
 	public YiwuJson<PageBean<LessonApiView>> findPage(
-			@ApiParam(value = "id of the customer", required = true) int customerId,
-			@ApiParam(value = "pageNo should be positive", required = true) int pageNo,
-			@ApiParam(value = "pageSize should be positive", required = true) int pageSize) {
+			@ApiParam(value = "id of the customer", required = true)
+			int customerId,
+			@ApiParam(value = "pageNo should be positive", required = false)
+			@RequestParam(value="pageNo", defaultValue = "1") 
+			int pageNo,
+			@ApiParam(value = "pageSize should be positive", required = false) 
+			@RequestParam(value="pageSize", defaultValue = "10") 
+			int pageSize) 
+	{
 		try {
 			PageBean<LessonApiView> page = checkInsYzwService.findPageViewByCustomer(customerId, pageNo, pageSize);
-			return new YiwuJson<>(page);
+			return YiwuJson.createBySuccess(page);
 		} catch (Exception e) {
-			return new YiwuJson<>(e.getMessage());
+			logger.error(e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
 		}
 
 	}

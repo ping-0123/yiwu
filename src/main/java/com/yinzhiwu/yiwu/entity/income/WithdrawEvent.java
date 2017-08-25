@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.entity.income;
 
+import javax.persistence.ConstraintMode;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,7 +24,7 @@ public class WithdrawEvent extends IncomeEvent {
 	private static final long serialVersionUID = 2145281150678264437L;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_withdrawEvent_capitalAccount_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_withdrawEvent_capitalAccount_id", value = ConstraintMode.NO_CONSTRAINT))
 	private CapitalAccount capitalAccount;
 
 	public WithdrawEvent(Distributer distributer, EventType type, Float param) {

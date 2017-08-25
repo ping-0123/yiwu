@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,9 @@ import com.yinzhiwu.yiwu.entity.yzw.Connotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzwOld.Lesson;
 import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
+import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 import com.yinzhiwu.yiwu.service.LessonService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
@@ -96,7 +99,7 @@ public class LessonApiController extends BaseController {
 			 int storeId,  String courseType,
 			 String teacherName,  String danceCatagory,  Date date,
 			 String weChat) {
-
+		
 		if (date == null) {
 			date = new Date();
 		}
@@ -111,7 +114,8 @@ public class LessonApiController extends BaseController {
 	@ResponseBody
 	@GetMapping(value = "/list")
 	@ApiOperation("根据课程Id(courseId)获取课时列表(lesson list)")
-	public YiwuJson<List<LessonApiView>> findByCourseId(@ApiParam(value = "课程Id", required = true) String courseId) {
+	public YiwuJson<List<LessonApiView>> findByCourseId(@ApiParam(value = "课程Id", required = true) String courseId) 
+	{
 		return lessonYzwService.findByCourseId(courseId);
 	}
 
@@ -128,4 +132,30 @@ public class LessonApiController extends BaseController {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
+	
+	@ResponseBody
+	@GetMapping(value = "/courseType/private")
+	@ApiOperation("根据会籍合约获取私教课课程列表")
+	public YiwuJson<List<PrivateLessonApiView>> findByContractNo(String contractNo)
+	{
+		return lessonYzwService.findPrivateLessonApiViewsByContracNo(contractNo);
+	}
+	
+	
+	
+	@ResponseBody
+	@GetMapping(value="/courseType_closed")
+	@ApiOperation("获取当天的封闭式课程列表, 不含舞种等级， 舞种等级描述\n")
+	public YiwuJson<PageBean<LessonApiView>> findLessonApiViews(
+			@ApiParam(required=true) Integer storeId,
+			@ApiParam(required=false, defaultValue="today")Date date,
+			@ApiParam(required=false, defaultValue="1") @RequestParam(defaultValue="1") int pageNo,
+			@ApiParam(required=false, defaultValue="10") @RequestParam(defaultValue="10") int pageSize)
+
+	{
+		if(date == null)
+			date = new Date();
+		return lessonYzwService.findPageOfClosedLessonApiViewByStoreIdAndLessonDate(storeId, date, pageNo, pageSize);
+	}
+	
 }

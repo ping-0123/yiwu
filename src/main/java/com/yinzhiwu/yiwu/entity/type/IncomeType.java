@@ -40,6 +40,8 @@ public class IncomeType extends BaseType {
 		return this.getName().equals(another.getName()) ? true : false;
 	}
 	
+	
+	
 	@javax.persistence.Transient
 	public String getChineseName(){
 		switch (this.getName()) {

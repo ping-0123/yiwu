@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.service.impl;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.AppointmentEventDao;
 import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
+import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.dao.IncomeRecordDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
@@ -16,6 +18,7 @@ import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.income.AbstractAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.AppointmentEvent;
+import com.yinzhiwu.yiwu.entity.income.BreakAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.entity.income.UnAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
@@ -50,6 +53,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	private OrderYzwDao orderDao;
 	@Autowired
 	private IncomeRecordDao incomeRecordDao;
+	@Autowired CheckInsYzwDao checkInsDao;
 
 	/**
 	 * 调用该函数前，先判断是否满足预约， 取消预约条件
@@ -74,22 +78,20 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		if (isAppointed(customer, lesson))
 			throw new Exception("您已预约课程：" + lesson.getName() + "无须重复预约");
 		//仅开放式课程可以预约
-		if(lesson.getCourseType() != CourseType.OPENED)
-			throw new Exception("仅开放式课程可以预约");
+		if(CourseType.CLOSED == lesson.getCourseType()  )
+			throw new Exception("封闭式课程无须预约");
 		//判断上课时间是否已过
 		if ((new Date()).after(lesson.getStartDateTime()))
 			throw new Exception("上课时间已过， 不能预约");
+		//判断是否已签到
+		if(checkInsDao.isCheckedIn(customer.getMemberCard(), lesson.getId()))
+			throw new Exception("您已签到");
 		// 判断卡权益是否可以预约
-		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
-				customer.getId(),
-				lesson.getSubCourseType());
-		//TODO 有漏洞, 客户预约后，剩余次数并没有减掉，而是要上完课签到之后第二天才能减掉  也就是说剩余次数为1可以预约很多次课.
-		if (contract == null)
-			throw new Exception("您不能预约课程\"" + lesson.getName() + "\"\n请购买音之舞\"" + lesson.getSubCourseType().getName() + "\"类舞蹈卡");
+		Contract contract = orderDao.findCheckableContractOfCustomerAndLesson(customer, lesson);
 		
-		
-		AppointmentYzw appoint = new AppointmentYzw(lesson, customer);
+		AppointmentYzw appoint = new AppointmentYzw(lesson, distributer, contract.getContractNo());
 		appointmentDao.save(appoint);
+		orderDao.updateContractWithHoldTimes(contract.getContractNo(), 1);
 		AppointmentEvent event = new AppointmentEvent(distributer,  lesson);
 		this.save(event);
 		// return
@@ -106,18 +108,26 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		if (appointment == null)
 			throw new Exception("您尚未预约课程\"" + lesson.getName() + "\", 不能做取消操作");
 		// 判断是否可以取消预约
+		Calendar start = Calendar.getInstance();
+		start.setTime(lesson.getStartDateTime());
+		start.add(Calendar.HOUR, -2);
 		Calendar currentTime = Calendar.getInstance();
-		currentTime.add(Calendar.HOUR, 2);
-		if (currentTime.after(lesson.getStartDateTime())) {
+		if (currentTime.after(start)) {
 			throw new Exception("开课前两小时内不能取消预约");
 		}
+		if(checkInsDao.isCheckedIn(customer.getMemberCard(), lesson.getId()))
+			throw new Exception("您已签到");
+		
 		appointment.setStatus(AppointStatus.UN_APOINTED);
 		appointmentDao.update(appointment);
+		orderDao.updateContractWithHoldTimes(appointment.getContractNo(), -1);
+		
 		UnAppointmentEvent event = new UnAppointmentEvent(distributer, 1f, lesson);
 		save(event);
 
+		//TODO 返回逻辑做出修改
 		IncomeRecord record = incomeRecordDao.findExpProducedByEvent(event.getId(), IncomeType.EXP);
-		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(customer.getId(),
+		Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(customer.getId(),
 				lesson.getSubCourseType());
 		if (contract != null) {
 			return new AppointSuccessApiView(event, contract, record.getIncomeValue());
@@ -143,10 +153,25 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	 */
 	//TODO 存在一些问题 需要把当天已经预约的， 已经刷卡了的次数去掉
 	private boolean isAppointable(CustomerYzw customer, LessonYzw lesson) {
-		Contract contract = orderDao.find_valid_contract_by_customer_by_subCourseType(
+		Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(
 				customer.getId(),
 				lesson.getSubCourseType());
 		return contract != null;
 	}
 
+	
+	@Override
+	public void saveAllLastDayBreakAppointments(){
+		List<AppointmentYzw> appointments = appointmentDao.findLastDayAppointments();
+		for (AppointmentYzw appointment : appointments) {
+			if(appointment.getDistributer()!=null 
+					&& appointment.getLesson() !=null
+					&& !checkInsDao.isCheckedIn(appointment.getDistributer().getId(), appointment.getLesson().getId()))
+			{
+				AbstractAppointmentEvent event = new BreakAppointmentEvent(appointment.getDistributer(), appointment.getLesson());
+				incomeEventService.save(event);
+			}
+		}
+		orderDao.cleanWithHoldTimes();
+	}
 }

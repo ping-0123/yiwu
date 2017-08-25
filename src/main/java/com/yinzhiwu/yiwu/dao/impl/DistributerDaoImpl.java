@@ -3,13 +3,13 @@ package com.yinzhiwu.yiwu.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.util.GeneratorUtil;
@@ -19,8 +19,6 @@ import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
 
 @Repository
 public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implements DistributerDao {
-
-	private static final Log logger = LogFactory.getLog(DistributerDaoImpl.class);
 
 	@Override
 	public Integer save(Distributer entity) {
@@ -32,12 +30,21 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 			logger.debug("new Id for Distributer is : " + id);
 		entity.setId(id);
 		entity.setPassword(SecurityUtil.encryptByMd5(entity.getPassword()));
-		if(entity.getMemberId() == null || "".equals(entity.getMemberId().trim())){
-			String memberCard = GeneratorUtil.generateMemberId(id);
-			entity.setMemberId(memberCard);
+		String memberCard = GeneratorUtil.generateMemberId(id);
+		if(entity.getMemberCard() == null || "".equals(entity.getMemberCard().trim())){
+			entity.setMemberCard(memberCard);
 			entity.getCustomer().setMemberCard(memberCard);
+			if(! StringUtils.hasLength(entity.getCustomer().getName()))
+				entity.getCustomer().setName(memberCard);
 		}
 		entity.setShareCode(ShareCodeUtil.toSerialCode(id));
+		
+		if(!StringUtils.hasLength(entity.getUsername()))
+			entity.setUsername(memberCard);
+		if(!StringUtils.hasLength(entity.getNickName()))
+			entity.setNickName(memberCard);
+		if(!StringUtils.hasLength(entity.getName()))
+			entity.setName(memberCard);
 		
 		return super.save(entity);
 	}
@@ -94,12 +101,12 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	}
 
 	@Override
-	public Distributer findByWechat(String wechatNo) throws DataNotFoundException {
+	public Distributer findByWechat(String wechatNo){
 		List<Distributer> distributers = findByProperty("wechatNo", wechatNo);
 		if (distributers.size() > 0)
 			return distributers.get(0);
 		else
-			throw new DataNotFoundException(this.getClass(), "wechatNo", wechatNo);
+			return null;
 	}
 
 	@Override
@@ -214,6 +221,20 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		if(list == null)
 			list = new ArrayList<>();
 		return list;
+	}
+
+
+	@Override
+	public CustomerYzw findCustomerByWechat(String wechatNo) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" SELECT t1.customer");
+		hql.append(" FROM Distributer t1");
+		hql.append(" WHERE t1.wechatNo = :wechatNo");
+		
+		List<CustomerYzw> customers = getSession().createQuery(hql.toString(),CustomerYzw.class)
+				.setParameter("wechatNo", wechatNo)
+				.getResultList();
+		return (customers.size()> 0)?customers.get(0):null;
 	}
 
 }

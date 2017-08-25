@@ -24,6 +24,10 @@ public class IncomeRecordApiView {
 
 	private String memberId;
 
+	private String phoneNo;
+	
+	private String customerName;
+
 	private String superMemberName;
 
 	private String incomeTypeName;
@@ -51,7 +55,9 @@ public class IncomeRecordApiView {
 			LOG.error(e.getMessage());
 		}
 
-		this.memberId = r.getContributor().getMemberId();
+		this.phoneNo = r.getContributor().getPhoneNo();
+		this.customerName = r.getContributor().getCustomer().getName();
+		this.memberId = r.getContributor().getMemberCard();
 		this.memberName = r.getContributor().getName();
 		if (r.getContributor().getSuperDistributer() != null)
 			this.superMemberName = r.getContributor().getSuperDistributer().getName();
@@ -158,6 +164,7 @@ public class IncomeRecordApiView {
 	}
 
 	public IncomeRecordApiView(int id, Date date, String eventTypeName, String memberName, String memberId,
+			 String phoneNo, String customerName,
 			String superMemberName, String incomeTypeName, float incomeValue, float payedAmount, float currentValue,
 			float factor) {
 		super();
@@ -166,12 +173,30 @@ public class IncomeRecordApiView {
 		this.eventTypeName = eventTypeName;
 		this.memberName = memberName;
 		this.memberId = memberId;
+		this.phoneNo = phoneNo;
+		this.customerName  = customerName;
 		this.superMemberName = superMemberName;
 		this.incomeTypeName = incomeTypeName;
 		this.incomeValue = incomeValue;
 		this.payedAmount = payedAmount;
 		this.currentValue = currentValue;
 		this.factor = factor;
+	}
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 
 }

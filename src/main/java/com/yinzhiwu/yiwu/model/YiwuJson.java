@@ -1,17 +1,26 @@
 package com.yinzhiwu.yiwu.model;
 
+import java.io.Serializable;
+
 import org.springframework.util.StringUtils;
 
-public class YiwuJson<T> {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-	private int returnCode;
+//@JsonSerialize(include =  JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(value= Include.NON_NULL)
+//保证序列化json的时候,如果是null的对象,key也会消失
+public class YiwuJson<T> implements Serializable {
 
-	private boolean secure;
-
-	private String msg;
-
-	private T data;
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7000760666908532411L;
+	private int 	returnCode;
+	private boolean secure = false;
+	private String	msg;
+	private T 		data;
 	private boolean result;
 
 	public YiwuJson() {
@@ -54,7 +63,67 @@ public class YiwuJson<T> {
 		this.data = data;
 		this.result = result;
 	}
+	private YiwuJson(int returnCode){
+		this.returnCode = returnCode;
+		this.secure = false;
+		this.result = this.isSuccess();
+	}
+	private YiwuJson(int returnCode, String msg){
+		this.returnCode = returnCode;
+		this.secure = false;
+		this.msg = msg;
+		this.result = this.isSuccess();
+	}
+	private YiwuJson(int returnCode, T data){
+		this.returnCode = returnCode;
+		this.secure = false;
+		this.data = data;
+		this.result = this.isSuccess();
+	}
+	
+	private YiwuJson(int returnCode, String message, T data){
+		this.returnCode = returnCode;
+		this.secure = false;
+		this.msg = message;
+		this.data = data;
+		this.result = this.isSuccess();
+	}
+	
+	public static <T> YiwuJson<T> createBySuccess(){
+        return new YiwuJson<T>(ReturnCode.SUCCESS.getCode());
+    }
 
+    public static <T> YiwuJson<T> createBySuccessMessage(String msg){
+        return new YiwuJson<T>(ReturnCode.SUCCESS.getCode(),msg);
+    }
+
+    public static <T> YiwuJson<T> createBySuccess(T data){
+        return new YiwuJson<T>(ReturnCode.SUCCESS.getCode(),data);
+    }
+
+    public static <T> YiwuJson<T> createBySuccess(String msg,T data){
+        return new YiwuJson<T>(ReturnCode.SUCCESS.getCode(),msg,data);
+    }
+
+
+	public static <T> YiwuJson<T> createByError(){
+        return new YiwuJson<T>(ReturnCode.ERROR.getCode(),ReturnCode.ERROR.getDesc());
+    }
+
+
+    public static <T> YiwuJson<T> createByErrorMessage(String errorMessage){
+        return new YiwuJson<T>(ReturnCode.ERROR.getCode(),errorMessage);
+    }
+
+    public static <T> YiwuJson<T> createByErrorCodeMessage(int errorCode,String errorMessage){
+        return new YiwuJson<T>(errorCode,errorMessage);
+    }
+
+	@JsonIgnore
+    public boolean isSuccess(){
+        return this.returnCode == ReturnCode.SUCCESS.getCode();
+    }
+    
 	public final T getData() {
 		return data;
 	}
@@ -95,4 +164,29 @@ public class YiwuJson<T> {
 		this.msg = msg;
 	}
 
+	public enum ReturnCode{
+		SUCCESS(0, "success"),
+		ERROR(1001, "error"),
+		NEED_LOGIN(1002, "need login"),
+		ILLEGAL_ARGUMENT(1003,"illegal argument"),
+		NO_PERMISSION(1004, "do not permmited");
+		
+		private final int code;
+		private final String desc;
+		
+		public int getCode() {
+			return code;
+		}
+		public String getDesc() {
+			return desc;
+		}
+		
+		private ReturnCode(int code, String desc) {
+			this.code = code;
+			this.desc = desc;
+		}
+
+		
+		
+	}
 }

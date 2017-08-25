@@ -51,8 +51,6 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 		@UniqueConstraint(name = "uk_distributer_wechatNo", columnNames = "wechatNO"),
 		@UniqueConstraint(name = "uk_distributer_phoneNo", columnNames = "phoneNo"),
 		@UniqueConstraint(name = "uk_distributer_shareCode", columnNames = "shareCode"),
-		// @UniqueConstraint(name="uk_distributer_headIconName",
-		// columnNames="headIconName"),
 		@UniqueConstraint(name = "fuk_distributer_customer_id", columnNames = "customer_id"),
 		@UniqueConstraint(name = "fuk_distributer_defaultCapitalAccount_id", columnNames = "defaultCapitalAccount_id"),
 		@UniqueConstraint(name = "fuk_distributer_employee_id", columnNames="employee_id" )})
@@ -63,13 +61,19 @@ public class Distributer extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -8400038437062433347L;
 
+	public static enum Role{
+		CUSTOMER,
+		EMPLOYEE,
+		COMPANY;
+	}
+	
 	/**
 	 * 会员卡号
 	 * unique=true, @Formula("concat('E5',
 	 * lpad(id,8,'0'))") @ColumnDefault("concat('E5', lpad(id,8,'0'))")
 	 */
 	@Column(name="memberCard",length = 32, nullable = false, updatable = false )
-	private String memberId;
+	private String memberCard;
 
 	@Column(length = 32)
 	private String name;
@@ -80,7 +84,6 @@ public class Distributer extends BaseEntity {
 	/**
 	 * @Pattern(regexp="(\\p{Alpha}|\\d|_){5,31}") @NotNull unique
 	 */
-
 	@Column(length = 32, insertable = true, updatable = false)
 	private String username; // 默认是手机号
 
@@ -168,6 +171,9 @@ public class Distributer extends BaseEntity {
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_distributer_user_id", value=ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw user;
 	
+	@Enumerated(EnumType.STRING)
+	private Role role;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "superDistributer")
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -183,20 +189,13 @@ public class Distributer extends BaseEntity {
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<Message> messages = new ArrayList<>();
 
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	@JsonIgnore
-	@OneToMany(mappedBy = "distributer", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "distributer",fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
 	private List<DistributerIncome> distributerIncomes = new ArrayList<>();
 
 	@Override
 	public void init() {
 		super.init();
-		if (!StringUtils.hasLength(this.getName()))
-			setName(getPhoneNo());
-		if (!StringUtils.hasLength(getUsername()))
-			setUsername(getPhoneNo());
-		if (!StringUtils.hasLength(getNickName()))
-			setNickName(getPhoneNo());
 		if (!StringUtils.hasLength(getPassword()))
 			this.password = "yzw123456";
 		this.registedTime = super.getCreateDate();
@@ -242,7 +241,7 @@ public class Distributer extends BaseEntity {
 	public Float getIncomeValue(IncomeType type) {
 		List<DistributerIncome> incomes = this.getDistributerIncomes();
 		if (null == incomes || incomes.size() == 0)
-			return null;
+			return 0f;
 
 		for (DistributerIncome income : incomes) {
 			if (type.equals(income.getIncomeType()))
@@ -261,14 +260,6 @@ public class Distributer extends BaseEntity {
 				return income;
 		}
 		return null;
-	}
-
-	public String getMemberId() {
-		return memberId;
-	}
-
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
 	}
 
 	public String getShareCode() {
@@ -461,6 +452,22 @@ public class Distributer extends BaseEntity {
 
 	public void setUser(EmployeeYzw user) {
 		this.user = user;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public String getMemberCard() {
+		return memberCard;
+	}
+
+	public void setMemberCard(String memberCard) {
+		this.memberCard = memberCard;
 	}
 
 

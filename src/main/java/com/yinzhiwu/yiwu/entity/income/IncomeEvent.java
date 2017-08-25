@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.ConstraintMode;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -36,17 +37,17 @@ public class IncomeEvent extends BaseEntity {
 	private static final long serialVersionUID = 1318050842407338699L;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_event_distributer_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_event_distributer_id", value=ConstraintMode.NO_CONSTRAINT))
 	private Distributer distributer;
 
 	private Date occurTime;
 
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_event_type_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_event_type_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EventType type;
 
 	private Float param;
-
+	private String comments;
 	@JsonIgnore
 	@OneToMany(mappedBy = "incomeEvent")
 	private List<IncomeRecord> incomeRecords = new ArrayList<>();
@@ -119,6 +120,14 @@ public class IncomeEvent extends BaseEntity {
 
 	public void setIncomeRecords(List<IncomeRecord> incomeRecords) {
 		this.incomeRecords = incomeRecords;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 }

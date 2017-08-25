@@ -19,6 +19,8 @@ public interface CheckInsYzwService extends IBaseService<CheckInsYzw, Integer> {
 	CheckInSuccessApiView saveCustomerCheckIn(int distributerId, int lessonId)
 			throws YiwuException, DataNotFoundException;
 
-	PageBean<LessonApiView> findPageViewByCustomer(int customerId, int pageNo, int pageSize) throws Exception;
+	PageBean<LessonApiView> findPageViewByCustomer(int customerId, Integer pageNo, Integer pageSize);
+
+	int findCheckedInLessonsCountOfCustomer(int customerId);
 
 }

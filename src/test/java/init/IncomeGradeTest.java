@@ -46,6 +46,6 @@ public class IncomeGradeTest {
 
 	@Test
 	public void insertFundsBrokerageGrade() {
-
+		
 	}
 }

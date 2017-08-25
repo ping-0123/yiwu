@@ -22,9 +22,11 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.model.DailyLessonsDto;
 import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto;
 import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto.CheckedInStatus;
+import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
 @Service
@@ -36,6 +38,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	@Autowired private CustomerYzwDao customerYzwDao;
 	@Autowired private StoreManCallRollYzwDao storeManCallRollYzwDao;
 	@Autowired private CheckInsYzwDao checkInsYzwDao;
+	@Autowired private FileService fileService;
 	
 	@Autowired
 	public void setBaseDao(LessonYzwDao lessonDao) {
@@ -182,5 +185,26 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		dto.setOrderInCourse(lessonDao.findOrderInCourse(lesson));
 		
 		return dto;
+	}
+
+	@Override
+	public YiwuJson<List<PrivateLessonApiView>> findPrivateLessonApiViewsByContracNo(String contractNo) {
+		List<PrivateLessonApiView> views = lessonDao.findPrivateLessonApiViewsByContracNo(contractNo);
+		if(views.size() == 0)
+			return YiwuJson.createByErrorMessage("未找到会籍合约为" + contractNo + "的私教课");
+		return YiwuJson.createBySuccess(views);
+	}
+
+	@Override
+	public YiwuJson<PageBean<LessonApiView>> findPageOfClosedLessonApiViewByStoreIdAndLessonDate(Integer storeId,
+			Date date, int pageNo, int pageSize) {
+		PageBean<LessonApiView> page = lessonDao.findPageOfClosedLessonApiViewByStoreIdAndLessonDate(storeId ,date, pageNo, pageSize);
+		if(page.getList().size() ==0)
+			return YiwuJson.createBySuccessMessage("未找到封闭式课程");
+		//设置pictureURL
+		for (LessonApiView view : page.getList()) {
+			view.setPictureUrl(fileService.getFileUrl(view.getPictureUrl()));
+		}
+		return YiwuJson.createBySuccess(page);
 	}
 }

@@ -63,7 +63,7 @@ public class CheckInSuccessApiView {
 			this.city = store.getCity();
 		}
 		this.lessonName = lesson.getName();
-		if (lesson.getCourse() != null)
+		if (lesson.getCourse() != null )
 			this.danceName = lesson.getCourse().getDanceDesc();
 		this.courseType = lesson.getCourseType();
 		this.coachName = lesson.getDueTeacherName();

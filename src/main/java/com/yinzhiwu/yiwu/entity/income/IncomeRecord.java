@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.entity.income;
 
 import java.util.Date;
 
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -25,23 +26,23 @@ public class IncomeRecord extends BaseEntity {
 	private static final long serialVersionUID = 4478053780652759400L;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_event_id"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_event_id", value=ConstraintMode.NO_CONSTRAINT))
 	private IncomeEvent incomeEvent;
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_incomeType_id"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_incomeType_id", value = ConstraintMode.NO_CONSTRAINT))
 	private IncomeType incomeType;
 
 	private Date recordTimestamp;
 
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeRecord_contributor_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeRecord_contributor_id", value = ConstraintMode.NO_CONSTRAINT))
 	private Distributer contributor;
 
 	private Float contributedValue;
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_benificiary_id"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_benificiary_id", value=ConstraintMode.NO_CONSTRAINT))
 	private Distributer benificiary;
 
 	private Float incomeFactor;
@@ -51,7 +52,7 @@ public class IncomeRecord extends BaseEntity {
 	private Float currentValue;
 
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeRecord_relationType_id"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeRecord_relationType_id", value = ConstraintMode.NO_CONSTRAINT))
 	private RelationType con_ben_relation;
 
 	public IncomeRecord(IncomeEvent event2, IncomeFactor factor, Distributer benificiary) {

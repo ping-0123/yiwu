@@ -3,13 +3,13 @@ package com.yinzhiwu.yiwu.controller.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.yinzhiwu.yiwu.context.Constants;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -32,12 +33,13 @@ import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 import com.yinzhiwu.yiwu.service.DistributerService;
+import com.yinzhiwu.yiwu.service.impl.FileService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/distributer")
 @Api(value = "distributer")
@@ -47,30 +49,44 @@ public class DistributerApiController extends BaseController {
 	private DistributerService distributerService;
 	@Autowired
 	private CapitalAccountService capitalAccountService;
+	@Autowired
+	private FileService fileService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("birthDay");
 	}
 
-	@PostMapping
+	@RequestMapping(value="/register.do", method={RequestMethod.POST})
 	@ApiOperation("注册新用户")
 	public YiwuJson<DistributerRegisterModel> register(@Valid DistributerRegisterModel m, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new YiwuJson<>(getErrorsMessage(bindingResult));
-		}
+		} 
 		try {
 			return distributerService.register(m);
 		} catch (Exception e) {
-			logger.error(e);
+			e.printStackTrace();
+			logger.error(e.getStackTrace());
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
 	
 	
-	@PostMapping(value = "/loginByWechat")
-	public YiwuJson<DistributerApiView> loginByWechat(@RequestParam String wechatNo) {
-		return distributerService.loginByWechat(wechatNo);
+	@RequestMapping(value = "/loginByWechat", method={RequestMethod.GET,RequestMethod.POST})
+	@ApiOperation(value ="使用微信openId登录")
+	public YiwuJson<?> loginByWechat(@RequestParam String wechatNo, HttpSession session) {
+		Distributer distributer = distributerService.findByWechatNo(wechatNo);
+		if(distributer == null)
+			return YiwuJson.createByErrorMessage("您尚未注册");
+		session.setAttribute(Constants.CURRENT_USER, distributer);
+		
+		DistributerApiView view = new DistributerApiView(distributer);
+		view.setHeadIconUrl(fileService.getFileUrl(distributer.getHeadIconName()));
+		view.setBeatRate(distributerService.getExpWinRate(distributer));
+		session.setAttribute(Constants.CURRENT_DISTRIBUTER_VIWE, view);
+		
+		 return YiwuJson.createBySuccess(view);
 	}
 
 	@PostMapping(value = "/loginByAccount")
@@ -90,14 +106,23 @@ public class DistributerApiController extends BaseController {
 		return distributerService.findById(id);
 	}
 
+	@GetMapping(value="/getInfo.do")
+	@ApiOperation("获取个人信息")
+	public YiwuJson<?> getInfo(@ApiParam(required=false) HttpSession session){
+		DistributerApiView view =  (DistributerApiView) session.getAttribute(Constants.CURRENT_DISTRIBUTER_VIWE);
+		if(view == null )
+			return YiwuJson.createByErrorMessage("请登录");
+		return YiwuJson.createBySuccess(view);
+	}
+	
 	@GetMapping(value = "/{id}")
-	public YiwuJson<DistributerApiView> doGet(@PathVariable int id) {
+	public YiwuJson<DistributerApiView> doGet(@PathVariable int id, HttpSession session) {
 		return distributerService.findById(id);
 	}
 
 	@GetMapping(value = "/capitalAccount/getDefault")
 	@ApiOperation(value = "获取默认的提现帐号")
-	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(int distributerId) {
+	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(Integer distributerId) {
 		return distributerService.getDefaultCapitalAccount(distributerId);
 	}
 
@@ -189,9 +214,9 @@ public class DistributerApiController extends BaseController {
 	@ApiOperation("修改会员个人资料")
 	public YiwuJson<DistributerModifyModel> modify(DistributerModifyModel model, @PathVariable int distributerId) {
 		if (model == null)
-			return new YiwuJson<>("没有需要修改的项");
+			return YiwuJson.createByErrorMessage("没有需要修改的项");
 		if (model.getImage() != null && model.getImage().getSize() > 500 * 1024)
-			return new YiwuJson<>("您上传的头像太大， 请保存在500Kb以下");
+			return YiwuJson.createByErrorMessage("您上传的头像太大， 请保存在500Kb以下");
 
 		return distributerService.modify(distributerId, model);
 

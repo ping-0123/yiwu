@@ -52,4 +52,8 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 
 	PageBean<CustomerDto> findVisableDistributersByEmployee(int distributerId, String key, int pageNo, int pageSize) throws YiwuException;
 
+	Distributer findByWechatNo(String wechatNo);
+
+	float getExpWinRate(Distributer distributer);
+
 }

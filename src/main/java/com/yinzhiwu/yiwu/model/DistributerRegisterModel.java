@@ -10,9 +10,10 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.enums.Gender;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-
+@ApiModel
 public class DistributerRegisterModel {
 
 	@ApiModelProperty(value="手机号码", required=true)

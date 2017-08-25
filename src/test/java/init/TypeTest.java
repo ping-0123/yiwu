@@ -2,6 +2,7 @@ package init;
 
 import java.lang.reflect.Field;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,7 +18,6 @@ import com.yinzhiwu.yiwu.service.BaseTypeService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
-// @RunWith(BlockJUnit4ClassRunner.class)
 public class TypeTest {
 
 	@Autowired
@@ -40,4 +40,9 @@ public class TypeTest {
 		}
 	}
 
+	
+	@Test
+	public void test(){
+		System.out.println("this is a test");
+	}
 }

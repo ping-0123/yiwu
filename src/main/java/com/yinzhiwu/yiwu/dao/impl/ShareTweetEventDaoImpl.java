@@ -34,17 +34,17 @@ public class ShareTweetEventDaoImpl extends BaseDaoImpl<ShareTweetEvent, Integer
 	@Override
 	public int findShareTweetTimes(int distributerId) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("SELECT COUNT(*)");
+		builder.append("SELECT COUNT(1)");
 		builder.append(" FROM ShareTweetEvent T1");
 		builder.append(" WHERE T1.distributer.id=:distributerId");
-		builder.append(" AND T1.type.id in :eventTypes");
+		builder.append(" AND T1.type.id IN :eventTypes");
 		List<Integer> typeIds = new ArrayList<>();
 		typeIds.add(EventType.SHARE_TWEET_BY_WECHAT_AFTER_THREE_TIMES_PER_DAY.getId());
 		typeIds.add(EventType.SHARE_TWEET_BY_WECHAT_FIRST_THREE_TIMES_PER_DAY.getId());
-		@SuppressWarnings("unchecked")
-		List<Long> list = (List<Long>) getHibernateTemplate().findByNamedParam(builder.toString(),
-				new String[] { "distributerId", "eventTypes" }, new Object[] { distributerId, typeIds });
-		return list.get(0).intValue();
+		return findCount(builder.toString(),
+				new String[]{"distributerId","eventTypes"}, 
+				new Object[]{distributerId, typeIds})
+				.intValue();
 	}
 
 }

@@ -12,6 +12,7 @@ import javax.persistence.MappedSuperclass;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yinzhiwu.yiwu.context.UserContext;
 
 /**
  * name rule foreign key: fk_{table name}_{foreign key column name} foreign key
@@ -63,14 +64,25 @@ public abstract class BaseEntity implements Serializable {
 		Date date = new Date();
 		this.createDate = date;
 		this.lastModifiedDate = date;
-		this.createUserId = 1;
-		this.lastModifiedUserId = 1;
+		Distributer distributer = UserContext.getUser();
+		if(distributer != null){
+			this.createUserId = distributer.getId();
+			this.lastModifiedUserId = distributer.getId();
+		}else{
+			this.createUserId = 1;
+			this.lastModifiedUserId = 1;
+		}
 	}
 
 	public void beforeUpdate() {
 		Date date = new Date();
 		this.lastModifiedDate = date;
-		this.lastModifiedUserId = 1;
+		Distributer distributer = UserContext.getUser();
+		if(distributer !=null)
+			this.lastModifiedUserId = distributer.getId();
+		else {
+			this.lastModifiedUserId = 1;
+		}
 	}
 
 	public Integer getId() {

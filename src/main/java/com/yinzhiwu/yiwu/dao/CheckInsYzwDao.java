@@ -23,4 +23,19 @@ public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer> {
 
 	Date findCheckInTimeByProperties(Integer lessonId, Integer actualTeacherId);
 
+	boolean isCheckedIn(String memberCard, Integer lessonId);
+
+	boolean isCheckedIn(Integer distributerId, Integer lessonId);
+
+	List<LessonApiView> findLessonApiViewsByMemeberCard(String memberCard);
+
+	/**
+	 * 分页查询会员已上课时
+	 * @param memberCard
+	 * @return
+	 */
+	PageBean<LessonApiView> findPageCheckedInLessonApiViewsByMemberCard(String memberCard, Integer pageNo, Integer pageSize);
+
+	int findCheckedInLessonsCountByMemeberCard(String memberCard);
+
 }

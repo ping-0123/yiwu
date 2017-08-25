@@ -5,7 +5,7 @@
   <groupId>com.yinzhiwu</groupId>
   <artifactId>yiwu</artifactId>
   <packaging>war</packaging>
-  <version>1.2.3</version>
+  <version>1.2.5</version>
   <name>yiwu</name>
   <url>http://maven.apache.org</url>
   
@@ -74,6 +74,11 @@
 		<artifactId>spring-webmvc</artifactId>
 		<version>${spring.version}</version>
 	</dependency>
+	<dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context-support</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-orm</artifactId>
@@ -169,15 +174,15 @@
 		<artifactId>log4j</artifactId>
 		<version>1.2.17</version>
 	</dependency>
-	
-	<!-- apache 文件上传依赖包 -->
+	 
+	<!-- apache 文件上传依赖包  -->
 	<dependency>
-	    <groupId>commons-fileupload</groupId>
+	   <groupId>commons-fileupload</groupId>
 	    <artifactId>commons-fileupload</artifactId>
 	    <version>1.3.2</version>
-	</dependency>
-
-	<!-- quartz 定时任务 -->
+	 </dependency>
+	 
+	<!-- quartz 定时任务  -->
 	<dependency>
 	    <groupId>org.quartz-scheduler</groupId>
 	    <artifactId>quartz</artifactId>
@@ -219,16 +224,16 @@
     	<resource>
     		<directory>src/main/resources</directory>
     		<excludes>
-    			<exclude>environment/development/*</exclude>
-    			<exclude>environment/test/*</exclude>
-    			<exclude>environment/production/*</exclude>
+    			<exclude>environment/development/**</exclude>
+    			<exclude>environment/test/**</exclude>
+    			<exclude>environment/production/**</exclude>
     			<exclude>dbscripts/**</exclude>
     			<exclude>examples/*</exclude>
     		</excludes>
     	</resource>
     	<resource>
     		<directory>src/main/resources/environment/${environment}</directory>
-    	 	<targetPath>properties</targetPath>
+    	 	<targetPath></targetPath>
     	</resource>
     </resources>
     <plugins>
@@ -247,15 +252,13 @@
     	
    		 <plugin>
 	            <groupId>org.apache.tomcat.maven</groupId>
-		        <artifactId>tomcat7-maven-plugin</artifactId>
+		        <artifactId>tomcat-maven-plugin</artifactId>
 		        <version>2.2</version>
 	              <configuration>
-	                      <url>http://localhost:8080/manager/text</url>
-	                      <server>tomcat</server>
+	                      <url>http://localhost:8080/manager</url>
+	                      <server>tomcat</server> 
 	                      <username>tomcat</username>
 	                      <password>tomcat</password>
-	                      <charset>UTF-8</charset> 
-	                      <path>yiwu</path>
 	              </configuration>
          </plugin>
          

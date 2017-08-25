@@ -42,10 +42,10 @@ public class EmployeeDepartmentYzwDaoImpl extends BaseDaoImpl<EmployeeDepartment
 	@Override
 	public List<DepartmentYzw> findDepartmentsByEmployee(int employeeId) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("SELECT d.department");
-		hql.append(" FROM EmployeeDepartmentYzw d");
-		hql.append(" WHERE d.employee.id=:employeeId");
-		hql.append(" AND d.removed =:removed");
+		hql.append("SELECT t1.department");
+		hql.append(" FROM EmployeeDepartmentYzw t1");
+		hql.append(" WHERE t1.employee.id=:employeeId");
+		hql.append(" AND t1.removed =:removed");
 		List<DepartmentYzw> depts = getSession().createQuery(hql.toString(), DepartmentYzw.class)
 				.setParameter("employeeId", employeeId)
 				.setParameter("removed", false)
@@ -76,6 +76,20 @@ public class EmployeeDepartmentYzwDaoImpl extends BaseDaoImpl<EmployeeDepartment
 		
 		if(list == null) list = new ArrayList<>();
 		return list;
+	}
+
+	@Override
+	public DepartmentYzw findOneDepartmentByEmployee(Integer id) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT t1.department");
+		hql.append(" FROM EmployeeDepartmentYzw t1");
+		hql.append(" WHERE t1.employee.id=:employeeId");
+		hql.append(" AND t1.removed =:removed");
+		return getSession().createQuery(hql.toString(), DepartmentYzw.class)
+				.setParameter("employeeId", id)
+				.setParameter("removed", false)
+				.setMaxResults(1)
+				.getSingleResult();
 	}
 	
 	
