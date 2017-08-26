@@ -172,7 +172,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	}
 	
 	@Override
-	public Contract findCheckableContractOfCustomerAndLesson(CustomerYzw customer, LessonYzw lesson) throws YiwuException{
+	public Contract findCheckableContractOfCustomerAndLesson(CustomerYzw customer, LessonYzw lesson) throws DataNotFoundException{
 		Assert.notNull(customer);
 		Assert.notNull(lesson);
 		
@@ -199,13 +199,13 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 					.getResultList();
 		if(contracts.size()==0){
 			StringBuilder strBuilder = new StringBuilder();
-			strBuilder.append("您不能预约或签到课程\"").append(lesson.getName()).append("\n");
+			strBuilder.append("您不能预约课程\"").append(lesson.getName()).append("\n");
 			strBuilder.append("原因可能有:\n");
 			strBuilder.append("1.您没有音之舞\"").append(lesson.getSubCourseType().getName()).append("\"类会籍合约\n");
-			strBuilder.append("2.您所签到课程的上课日期不在会籍合约的有效日期范围内\n");
-			strBuilder.append("3.您的会籍合约已失效， 即\"有效次数-剩余次数-待扣次数=0\"\n");
+			strBuilder.append("2.您所预约的课程的上课日期不在会籍合约的有效日期范围内\n");
+			strBuilder.append("3.您的会籍合约已失效或即将失效， 即\"剩余次数-待扣次数=0\"\n");
 			strBuilder.append("4.您的会籍合约使用范围不包含\"").append(lesson.getStore().getName()).append("\"\n");
-			throw new YiwuException(strBuilder.toString());
+			throw new DataNotFoundException(strBuilder.toString());
 		}
 		return contracts.get(0);
 		

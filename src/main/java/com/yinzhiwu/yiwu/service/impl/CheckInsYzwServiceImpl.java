@@ -81,7 +81,7 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 
 	@Override
 	public CheckInSuccessApiView saveCustomerCheckIn(int distributerId, int lessonId)
-			throws YiwuException, DataNotFoundException {
+			throws YiwuException {
 		
 		boolean isAppointed = false;
 		Distributer distributer = distibuterDao.get(distributerId);
@@ -109,13 +109,28 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		if(Calendar.getInstance().after(end))
 			throw new YiwuException("课程已结束");
 		//获取已经预约的会籍合约
-		String contractNo = appointmentDao.getAppointedContractNo(distributer.getId(), lesson.getId());
+		String contractNo = null;
+		try{
+			contractNo = appointmentDao.getAppointedContractNo(distributer.getId(), lesson.getId());
+		}catch (Exception e) {
+			String message = e.getMessage();
+			message.replace("预约", "签到");
+			throw new YiwuException(message, e);
+		}
+		
 		if(contractNo != null)
 			isAppointed = true;
 		else{
 			//判断是否能刷卡
-			Contract contract = orderDao.findCheckableContractOfCustomerAndLesson(customer, lesson);
-			contractNo = contract.getContractNo();
+			try {
+				Contract contract = orderDao.findCheckableContractOfCustomerAndLesson(customer, lesson);
+				contractNo = contract.getContractNo();
+			} catch (DataNotFoundException e) {
+				String message = e.getMessage();
+				logger.error(message,e);
+				message.replace("预约", "签到");
+				throw new YiwuException(message);
+			}
 		}
 			
 		
