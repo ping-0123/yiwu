@@ -7,9 +7,14 @@ import java.util.List;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Convert;
 import javax.persistence.Converter;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
@@ -134,7 +139,11 @@ public class Contract {
 	@Column(name = "checked_status")
 	@Convert(converter = ContractStatusConverter.class)
 	private ContractStatus status;
-
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "course_id", foreignKey = @ForeignKey(name = "fk_order_course_id", value = ConstraintMode.NO_CONSTRAINT))
+	private CourseYzw course;
+	
 	public Contract() {
 	}
 
@@ -235,6 +244,14 @@ public class Contract {
 
 	public void setWithHoldTimes(Short withHoldTimes) {
 		this.withHoldTimes = withHoldTimes;
+	}
+
+	public CourseYzw getCourse() {
+		return course;
+	}
+
+	public void setCourse(CourseYzw course) {
+		this.course = course;
 	}
 
 

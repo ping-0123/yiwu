@@ -89,7 +89,7 @@ public class LessonYzw extends BaseYzwEntity {
 	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "courseId", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "course_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private CourseYzw course;
 
 	@Column

@@ -11,11 +11,10 @@ import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
-import com.yinzhiwu.yiwu.util.CalendarUtil;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.YiwuException;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.util.CalendarUtil;
 
 /**
 *@Author ping
@@ -29,14 +28,6 @@ public class OrderYzwDaoTest  extends TestBase{
 	private OrderYzwDao orderYzwDao;
 	@Autowired private CustomerYzwDao customerDao;
 	@Autowired private LessonYzwDao lessonDao;
-	@Test
-	public void testFindValidContracts(){
-		int customerId = 42583;
-		SubCourseType subCourseType = SubCourseType.OPEN_B;
-		int storeId = 66;
-		System.out.println("valid contrats is " + 
-	orderYzwDao.findValidContractsByCustomerIdAndSubCourseTypeAndValidStore(customerId, subCourseType, storeId));
-	}
 	
 	@Test
 	public void testFindCheckableContractsOfCustomerAndLesson(){
@@ -52,9 +43,15 @@ public class OrderYzwDaoTest  extends TestBase{
 			try {
 				orderYzwDao.findCheckableContractOfCustomerAndLesson(customer, lesson);
 				System.out.println("可以预约成功");
-			} catch (YiwuException e) {
+			} catch (DataNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@Test
+	public void testFindContractByContractNo(){
+		String contractNo = "YZW20170822153";
+		System.out.println(orderYzwDao.findContractByContractNo(contractNo));
 	}
 }

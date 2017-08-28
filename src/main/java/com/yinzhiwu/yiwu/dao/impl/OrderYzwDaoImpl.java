@@ -3,21 +3,17 @@ package com.yinzhiwu.yiwu.dao.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaQuery;
 
-import org.hibernate.type.LongType;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
@@ -47,54 +43,17 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 
 	@Override
 	public boolean isCustomerFirstOrder(OrderYzw order) {
-		String hql = "select count(*) from OrderYzw where customer.id=:customerId and product.name like '%卡%' and payedDate <:payedDate";
-		@SuppressWarnings("unchecked")
-		List<Long> counts = (List<Long>) getHibernateTemplate().findByNamedParam(hql,
-				new String[] { "customerId", "payedDate" },
-				new Object[] { order.getCustomer().getId(), order.getPayedDate() });
-		if (counts.get(0) > 0)
-			return false;
-		else
-			return true;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public float get_effective_brockerage_base(OrderYzw order) {
-		String hql = "select sum(amount) from OrderPayedMethod where order.id=:orderId and payedMethod.id <> 3";
-		List<Float> list = (List<Float>) getHibernateTemplate().findByNamedParam(hql, "orderId", order.getId());
-		return list.get(0);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<OrderYzw> find_produce_commission_orders() throws DataNotFoundException {
-		updateLingLingContractDates();
-		String hql = "FROM OrderYzw WHERE createTime >= :payedDate AND product.name like '%卡%' ";
-		List<OrderYzw> orders = (List<OrderYzw>) getHibernateTemplate().findByNamedParam(hql, "payedDate",
-				_get_last_date());
-		if (orders == null || orders.size() == 0)
-			throw new DataNotFoundException(OrderYzw.class, "createTime", _get_last_date());
-		return orders;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<OrderYzw> test_find_produce_commission_orders(Date date) {
-		updateLingLingContractDates();
-		String hql = "from OrderYzw where createTime >= :payedDate and product.name like '%卡%' ";
-		return (List<OrderYzw>) getHibernateTemplate().findByNamedParam(hql, "payedDate", date);
-	}
-
-	private Date _get_last_date() {
-		String sql = "SELECT PREV_FIRE_TIME FROM yiwu.qrtz_triggers where JOB_NAME = 'orderBrockerageJobDetail'";
-		@SuppressWarnings({ "unchecked", "deprecation" })
-		List<Long> list = getSession().createNativeQuery(sql).addScalar("PREV_FIRE_TIME", LongType.INSTANCE).list();
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(list.get(0));
-		if(logger.isDebugEnabled())
-			logger.debug("上一次执行orderBrockerageJobDetail时间是: " + calendar.getTime());
-		return calendar.getTime();
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT COUNT(1)");
+		hql.append(" FROM OrderYzw t1");
+		hql.append(" WHERE t1.customer.id=:customerId");
+		hql.append(" AND t1.product.name like '%卡%'");
+		hql.append(" AND t1.payedDate < :payedDate");
+		Long count = findCount(
+				hql.toString(), 
+				new String[]{"customerId", "payedDate"}, 
+				new Object[]{order.getCustomer().getId(), order.getPayedDate()});
+		return count>0;
 	}
 
 	@Override
@@ -118,61 +77,15 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		return findByProperty("customer.id", customerId);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public OrderYzw get(String id) {
 		updateLingLingContractDates();
-		// 1.select courseId from vorder
-		String hql = "select o.course from OrderYzw o  where o.id = :id";
-		List<CourseYzw> courses = (List<CourseYzw>) getHibernateTemplate().findByNamedParam(hql, "id", id);
-		if (courses != null && courses.size() > 0)
-			return super.get(id);
-		else {
-			OrderYzw order = super.get(id);
-			if (order != null)
-				order.setCourse(null);
-			return order;
-		}
-
+		return super.get(id);
 	}
 
-	@Override
-	public List<String> find_contractNos_by_customer_id(int customerId) {
-		String hql = "select contract.contractNo from OrderYzw t1 where t1.customer.id = :customerId";
-		@SuppressWarnings("unchecked")
-		List<String> constractNos = (List<String>) getHibernateTemplate().findByNamedParam(hql, "customerId",
-				customerId);
-		return constractNos;
-	}
-
-	@Override
-	public Contract findCheckedContractByCustomerIdAndSubCourseType(int customerId, SubCourseType subCourseType) {
-		updateLingLingContractDates();
-		StringBuilder hql = new StringBuilder();
-		hql.append(" SELECT t1.contract");
-		hql.append(" FROM OrderYzw t1");
-		hql.append(" WHERE t1.contract.status = :contractStatus");
-		hql.append(" AND t1.customer.id=:customerId");
-		hql.append(" AND t1.contract.subType= :subCourseType");
-		hql.append(" AND t1.contract.remainTimes - t1.contract.withHoldTimes >=:remainTimes");
-		hql.append(" AND t1.contract.end >=:curdate");
-		hql.append(" ORDER BY t1.contract.end");
-		List<Contract> contracts =    getSession().createQuery(hql.toString(), Contract.class)
-				.setParameter("contractStatus", ContractStatus.CHECKED)
-				.setParameter("customerId", 	customerId)
-				.setParameter("subCourseType", 	subCourseType)
-				.setParameter("remainTimes", 	BigDecimal.valueOf(1))
-				.setParameter("curdate", 		new Date())
-				.setMaxResults(1)
-				.getResultList();
-			if(contracts.size() ==0)
-				return null;
-			return contracts.get(0);
-		
-	}
 	
 	@Override
-	public Contract findCheckableContractOfCustomerAndLesson(CustomerYzw customer, LessonYzw lesson) throws YiwuException{
+	public Contract findCheckableContractOfCustomerAndLesson(CustomerYzw customer, LessonYzw lesson) throws DataNotFoundException{
 		Assert.notNull(customer);
 		Assert.notNull(lesson);
 		
@@ -199,44 +112,14 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 					.getResultList();
 		if(contracts.size()==0){
 			StringBuilder strBuilder = new StringBuilder();
-			strBuilder.append("您不能预约或签到课程\"").append(lesson.getName()).append("\n");
+			strBuilder.append("您不能预约课程\"").append(lesson.getName()).append("\n");
 			strBuilder.append("原因可能有:\n");
 			strBuilder.append("1.您没有音之舞\"").append(lesson.getSubCourseType().getName()).append("\"类会籍合约\n");
-			strBuilder.append("2.您所签到课程的上课日期不在会籍合约的有效日期范围内\n");
-			strBuilder.append("3.您的会籍合约已失效， 即\"有效次数-剩余次数-待扣次数=0\"\n");
+			strBuilder.append("2.您所预约的课程的上课日期不在会籍合约的有效日期范围内\n");
+			strBuilder.append("3.您的会籍合约已失效或即将失效， 即\"剩余次数-待扣次数=0\"\n");
 			strBuilder.append("4.您的会籍合约使用范围不包含\"").append(lesson.getStore().getName()).append("\"\n");
-			throw new YiwuException(strBuilder.toString());
+			throw new DataNotFoundException(strBuilder.toString());
 		}
-		return contracts.get(0);
-		
-	}
-	
-	@Override
-	public Contract findValidContractsByCustomerIdAndSubCourseTypeAndValidStore(int customerId, SubCourseType subCourseType, int storeId) {
-		updateLingLingContractDates();
-		StringBuilder hql = new StringBuilder();
-		hql.append(" SELECT t1.contract");
-		hql.append(" FROM OrderYzw t1");
-		hql.append(" WHERE t1.contract.status = :contractStatus");
-		hql.append(" AND t1.customer.id=:customerId");
-		hql.append(" AND t1.contract.subType= :subCourseType");
-		hql.append(" AND t1.contract.remainTimes - t1.contract.withHoldTimes >=:remainTimes");
-		hql.append(" AND t1.contract.start <= :curdate_start");
-		hql.append(" AND t1.contract.end >= :curdate_end");
-		hql.append(" AND FIND_IN_SET(:storeId , REPLACE(t1.contract.validStoreIds,';',','))>0");
-		hql.append(" ORDER BY t1.contract.end");
-		List<Contract> contracts =    getSession().createQuery(hql.toString(), Contract.class)
-				.setParameter("contractStatus", ContractStatus.CHECKED)
-				.setParameter("customerId", 	customerId)
-				.setParameter("subCourseType", 	subCourseType)
-				.setParameter("remainTimes", 	BigDecimal.valueOf(1))
-				.setParameter("curdate_start", 		new Date())
-				.setParameter("curdate_end", new Date())
-				.setParameter("storeId", String.valueOf(storeId))
-				.setMaxResults(1)
-				.getResultList();
-		if(contracts.size()==0)
-			return null;
 		return contracts.get(0);
 		
 	}
@@ -309,8 +192,8 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	private  int cleanNullCourseIds(){
 		StringBuilder hql = new StringBuilder();
 		hql.append("UPDATE OrderYzw t1");
-		hql.append(" SET t1.course.id = ''");
-		hql.append(" WHERE t1.course.id IS NULL");
+		hql.append(" SET t1.contract.course.id = ''");
+		hql.append(" WHERE t1.contract.course.id IS NULL");
 		return getSession().createQuery(hql.toString()).executeUpdate();
 	}
 	
@@ -403,10 +286,20 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(" FROM OrderYzw t1");
 		hql.append(" WHERE t1.contract.contractNo = :contractNo");
 		
-		return getSession().createQuery(hql.toString(), Contract.class)
+		List<Contract> contracts = getSession().createQuery(hql.toString(), Contract.class)
 				.setParameter("contractNo", contractNo)
-				.setMaxResults(1)
-				.getSingleResult();
+				.getResultList();
+		
+		switch (contracts.size()) {
+		case 0:
+			logger.error("传入的会籍合约号\"" + contractNo + "\"不正确");
+			return null;
+		case 1:
+			return contracts.get(0);
+		default:
+			logger.error("会籍合约\"" + contractNo+ "\"重复");
+			return null;
+		}
 			
 	}
 

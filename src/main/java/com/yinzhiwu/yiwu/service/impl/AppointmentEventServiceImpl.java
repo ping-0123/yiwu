@@ -125,10 +125,10 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		UnAppointmentEvent event = new UnAppointmentEvent(distributer, 1f, lesson);
 		save(event);
 
-		//TODO 返回逻辑做出修改
 		IncomeRecord record = incomeRecordDao.findExpProducedByEvent(event.getId(), IncomeType.EXP);
-		Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(customer.getId(),
-				lesson.getSubCourseType());
+//		Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(customer.getId(),
+//				lesson.getSubCourseType());
+		Contract contract = orderDao.findContractByContractNo(appointment.getContractNo());
 		if (contract != null) {
 			return new AppointSuccessApiView(event, contract, record.getIncomeValue());
 		}
@@ -142,21 +142,6 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 
 	private boolean isAppointed(CustomerYzw customer, LessonYzw lesson) {
 		return appointmentDao.isAppointed(customer, lesson);
-	}
-
-	/**
-	 * 
-	 * 
-	 * @param customer
-	 * @param lesson
-	 * @return
-	 */
-	//TODO 存在一些问题 需要把当天已经预约的， 已经刷卡了的次数去掉
-	private boolean isAppointable(CustomerYzw customer, LessonYzw lesson) {
-		Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(
-				customer.getId(),
-				lesson.getSubCourseType());
-		return contract != null;
 	}
 
 	

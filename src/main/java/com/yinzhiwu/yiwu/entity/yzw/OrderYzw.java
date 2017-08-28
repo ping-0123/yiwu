@@ -127,10 +127,6 @@ public class OrderYzw extends BaseYzwEntity {
 	@Column(name = "payed_date")
 	private Date payedDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "course_id", foreignKey = @ForeignKey(name = "fk_order_course_id", value = ConstraintMode.NO_CONSTRAINT))
-	private CourseYzw course;
-
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "store_id", foreignKey = @ForeignKey(name = "fk_order_store_id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw store;
@@ -311,10 +307,6 @@ public class OrderYzw extends BaseYzwEntity {
 		return payedDate;
 	}
 
-	public CourseYzw getCourse() {
-		return course;
-	}
-
 	public DepartmentYzw getStore() {
 		return store;
 	}
@@ -389,10 +381,6 @@ public class OrderYzw extends BaseYzwEntity {
 
 	public void setPayedDate(Date payedDate) {
 		this.payedDate = payedDate;
-	}
-
-	public void setCourse(CourseYzw course) {
-		this.course = course;
 	}
 
 	public void setStore(DepartmentYzw store) {
