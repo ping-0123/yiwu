@@ -126,8 +126,9 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		save(event);
 
 		IncomeRecord record = incomeRecordDao.findExpProducedByEvent(event.getId(), IncomeType.EXP);
-		Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(customer.getId(),
-				lesson.getSubCourseType());
+//		Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(customer.getId(),
+//				lesson.getSubCourseType());
+		Contract contract = orderDao.findContractByContractNo(appointment.getContractNo());
 		if (contract != null) {
 			return new AppointSuccessApiView(event, contract, record.getIncomeValue());
 		}

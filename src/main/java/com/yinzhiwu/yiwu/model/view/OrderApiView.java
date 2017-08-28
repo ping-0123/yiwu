@@ -53,7 +53,7 @@ public class OrderApiView {
 			this.checkedStatus = contract.getStatus().getStatus();
 		}
 
-		CourseYzw course = o.getCourse();
+		CourseYzw course = contract.getCourse();
 		try {
 			if (course != null) {
 				this.courseId = course.getId();

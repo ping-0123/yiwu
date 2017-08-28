@@ -6,7 +6,6 @@ import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -17,17 +16,9 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 
 	public boolean isCustomerFirstOrder(OrderYzw order);
 
-	public float get_effective_brockerage_base(OrderYzw order);
-
-	public List<OrderYzw> find_produce_commission_orders() throws DataNotFoundException;
-
 	public List<OrderYzw> findByCustomer(CustomerYzw customer);
 
 	public List<OrderYzw> findByCustomerId(int customerId);
-
-	public List<String> find_contractNos_by_customer_id(int customerId);
-
-	public Contract findCheckedContractByCustomerIdAndSubCourseType(int customerId, SubCourseType subCourseType);
 
 	public OrderYzw findByContractNO(String contractNo) throws YiwuException;
 
@@ -44,9 +35,6 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 	public int cleanWithHoldTimes();
 
 	public List<PrivateContractApiView> getPrivateContractsByCustomer(Integer customerId);
-
-	Contract findValidContractsByCustomerIdAndSubCourseTypeAndValidStore(int customerId, SubCourseType subCourseType,
-			int storeId);
 
 	/**
 	 * 
