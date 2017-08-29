@@ -30,6 +30,7 @@ import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
+import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 import com.yinzhiwu.yiwu.service.DistributerService;
@@ -230,7 +231,7 @@ public class DistributerApiController extends BaseController {
 	
 	@GetMapping("/{distributerId}/defaultStore")
 	@ApiOperation(value="返回客户默认的上课门店")
-	public YiwuJson<?> getDefaultStore(@PathVariable(name="distributerId", required=true) Integer distributerId){
+	public YiwuJson<StoreApiView> getDefaultStore(@PathVariable(name="distributerId", required=true) Integer distributerId){
 		return  distributerService.findDefaultStoreApiView(distributerId);
 	}
 }

@@ -447,7 +447,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	}
 
 	@Override
-	public YiwuJson<?> findDefaultStoreApiView(Integer distributerId) {
+	public YiwuJson<StoreApiView> findDefaultStoreApiView(Integer distributerId) {
 		Distributer distributer = distributerDao.get(distributerId);
 		if(distributer == null)
 			return YiwuJson.createByErrorMessage("无效的分销者Id" +distributerId);
