@@ -60,7 +60,8 @@ public class CheckInSuccessApiView {
 		DepartmentYzw store = lesson.getStore();
 		if (store != null) {
 			this.storeName = store.getName();
-			this.city = store.getCity();
+			if(store.getOfficialAddress() != null)
+				this.city = store.getOfficialAddress().getCity();
 		}
 		this.lessonName = lesson.getName();
 		if (lesson.getCourse() != null )

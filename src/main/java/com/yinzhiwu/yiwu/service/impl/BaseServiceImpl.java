@@ -21,7 +21,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		return baseDao;
 	}
 
-	public final void setBaseDao(IBaseDao<T, PK> baseDao) {
+	protected final void setBaseDao(IBaseDao<T, PK> baseDao) {
 		this.baseDao = baseDao;
 	}
 

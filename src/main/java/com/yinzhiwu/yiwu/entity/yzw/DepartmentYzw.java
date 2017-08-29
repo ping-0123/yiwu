@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.yinzhiwu.yiwu.entity.Address;
+
 @Entity
 @Table(name = "vdepartment")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
@@ -25,6 +27,16 @@ public class DepartmentYzw extends BaseYzwEntity{
 	 * 
 	 */
 	private static final long serialVersionUID = 2093904107877155678L;
+	
+	public static enum OrgnizationType{
+		STORE,
+		DISTRICT,
+		OPERATING,
+		MAKET,
+		HR,
+		FINANCE,
+		COMPANY
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,17 +82,13 @@ public class DepartmentYzw extends BaseYzwEntity{
 	private String operationDistrict;
 
 	@Column(length = 16)
-	private String city;
-
-	@Column(length = 16)
 	private String officialAccount;
 
 	@Column
 	private String logo;
-
-	@Column
-	private String province;
-
+	
+	private Address officialAddress;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -129,20 +137,12 @@ public class DepartmentYzw extends BaseYzwEntity{
 		return operationDistrict;
 	}
 
-	public String getCity() {
-		return city;
-	}
-
 	public String getOfficialAccount() {
 		return officialAccount;
 	}
 
 	public String getLogo() {
 		return logo;
-	}
-
-	public String getProvince() {
-		return province;
 	}
 
 	public void setId(Integer id) {
@@ -193,20 +193,12 @@ public class DepartmentYzw extends BaseYzwEntity{
 		this.operationDistrict = operationDistrict;
 	}
 
-	public void setCity(String city) {
-		this.city = city;
-	}
-
 	public void setOfficialAccount(String officialAccount) {
 		this.officialAccount = officialAccount;
 	}
 
 	public void setLogo(String logo) {
 		this.logo = logo;
-	}
-
-	public void setProvince(String province) {
-		this.province = province;
 	}
 
 	public boolean isContain(DepartmentYzw dept){
@@ -216,10 +208,13 @@ public class DepartmentYzw extends BaseYzwEntity{
 		return false;
 	}
 
-	// @OneToMany(mappedBy="department")
-	// List<EmployeeYzw> employees = new ArrayList<>();
+	public Address getOfficialAddress() {
+		return officialAddress;
+	}
 
-	// @OneToMany(mappedBy="superior")
-	// List<DepartmentYzw> subordinates = new ArrayList<>();
-
+	public void setOfficialAddress(Address officialAddress) {
+		this.officialAddress = officialAddress;
+	}
+	
+	
 }

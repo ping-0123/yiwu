@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.yinzhiwu.yiwu.enums.DataStatus;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 @Entity
@@ -36,8 +37,8 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(length = 128)
-	private String user;
+	@Column(length = 128, name ="user")
+	private String username;
 
 	@Column(length = 128)
 	private String seegleUserId;
@@ -118,17 +119,19 @@ public class EmployeeYzw extends BaseYzwEntity {
 
 	@Column(name = "Last_Online_TimeStamp")
 	private Date lastOnlineTimeStamp;
-
+	
+	@Column(length=128, name="passwords")
+	private String passwords;
+	@Column(length=123)
+	private String salt;
+	private DataStatus status=DataStatus.NORMAL;
+	
 	public EmployeeYzw() {
 		super();
 	}
 
 	public Integer getId() {
 		return id;
-	}
-
-	public String getUser() {
-		return user;
 	}
 
 	public String getSeegleUserId() {
@@ -233,10 +236,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
 	}
 
 	public void setSeegleUserId(String seegleUserId) {
@@ -345,6 +344,42 @@ public class EmployeeYzw extends BaseYzwEntity {
 
 	public void setDepartment(DepartmentYzw department) {
 		this.department = department;
+	}
+
+	public String getPasswords() {
+		return passwords;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public DataStatus getStatus() {
+		return status;
+	}
+
+	public void setRemoved(Boolean removed) {
+		this.removed = removed;
+	}
+
+	public void setPasswords(String passwords) {
+		this.passwords = passwords;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+	public void setStatus(DataStatus status) {
+		this.status = status;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }
