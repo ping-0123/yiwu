@@ -10,6 +10,7 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
+import com.yinzhiwu.yiwu.model.view.StoreApiView;
 
 public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 	public String find_last_id();
@@ -44,5 +45,7 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 	 * @throws YiwuException 没有找到满足条件的会籍合约， 则提示可能的原因
 	 */
 	Contract findCheckableContractOfCustomerAndLesson(CustomerYzw customer, LessonYzw lesson) throws DataNotFoundException;
+
+	public StoreApiView findStoreOfValidOpenContractOrder(Integer id);
 
 }

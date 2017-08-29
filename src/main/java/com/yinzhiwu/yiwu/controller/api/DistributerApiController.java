@@ -227,4 +227,10 @@ public class DistributerApiController extends BaseController {
 	public YiwuJson<List<TopThreeApiView>> getTopThree() {
 		return new YiwuJson<>(distributerService.getBrokerageTopThree());
 	}
+	
+	@GetMapping("/{distributerId}/defaultStore")
+	@ApiOperation(value="返回客户默认的上课门店")
+	public YiwuJson<?> getDefaultStore(@PathVariable(name="distributerId", required=true) Integer distributerId){
+		return  distributerService.findDefaultStoreApiView(distributerId);
+	}
 }

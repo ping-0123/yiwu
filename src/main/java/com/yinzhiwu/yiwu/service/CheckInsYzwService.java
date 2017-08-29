@@ -22,5 +22,4 @@ public interface CheckInsYzwService extends IBaseService<CheckInsYzw, Integer> {
 	PageBean<LessonApiView> findPageViewByCustomer(int customerId, Integer pageNo, Integer pageSize);
 
 	int findCheckedInLessonsCountOfCustomer(int customerId);
-
 }
