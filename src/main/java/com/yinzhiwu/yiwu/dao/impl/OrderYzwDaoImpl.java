@@ -287,8 +287,11 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(" FROM OrderYzw t1");
 		hql.append(" WHERE t1.contract.contractNo = :contractNo");
 		
+		
 		List<Contract> contracts = getSession().createQuery(hql.toString(), Contract.class)
 				.setParameter("contractNo", contractNo)
+				//解决会籍合约重复导致刷卡失败的问题
+				.setMaxResults(1)
 				.getResultList();
 		
 		switch (contracts.size()) {
