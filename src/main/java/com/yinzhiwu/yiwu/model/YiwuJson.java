@@ -5,11 +5,8 @@ import java.io.Serializable;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-//@JsonSerialize(include =  JsonSerialize.Inclusion.NON_NULL)
-@JsonInclude(value= Include.NON_NULL)
+//@JsonInclude(value= Include.NON_NULL)
 //保证序列化json的时候,如果是null的对象,key也会消失
 public class YiwuJson<T> implements Serializable {
 

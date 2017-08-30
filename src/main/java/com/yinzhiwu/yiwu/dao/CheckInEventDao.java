@@ -5,5 +5,5 @@ import com.yinzhiwu.yiwu.model.view.CheckInSuccessApiView;
 
 public interface CheckInEventDao extends IBaseDao<CheckInEvent, Integer> {
 	
-	public CheckInSuccessApiView findById(int eventId);
+	public CheckInSuccessApiView findCheckInSuccessApiViewById(int eventId);
 }

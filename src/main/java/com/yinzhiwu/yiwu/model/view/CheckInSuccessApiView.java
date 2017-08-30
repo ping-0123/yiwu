@@ -1,18 +1,10 @@
 package com.yinzhiwu.yiwu.model.view;
 
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
 
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.entity.income.CheckInEvent;
-import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
-import com.yinzhiwu.yiwu.entity.type.IncomeType;
-import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
-import com.yinzhiwu.yiwu.entity.yzw.Contract;
-import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
-import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 
 public class CheckInSuccessApiView {
@@ -42,41 +34,8 @@ public class CheckInSuccessApiView {
 	private Integer withHoldTimes;
 
 	public CheckInSuccessApiView() {
-		super();
 	}
 
-	public CheckInSuccessApiView(CheckInEvent event, Contract contract) {
-		Assert.notNull(event);
-		Assert.notNull(event.getCheckIn());
-		Assert.notNull(event.getCheckIn().getLesson());
-		Assert.notNull(contract);
-		Assert.isTrue(event.getCheckIn().getContractNo().equals(contract.getContractNo()));
-
-		CheckInsYzw checkIn = event.getCheckIn();
-		this.times = (int) event.getParam().floatValue();
-		IncomeRecord record = event.getAppointedIncomeRecord(IncomeType.EXP);
-		if (record != null)
-			exp = record.getIncomeValue();
-		LessonYzw lesson = checkIn.getLesson();
-		DepartmentYzw store = lesson.getStore();
-		if (store != null) {
-			this.storeName = store.getName();
-			this.city = store.getCity();
-		}
-		this.lessonName = lesson.getName();
-		if (lesson.getCourse() != null )
-			this.danceName = lesson.getCourse().getDanceDesc();
-		this.courseType = lesson.getCourseType();
-		this.coachName = lesson.getDueTeacherName();
-		this.lessonDate = lesson.getLessonDate();
-		this.startTime = lesson.getStartTime();
-		this.endTime = lesson.getEndTime();
-		this.contractNo = contract.getContractNo();
-		this.contractStartDate = contract.getStart();
-		this.contractEndDate = contract.getEnd();
-		this.validityTimes = contract.getValidityTimes();
-		this.remainTimes = contract.getRemainTimes().intValue();
-	}
 
 	public Integer getTimes() {
 		return times;
@@ -215,11 +174,11 @@ public class CheckInSuccessApiView {
 		this.withHoldTimes = withHoldTimes;
 	}
 
-	public CheckInSuccessApiView(Integer times, Float exp, String city, String storeName, String lessonName,
+	public CheckInSuccessApiView(Float times, Float exp, String city, String storeName, String lessonName,
 			String danceName, CourseType courseType, String coachName, Date lessonDate, Date startTime, Date endTime,
-			String contractNo, Date contractStartDate, Date contractEndDate, Integer validityTimes, Integer remainTimes,
-			Integer withHoldTimes) {
-		this.times = times;
+			String contractNo, Date contractStartDate, Date contractEndDate, Integer validityTimes, BigDecimal remainTimes,
+			Short withHoldTimes) {
+		this.times = times.intValue();
 		this.exp = exp;
 		this.city = city;
 		this.storeName = storeName;
@@ -234,8 +193,8 @@ public class CheckInSuccessApiView {
 		this.contractStartDate = contractStartDate;
 		this.contractEndDate = contractEndDate;
 		this.validityTimes = validityTimes;
-		this.remainTimes = remainTimes;
-		this.withHoldTimes = withHoldTimes;
+		this.remainTimes = remainTimes.intValue();
+		this.withHoldTimes = withHoldTimes.intValue();
 	}
 
 	

@@ -12,16 +12,13 @@ import com.yinzhiwu.yiwu.dao.AppointmentEventDao;
 import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
-import com.yinzhiwu.yiwu.dao.IncomeRecordDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.income.AbstractAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.AppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.BreakAppointmentEvent;
-import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.entity.income.UnAppointmentEvent;
-import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
@@ -49,10 +46,9 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	private LessonYzwDao lessonDao;
 	@Autowired
 	private AppointmentYzwDao appointmentDao;
+	@Autowired private AppointmentEventDao appointmentEventDao;
 	@Autowired
 	private OrderYzwDao orderDao;
-	@Autowired
-	private IncomeRecordDao incomeRecordDao;
 	@Autowired CheckInsYzwDao checkInsDao;
 
 	/**
@@ -95,8 +91,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		AppointmentEvent event = new AppointmentEvent(distributer,  lesson);
 		this.save(event);
 		// return
-		IncomeRecord record = incomeRecordDao.findExpProducedByEvent(event.getId(), IncomeType.EXP);
-		return new AppointSuccessApiView(event, contract, record.getIncomeValue());
+		return appointmentEventDao.findAppointSuccessApiViewById(event.getId());
 	}
 
 	@Override
@@ -124,15 +119,8 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		
 		UnAppointmentEvent event = new UnAppointmentEvent(distributer, 1f, lesson);
 		save(event);
-
-		IncomeRecord record = incomeRecordDao.findExpProducedByEvent(event.getId(), IncomeType.EXP);
-//		Contract contract = orderDao.findCheckedContractByCustomerIdAndSubCourseType(customer.getId(),
-//				lesson.getSubCourseType());
-		Contract contract = orderDao.findContractByContractNo(appointment.getContractNo());
-		if (contract != null) {
-			return new AppointSuccessApiView(event, contract, record.getIncomeValue());
-		}
-		return null;
+		
+		return appointmentEventDao.findAppointSuccessApiViewById(event.getId());
 	}
 
 	@SuppressWarnings("unused")
