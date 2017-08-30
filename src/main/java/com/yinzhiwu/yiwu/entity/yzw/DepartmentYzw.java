@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.entity.yzw;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -87,6 +88,7 @@ public class DepartmentYzw extends BaseYzwEntity{
 	@Column
 	private String logo;
 	
+	@Embedded
 	private Address officialAddress;
 	
 	public Integer getId() {
