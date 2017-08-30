@@ -200,7 +200,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 			Date date, int pageNo, int pageSize) {
 		PageBean<LessonApiView> page = lessonDao.findPageOfClosedLessonApiViewByStoreIdAndLessonDate(storeId ,date, pageNo, pageSize);
 		if(page.getList().size() ==0)
-			return YiwuJson.createBySuccessMessage("未找到封闭式课程");
+			return YiwuJson.createByErrorMessage("未找到封闭式课程");
 		//设置pictureURL
 		for (LessonApiView view : page.getList()) {
 			view.setPictureUrl(fileService.getFileUrl(view.getPictureUrl()));

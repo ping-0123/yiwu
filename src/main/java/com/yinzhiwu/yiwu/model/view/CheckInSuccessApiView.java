@@ -39,6 +39,7 @@ public class CheckInSuccessApiView {
 	private Date contractEndDate;
 	private Integer validityTimes;
 	private Integer remainTimes;
+	private Integer withHoldTimes;
 
 	public CheckInSuccessApiView() {
 		super();
@@ -197,26 +198,6 @@ public class CheckInSuccessApiView {
 		this.contractEndDate = contractEndDate;
 	}
 
-	public CheckInSuccessApiView(Integer times, Float exp, String city, String storeName, String lessonName,
-			CourseType courseType, String coachName, Date lessonDate, Time startTime, Time endTime, String contractNo,
-			Date contractStartDate, Date contractEndDate, Integer validityTimes, Integer remainTimes) {
-		super();
-		this.times = times;
-		this.exp = exp;
-		this.city = city;
-		this.storeName = storeName;
-		this.lessonName = lessonName;
-		this.courseType = courseType;
-		this.coachName = coachName;
-		this.lessonDate = lessonDate;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.contractNo = contractNo;
-		this.contractStartDate = contractStartDate;
-		this.contractEndDate = contractEndDate;
-		this.validityTimes = validityTimes;
-		this.remainTimes = remainTimes;
-	}
 
 	public String getDanceName() {
 		return danceName;
@@ -226,4 +207,36 @@ public class CheckInSuccessApiView {
 		this.danceName = danceName;
 	}
 
+	public Integer getWithHoldTimes() {
+		return withHoldTimes;
+	}
+
+	public void setWithHoldTimes(Integer withHoldTimes) {
+		this.withHoldTimes = withHoldTimes;
+	}
+
+	public CheckInSuccessApiView(Integer times, Float exp, String city, String storeName, String lessonName,
+			String danceName, CourseType courseType, String coachName, Date lessonDate, Date startTime, Date endTime,
+			String contractNo, Date contractStartDate, Date contractEndDate, Integer validityTimes, Integer remainTimes,
+			Integer withHoldTimes) {
+		this.times = times;
+		this.exp = exp;
+		this.city = city;
+		this.storeName = storeName;
+		this.lessonName = lessonName;
+		this.danceName = danceName;
+		this.courseType = courseType;
+		this.coachName = coachName;
+		this.lessonDate = lessonDate;
+		this.startTime = (Time) startTime;
+		this.endTime = (Time) endTime;
+		this.contractNo = contractNo;
+		this.contractStartDate = contractStartDate;
+		this.contractEndDate = contractEndDate;
+		this.validityTimes = validityTimes;
+		this.remainTimes = remainTimes;
+		this.withHoldTimes = withHoldTimes;
+	}
+
+	
 }
