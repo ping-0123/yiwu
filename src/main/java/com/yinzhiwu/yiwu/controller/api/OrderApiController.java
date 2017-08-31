@@ -58,7 +58,7 @@ public class OrderApiController {
 	@GetMapping(value="")
 	@ApiOperation(value="查询客户的订单列表")
 	public YiwuJson<PageBean<OrderApiView>>  findPageOfOrderApiViewByDistributerId(
-			Integer distributerId,
+			@RequestParam(value="distributerId", required =true) Integer distributerId,
 			@RequestParam(value="pageNo", defaultValue="1", required=false) int pageNo,
 			@RequestParam(value="pageSize",defaultValue="10", required=false) int pageSize){
 		Distributer distributer = distributerDao.get(distributerId);
