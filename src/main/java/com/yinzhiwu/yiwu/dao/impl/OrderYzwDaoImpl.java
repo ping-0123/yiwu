@@ -37,8 +37,10 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		List<String> list = getSession().createNativeQuery(sql).list();
 		if (list.size() > 0)
 			return list.get(0);
-		else
+		else{
+			logger.warn("the order table has no data");;
 			return "20000101001";
+		}
 	}
 
 	@Override
@@ -361,7 +363,5 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		super.update(entity);
 		cleanNullCourseIds();
 	}
-	
-	
 	
 }

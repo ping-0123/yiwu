@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.model.view;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -10,14 +11,19 @@ import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 
 public class OrderApiView {
 
-	private Log LOG = LogFactory.getLog(OrderApiView.class);
+	private static Log logger = LogFactory.getLog(OrderApiView.class);
 
 	private String id;
+	private Integer productId;
+	private String productName;
+	private Date payedDate;
 	private String contractNo;
 	private CourseType productType;
+	private SubCourseType subCourseType;
 	private int validityTimes;
 	private int remainTimes;
 	private int withHoldTimes;
@@ -32,7 +38,6 @@ public class OrderApiView {
 	private String courseName;
 	private String courseStore;
 	private Date courseStartDate;
-	private Boolean eContractStatus;
 
 	public OrderApiView() {
 	};
@@ -50,6 +55,7 @@ public class OrderApiView {
 			this.contractStart = contract.getStart();
 			this.contractEnd = contract.getEnd();
 			this.productType = contract.getType();
+			this.subCourseType = contract.getSubType();
 			this.checkedStatus = contract.getStatus().getStatus();
 		}
 
@@ -62,9 +68,8 @@ public class OrderApiView {
 				this.courseStartDate = course.getStartDate();
 			}
 		} catch (Exception e) {
-			LOG.warn(e.getMessage());
+			logger.warn(e.getMessage());
 		}
-		this.eContractStatus = o.geteContractStatus();
 	}
 
 	public String getId() {
@@ -147,14 +152,6 @@ public class OrderApiView {
 		this.courseStartDate = courseStartDate;
 	}
 
-	public Boolean geteContractStatus() {
-		return eContractStatus;
-	}
-
-	public void seteContractStatus(Boolean eContractStatus) {
-		this.eContractStatus = eContractStatus;
-	}
-
 	public String getCheckedStatus() {
 		return checkedStatus;
 	}
@@ -177,6 +174,57 @@ public class OrderApiView {
 
 	public void setWithHoldTimes(int withHoldTimes) {
 		this.withHoldTimes = withHoldTimes;
+	}
+
+	public SubCourseType getSubCourseType() {
+		return subCourseType;
+	}
+
+	public void setSubCourseType(SubCourseType subCourseType) {
+		this.subCourseType = subCourseType;
+	}
+
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public Date getPayedDate() {
+		return payedDate;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public void setPayedDate(Date payedDate) {
+		this.payedDate = payedDate;
+	}
+
+	public OrderApiView(String id, Integer productId, String productName, Date payedDate, String contractNo,
+			CourseType productType, SubCourseType subCourseType, int validityTimes, BigDecimal remainTimes, Short withHoldTimes,
+			Date contractStart, Date contractEnd, String checkedStatus, String courseId) {
+		this.id = id;
+		this.productId = productId;
+		this.productName = productName;
+		this.payedDate = payedDate;
+		this.contractNo = contractNo;
+		this.productType = productType;
+		this.subCourseType = subCourseType;
+		this.validityTimes = validityTimes;
+		this.remainTimes = remainTimes.intValue();
+		this.withHoldTimes = withHoldTimes;
+		this.contractStart = contractStart;
+		this.contractEnd = contractEnd;
+		this.checkedStatus = checkedStatus;
+		this.courseId = courseId;
 	}
 
 }

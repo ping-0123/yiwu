@@ -22,6 +22,10 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 
 	public OrderYzw findByContractNO(String contractNo) throws YiwuException;
 
+	/**
+	 * 计算佣金用，找出前天的所有订单
+	 * @return
+	 */
 	public List<OrderYzw> findAllLastDayOrders();
 
 	public PageBean<OrderYzw> findPayedOrderPageByCustomerId(int customerId, int pageNo, int pageSize);

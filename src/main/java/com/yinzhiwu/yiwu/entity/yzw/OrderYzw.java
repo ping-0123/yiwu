@@ -24,10 +24,13 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.Assert;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 
+@JsonInclude(value= Include.NON_NULL)
 @Entity
 @Table(name = "vorder")
 public class OrderYzw extends BaseYzwEntity {
@@ -138,36 +141,6 @@ public class OrderYzw extends BaseYzwEntity {
 	@Embedded
 	private Contract contract;
 
-	// @Column(name="checked_status", length=32)
-	// private String checkedStatus;
-
-	// @Column(length=32)
-	// private String contractNo;
-	//
-	// @Column
-	// private Integer validity;
-	//
-	// @Column(name="validity_times")
-	// private Integer validityTimes;
-	//
-	// @Column
-	// private Date startDate;
-	//
-	// @Column
-	// private Date endDate;
-	//
-	// @Column(name="remain_times")
-	// private Float remainTimes;
-	//
-	// @Column(length=32, name="product_type")
-	// private String productType;
-	//
-	// @Column(length=32, name="product_subType")
-	// private String productSubType;
-
-	// @Column(name="valid_storeids")
-	// private String validStoreIds;
-
 	@Column(length = 32)
 	private String recommender;
 
@@ -217,6 +190,8 @@ public class OrderYzw extends BaseYzwEntity {
 	public OrderYzw() {
 	}
 
+	
+	
 	public OrderYzw(CustomerYzw cust, ProductYzw product, float payAmount, DepartmentYzw dept) {
 		Assert.notNull(cust);
 		Assert.notNull(product);
@@ -481,6 +456,17 @@ public class OrderYzw extends BaseYzwEntity {
 
 	public void seteContractStatus(Boolean eContractStatus) {
 		this.eContractStatus = eContractStatus;
+	}
+
+
+	public OrderYzw(String id, int productId, String productName, Date payedDate, Contract contract) {
+		this.id = id;
+		this.payedDate = payedDate;
+		this.contract = contract;
+		ProductYzw p = new ProductYzw();
+		p.setId(productId);
+		p.setName(productName);
+		this.product = p;
 	}
 
 
