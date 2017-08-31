@@ -136,36 +136,6 @@ public class OrderYzw extends BaseYzwEntity {
 	@Embedded
 	private Contract contract;
 
-	// @Column(name="checked_status", length=32)
-	// private String checkedStatus;
-
-	// @Column(length=32)
-	// private String contractNo;
-	//
-	// @Column
-	// private Integer validity;
-	//
-	// @Column(name="validity_times")
-	// private Integer validityTimes;
-	//
-	// @Column
-	// private Date startDate;
-	//
-	// @Column
-	// private Date endDate;
-	//
-	// @Column(name="remain_times")
-	// private Float remainTimes;
-	//
-	// @Column(length=32, name="product_type")
-	// private String productType;
-	//
-	// @Column(length=32, name="product_subType")
-	// private String productSubType;
-
-	// @Column(name="valid_storeids")
-	// private String validStoreIds;
-
 	@Column(length = 32)
 	private String recommender;
 

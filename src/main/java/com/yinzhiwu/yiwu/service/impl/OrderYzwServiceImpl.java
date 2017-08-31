@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
@@ -268,6 +269,8 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 	@Override
 	public YiwuJson<PageBean<OrderApiView>> findPageOfOrderApiViewByDistributer(Distributer distributer, int pageNo,
 			int pageSize) {
+		Assert.notNull(distributer, "orderYzwServiceImpl.findPageOfOrderApiViewByDistributer.distributer 不能为null");
+		
 		PageBean<OrderApiView> page = orderDao.findPageOfOrderApiViewByCustomerId(distributer.getCustomer().getId(), pageNo, pageSize);
 		List<OrderApiView> views = page.getData();
 		for (OrderApiView view : views) {

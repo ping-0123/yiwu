@@ -29,6 +29,8 @@ public class OrderYzwServiceTest  extends TestBase{
 //		int customerId = 33897;
 		int distributerId = 3002113;
 		Distributer distributer = distributerService.get(distributerId);
+		if(distributer == null)
+			return ;
 		YiwuJson<PageBean<OrderApiView>> json =
 				orderService.findPageOfOrderApiViewByDistributer(distributer, 1, 10);
 		String json2 = new Gson().toJson(json);
