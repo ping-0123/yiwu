@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
@@ -262,6 +263,37 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 			return YiwuJson.createByErrorMessage("您没有购买过私教课产品");
 		return YiwuJson.createBySuccess(views);
 	}
+
+
+	@Override
+	public YiwuJson<PageBean<OrderApiView>> findPageOfOrderApiViewByDistributer(Distributer distributer, int pageNo,
+			int pageSize) {
+		PageBean<OrderApiView> page = orderDao.findPageOfOrderApiViewByCustomerId(distributer.getCustomer().getId(), pageNo, pageSize);
+		List<OrderApiView> views = page.getData();
+		for (OrderApiView view : views) {
+			view.setValidStores(converStoreIdsToStoreNames(view.getValidStores()));
+		}
+		return YiwuJson.createBySuccess(page);
+	}
 	
-	
+	private String converStoreIdsToStoreNames(String semicolonSeparateStoreIds){
+		if( ! StringUtils.hasLength(semicolonSeparateStoreIds))
+			return null;
+		StringBuilder names = new StringBuilder();
+		String ids = semicolonSeparateStoreIds;
+		ids.replace(" ","");
+		String[] idArr = ids.split(";");
+		for (String id : idArr) {
+			DepartmentYzw dept =  deptDao.get(Integer.valueOf(id.trim()));
+			if(dept != null){
+				names.append(dept.getName());
+				names.append(",");
+			}
+		}
+		
+		String s =names.toString();
+		//去除最要一个逗号
+		return s.substring(0,s.length()-1);
+		
+	}
 }

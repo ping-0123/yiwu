@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yinzhiwu.yiwu.dao.DistributerDao;
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.ReturnedJson;
 import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderAbbrApiView;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
@@ -33,6 +36,8 @@ public class OrderApiController {
 
 	@Autowired
 	private OrderYzwService orderYzwService;
+	@Autowired
+	private DistributerDao distributerDao;
 
 	@RequestMapping(value = "/getDailyOrders", method = { RequestMethod.GET, RequestMethod.POST })
 	public ReturnedJson getDailyOrdersByStore(@RequestParam int storeId, @RequestParam Date payedDate,
@@ -44,11 +49,24 @@ public class OrderApiController {
 		}
 	}
 
+	@Deprecated
 	@GetMapping(value = "/list")
 	public YiwuJson<List<OrderAbbrApiView>> findByDistributerId(int distributerId) {
 		return orderYzwService.findByDistributerId(distributerId);
 	}
 
+	@GetMapping
+	@ApiOperation(value="查询客户的订单列表")
+	public YiwuJson<PageBean<OrderApiView>>  findPageOfOrderApiViewByDistributerId(
+			Integer distributerId,
+			@RequestParam(value="pageNo", defaultValue="1", required=false) int pageNo,
+			@RequestParam(value="pageSize",defaultValue="10", required=false) int pageSize){
+		Distributer distributer = distributerDao.get(distributerId);
+		if(distributer == null )
+			return YiwuJson.createByErrorMessage("不存在Id为:" + distributerId + " 的客户");
+		return orderYzwService.findPageOfOrderApiViewByDistributer(distributer,  pageNo,  pageSize);
+	}
+	
 	@GetMapping(value = "/count")
 	public YiwuJson<Long> findCount(int customerId) {
 		try {

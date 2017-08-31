@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.service;
 
 import java.util.List;
 
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -25,6 +26,8 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 	void modify(String id, OrderSaveDto order) throws Exception;
 
 	YiwuJson<List<PrivateContractApiView>> getPrivateContractsByCustomer(Integer customerId);
+
+	YiwuJson<PageBean<OrderApiView>> findPageOfOrderApiViewByDistributer(Distributer distributer, int pageNo, int pageSize);
 
 
 }

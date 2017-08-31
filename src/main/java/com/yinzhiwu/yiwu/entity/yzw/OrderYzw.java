@@ -25,8 +25,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 
 @Entity
 @Table(name = "vorder")
@@ -240,14 +238,6 @@ public class OrderYzw extends BaseYzwEntity {
 		calendar.add(Calendar.MONTH, product.getUsefulLife());
 		contract.setEnd(calendar.getTime());
 		contract.setRemainTimes(BigDecimal.valueOf(product.getUsefulTimes()));
-		if ("成人".equals(cust.getAddress())) {
-			contract.setType(CourseType.OPENED);
-			contract.setSubType(SubCourseType.OPEN_B);
-		} else {
-			contract.setType(CourseType.CLOSED);
-			contract.setSubType(SubCourseType.CLOSED);
-		}
-		contract.setValidStoreIds("61; 62; 63; 64; 65; 66; 67; 68; 69");
 		this.contract = contract;
 
 	}

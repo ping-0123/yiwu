@@ -20,6 +20,7 @@ import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
+import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
@@ -369,7 +370,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	@Override
 	public StoreApiView findStoreOfValidOpenContractOrder(Integer customerId) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("SELECT new com.yinzhiwu.yiwu.model.view.StoreApiView");
+		hql.append("SELECT new " + StoreApiView.class.getName());
 		hql.append("(");
 		hql.append("t1.lesson.store.id");
 		hql.append(",t1.lesson.store.name");
@@ -389,6 +390,34 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 			return null;
 		else
 			return views.get(0);
+	}
+
+	@Override
+	public PageBean<OrderApiView> findPageOfOrderApiViewByCustomerId(Integer customerId, int pageNo, int pageSize) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT new " + OrderApiView.class.getName());
+		hql.append("(");
+		hql.append("t1.id");
+		hql.append(",t1.product.id");
+		hql.append(",t1.product.name");
+		hql.append(",t1.payedDate");
+		hql.append(",t1.contract.contractNo");
+		hql.append(",t1.contract.type");
+		hql.append(",t1.contract.subType");
+		hql.append(",t1.contract.validityTimes");
+		hql.append(",t1.contract.remainTimes");
+		hql.append(",t1.contract.withHoldTimes");
+		hql.append(",t1.contract.validStoreIds");
+		hql.append(",t1.contract.start");
+		hql.append(",t1.contract.end");
+		hql.append(",t1.contract.status");
+		hql.append(",t1.contract.course.id");
+		hql.append(")");
+		hql.append(" FROM OrderYzw t1");
+		hql.append(" WHERE t1.customer.id = :customerId");
+		hql.append(" ORDER BY t1.payedDate DESC");
+		
+		return findPage(hql.toString(), OrderApiView.class, "customerId", customerId, pageNo, pageSize);
 	}
 	
 	

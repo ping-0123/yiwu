@@ -1,33 +1,45 @@
 package com.yinzhiwu.yiwu.model.view;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
+import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
-import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
+import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 
+@JsonInclude(value= Include.NON_NULL)
 public class OrderApiView {
 
-	private Log LOG = LogFactory.getLog(OrderApiView.class);
+	private static Log logger = LogFactory.getLog(OrderApiView.class);
 
 	private String id;
+	private Integer productId;
+	private String productName;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
+	private Date payedDate;
 	private String contractNo;
 	private CourseType productType;
-	private int validityTimes;
-	private int remainTimes;
-	private int withHoldTimes;
+	private SubCourseType subCourseType;
+	private Integer validityTimes;
+	private Integer remainTimes;
+	private Integer withHoldTimes;
+	private String validStores;
 	// 合约开始日期
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date contractStart;
 	// 合约结束日期
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date contractEnd;
-	private String checkedStatus;
+	private  ContractStatus checkedStatus;
 	private String courseId;
 	private String courseName;
 	private String courseStore;
@@ -46,11 +58,11 @@ public class OrderApiView {
 			this.contractNo = contract.getContractNo();
 			this.validityTimes = contract.getValidityTimes();
 			this.remainTimes = contract.getRemainTimes().intValue();
-			this.withHoldTimes = contract.getWithHoldTimes();
+			this.withHoldTimes = contract.getWithHoldTimes().intValue();
 			this.contractStart = contract.getStart();
 			this.contractEnd = contract.getEnd();
 			this.productType = contract.getType();
-			this.checkedStatus = contract.getStatus().getStatus();
+			this.checkedStatus = contract.getStatus();
 		}
 
 		CourseYzw course = contract.getCourse();
@@ -62,7 +74,7 @@ public class OrderApiView {
 				this.courseStartDate = course.getStartDate();
 			}
 		} catch (Exception e) {
-			LOG.warn(e.getMessage());
+			logger.warn(e.getMessage());
 		}
 		this.eContractStatus = o.geteContractStatus();
 	}
@@ -155,11 +167,11 @@ public class OrderApiView {
 		this.eContractStatus = eContractStatus;
 	}
 
-	public String getCheckedStatus() {
+	public ContractStatus getCheckedStatus() {
 		return checkedStatus;
 	}
 
-	public void setCheckedStatus(String checkedStatus) {
+	public void setCheckedStatus(ContractStatus checkedStatus) {
 		this.checkedStatus = checkedStatus;
 	}
 
@@ -177,6 +189,78 @@ public class OrderApiView {
 
 	public void setWithHoldTimes(int withHoldTimes) {
 		this.withHoldTimes = withHoldTimes;
+	}
+
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public Date getPayedDate() {
+		return payedDate;
+	}
+
+	public void setPayedDate(Date payedDate) {
+		this.payedDate = payedDate;
+	}
+
+	public SubCourseType getSubCourseType() {
+		return subCourseType;
+	}
+
+	public void setSubCourseType(SubCourseType subCourseType) {
+		this.subCourseType = subCourseType;
+	}
+
+	public OrderApiView(String id, Integer productId, String productName, Date payedDate, String contractNo,
+			CourseType productType, SubCourseType subCourseType, Integer validityTimes, BigDecimal remainTimes, Short withHoldTimes,
+			String validStoreIds, Date contractStart, Date contractEnd, ContractStatus checkedStatus, String courseId) {
+		this.id = id;
+		this.productId = productId;
+		this.productName = productName;
+		this.payedDate = payedDate;
+		this.contractNo = contractNo;
+		this.productType = productType;
+		this.subCourseType = subCourseType;
+		this.validityTimes = validityTimes;
+		this.remainTimes =remainTimes==null?0:remainTimes.intValue();
+		this.withHoldTimes = withHoldTimes.intValue();
+		this.validStores  = validStoreIds;
+		this.contractStart = contractStart;
+		this.contractEnd = contractEnd;
+		this.checkedStatus = checkedStatus;
+		this.courseId = courseId;
+	}
+
+	public String getValidStores() {
+		return validStores;
+	}
+
+	public void setValidityTimes(Integer validityTimes) {
+		this.validityTimes = validityTimes;
+	}
+
+	public void setRemainTimes(Integer remainTimes) {
+		this.remainTimes = remainTimes;
+	}
+
+	public void setWithHoldTimes(Integer withHoldTimes) {
+		this.withHoldTimes = withHoldTimes;
+	}
+
+	public void setValidStores(String validStores) {
+		this.validStores = validStores;
 	}
 
 }
