@@ -55,7 +55,7 @@ public class OrderApiController {
 		return orderYzwService.findByDistributerId(distributerId);
 	}
 
-	@GetMapping
+	@GetMapping(value="")
 	@ApiOperation(value="查询客户的订单列表")
 	public YiwuJson<PageBean<OrderApiView>>  findPageOfOrderApiViewByDistributerId(
 			Integer distributerId,
