@@ -22,12 +22,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "vcourse")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class CourseYzw extends BaseYzwEntity {
 
 	/**
@@ -366,8 +370,9 @@ public class CourseYzw extends BaseYzwEntity {
 			@AttributeOverride(name = "danceIntroduction", column = @Column(name = "danceIntroduction")) })
 	private Connotation connotation;
 
-	// @OneToMany
-	// List<OrderYzw> orders = new ArrayList<>();
+	 @OneToMany(mappedBy="course")
+	 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+	 List<LessonYzw> lessons = new ArrayList<>();
 
 	public CourseYzw() {
 		super();
@@ -707,6 +712,14 @@ public class CourseYzw extends BaseYzwEntity {
 
 	public void setConnotation(Connotation connotation) {
 		this.connotation = connotation;
+	}
+
+	public List<LessonYzw> getLessons() {
+		return lessons;
+	}
+
+	public void setLessons(List<LessonYzw> lessons) {
+		this.lessons = lessons;
 	}
 
 }

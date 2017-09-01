@@ -22,6 +22,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseTypeConverter;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
@@ -29,6 +32,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseTypeConverter;
 
 @Entity
 @Table(name = "vlesson")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class LessonYzw extends BaseYzwEntity {
 
 	/**
