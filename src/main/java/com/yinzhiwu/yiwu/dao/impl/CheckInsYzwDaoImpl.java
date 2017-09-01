@@ -19,8 +19,10 @@ import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
+import com.yinzhiwu.yiwu.model.view.StoreApiView;
 
 @Repository
 public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implements CheckInsYzwDao {
@@ -173,7 +175,7 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 	@Override
 	public PageBean<LessonApiView> findPageCheckedInLessonApiViewsByMemberCard(String memberCard, Integer pageNo, Integer pageSize) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("SELECT new com.yinzhiwu.yiwu.model.view.LessonApiView");
+		hql.append("SELECT new " + LessonApiView.class.getName());
 		hql.append("(");
 		hql.append("t1.lesson.id");
 		hql.append(",t1.lesson.name");
@@ -189,6 +191,30 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 		
 		return findPage(hql.toString(), LessonApiView.class, new String[]{"memberCard"}, new Object[]{memberCard}, pageNo, pageSize);
 	}
+	
+	@Override
+	public PageBean<LessonApiView> findPageOfLessonApiViewsByContractNo(String contractNo, int pageNo, int pageSize){
+		Assert.hasLength(contractNo);
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT new " + LessonApiView.class.getName());
+		hql.append("(");
+		hql.append("t1.lesson.id");
+		hql.append(",t1.lesson.name");
+		hql.append(",t1.lesson.lessonDate");
+		hql.append(",t1.lesson.actualTeacherName");
+		hql.append(",t1.lesson.storeName");
+		hql.append(")");
+		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" WHERE t1.contractNo = :contractNo");
+		//老师也已签到
+		hql.append(" AND t1.lesson.actualTeacher.id IS NOT NULL");
+		hql.append(" AND t1.lesson.actualTeacher.id <>  0");
+		hql.append(" ORDER BY t1.createTime DESC");
+		
+		return findPage(hql.toString(), LessonApiView.class, "contractNo", contractNo, pageNo, pageSize);
+		
+	}
 
 	@Override
 	public int findCheckedInLessonsCountByMemeberCard(String memberCard) {
@@ -199,6 +225,33 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 		hql.append(" AND t1.lesson.actualTeacher.id IS NOT NULL");
 		hql.append(" AND t1.lesson.actualTeacher.id <>  0");
 		return findCount(hql.toString(), "memberCard", memberCard).intValue();
+	}
+
+	@Override
+	public StoreApiView findStoreApiViewOfLastCheckedOpenLesson(String memberCard) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT new com.yinzhiwu.yiwu.model.view.StoreApiView");
+		hql.append("(");
+		hql.append("t1.lesson.store.id");
+		hql.append(",t1.lesson.store.name");
+		hql.append(",t1.lesson.store.superior.id");
+		hql.append(")");
+		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" WHERE t1.memberCard = :memberCard");
+		hql.append(" AND t1.lesson.courseType= :courseType");
+		hql.append(" ORDER BY t1.createTime DESC");
+		
+		List<StoreApiView> views = getSession().createQuery(hql.toString(), StoreApiView.class)
+				.setParameter("memberCard", memberCard)
+				.setParameter("courseType", CourseType.CLOSED)
+				.setMaxResults(1)
+				.getResultList();
+		
+		if(views.size()==0)
+			return null;
+		else
+			return views.get(0);
+		
 	}
 
 }

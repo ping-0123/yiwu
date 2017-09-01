@@ -35,7 +35,7 @@ public class DistributerApiView implements Serializable {
 	private int customerId;
 	private int empoyeeId;
 	private float beatRate;
-
+	
 	public DistributerApiView() {
 	}
 

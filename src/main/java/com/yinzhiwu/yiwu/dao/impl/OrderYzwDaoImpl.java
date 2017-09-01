@@ -20,7 +20,9 @@ import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
+import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
+import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
 import com.yinzhiwu.yiwu.util.GeneratorUtil;
 
@@ -288,8 +290,11 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(" FROM OrderYzw t1");
 		hql.append(" WHERE t1.contract.contractNo = :contractNo");
 		
+		
 		List<Contract> contracts = getSession().createQuery(hql.toString(), Contract.class)
 				.setParameter("contractNo", contractNo)
+				//解决会籍合约重复导致刷卡失败的问题
+				.setMaxResults(1)
 				.getResultList();
 		
 		switch (contracts.size()) {
@@ -362,6 +367,59 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	public void update(OrderYzw entity) {
 		super.update(entity);
 		cleanNullCourseIds();
+	}
+
+	@Override
+	public StoreApiView findStoreOfValidOpenContractOrder(Integer customerId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT new " + StoreApiView.class.getName());
+		hql.append("(");
+		hql.append("t1.lesson.store.id");
+		hql.append(",t1.lesson.store.name");
+		hql.append(",t1.lesson.store.superior.id");
+		hql.append(")");
+		hql.append(" FROM OrderYzw t1");
+		hql.append(" WHERE t1.customer.id = :customerId");
+		hql.append(" AND t1.contract.type =:openCourseType");
+		
+		List<StoreApiView> views = getSession().createQuery(hql.toString(), StoreApiView.class)
+				.setParameter("customerId", customerId)
+				.setParameter("openCourseType", CourseType.OPENED)
+				.setMaxResults(1)
+				.getResultList();
+		
+		if(views.size() ==0)
+			return null;
+		else
+			return views.get(0);
+	}
+
+	@Override
+	public PageBean<OrderApiView> findPageOfOrderApiViewByCustomerId(Integer customerId, int pageNo, int pageSize) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT new " + OrderApiView.class.getName());
+		hql.append("(");
+		hql.append("t1.id");
+		hql.append(",t1.product.id");
+		hql.append(",t1.product.name");
+		hql.append(",t1.payedDate");
+		hql.append(",t1.contract.contractNo");
+		hql.append(",t1.contract.type");
+		hql.append(",t1.contract.subType");
+		hql.append(",t1.contract.validityTimes");
+		hql.append(",t1.contract.remainTimes");
+		hql.append(",t1.contract.withHoldTimes");
+		hql.append(",t1.contract.validStoreIds");
+		hql.append(",t1.contract.start");
+		hql.append(",t1.contract.end");
+		hql.append(",t1.contract.status");
+		hql.append(",t1.contract.course.id");
+		hql.append(")");
+		hql.append(" FROM OrderYzw t1");
+		hql.append(" WHERE t1.customer.id = :customerId");
+		hql.append(" ORDER BY t1.payedDate DESC");
+		
+		return findPage(hql.toString(), OrderApiView.class, "customerId", customerId, pageNo, pageSize);
 	}
 	
 }

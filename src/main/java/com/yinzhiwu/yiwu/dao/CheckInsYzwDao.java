@@ -8,6 +8,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
+import com.yinzhiwu.yiwu.model.view.StoreApiView;
 
 public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer> {
 
@@ -37,5 +38,9 @@ public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer> {
 	PageBean<LessonApiView> findPageCheckedInLessonApiViewsByMemberCard(String memberCard, Integer pageNo, Integer pageSize);
 
 	int findCheckedInLessonsCountByMemeberCard(String memberCard);
+
+	StoreApiView findStoreApiViewOfLastCheckedOpenLesson(String memberCard);
+
+	PageBean<LessonApiView> findPageOfLessonApiViewsByContractNo(String contractNo, int pageNo, int pageSize);
 
 }

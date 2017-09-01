@@ -21,18 +21,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 
 @JsonInclude(value= Include.NON_NULL)
 @Entity
 @Table(name = "vorder")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class OrderYzw extends BaseYzwEntity {
 
 	/**
@@ -169,7 +170,7 @@ public class OrderYzw extends BaseYzwEntity {
 	private Boolean isAuditedByFinance;
 
 	@Column(name = "e_contract_text")
-	private Blob eContractText;
+	private String eContractText;
 
 	@Column(name = "e_contract_address")
 	private String econtractAddress;
@@ -215,14 +216,6 @@ public class OrderYzw extends BaseYzwEntity {
 		calendar.add(Calendar.MONTH, product.getUsefulLife());
 		contract.setEnd(calendar.getTime());
 		contract.setRemainTimes(BigDecimal.valueOf(product.getUsefulTimes()));
-		if ("成人".equals(cust.getAddress())) {
-			contract.setType(CourseType.OPENED);
-			contract.setSubType(SubCourseType.OPEN_B);
-		} else {
-			contract.setType(CourseType.CLOSED);
-			contract.setSubType(SubCourseType.CLOSED);
-		}
-		contract.setValidStoreIds("61; 62; 63; 64; 65; 66; 67; 68; 69");
 		this.contract = contract;
 
 	}
@@ -414,7 +407,7 @@ public class OrderYzw extends BaseYzwEntity {
 		return isAuditedByFinance;
 	}
 
-	public Blob geteContractText() {
+	public String geteContractText() {
 		return eContractText;
 	}
 
@@ -434,7 +427,7 @@ public class OrderYzw extends BaseYzwEntity {
 		this.isAuditedByFinance = isAuditedByFinance;
 	}
 
-	public void seteContractText(Blob eContractText) {
+	public void seteContractText(String eContractText) {
 		this.eContractText = eContractText;
 	}
 

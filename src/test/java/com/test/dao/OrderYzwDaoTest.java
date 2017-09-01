@@ -1,5 +1,6 @@
 package com.test.dao;
 
+import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,7 +15,10 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.page.PageBean;
+import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
+import com.yinzhiwu.yiwu.util.ReflectUtils;
 
 /**
 *@Author ping
@@ -53,5 +57,29 @@ public class OrderYzwDaoTest  extends TestBase{
 	public void testFindContractByContractNo(){
 		String contractNo = "YZW20170822153";
 		System.out.println(orderYzwDao.findContractByContractNo(contractNo));
+	}
+	
+	@Test
+	public void testfindPageOfOrderApiViewByCustomerId(){
+		int customerId = 33897;
+		
+		PageBean<OrderApiView> page = orderYzwDao.findPageOfOrderApiViewByCustomerId(customerId, 1, 10);
+		List<OrderApiView> views = page.getData();
+		Field[] fields = ReflectUtils.getAllFields(OrderApiView.class);
+		for (OrderApiView view : views) {
+			for (Field field : fields) {
+				field.setAccessible(true);
+				try {
+					System.err.println(views.indexOf(view)+ " " + field.getName() + " : " + field.get(view));
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			System.err.println("\n");
+		}
 	}
 }

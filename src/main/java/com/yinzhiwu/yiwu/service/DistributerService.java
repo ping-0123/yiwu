@@ -13,6 +13,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
+import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.EmpDistributerDto;
@@ -55,5 +56,7 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 	Distributer findByWechatNo(String wechatNo);
 
 	float getExpWinRate(Distributer distributer);
+
+	YiwuJson<StoreApiView> findDefaultStoreApiView(Integer distributerId);
 
 }

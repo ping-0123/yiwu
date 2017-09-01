@@ -23,4 +23,6 @@ public interface CheckInsYzwService extends IBaseService<CheckInsYzw, Integer> {
 
 	int findCheckedInLessonsCountOfCustomer(int customerId);
 
+	YiwuJson<PageBean<LessonApiView>> findPageOfCheckedInLessonApiViewsByContractNo(String contractNo, int pageNo,
+			int pageSize);
 }

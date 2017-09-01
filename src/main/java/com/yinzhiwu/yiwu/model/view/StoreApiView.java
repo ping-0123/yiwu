@@ -2,9 +2,13 @@ package com.yinzhiwu.yiwu.model.view;
 
 import org.springframework.util.Assert;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.StoreInfo;
 import com.yinzhiwu.yiwu.entity.yzwOld.Department;
 
+
+@JsonInclude(value= Include.NON_NULL)
 public class StoreApiView {
 
 	private int id;
@@ -14,6 +18,7 @@ public class StoreApiView {
 	private String address;
 
 	private String telePhone;
+	private Integer districtId;
 
 	public StoreApiView() {
 
@@ -31,6 +36,8 @@ public class StoreApiView {
 		this.address = address;
 		this.telePhone = telePhone;
 	}
+	
+	
 
 	public StoreApiView(StoreInfo si) {
 		Assert.notNull(si);
@@ -77,6 +84,20 @@ public class StoreApiView {
 
 	public final void setTelePhone(String telePhone) {
 		this.telePhone = telePhone;
+	}
+
+	public Integer getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Integer districtId) {
+		this.districtId = districtId;
+	}
+
+	public StoreApiView(int id, String name, Integer districtId) {
+		this.id = id;
+		this.name = name;
+		this.districtId = districtId;
 	}
 
 }

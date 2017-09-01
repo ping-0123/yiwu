@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
+import com.yinzhiwu.yiwu.dao.CheckInEventDao;
 import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
@@ -14,7 +15,6 @@ import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.income.CheckInAfterAppointEvent;
-import com.yinzhiwu.yiwu.entity.income.CheckInEvent;
 import com.yinzhiwu.yiwu.entity.income.CheckInWithoutAppointEvent;
 import com.yinzhiwu.yiwu.entity.income.IncomeEvent;
 import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
@@ -37,6 +37,8 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 	@Autowired
 	private CheckInsYzwDao checkInsYzwDao;
 	@Autowired
+	private CheckInEventDao checkInEventDao;
+	@Autowired
 	private OrderYzwDao orderDao;
 	@Autowired
 	private AppointmentYzwDao appointmentDao;
@@ -48,6 +50,7 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 	private LessonYzwDao lessonDao;
 	@Autowired
 	private CustomerYzwDao customerDao;
+	
 	
 	@Autowired
 	public void setBaseDao(CheckInsYzwDao checkInsYzwDao) {
@@ -149,8 +152,16 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		}
 		incomeEventService.save(event);
 		
-		return new CheckInSuccessApiView((CheckInEvent) event, orderDao.findContractByContractNo(contractNo));
+		return checkInEventDao.findCheckInSuccessApiViewById(event.getId());
 	}
+
+	@Override
+	public YiwuJson<PageBean<LessonApiView>> findPageOfCheckedInLessonApiViewsByContractNo(String contractNo,
+			int pageNo, int pageSize) {
+		PageBean<LessonApiView> page = checkInsYzwDao.findPageOfLessonApiViewsByContractNo(contractNo, pageNo, pageSize);
+		return YiwuJson.createBySuccess(page);
+	}
+
 
 
 

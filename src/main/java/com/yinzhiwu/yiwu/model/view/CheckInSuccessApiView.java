@@ -1,18 +1,10 @@
 package com.yinzhiwu.yiwu.model.view;
 
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
 
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.entity.income.CheckInEvent;
-import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
-import com.yinzhiwu.yiwu.entity.type.IncomeType;
-import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
-import com.yinzhiwu.yiwu.entity.yzw.Contract;
-import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
-import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 
 public class CheckInSuccessApiView {
@@ -39,44 +31,11 @@ public class CheckInSuccessApiView {
 	private Date contractEndDate;
 	private Integer validityTimes;
 	private Integer remainTimes;
+	private Integer withHoldTimes;
 
 	public CheckInSuccessApiView() {
-		super();
 	}
 
-	public CheckInSuccessApiView(CheckInEvent event, Contract contract) {
-		Assert.notNull(event);
-		Assert.notNull(event.getCheckIn());
-		Assert.notNull(event.getCheckIn().getLesson());
-		Assert.notNull(contract);
-		Assert.isTrue(event.getCheckIn().getContractNo().equals(contract.getContractNo()));
-
-		CheckInsYzw checkIn = event.getCheckIn();
-		this.times = (int) event.getParam().floatValue();
-		IncomeRecord record = event.getAppointedIncomeRecord(IncomeType.EXP);
-		if (record != null)
-			exp = record.getIncomeValue();
-		LessonYzw lesson = checkIn.getLesson();
-		DepartmentYzw store = lesson.getStore();
-		if (store != null) {
-			this.storeName = store.getName();
-			if(store.getOfficialAddress() != null)
-				this.city = store.getOfficialAddress().getCity();
-		}
-		this.lessonName = lesson.getName();
-		if (lesson.getCourse() != null )
-			this.danceName = lesson.getCourse().getDanceDesc();
-		this.courseType = lesson.getCourseType();
-		this.coachName = lesson.getDueTeacherName();
-		this.lessonDate = lesson.getLessonDate();
-		this.startTime = lesson.getStartTime();
-		this.endTime = lesson.getEndTime();
-		this.contractNo = contract.getContractNo();
-		this.contractStartDate = contract.getStart();
-		this.contractEndDate = contract.getEnd();
-		this.validityTimes = contract.getValidityTimes();
-		this.remainTimes = contract.getRemainTimes().intValue();
-	}
 
 	public Integer getTimes() {
 		return times;
@@ -198,26 +157,6 @@ public class CheckInSuccessApiView {
 		this.contractEndDate = contractEndDate;
 	}
 
-	public CheckInSuccessApiView(Integer times, Float exp, String city, String storeName, String lessonName,
-			CourseType courseType, String coachName, Date lessonDate, Time startTime, Time endTime, String contractNo,
-			Date contractStartDate, Date contractEndDate, Integer validityTimes, Integer remainTimes) {
-		super();
-		this.times = times;
-		this.exp = exp;
-		this.city = city;
-		this.storeName = storeName;
-		this.lessonName = lessonName;
-		this.courseType = courseType;
-		this.coachName = coachName;
-		this.lessonDate = lessonDate;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.contractNo = contractNo;
-		this.contractStartDate = contractStartDate;
-		this.contractEndDate = contractEndDate;
-		this.validityTimes = validityTimes;
-		this.remainTimes = remainTimes;
-	}
 
 	public String getDanceName() {
 		return danceName;
@@ -227,4 +166,36 @@ public class CheckInSuccessApiView {
 		this.danceName = danceName;
 	}
 
+	public Integer getWithHoldTimes() {
+		return withHoldTimes;
+	}
+
+	public void setWithHoldTimes(Integer withHoldTimes) {
+		this.withHoldTimes = withHoldTimes;
+	}
+
+	public CheckInSuccessApiView(Float times, Float exp, String city, String storeName, String lessonName,
+			String danceName, CourseType courseType, String coachName, Date lessonDate, Date startTime, Date endTime,
+			String contractNo, Date contractStartDate, Date contractEndDate, Integer validityTimes, BigDecimal remainTimes,
+			Short withHoldTimes) {
+		this.times = times.intValue();
+		this.exp = exp;
+		this.city = city;
+		this.storeName = storeName;
+		this.lessonName = lessonName;
+		this.danceName = danceName;
+		this.courseType = courseType;
+		this.coachName = coachName;
+		this.lessonDate = lessonDate;
+		this.startTime = (Time) startTime;
+		this.endTime = (Time) endTime;
+		this.contractNo = contractNo;
+		this.contractStartDate = contractStartDate;
+		this.contractEndDate = contractEndDate;
+		this.validityTimes = validityTimes;
+		this.remainTimes = remainTimes.intValue();
+		this.withHoldTimes = withHoldTimes.intValue();
+	}
+
+	
 }

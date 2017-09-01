@@ -78,9 +78,13 @@ public class CheckInsApiController extends BaseController {
 	@ApiOperation(value = "学员签到")
 	public YiwuJson<CheckInSuccessApiView> saveCustomerCheckIn(int distribuerId, int lessonId) {
 		try {
-			return new YiwuJson<>(checkInsYzwService.saveCustomerCheckIn(distribuerId, lessonId));
+			CheckInSuccessApiView view = checkInsYzwService.saveCustomerCheckIn(distribuerId, lessonId);
+			if(view != null)
+				return YiwuJson.createBySuccess(view);
+			else
+				return YiwuJson.createBySuccessMessage("签到已成功,但由于数据一致性问题， 导致不能返回签到数据");
 		} catch (Exception e) {
-			return new YiwuJson<>(e.getMessage());
+			return YiwuJson.createByErrorMessage(e.getMessage());
 		}
 	}
 }

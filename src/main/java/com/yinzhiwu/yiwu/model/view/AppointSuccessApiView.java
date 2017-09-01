@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.model.view;
 
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
 
@@ -37,6 +38,7 @@ public class AppointSuccessApiView {
 	private Integer remainDays;
 	private Integer validityTimes;
 	private Integer remainTimes;
+	private Integer withHoldTimes;
 
 	public AppointSuccessApiView(AbstractAppointmentEvent event, Contract contract, float exp) {
 		if (event != null && contract != null) {
@@ -67,29 +69,6 @@ public class AppointSuccessApiView {
 				this.remainTimes =  contract.getRemainTimes().intValue();
 			}
 		}
-	}
-
-	public AppointSuccessApiView(Integer times, Float exp, String city, String storeName, String lessonName,
-			String danceName, SubCourseType subCourseType, String coachName, Date lessonDate, Time startTime, Time endTime,
-			String contractNo, Date contractStartDate, Date contractEndDate, Integer validityTimes,
-			Integer remainTimes) {
-		super();
-		this.times = times;
-		this.exp = exp;
-		this.city = city;
-		this.storeName = storeName;
-		this.lessonName = lessonName;
-		this.danceName = danceName;
-		this.subCourseType = subCourseType;
-		this.coachName = coachName;
-		this.lessonDate = lessonDate;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.contractNo = contractNo;
-		this.contractStartDate = contractStartDate;
-		this.contractEndDate = contractEndDate;
-		this.validityTimes = validityTimes;
-		this.remainTimes = remainTimes;
 	}
 
 	public AppointSuccessApiView() {
@@ -234,4 +213,37 @@ public class AppointSuccessApiView {
 		this.subCourseType = subCourseType;
 	}
 
+	public Integer getWithHoldTimes() {
+		return withHoldTimes;
+	}
+
+	public void setWithHoldTimes(Integer withHoldTimes) {
+		this.withHoldTimes = withHoldTimes;
+	}
+
+	public AppointSuccessApiView(Float times, Float exp, String city, String storeName, String lessonName,
+			String danceName, SubCourseType subCourseType, String coachName, Date lessonDate, Date startTime,
+			Date endTime, String contractNo, Date contractStartDate, Date contractEndDate, Integer remainDays,
+			Integer validityTimes, BigDecimal remainTimes, Short withHoldTimes) {
+		this.times = times.intValue();
+		this.exp = exp;
+		this.city = city;
+		this.storeName = storeName;
+		this.lessonName = lessonName;
+		this.danceName = danceName;
+		this.subCourseType = subCourseType;
+		this.coachName = coachName;
+		this.lessonDate = lessonDate;
+		this.startTime = (Time) startTime;
+		this.endTime = (Time) endTime;
+		this.contractNo = contractNo;
+		this.contractStartDate = contractStartDate;
+		this.contractEndDate = contractEndDate;
+		this.remainDays = remainDays;
+		this.validityTimes = validityTimes;
+		this.remainTimes = remainTimes.intValue();
+		this.withHoldTimes = withHoldTimes.intValue();
+	}
+
+	
 }

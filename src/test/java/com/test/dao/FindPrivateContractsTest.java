@@ -29,6 +29,8 @@ public class FindPrivateContractsTest  extends TestBase{
 	@Test
 	public void testGet(){
 		OrderYzw order = orderDao.get("20170822048");
+		if(order == null )
+			return;
 		System.err.println("hash code is ...." + order.hashCode());
 		System.err.println("the customer name of order is .." + order.getCustomer().getName());
 		System.err.println("the contract of order is .." + order.getContract());

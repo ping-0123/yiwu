@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
+import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
@@ -21,6 +22,7 @@ import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.dao.EmployeeDepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
 import com.yinzhiwu.yiwu.dao.IncomeRecordDao;
+import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.dao.ShareTweetEventDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -40,6 +42,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
+import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.IncomeEventService;
@@ -72,6 +75,8 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Autowired private EmployeeDepartmentYzwDao empDeptDao;
 	@Autowired private FileService fileService;
 //	@Autowired private EmployeePostYzwDao empPostDao;
+	@Autowired private CheckInsYzwDao checkInsDao;
+	@Autowired private OrderYzwDao orderDao;
 	
 	@Value("${system.headIcon.savePath}")
 	private String headIconSavePath;
@@ -191,7 +196,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			event = new RegisterEvent(distributer, EventType.REGISTER_WITH_INVATATION_CODE, 1f, invitationCode);
 		incomeEventService.save(event);
 		
-		return YiwuJson.createBySuccessMessage("注册成功");
+		return YiwuJson.createBySuccessMessage(message);
 	}
 
 	private CustomerYzw _matchCustomer(DistributerRegisterModel registerModel) {
@@ -439,6 +444,21 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Override
 	public Distributer findByWechatNo(String wechatNo) {
 		return distributerDao.findByWechat(wechatNo);
+	}
+
+	@Override
+	public YiwuJson<StoreApiView> findDefaultStoreApiView(Integer distributerId) {
+		Distributer distributer = distributerDao.get(distributerId);
+		if(distributer == null)
+			return YiwuJson.createByErrorMessage("无效的分销者Id" +distributerId);
+		
+		StoreApiView view = checkInsDao.findStoreApiViewOfLastCheckedOpenLesson(distributer.getMemberCard());
+		if(view == null){
+			view = orderDao.findStoreOfValidOpenContractOrder(distributer.getCustomer().getId());
+		}
+		if(view == null)
+			return YiwuJson.createByErrorMessage("");
+		return YiwuJson.createBySuccess(view);
 	}
 
 }

@@ -54,6 +54,7 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 		@UniqueConstraint(name = "fuk_distributer_customer_id", columnNames = "customer_id"),
 		@UniqueConstraint(name = "fuk_distributer_defaultCapitalAccount_id", columnNames = "defaultCapitalAccount_id"),
 		@UniqueConstraint(name = "fuk_distributer_employee_id", columnNames="employee_id" )})
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Distributer extends BaseEntity {
 
 	/**
