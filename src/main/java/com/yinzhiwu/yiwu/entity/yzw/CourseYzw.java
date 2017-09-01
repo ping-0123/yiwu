@@ -370,7 +370,8 @@ public class CourseYzw extends BaseYzwEntity {
 			@AttributeOverride(name = "danceIntroduction", column = @Column(name = "danceIntroduction")) })
 	private Connotation connotation;
 
-	 @OneToMany(mappedBy="course")
+	 @OneToMany
+	 @JoinColumn(name="course_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
 	 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 	 List<LessonYzw> lessons = new ArrayList<>();
 

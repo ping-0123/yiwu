@@ -167,7 +167,7 @@ public class OrderYzw extends BaseYzwEntity {
 	private Boolean isAuditedByFinance;
 
 	@Column(name = "e_contract_text")
-	private Blob eContractText;
+	private String eContractText;
 
 	@Column(name = "e_contract_address")
 	private String econtractAddress;
@@ -402,7 +402,7 @@ public class OrderYzw extends BaseYzwEntity {
 		return isAuditedByFinance;
 	}
 
-	public Blob geteContractText() {
+	public String geteContractText() {
 		return eContractText;
 	}
 
@@ -422,7 +422,7 @@ public class OrderYzw extends BaseYzwEntity {
 		this.isAuditedByFinance = isAuditedByFinance;
 	}
 
-	public void seteContractText(Blob eContractText) {
+	public void seteContractText(String eContractText) {
 		this.eContractText = eContractText;
 	}
 
