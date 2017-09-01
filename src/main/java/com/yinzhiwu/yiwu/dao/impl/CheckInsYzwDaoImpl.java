@@ -175,7 +175,7 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 	@Override
 	public PageBean<LessonApiView> findPageCheckedInLessonApiViewsByMemberCard(String memberCard, Integer pageNo, Integer pageSize) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("SELECT new com.yinzhiwu.yiwu.model.view.LessonApiView");
+		hql.append("SELECT new " + LessonApiView.class.getName());
 		hql.append("(");
 		hql.append("t1.lesson.id");
 		hql.append(",t1.lesson.name");
@@ -190,6 +190,30 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 		hql.append(" ORDER BY t1.createTime DESC");
 		
 		return findPage(hql.toString(), LessonApiView.class, new String[]{"memberCard"}, new Object[]{memberCard}, pageNo, pageSize);
+	}
+	
+	@Override
+	public PageBean<LessonApiView> findPageOfLessonApiViewsByContractNo(String contractNo, int pageNo, int pageSize){
+		Assert.hasLength(contractNo);
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT new " + LessonApiView.class.getName());
+		hql.append("(");
+		hql.append("t1.lesson.id");
+		hql.append(",t1.lesson.name");
+		hql.append(",t1.lesson.lessonDate");
+		hql.append(",t1.lesson.actualTeacherName");
+		hql.append(",t1.lesson.storeName");
+		hql.append(")");
+		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" WHERE t1.contractNo = :contractNo");
+		//老师也已签到
+		hql.append(" AND t1.lesson.actualTeacher.id IS NOT NULL");
+		hql.append(" AND t1.lesson.actualTeacher.id <>  0");
+		hql.append(" ORDER BY t1.createTime DESC");
+		
+		return findPage(hql.toString(), LessonApiView.class, "contractNo", contractNo, pageNo, pageSize);
+		
 	}
 
 	@Override

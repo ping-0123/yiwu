@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,9 +20,11 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.ReturnedJson;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
+import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.OrderAbbrApiView;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
+import com.yinzhiwu.yiwu.service.CheckInsYzwService;
 import com.yinzhiwu.yiwu.service.OrderService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 
@@ -38,6 +41,8 @@ public class OrderApiController {
 	private OrderYzwService orderYzwService;
 	@Autowired
 	private DistributerDao distributerDao;
+	@Autowired
+	private CheckInsYzwService checkInsService;
 
 	@RequestMapping(value = "/getDailyOrders", method = { RequestMethod.GET, RequestMethod.POST })
 	public ReturnedJson getDailyOrdersByStore(@RequestParam int storeId, @RequestParam Date payedDate,
@@ -84,11 +89,6 @@ public class OrderApiController {
 
 	@PutMapping("/{id}")
 	public YiwuJson<Boolean> modify(OrderYzw order, @PathVariable String id) {
-		// if(order.geteContractStatus()){
-		// Contract contract = new Contract();
-		// contract.setStatus("已确认");
-		// order.setContract(contract);
-		// }
 		try {
 			orderYzwService.modify(id, order);
 		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
@@ -104,5 +104,17 @@ public class OrderApiController {
 	public YiwuJson<List<PrivateContractApiView>> getPrivateContracts(Integer customerId){
 		
 		return orderYzwService.getPrivateContractsByCustomer(customerId);
+	}
+	
+	@GetMapping(value="/contracts/{contractNo}/checkedInLessons")
+	@ApiOperation(value="查询{contractNo}下已签到(即已上课)的课程")
+	public YiwuJson<PageBean<LessonApiView>> findCheckedLessonsByContractNo(
+			@PathVariable(value="contractNo") String contractNo,
+			@RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo,
+			@RequestParam(value="pageSize", required=false, defaultValue="10") int pageSize)
+	{
+		if(!StringUtils.hasLength(contractNo))
+			return YiwuJson.createByErrorMessage("请传入正确的 contractNo");
+		return checkInsService.findPageOfCheckedInLessonApiViewsByContractNo(contractNo,pageNo, pageSize );
 	}
 }

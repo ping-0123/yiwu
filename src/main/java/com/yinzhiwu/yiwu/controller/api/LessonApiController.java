@@ -116,6 +116,8 @@ public class LessonApiController extends BaseController {
 	@ApiOperation("根据课程Id(courseId)获取课时列表(lesson list)")
 	public YiwuJson<List<LessonApiView>> findByCourseId(@ApiParam(value = "课程Id", required = true) String courseId) 
 	{
+		if(courseId == null || "".equals(courseId))
+			return YiwuJson.createByErrorMessage("请传入正确的courseId");
 		return lessonYzwService.findByCourseId(courseId);
 	}
 

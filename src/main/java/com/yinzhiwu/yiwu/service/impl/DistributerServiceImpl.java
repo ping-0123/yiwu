@@ -196,7 +196,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			event = new RegisterEvent(distributer, EventType.REGISTER_WITH_INVATATION_CODE, 1f, invitationCode);
 		incomeEventService.save(event);
 		
-		return YiwuJson.createBySuccessMessage("注册成功");
+		return YiwuJson.createBySuccessMessage(message);
 	}
 
 	private CustomerYzw _matchCustomer(DistributerRegisterModel registerModel) {

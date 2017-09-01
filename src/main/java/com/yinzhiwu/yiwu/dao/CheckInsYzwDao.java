@@ -41,4 +41,6 @@ public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer> {
 
 	StoreApiView findStoreApiViewOfLastCheckedOpenLesson(String memberCard);
 
+	PageBean<LessonApiView> findPageOfLessonApiViewsByContractNo(String contractNo, int pageNo, int pageSize);
+
 }

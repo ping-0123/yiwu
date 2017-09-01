@@ -155,6 +155,13 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		return checkInEventDao.findCheckInSuccessApiViewById(event.getId());
 	}
 
+	@Override
+	public YiwuJson<PageBean<LessonApiView>> findPageOfCheckedInLessonApiViewsByContractNo(String contractNo,
+			int pageNo, int pageSize) {
+		PageBean<LessonApiView> page = checkInsYzwDao.findPageOfLessonApiViewsByContractNo(contractNo, pageNo, pageSize);
+		return YiwuJson.createBySuccess(page);
+	}
+
 
 
 
