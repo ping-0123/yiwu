@@ -29,8 +29,6 @@ import com.yinzhiwu.yiwu.util.GeneratorUtil;
 @Repository
 public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements OrderYzwDao {
 
-	
-	
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
@@ -118,8 +116,9 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 			strBuilder.append("原因可能有:\n");
 			strBuilder.append("1.您没有音之舞\"").append(lesson.getSubCourseType().getName()).append("\"类会籍合约\n");
 			strBuilder.append("2.您所预约的课程的上课日期不在会籍合约的有效日期范围内\n");
-			strBuilder.append("3.您的会籍合约已失效或即将失效， 即\"剩余次数-待扣次数=0\"\n");
-			strBuilder.append("4.您的会籍合约使用范围不包含\"").append(lesson.getStore().getName()).append("\"\n");
+			strBuilder.append("3.您的会籍合约处于非\"已审核\"状态\n");
+			strBuilder.append("4.您的会籍合约已失效或即将失效， 即\"剩余次数-待扣次数=0\"\n");
+			strBuilder.append("5.您的会籍合约使用范围不包含\"").append(lesson.getStore().getName()).append("\"\n");
 			throw new DataNotFoundException(strBuilder.toString());
 		}
 		return contracts.get(0);
