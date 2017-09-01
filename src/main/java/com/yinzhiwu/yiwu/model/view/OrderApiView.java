@@ -14,10 +14,7 @@ import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
-<<<<<<< HEAD
-=======
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
->>>>>>> v1.2.6
 
 @JsonInclude(value= Include.NON_NULL)
 public class OrderApiView {
@@ -27,24 +24,15 @@ public class OrderApiView {
 	private String id;
 	private Integer productId;
 	private String productName;
-<<<<<<< HEAD
-=======
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
->>>>>>> v1.2.6
 	private Date payedDate;
 	private String contractNo;
 	private CourseType productType;
 	private SubCourseType subCourseType;
-<<<<<<< HEAD
-	private int validityTimes;
-	private int remainTimes;
-	private int withHoldTimes;
-=======
 	private Integer validityTimes;
 	private Integer remainTimes;
 	private Integer withHoldTimes;
 	private String validStores;
->>>>>>> v1.2.6
 	// 合约开始日期
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date contractStart;
@@ -73,12 +61,7 @@ public class OrderApiView {
 			this.contractStart = contract.getStart();
 			this.contractEnd = contract.getEnd();
 			this.productType = contract.getType();
-<<<<<<< HEAD
-			this.subCourseType = contract.getSubType();
-			this.checkedStatus = contract.getStatus().getStatus();
-=======
 			this.checkedStatus = contract.getStatus();
->>>>>>> v1.2.6
 		}
 
 		CourseYzw course = contract.getCourse();
@@ -174,19 +157,8 @@ public class OrderApiView {
 		this.courseStartDate = courseStartDate;
 	}
 
-<<<<<<< HEAD
-	public String getCheckedStatus() {
-=======
-	public Boolean geteContractStatus() {
-		return eContractStatus;
-	}
-
-	public void seteContractStatus(Boolean eContractStatus) {
-		this.eContractStatus = eContractStatus;
-	}
 
 	public ContractStatus getCheckedStatus() {
->>>>>>> v1.2.6
 		return checkedStatus;
 	}
 
@@ -210,17 +182,6 @@ public class OrderApiView {
 		this.withHoldTimes = withHoldTimes;
 	}
 
-<<<<<<< HEAD
-	public SubCourseType getSubCourseType() {
-		return subCourseType;
-	}
-
-	public void setSubCourseType(SubCourseType subCourseType) {
-		this.subCourseType = subCourseType;
-	}
-
-=======
->>>>>>> v1.2.6
 	public Integer getProductId() {
 		return productId;
 	}
@@ -229,13 +190,6 @@ public class OrderApiView {
 		return productName;
 	}
 
-<<<<<<< HEAD
-	public Date getPayedDate() {
-		return payedDate;
-	}
-
-=======
->>>>>>> v1.2.6
 	public void setProductId(Integer productId) {
 		this.productId = productId;
 	}
@@ -243,23 +197,14 @@ public class OrderApiView {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-
-<<<<<<< HEAD
-=======
 	public Date getPayedDate() {
 		return payedDate;
 	}
 
->>>>>>> v1.2.6
 	public void setPayedDate(Date payedDate) {
 		this.payedDate = payedDate;
 	}
 
-<<<<<<< HEAD
-	public OrderApiView(String id, Integer productId, String productName, Date payedDate, String contractNo,
-			CourseType productType, SubCourseType subCourseType, int validityTimes, BigDecimal remainTimes, Short withHoldTimes,
-			Date contractStart, Date contractEnd, String checkedStatus, String courseId) {
-=======
 	public SubCourseType getSubCourseType() {
 		return subCourseType;
 	}
@@ -271,7 +216,6 @@ public class OrderApiView {
 	public OrderApiView(String id, Integer productId, String productName, Date payedDate, String contractNo,
 			CourseType productType, SubCourseType subCourseType, Integer validityTimes, BigDecimal remainTimes, Short withHoldTimes,
 			String validStoreIds, Date contractStart, Date contractEnd, ContractStatus checkedStatus, String courseId) {
->>>>>>> v1.2.6
 		this.id = id;
 		this.productId = productId;
 		this.productName = productName;
@@ -280,22 +224,15 @@ public class OrderApiView {
 		this.productType = productType;
 		this.subCourseType = subCourseType;
 		this.validityTimes = validityTimes;
-<<<<<<< HEAD
-		this.remainTimes = remainTimes.intValue();
-		this.withHoldTimes = withHoldTimes;
-=======
 		this.remainTimes =remainTimes==null?0:remainTimes.intValue();
 		this.withHoldTimes = withHoldTimes.intValue();
 		this.validStores  = validStoreIds;
->>>>>>> v1.2.6
 		this.contractStart = contractStart;
 		this.contractEnd = contractEnd;
 		this.checkedStatus = checkedStatus;
 		this.courseId = courseId;
 	}
 
-<<<<<<< HEAD
-=======
 	public String getValidStores() {
 		return validStores;
 	}
@@ -316,5 +253,4 @@ public class OrderApiView {
 		this.validStores = validStores;
 	}
 
->>>>>>> v1.2.6
 }
