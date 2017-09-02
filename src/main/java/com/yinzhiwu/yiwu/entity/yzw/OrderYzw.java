@@ -1,7 +1,6 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
 import java.math.BigDecimal;
-import java.sql.Blob;
 import java.util.Calendar;
 import java.util.Date;
 
