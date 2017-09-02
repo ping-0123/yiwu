@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.dao;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.impl.BaseDaoImpl;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
@@ -32,9 +33,23 @@ public class EmployeeYzwDaoImpl extends BaseDaoImpl<EmployeeYzw,Integer> impleme
 
 	@Override
 	public EmployeeYzw findByTel(String phoneNo) {
+		Assert.hasText(phoneNo);
+		
 		List<EmployeeYzw> emps =findByProperties(
 				new String[]{"tel", "removed"}, 
 				new Object[]{phoneNo, false});
+		if(emps==null || emps.size() ==0)
+			return null;
+		return emps.get(0);
+	}
+
+	@Override
+	public EmployeeYzw findByUsername(String username) {
+		Assert.hasText(username);
+		
+		List<EmployeeYzw> emps =findByProperties(
+				new String[]{"username", "removed"}, 
+				new Object[]{username, false});
 		if(emps==null || emps.size() ==0)
 			return null;
 		return emps.get(0);

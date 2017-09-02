@@ -16,12 +16,14 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Where;
 
 import com.yinzhiwu.yiwu.entity.Address;
 
 @Entity
 @Table(name = "vdepartment")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+@Where(clause="removed=true")
 public class DepartmentYzw extends BaseYzwEntity{
 
 	/**

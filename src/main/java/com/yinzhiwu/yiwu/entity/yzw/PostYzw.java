@@ -1,14 +1,24 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import com.yinzhiwu.yiwu.entity.sys.Role;
 
 @Entity
 @Table(name = "vpost")
@@ -46,7 +56,13 @@ public class PostYzw extends BaseYzwEntity {
 	@Column
 	private Integer lparam;
 	
-
+	@ManyToMany
+	@JoinTable(name="sys_post_role",
+			joinColumns=@JoinColumn(name="post_id",foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_postRole_post_id")),
+			inverseJoinColumns=@JoinColumn(name="role_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_postRole_role_id")))
+	private Set<Role> roles = new LinkedHashSet<>();
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -109,6 +125,14 @@ public class PostYzw extends BaseYzwEntity {
 
 	public void setLparam(Integer lparam) {
 		this.lparam = lparam;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 	

@@ -26,6 +26,7 @@ import com.yinzhiwu.yiwu.entity.BaseEntity;
 
 @Entity
 @Table(name="sys_role")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Role extends BaseEntity {
 
 	/**
@@ -65,6 +66,12 @@ public class Role extends BaseEntity {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public List<Resource> getResources() {
+		return resources;
+	}
+	public void setResources(List<Resource> resources) {
+		this.resources = resources;
 	}
 	
 	

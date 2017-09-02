@@ -4,4 +4,6 @@ import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 
 public interface EmployeeYzwService extends IBaseService<EmployeeYzw, Integer> {
 
+	EmployeeYzw findByUsername(String username);
+
 }

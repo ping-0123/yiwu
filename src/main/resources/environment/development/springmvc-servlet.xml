@@ -86,4 +86,5 @@
         <property name="resolveLazily" value="true"></property>
     </bean>
 
+	<import resource="spring-mvc-shiro.xml"/>
 </beans>

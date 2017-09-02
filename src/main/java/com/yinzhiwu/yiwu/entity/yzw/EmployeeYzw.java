@@ -1,6 +1,8 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,12 +15,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.yinzhiwu.yiwu.entity.sys.Resource;
+import com.yinzhiwu.yiwu.entity.sys.Role;
 import com.yinzhiwu.yiwu.enums.DataStatus;
 import com.yinzhiwu.yiwu.enums.Gender;
 
@@ -125,6 +131,10 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@Column(length=123)
 	private String salt;
 	private DataStatus status=DataStatus.NORMAL;
+	
+	@OneToMany
+	@JoinTable(name="employee_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	private Set<EmployeePostYzw> employeePosts = new LinkedHashSet<>();
 	
 	public EmployeeYzw() {
 		super();
@@ -382,4 +392,50 @@ public class EmployeeYzw extends BaseYzwEntity {
 		this.username = username;
 	}
 
+	public String getCredentialsSalt() {
+		return this.username + this.salt;
+	}
+
+	public Set<EmployeePostYzw> getEmployeePosts() {
+		return employeePosts;
+	}
+
+	public void setEmployeePosts(Set<EmployeePostYzw> employeePosts) {
+		this.employeePosts = employeePosts;
+	}
+	
+	public Set<Role> getRoles(){
+		Set<Role> roles = new LinkedHashSet<>();
+		Set<EmployeePostYzw> empPosts = this.getEmployeePosts();
+		for (EmployeePostYzw ep : empPosts) {
+			roles.addAll(ep.getPost().getRoles());
+		}
+		return roles;
+	}
+	
+	public Set<Resource> getResources(){
+		Set<Resource> resources = new LinkedHashSet<>();
+		for(Role role: getRoles()){
+			resources.addAll(role.getResources());
+		}
+		return resources;
+	}
+	
+	
+	public Set<String> getStringRoles(){
+		Set<String> stringRoles = new LinkedHashSet<>();
+		for(Role role:getRoles()){
+			stringRoles.add(role.getName());
+		}
+		
+		return stringRoles;
+	}
+	
+	public Set<String> getStringPermissions(){
+		Set<String> permissions = new LinkedHashSet<>();
+		for(Resource r: getResources()){
+			permissions.add(r.getPermission());
+		}
+		return permissions;
+	}
 }
