@@ -1,8 +1,5 @@
-package com.github.zhangkaitao.shiro.chapter16.web.controller;
+package com.yinzhiwu.yiwu.web.controller;
 
-import com.github.zhangkaitao.shiro.chapter16.entity.Role;
-import com.github.zhangkaitao.shiro.chapter16.service.ResourceService;
-import com.github.zhangkaitao.shiro.chapter16.service.RoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,11 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.yinzhiwu.yiwu.entity.sys.Role;
+import com.yinzhiwu.yiwu.service.ResourceService;
+import com.yinzhiwu.yiwu.service.RoleService;
+
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 14-2-14
- * <p>Version: 1.0
+ * @author ping
+ * @Date 2017年9月3日 下午10:46:49
+ *
  */
+
 @Controller
 @RequestMapping("/role")
 public class RoleController {
@@ -46,41 +48,41 @@ public class RoleController {
     @RequiresPermissions("role:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(Role role, RedirectAttributes redirectAttributes) {
-        roleService.createRole(role);
+        roleService.save(role);
         redirectAttributes.addFlashAttribute("msg", "新增成功");
         return "redirect:/role";
     }
 
     @RequiresPermissions("role:update")
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
-    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         setCommonData(model);
-        model.addAttribute("role", roleService.findOne(id));
+        model.addAttribute("role", roleService.get(id));
         model.addAttribute("op", "修改");
         return "role/edit";
     }
 
     @RequiresPermissions("role:update")
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String update(Role role, RedirectAttributes redirectAttributes) {
-        roleService.updateRole(role);
+        roleService.update(role);
         redirectAttributes.addFlashAttribute("msg", "修改成功");
         return "redirect:/role";
     }
 
     @RequiresPermissions("role:delete")
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
-    public String showDeleteForm(@PathVariable("id") Long id, Model model) {
+    public String showDeleteForm(@PathVariable("id") Integer id, Model model) {
         setCommonData(model);
-        model.addAttribute("role", roleService.findOne(id));
+        model.addAttribute("role", roleService.get(id));
         model.addAttribute("op", "删除");
         return "role/edit";
     }
 
     @RequiresPermissions("role:delete")
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
-    public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-        roleService.deleteRole(id);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+        roleService.delete(id);
         redirectAttributes.addFlashAttribute("msg", "删除成功");
         return "redirect:/role";
     }

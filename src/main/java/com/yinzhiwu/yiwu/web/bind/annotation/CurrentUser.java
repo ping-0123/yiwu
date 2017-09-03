@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package com.github.zhangkaitao.shiro.chapter16.web.bind.annotation;
+package com.yinzhiwu.yiwu.web.bind.annotation;
 
-import com.github.zhangkaitao.shiro.chapter16.Constants;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import com.yinzhiwu.yiwu.context.Constants;
 
 /**
  * <p>绑定当前登录的用户</p>
  * <p>不同于@ModelAttribute</p>
+ * 
+ * @author ping
+ * @Date 2017年9月3日 下午9:14:31
  *
- * @author Zhang Kaitao
  */
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)

@@ -1,7 +1,5 @@
-package com.github.zhangkaitao.shiro.chapter16.web.controller;
+package com.yinzhiwu.yiwu.web.controller;
 
-import com.github.zhangkaitao.shiro.chapter16.entity.Resource;
-import com.github.zhangkaitao.shiro.chapter16.service.ResourceService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,13 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.yinzhiwu.yiwu.entity.sys.Resource;
+import com.yinzhiwu.yiwu.service.ResourceService;
+
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 14-2-14
- * <p>Version: 1.0
+ * 
+ * @author ping
+ * @Date 2017年9月3日 下午9:51:28
+ *
  */
 @Controller
-@RequestMapping("/resource")
+@RequestMapping("/resources")
 public class ResourceController {
 
     @Autowired
@@ -38,12 +40,11 @@ public class ResourceController {
 
     @RequiresPermissions("resource:create")
     @RequestMapping(value = "/{parentId}/appendChild", method = RequestMethod.GET)
-    public String showAppendChildForm(@PathVariable("parentId") Long parentId, Model model) {
-        Resource parent = resourceService.findOne(parentId);
+    public String showAppendChildForm(@PathVariable("parentId") Integer parentId, Model model) {
+        Resource parent = resourceService.get(parentId);
         model.addAttribute("parent", parent);
         Resource child = new Resource();
-        child.setParentId(parentId);
-        child.setParentIds(parent.makeSelfAsParentIds());
+        child.setParent(parent);
         model.addAttribute("resource", child);
         model.addAttribute("op", "新增子节点");
         return "resource/edit";
@@ -52,31 +53,31 @@ public class ResourceController {
     @RequiresPermissions("resource:create")
     @RequestMapping(value = "/{parentId}/appendChild", method = RequestMethod.POST)
     public String create(Resource resource, RedirectAttributes redirectAttributes) {
-        resourceService.createResource(resource);
+        resourceService.save(resource);
         redirectAttributes.addFlashAttribute("msg", "新增子节点成功");
         return "redirect:/resource";
     }
 
     @RequiresPermissions("resource:update")
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
-    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("resource", resourceService.findOne(id));
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("resource", resourceService.get(id));
         model.addAttribute("op", "修改");
         return "resource/edit";
     }
 
     @RequiresPermissions("resource:update")
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String update(Resource resource, RedirectAttributes redirectAttributes) {
-        resourceService.updateResource(resource);
+        resourceService.update(resource);
         redirectAttributes.addFlashAttribute("msg", "修改成功");
         return "redirect:/resource";
     }
 
     @RequiresPermissions("resource:delete")
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
-    public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-        resourceService.deleteResource(id);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+        resourceService.delete(id);
         redirectAttributes.addFlashAttribute("msg", "删除成功");
         return "redirect:/resource";
     }

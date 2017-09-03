@@ -1,6 +1,5 @@
-package com.github.zhangkaitao.shiro.chapter16.web.bind.method;
+package com.yinzhiwu.yiwu.web.bind.method;
 
-import com.github.zhangkaitao.shiro.chapter16.web.bind.annotation.CurrentUser;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -8,11 +7,13 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.yinzhiwu.yiwu.web.bind.annotation.CurrentUser;
+
 /**
- * <p>用于绑定@FormModel的方法参数解析器
- * <p>User: Zhang Kaitao
- * <p>Date: 13-1-12 下午5:01
- * <p>Version: 1.0
+ * 
+ * @author ping
+ * @Date 2017年9月3日 下午9:13:37
+ *
  */
 public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
 	public CurrentUserMethodArgumentResolver() {

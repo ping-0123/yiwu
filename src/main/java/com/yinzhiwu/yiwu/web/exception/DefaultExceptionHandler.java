@@ -1,4 +1,4 @@
-package com.github.zhangkaitao.shiro.chapter16.web.exception;
+package com.yinzhiwu.yiwu.web.exception;
 
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
@@ -9,9 +9,10 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 14-2-12
- * <p>Version: 1.0
+ * 
+ * @author ping
+ * @Date 2017年9月3日 下午10:58:08
+ *
  */
 @ControllerAdvice
 public class DefaultExceptionHandler {

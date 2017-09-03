@@ -1,4 +1,4 @@
-package com.github.zhangkaitao.shiro.chapter16.web.controller;
+package com.yinzhiwu.yiwu.web.controller;
 
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 14-2-15
- * <p>Version: 1.0
+ * 
+ * @author ping
+ * @Date 2017年9月3日 下午9:24:26
+ *
  */
 @Controller
 public class LoginController {

@@ -24,4 +24,10 @@ public class EmployeeYzwServiceImpl extends BaseServiceImpl<EmployeeYzw, Integer
 		return employeeDao.findByUsername(username);
 	}
 
+	@Override
+	public void changePassword(Integer id, String newPassword) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
