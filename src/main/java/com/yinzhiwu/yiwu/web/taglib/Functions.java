@@ -1,12 +1,5 @@
-package com.github.zhangkaitao.shiro.chapter16.web.taglib;
+package com.yinzhiwu.yiwu.web.taglib;
 
-import com.github.zhangkaitao.shiro.chapter16.entity.Organization;
-import com.github.zhangkaitao.shiro.chapter16.entity.Resource;
-import com.github.zhangkaitao.shiro.chapter16.entity.Role;
-import com.github.zhangkaitao.shiro.chapter16.service.OrganizationService;
-import com.github.zhangkaitao.shiro.chapter16.service.ResourceService;
-import com.github.zhangkaitao.shiro.chapter16.service.RoleService;
-import com.github.zhangkaitao.shiro.spring.SpringUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
