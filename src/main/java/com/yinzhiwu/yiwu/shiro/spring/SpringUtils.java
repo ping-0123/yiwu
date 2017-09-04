@@ -10,6 +10,12 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
+/**
+ * 
+ * @author ping
+ * @date 2017年9月4日下午12:06:14
+ *
+ */
 public final class SpringUtils implements BeanFactoryPostProcessor {
 
     private static ConfigurableListableBeanFactory beanFactory; // Spring应用上下文环境
