@@ -231,7 +231,9 @@ public class DistributerApiController extends BaseController {
 	
 	@GetMapping("/{distributerId}/defaultStore")
 	@ApiOperation(value="返回客户默认的上课门店")
-	public YiwuJson<StoreApiView> getDefaultStore(@PathVariable(name="distributerId", required=true) Integer distributerId){
+	public YiwuJson<StoreApiView> getDefaultStore(
+			@PathVariable(name="distributerId", required=true) Integer distributerId)
+	{
 		return  distributerService.findDefaultStoreApiView(distributerId);
 	}
 }

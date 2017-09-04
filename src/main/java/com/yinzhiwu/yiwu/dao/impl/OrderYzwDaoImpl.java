@@ -379,9 +379,9 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT new " + StoreApiView.class.getName());
 		hql.append("(");
-		hql.append("t1.lesson.store.id");
-		hql.append(",t1.lesson.store.name");
-		hql.append(",t1.lesson.store.superior.id");
+		hql.append("t1.store.id");
+		hql.append(",t1.store.name");
+		hql.append(",t1.store.superior.id");
 		hql.append(")");
 		hql.append(" FROM OrderYzw t1");
 		hql.append(" WHERE t1.customer.id = :customerId");
