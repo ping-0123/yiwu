@@ -58,11 +58,9 @@ public class CheckInsApiController extends BaseController {
 			@ApiParam(value = "id of the customer", required = true)
 			int customerId,
 			@ApiParam(value = "pageNo should be positive", required = false)
-			@RequestParam(value="pageNo", defaultValue = "1") 
-			int pageNo,
+			@RequestParam(value="pageNo", defaultValue = "1") int pageNo,
 			@ApiParam(value = "pageSize should be positive", required = false) 
-			@RequestParam(value="pageSize", defaultValue = "10") 
-			int pageSize) 
+			@RequestParam(value="pageSize", defaultValue = "10") int pageSize) 
 	{
 		try {
 			PageBean<LessonApiView> page = checkInsYzwService.findPageViewByCustomer(customerId, pageNo, pageSize);
@@ -76,9 +74,9 @@ public class CheckInsApiController extends BaseController {
 
 	@PostMapping
 	@ApiOperation(value = "学员签到")
-	public YiwuJson<CheckInSuccessApiView> saveCustomerCheckIn(int distribuerId, int lessonId) {
+	public YiwuJson<CheckInSuccessApiView> saveCustomerCheckIn(int distributerId, int lessonId) {
 		try {
-			CheckInSuccessApiView view = checkInsYzwService.saveCustomerCheckIn(distribuerId, lessonId);
+			CheckInSuccessApiView view = checkInsYzwService.saveCustomerCheckIn(distributerId, lessonId);
 			if(view != null)
 				return YiwuJson.createBySuccess(view);
 			else

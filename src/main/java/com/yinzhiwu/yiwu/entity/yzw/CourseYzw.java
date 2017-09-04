@@ -23,6 +23,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -372,6 +373,7 @@ public class CourseYzw extends BaseYzwEntity {
 
 	 @OneToMany
 	 @JoinColumn(name="course_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	 @OrderBy(value="lessonDate ASC")
 	 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 	 List<LessonYzw> lessons = new ArrayList<>();
 

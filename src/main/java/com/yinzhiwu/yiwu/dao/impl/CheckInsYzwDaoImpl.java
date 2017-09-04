@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,9 +16,9 @@ import org.springframework.util.Assert;
 import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
@@ -27,15 +26,6 @@ import com.yinzhiwu.yiwu.model.view.StoreApiView;
 @Repository
 public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implements CheckInsYzwDao {
 
-	@Override
-	public int findCountByContractNos(List<String> contractNos) {
-		String hql = "select count(*) from CheckInsYzw where contractNo in :contractNos";
-		if (contractNos == null || contractNos.size() == 0)
-			return 0;
-		@SuppressWarnings("unchecked")
-		List<Long> list = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "contractNos", contractNos);
-		return list.get(0).intValue();
-	}
 
 	@Override
 	public int findCountByCustomerId(int customerId) {
@@ -51,14 +41,6 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 				.intValue();
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<LessonYzw> findByContractNos(List<String> contractNos) {
-		if (contractNos == null || contractNos.size() == 0)
-			return new ArrayList<>();
-		String hql = "SELECT t1.lesson FROM CheckInsYzw t1 WHERE t1.contractNo in :contractNos";
-		return (List<LessonYzw>) getHibernateTemplate().findByNamedParam(hql, "contractNos", contractNos);
-	}
 
 	@Override
 	public PageBean<LessonApiView> findPageByContractNos(List<String> contractNos, int pageNo, int pageSize) {

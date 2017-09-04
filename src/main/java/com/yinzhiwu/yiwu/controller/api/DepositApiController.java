@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.controller.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
@@ -22,7 +23,11 @@ public class DepositApiController extends BaseController {
 
 	@PostMapping
 	@ApiOperation(value="支付定金")
-	public YiwuJson<Boolean> payDeposit(int distributerId, float amount, boolean fundsFirst) {
+	public YiwuJson<Boolean> payDeposit(
+			Integer distributerId, 
+			Float amount,
+			@RequestParam(value="fundsFirst", required=false, defaultValue="true") boolean fundsFirst)
+	{
 		try {
 			if(amount <=0)
 				throw new YiwuException("提现金额不能少于零");
