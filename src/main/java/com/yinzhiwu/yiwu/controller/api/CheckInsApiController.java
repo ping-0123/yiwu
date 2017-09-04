@@ -58,11 +58,9 @@ public class CheckInsApiController extends BaseController {
 			@ApiParam(value = "id of the customer", required = true)
 			int customerId,
 			@ApiParam(value = "pageNo should be positive", required = false)
-			@RequestParam(value="pageNo", defaultValue = "1") 
-			int pageNo,
+			@RequestParam(value="pageNo", defaultValue = "1") int pageNo,
 			@ApiParam(value = "pageSize should be positive", required = false) 
-			@RequestParam(value="pageSize", defaultValue = "10") 
-			int pageSize) 
+			@RequestParam(value="pageSize", defaultValue = "10") int pageSize) 
 	{
 		try {
 			PageBean<LessonApiView> page = checkInsYzwService.findPageViewByCustomer(customerId, pageNo, pageSize);
