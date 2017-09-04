@@ -427,6 +427,4 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		return findPage(hql.toString(), OrderApiView.class, "customerId", customerId, pageNo, pageSize);
 	}
 	
-	
-	
 }
