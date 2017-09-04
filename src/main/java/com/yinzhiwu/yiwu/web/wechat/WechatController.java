@@ -31,6 +31,7 @@ public class WechatController {
 		return echostr;
 	}
 	
+	@SuppressWarnings("unused")
 	private boolean _checkSignature(String signature, String timestamp, String nonce){
 		String[] arr = new String[]{TOKEN, timestamp, nonce};
 		//1.排序

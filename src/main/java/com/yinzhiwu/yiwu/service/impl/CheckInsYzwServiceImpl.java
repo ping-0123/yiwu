@@ -99,10 +99,6 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 		if (CourseType.CLOSED== lesson.getCourseType())
 			throw new YiwuException("封闭式课程无须刷卡");
 
-		//判断是否已经预约
-//		if(! appointmentDao.isAppointed(customer, lesson))
-//			throw new YiwuException("未预约不能刷卡上课");
-		//判断是否已刷卡
 		if (checkInsYzwDao.isCheckedIn(customer.getMemberCard(), lesson.getId()))
 			throw new YiwuException("已刷卡， 无须重复刷卡");
 		//上课时间是否已已过

@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.dao.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -83,11 +84,11 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		return super.get(id);
 	}
 
-	
 	@Override
 	public Contract findCheckableContractOfCustomerAndLesson(CustomerYzw customer, LessonYzw lesson) throws DataNotFoundException{
 		Assert.notNull(customer);
 		Assert.notNull(lesson);
+		String[] appointedContractNos =  lesson.getAppointedContract().split(";");
 		
 		updateLingLingContractDates();
 		StringBuilder hql = new StringBuilder();
@@ -99,17 +100,24 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(" AND t1.contract.remainTimes - t1.contract.withHoldTimes >=:remainTimes");
 		hql.append(" AND :lessonDate BETWEEN t1.contract.start AND t1.contract.end");
 		hql.append(" AND FIND_IN_SET(:storeId , REPLACE(REPLACE(t1.contract.validStoreIds,';',','), ' ', ''))>0");
+		if(CourseType.PRIVATE==lesson.getCourseType()){
+			hql.append(" AND t1.contract.contractNo IN :appointedContractNos");
+		}
 		hql.append(" ORDER BY t1.contract.end");
 			
-		List<Contract> contracts =    getSession().createQuery(hql.toString(), Contract.class)
+		 org.hibernate.query.Query<Contract> query = getSession().createQuery(hql.toString(), Contract.class)
 					.setParameter("contractStatus", ContractStatus.CHECKED)
 					.setParameter("customerId", 	customer.getId())
 					.setParameter("subCourseType", 	lesson.getSubCourseType())
 					.setParameter("remainTimes", 	BigDecimal.valueOf(1))
 					.setParameter("lessonDate", lesson.getLessonDate())
 					.setParameter("storeId", String.valueOf(lesson.getStore().getId()))
-					.setMaxResults(1)
-					.getResultList();
+					.setMaxResults(1);
+		 if(CourseType.PRIVATE==lesson.getCourseType()){			
+			 query.setParameter("appointedContractNos", Arrays.asList(appointedContractNos));
+		 }
+		 
+		List<Contract> contracts = query.getResultList();
 		if(contracts.size()==0){
 			StringBuilder strBuilder = new StringBuilder();
 			strBuilder.append("您不能预约课程\"").append(lesson.getName()).append("\n");
