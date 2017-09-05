@@ -70,6 +70,7 @@ public class OrderApiController {
 			@RequestParam(value="distributerId", required =true) Integer distributerId,
 			@RequestParam(value="pageNo", defaultValue="1", required=false) int pageNo,
 			@RequestParam(value="pageSize",defaultValue="10", required=false) int pageSize){
+		
 		Distributer distributer = distributerDao.get(distributerId);
 		if(distributer == null )
 			return YiwuJson.createByErrorMessage("不存在Id为:" + distributerId + " 的客户");
@@ -91,6 +92,7 @@ public class OrderApiController {
 		return orderYzwService.findById(id);
 	}
 
+	@Deprecated
 	@PutMapping("/{id}")
 	public YiwuJson<Boolean> modify(OrderYzw order, @PathVariable String id) {
 		try {
@@ -121,12 +123,15 @@ public class OrderApiController {
 		switch (status) {
 		case VERIFIED:
 			if(!ContractStatus.UN_VERIFIED.equals(contract.getStatus()))
-				return YiwuJson.createByErrorMessage("当前合约处于"+ contract.getStatus() + " 不能转为状态:" + ContractStatus.VERIFIED );
+				//订单只有在未确认的状态下才能确认
+				return YiwuJson.createByErrorMessage("当前合约处于"+ contract.getStatus() + " 不能转为状态" + ContractStatus.VERIFIED );
+			
+			//当折扣小于1， 订单需要审核
 			if(order.getDiscount()<1)
 				contract.setStatus(ContractStatus.UN_CHECKED);
 			else
 				contract.setStatus(ContractStatus.CHECKED);
-			orderYzwService.save(order);
+			orderYzwService.update(order);
 		case CHECKED:
 		case LEFT:
 		case RETURNED_PREMIUM:
@@ -137,7 +142,7 @@ public class OrderApiController {
 		default:
 			return YiwuJson.createByErrorCodeMessage(ReturnCode.ILLEGAL_ARGUMENT.getCode(), status.toString() + "is not a legal argument") ;
 		}
-		return YiwuJson.createBySuccess();
+		return YiwuJson.createBySuccess(Boolean.TRUE);
 	}
 	
 	
