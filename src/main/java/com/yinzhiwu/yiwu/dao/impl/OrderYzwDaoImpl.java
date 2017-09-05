@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -30,7 +31,8 @@ import com.yinzhiwu.yiwu.util.GeneratorUtil;
 @Repository
 public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements OrderYzwDao {
 
-
+	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public String find_last_id() {
@@ -121,26 +123,27 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		if(contracts.size()==0){
 			StringBuilder strBuilder = new StringBuilder();
 			strBuilder.append("<p>");
-			strBuilder.append("您不能预约课程\"").append(lesson.getName()).append("\n");
+			strBuilder.append("要成功签到课程\"").append(lesson.getName()).append("\"");
+			strBuilder.append("会员卡\"").append(customer.getMemberCard()).append("\"名下需存在同时满足以下条件的会籍合约:\n");
 			strBuilder.append("</p>");
 			strBuilder.append("<p>");
-			strBuilder.append("原因可能有:\n");
+			strBuilder.append("1.合约类型为:\"").append(lesson.getSubCourseType().getName()).append("\"\n");
 			strBuilder.append("</p>");
 			strBuilder.append("<p>");
-			strBuilder.append("1.您没有音之舞\"").append(lesson.getSubCourseType().getName()).append("\"类会籍合约\n");
+			strBuilder.append("2.合约状态为:\"已审核\"\n");
 			strBuilder.append("</p>");
 			strBuilder.append("<p>");
-			strBuilder.append("2.您所预约的课程的上课日期不在会籍合约的有效日期范围内\n");
+			strBuilder.append("3.合约的\"剩余次数-待扣次数>0\"\n");
 			strBuilder.append("</p>");
 			strBuilder.append("<p>");
-			strBuilder.append("3.您的会籍合约处于非\"已审核\"状态\n");
+			strBuilder.append("4.课时的上课日期\"").append(sdf.format(lesson.getLessonDate())).append("\"在合约的开始和结束日期之间\n");
 			strBuilder.append("</p>");
 			strBuilder.append("<p>");
-			strBuilder.append("4.您的会籍合约已失效或即将失效， 即\"剩余次数-待扣次数=0\"\n");
+			strBuilder.append("5.合约使用范围包含课时的上课地点:\"").append(lesson.getStore().getName()).append("\"\n");
 			strBuilder.append("</p>");
+			strBuilder.append("</p>");
+			strBuilder.append("6.如果是私教课，还需满足合约是私教课所排课的会籍合约\"").append(lesson.getAppointedContract()).append("\"之一\n");
 			strBuilder.append("<p>");
-			strBuilder.append("5.您的会籍合约使用范围不包含\"").append(lesson.getStore().getName()).append("\"\n");
-			strBuilder.append("</p>");
 			throw new DataNotFoundException(strBuilder.toString());
 		}
 		return contracts.get(0);
