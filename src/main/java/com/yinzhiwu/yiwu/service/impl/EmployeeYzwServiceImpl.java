@@ -8,7 +8,7 @@ import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 
-@Service
+@Service(value="employeeYzwServiceImpl")
 public class EmployeeYzwServiceImpl extends BaseServiceImpl<EmployeeYzw, Integer> implements EmployeeYzwService {
 
 	@Autowired public void setBaseDao(EmployeeYzwDao empDao){

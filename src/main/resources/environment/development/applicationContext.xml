@@ -26,6 +26,8 @@
     	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>  
     
+    <aop:aspectj-autoproxy expose-proxy="true"/>
+    
 	<!-- c3p0连接池配置 -->  
      <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">  
           <!-- 用户名-->  

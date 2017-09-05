@@ -5,7 +5,6 @@ import javax.servlet.ServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.filter.PathMatchingFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yinzhiwu.yiwu.context.Constants;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
@@ -19,7 +18,7 @@ import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 
 public class SysUserFilter extends PathMatchingFilter {
 
-    @Autowired
+//    @Autowired
     private EmployeeYzwService userService;
 
     @Override
