@@ -61,6 +61,11 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
@@ -240,8 +245,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-quartz</artifactId>
-            <version>${shiro.version}</version>
+			<artifactId>shiro-quartz</artifactId>
+			<version>${shiro.version}</version>
 		</dependency>
 	</dependencies>
 
