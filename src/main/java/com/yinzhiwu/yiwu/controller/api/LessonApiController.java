@@ -62,6 +62,7 @@ public class LessonApiController extends BaseController {
 		return lessonService.findById(intId);
 	}
 
+	@Deprecated
 	@GetMapping(value = "/connotation/{lessonId}")
 	@ResponseBody
 	@ApiOperation(value = "根据课时Id获取课时内涵信息")
@@ -74,6 +75,21 @@ public class LessonApiController extends BaseController {
 		} catch (Exception e) {
 			logger.error(e);
 			return new YiwuJson<>(e.getMessage());
+		}
+	}
+	
+	@GetMapping(value = "/{id}/connotation")
+	@ResponseBody
+	@ApiOperation(value = "根据课时Id获取课时内涵信息")
+	public YiwuJson<Connotation> getConnotationById(@PathVariable(value="id") int lessonId) {
+		try {
+			LessonYzw lesson = lessonYzwService.get(lessonId);
+			if (lesson == null)
+				throw new Exception("未能找到lesson id为 " + lessonId + "的课时");
+			return YiwuJson.createBySuccess(lesson.getConnotation());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
 		}
 	}
 
