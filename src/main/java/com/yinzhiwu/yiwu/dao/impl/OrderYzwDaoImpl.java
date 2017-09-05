@@ -124,6 +124,8 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 			StringBuilder strBuilder = new StringBuilder();
 			strBuilder.append("<p>");
 			strBuilder.append("要成功签到课程\"").append(lesson.getName()).append("\"");
+			strBuilder.append("</p>");
+			strBuilder.append("<p>");
 			strBuilder.append("会员卡\"").append(customer.getMemberCard()).append("\"名下需存在同时满足以下条件的会籍合约:\n");
 			strBuilder.append("</p>");
 			strBuilder.append("<p>");
