@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
+import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.ReturnedJson;
 import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.YiwuJson.ReturnCode;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.OrderAbbrApiView;
@@ -29,6 +32,7 @@ import com.yinzhiwu.yiwu.service.OrderService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping(value = "/api/order")
@@ -98,7 +102,45 @@ public class OrderApiController {
 			return new YiwuJson<>("成功确认订单", new Boolean(true));
 		return new YiwuJson<>(new Boolean(true));
 	}
-
+	
+	@PutMapping("/{orderId}/contract/status")
+	@ApiOperation(value="确认合同")
+	public YiwuJson<Boolean> modifyContractStatus(
+			@ApiParam(name="orderId", required=true) @PathVariable(name="orderId",  required=true) 
+			String id, 
+			@ApiParam(name="status", value="VERIFIED,CHECKED,LEFT,RETURNED_PREMIUM,FORBIDDEN,EXPIRED", required=true)
+			ContractStatus status) 
+	{
+		OrderYzw order = orderYzwService.get(id);
+		if(order == null)
+			return YiwuJson.createByErrorCodeMessage(ReturnCode.ILLEGAL_ARGUMENT.getCode(), "无效的订单Id" + id);
+		Contract contract = order.getContract();
+		if(contract == null)
+			return YiwuJson.createByErrorMessage("order:" + id + "不存在会籍合约");
+		
+		switch (status) {
+		case VERIFIED:
+			if(!ContractStatus.UN_VERIFIED.equals(contract.getStatus()))
+				return YiwuJson.createByErrorMessage("当前合约处于"+ contract.getStatus() + " 不能转为状态:" + ContractStatus.VERIFIED );
+			if(order.getDiscount()<1)
+				contract.setStatus(ContractStatus.UN_CHECKED);
+			else
+				contract.setStatus(ContractStatus.CHECKED);
+			orderYzwService.save(order);
+		case CHECKED:
+		case LEFT:
+		case RETURNED_PREMIUM:
+		case FORBIDDEN:
+		case EXPIRED:
+			//TODO
+			break;
+		default:
+			return YiwuJson.createByErrorCodeMessage(ReturnCode.ILLEGAL_ARGUMENT.getCode(), status.toString() + "is not a legal argument") ;
+		}
+		return YiwuJson.createBySuccess();
+	}
+	
+	
 	@GetMapping(value="/contract/type/private")
 	@ApiOperation(value="获取客户所有的私教课会籍合约")
 	public YiwuJson<List<PrivateContractApiView>> getPrivateContracts(Integer customerId){
