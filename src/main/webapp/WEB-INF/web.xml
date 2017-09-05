@@ -118,6 +118,6 @@
 	</listener>     
  -->
 	<welcome-file-list>
-		<welcome-file>lesson_table.html</welcome-file>
+		<welcome-file>login.jsp</welcome-file>
 	</welcome-file-list>
 </web-app>
