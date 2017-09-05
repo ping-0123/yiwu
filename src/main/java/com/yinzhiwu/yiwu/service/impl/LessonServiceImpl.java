@@ -12,12 +12,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.AppointmentDao;
-import com.yinzhiwu.yiwu.dao.ClassRoomDao;
 import com.yinzhiwu.yiwu.dao.CourseDao;
 import com.yinzhiwu.yiwu.dao.CustomerDao;
 import com.yinzhiwu.yiwu.dao.LessonDao;
 import com.yinzhiwu.yiwu.dao.OrderDao;
-import com.yinzhiwu.yiwu.entity.yzwOld.ClassRoom;
 import com.yinzhiwu.yiwu.entity.yzwOld.Course;
 import com.yinzhiwu.yiwu.entity.yzwOld.Customer;
 import com.yinzhiwu.yiwu.entity.yzwOld.Lesson;
@@ -34,8 +32,6 @@ public class LessonServiceImpl extends BaseServiceImpl<Lesson, Integer> implemen
 	@Autowired
 	private LessonDao lessonDao;
 
-	@Autowired
-	private ClassRoomDao roomDao;
 
 	@Autowired
 	private AppointmentDao appointedDao;
@@ -49,6 +45,7 @@ public class LessonServiceImpl extends BaseServiceImpl<Lesson, Integer> implemen
 	@Autowired
 	@Qualifier("customerDaoImpl")
 	private CustomerDao customerDao;
+	
 
 	@Override
 	public Lesson findById(int lessonId) {
@@ -113,11 +110,11 @@ public class LessonServiceImpl extends BaseServiceImpl<Lesson, Integer> implemen
 			for (Lesson l : list) {
 				LessonOldApiView ml = new LessonOldApiView(l);
 				// 添加最大预约人数
-				if (null != l.getClassRoomId() && "" != l.getClassRoomId()) {
-					ClassRoom room = roomDao.findById(l.getClassRoomId());
-					if (room != null)
-						ml.setMaxStudentCount(room.getMaxStudentCount());
-				}
+//				if (null != l.getClassRoomId() && "" != l.getClassRoomId()) {
+//					ClassRoomYzw room = roomDao.findById(l.getClassRoomId());
+//					if (room != null)
+//						ml.setMaxStudentCount(room.getMaxStudentCount());
+//				}
 
 				// 添加舞种，舞种等级
 				Course course;
