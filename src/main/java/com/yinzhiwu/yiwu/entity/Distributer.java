@@ -471,6 +471,16 @@ public class Distributer extends BaseEntity {
 		this.memberCard = memberCard;
 	}
 
+	public Object getLocked() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public byte[] getCredentialsSalt() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 }

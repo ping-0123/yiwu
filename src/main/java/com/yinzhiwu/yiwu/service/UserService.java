@@ -1,9 +1,14 @@
 package com.yinzhiwu.yiwu.service;
 
-import com.yinzhiwu.yiwu.entity.Account;
+import java.util.Set;
 
-public interface UserService {
-	public Account findById(int id);
+import com.yinzhiwu.yiwu.entity.Distributer;
 
-	public void show();
+public interface UserService extends IBaseService<Distributer, Integer>{
+
+	Set<String> findRoles(String username);
+
+	Set<String> findPermissions(String username);
+
+	Distributer findByUsername(String username);
 }
