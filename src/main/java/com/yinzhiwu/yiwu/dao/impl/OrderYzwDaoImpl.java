@@ -111,11 +111,11 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 					.setParameter("subCourseType", 	lesson.getSubCourseType())
 					.setParameter("remainTimes", 	BigDecimal.valueOf(1))
 					.setParameter("lessonDate", lesson.getLessonDate())
-					.setParameter("storeId", String.valueOf(lesson.getStore().getId()))
-					.setMaxResults(1);
+					.setParameter("storeId", String.valueOf(lesson.getStore().getId()));
 		 if(CourseType.PRIVATE==lesson.getCourseType()){			
 			 query.setParameter("appointedContractNos", Arrays.asList(appointedContractNos));
 		 }
+		 query.setMaxResults(1);
 		 
 		List<Contract> contracts = query.getResultList();
 		if(contracts.size()==0){
