@@ -35,7 +35,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.3.6.RELEASE</spring.version>
-		<aspectj.version>1.8.10</aspectj.version>
+		<aspectj.version>1.7.4</aspectj.version>
 		<hibernate.version>5.2.6.Final</hibernate.version>
 		<hibernate.validator.version>5.2.5.Final</hibernate.validator.version>
 		<jackson.version>2.8.7</jackson.version>
@@ -267,7 +267,6 @@
 			</resource>
 		</resources>
 		<plugins>
-		<!--  
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -277,8 +276,7 @@
 					<target>1.8</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
-			</plugin> -->
-
+			</plugin> 
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
