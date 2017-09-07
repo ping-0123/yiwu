@@ -14,8 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "vemployee_post")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class EmployeePostYzw {
 
 	@Id
@@ -23,15 +27,25 @@ public class EmployeePostYzw {
 	private Integer id;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="employeeId", 
-		foreignKey=@ForeignKey(name="fk_employeePost_employeeId", value=ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name="employee_id", 
+		foreignKey=@ForeignKey(name="fk_employeePost_employee_id", value=ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw employee;
+	
+	@ManyToOne
+	@JoinColumn(name="department_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	private DepartmentYzw department;
+	
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "postID",
-			foreignKey=@ForeignKey(name="fk_employeePost_postId", value=ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "post_id",
+			foreignKey=@ForeignKey(name="fk_employeePost_post_id", value=ConstraintMode.NO_CONSTRAINT))
 	private PostYzw post;
 
+	private Date start;
+	private Date end;
+	@Column(name="is_default")
+	private Boolean isDefault = Boolean.FALSE;
+	
 	@Column(name="lastChangeId")
 	private Integer sf_last_change_user_id;
 
@@ -49,7 +63,9 @@ public class EmployeePostYzw {
 
 	@Column(name="lastChangeTimestamp")
 	private Date sf_last_change_timestamp;
-
+	
+	
+	
 	public void init(){
 		
 	}
@@ -129,7 +145,39 @@ public class EmployeePostYzw {
 	public void setSf_last_change_timestamp(Date sf_last_change_timestamp) {
 		this.sf_last_change_timestamp = sf_last_change_timestamp;
 	}
-	
+
+	public DepartmentYzw getDepartment() {
+		return department;
+	}
+
+	public Date getStart() {
+		return start;
+	}
+
+	public Date getEnd() {
+		return end;
+	}
+
+	public void setDepartment(DepartmentYzw department) {
+		this.department = department;
+	}
+
+	public void setStart(Date start) {
+		this.start = start;
+	}
+
+	public void setEnd(Date end) {
+		this.end = end;
+	}
+
+
+	public Boolean isDefault() {
+		return isDefault;
+	}
+
+	public void setDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
+	}
 	
 
 }

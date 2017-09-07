@@ -95,6 +95,7 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
+            	/api/** = anon
                 /index.jsp = anon
                 /unauthorized.jsp = anon
                 /login.jsp = authc
