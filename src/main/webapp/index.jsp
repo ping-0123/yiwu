@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.io.ObjectInputStream" %>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <body>
