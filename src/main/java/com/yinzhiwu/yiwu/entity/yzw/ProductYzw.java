@@ -232,7 +232,6 @@ public class ProductYzw extends BaseYzwEntity {
 	}
 
 	public ProductYzw() {
-		super();
 	}
 
 	public String getVisableDepartmentIds() {

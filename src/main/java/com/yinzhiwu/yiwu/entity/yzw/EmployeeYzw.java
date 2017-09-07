@@ -1,6 +1,8 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,11 +16,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.yinzhiwu.yiwu.entity.sys.Resource;
+import com.yinzhiwu.yiwu.entity.sys.Role;
+import com.yinzhiwu.yiwu.enums.DataStatus;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 @Entity
@@ -36,8 +42,8 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(length = 128)
-	private String user;
+	@Column(length = 128, name ="user")
+	private String username;
 
 	@Column(length = 128)
 	private String seegleUserId;
@@ -118,17 +124,23 @@ public class EmployeeYzw extends BaseYzwEntity {
 
 	@Column(name = "Last_Online_TimeStamp")
 	private Date lastOnlineTimeStamp;
-
+	
+	@Column(length=128, name="passwords")
+	private String passwords;
+	@Column(length=123)
+	private String salt;
+	private DataStatus status=DataStatus.NORMAL;
+	
+	@OneToMany
+	@JoinColumn(name="employee_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	private Set<EmployeePostYzw> employeePosts = new LinkedHashSet<>();
+	
 	public EmployeeYzw() {
 		super();
 	}
 
 	public Integer getId() {
 		return id;
-	}
-
-	public String getUser() {
-		return user;
 	}
 
 	public String getSeegleUserId() {
@@ -233,10 +245,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
 	}
 
 	public void setSeegleUserId(String seegleUserId) {
@@ -347,4 +355,86 @@ public class EmployeeYzw extends BaseYzwEntity {
 		this.department = department;
 	}
 
+	public String getPasswords() {
+		return passwords;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public DataStatus getStatus() {
+		return status;
+	}
+
+	public void setRemoved(Boolean removed) {
+		this.removed = removed;
+	}
+
+	public void setPasswords(String passwords) {
+		this.passwords = passwords;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+	public void setStatus(DataStatus status) {
+		this.status = status;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getCredentialsSalt() {
+		return this.username + this.salt;
+	}
+
+	public Set<EmployeePostYzw> getEmployeePosts() {
+		return employeePosts;
+	}
+
+	public void setEmployeePosts(Set<EmployeePostYzw> employeePosts) {
+		this.employeePosts = employeePosts;
+	}
+	
+	public Set<Role> getRoles(){
+		Set<Role> roles = new LinkedHashSet<>();
+		Set<EmployeePostYzw> empPosts = this.getEmployeePosts();
+		for (EmployeePostYzw ep : empPosts) {
+			roles.addAll(ep.getPost().getRoles());
+		}
+		return roles;
+	}
+	
+	public Set<Resource> getResources(){
+		Set<Resource> resources = new LinkedHashSet<>();
+		for(Role role: getRoles()){
+			resources.addAll(role.getResources());
+		}
+		return resources;
+	}
+	
+	
+	public Set<String> getStringRoles(){
+		Set<String> stringRoles = new LinkedHashSet<>();
+		for(Role role:getRoles()){
+			stringRoles.add(role.getName());
+		}
+		
+		return stringRoles;
+	}
+	
+	public Set<String> getStringPermissions(){
+		Set<String> permissions = new LinkedHashSet<>();
+		for(Resource r: getResources()){
+			permissions.add(r.getPermission());
+		}
+		return permissions;
+	}
 }
