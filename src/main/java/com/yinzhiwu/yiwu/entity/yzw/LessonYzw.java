@@ -110,6 +110,7 @@ public class LessonYzw extends BaseYzwEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "storeId", foreignKey = @ForeignKey(name = "fk_lesson_store_id", value = ConstraintMode.NO_CONSTRAINT))
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private DepartmentYzw store;
 
 	@Column(length = 32)

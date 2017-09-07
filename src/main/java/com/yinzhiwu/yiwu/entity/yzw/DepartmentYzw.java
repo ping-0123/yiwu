@@ -23,7 +23,7 @@ import com.yinzhiwu.yiwu.entity.Address;
 @Entity
 @Table(name = "vdepartment")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-@Where(clause="removed=true")
+@Where(clause="removed=false")
 public class DepartmentYzw extends BaseYzwEntity{
 
 	/**

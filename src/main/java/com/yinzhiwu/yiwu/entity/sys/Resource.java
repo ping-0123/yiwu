@@ -52,7 +52,7 @@ public class Resource extends BaseEntity {
 	private ResourceType type;
 	
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name="parent_id",foreignKey=@ForeignKey(value=ConstraintMode.CONSTRAINT, name="fk_resource_parent_id"))
 	private Resource parent;
 	
 	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)

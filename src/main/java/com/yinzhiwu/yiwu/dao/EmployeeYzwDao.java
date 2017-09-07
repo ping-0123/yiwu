@@ -14,4 +14,6 @@ public interface EmployeeYzwDao extends IBaseDao<EmployeeYzw, Integer> {
 
 	EmployeeYzw findByTel(String phoneNo);
 
+	EmployeeYzw findByUsername(String username);
+
 }
