@@ -12,5 +12,5 @@ public interface UserService extends IBaseService<EmployeeYzw, Integer>{
 
 	EmployeeYzw findByUsername(String username);
 	
-	void moidifyPasswords(Integer userId, String newPasswords);
+	void modifyPassword(Integer userId, String newPasswords);
 }

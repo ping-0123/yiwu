@@ -41,7 +41,7 @@ public class UserServiceImpl extends BaseServiceImpl<EmployeeYzw, Integer> imple
 	}
 
 	@Override
-	public void moidifyPasswords(Integer userId, String newPasswords) {
+	public void modifyPassword(Integer userId, String newPasswords) {
 	      EmployeeYzw user =employeeDao.get(userId);
 	      user.setPassword(newPasswords);
 	      passwordHelper.encryptPassword(user);

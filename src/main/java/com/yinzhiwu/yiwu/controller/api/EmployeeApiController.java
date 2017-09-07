@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,9 +49,9 @@ public class EmployeeApiController {
 		}
 	}
 	
-	@PutMapping(value="{id}/password")
+	@PostMapping(value="{id}/password")
 	public YiwuJson<Object> modifyPassword(@PathVariable(name="id") int id,  String newPassword){
-		userService.moidifyPasswords(id, newPassword);
+		userService.modifyPassword(id, newPassword);
 		return YiwuJson.createBySuccess();
 	}
 }
