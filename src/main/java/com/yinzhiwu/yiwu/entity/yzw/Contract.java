@@ -111,10 +111,10 @@ public class Contract {
 
 	private Integer validity;
 
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	@Column(name = "startdate")
 	private Date start;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	@Column(name = "endDate")
 	private Date end;
 	

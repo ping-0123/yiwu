@@ -19,7 +19,7 @@ public class CheckInEventDaoImpl extends BaseDaoImpl<CheckInEvent, Integer> impl
 		hql.append("(");
 		hql.append("t1.param");
 		hql.append(",t6.incomeValue");
-		hql.append(",t3.store.city");
+		hql.append(",t3.store.officialAddress.city");
 		hql.append(",t3.store.name");
 		hql.append(",t3.name");
 		hql.append(",t4.danceDesc");

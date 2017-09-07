@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.test.TestBase;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
@@ -33,6 +34,7 @@ public class OrderYzwDaoTest  extends TestBase{
 	@Autowired private CustomerYzwDao customerDao;
 	@Autowired private LessonYzwDao lessonDao;
 	
+	@Transactional
 	@Test
 	public void testFindCheckableContractsOfCustomerAndLesson(){
 		CustomerYzw customer = customerDao.get(33897);
