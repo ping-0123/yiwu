@@ -71,6 +71,7 @@
                 <value>com.yinzhiwu.yiwu.entity.type</value>
                 <value>com.yinzhiwu.yiwu.entity.income</value>
                  <value>com.yinzhiwu.yiwu.entity.yzwOld</value>
+                 <value>com.yinzhiwu.yiwu.sys</value>
             </list>  
         </property>  
         <property name="hibernateProperties">  
