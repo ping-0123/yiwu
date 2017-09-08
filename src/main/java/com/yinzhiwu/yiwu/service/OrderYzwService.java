@@ -29,5 +29,7 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 
 	YiwuJson<PageBean<OrderApiView>> findPageOfOrderApiViewByDistributer(Distributer distributer, int pageNo, int pageSize);
 
+	void settleContract(String contractNo);
+
 
 }

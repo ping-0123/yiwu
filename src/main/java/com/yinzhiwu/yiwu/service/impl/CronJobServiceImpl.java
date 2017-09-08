@@ -26,4 +26,6 @@ public class CronJobServiceImpl implements CronJobService {
 		 * 		4.设置会籍合约的剩余次数
 		 */
 	}
+	
+	
 }

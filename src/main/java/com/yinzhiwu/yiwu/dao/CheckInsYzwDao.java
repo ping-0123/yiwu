@@ -39,4 +39,13 @@ public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer> {
 
 	PageBean<LessonApiView> findPageOfLessonApiViewsByContractNo(String contractNo, int pageNo, int pageSize);
 
+	List<CheckInsYzw> findByLessonId(Integer id);
+
+	/**
+	 * 查询该合约所有已上课正常结算的课程课时汇总
+	 * @param contractNo
+	 * @return
+	 */
+	Float findSumHoursOfCheckedLessonsByContractNo(String contractNo);
+
 }

@@ -115,6 +115,10 @@ public class YiwuJson<T> implements Serializable {
     public static <T> YiwuJson<T> createByErrorCodeMessage(int errorCode,String errorMessage){
         return new YiwuJson<T>(errorCode,errorMessage);
     }
+    
+    public static <T> YiwuJson<T> createByIllegalArgumentError(){
+    	return new YiwuJson<T>(ReturnCode.ILLEGAL_ARGUMENT.getCode(), ReturnCode.ILLEGAL_ARGUMENT.getDesc());
+	}
 
 	@JsonIgnore
     public boolean isSuccess(){

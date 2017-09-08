@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
@@ -28,6 +29,7 @@ import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw.VipAttributer;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderAbbrApiView;
@@ -51,6 +53,7 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 	@Autowired private ProductYzwDao productDao;
 	@Autowired private CustomerYzwDao customerDao;
 	@Autowired private DepartmentYzwDao deptDao;
+	@Autowired private CheckInsYzwDao checkInsdao;
 	
 	@Autowired
 	public void setBaseDao(OrderYzwDao orderYzwDao) {
@@ -270,6 +273,8 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 	public YiwuJson<PageBean<OrderApiView>> findPageOfOrderApiViewByDistributer(Distributer distributer, int pageNo,
 			int pageSize) {
 		Assert.notNull(distributer, "orderYzwServiceImpl.findPageOfOrderApiViewByDistributer.distributer 不能为null");
+		if(distributer.getCustomer()== null)
+			return YiwuJson.createByErrorMessage("distribter:" + distributer.getId() + " 未绑定客户信息");
 		
 		PageBean<OrderApiView> page = orderDao.findPageOfOrderApiViewByCustomerId(distributer.getCustomer().getId(), pageNo, pageSize);
 		List<OrderApiView> views = page.getData();
@@ -277,6 +282,40 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 			view.setValidStores(converStoreIdsToStoreNames(view.getValidStores()));
 		}
 		return YiwuJson.createBySuccess(page);
+	}
+	
+	
+	@Override
+	public void settleContract(String contractNo){
+		try {
+			OrderYzw order = orderDao.findByContractNO(contractNo);
+			if(order == null){
+				logger.error(contractNo + "会籍合约不存在");
+				return;
+			}
+			Contract contract = order.getContract();
+			float hours = checkInsdao.findSumHoursOfCheckedLessonsByContractNo(contract.getContractNo());
+			float remainours = contract.getValidityTimes().floatValue() - hours;
+			if(remainours < 0){
+				logger.error(contract.getContractNo() +"合约异常 ，刷卡总课时大于合约有效次数");
+				order.setComments(order.getComments() +"  合约异常 ，刷卡总课时数为 "+  hours  + ",大于合约有效次数");
+				orderDao.update(order);
+				return;
+			}
+			if(remainours < contract.getRemainTimes().floatValue()){
+				 contract.setRemainTimes(BigDecimal.valueOf(remainours));
+				 logger.info(contract.getContractNo() + "合约正常结算");
+				 orderDao.update(order);
+			}
+			if(remainours > contract.getRemainTimes().floatValue()){
+				logger.error(contract.getContractNo()  + "合约异常结算， 扣减时数大于刷卡次数");
+				order.setComments(order.getComments() + "; 合约异常结算， 扣减时数大于刷卡上课总时数 " + hours);
+				orderDao.update(order);
+			}
+		} catch (YiwuException e) {
+			logger.error(e.getMessage(), e);
+			return;
+		}
 	}
 	
 	private String converStoreIdsToStoreNames(String semicolonSeparateStoreIds){

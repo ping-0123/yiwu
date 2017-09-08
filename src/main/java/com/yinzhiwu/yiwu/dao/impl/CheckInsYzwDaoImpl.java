@@ -236,4 +236,32 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 		
 	}
 
+
+	@Override
+	public List<CheckInsYzw> findByLessonId(Integer lessonId) {
+		return findByProperty("lesson.id", lessonId);
+	}
+
+
+	@Override
+	public Float findSumHoursOfCheckedLessonsByContractNo(String contractNo) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT SUM(t1.lessonTime)");
+		hql.append(" FROM LessonYzw t1");
+		hql.append(" WHERE t1.dueTeacher.id is not NULL");
+		hql.append(" AND t1.dueTeacher.id > 0");
+		hql.append(" AND t1.id IN");
+		hql.append(" (");
+		hql.append("SELECT t2.lesson.id");
+		hql.append(" FROM CheckInsYzw t2");
+		hql.append(" WHERE t2.contractNo =:contractNo");
+		hql.append(" )");
+		
+		
+		return getSession().createQuery(hql.toString(), Double.class)
+				.setParameter("contractNo", contractNo)
+				.getSingleResult()
+				.floatValue();
+	}
+
 }

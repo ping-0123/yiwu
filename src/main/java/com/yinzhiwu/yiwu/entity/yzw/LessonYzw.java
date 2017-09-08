@@ -375,9 +375,6 @@ public class LessonYzw extends BaseYzwEntity {
 		this.classRoomName = classRoomName;
 	}
 
-	public void setActualTeacherId(EmployeeYzw actualTeacherId) {
-		this.actualTeacher = actualTeacherId;
-	}
 
 	public void setActualTeacherName(String actualTeacherName) {
 		this.actualTeacherName = actualTeacherName;
@@ -461,6 +458,10 @@ public class LessonYzw extends BaseYzwEntity {
 
 	public void setConnotation(Connotation connotation) {
 		this.connotation = connotation;
+	}
+
+	public void setActualTeacher(EmployeeYzw actualTeacher) {
+		this.actualTeacher = actualTeacher;
 	}
 
 }

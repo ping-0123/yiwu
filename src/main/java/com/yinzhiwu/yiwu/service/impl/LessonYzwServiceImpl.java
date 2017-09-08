@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
@@ -15,9 +16,11 @@ import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.StoreManCallRollYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
 import com.yinzhiwu.yiwu.entity.yzw.Connotation;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.model.DailyLessonsDto;
@@ -206,5 +209,82 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 			view.setPictureUrl(fileService.getFileUrl(view.getPictureUrl()));
 		}
 		return YiwuJson.createBySuccess(page);
+	}
+	
+	@Override
+	public void settleLesson(LessonYzw lesson){
+		Assert.notNull(lesson);
+		
+		switch (lesson.getCourseType()) {
+		case PRIVATE:
+			settlePrivateLesson(lesson);
+			break;
+		case OPENED:
+			break;
+		case CLOSED:
+			break;
+		default:
+			break;
+		}
+		
+	}
+	
+	private void settlePrivateLesson(LessonYzw lesson){
+		List<CheckInsYzw> checks = checkInsYzwDao.findByLessonId(lesson.getId());
+		if(checks.size() ==0){
+			logger.info(lesson.getId() + "没有签到记录");
+			return;
+		}
+		if(!StringUtils.hasText(lesson.getAppointedContract())){
+			logger.error(lesson.getId() + "私教课没有排会籍合约");
+			return;
+		}
+		
+		//提起学员老师签到信息
+		List<String> checkedContractNos = new ArrayList<>();
+		EmployeeYzw lastCheckedTeacher = null;
+		CheckInsYzw lastTeacherCheck  = null;
+		for (CheckInsYzw check : checks) {
+			if(StringUtils.hasText(check.getContractNo()))
+				//添加签到学员会籍合约
+				checkedContractNos.add(check.getContractNo());
+			else if(check.getTeacher() != null){
+				//设置最后一条的老师签到记录
+				if(lastTeacherCheck == null)
+					lastTeacherCheck = check;
+				else
+					lastTeacherCheck = 
+					check.getCreateTime().after(lastTeacherCheck.getCreateTime())?check:lastTeacherCheck;
+			}
+		}
+		if(checkedContractNos.size() ==0){
+			logger.info(lesson.getId() + "没有学员的签到记录");
+			return;
+		}
+		
+		//判断老师是否已签到
+		if(lastTeacherCheck == null){
+			logger.info(lesson.getId() + "没有老师的签到记录");
+			return;
+		}
+		lastCheckedTeacher = lastTeacherCheck.getTeacher();
+		//判断排课老师是否签到
+		if(! lastCheckedTeacher.equals(lesson.getDueTeacher())){
+			logger.info(lesson.getId() + "非排课老师签到");
+			return;
+		}
+			
+		//判断排课学员是否已签到
+		String[] contractNos = lesson.getAppointedContract().split(";");
+		for (String contractNo : contractNos) {
+			if(! checkedContractNos.contains(contractNo)){
+				logger.info("课程:" + lesson.getId() + "中会籍合约:" +contractNo + "未刷卡");
+				return;
+			}
+		}
+		
+		//setlle lesson
+		lesson.setActualTeacher(lastCheckedTeacher);
+		lessonDao.update(lesson);
 	}
 }

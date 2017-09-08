@@ -118,7 +118,7 @@
             <tx:method name="deleteAndRepair" />  
             <tx:method name="judge*"/>
   
-            <tx:method name="set*" />
+            <tx:method name="set*" propagation="REQUIRED"/>
             <tx:method name="get*" propagation="REQUIRED"/>
             <tx:method name="find*" propagation="REQUIRED" />  
             <tx:method name="load*" propagation="SUPPORTS" />  
