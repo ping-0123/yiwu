@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.context.UserContext;
+import com.yinzhiwu.yiwu.enums.DataStatus;
 
 /**
  * name rule foreign key: fk_{table name}_{foreign key column name} foreign key
@@ -56,6 +59,9 @@ public abstract class BaseEntity implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Column(insertable = true, updatable = true)
 	protected Date lastModifiedDate;
+	
+	@Enumerated(value=EnumType.ORDINAL)
+	private DataStatus dataStatus = DataStatus.NORMAL;
 
 	public BaseEntity() {
 	}
@@ -150,6 +156,26 @@ public abstract class BaseEntity implements Serializable {
 
 	public void setLastModifiedUserId(int moddifiedUserId) {
 		this.lastModifiedUserId = moddifiedUserId;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setCreateUserId(Integer createUserId) {
+		this.createUserId = createUserId;
+	}
+
+	public void setLastModifiedUserId(Integer lastModifiedUserId) {
+		this.lastModifiedUserId = lastModifiedUserId;
+	}
+
+	public DataStatus getDataStatus() {
+		return dataStatus;
+	}
+
+	public void setDataStatus(DataStatus dataStatus) {
+		this.dataStatus = dataStatus;
 	}
 
 }

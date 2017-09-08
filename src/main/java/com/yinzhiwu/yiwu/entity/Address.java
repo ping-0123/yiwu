@@ -14,10 +14,10 @@ public class Address {
 	private String city;
 	@Column(length = 32)
 	private String district;
-	@Column(length = 32)
-	private String town;
-	@Column(length = 32)
-	private String village;
+//	@Column(length = 32)
+//	private String town;
+//	@Column(length = 32)
+//	private String village;
 	@Column(length = 128)
 	private String address;
 	private Float longitude;
@@ -26,15 +26,13 @@ public class Address {
 	public Address() {
 	}
 
-	public Address(String contry, String province, String city, String district, String town, String village,
+	public Address(String contry, String province, String city, String district, 
 			String detail, float longitude, float latitude) {
 		super();
 		this.nation = contry;
 		this.province = province;
 		this.city = city;
 		this.district = district;
-		this.town = town;
-		this.village = village;
 		this.address = detail;
 		this.longitude = longitude;
 		this.latitude = latitude;
@@ -52,13 +50,6 @@ public class Address {
 		return district;
 	}
 
-	public String getTown() {
-		return town;
-	}
-
-	public String getVillage() {
-		return village;
-	}
 
 	public Float getLongitude() {
 		return longitude;
@@ -78,14 +69,6 @@ public class Address {
 
 	public void setDistrict(String district) {
 		this.district = district;
-	}
-
-	public void setTown(String town) {
-		this.town = town;
-	}
-
-	public void setVillage(String village) {
-		this.village = village;
 	}
 
 	public void setLongitude(float longitude) {

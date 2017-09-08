@@ -48,7 +48,7 @@ public class AppointSuccessApiView {
 			if (lesson != null) {
 				DepartmentYzw store = lesson.getStore();
 				if (store != null) {
-					this.city = store.getCity();
+					this.city = store.getOfficialAddress().getCity();
 					this.storeName = store.getName();
 				}
 				this.lessonName = lesson.getName();

@@ -40,4 +40,14 @@ public class EmployeeYzwDaoImpl extends BaseDaoImpl<EmployeeYzw,Integer> impleme
 		return emps.get(0);
 	}
 
+	@Override
+	public EmployeeYzw findByUsername(String username) {
+		List<EmployeeYzw> emps =findByProperties(
+				new String[]{"username", "removed"}, 
+				new Object[]{username, false});
+		if(emps==null || emps.size() == 0)
+			return null;
+		return emps.get(0);
+	}
+
 }

@@ -25,8 +25,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.Assert;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 
+@JsonInclude(value= Include.NON_NULL)
 @Entity
 @Table(name = "vorder")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
@@ -187,6 +190,8 @@ public class OrderYzw extends BaseYzwEntity {
 	public OrderYzw() {
 	}
 
+	
+	
 	public OrderYzw(CustomerYzw cust, ProductYzw product, float payAmount, DepartmentYzw dept) {
 		Assert.notNull(cust);
 		Assert.notNull(product);
@@ -443,6 +448,17 @@ public class OrderYzw extends BaseYzwEntity {
 
 	public void seteContractStatus(Boolean eContractStatus) {
 		this.eContractStatus = eContractStatus;
+	}
+
+
+	public OrderYzw(String id, int productId, String productName, Date payedDate, Contract contract) {
+		this.id = id;
+		this.payedDate = payedDate;
+		this.contract = contract;
+		ProductYzw p = new ProductYzw();
+		p.setId(productId);
+		p.setName(productName);
+		this.product = p;
 	}
 
 
