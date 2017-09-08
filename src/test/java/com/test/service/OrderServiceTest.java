@@ -21,7 +21,7 @@ public class OrderServiceTest extends TestBase{
 	@Test
 	@Rollback(value=false)
 	public void testSettleContract(){
-		String contractNo = "YZW20170625680";
+		String contractNo = "YZW20170812064";
 		orderService.settleContract(contractNo);
 	}
 

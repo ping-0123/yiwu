@@ -31,6 +31,7 @@ import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto;
 import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto.CheckedInStatus;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
+import com.yinzhiwu.yiwu.service.OrderYzwService;
 
 @Service
 public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> implements LessonYzwService {
@@ -42,6 +43,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	@Autowired private StoreManCallRollYzwDao storeManCallRollYzwDao;
 	@Autowired private CheckInsYzwDao checkInsYzwDao;
 	@Autowired private FileService fileService;
+	@Autowired private OrderYzwService orderService;
 	
 	@Autowired
 	public void setBaseDao(LessonYzwDao lessonDao) {
@@ -220,8 +222,10 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 			settlePrivateLesson(lesson);
 			break;
 		case OPENED:
+			//TODO
 			break;
 		case CLOSED:
+			//TODO
 			break;
 		default:
 			break;
@@ -286,5 +290,10 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		//setlle lesson
 		lesson.setActualTeacher(lastCheckedTeacher);
 		lessonDao.update(lesson);
+		
+		//settle contract
+		for (String contractNo : contractNos) {
+			orderService.settleContract(contractNo);
+		}
 	}
 }

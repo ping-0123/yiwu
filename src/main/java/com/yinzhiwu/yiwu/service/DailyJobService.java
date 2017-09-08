@@ -6,10 +6,10 @@ package com.yinzhiwu.yiwu.service;
 *
 */
 
-public interface CronJobService {
+public interface DailyJobService {
 
 	/**
-	 * 结算课时
+	 * 每日结算课时
 	 */
 	void settleLesson();
 	

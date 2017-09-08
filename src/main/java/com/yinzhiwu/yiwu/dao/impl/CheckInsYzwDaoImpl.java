@@ -264,4 +264,18 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 				.floatValue();
 	}
 
+
+	@Override
+	public List<LessonYzw> findCheckedInlessonsByDate(Date start, Date end) {
+		StringBuilder hql  = new StringBuilder();
+		hql.append("SELECT DISTINCT t1.lesson");
+		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" WHERE t1.createTime BETWEEN :start AND :end");
+		
+		return getSession().createQuery(hql.toString(), LessonYzw.class)
+				.setParameter("start", start)
+				.setParameter("end", end)
+				.getResultList();
+	}
+
 }

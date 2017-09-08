@@ -48,4 +48,6 @@ public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer> {
 	 */
 	Float findSumHoursOfCheckedLessonsByContractNo(String contractNo);
 
+	List<LessonYzw> findCheckedInlessonsByDate(Date start, Date end);
+
 }
