@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
@@ -50,5 +51,7 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 	public StoreApiView findStoreOfValidOpenContractOrder(Integer id);
 
 	public PageBean<OrderApiView> findPageOfOrderApiViewByCustomerId(Integer id, int pageNo, int pageSize);
+
+	public List<OrderYzw> findBrokeragableOrdersSinceRegesterDate(Integer customerId, Date registedDate);
 
 }

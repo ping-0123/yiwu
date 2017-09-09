@@ -13,7 +13,9 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.income.IncomeEvent;
 import com.yinzhiwu.yiwu.entity.income.IncomeFactor;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
+import com.yinzhiwu.yiwu.entity.income.PurchaseEvent;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
+import com.yinzhiwu.yiwu.entity.type.RelationType;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.IncomeRecordApiView;
 import com.yinzhiwu.yiwu.model.view.ShareTweetIncomeRecordApiView;
@@ -74,6 +76,21 @@ public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integ
 	}
 
 	@Override
+	public void saveRecordsWithoutSelfIncome(PurchaseEvent event) {
+		List<IncomeFactor> factors =  incomeFactorDao.findByProperty("eventType.id", event.getType().getId());
+		for (IncomeFactor factor : factors) {
+			if(RelationType.SELF_WITH_SELF.equals(factor.getRelation()))
+				continue;
+			Distributer benificiary = factor.getRelation().getRelativeDistributer(event.getDistributer());
+			if (benificiary != null && factor.getFactor() != 0f && event.getParam() != 0) {
+				IncomeRecord record = new IncomeRecord(event, factor, benificiary);
+				this.save(record);
+			}
+		}
+		
+	}
+	
+	@Override
 	public int findCountByIncomeTypesByBeneficiary(int distributerId, int[] incomeTypeIds) {
 		return incomeRecordDao.findCountByIncomeTypesByBeneficiary(distributerId, incomeTypeIds);
 	}
@@ -96,4 +113,6 @@ public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integ
 		Long count = incomeRecordDao.findCountBy_incomeTypes_relationTypes_eventTypes_benificiary(observerId, eventTypeIds, relationTypeIds, incomeTypeIds);
 		return YiwuJson.createBySuccess(count);
 	}
+
+
 }

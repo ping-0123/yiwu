@@ -338,4 +338,12 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		return s.substring(0,s.length()-1);
 		
 	}
+
+
+	@Override
+	public List<OrderYzw> findBrokeragableOrdersSinceRegesterDate(Distributer distributer) {
+		Assert.notNull(distributer);
+		
+		return orderDao.findBrokeragableOrdersSinceRegesterDate(distributer.getCustomer().getId(), distributer.getRegistedTime());
+	}
 }

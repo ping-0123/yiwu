@@ -37,18 +37,28 @@ public class PurchaseEventServiceImpl extends BaseServiceImpl<PurchaseEvent, Int
 	 * @param order
 	 * @throws DataNotFoundException
 	 */
+	@Override
 	public void savePurchaseEvent(OrderYzw order) {
 		Assert.notNull(order);
 		Assert.notNull(order.getCustomer());
 
-		List<Distributer> distributers = distributerDao.findByProperty("customer.id", order.getCustomer().getId());
-		if(distributers.size() ==0) return;
-		Distributer distributer = distributers.get(0);
+		Distributer distributer = distributerDao.findByCustomerId(order.getCustomer().getId());
 		// float amount = orderDao.get_effective_brockerage_base(order);
 		PurchaseEvent event = new PurchaseEvent(distributer, order);
 		incomeEventService.save(event);
 	}
 
+	
+	@Override
+	public void savePurchaseEventWithoutSelfIncome(OrderYzw order){
+		if(order == null || order.getCustomer() == null) return;
+		
+		Distributer distributer = distributerDao.findByCustomerId(order.getCustomer().getId());
+		// float amount = orderDao.get_effective_brockerage_base(order);
+		PurchaseEvent event = new PurchaseEvent(distributer, order);
+		incomeEventService.saveWithoutSelfIncome(event);
+	}
+	
 	/*
 	 * 每晚4点定时执行， 产生对应的佣金收益
 	 */

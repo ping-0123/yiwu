@@ -31,5 +31,7 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 
 	void settleContract(String contractNo);
 
+	List<OrderYzw> findBrokeragableOrdersSinceRegesterDate(Distributer distributer);
+
 
 }

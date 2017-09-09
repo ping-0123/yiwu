@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -58,5 +59,13 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 	float getExpWinRate(Distributer distributer);
 
 	YiwuJson<StoreApiView> findDefaultStoreApiView(Integer distributerId);
+
+	/**
+	 * 设置distributer's super
+	 * @param distributer
+	 */
+	void setSuperToServer(Distributer distributer);
+
+	List<Distributer> findCustomerDistributersWhoNoSuperByRegisterDate(Date start, Date end);
 
 }

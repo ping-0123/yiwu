@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.IncomeEventDao;
 import com.yinzhiwu.yiwu.entity.income.IncomeEvent;
+import com.yinzhiwu.yiwu.entity.income.PurchaseEvent;
 import com.yinzhiwu.yiwu.service.IncomeEventService;
 import com.yinzhiwu.yiwu.service.IncomeRecordService;
 
@@ -24,6 +25,12 @@ public class IncomeEventServiceImpl extends BaseServiceImpl<IncomeEvent, Integer
 		super.save(event);
 		incomeRecordService.save_records_produced_by_event(event);
 		return event.getId();
+	}
+
+	@Override
+	public void saveWithoutSelfIncome(PurchaseEvent event) {
+		super.save(event);
+		incomeRecordService.saveRecordsWithoutSelfIncome(event);
 	}
 
 }

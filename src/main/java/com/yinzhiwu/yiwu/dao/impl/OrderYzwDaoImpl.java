@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaQuery;
@@ -175,8 +176,9 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		calendar.add(Calendar.DAY_OF_MONTH, -2);
 		StringBuilder hql = new StringBuilder();
 		hql.append("FROM OrderYzw t1");
-		hql.append(" WHERE t1.payedDate BETWEEN :start AND :end");
+		hql.append(" WHERE t1.createTime BETWEEN :start AND :end");
 		hql.append(" AND t1.product.contractType.contractType in :contractTypes");
+		hql.append(" AND t1.contract.type in :contractTypes2");
 		if(logger.isDebugEnabled()){
 			logger.debug("start is " + CalendarUtil.getDayBegin(calendar).getTime());
 			logger.debug("end is " + CalendarUtil.getDayEnd(calendar).getTime());
@@ -186,6 +188,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 				.setParameter("start", 			CalendarUtil.getDayBegin(calendar).getTime())
 				.setParameter("end", 			CalendarUtil.getDayEnd(calendar).getTime())
 				.setParameter("contractTypes", 	CourseType.getEffectiveCourseTypes())
+				.setParameter("contractTypes2", CourseType.getEffectiveCourseTypes())
 				.getResultList();
 		
 		if (orders == null)
@@ -444,6 +447,35 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(" ORDER BY t1.payedDate DESC");
 		
 		return findPage(hql.toString(), OrderApiView.class, "customerId", customerId, pageNo, pageSize);
+	}
+
+
+	@Override
+	public List<OrderYzw> findBrokeragableOrdersSinceRegesterDate(Integer customerId, Date registedTime) {
+		updateLingLingContractDates();
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, -2);
+		Date start  = registedTime;
+		Date end = CalendarUtil.getDayEnd(calendar).getTime();
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("FROM OrderYzw t1");
+		hql.append(" WHERE t1.createTime BETWEEN :start and :end");
+		hql.append(" AND t1.customer.id = :customerId");
+		hql.append(" AND t1.product.contractType.contractType in :contractTypes");
+		hql.append(" AND t1.contract.type in :contractTypes2");
+		
+		List<OrderYzw> orders = getSession().createQuery(hql.toString(), OrderYzw.class)
+				.setParameter("start", start)
+				.setParameter("end",end)
+				.setParameter("customerId",customerId)
+				.setParameter("contractTypes", 	CourseType.getEffectiveCourseTypes())
+				.setParameter("contractTypes2", CourseType.getEffectiveCourseTypes())
+				.getResultList();
+		
+		if (orders == null)
+			return new ArrayList<>();
+		return orders;
 	}
 	
 }

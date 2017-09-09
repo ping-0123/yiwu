@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.type.IntegerType;
@@ -9,6 +10,7 @@ import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.Distributer.Role;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -235,6 +237,33 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 				.setParameter("wechatNo", wechatNo)
 				.getResultList();
 		return (customers.size()> 0)?customers.get(0):null;
+	}
+
+
+	@Override
+	public Distributer findByEmployeeId(Integer employeeId) {
+		List<Distributer> distributers = findByProperty("employee.id", employeeId);
+		if(distributers.size() ==0){
+			logger.info(employeeId + " 员工尚未注册分销系统");
+			return null;
+		}
+		return distributers.get(0);
+	}
+
+
+	@Override
+	public List<Distributer> findCustomerDistributersWhoNoSuperByRegisterDate(Date start, Date end) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("FROM Distributer t1");
+		hql.append(" WHERE t1.superDistributer.id IS NULL");
+		hql.append(" AND t1.role = :role");
+		hql.append(" AND t1.registedTime BETWEEN :start AND :end");
+		
+		return getSession().createQuery(hql.toString(), Distributer.class)
+				.setParameter("role", Role.CUSTOMER)
+				.setParameter("start", start)
+				.setParameter("end", end)
+				.getResultList();
 	}
 
 }

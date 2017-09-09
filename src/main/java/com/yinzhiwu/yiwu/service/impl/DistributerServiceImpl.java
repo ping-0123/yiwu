@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -459,6 +461,39 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		if(view == null)
 			return YiwuJson.createByErrorMessage("");
 		return YiwuJson.createBySuccess(view);
+	}
+
+	@Override
+	public void setSuperToServer(Distributer distributer) {
+		Assert.notNull(distributer);
+		if(distributer.getSuperDistributer() != null)
+			return;
+		CustomerYzw customer = distributer.getCustomer();
+		if(customer == null){
+			logger.error("distributer " + distributer.getId() + " 未绑定cutomer信息" );
+			return;
+		}
+		
+		EmployeeYzw salesman = customer.getSalesman();
+		if(salesman == null){
+			logger.error("customer " + customer.getId() + " 该客户没有服务归属");
+			return;
+		}
+		
+		Distributer emp = distributerDao.findByEmployeeId(salesman.getId());
+		if(emp == null){
+			logger.info("employee " + salesman.getId() + " " +  salesman.getName() + "尚未注册分销系统");
+			return;
+		}
+		
+		distributer.setSuperDistributer(emp);
+		distributer.setServer(salesman);
+		distributerDao.update(distributer);
+	}
+
+	@Override
+	public List<Distributer> findCustomerDistributersWhoNoSuperByRegisterDate(Date start, Date end) {
+		return distributerDao.findCustomerDistributersWhoNoSuperByRegisterDate(start, end);
 	}
 
 }

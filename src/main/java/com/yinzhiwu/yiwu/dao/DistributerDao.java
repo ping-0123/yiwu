@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -41,4 +42,8 @@ public interface DistributerDao extends IBaseDao<Distributer, Integer> {
 	public List<Integer> findIdsByemployees(List<Integer> employeeIds);
 
 	public CustomerYzw findCustomerByWechat(String wechatNO);
+
+	public Distributer findByEmployeeId(Integer id);
+
+	public List<Distributer> findCustomerDistributersWhoNoSuperByRegisterDate(Date start, Date end);
 }

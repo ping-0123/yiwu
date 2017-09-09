@@ -57,7 +57,7 @@
 
  	<!-- ### 配置创建定配置 Quartz 调度器的 SchedulerFactoryBean ### -->
  	<!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->  
-	<bean  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+	<bean id="timer" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
 	    <property name="jobDetails">  
 	        <list>  
 	            <ref bean="orderBrockerageJobDetail" />

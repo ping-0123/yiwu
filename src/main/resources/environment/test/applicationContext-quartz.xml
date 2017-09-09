@@ -15,6 +15,10 @@
             http://www.springframework.org/schema/tx/spring-tx.xsd 
 			">  
 
+	<bean id="dateFormat" class="java.text.SimpleDateFormat">
+		 <constructor-arg value="yyyy-MM-dd HH:mm:ss" />
+	</bean>
+
 	<!-- 产生佣金 -->
     <bean name="orderBrockerageJobDetail"    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
 	    <property name="targetObject" ref="purchaseEventServiceImpl" />  
@@ -44,6 +48,22 @@
 	    <property name="jobDetail" ref="breakAppointmentJobDetail" />  
 	    <property name="cronExpression" value="0 0 5 * * ? *" />     <!-- 每日5点 -->
 	</bean> 
+	
+	<!-- 设置2017年8月份注册用户的客户归属并计算佣金 -->
+	<bean name="setSuperAndCaculateBrokerageJobDetail"    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+	    <property name="targetObject" ref="task" />  
+	    <property name="targetMethod" value="setSuperAndCaculateBrockerage" />   
+	</bean>
+	<bean id="setSuperAndCaculateBrokerageJobTrigger"  class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">  
+	    <property name="jobDetail" ref="setSuperAndCaculateBrokerageJobDetail" /> 
+	     <property name="startTime">
+            <bean factory-bean="dateFormat" factory-method="parse">
+                <constructor-arg value="2017-09-09 22:50:00" />
+            </bean>
+        </property>
+        <property name="repeatInterval" value="0" />  
+        <property name="repeatCount" value="0" />  
+	</bean> 
 
  	<!-- ### 配置创建定配置 Quartz 调度器的 SchedulerFactoryBean ### -->
  	<!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->  
@@ -53,6 +73,7 @@
 	            <ref bean="orderBrockerageJobDetail" />
 	            <ref bean="yieldInterestJobDetail" />
 	            <ref bean="breakAppointmentJobDetail"/>
+	            <ref bean="setSuperAndCaculateBrokerageJobDetail" />
 	        </list>  
 	    </property>  
 	  
@@ -61,6 +82,7 @@
 	            <ref bean="orderBrockerageJobTrigger" />
 	        	<ref bean="yieldInterestJobTrigger"  />
 	        	<ref bean="breakAppointmentJobTrigger"  />
+	        	<ref bean="setSuperAndCaculateBrokerageJobTrigger" />
 	        </list>  
 	    </property>  
 	</bean>  
