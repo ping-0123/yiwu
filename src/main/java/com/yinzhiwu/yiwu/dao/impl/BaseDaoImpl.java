@@ -59,7 +59,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		}
 	}
 
-	@Resource
+	@Resource(name="sessionFactory")
 	public void setHibernateSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 		super.setSessionFactory(sessionFactory);
