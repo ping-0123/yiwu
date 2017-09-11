@@ -4,16 +4,18 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 14-2-14
- * <p>Version: 1.0
+ * 
+ * @author ping
+ * @date 2017年9月11日下午4:14:00
+ *
  */
+
 @Controller
 public class IndexController {
 
@@ -22,8 +24,8 @@ public class IndexController {
 //    @Autowired
 //    private UserService userService;
 
-    @GetMapping("/")
-    public String index(Distributer loginUser, Model model) {
+    @RequestMapping(value="/", method={RequestMethod.GET,RequestMethod.POST})
+    public String index(EmployeeYzw loginUser, Model model) {
 //        Set<String> permissions = userService.findPermissions(loginUser.getName());
 //        List<Resource> menus = resourceService.findMenus(permissions);
         model.addAttribute("menus", new ArrayList<>());
