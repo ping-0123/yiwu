@@ -241,6 +241,12 @@
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-quartz</artifactId>
 			<version>${shiro.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>org.opensymphony.quartz</artifactId>
+					<groupId>quartz</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
