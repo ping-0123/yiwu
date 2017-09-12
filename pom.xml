@@ -37,7 +37,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.3.6.RELEASE</spring.version>
-		<aspectj.version>1.7.4</aspectj.version>
+		<aspectj.version>1.8.10</aspectj.version>
 		<hibernate.version>5.2.6.Final</hibernate.version>
 		<hibernate.validator.version>5.2.5.Final</hibernate.validator.version>
 		<jackson.version>2.8.7</jackson.version>
@@ -213,18 +213,18 @@
 			<version>${qiniu.version}</version>
 		</dependency>
 
-		<!-- ######### swagger support ############ -->
+		<!-- ######### swagger support ############   -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
-		<!--petstore是官方的一个demo，加入此依赖是为了稍后参考接口描述的编写 生产系统中无须添加 -->
+		<!--petstore是官方的一个demo，加入此依赖是为了稍后参考接口描述的编写 生产系统中无须添加 
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-petstore</artifactId>
 			<version>${swagger.version}</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- #### shiro #### -->
 		<dependency>

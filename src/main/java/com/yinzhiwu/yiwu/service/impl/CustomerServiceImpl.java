@@ -4,14 +4,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.CustomerDao;
 import com.yinzhiwu.yiwu.entity.yzwOld.Customer;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.CustomerService;
 
-@Repository
+@Service
 public class CustomerServiceImpl implements CustomerService {
 
 	private static final Log logger = LogFactory.getLog(CustomerServiceImpl.class);

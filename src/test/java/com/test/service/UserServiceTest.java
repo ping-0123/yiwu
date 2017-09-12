@@ -22,7 +22,7 @@ public class UserServiceTest extends TestBase{
 	public void testChangePassword(){
 		int id = 1;
 		try{
-			userService.modifyPassword(id, "yinzhiwu0123");
+			userService.modifyPassword(id, "admin");
 		}catch (Exception e) {
 			// TODO: handle exception
 		}

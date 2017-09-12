@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -35,31 +34,23 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		implements AppointmentEventService {
 
 	@Autowired
-	@Qualifier(value="appointmentEventDaoImpl")
 	public void setBaseDao(AppointmentEventDao appointmentEventDao) {
 		super.setBaseDao(appointmentEventDao);
 	}
 
 	@Autowired
-	@Qualifier(value="distributerDaoImpl")
 	private DistributerDao distributerDao;
 	@Autowired
-	@Qualifier(value="incomeEventServiceImpl")
 	private IncomeEventService incomeEventService;
 	@Autowired
-	@Qualifier(value="lessonYzwDaoImpl")
 	private LessonYzwDao lessonDao;
 	@Autowired
-	@Qualifier(value="appointmentYzwDaoImpl")
 	private AppointmentYzwDao appointmentDao;
 	@Autowired 
-	@Qualifier(value="appointmentEventDaoImpl")
 	private AppointmentEventDao appointmentEventDao;
 	@Autowired
-	@Qualifier(value="orderYzwDaoImpl")
 	private OrderYzwDao orderDao;
 	@Autowired 
-	@Qualifier(value="checkInsYzwDaoImpl")
 	private CheckInsYzwDao checkInsDao;
 
 	/**
