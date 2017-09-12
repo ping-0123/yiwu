@@ -56,10 +56,11 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		if (type instanceof ParameterizedType) {
 			Type[] parameterizedType = ((ParameterizedType) type).getActualTypeArguments();
 			this.entityClass = (Class<T>) parameterizedType[0];
+			System.out.println("entityClass========>" + entityClass.getName());
 		}
 	}
 
-	@Resource
+	@Resource(name="sessionFactory")
 	public void setHibernateSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 		super.setSessionFactory(sessionFactory);

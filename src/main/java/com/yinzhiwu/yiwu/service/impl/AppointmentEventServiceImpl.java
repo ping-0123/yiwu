@@ -46,10 +46,12 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	private LessonYzwDao lessonDao;
 	@Autowired
 	private AppointmentYzwDao appointmentDao;
-	@Autowired private AppointmentEventDao appointmentEventDao;
+	@Autowired 
+	private AppointmentEventDao appointmentEventDao;
 	@Autowired
 	private OrderYzwDao orderDao;
-	@Autowired CheckInsYzwDao checkInsDao;
+	@Autowired 
+	private CheckInsYzwDao checkInsDao;
 
 	/**
 	 * 调用该函数前，先判断是否满足预约， 取消预约条件

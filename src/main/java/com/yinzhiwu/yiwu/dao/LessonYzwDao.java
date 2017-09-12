@@ -9,8 +9,8 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 
-public interface LessonYzwDao extends IBaseDao<LessonYzw, Integer> {
 
+public interface LessonYzwDao extends IBaseDao<LessonYzw, Integer> {
 	List<LessonYzw> findByCourseId(String courseId);
 
 	public LessonYzw findLastNLesson(LessonYzw thisLesson, int lastN);

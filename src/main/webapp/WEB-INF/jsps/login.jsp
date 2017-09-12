@@ -10,7 +10,7 @@
 </style>
 </head>
 <body>
-
+	<h1>login under web-inf/jsps</h1>
 	<div class="error">${error}</div>
 	<form action="" method="post">
 		用户名：<input type="text" name="username" value="<shiro:principal/>"><br />

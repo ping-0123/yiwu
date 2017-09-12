@@ -2,6 +2,7 @@ package com.test.service;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
 import com.test.TestBase;
 import com.yinzhiwu.yiwu.service.UserService;
@@ -17,10 +18,11 @@ public class UserServiceTest extends TestBase{
 	@Autowired private UserService userService;
 	
 	@Test
+	@Rollback(value=false)
 	public void testChangePassword(){
 		int id = 1;
 		try{
-			userService.modifyPassword(id, "yinzhiwu0123");
+			userService.modifyPassword(id, "admin");
 		}catch (Exception e) {
 			// TODO: handle exception
 		}

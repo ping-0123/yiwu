@@ -24,6 +24,7 @@
 	
     <context:component-scan base-package="com.yinzhiwu.yiwu">
     	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
     </context:component-scan>  
     
 	<!-- c3p0连接池配置 -->  
