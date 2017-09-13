@@ -20,11 +20,11 @@ public class UserServiceTest extends TestBase{
 	@Test
 	@Rollback(value=false)
 	public void testChangePassword(){
-		int id = 1;
+		int id = 331;
 		try{
-			userService.modifyPassword(id, "admin");
+			userService.modifyPassword(id, "yiping");
 		}catch (Exception e) {
-			// TODO: handle exception
+			logger.error(e.getMessage(), e);
 		}
 	}
 }

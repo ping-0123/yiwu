@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.web.bind.anotation.CurrentUser;
 
 /**
  * 
@@ -24,8 +25,8 @@ public class IndexController {
 //    @Autowired
 //    private UserService userService;
 
-    @RequestMapping(value="/", method={RequestMethod.GET,RequestMethod.POST})
-    public String index(EmployeeYzw loginUser, Model model) {
+    @RequestMapping(value="/index", method={RequestMethod.GET,RequestMethod.POST})
+    public String index(@CurrentUser EmployeeYzw user, Model model) {
 //        Set<String> permissions = userService.findPermissions(loginUser.getName());
 //        List<Resource> menus = resourceService.findMenus(permissions);
         model.addAttribute("menus", new ArrayList<>());

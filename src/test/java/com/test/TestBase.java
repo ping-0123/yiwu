@@ -1,5 +1,8 @@
 package com.test;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,5 +19,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(value = "transactionManager")
 public abstract class TestBase {
 //public abstract class TestBase extends AbstractTransactionalJUnit4SpringContextTests {
-
+	protected  Log logger = LogFactory.getLog(getClass());
 }

@@ -98,7 +98,7 @@
             	/api/** = anon
                 /index.jsp = anon
                 /unauthorized.jsp = anon
-                /login.jsp = anon
+                /login.jsp = authc
                 /logout = logout
                 /** = user
             </value>

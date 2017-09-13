@@ -14,6 +14,7 @@
 			http://www.springframework.org/schema/tx 
             http://www.springframework.org/schema/tx/spring-tx.xsd 
 			">  
+  	<import resource="classpath:applicationContext-*.xml"/>
 	<!-- 加载配置文件 -->
 	<context:property-placeholder location="
 		classpath:properties/jdbc.properties,
@@ -125,6 +126,4 @@
         												execution(* com.yinzhiwu.yiwu..*ServiceImpl.*(..))" />  
         <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />  
     </aop:config>  
-  	<import resource="classpath:applicationContext-shiro.xml"/>
-  	
  </beans>
