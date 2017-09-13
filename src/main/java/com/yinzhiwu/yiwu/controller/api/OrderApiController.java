@@ -15,20 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
-import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
+import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.ReturnedJson;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.YiwuJson.ReturnCode;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
-import com.yinzhiwu.yiwu.model.view.OrderAbbrApiView;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
 import com.yinzhiwu.yiwu.service.CheckInsYzwService;
-import com.yinzhiwu.yiwu.service.OrderService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 
 import io.swagger.annotations.ApiOperation;
@@ -38,8 +35,6 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping(value = "/api/order")
 public class OrderApiController {
 
-	@Autowired
-	private OrderService orderService;
 
 	@Autowired
 	private OrderYzwService orderYzwService;
@@ -48,21 +43,16 @@ public class OrderApiController {
 	@Autowired
 	private CheckInsYzwService checkInsService;
 
-	@RequestMapping(value = "/getDailyOrders", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/getDailyOrders", method = { RequestMethod.GET })
 	public ReturnedJson getDailyOrdersByStore(@RequestParam int storeId, @RequestParam Date payedDate,
 			@RequestParam int productTypeId) {
 		if (productTypeId == 0) {
-			return new ReturnedJson(orderService.getDailyOrderByStore(storeId, payedDate));
+			return new ReturnedJson(OrderYzwService.getDailyOrderByStore(storeId, payedDate));
 		} else {
-			return new ReturnedJson(orderService.getDailyOrderByStore(storeId, payedDate, productTypeId));
+			return new ReturnedJson(OrderYzwService.getDailyOrderByStore(storeId, payedDate, productTypeId));
 		}
 	}
 
-	@Deprecated
-	@GetMapping(value = "/list")
-	public YiwuJson<List<OrderAbbrApiView>> findByDistributerId(int distributerId) {
-		return orderYzwService.findByDistributerId(distributerId);
-	}
 
 	@GetMapping(value="")
 	@ApiOperation(value="查询客户的订单列表")
@@ -92,18 +82,6 @@ public class OrderApiController {
 		return orderYzwService.findById(id);
 	}
 
-	@Deprecated
-	@PutMapping("/{id}")
-	public YiwuJson<Boolean> modify(OrderYzw order, @PathVariable String id) {
-		try {
-			orderYzwService.modify(id, order);
-		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
-			return new YiwuJson<>(e.getMessage());
-		}
-		if (order.geteContractStatus())
-			return new YiwuJson<>("成功确认订单", new Boolean(true));
-		return new YiwuJson<>(new Boolean(true));
-	}
 	
 	@PutMapping("/{orderId}/contract/status")
 	@ApiOperation(value="确认合同")

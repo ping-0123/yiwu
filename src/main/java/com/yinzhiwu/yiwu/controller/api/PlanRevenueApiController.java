@@ -22,11 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.entity.PlanRevenue;
 import com.yinzhiwu.yiwu.entity.type.ProductType;
-import com.yinzhiwu.yiwu.model.PlanRevenueApiModel;
 import com.yinzhiwu.yiwu.model.ReturnedJson;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
-import com.yinzhiwu.yiwu.service.DepartmentService;
 import com.yinzhiwu.yiwu.service.PlanRevenueService;
 import com.yinzhiwu.yiwu.service.ProductTypeService;
 
@@ -37,21 +35,21 @@ public class PlanRevenueApiController {
 	private static final Log logger = LogFactory.getLog(PlanRevenueApiController.class);
 
 	@Autowired
-	private PlanRevenueService planRevenueService;
-
-	@Autowired
-	private DepartmentService departmentService;
+	private PlanRevenueService planService;
 
 	@Autowired
 	private ProductTypeService productTypeService;
 
 	@ResponseBody
 	@RequestMapping(value = "/getMonthlyPlanRevenue", method = { RequestMethod.GET })
-	public ReturnedJson getMonthlyPlanRevenue(@RequestParam int districtId, @RequestParam int year,
-			@RequestParam int month, @RequestParam int productTypeId) {
+	public ReturnedJson getMonthlyPlanRevenue(
+				@RequestParam int districtId, 
+				@RequestParam int year,
+				@RequestParam int month, 
+				@RequestParam int productTypeId) {
 
 		return new ReturnedJson(
-				planRevenueService.getDistricMonthlyPlanRevenue(districtId, year, month, productTypeId));
+				planService.getDistricMonthlyPlanRevenue(districtId, year, month, productTypeId));
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -62,15 +60,15 @@ public class PlanRevenueApiController {
 
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable int id, Model model) {
-		PlanRevenueApiModel plan = planRevenueService.get(id);
+		PlanRevenue plan = planService.get(id);
 		model.addAttribute("plan", plan);
 		return "planRevenue/edit";
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public YiwuJson<PlanRevenueApiModel> doGet(@PathVariable int id) {
-		return new YiwuJson<>(planRevenueService.get(id));
+	public YiwuJson<PlanRevenue> doGet(@PathVariable int id) {
+		return new YiwuJson<>(planService.get(id));
 
 	}
 
@@ -81,7 +79,7 @@ public class PlanRevenueApiController {
 			logger.info("Code:" + fieldError.getCode() + ",field:" + fieldError.getField());
 			return "planRevenue/form";
 		}
-		int id = planRevenueService.save(plan);
+		int id = planService.save(plan);
 		if (id > 0) {
 			model.addAttribute("id", id);
 			// model.addAttribute("year", plan.getYear());
@@ -96,17 +94,19 @@ public class PlanRevenueApiController {
 
 	@GetMapping("/list")
 	public String list(@ModelAttribute("plan") PlanRevenue plan, Model model) {
-		List<PlanRevenueApiModel> list = new ArrayList<>();
+		List<PlanRevenue> list = new ArrayList<>();
 		logger.debug(plan.getStoreId());
 		int productTypeId = 0;
 		if (plan.getId() > 0) {
-			list.add(planRevenueService.get(plan.getId()));
+			list.add(planService.get(plan.getId()));
 		} else {
 			if (plan.getProductType() != null) {
 				productTypeId = plan.getProductType().getId();
 			}
-			list.addAll(planRevenueService.findByProperties(plan.getStoreId(), plan.getYear(), plan.getMonth(),
-					productTypeId));
+			list.addAll(planService.findByProperties(
+							new String[]{"", "", "",""},
+							new Object[]{plan.getStoreId(), plan.getYear(), plan.getMonth(),productTypeId})
+					);
 		}
 
 		model.addAttribute("list", list);
@@ -114,16 +114,16 @@ public class PlanRevenueApiController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public String doPut(@ModelAttribute PlanRevenueApiModel plan, Model model) {
+	public String doPut(@ModelAttribute PlanRevenue plan, Model model) {
 		PlanRevenue p = new PlanRevenue();
 		p.setId(plan.getId());
 		p.setStoreId(plan.getStoreId());
 		p.setYear(plan.getYear());
 		p.setMonth(plan.getMonth());
 		p.setProductType(new ProductType());
-		p.getProductType().setId(plan.getProductTypeId());
+		p.getProductType().setId(plan.getProductType().getId());
 		p.setAmount(plan.getAmount());
-		planRevenueService.saveOrUpdate(p);
+		planService.saveOrUpdate(p);
 
 		model.addAttribute("id", plan.getId());
 		// model.addAttribute("year", plan.getYear());
@@ -135,7 +135,7 @@ public class PlanRevenueApiController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public String doDelete(@PathVariable int id) {
-		planRevenueService.delete(id);
+		planService.delete(id);
 		return "success";
 	}
 
@@ -143,7 +143,7 @@ public class PlanRevenueApiController {
 	public List<StoreApiView> getAllStores2() {
 		List<StoreApiView> stores = new ArrayList<>();
 		stores.add(new StoreApiView(0, "所有", "", ""));
-		stores.addAll(departmentService.getAllStores());
+//		stores.addAll(departmentService.findAllStores(0));
 		return stores;
 	}
 
@@ -158,7 +158,7 @@ public class PlanRevenueApiController {
 	@ModelAttribute("stores")
 	public List<StoreApiView> getAllStores() {
 		List<StoreApiView> stores = new ArrayList<>();
-		stores.addAll(departmentService.getAllStores());
+//		stores.addAll(departmentService.getAllStores());
 		return stores;
 	}
 

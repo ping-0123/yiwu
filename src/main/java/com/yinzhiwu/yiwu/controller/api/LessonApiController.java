@@ -4,10 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,12 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.Connotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.entity.yzwOld.Lesson;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
-import com.yinzhiwu.yiwu.service.LessonService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
 import io.swagger.annotations.ApiOperation;
@@ -41,42 +37,16 @@ import io.swagger.annotations.ApiParam;
 public class LessonApiController extends BaseController {
 
 	@Autowired
-	@Qualifier(value = "lessonServiceImplTwo")
-	private LessonService lessonService;
-
-	@Autowired
 	private LessonYzwService lessonYzwService;
 
-	@Deprecated
-	@RequestMapping(value = "/id/{id}", method = { RequestMethod.GET })
-	@ResponseBody
-	public Lesson getLesson(@PathVariable String id) {
-		int intId = Integer.parseInt(id);
-		return lessonService.findById(intId);
-	}
 
 	@RequestMapping(value = "/{id}", method = { RequestMethod.GET })
 	@ResponseBody
-	public Lesson getLesson2(@PathVariable String id) {
+	public LessonYzw getLesson2(@PathVariable String id) {
 		int intId = Integer.parseInt(id);
-		return lessonService.findById(intId);
+		return lessonYzwService.get(intId);
 	}
 
-	@Deprecated
-	@GetMapping(value = "/connotation/{lessonId}")
-	@ResponseBody
-	@ApiOperation(value = "根据课时Id获取课时内涵信息")
-	public YiwuJson<Connotation> getConnotationByLessonId(@PathVariable int lessonId) {
-		try {
-			LessonYzw lesson = lessonYzwService.get(lessonId);
-			if (lesson == null)
-				throw new Exception("未能找到lesson id为 " + lessonId + "的课时");
-			return new YiwuJson<>(lesson.getConnotation());
-		} catch (Exception e) {
-			logger.error(e);
-			return new YiwuJson<>(e.getMessage());
-		}
-	}
 	
 	@GetMapping(value = "/{id}/connotation")
 	@ResponseBody
@@ -119,13 +89,9 @@ public class LessonApiController extends BaseController {
 		if (date == null) {
 			date = new Date();
 		}
-		return lessonService.findLessonWeekList(storeId, courseType, teacherName, danceCatagory, date, weChat);
+		return lessonYzwService.findLessonWeekList(storeId, courseType, teacherName, danceCatagory, date, weChat);
 	}
 
-	@RequestMapping(value = "/arrangePriviteLesson", method = { RequestMethod.POST })
-	public void arrangePriviteLesson(@ModelAttribute Lesson lesson) {
-		lessonService.save(lesson);
-	}
 
 	@ResponseBody
 	@GetMapping(value = "/list")

@@ -1,21 +1,19 @@
 package com.yinzhiwu.yiwu.model.view;
 
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
-import com.yinzhiwu.yiwu.entity.yzwOld.Employee;
+
+/**
+*@Author ping
+*@Time  创建时间:2017年9月13日下午7:26:54
+*
+*/
 
 public class EmployeeApiView {
 
 	private int id;
-
 	private String name;
-
-	public EmployeeApiView(Employee e) {
-		this.id = e.getId();
-		this.name = e.getName();
-	}
-
-	public EmployeeApiView() {
-	}
+	
+	public EmployeeApiView(){}
 
 	public EmployeeApiView(int id, String name) {
 		this.id = id;
@@ -24,23 +22,25 @@ public class EmployeeApiView {
 
 	public EmployeeApiView(EmployeeYzw emp) {
 		this.id = emp.getId();
-		this.name = emp.getName();
+		this.name= emp.getName();
 	}
 
-	public final int getId() {
+	public int getId() {
 		return id;
 	}
 
-	public final void setId(int id) {
-		this.id = id;
-	}
-
-	public final String getName() {
+	public String getName() {
 		return name;
 	}
 
-	public final void setName(String name) {
-		this.name = name;
+	public void setId(int id) {
+		this.id = id;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+	
 }

@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -28,6 +29,16 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 	YiwuJson<List<PrivateContractApiView>> getPrivateContractsByCustomer(Integer customerId);
 
 	YiwuJson<PageBean<OrderApiView>> findPageOfOrderApiViewByDistributer(Distributer distributer, int pageNo, int pageSize);
+
+	static Object getDailyOrderByStore(int storeId, Date payedDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	static Object getDailyOrderByStore(int storeId, Date payedDate, int productTypeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 }

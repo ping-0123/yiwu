@@ -2,23 +2,23 @@ package com.yinzhiwu.yiwu.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.yinzhiwu.yiwu.dao.DepartmentDao;
 import com.yinzhiwu.yiwu.service.CityService;
 
-@Service
-public class CityServiceImpl implements CityService {
+/**
+*@Author ping
+*@Time  创建时间:2017年9月13日下午7:47:43
+*
+*/
 
-	@Autowired
-	@Qualifier("departmentDaoImplTwo")
-	private DepartmentDao departmentDao;
+@Service
+public class CityServiceImpl implements CityService{
 
 	@Override
 	public List<String> getCities() {
-		return departmentDao.findCities();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

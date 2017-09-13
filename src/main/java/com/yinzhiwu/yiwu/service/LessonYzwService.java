@@ -29,4 +29,7 @@ public interface LessonYzwService extends IBaseService<LessonYzw, Integer> {
 	YiwuJson<PageBean<LessonApiView>> findPageOfClosedLessonApiViewByStoreIdAndLessonDate(Integer storeId, Date date,
 			int pageNo, int pageSize);
 
+	Object findLessonWeekList(int storeId, String courseType, String teacherName, String danceCatagory, Date date,
+			String weChat);
+
 }

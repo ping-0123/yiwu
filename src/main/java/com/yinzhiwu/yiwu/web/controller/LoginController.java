@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.yinzhiwu.yiwu.controller.BaseController;
+
 /**
  * 
  * @author ping
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  *
  */
 @Controller
-public class LoginController {
+public class LoginController extends BaseController {
 
     @GetMapping(value = "/login")
     public String showLoginForm(HttpServletRequest req, Model model) {

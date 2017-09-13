@@ -5,7 +5,6 @@ import org.springframework.util.Assert;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.StoreInfo;
-import com.yinzhiwu.yiwu.entity.yzwOld.Department;
 
 
 @JsonInclude(value= Include.NON_NULL)
@@ -49,10 +48,6 @@ public class StoreApiView {
 		this.telePhone = si.getTelePhone();
 	}
 
-	public StoreApiView(Department d) {
-		this.id = d.getId();
-		this.name = d.getDeptName();
-	}
 
 	public final int getId() {
 		return id;

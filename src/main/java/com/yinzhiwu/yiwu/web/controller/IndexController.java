@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.web.bind.anotation.CurrentUser;
 
@@ -18,20 +19,22 @@ import com.yinzhiwu.yiwu.web.bind.anotation.CurrentUser;
  */
 
 @Controller
-public class IndexController {
+public class IndexController extends BaseController {
 
 //    @Autowired
 //    private ResourceService resourceService;
 //    @Autowired
 //    private UserService userService;
 
-    @RequestMapping(value="/", method={RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value="/index", method={RequestMethod.GET})
     public String index(@CurrentUser EmployeeYzw user, Model model) {
 //        Set<String> permissions = userService.findPermissions(loginUser.getName());
 //        List<Resource> menus = resourceService.findMenus(permissions);
         model.addAttribute("menus", new ArrayList<>());
         return "index";
     }
+    
+    
 
     @RequestMapping("/welcome")
     public String welcome() {

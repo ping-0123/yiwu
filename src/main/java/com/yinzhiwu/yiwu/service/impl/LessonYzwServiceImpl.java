@@ -207,4 +207,11 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		}
 		return YiwuJson.createBySuccess(page);
 	}
+
+	@Override
+	public Object findLessonWeekList(int storeId, String courseType, String teacherName, String danceCatagory,
+			Date date, String weChat) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

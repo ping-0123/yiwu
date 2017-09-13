@@ -15,7 +15,6 @@ import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.EmployeeApiView;
-import com.yinzhiwu.yiwu.service.EmployeeService;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 import com.yinzhiwu.yiwu.service.UserService;
 
@@ -24,15 +23,12 @@ import com.yinzhiwu.yiwu.service.UserService;
 public class EmployeeApiController {
 
 	@Autowired
-	private EmployeeService employeeService;
-
-	@Autowired
 	private EmployeeYzwService empYzwService;
 	@Autowired private UserService userService;
 
 	@RequestMapping(value = "/getAllCoaches", method = { RequestMethod.GET })
 	public List<EmployeeApiView> getAllCoaches() {
-		return employeeService.getAllOnJobCoaches();
+		return empYzwService.getAllOnJobCoaches();
 	}
 
 	@GetMapping(value = "/list")
@@ -45,7 +41,7 @@ public class EmployeeApiController {
 			}
 			return new YiwuJson<>(views);
 		} catch (DataNotFoundException e1) {
-			return new YiwuJson<>(e1.getMessage());
+			return YiwuJson.createByErrorMessage(e1.getMessage());
 		}
 	}
 	
