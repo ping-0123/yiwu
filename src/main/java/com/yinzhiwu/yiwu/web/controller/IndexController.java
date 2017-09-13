@@ -25,7 +25,7 @@ public class IndexController {
 //    @Autowired
 //    private UserService userService;
 
-    @RequestMapping(value="/index", method={RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value="/", method={RequestMethod.GET,RequestMethod.POST})
     public String index(@CurrentUser EmployeeYzw user, Model model) {
 //        Set<String> permissions = userService.findPermissions(loginUser.getName());
 //        List<Resource> menus = resourceService.findMenus(permissions);

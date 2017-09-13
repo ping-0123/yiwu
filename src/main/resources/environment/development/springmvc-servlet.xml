@@ -16,6 +16,7 @@
       		http://www.springframework.org/schema/mvc/spring-mvc.xsd
 			">
 
+	<!-- controller scan -->
 	<context:component-scan base-package="com.yinzhiwu.yiwu">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
@@ -25,8 +26,6 @@
 
 	<!-- 配置数据格式转换 -->
 	<mvc:annotation-driven conversion-service="conversionService" />
-
-	<!-- 静态资源映射, 解决不能js,css的问题 <mvc:resources location="/images/" mapping="/images/**"></mvc:resources> -->
 
 	<!-- don't handle the static resource -->
 	<mvc:default-servlet-handler />
@@ -42,8 +41,10 @@
 		<mvc:mapping path="/**" allowed-origins="*"
 			allow-credentials="true" max-age="1800" allowed-methods="GET,POST,PUT,DELETE,OPTIONS" />
 	</mvc:cors>
-
+	
+	<!-- swagger api document -->
 	<bean name="applicationSwaggerConfig" class="com.yinzhiwu.yiwu.swagger.ApplicationSwaggerConfig">
+	
 	</bean>
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

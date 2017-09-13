@@ -9,9 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 14-2-15
- * <p>Version: 1.0
+ * 
+ * @author ping
+ * @date 2017年9月13日下午1:58:14
+ *
  */
 @Controller
 public class LoginController {
@@ -30,6 +31,5 @@ public class LoginController {
         model.addAttribute("error", error);
         return "login";
     }
-
 
 }
