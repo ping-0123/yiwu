@@ -6,9 +6,11 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
+
 
 /**
  * 
@@ -19,7 +21,7 @@ import com.yinzhiwu.yiwu.controller.BaseController;
 @Controller
 public class LoginController extends BaseController {
 
-    @GetMapping(value = "/login")
+    @RequestMapping(value = "/login", method={RequestMethod.GET, RequestMethod.POST})
     public String showLoginForm(HttpServletRequest req, Model model) {
         String exceptionClassName = (String)req.getAttribute("shiroLoginFailure");
         String error = null;
@@ -33,5 +35,11 @@ public class LoginController extends BaseController {
         model.addAttribute("error", error);
         return "login";
     }
+    
+//    @PostMapping(value="/login")
+//    public String loginSuccess(HttpServletRequest req){
+//  
+//    	return "index";
+//    }
 
 }

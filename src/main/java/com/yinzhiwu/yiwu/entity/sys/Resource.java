@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -25,14 +26,16 @@ import com.yinzhiwu.yiwu.entity.BaseEntity;
 */
 
 @Entity
-@Table(name="sys_resource")
+@Table(name="sys_resource", uniqueConstraints={
+	@UniqueConstraint(name = "uk_resource_code", columnNames = { "code" })
+})
 public class Resource extends BaseEntity {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1565342126871220575L;
-	public enum ResourceType{
+	public static enum ResourceType{
 		MENU,
 		BUTTON
 	}
@@ -58,6 +61,20 @@ public class Resource extends BaseEntity {
 	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private List<Resource> children = new ArrayList<>();
+	
+	public Resource(){}
+	
+	public Resource(String code, String name, String url, String permission, ResourceType type, Resource parent) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.url = url;
+		this.permission = permission;
+		this.type = type;
+		this.parent = parent;
+	}
+	
+	
 
 	public String getCode() {
 		return code;
@@ -114,6 +131,10 @@ public class Resource extends BaseEntity {
 
 	public void setChildren(List<Resource> children) {
 		this.children = children;
+	}
+
+	public boolean isRootNode(){
+		return false;
 	}
 	
 	

@@ -15,6 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.context.UserContext;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.enums.DataStatus;
 
 /**
@@ -39,9 +40,7 @@ public abstract class BaseEntity implements Serializable {
 	@Column(nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	/**
-	 * ��������
-	 */
+
 	@Column(updatable = false)
 	private Integer createUserId;
 
@@ -49,9 +48,6 @@ public abstract class BaseEntity implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Column(updatable = false)
 	private Date createDate;
-	/**
-	 * �޸�����
-	 */
 
 	private Integer lastModifiedUserId;
 
@@ -70,25 +66,19 @@ public abstract class BaseEntity implements Serializable {
 		Date date = new Date();
 		this.createDate = date;
 		this.lastModifiedDate = date;
-		Distributer distributer = UserContext.getUser();
-		if(distributer != null){
-			this.createUserId = distributer.getId();
-			this.lastModifiedUserId = distributer.getId();
-		}else{
-			this.createUserId = 1;
-			this.lastModifiedUserId = 1;
+		EmployeeYzw emp = UserContext.getEmployeeUser();
+		if(emp != null){
+			this.createUserId = emp.getId();
+			this.lastModifiedUserId = emp.getId();
 		}
 	}
 
 	public void beforeUpdate() {
 		Date date = new Date();
 		this.lastModifiedDate = date;
-		Distributer distributer = UserContext.getUser();
-		if(distributer !=null)
-			this.lastModifiedUserId = distributer.getId();
-		else {
-			this.lastModifiedUserId = 1;
-		}
+		EmployeeYzw emp = UserContext.getEmployeeUser();
+		if(emp !=null)
+			this.lastModifiedUserId = emp.getId();
 	}
 
 	public Integer getId() {

@@ -3,9 +3,9 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <head>
-    <title>shiro综合案例</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/layout-default-latest.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/JQuery zTree v3.5.15/css/zTreeStyle/zTreeStyle.css">
+    <title>yiwu后台</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/layout-default-latest.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/JQuery zTree v3.5.15/css/zTreeStyle/zTreeStyle.css">
 </head>
 <body>
 
@@ -18,18 +18,20 @@
     <div>
     	<ul id="menuTree" class="ztree"></ul>
     </div>
+    
     <!--
     <div>
 	    <c:forEach items="${menus}" var="m">
 	        <a href="${pageContext.request.contextPath}/${m.url}" target="content">${m.name}</a><br/>
 	    </c:forEach>
     </div>   -->
+    
 </div>
 
 
-<script src="${pageContext.request.contextPath}/static/js/jquery-1.11.0.min.js"></script>
-<script src="${pageContext.request.contextPath}/static/js/jquery.layout-latest.min.js"></script>
-<script src="${pageContext.request.contextPath}/static/JQuery zTree v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/jquery.layout-latest.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/JQuery zTree v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
 <script>
 	var setting = {
         view: {
@@ -50,7 +52,6 @@
             <c:if test="${not m.isRootNode()}">
                 { id:"${m.id}", pId:"${m.parent.id}", name:"${m.name}", 
                 	<c:if test="${m.url ne ''}"> url:"${pageContext.request.contextPath}/${m.url}" ,target:"content" </c:if>},
-                
             </c:if>
         </c:forEach>
     ];

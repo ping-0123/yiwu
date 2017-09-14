@@ -3,7 +3,7 @@ package com.test.controller;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.test.TestBase;
+import com.test.BaseTest;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
 import com.yinzhiwu.yiwu.service.ElectricContractYzwService;
 
@@ -13,7 +13,7 @@ import com.yinzhiwu.yiwu.service.ElectricContractYzwService;
 *
 */
 
-public class EContractControllerTest extends TestBase {
+public class EContractControllerTest extends BaseTest {
 	
 	@Autowired private ElectricContractYzwService econtractService;
 	

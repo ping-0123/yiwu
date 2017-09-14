@@ -18,7 +18,7 @@ VIEW `vemployee` AS
         `chenkuserdb1`.`tblemployee`.`Fax` AS `fax`,
         `chenkuserdb1`.`tblemployee`.`Email` AS `email`,
         `chenkuserdb1`.`tblemployee`.`Disabled` AS `disabled`,
-        status,
+        status dataStatus,
         `chenkuserdb1`.`tblemployee`.`Creator` AS `sf_create_user`,
         `chenkuserdb1`.`tblemployee`.`LastChanger` AS `sf_last_change_user`,
         `chenkuserdb1`.`tblemployee`.`CreateTime` AS `sf_create_time`,

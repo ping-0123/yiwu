@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
-import com.test.TestBase;
+import com.test.BaseTest;
 import com.yinzhiwu.yiwu.service.UserService;
 
 /**
@@ -13,7 +13,7 @@ import com.yinzhiwu.yiwu.service.UserService;
 *
 */
 
-public class UserServiceTest extends TestBase{
+public class UserServiceTest extends BaseTest{
 
 	@Autowired private UserService userService;
 	

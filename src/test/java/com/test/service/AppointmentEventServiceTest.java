@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.test.TestBase;
+import com.test.BaseTest;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
@@ -19,7 +19,7 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 *
 */
 
-public class AppointmentEventServiceTest extends TestBase {
+public class AppointmentEventServiceTest extends BaseTest {
 
 	@Autowired private AppointmentEventService appointmentEventService;
 	@Autowired private LessonYzwDao lessonDao;

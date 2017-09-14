@@ -54,7 +54,7 @@ public class UserRealm extends AuthorizingRealm {
             throw new UnknownAccountException();//没找到帐号
         }
 
-        if(Boolean.TRUE.equals(DataStatus.NORMAL ==user.getStatus())) {
+        if(Boolean.TRUE.equals(DataStatus.NORMAL ==user.getDataStatus())) {
             throw new LockedAccountException(); //帐号锁定
         }
 

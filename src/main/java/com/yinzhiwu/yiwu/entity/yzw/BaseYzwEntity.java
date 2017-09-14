@@ -11,7 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.context.UserContext;
-import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.enums.DataStatus;
 
 
 @MappedSuperclass
@@ -27,15 +27,15 @@ public abstract class BaseYzwEntity implements Serializable {
 	private Integer createUserId;
 
 	@JsonIgnore
-	@Column(name = "sf_last_change_user")
-	private Integer lastChangeUserId;
-
-	@JsonIgnore
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Column(name = "sf_create_time", insertable = true, updatable = false)
 	private Date createTime;
 
+	@JsonIgnore
+	@Column(name = "sf_last_change_user")
+	private Integer lastChangeUserId;
+	
 	@JsonIgnore
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -58,6 +58,8 @@ public abstract class BaseYzwEntity implements Serializable {
 	@Column(name = "sf_last_change_timeStamp")
 	private Date lastChangeTimestamp;
 
+	private DataStatus dataStatus = DataStatus.NORMAL;
+	
 	public BaseYzwEntity() {
 	}
 
@@ -67,13 +69,10 @@ public abstract class BaseYzwEntity implements Serializable {
 		this.lastChangeTime = date;
 		this.lastChangeTimestamp = date;
 		this.lastSyncTimeStamp = date;
-		Distributer distributer = UserContext.getUser();
-		if(distributer != null){
-			this.createUserId = distributer.getId();
-			this.lastChangeUserId = distributer.getId();
-		}else{
-			this.createUserId = 1;
-			this.lastChangeUserId = 1;
+		EmployeeYzw emp = UserContext.getEmployeeUser();
+		if(emp != null){
+			this.createUserId = emp.getId();
+			this.lastChangeUserId = emp.getId();
 		}
 	}
 
@@ -82,9 +81,9 @@ public abstract class BaseYzwEntity implements Serializable {
 		this.lastChangeTime = date;
 		this.lastChangeTimestamp = date;
 		this.lastSyncTimeStamp = date;
-		Distributer distributer = UserContext.getUser();
-		if(distributer != null)
-			this.lastChangeUserId = distributer.getId();
+		EmployeeYzw emp = UserContext.getEmployeeUser();
+		if(emp != null)
+			this.lastChangeUserId = emp.getId();
 	}
 
 	public Integer getCreateUserId() {
@@ -141,6 +140,14 @@ public abstract class BaseYzwEntity implements Serializable {
 
 	public void setLastChangeUserId(Integer lastChangeUserId) {
 		this.lastChangeUserId = lastChangeUserId;
+	}
+
+	public DataStatus getDataStatus() {
+		return dataStatus;
+	}
+
+	public void setDataStatus(DataStatus dataStatus) {
+		this.dataStatus = dataStatus;
 	}
 
 }

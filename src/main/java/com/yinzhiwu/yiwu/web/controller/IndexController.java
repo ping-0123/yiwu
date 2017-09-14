@@ -1,15 +1,21 @@
 package com.yinzhiwu.yiwu.web.controller;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.controller.BaseController;
+import com.yinzhiwu.yiwu.entity.sys.Resource;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
-import com.yinzhiwu.yiwu.web.bind.anotation.CurrentUser;
+import com.yinzhiwu.yiwu.service.ResourceService;
+import com.yinzhiwu.yiwu.service.UserService;
 
 /**
  * 
@@ -21,21 +27,26 @@ import com.yinzhiwu.yiwu.web.bind.anotation.CurrentUser;
 @Controller
 public class IndexController extends BaseController {
 
-//    @Autowired
-//    private ResourceService resourceService;
-//    @Autowired
-//    private UserService userService;
+    @Autowired
+    private ResourceService resourceService;
+    @Autowired
+    private UserService userService;
+    
 
     @RequestMapping(value="/index", method={RequestMethod.GET})
-    public String index(@CurrentUser EmployeeYzw user, Model model) {
-//        Set<String> permissions = userService.findPermissions(loginUser.getName());
-//        List<Resource> menus = resourceService.findMenus(permissions);
-        model.addAttribute("menus", new ArrayList<>());
+    public String index(Model model) {
+    	EmployeeYzw user = UserContext.getEmployeeUser();
+        Set<String> permissions = userService.findPermissions(user);
+        List<Resource> menus = resourceService.findMenus(permissions);
+        model.addAttribute("menus", menus);
         return "index";
     }
     
+    @GetMapping(value="/")
+    public String index2(Model model){
+    	return "redirect:/index";
+    }
     
-
     @RequestMapping("/welcome")
     public String welcome() {
         return "welcome";

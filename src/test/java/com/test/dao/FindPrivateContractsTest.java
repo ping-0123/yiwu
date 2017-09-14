@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.test.TestBase;
+import com.test.BaseTest;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
@@ -16,7 +16,7 @@ import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
 *
 */
 
-public class FindPrivateContractsTest  extends TestBase{
+public class FindPrivateContractsTest  extends BaseTest{
 	
 	@Autowired private OrderYzwDao orderDao;
 	

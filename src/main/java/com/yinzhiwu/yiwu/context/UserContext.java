@@ -3,7 +3,10 @@ package com.yinzhiwu.yiwu.context;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.validator.internal.util.Contracts;
+
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 
 /**
@@ -12,28 +15,36 @@ import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 *
 */
 
-public class UserContext {
+public abstract class UserContext {
 
-	private static ThreadLocal<Map<String, Object>> tl = new ThreadLocal<>();
+	private static ThreadLocal<Map<String, Object>> map = new ThreadLocal<>();
 	
 	public static void setUser(Distributer user){
-		_getSureMap().put(Constants.CURRENT_USER, user);
+		getSureMap().put(Constants.CURRENT_USER, user);
 	}
 	
 	public static Distributer getUser(){
-		return (Distributer) _getSureMap().get(Constants.CURRENT_USER);
+		return (Distributer) getSureMap().get(Constants.CURRENT_USER);
 	}
 	
 	public static void setDistributer(DistributerApiView view){
-		_getSureMap().put(Constants.CURRENT_DISTRIBUTER_VIWE, view);
+		getSureMap().put(Constants.CURRENT_DISTRIBUTER_VIWE, view);
 	}
 	public static DistributerApiView getDistributer(){
-		return (DistributerApiView) _getSureMap().get(Constants.CURRENT_DISTRIBUTER_VIWE);
+		return (DistributerApiView) getSureMap().get(Constants.CURRENT_DISTRIBUTER_VIWE);
 	}
 	
-	private static Map<String, Object> _getSureMap(){
-		if(tl.get() == null)
-			tl.set(new HashMap<>());
-		return tl.get();
+	public static void setEmployeeUser(EmployeeYzw emp){
+		getSureMap().put(Constants.CURRENT_EMPLOYEE_USER,emp);
+	}
+	
+	public static EmployeeYzw getEmployeeUser(){
+		return (EmployeeYzw) getSureMap().get(Constants.CURRENT_EMPLOYEE_USER);
+	}
+	
+	private static Map<String, Object> getSureMap(){
+		if(map.get() == null)
+			map.set(new HashMap<>());
+		return map.get();
 	}
 }

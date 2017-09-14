@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.test.TestBase;
+import com.test.BaseTest;
 import com.yinzhiwu.yiwu.dao.AppointmentEventDao;
 import com.yinzhiwu.yiwu.model.view.AppointSuccessApiView;
 import com.yinzhiwu.yiwu.util.ReflectUtils;
@@ -16,7 +16,7 @@ import com.yinzhiwu.yiwu.util.ReflectUtils;
 *
 */
 
-public class AppointmentEventDaoTest  extends TestBase{
+public class AppointmentEventDaoTest  extends BaseTest{
 
 	@Autowired private AppointmentEventDao dao;
 	

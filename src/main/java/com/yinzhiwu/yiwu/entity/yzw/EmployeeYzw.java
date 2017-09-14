@@ -23,8 +23,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.yinzhiwu.yiwu.entity.sys.Resource;
-import com.yinzhiwu.yiwu.entity.sys.Role;
-import com.yinzhiwu.yiwu.enums.DataStatus;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 @Entity
@@ -129,7 +127,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 	private String password;
 	@Column(length=123)
 	private String salt;
-	private DataStatus status=DataStatus.NORMAL;
 	
 	@OneToMany
 	@JoinColumn(name="employee_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
@@ -142,18 +139,18 @@ public class EmployeeYzw extends BaseYzwEntity {
 		return this.username + this.salt;
 	}
 
-	public Set<Role> getRoles(){
-		Set<Role> roles = new LinkedHashSet<>();
+	public Set<RoleYzw> getRoles(){
+		Set<RoleYzw> roles = new LinkedHashSet<>();
 		Set<EmployeePostYzw> empPosts = this.getEmployeePosts();
 		for (EmployeePostYzw ep : empPosts) {
-			roles.addAll(ep.getPost().getRoles());
+			roles.add(ep.getRole());
 		}
 		return roles;
 	}
 	
 	public Set<Resource> getResources(){
 		Set<Resource> resources = new LinkedHashSet<>();
-		for(Role role: getRoles()){
+		for(RoleYzw role: getRoles()){
 			resources.addAll(role.getResources());
 		}
 		return resources;
@@ -162,7 +159,7 @@ public class EmployeeYzw extends BaseYzwEntity {
 	
 	public Set<String> getStringRoles(){
 		Set<String> stringRoles = new LinkedHashSet<>();
-		for(Role role:getRoles()){
+		for(RoleYzw role:getRoles()){
 			stringRoles.add(role.getName());
 		}
 		
@@ -255,7 +252,9 @@ public class EmployeeYzw extends BaseYzwEntity {
 		return removed;
 	}
 
-
+	public boolean isRemoved(){
+		return removed;
+	}
 
 	public Integer getWparam() {
 		return wparam;
@@ -355,12 +354,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 
 	public String getSalt() {
 		return salt;
-	}
-
-
-
-	public DataStatus getStatus() {
-		return status;
 	}
 
 
@@ -548,13 +541,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
-
-
-
-	public void setStatus(DataStatus status) {
-		this.status = status;
-	}
-
 
 
 	public void setEmployeePosts(Set<EmployeePostYzw> employeePosts) {

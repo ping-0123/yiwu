@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.test.TestBase;
+import com.test.BaseTest;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
@@ -27,7 +27,7 @@ import com.yinzhiwu.yiwu.util.ReflectUtils;
 *
 */
 
-public class OrderYzwDaoTest  extends TestBase{
+public class OrderYzwDaoTest  extends BaseTest{
 
 	@Autowired
 	private OrderYzwDao orderYzwDao;
