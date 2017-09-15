@@ -21,6 +21,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Where;
 
 import com.yinzhiwu.yiwu.entity.sys.Resource;
 import com.yinzhiwu.yiwu.enums.Gender;
@@ -28,6 +29,7 @@ import com.yinzhiwu.yiwu.enums.Gender;
 @Entity
 @Table(name = "vemployee")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Where(clause="removed=false")
 public class EmployeeYzw extends BaseYzwEntity {
 
 	/**
@@ -130,6 +132,7 @@ public class EmployeeYzw extends BaseYzwEntity {
 	
 	@OneToMany
 	@JoinColumn(name="employee_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Set<EmployeePostYzw> employeePosts = new LinkedHashSet<>();
 	
 	public EmployeeYzw() {

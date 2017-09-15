@@ -49,7 +49,7 @@ public class DepartmentYzw extends BaseYzwEntity{
 	@Column(length = 50, name = "Name")
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "superiorId", foreignKey = @ForeignKey(name = "fk_department_superior_Id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw superior;
 
@@ -256,5 +256,9 @@ public class DepartmentYzw extends BaseYzwEntity{
 		return true;
 	}
 	
+	
+	public boolean isRootNode(){
+		return superior == null;
+	}
 	
 }

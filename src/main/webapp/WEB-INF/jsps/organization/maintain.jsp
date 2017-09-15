@@ -5,15 +5,14 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/css.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/css.css">
 </head>
 <body>
 
     <form:form id="form" method="post" commandName="organization">
         <form:hidden path="id"/>
-        <form:hidden path="available"/>
-        <form:hidden path="parent.id"/>
-        <!--<form:hidden path="parentIds"/> -->
+        <form:hidden path="dataStatus"/>
+        <form:hidden path="superior.id"/>
 
         <div class="form-group">
             <form:label path="name">名称：</form:label>
@@ -40,31 +39,31 @@
         </shiro:hasPermission>
     </form:form>
 
-    <script src="${pageContext.request.contextPath}/static/js/jquery-1.11.0.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.0.min.js"></script>
     <script>
         $(function() {
             $("#updateBtn").click(function() {
                 $("#form")
-                        .attr("action", "${pageContext.request.contextPath}/organization/${organization.id}/update")
+                        .attr("action", "${pageContext.request.contextPath}/organizations/${organization.id}/update")
                         .submit();
                 return false;
             });
             $("#deleteBtn").click(function() {
                 if(confirm("确认删除吗？")) {
                     $("#form")
-                            .attr("action", "${pageContext.request.contextPath}/organization/${organization.id}/delete")
+                            .attr("action", "${pageContext.request.contextPath}/organizations/${organization.id}/delete")
                             .submit();
                 }
                 return false;
             });
 
             $("#appendChildBtn").click(function() {
-                location.href="${pageContext.request.contextPath}/organization/${organization.id}/appendChild";
+                location.href="${pageContext.request.contextPath}/organizations/${organization.id}/appendChild";
                 return false;
             });
 
             $("#moveBtn").click(function() {
-                location.href="${pageContext.request.contextPath}/organization/${organization.id}/move";
+                location.href="${pageContext.request.contextPath}/organizations/${organization.id}/move";
                 return false;
             });
         });

@@ -2,14 +2,14 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/JQuery zTree v3.5.15/css/zTreeStyle/zTreeStyle.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/JQuery zTree v3.5.15/css/zTreeStyle/zTreeStyle.css">
 </head>
 <body>
 
 <ul id="tree" class="ztree"></ul>
 
-<script src="${pageContext.request.contextPath}/static/js/jquery-1.11.0.min.js"></script>
-<script src="${pageContext.request.contextPath}/static/JQuery zTree v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/JQuery zTree v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
 <script>
     $(function () {
         var setting = {
@@ -20,14 +20,14 @@
             },
             callback : {
                 onClick : function(event, treeId, treeNode) {
-                    parent.frames['content'].location.href = "${pageContext.request.contextPath}/organization/"+treeNode.id+"/maintain";
+                    parent.frames['content'].location.href = "${pageContext.request.contextPath}/organizations/"+treeNode.id+"/maintain";
                 }
             }
         };
 
         var zNodes =[
-            <c:forEach items="${organizationList}" var="o">
-                { id:"${o.id}", pId:"${o.parent.id}", name:"${o.name}", open:"true"},
+            <c:forEach items="${organizationList}" var="d">
+                { id:"${d.id}", pId:"${d.superior.id}", name:"${d.name}", open:"true"},
             </c:forEach>
         ];
 

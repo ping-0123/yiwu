@@ -24,8 +24,7 @@ import com.yinzhiwu.yiwu.service.ResourceService;
 @RequestMapping("/resources")
 public class ResourceController {
 
-    @Autowired
-    private ResourceService resourceService;
+    @Autowired private ResourceService resourceService;
 
     @ModelAttribute("types")
     public Resource.ResourceType[] resourceTypes() {
@@ -39,7 +38,7 @@ public class ResourceController {
     }
 
     @RequestMapping(value = "/{parentId}/appendChild", method = RequestMethod.GET)
-    public String showAppendChildForm(@PathVariable("parentId") Long parentId, Model model) {
+    public String showAppendChildForm(@PathVariable("parentId") Integer parentId, Model model) {
         Resource parent = resourceService.get(parentId);
         model.addAttribute("parent", parent);
         Resource child = new Resource();
@@ -58,7 +57,7 @@ public class ResourceController {
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
-    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
+    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("resource", resourceService.get(id));
         model.addAttribute("op", "修改");
         return "resource/edit";
@@ -72,7 +71,7 @@ public class ResourceController {
     }
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
-    public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         resourceService.delete(id);
         redirectAttributes.addFlashAttribute("msg", "删除成功");
         return "redirect:/resource";

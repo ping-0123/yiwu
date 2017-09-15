@@ -29,6 +29,7 @@ import com.yinzhiwu.yiwu.entity.BaseEntity;
 @Table(name="sys_resource", uniqueConstraints={
 	@UniqueConstraint(name = "uk_resource_code", columnNames = { "code" })
 })
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Resource extends BaseEntity {
 
 	/**
@@ -54,7 +55,7 @@ public class Resource extends BaseEntity {
 	
 	private ResourceType type;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="parent_id",foreignKey=@ForeignKey(value=ConstraintMode.CONSTRAINT, name="fk_resource_parent_id"))
 	private Resource parent;
 	

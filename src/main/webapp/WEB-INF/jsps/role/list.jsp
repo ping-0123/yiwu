@@ -5,7 +5,7 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/css.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/css.css">
 </head>
 <body>
 
@@ -14,7 +14,7 @@
 </c:if>
 
 <shiro:hasPermission name="role:create">
-    <a href="${pageContext.request.contextPath}/role/create">角色新增</a><br/>
+    <a href="${pageContext.request.contextPath}/roles/create">角色新增</a><br/>
 </shiro:hasPermission>
 <table class="table">
     <thead>
@@ -33,10 +33,10 @@
                 <td>
                 	<c:if test="${role.name ne 'Admin'}">
 	                    <shiro:hasPermission name="role:update">
-	                        <a href="${pageContext.request.contextPath}/role/${role.id}/update">修改</a>
+	                        <a href="${pageContext.request.contextPath}/roles/${role.id}/update">修改</a>
 	                    </shiro:hasPermission>
 	                    <shiro:hasPermission name="role:delete">
-	                        <a href="${pageContext.request.contextPath}/role/${role.id}/delete">删除</a>
+	                        <a href="${pageContext.request.contextPath}/roles/${role.id}/delete">删除</a>
 	                    </shiro:hasPermission>
 	                 </c:if>
                 </td>

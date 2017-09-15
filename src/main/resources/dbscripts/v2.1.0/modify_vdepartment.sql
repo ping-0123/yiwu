@@ -1,4 +1,5 @@
 alter TABLE chenkuserdb1.tbldept add COLUMN(nation varchar(32), district varchar(32), address varchar(128), longitude FLOAT, latitude FLOAT);
+alter TABLE chenkuserdb1.tbldept add COLUMN(dataStatus int);
 CREATE 
 or REPLACE 
 VIEW `vdepartment` AS
@@ -10,17 +11,11 @@ VIEW `vdepartment` AS
         `chenkuserdb1`.`tbldept`.`Manager1` AS `manager1`,
         `chenkuserdb1`.`tbldept`.`Manager2` AS `manager2`,
         `chenkuserdb1`.`tbldept`.`Description` AS `description`,
-        `chenkuserdb1`.`tbldept`.`Creator` AS `sf_create_user`,
-        `chenkuserdb1`.`tbldept`.`LastChanger` AS `sf_last_change_user`,
-        `chenkuserdb1`.`tbldept`.`CreateTime` AS `sf_create_time`,
-        `chenkuserdb1`.`tbldept`.`LastChangeTime` AS `sf_last_change_time`,
         `chenkuserdb1`.`tbldept`.`Removed` AS `removed`,
+        datastatus,
         `chenkuserdb1`.`tbldept`.`flag` AS `flag`,
         `chenkuserdb1`.`tbldept`.`wparam` AS `wparam`,
         `chenkuserdb1`.`tbldept`.`lparam` AS `lparam`,
-        `chenkuserdb1`.`tbldept`.`MachineCode` AS `machineCode`,
-        `chenkuserdb1`.`tbldept`.`Sf_Last_Sync_TimeStamp` AS `sf_Last_Sync_TimeStamp`,
-        `chenkuserdb1`.`tbldept`.`SF_Last_Change_Timestamp` AS `sf_last_change_timeStamp`,
         `chenkuserdb1`.`tbldept`.`SKF725` AS `operationDistrict`,
         `chenkuserdb1`.`tbldept`.`SKF863` AS `officialAccount`,
         `chenkuserdb1`.`tbldept`.`SKF865` AS `logo`,
@@ -30,6 +25,15 @@ VIEW `vdepartment` AS
          district,
          address,
          longitude,
-         latitude
+         latitude,
+		`chenkuserdb1`.`tbldept`.`Creator` AS `sf_create_user`,
+        `chenkuserdb1`.`tbldept`.`LastChanger` AS `sf_last_change_user`,
+        `chenkuserdb1`.`tbldept`.`CreateTime` AS `sf_create_time`,
+        `chenkuserdb1`.`tbldept`.`LastChangeTime` AS `sf_last_change_time`,
+		`chenkuserdb1`.`tbldept`.`MachineCode` AS `machineCode`,
+        `chenkuserdb1`.`tbldept`.`Sf_Last_Sync_TimeStamp` AS `sf_Last_Sync_TimeStamp`,
+        `chenkuserdb1`.`tbldept`.`SF_Last_Change_Timestamp` AS `sf_last_change_timeStamp`
     FROM
         `chenkuserdb1`.`tbldept`;
+        
+ UPDATE vdepartment set superiorId=null where id = 1;

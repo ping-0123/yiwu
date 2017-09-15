@@ -16,10 +16,12 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "vemployee_post")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+@Where(clause="removed=false")
 public class EmployeePostYzw extends BaseYzwEntity {
 
 	/**
@@ -36,7 +38,7 @@ public class EmployeePostYzw extends BaseYzwEntity {
 		foreignKey=@ForeignKey(name="fk_employeePost_employee_id", value=ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw employee;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="department_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw department;
 	

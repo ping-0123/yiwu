@@ -37,7 +37,9 @@ public class IndexController extends BaseController {
     public String index(Model model) {
     	EmployeeYzw user = UserContext.getEmployeeUser();
         Set<String> permissions = userService.findPermissions(user);
+        logger.info("permissions is " + permissions);
         List<Resource> menus = resourceService.findMenus(permissions);
+        logger.info("menus is " + menus );
         model.addAttribute("menus", menus);
         return "index";
     }

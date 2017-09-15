@@ -5,7 +5,7 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/css.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/css.css">
 </head>
 <body>
 
@@ -14,7 +14,7 @@
 </c:if>
 
 <shiro:hasPermission name="user:create">
-    <a href="${pageContext.request.contextPath}/user/create">用户新增</a><br/>
+    <a href="${pageContext.request.contextPath}/users/create">用户新增</a><br/>
 </shiro:hasPermission>
 
 <table class="table">
@@ -30,7 +30,7 @@
         <c:forEach items="${userList}" var="user">
             <tr>
                 <td>${user.username}</td>
-                <td>${user.organization.name}</td>
+                <td>${user.department.name}</td>
                 <td>
                 	<c:forEach items="${user.roles}" var="role">
                 		${role.name}&nbsp;
@@ -38,15 +38,15 @@
                 </td>
                 <td>
                     <shiro:hasPermission name="user:update">
-                        <a href="${pageContext.request.contextPath}/user/${user.id}/update">修改</a>
+                        <a href="${pageContext.request.contextPath}/users/${user.id}/update">修改</a>
                     </shiro:hasPermission>
 
                     <shiro:hasPermission name="user:delete">
-                        <a href="${pageContext.request.contextPath}/user/${user.id}/delete">删除</a>
+                        <a href="${pageContext.request.contextPath}/users/${user.id}/delete">删除</a>
                     </shiro:hasPermission>
 
                     <shiro:hasPermission name="user:update">
-                        <a href="${pageContext.request.contextPath}/user/${user.id}/changePassword">改密</a>
+                        <a href="${pageContext.request.contextPath}/users/${user.id}/changePassword">改密</a>
                     </shiro:hasPermission>
                 </td>
             </tr>

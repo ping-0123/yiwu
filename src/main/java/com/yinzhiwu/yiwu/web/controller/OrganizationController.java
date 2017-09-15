@@ -51,7 +51,7 @@ public class OrganizationController {
     @RequestMapping(value = "/{parentId}/appendChild", method = RequestMethod.POST)
     public String create(DepartmentYzw organization) {
         organizationService.save(organization);
-        return "redirect:/organization/success";
+        return "redirect:/organizations/success";
     }
 
     @RequestMapping(value = "/{id}/maintain", method = RequestMethod.GET)
@@ -69,14 +69,14 @@ public class OrganizationController {
     		e.printStackTrace();
 		}
         redirectAttributes.addFlashAttribute("msg", "修改成功");
-        return "redirect:/organization/success";
+        return "redirect:/organizations/success";
     }
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
     public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         organizationService.delete(id);
         redirectAttributes.addFlashAttribute("msg", "删除成功");
-        return "redirect:/organization/success";
+        return "redirect:/organizations/success";
     }
 
 
@@ -95,7 +95,7 @@ public class OrganizationController {
     	DepartmentYzw source = organizationService.get(sourceId);
     	DepartmentYzw target = organizationService.get(targetId);
         organizationService.move(source, target);
-        return "redirect:/organization/success";
+        return "redirect:/organizations/success";
     }
 
     @RequestMapping(value = "/success", method = RequestMethod.GET)

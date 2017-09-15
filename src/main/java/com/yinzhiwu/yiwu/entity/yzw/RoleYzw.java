@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.entity.yzw;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -17,12 +18,14 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Where;
 
 import com.yinzhiwu.yiwu.entity.sys.Resource;
 
 @Entity
 @Table(name = "vpost")
 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+@Where(clause="removed=false")
 public class RoleYzw extends BaseYzwEntity {
 
 	/**
@@ -56,10 +59,11 @@ public class RoleYzw extends BaseYzwEntity {
 	@Column
 	private Integer lparam;
 	
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name="sys_role_resource",
 			joinColumns=@JoinColumn(name="role_id",foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_roleResource_role_id")),
 			inverseJoinColumns=@JoinColumn(name="resource_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_roleResource_resource_id")))
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Resource> resources = new LinkedHashSet<>();
 	
 	

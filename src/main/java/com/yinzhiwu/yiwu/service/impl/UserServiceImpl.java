@@ -81,6 +81,7 @@ public class UserServiceImpl extends BaseServiceImpl<EmployeeYzw, Integer> imple
 			return permissions;
 		}
 		
+		emp = employeeDao.get(emp.getId());
 		return emp.getStringPermissions();
 	}
 	
