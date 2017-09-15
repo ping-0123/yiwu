@@ -74,5 +74,23 @@ public class DepartmentYzwServiceImpl extends BaseServiceImpl<DepartmentYzw, Int
 	public List<StoreApiView> findStoreApiViewsUnderOrganization(Integer districtId) {
 		return departmentDao.findStoreApiViewsUnderOrganization(districtId);
 	}
+
+	@Override
+	public void move(DepartmentYzw source, DepartmentYzw target) {
+		source.setSuperior(target);
+		super.save(source);
+	}
+
+	@Override
+	public List<DepartmentYzw> findAllWithExclude(DepartmentYzw source) {
+		List<DepartmentYzw>  depts = findAll();
+		for (DepartmentYzw dept : depts) {
+			if(source.equals(dept)){
+				depts.remove(dept);
+				break;
+			}
+		}
+		return depts;
+	}
 	
 }

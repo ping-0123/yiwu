@@ -86,7 +86,7 @@ public class UserRealm extends AuthorizingRealm {
 
     public void clearAllCachedAuthorizationInfo() {
         getAuthorizationCache().clear();
-    }
+    }	
 
     public void clearAllCachedAuthenticationInfo() {
         getAuthenticationCache().clear();

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{margin:0;padding: 0;}
+			#index_top{position:absolute; top:0;margin-left:230px;}
+			#index_body{position: absolute;top:65px;left: 230px;}
+			
+		</style>
+	</head>
+	<body>
+		<iframe src="index_left.html" width="100%" id="index_left" height="2065" scrolling="no"></iframe>
+		<iframe src="index_top.html" id="index_top"  height="67" scrolling="no"></iframe>
+		<iframe src="index_body.html" id="index_body" width="300" height="2000" scrolling="no"></iframe>
+		<script src="js/moment/jquery-1.9.1.min.js"></script>
+		<script>
+			$(document).ready(
+				function(){
+					var hei=$(window).height();
+					var wid=$(window).width();
+					var widt=wid-230;
+					var heig=$("#index_body").scrollHeight;
+				
+					$("#index_top").css("width",widt);
+				    $("#index_body").css("width",wid-231);
+				    
+				}
+			)
+		</script>
+	</body>
+</html>

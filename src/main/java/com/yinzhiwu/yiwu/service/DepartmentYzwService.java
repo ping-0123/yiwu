@@ -22,4 +22,8 @@ public interface DepartmentYzwService extends IBaseService<DepartmentYzw, Intege
 	List<DepartmentApiView> findAllOperationDistricts();
 	List<StoreApiView> findStoreApiViewsUnderOrganization(Integer districtId);
 
+	void move(DepartmentYzw source, DepartmentYzw target);
+
+	List<DepartmentYzw> findAllWithExclude(DepartmentYzw source);
+
 }
