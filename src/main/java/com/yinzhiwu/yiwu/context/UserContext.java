@@ -3,8 +3,6 @@ package com.yinzhiwu.yiwu.context;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.validator.internal.util.Contracts;
-
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;

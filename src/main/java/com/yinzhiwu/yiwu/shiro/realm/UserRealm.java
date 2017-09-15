@@ -23,6 +23,7 @@ import com.yinzhiwu.yiwu.service.UserService;
  * @date 2017年9月7日下午3:06:09
  *
  */
+
 public class UserRealm extends AuthorizingRealm {
 
 	@Autowired
