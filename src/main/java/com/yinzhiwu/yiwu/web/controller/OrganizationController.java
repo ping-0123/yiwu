@@ -20,7 +20,7 @@ import com.yinzhiwu.yiwu.service.DepartmentYzwService;
  */
 
 @Controller
-@RequestMapping(value= "/organizations")
+@RequestMapping(value= "/system/organizations")
 public class OrganizationController {
 
     @Autowired

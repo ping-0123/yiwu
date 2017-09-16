@@ -21,7 +21,7 @@ import com.yinzhiwu.yiwu.service.RoleYzwService;
  */
 
 @Controller
-@RequestMapping("/roles")
+@RequestMapping("/system/roles")
 public class RoleController extends BaseController {
 
     @Autowired

@@ -81,15 +81,15 @@
         <property name="usernameParam" value="username"/>
         <property name="passwordParam" value="password"/>
         <property name="rememberMeParam" value="rememberMe"/>
-        <property name="loginUrl" value="/login"/>
+        <property name="loginUrl" value="/system/login"/>
     </bean>
 
 
     <!-- Shiro的Web过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/login"/>
-        <property name="successUrl" value="/index"/>
+        <property name="loginUrl" value="/system/login"/>
+        <property name="successUrl" value="/system/index"/>
         <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
         <property name="filters">
             <util:map>
@@ -102,8 +102,8 @@
             	/api/** = anon
             	/assets/** = anon
                 /unauthorized.jsp = anon
-                /login = authc
-                /logout = logout
+                /system/login = authc
+                /system/logout = logout
                 /** = user, sysUser
             </value>
         </property>

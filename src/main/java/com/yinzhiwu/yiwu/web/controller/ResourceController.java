@@ -21,7 +21,7 @@ import com.yinzhiwu.yiwu.service.ResourceService;
  */
 
 @Controller
-@RequestMapping("/resources")
+@RequestMapping("/system/resources")
 public class ResourceController {
 
     @Autowired private ResourceService resourceService;

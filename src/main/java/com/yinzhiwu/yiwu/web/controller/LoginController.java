@@ -19,6 +19,7 @@ import com.yinzhiwu.yiwu.controller.BaseController;
  *
  */
 @Controller
+@RequestMapping(value="/system")
 public class LoginController extends BaseController {
 
     @RequestMapping(value = "/login", method={RequestMethod.GET, RequestMethod.POST})

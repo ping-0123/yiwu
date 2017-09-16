@@ -33,7 +33,7 @@ public class IndexController extends BaseController {
     private UserService userService;
     
 
-    @RequestMapping(value="/index", method={RequestMethod.GET})
+    @RequestMapping(value="/system/index", method={RequestMethod.GET})
     public String index(Model model) {
     	EmployeeYzw user = UserContext.getEmployeeUser();
         Set<String> permissions = userService.findPermissions(user);
@@ -46,10 +46,15 @@ public class IndexController extends BaseController {
     
     @GetMapping(value="/")
     public String index2(Model model){
-    	return "redirect:/index";
+    	return "redirect:/system/index";
     }
     
-    @RequestMapping("/welcome")
+    @GetMapping(value="/system")
+    public String index3(Model model){
+    	return "redirect:/system/index";
+    }
+    	
+    @RequestMapping("/system/welcome")
     public String welcome() {
         return "welcome";
     }

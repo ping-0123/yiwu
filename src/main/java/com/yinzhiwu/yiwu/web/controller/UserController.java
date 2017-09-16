@@ -22,7 +22,7 @@ import com.yinzhiwu.yiwu.service.UserService;
  */
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/system/users")
 public class UserController {
 
 	
