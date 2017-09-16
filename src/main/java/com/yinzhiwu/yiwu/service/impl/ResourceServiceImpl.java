@@ -27,7 +27,7 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource,Integer> imple
 		public void setBaseDao(ResourceDao resourceDao){
 			super.setBaseDao(resourceDao);
 		}
-
+		@Autowired private ResourceDao resDao;
 		
 		@Override
 		public List<Resource> findMenus(Set<String> permissions) {
@@ -52,5 +52,11 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource,Integer> imple
 			}
 			
 			return false;
+		}
+
+
+		@Override
+		public List<Resource> findRootMenus() {
+			return resDao.findRootMenus();
 		}
 }

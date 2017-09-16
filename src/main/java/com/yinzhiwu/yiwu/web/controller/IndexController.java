@@ -38,27 +38,14 @@ public class IndexController extends BaseController {
     	EmployeeYzw user = UserContext.getEmployeeUser();
         Set<String> permissions = userService.findPermissions(user);
         logger.info("permissions is " + permissions);
-        List<Resource> menus = resourceService.findMenus(permissions);
-        logger.info("menus is " + menus );
+//        List<Resource> menus = resourceService.findMenus(permissions);
+       List<Resource> menus = resourceService.findRootMenus();
+        logger.info("menus size is " + menus.size() );
         model.addAttribute("menus", menus);
         return "index";
     }
     
-    @GetMapping(value="/system/index_left")
-    public String index_left(Model model){
-    	return "index_left";
-    }
-    
-    @GetMapping(value="/system/index_top")
-    public String index_top(Model model){
-    	return "index_top";
-    }
-    
-    @GetMapping(value="/system/index_body")
-    public String index_body(Model model){
-    	return "index_body";
-    }
-    
+       
     @GetMapping(value="/")
     public String index2(Model model){
     	return "redirect:/system/index";

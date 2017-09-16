@@ -1,5 +1,7 @@
 package com.yinzhiwu.yiwu.dao;
 
+import java.util.List;
+
 import com.yinzhiwu.yiwu.entity.sys.Resource;
 
 /**
@@ -9,5 +11,7 @@ import com.yinzhiwu.yiwu.entity.sys.Resource;
 */
 
 public interface ResourceDao extends IBaseDao<Resource,Integer>{
+
+	List<Resource> findRootMenus();
 
 }

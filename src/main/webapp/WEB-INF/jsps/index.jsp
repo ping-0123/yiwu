@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
    <style>
@@ -19,18 +20,6 @@
     <link href="../backend/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="../backend/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="../backend/vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="../backend/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-	
-    <!-- bootstrap-progressbar -->
-    <link href="../backend/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="../backend/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="../backend/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-
     <!-- Custom Theme Style -->
     <link href="../backend/css/custom.min.css" rel="stylesheet">
   </head>
@@ -66,65 +55,35 @@
             <br />
 
             <!-- sidebar menu -->
+ 
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
-                <h3>General</h3>
-                <ul class="nav side-menu">
+                  <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="https://www.baidu.com" target="content">Dashboard</a></li>
-                      <li><a href="index2.html">Dashboard2</a></li>
-                      <li><a href="index3.html">Dashboard3</a></li>
+                      <li><a href="https://www.baidu.com" target = "content">百度</a></li>
+                      <li><a href="https://www.taobao.com" target = "content">淘宝</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="form.html">General Form</a></li>
-                      <li><a href="form_advanced.html">Advanced Components</a></li>
-                      <li><a href="form_validation.html">Form Validation</a></li>
-                      <li><a href="form_wizards.html">Form Wizard</a></li>
-                      <li><a href="form_upload.html">Form Upload</a></li>
-                      <li><a href="form_buttons.html">Form Buttons</a></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="general_elements.html">General Elements</a></li>
-                      <li><a href="media_gallery.html">Media Gallery</a></li>
-                      <li><a href="typography.html">Typography</a></li>
-                      <li><a href="icons.html">Icons</a></li>
-                      <li><a href="glyphicons.html">Glyphicons</a></li>
-                      <li><a href="widgets.html">Widgets</a></li>
-                      <li><a href="invoice.html">Invoice</a></li>
-                      <li><a href="inbox.html">Inbox</a></li>
-                      <li><a href="calendar.html">Calendar</a></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="tables.html">Tables</a></li>
-                      <li><a href="tables_dynamic.html">Table Dynamic</a></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-bar-chart-o"></i> Data Presentation <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="chartjs.html">Chart JS</a></li>
-                      <li><a href="chartjs2.html">Chart JS2</a></li>
-                      <li><a href="morisjs.html">Moris JS</a></li>
-                      <li><a href="echarts.html">ECharts</a></li>
-                      <li><a href="other_charts.html">Other Charts</a></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-clone"></i>Layouts <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
-                      <li><a href="fixed_footer.html">Fixed Footer</a></li>
-                    </ul>
-                  </li>
-                </ul>
+                  
+                  <c:forEach items="${menus}" var="m">
+                  	 <shiro:hasPermission name="${m.permission}">
+                  		 <li><a><i class="fa fa-home"></i> ${m.name} <span class="fa fa-chevron-down"></span></a>
+	                  		 <ul class="nav child_menu">
+	                  		 	<c:forEach items="${m.children}" var="child">
+	                  		 		 <shiro:hasPermission name="${child.permission}">
+			                      		<li><a href="${child.url}" target = "content">${child.name}</a></li>
+			                      	 </shiro:hasPermission>
+	                  			 </c:forEach>
+			                  </ul>
+                  		 </li>
+                  	 </shiro:hasPermission>
+                  </c:forEach>
+                  </ul>
               </div>
-              
+            	 
             </div>
+            
             <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->
@@ -245,8 +204,8 @@
         <!-- /top navigation -->
 
         <!-- page content -->
-        <div class="right_col" role="main">
-			   <iframe  name="content"  frameborder="0"  marginheight="10" marginwidth = "10" src="welcome" width="100%" height="900" scrolling="no" > </iframe> 
+        <div class="right_col" role="main" style="frameborder：0">
+			   <iframe  name="content" id="iframe" frameborder="0"  marginheight="10" marginwidth = "10" src="welcome" width="100%" height="800" scrolling="auto" > </iframe> 
         </div>
     	<!-- /page content -->
 		
@@ -260,47 +219,22 @@
      
       </div>
     </div>
+	
 
     <!-- jQuery -->
     <script src="../backend/vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="../backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- FastClick -->
-    <script src="../backend/vendors/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
-    <script src="../backend/vendors/nprogress/nprogress.js"></script>
-    <!-- Chart.js -->
-    <script src="../backend/vendors/Chart.js/dist/Chart.min.js"></script>
-    <!-- gauge.js -->
-    <script src="../backend/vendors/gauge.js/dist/gauge.min.js"></script>
-    <!-- bootstrap-progressbar -->
-    <script src="../backend/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <!-- iCheck -->
-    <script src="../backend/vendors/iCheck/icheck.min.js"></script>
-    <!-- Skycons -->
-    <script src="../backend/vendors/skycons/skycons.js"></script>
-    <!-- Flot -->
-    <script src="../backend/vendors/Flot/jquery.flot.js"></script>
-    <script src="../backend/vendors/Flot/jquery.flot.pie.js"></script>
-    <script src="../backend/vendors/Flot/jquery.flot.time.js"></script>
-    <script src="../backend/vendors/Flot/jquery.flot.stack.js"></script>
-    <script src="../backend/vendors/Flot/jquery.flot.resize.js"></script>
-    <!-- Flot plugins -->
-    <script src="../backend/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-    <script src="../backend/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-    <script src="../backend/vendors/flot.curvedlines/curvedLines.js"></script>
-    <!-- DateJS -->
-    <script src="../backend/vendors/DateJS/build/date.js"></script>
-    <!-- JQVMap -->
-    <script src="../backend/vendors/jqvmap/dist/jquery.vmap.js"></script>
-    <script src="../backend/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-    <script src="../backend/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="../backend/vendors/moment/min/moment.min.js"></script>
-    <script src="../backend/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-
     <!-- Custom Theme Scripts -->
     <script src="../backend/js/custom.min.js"></script>
+    
+	</script>
+	<script>
+	var height=document.documentElement.clientHeight;
+	//alert(height);
+	height=height-90;
+	$("#iframe").css("height",height);
+	</script>
 	
   </body>
 </html>

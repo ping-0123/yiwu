@@ -16,6 +16,7 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Where;
 
 import com.yinzhiwu.yiwu.entity.BaseEntity;
 
@@ -30,6 +31,7 @@ import com.yinzhiwu.yiwu.entity.BaseEntity;
 	@UniqueConstraint(name = "uk_resource_code", columnNames = { "code" })
 })
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+@Where(clause="dataStatus <> 2")
 public class Resource extends BaseEntity {
 
 	/**

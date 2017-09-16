@@ -15,4 +15,6 @@ public interface ResourceService extends IBaseService<Resource,Integer> {
 
 	List<Resource> findMenus(Set<String> permissions);
 
+	List<Resource> findRootMenus();
+
 }
