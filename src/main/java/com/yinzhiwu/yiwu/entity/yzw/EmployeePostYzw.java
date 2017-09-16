@@ -21,7 +21,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @Table(name = "vemployee_post")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-@Where(clause="removed=false")
+@Where(clause="dataStatus <> 2")
 public class EmployeePostYzw extends BaseYzwEntity {
 
 	/**

@@ -25,7 +25,7 @@ import com.yinzhiwu.yiwu.entity.sys.Resource;
 @Entity
 @Table(name = "vpost")
 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
-@Where(clause="removed=false")
+@Where(clause="dataStatus <> 2")
 public class RoleYzw extends BaseYzwEntity {
 
 	/**

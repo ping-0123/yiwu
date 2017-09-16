@@ -29,7 +29,7 @@ import com.yinzhiwu.yiwu.enums.Gender;
 @Entity
 @Table(name = "vemployee")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Where(clause="removed=false")
+@Where(clause="dataStatus <> 2")
 public class EmployeeYzw extends BaseYzwEntity {
 
 	/**
