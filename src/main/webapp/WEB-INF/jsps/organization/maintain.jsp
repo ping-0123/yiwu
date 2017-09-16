@@ -44,26 +44,26 @@
         $(function() {
             $("#updateBtn").click(function() {
                 $("#form")
-                        .attr("action", "${pageContext.request.contextPath}/organizations/${organization.id}/update")
+                        .attr("action", "${organization.id}/update")
                         .submit();
                 return false;
             });
             $("#deleteBtn").click(function() {
                 if(confirm("确认删除吗？")) {
                     $("#form")
-                            .attr("action", "${pageContext.request.contextPath}/organizations/${organization.id}/delete")
+                            .attr("action", "${organization.id}/delete")
                             .submit();
                 }
                 return false;
             });
 
             $("#appendChildBtn").click(function() {
-                location.href="${pageContext.request.contextPath}/organizations/${organization.id}/appendChild";
+                location.href="${organization.id}/appendChild";
                 return false;
             });
 
             $("#moveBtn").click(function() {
-                location.href="${pageContext.request.contextPath}/organizations/${organization.id}/move";
+                location.href="${organization.id}/move";
                 return false;
             });
         });

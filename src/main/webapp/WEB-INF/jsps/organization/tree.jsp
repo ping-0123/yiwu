@@ -20,14 +20,17 @@
             },
             callback : {
                 onClick : function(event, treeId, treeNode) {
-                    parent.frames['content'].location.href = "${pageContext.request.contextPath}/organizations/"+treeNode.id+"/maintain";
+                    parent.frames['content'].location.href = treeNode.id+"/maintain";
                 }
             }
         };
 
         var zNodes =[
             <c:forEach items="${organizationList}" var="d">
-                { id:"${d.id}", pId:"${d.superior.id}", name:"${d.name}", open:"true"},
+                { 	id:"${d.id}", 
+	               	pId:"${d.superior.id}", 
+	               	name:"${d.name}", 
+	               	open:"false"},
             </c:forEach>
         ];
 

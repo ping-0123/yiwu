@@ -10,8 +10,8 @@
 <body>
 
 <iframe name="content" class="ui-layout-center"
-        src="${pageContext.request.contextPath}/system/welcome" frameborder="0" scrolling="auto"></iframe>
-<div class="ui-layout-north">欢迎&nbsp<shiro:principal/>&nbsp进入音之舞后台管理系统，<a href="${pageContext.request.contextPath}/system/logout">退出</a></div>
+        src="welcome" frameborder="0" scrolling="auto"></iframe>
+<div class="ui-layout-north">欢迎&nbsp<shiro:principal/>&nbsp进入音之舞后台管理系统，<a href="logout">退出</a></div>
 <div class="ui-layout-south"> 放置其他一些信息</div>
 <div class="ui-layout-west">
     功能菜单<br/>
@@ -49,10 +49,14 @@
 	
     var zNodes =[
         <c:forEach items="${menus}" var="m">
-            <c:if test="${not m.isRootNode()}">
-                { id:"${m.id}", pId:"${m.parent.id}", name:"${m.name}", 
-                	<c:if test="${m.url ne ''}"> url:"${pageContext.request.contextPath}/${m.url}" ,target:"content" </c:if>},
-            </c:if>
+                { 	id:"${m.id}", 
+                	pId:"${m.parent.id}", 
+                	name:"${m.name}", 
+                	<c:if test="${m.url != '' && m.url != null}"> 
+                		url:"${m.url}" ,
+                		target:"content" 
+                	</c:if>
+              	},
         </c:forEach>
     ];
 	$.fn.zTree.init($("#menuTree"), setting, zNodes);		

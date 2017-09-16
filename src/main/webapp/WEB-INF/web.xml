@@ -48,7 +48,7 @@
     <!-- ensure that Shiro works in subsequent filters in the filter chain:             -->
     <filter-mapping>
         <filter-name>shiroFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/system/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
@@ -61,7 +61,11 @@
 	</filter> 
 	<filter-mapping> 
 		<filter-name>openSessionInViewFilter</filter-name> 
-		<url-pattern>/*</url-pattern> 
+		<url-pattern>/system/*</url-pattern> 
+	</filter-mapping>
+	<filter-mapping> 
+		<filter-name>openSessionInViewFilter</filter-name> 
+		<url-pattern>/api/*</url-pattern> 
 	</filter-mapping>
 
 
@@ -83,7 +87,11 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>httpMethodFilter</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/system/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>httpMethodFilter</filter-name>
+		<url-pattern>/api/*</url-pattern>
 	</filter-mapping>
 
 
