@@ -44,6 +44,21 @@ public class IndexController extends BaseController {
         return "index";
     }
     
+    @GetMapping(value="/system/index_left")
+    public String index_left(Model model){
+    	return "index_left";
+    }
+    
+    @GetMapping(value="/system/index_top")
+    public String index_top(Model model){
+    	return "index_top";
+    }
+    
+    @GetMapping(value="/system/index_body")
+    public String index_body(Model model){
+    	return "index_body";
+    }
+    
     @GetMapping(value="/")
     public String index2(Model model){
     	return "redirect:/system/index";

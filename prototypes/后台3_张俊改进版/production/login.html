@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -30,7 +32,7 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form>
+            <form action="" method="post" >
               <h1>Login Form</h1>
               <div>
                 <input type="text" class="form-control" placeholder="Username" required="" />
@@ -39,7 +41,11 @@
                 <input type="password" class="form-control" placeholder="Password" required="" />
               </div>
               <div>
-                <a class="btn btn-default submit" href="index.html">Log in</a>
+               	<input  name="rememberMe" type="checkbox" checked/>
+               	<label for="RememberMe">Remember Me</label>
+              </div>
+              <div>
+                <a class="btn btn-default submit" >Login</a>
                 <a class="reset_pass" href="#">Lost your password?</a>
               </div>
 
