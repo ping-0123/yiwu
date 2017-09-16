@@ -1,5 +1,6 @@
 alter TABLE chenkuserdb1.tblemployee add COLUMN(yiwu_password varchar(128), salt varchar(128));
 alter TABLE chenkuserdb1.tblemployee add COLUMN(dataStatus int);
+
 CREATE 
 	or REPLACE
 VIEW `vemployee` AS
@@ -44,3 +45,6 @@ VIEW `vemployee` AS
         `chenkuserdb1`.`tblemployee`.`Last_Online_TimeStamp` AS `last_online_timestamp`
     FROM
         `chenkuserdb1`.`tblemployee`;
+        
+ update vemployee set dataStatus=2 where removed=TRUE;
+UPDATE vemployee set datastatus=0 where datastatus is null;

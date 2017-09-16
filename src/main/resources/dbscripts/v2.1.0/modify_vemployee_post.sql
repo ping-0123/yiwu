@@ -1,6 +1,6 @@
 alter TABLE chenkuserdb1.tblemployee_post add COLUMN(department_id int, start date, end DATE, is_default BOOLEAN DEFAULT FALSE);
 alter TABLE chenkuserdb1.tblemployee_post add COLUMN(sf_create_user int, sf_create_time DATETIME, dataStatus int);
-UPDATE vemployee_post set post_id = 1 where post_id = -1;
+
 CREATE 
     or REPLACE
 VIEW `vemployee_post` AS
@@ -24,3 +24,6 @@ VIEW `vemployee_post` AS
     FROM
         `chenkuserdb1`.`tblemployee_post`;
         
+UPDATE vemployee_post set post_id = 1 where post_id = -1;
+update vemployee_post set dataStatus=2 where removed=TRUE;
+UPDATE vemployee_post set datastatus=0 where datastatus is null;

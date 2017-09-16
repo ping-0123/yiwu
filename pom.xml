@@ -6,7 +6,8 @@
 	<groupId>com.yinzhiwu</groupId>
 	<artifactId>yiwu</artifactId>
 	<packaging>war</packaging>
-	<version>2.1.1.test</version>
+	<!--  使用后台模板 -->
+	<version>2.1.2</version>
 	<name>yiwu</name>
 	<url>http://maven.apache.org</url>
 

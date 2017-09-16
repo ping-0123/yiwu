@@ -1,5 +1,6 @@
 alter TABLE chenkuserdb1.tbldept add COLUMN(nation varchar(32), district varchar(32), address varchar(128), longitude FLOAT, latitude FLOAT);
 alter TABLE chenkuserdb1.tbldept add COLUMN(dataStatus int);
+
 CREATE 
 or REPLACE 
 VIEW `vdepartment` AS
@@ -37,3 +38,5 @@ VIEW `vdepartment` AS
         `chenkuserdb1`.`tbldept`;
         
  UPDATE vdepartment set superiorId=null where id = 1;
+ update vdepartment set dataStatus=2 where removed=TRUE;
+UPDATE vdepartment set datastatus=0 where datastatus is null;
