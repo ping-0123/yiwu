@@ -19,7 +19,7 @@
         <c:if test="${op ne '新增'}">
 	        <form:hidden path="id"/>
 	        <form:hidden path="salt"/>
-	        <form:hidden path="locked"/>
+	        <form:hidden path="dataStatus"/>
             <form:hidden path="password"/>
         </c:if>
 

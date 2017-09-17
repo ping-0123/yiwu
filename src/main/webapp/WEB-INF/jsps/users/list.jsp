@@ -34,7 +34,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Default Example <small>Posts</small></h2>
+                    <h2>Default Example <small>Users</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -56,21 +56,25 @@
                     <table id="datatable" class="table table-striped table-bordered">
                       <thead>
                         <tr>
-                          <th>职位</th>
-                          <th>描述</th>
+                          <th>姓名</th>
+                          <th>用户名</th>
+                          <th>状态</th>
                           <th>操作</th>
                         </tr>
                       </thead>
 
                       <tbody>
-                      		<c:forEach items="${posts}" var="p">
+                      		<c:forEach items="${users}" var="u">
                       			<tr>
-                      				<td>${p.name}</td>
-                      				<td>${p.description}</td>
+                      				
+                      				<td>${u.employee.name}</td>
+                      				<td>${u.username}</td>
+                      				<td>${u.dataStatus}</td>
                       				<td>
-                      					<shiro:hasPermission name="posts:update">
-                      						<input onclick="window.open('https://www.baidu.com','baidu', 'width=800, height=600,location=no,menubar=no,resizable=yes,scrollbars=no,status=no,titlebar=no,toolbar=no')" type="button" value="修改"/> &nbsp设置角色</shiro:hasPermission>
-                      					<shiro:hasPermission name="posts:delete">删除</shiro:hasPermission>
+                      					<shiro:hasPermission name="users:update">
+                      						<a href="users/${u.id}/password/edition">修改</a>
+                      					</shiro:hasPermission>
+                      					<shiro:hasPermission name="users:delete">删除</shiro:hasPermission>
                       				</td>
                       			</tr>
                       		</c:forEach>

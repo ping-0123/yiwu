@@ -7,7 +7,31 @@ package com.yinzhiwu.yiwu.enums;
 */
 
 public enum DataStatus {
-	NORMAL,
-	FORBID,
-	DELETE
+	NORMAL(0,"正常"),
+	FORBID(1,"禁用"),
+	DELETE(1,"删除");
+	
+	private final int index;
+	private final String name;
+	
+	private DataStatus(int index, String name)
+	{
+		this.index = index;
+		this.name= name;
+	}
+	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * @return the index
+	 */
+	public int getIndex() {
+		return index;
+	}
+	
+	
 }

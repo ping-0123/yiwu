@@ -38,7 +38,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
         model.addAttribute("users", userService.findAll());
-        return "user/list";
+        return "users/list";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -46,29 +46,28 @@ public class UserController {
         setCommonData(model);
         model.addAttribute("user", new EmployeeYzw());
         model.addAttribute("op", "新增");
-        return "user/edit";
+        return "users/edit";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(User user,  RedirectAttributes redirectAttributes) {
         userService.save(user);
         redirectAttributes.addFlashAttribute("msg", "新增成功");
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/edition", method = RequestMethod.GET)
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        setCommonData(model);
         model.addAttribute("user", userService.get(id));
         model.addAttribute("op", "修改");
-        return "user/edit";
+        return "users/edit";
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
     public String update(User user, RedirectAttributes redirectAttributes) {
         userService.update(user);
         redirectAttributes.addFlashAttribute("msg", "修改成功");
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
@@ -76,14 +75,14 @@ public class UserController {
         setCommonData(model);
         model.addAttribute("user", userService.get(id));
         model.addAttribute("op", "删除");
-        return "user/edit";
+        return "users/edit";
     }
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
     public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         userService.delete(id);
         redirectAttributes.addFlashAttribute("msg", "删除成功");
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
 
@@ -91,14 +90,14 @@ public class UserController {
     public String showChangePasswordForm(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("user", userService.get(id));
         model.addAttribute("op", "修改密码");
-        return "user/changePassword";
+        return "users/changePassword";
     }
 
     @RequestMapping(value = "/{id}/changePassword", method = RequestMethod.POST)
     public String changePassword(@PathVariable("id") Integer id, String newPassword, RedirectAttributes redirectAttributes) {
         userService.modifyPassword(id, newPassword);
         redirectAttributes.addFlashAttribute("msg", "修改密码成功");
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
     private void setCommonData(Model model) {
