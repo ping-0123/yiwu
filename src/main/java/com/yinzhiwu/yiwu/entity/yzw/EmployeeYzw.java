@@ -1,7 +1,7 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
 import java.util.Date;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -23,7 +23,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
-import com.yinzhiwu.yiwu.entity.sys.Resource;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 @Entity
@@ -133,7 +132,7 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@OneToMany
 	@JoinColumn(name="employee_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-	private Set<EmployeePostYzw> employeePosts = new LinkedHashSet<>();
+	private Set<EmployeePostYzw> employeePosts = new HashSet<>();
 	
 	public EmployeeYzw() {
 	}
@@ -141,42 +140,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 	public String getCredentialsSalt() {
 		return this.username + this.salt;
 	}
-
-	public Set<RoleYzw> getRoles(){
-		Set<RoleYzw> roles = new LinkedHashSet<>();
-		Set<EmployeePostYzw> empPosts = this.getEmployeePosts();
-		for (EmployeePostYzw ep : empPosts) {
-			roles.add(ep.getRole());
-		}
-		return roles;
-	}
-	
-	public Set<Resource> getResources(){
-		Set<Resource> resources = new LinkedHashSet<>();
-		for(RoleYzw role: getRoles()){
-			resources.addAll(role.getResources());
-		}
-		return resources;
-	}
-	
-	
-	public Set<String> getStringRoles(){
-		Set<String> stringRoles = new LinkedHashSet<>();
-		for(RoleYzw role:getRoles()){
-			stringRoles.add(role.getName());
-		}
-		
-		return stringRoles;
-	}
-	
-	public Set<String> getStringPermissions(){
-		Set<String> permissions = new LinkedHashSet<>();
-		for(Resource r: getResources()){
-			permissions.add(r.getPermission());
-		}
-		return permissions;
-	}
-
 
 
 	public Integer getId() {

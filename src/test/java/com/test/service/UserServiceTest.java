@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import com.test.BaseTest;
-import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.service.UserService;
 
 /**
@@ -32,11 +32,11 @@ public class UserServiceTest extends BaseTest{
 	}
 	
 	@Test
-	@Rollback(value=true)
+	@Rollback(value=false)
 	public void initPassword(){
-		List<EmployeeYzw>  emps = userService.findAll();
-		for (EmployeeYzw emp : emps) {
-			userService.modifyPassword(emp.getId(), "yzw123456");
+		List<User>  users = userService.findAll();
+		for (User user : users) {
+			userService.modifyPassword(user.getId(), "yzw123456");
 		}
 	}
 }

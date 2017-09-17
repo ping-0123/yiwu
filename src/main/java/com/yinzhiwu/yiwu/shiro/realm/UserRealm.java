@@ -13,7 +13,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.enums.DataStatus;
 import com.yinzhiwu.yiwu.service.UserService;
 
@@ -49,7 +49,7 @@ public class UserRealm extends AuthorizingRealm {
 
         String username = (String)token.getPrincipal();
 
-        EmployeeYzw user = userService.findByUsername(username);
+        User user = userService.findByUsername(username);
 
         if(user == null) {
             throw new UnknownAccountException();//没找到帐号
@@ -58,7 +58,7 @@ public class UserRealm extends AuthorizingRealm {
         if(DataStatus.FORBID == user.getDataStatus()) {
             throw new LockedAccountException(); //帐号锁定
         }
-
+        
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(
                 user.getUsername(), //用户名

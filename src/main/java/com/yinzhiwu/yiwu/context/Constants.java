@@ -12,4 +12,5 @@ public class Constants {
 	 public static final String CURRENT_DISTRIBUTER_VIWE = "current_distributer_view";
 	 
 	 public static final String CURRENT_EMPLOYEE_USER = "current_employee_user";
+	 public static final String CURRENT_EMPLOYEE = "current_employee";
 }

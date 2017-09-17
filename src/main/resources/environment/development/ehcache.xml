@@ -52,6 +52,32 @@
          diskPersistent="false"  
          overflowToDisk="false"   
          maxElementsOnDisk="10" /> 
+           <cache   
+         name="com.yinzhiwu.yiwu.entity.sys.Role"  
+         maxElementsInMemory="1000"  
+         memoryStoreEvictionPolicy="LRU"   
+         eternal="true"   
+         diskPersistent="false"  
+         overflowToDisk="false"   
+         maxElementsOnDisk="10" /> 
+         
+           <cache   
+         name="com.yinzhiwu.yiwu.entity.sys.Role.resources"  
+         maxElementsInMemory="1000"  
+         memoryStoreEvictionPolicy="LRU"   
+         eternal="true"   
+         diskPersistent="false"  
+         overflowToDisk="false"   
+         maxElementsOnDisk="10" /> 
+         
+           <cache   
+         name="com.yinzhiwu.yiwu.entity.sys.Resource"  
+         maxElementsInMemory="1000"  
+         memoryStoreEvictionPolicy="LRU"   
+         eternal="true"   
+         diskPersistent="false"  
+         overflowToDisk="false"   
+         maxElementsOnDisk="10" /> 
          
          <!-- 
         <cache   

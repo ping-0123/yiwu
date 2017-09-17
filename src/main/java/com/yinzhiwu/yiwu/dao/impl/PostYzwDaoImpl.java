@@ -2,8 +2,8 @@ package com.yinzhiwu.yiwu.dao.impl;
 
 import org.springframework.stereotype.Repository;
 
-import com.yinzhiwu.yiwu.dao.RoleYzwDao;
-import com.yinzhiwu.yiwu.entity.yzw.RoleYzw;
+import com.yinzhiwu.yiwu.dao.PostYzwDao;
+import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
 
 /**
 *@Author ping
@@ -12,6 +12,6 @@ import com.yinzhiwu.yiwu.entity.yzw.RoleYzw;
 */
 
 @Repository
-public class RoleYzwDaoImpl  extends BaseDaoImpl<RoleYzw,Integer> implements RoleYzwDao{
+public class PostYzwDaoImpl  extends BaseDaoImpl<PostYzw,Integer> implements PostYzwDao{
 
 }

@@ -46,7 +46,7 @@ public class EmployeePostYzw extends BaseYzwEntity {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "post_id",
 			foreignKey=@ForeignKey(name="fk_employeePost_post_id", value=ConstraintMode.NO_CONSTRAINT))
-	private RoleYzw role;
+	private PostYzw post;
 
 	private Date start;
 	private Date end;
@@ -91,17 +91,11 @@ public class EmployeePostYzw extends BaseYzwEntity {
 		this.isDefault = isDefault;
 	}
 
-	public RoleYzw getRole() {
-		return role;
-	}
 
 	public Boolean getIsDefault() {
 		return isDefault;
 	}
 
-	public void setRole(RoleYzw role) {
-		this.role = role;
-	}
 
 	public void setIsDefault(Boolean isDefault) {
 		this.isDefault = isDefault;
@@ -133,6 +127,20 @@ public class EmployeePostYzw extends BaseYzwEntity {
 	
 	public boolean isRemoved(){
 		return removed;
+	}
+
+	/**
+	 * @return the post
+	 */
+	public PostYzw getPost() {
+		return post;
+	}
+
+	/**
+	 * @param post the post to set
+	 */
+	public void setPost(PostYzw post) {
+		this.post = post;
 	}
 
 }

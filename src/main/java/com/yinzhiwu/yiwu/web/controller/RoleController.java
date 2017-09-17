@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
-import com.yinzhiwu.yiwu.entity.yzw.RoleYzw;
+import com.yinzhiwu.yiwu.entity.sys.Role;
 import com.yinzhiwu.yiwu.service.ResourceService;
-import com.yinzhiwu.yiwu.service.RoleYzwService;
+import com.yinzhiwu.yiwu.service.RoleService;
 
 /**
  * 
@@ -25,7 +25,7 @@ import com.yinzhiwu.yiwu.service.RoleYzwService;
 public class RoleController extends BaseController {
 
     @Autowired
-    private RoleYzwService roleService;
+    private RoleService roleService;
 
     @Autowired
     private ResourceService resourceService;
@@ -39,13 +39,13 @@ public class RoleController extends BaseController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String showCreateForm(Model model) {
         setCommonData(model);
-        model.addAttribute("role", new RoleYzw());
+        model.addAttribute("role", new Role());
         model.addAttribute("op", "新增");
         return "role/edit";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(RoleYzw role, RedirectAttributes redirectAttributes) {
+    public String create(Role role, RedirectAttributes redirectAttributes) {
     	logger.error(role.getResources());
         roleService.save(role);
         redirectAttributes.addFlashAttribute("msg", "新增成功");
@@ -61,7 +61,7 @@ public class RoleController extends BaseController {
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
-    public String update(RoleYzw role, RedirectAttributes redirectAttributes) {
+    public String update(Role role, RedirectAttributes redirectAttributes) {
         roleService.update(role);
         redirectAttributes.addFlashAttribute("msg", "修改成功");
         return "redirect:/role";

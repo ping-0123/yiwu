@@ -1,5 +1,8 @@
 package com.yinzhiwu.yiwu.dao;
 
-public interface UserDao {
-	public void show();
+import com.yinzhiwu.yiwu.entity.sys.User;
+
+public interface UserDao extends IBaseDao<User, Integer>{
+
+	User findByUsername(String username);
 }

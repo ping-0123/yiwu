@@ -1,6 +1,6 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -20,13 +20,13 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
-import com.yinzhiwu.yiwu.entity.sys.Resource;
+import com.yinzhiwu.yiwu.entity.sys.Role;
 
 @Entity
 @Table(name = "vpost")
 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 @Where(clause="dataStatus <> 2")
-public class RoleYzw extends BaseYzwEntity {
+public class PostYzw extends BaseYzwEntity {
 
 	/**
 	 * 
@@ -60,12 +60,11 @@ public class RoleYzw extends BaseYzwEntity {
 	private Integer lparam;
 	
 	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="sys_role_resource",
-			joinColumns=@JoinColumn(name="role_id",foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_roleResource_role_id")),
-			inverseJoinColumns=@JoinColumn(name="resource_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_roleResource_resource_id")))
+	@JoinTable(name="sys_post_role",
+			joinColumns=@JoinColumn(name="post_id",foreignKey=@ForeignKey( name="fk_postRole_post_id", value=ConstraintMode.NO_CONSTRAINT)),
+			inverseJoinColumns=@JoinColumn(name="role_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_postRole_role_id")))
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-	private Set<Resource> resources = new LinkedHashSet<>();
-	
+	private Set<Role> roles = new HashSet<>();	
 	
 	public Integer getId() {
 		return id;
@@ -131,12 +130,18 @@ public class RoleYzw extends BaseYzwEntity {
 		this.lparam = lparam;
 	}
 
-	public Set<Resource> getResources() {
-		return resources;
+	/**
+	 * @return the roles
+	 */
+	public Set<Role> getRoles() {
+		return roles;
 	}
 
-	public void setResources(Set<Resource> resources) {
-		this.resources = resources;
+	/**
+	 * @param roles the roles to set
+	 */
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 	

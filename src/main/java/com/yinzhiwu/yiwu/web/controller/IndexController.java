@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.sys.Resource;
-import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.service.ResourceService;
 import com.yinzhiwu.yiwu.service.UserService;
 
@@ -35,7 +35,7 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value="/system/index", method={RequestMethod.GET})
     public String index(Model model) {
-    	EmployeeYzw user = UserContext.getEmployeeUser();
+    	User user = UserContext.getUser();
         Set<String> permissions = userService.findPermissions(user);
         logger.info("permissions is " + permissions);
 //        List<Resource> menus = resourceService.findMenus(permissions);

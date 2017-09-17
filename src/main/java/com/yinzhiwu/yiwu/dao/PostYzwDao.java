@@ -1,6 +1,6 @@
 package com.yinzhiwu.yiwu.dao;
 
-import com.yinzhiwu.yiwu.entity.yzw.RoleYzw;
+import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
 
 /**
 *@Author ping
@@ -8,6 +8,6 @@ import com.yinzhiwu.yiwu.entity.yzw.RoleYzw;
 *
 */
 
-public interface RoleYzwDao extends IBaseDao<RoleYzw,Integer> {
+public interface PostYzwDao extends IBaseDao<PostYzw,Integer> {
 
 }

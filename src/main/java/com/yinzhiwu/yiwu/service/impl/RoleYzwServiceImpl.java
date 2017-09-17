@@ -3,9 +3,9 @@ package com.yinzhiwu.yiwu.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yinzhiwu.yiwu.dao.RoleYzwDao;
-import com.yinzhiwu.yiwu.entity.yzw.RoleYzw;
-import com.yinzhiwu.yiwu.service.RoleYzwService;
+import com.yinzhiwu.yiwu.dao.PostYzwDao;
+import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
+import com.yinzhiwu.yiwu.service.PostYzwService;
 
 /**
 *@Author ping
@@ -14,10 +14,10 @@ import com.yinzhiwu.yiwu.service.RoleYzwService;
 */
 
 @Service
-public class RoleYzwServiceImpl extends BaseServiceImpl<RoleYzw,Integer> implements RoleYzwService {
+public class RoleYzwServiceImpl extends BaseServiceImpl<PostYzw,Integer> implements PostYzwService {
 
 	@Autowired
-	public void setBaseDao(RoleYzwDao roleYzwDao){
-		super.setBaseDao(roleYzwDao);
+	public void setBaseDao(PostYzwDao dao){
+		super.setBaseDao(dao);
 	}
 }

@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
-import com.yinzhiwu.yiwu.service.RoleYzwService;
+import com.yinzhiwu.yiwu.service.RoleService;
 import com.yinzhiwu.yiwu.service.UserService;
 
 
@@ -32,11 +33,11 @@ public class UserController {
     @Autowired
     private DepartmentYzwService organizationService;
     @Autowired
-    private RoleYzwService roleService;
+    private RoleService roleService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
-        model.addAttribute("userList", userService.findAll());
+        model.addAttribute("users", userService.findAll());
         return "user/list";
     }
 
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(EmployeeYzw user,  RedirectAttributes redirectAttributes) {
+    public String create(User user,  RedirectAttributes redirectAttributes) {
         userService.save(user);
         redirectAttributes.addFlashAttribute("msg", "新增成功");
         return "redirect:/user";
@@ -64,7 +65,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
-    public String update(EmployeeYzw user, RedirectAttributes redirectAttributes) {
+    public String update(User user, RedirectAttributes redirectAttributes) {
         userService.update(user);
         redirectAttributes.addFlashAttribute("msg", "修改成功");
         return "redirect:/user";

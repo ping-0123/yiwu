@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
-import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 
 /**
 *@Author ping
@@ -17,19 +17,20 @@ public abstract class UserContext {
 
 	private static ThreadLocal<Map<String, Object>> map = new ThreadLocal<>();
 	
-	public static void setUser(Distributer user){
+	public static void setUser(User user){
 		getSureMap().put(Constants.CURRENT_USER, user);
 	}
 	
-	public static Distributer getUser(){
-		return (Distributer) getSureMap().get(Constants.CURRENT_USER);
+	public static User getUser(){
+		return (User) getSureMap().get(Constants.CURRENT_USER);
 	}
 	
-	public static void setDistributer(DistributerApiView view){
-		getSureMap().put(Constants.CURRENT_DISTRIBUTER_VIWE, view);
+	
+	public static void setDistributer(Distributer distributer){
+		getSureMap().put(Constants.CURRENT_DISTRIBUTER, distributer);
 	}
-	public static DistributerApiView getDistributer(){
-		return (DistributerApiView) getSureMap().get(Constants.CURRENT_DISTRIBUTER_VIWE);
+	public static Distributer getDistributer(){
+		return (Distributer) getSureMap().get(Constants.CURRENT_DISTRIBUTER);
 	}
 	
 	public static void setEmployeeUser(EmployeeYzw emp){

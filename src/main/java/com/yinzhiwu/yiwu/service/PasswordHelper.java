@@ -6,7 +6,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.stereotype.Service;
 
-import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.entity.sys.User;
 
 /**
  * 
@@ -36,7 +36,7 @@ public class PasswordHelper {
         this.hashIterations = hashIterations;
     }
 
-    public void encryptPassword(EmployeeYzw user) {
+    public void encryptPassword(User user) {
 
         user.setSalt(randomNumberGenerator.nextBytes().toHex());
 //    	user.setSalt("0f3742030f3d960e735ecaf525589a99");

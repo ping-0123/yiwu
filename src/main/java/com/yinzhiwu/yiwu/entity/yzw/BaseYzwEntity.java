@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.context.UserContext;
+import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.enums.DataStatus;
 
 
@@ -69,10 +70,10 @@ public abstract class BaseYzwEntity implements Serializable {
 		this.lastChangeTime = date;
 		this.lastChangeTimestamp = date;
 		this.lastSyncTimeStamp = date;
-		EmployeeYzw emp = UserContext.getEmployeeUser();
-		if(emp != null){
-			this.createUserId = emp.getId();
-			this.lastChangeUserId = emp.getId();
+		User user = UserContext.getUser();
+		if(user != null){
+			this.createUserId = user.getId();
+			this.lastChangeUserId = user.getId();
 		}
 	}
 
@@ -81,9 +82,9 @@ public abstract class BaseYzwEntity implements Serializable {
 		this.lastChangeTime = date;
 		this.lastChangeTimestamp = date;
 		this.lastSyncTimeStamp = date;
-		EmployeeYzw emp = UserContext.getEmployeeUser();
-		if(emp != null)
-			this.lastChangeUserId = emp.getId();
+		User user = UserContext.getUser();
+		if(user != null)
+			this.lastChangeUserId = user.getId();
 	}
 
 	public Integer getCreateUserId() {

@@ -109,6 +109,18 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			list = new ArrayList<>();
 		return list;
 	}
+	
+	protected T findOneByProperty(String propertyName, Object value) {
+		Assert.hasText(propertyName, "属性名不能为空");
+		
+		String hql = "FROM " + entityClass.getSimpleName() + " t1 WHERE  t1." + propertyName + " =:property";
+		List<T> list = getSession().createQuery(hql, entityClass)
+				.setParameter("property", value)
+				.setMaxResults(1)
+				.getResultList();
+		
+		return list.size()>0?list.get(0):null;
+	}
 
 	@Override
 	public Long findCountByProperty(String propertyName, Object value) {

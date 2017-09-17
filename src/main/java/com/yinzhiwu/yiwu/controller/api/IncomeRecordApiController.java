@@ -170,7 +170,7 @@ public class IncomeRecordApiController extends BaseController {
 		List<Integer> events = new ArrayList<>();
 		List<Integer> relations = new ArrayList<>();
 		List<Integer> types = new ArrayList<>();
-		Distributer user = UserContext.getUser();
+		Distributer user = UserContext.getDistributer();
 		int distributerId = observerId;
 		if(user !=null)
 			distributerId = user.getId();

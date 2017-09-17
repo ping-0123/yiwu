@@ -1,13 +1,17 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
-import com.yinzhiwu.yiwu.dao.UserDao;
+import org.springframework.stereotype.Repository;
 
-//@Repository
-public class UserDaoImpl implements UserDao {
+import com.yinzhiwu.yiwu.dao.UserDao;
+import com.yinzhiwu.yiwu.entity.sys.User;
+
+@Repository
+public class UserDaoImpl extends BaseDaoImpl<User, Integer> implements UserDao {
 
 	@Override
-	public void show() {
-		System.out.println("UserDaoImpl called");
+	public User findByUsername(String username) {
+		return findOneByProperty("username", username);
 	}
+
 
 }

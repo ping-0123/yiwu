@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.yinzhiwu.yiwu.context.Constants;
 import com.yinzhiwu.yiwu.context.UserContext;
-import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.service.UserService;
 
 
@@ -35,7 +35,7 @@ public class SysUserFilter extends PathMatchingFilter {
 
     @Override
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
-    	EmployeeYzw user = (EmployeeYzw) SecurityUtils.getSubject().getSession().getAttribute(Constants.CURRENT_USER);
+    	User user = (User) SecurityUtils.getSubject().getSession().getAttribute(Constants.CURRENT_USER);
     	
     	if(user ==null){
 	        String username = (String)SecurityUtils.getSubject().getPrincipal();
@@ -51,7 +51,7 @@ public class SysUserFilter extends PathMatchingFilter {
 	        SecurityUtils.getSubject().getSession().setAttribute(Constants.CURRENT_USER, user);
     	}
         
-        UserContext.setEmployeeUser(user);
+        UserContext.setUser(user);
         return true;
     }
 }

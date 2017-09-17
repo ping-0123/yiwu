@@ -13,40 +13,38 @@
     <div class="message">${msg}</div>
 </c:if>
 
-<shiro:hasPermission name="user:create">
-    <a href="${pageContext.request.contextPath}/users/create">用户新增</a><br/>
+<shiro:hasPermission name="users:create">
+    <a href="users/create">用户新增</a><br/>
 </shiro:hasPermission>
 
 <table class="table">
     <thead>
         <tr>
             <th>用户名</th>
-            <th>所属组织</th>
-            <th>角色列表</th>
+            <th>员工姓名</th>
+            <th>状态</th>
             <th>操作</th>
         </tr>
     </thead>
     <tbody>
-        <c:forEach items="${userList}" var="user">
+        <c:forEach items="${users}" var="user">
             <tr>
                 <td>${user.username}</td>
-                <td>${user.department.name}</td>
+                <td>${user.employee.name}</td>
                 <td>
-                	<c:forEach items="${user.roles}" var="role">
-                		${role.name}&nbsp;
-                	</c:forEach>
+                	${user.dataStatus}
                 </td>
                 <td>
-                    <shiro:hasPermission name="user:update">
-                        <a href="${pageContext.request.contextPath}/users/${user.id}/update">修改</a>
+                    <shiro:hasPermission name="users:update">
+                        <a href="users/${user.id}/update">修改</a>
                     </shiro:hasPermission>
 
-                    <shiro:hasPermission name="user:delete">
-                        <a href="${pageContext.request.contextPath}/users/${user.id}/delete">删除</a>
+                    <shiro:hasPermission name="users:delete">
+                        <a href="users/${user.id}/delete">删除</a>
                     </shiro:hasPermission>
 
-                    <shiro:hasPermission name="user:update">
-                        <a href="${pageContext.request.contextPath}/users/${user.id}/changePassword">改密</a>
+                    <shiro:hasPermission name="users:update">
+                        <a href="users/${user.id}/changePassword">改密</a>
                     </shiro:hasPermission>
                 </td>
             </tr>
