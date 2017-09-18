@@ -39,20 +39,22 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-					
+						<a href="http://localhost:9090/yiwu/system/index" data-toggle="modal" data-target="#modalPostEdit">加载模态框</a>
 						<shiro:hasPermission name="posts:create:*">
-						 	<button type="button" onclick="btnNew()" class="btn btn-primary" data-toggle="modal" data-target="#create">
-						 		<span class="glyphicon glyphicon-plus" aria-hidden="false"></span>  新增  
-						 	</button>
+							<button type="button" onclick="btnNew()" class="btn btn-primary"
+								data-toggle="modal" data-target="#modalPostEdit">
+								<span class="glyphicon glyphicon-plus" aria-hidden="false"></span>
+								新增
+							</button>
 						</shiro:hasPermission>
-						
+
 						<ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 							</li>
-							<li> <a href=""><i class="fa fa-refresh"></i></a>
+							<li><a href=""><i class="fa fa-refresh"></i></a>
 							<li><a class="close-link"><i class="fa fa-close"></i></a></li>
 						</ul>
-						
+
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
@@ -67,18 +69,19 @@
 
 							<tbody>
 								<c:forEach items="${posts}" var="p">
-									<tr id="${p.id}">
-										<td>${p.name}</td>
-										<td>${p.description}</td>
-										<td>
-											<shiro:hasPermission name="posts:update">
-												<a  data-toggle="modal" data-target="#myModal" onclick="btnNew('${p.id}')"><i class="fa fa-pencil" title="修改"></i></a>
-												<a data-toggle="modal" data-target="#myModal" ><i class="fa fa-navicon" title="设置岗位职责"></i>
-											</shiro:hasPermission> 
-											<shiro:hasPermission name="posts:delete">
-												<a  data-toggle="modal" data-target="#myModal"><i class="fa fa-minus-circle" title="删除"></i> </a>
-											</shiro:hasPermission>
-										</td>
+									<tr id="postId_${p.id}" aa="bb">
+										<td class="postName">${p.name}</td>
+										<td class="postDescription">${p.description}</td>
+										<td><shiro:hasPermission name="posts:update">
+												<a data-toggle="modal" data-target="#modalPostEdit"
+													onclick="btnNew('${p.id}')"><i class="fa fa-pencil"
+													title="修改"></i></a>
+												<a data-toggle="modal" data-target="#myModal"><i
+													class="fa fa-navicon" title="设置岗位职责"></i>
+											</shiro:hasPermission> <shiro:hasPermission name="posts:delete">
+												<a data-toggle="modal" data-target="#myModal"><i
+													class="fa fa-minus-circle" title="删除"></i> </a>
+											</shiro:hasPermission></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -92,11 +95,11 @@
 		</div>
 	</div>
 	<!-- /page content -->
-	
-	
+
+
 	<!-- 修改 modal -->
-	<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog"
-		aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg" id="modalPostEdit"
+		tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 
@@ -106,28 +109,34 @@
 					</button>
 					<h4 class="modal-title" id="myModalLabel">新增岗位</h4>
 				</div>
-					
-					</br>
 
-				<form id="demo-form2" data-parsley-validate
+				</br>
+
+				<form id="postEditForm" data-parsley-validate
 					class="form-horizontal form-label-left">
-
+					<div class="modal-dialog">
+						<div class="modal-content"></div>
+					</div>
+					<div class="form-group">
+						<input id="modalPostId" class="postId" type="hidden" name="id"
+							value="" />
+					</div>
 					<div class="form-group">
 						<label class="control-label col-md-3 col-sm-3 col-xs-12"
-							for="first-name">First Name <span class="required">*</span>
+							for="name">岗位名称 <span class="required">*</span>
 						</label>
 						<div class="col-md-6 col-sm-6 col-xs-12">
-							<input type="text" id="first-name" required="required"
-								class="form-control col-md-7 col-xs-12">
+							<input id="modalPostName" type="text" name="name"
+								required="required" class="form-control col-md-7 col-xs-12">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-md-3 col-sm-3 col-xs-12"
-							for="last-name">Last Name <span class="required">*</span>
-						</label>
+							for="description">岗位描述 <span class="required">*</span></label>
 						<div class="col-md-6 col-sm-6 col-xs-12">
-							<input type="text" id="last-name" name="last-name"
-								required="required" class="form-control col-md-7 col-xs-12">
+							<input type="text" id="modalPostDescription" id="description"
+								name="description" required="required"
+								class="form-control col-md-7 col-xs-12">
 						</div>
 					</div>
 					<div class="form-group">
@@ -174,8 +183,7 @@
 					</div>
 
 				</form>
-				</br>
-                </br>
+				</br> </br>
 			</div>
 		</div>
 	</div>
@@ -194,9 +202,14 @@
 	<!-- Custom Theme Scripts -->
 	<script src="../backend/js/custom.min.js"></script>
 	<script type="text/javascript">
-		function btnNew(string){
+		function btnNew(id) {
+			//	var index = $('table>thead').html();
+			$('#modalPostId').val(id);
+			$('#modalPostName').val(
+					$('#postId_' + id).children('.postName').text());
+			$('#modalPostDescription').val(
+					$('#postId_' + id).children('.postDescription').text());
 		}
-		
 	</script>
 </body>
 </html>
