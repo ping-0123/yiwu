@@ -57,6 +57,9 @@ public class Resource extends BaseEntity {
 	
 	private ResourceType type;
 	
+	@Column(length = 32)
+	private String icon;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="parent_id",foreignKey=@ForeignKey(value=ConstraintMode.CONSTRAINT, name="fk_resource_parent_id"))
 	private Resource parent;
@@ -138,6 +141,14 @@ public class Resource extends BaseEntity {
 
 	public boolean isRootNode(){
 		return false;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 	
 	

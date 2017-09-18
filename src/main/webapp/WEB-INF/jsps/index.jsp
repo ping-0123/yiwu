@@ -68,7 +68,7 @@
                   
                   <c:forEach items="${menus}" var="m">
                   	 <shiro:hasPermission name="${m.permission}">
-                  		 <li><a><i class="fa fa-home"></i> ${m.name} <span class="fa fa-chevron-down"></span></a>
+                  		 <li><a><i class="fa ${m.icon }"></i> ${m.name} <span class="fa fa-chevron-down"></span></a>
 	                  		 <ul class="nav child_menu">
 	                  		 	<c:forEach items="${m.children}" var="child">
 	                  		 		 <shiro:hasPermission name="${child.permission}">
@@ -205,7 +205,7 @@
 
         <!-- page content -->
         <div class="right_col" role="main" style="frameborder：0">
-			   <iframe  name="content" id="iframe" frameborder="0"  marginheight="10" marginwidth = "10" src="welcome" width="100%" height="800" scrolling="auto" > </iframe> 
+			   <iframe  name="content" id="iframe" frameborder="0"  marginheight="10" marginwidth = "10" src="welcome" width="100%" height="800" scrolling="auto"  > </iframe> 
         </div>
     	<!-- /page content -->
 		
@@ -230,10 +230,9 @@
     
 	</script>
 	<script>
-	var height=document.documentElement.clientHeight;
-	//alert(height);
-	height=height-90;
-	$("#iframe").css("height",height);
+		var height=document.documentElement.clientHeight;
+		height=height-90;
+		$("#iframe").css("height",height);
 	</script>
 	
   </body>
