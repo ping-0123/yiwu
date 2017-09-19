@@ -3,8 +3,6 @@ package com.yinzhiwu.yiwu.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaQuery;
-
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 
@@ -19,23 +17,11 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
  */
 public interface IBaseDao<T, PK extends Serializable> {
 
+	//查
 	public T get(PK id);
-
-	public PK save(T entity);
-
-	public void saveOrUpdate(T entity);
-
 	public List<T> findAll();
-
 	public Long findCount();
-
-	public List<T> findByProperty(String propertyName, Object value);
-	
-	public Long findCountByProperty(String propertyName, Object value);
-
-	public List<T> findByProperties(String[] propertyNames, Object[] values);
-
-	public Long findCountByProperties(String[] propertyNames, Object[] values);
+	PageBean<T> findPageOfAll(int pageNo, int pageSize);
 
 	/**
 	 * 如果T中的某一成员变量的class为@Entity注解, 则查询时忽略该属性， 即查询语句没有表的关联
@@ -45,16 +31,21 @@ public interface IBaseDao<T, PK extends Serializable> {
 	 * @throws DataNotFoundException
 	 */
 	public List<T> findByExample(T entity);
+	
+	//增
+	public PK save(T entity);
+	public void saveOrUpdate(T entity);
 
-	void delete(T entit);
+	//删
+	void delete(T entity);
 
 	void delete(PK id);
+	public void deleteLogic(T entity);
+	public void deleteLogic(PK id);
+	
 
+	//改
 	void update(T entity);
-
-	PageBean<T> findPageByHql(String hql, int pageNum, int pageSize);
-
-	<R> PageBean<R> findPageByCriteria(CriteriaQuery<R> criteria, int pageNo, int pageSize, int totalSize);
 
 	/**
 	 * 修改source的属性修改为target对应的属性值， 如果 target对应的属性值为null， 则source对应的属性 保持不变.
@@ -81,13 +72,6 @@ public interface IBaseDao<T, PK extends Serializable> {
 	 */
 	void modify(PK id, T target) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException;
 
-	PageBean<T> findPageOfAll(int pageNo, int pageSize);
-
-	PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize);
-
-	PageBean<T> findPageByProperty(String propertyName, Object value, int pageNo, int pageSize);
-
-	
 
 
 }

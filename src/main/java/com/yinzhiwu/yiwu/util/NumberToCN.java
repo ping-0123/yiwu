@@ -8,7 +8,7 @@ package com.yinzhiwu.yiwu.util;
 
 import java.math.BigDecimal;
 
-public class NumberToCN {
+public final class NumberToCN {
     /**
      * 汉语中数字大写
      */

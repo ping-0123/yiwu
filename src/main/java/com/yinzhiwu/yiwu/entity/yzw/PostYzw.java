@@ -24,7 +24,7 @@ import com.yinzhiwu.yiwu.entity.sys.Role;
 
 @Entity
 @Table(name = "vpost")
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 @Where(clause="dataStatus <> 2")
 public class PostYzw extends BaseYzwEntity {
 
@@ -34,14 +34,13 @@ public class PostYzw extends BaseYzwEntity {
 	private static final long serialVersionUID = -7814938629277335258L;
 
 	@Id
-	@Column(length = 32)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column
-	private Integer type;
+	private Integer type=1;
 
-	@Column(length = 50)
+	@Column(length = 50, updatable=false)
 	private String name;
 
 	@Column(length = 200)

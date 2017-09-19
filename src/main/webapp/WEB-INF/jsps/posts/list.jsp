@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="ping" uri="http://yinzhiwu.com/yiwu/tags/ping"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,18 +14,14 @@
 <title>DataTables | Gentelella</title>
 
 <!-- Bootstrap -->
-<link href="../backend/vendors/bootstrap/dist/css/bootstrap.min.css"
-	rel="stylesheet">
+<link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <!-- Font Awesome -->
-<link href="../backend/vendors/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet">
+<link href="${pageContext.request.contextPath}/backend/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <!-- Datatables -->
-<link
-	href="../backend/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css"
-	rel="stylesheet">
+<link href="${pageContext.request.contextPath}/backend/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
 
 <!-- Custom Theme Style -->
-<link href="../backend/css/custom.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/backend/css/custom.min.css" rel="stylesheet">
 
 </head>
 
@@ -39,20 +36,18 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<a href="http://localhost:9090/yiwu/system/index" data-toggle="modal" data-target="#modalPostEdit">加载模态框</a>
+						<!-- data-remote="${pageContext.request.contextPath}/system/posts/edit" -->
 						<shiro:hasPermission name="posts:create:*">
-							<button type="button" onclick="btnNew()" class="btn btn-primary"
-								data-toggle="modal" data-target="#modalPostEdit">
-								<span class="glyphicon glyphicon-plus" aria-hidden="false"></span>
-								新增
+							<button type="button" data-remote="${pageContext.request.contextPath}/system/posts/form" class="btn btn-primary" data-toggle="modal" data-target="#modalPostCreate">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
 						</shiro:hasPermission>
 
 						<ul class="nav navbar-right panel_toolbox">
-							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-							</li>
-							<li><a href=""><i class="fa fa-refresh"></i></a>
-							<li><a class="close-link"><i class="fa fa-close"></i></a></li>
+							<li><a class="collapse-link"> <i class="fa fa-chevron-up"></i></a></li>
+							<li><a href=""> <i class="fa fa-refresh"></i></a></li>
+							<li><a class="close-link"> <i class="fa fa-close"></i>
+							</a></li>
 						</ul>
 
 						<div class="clearfix"></div>
@@ -63,24 +58,24 @@
 								<tr>
 									<th>职位</th>
 									<th>描述</th>
+									<th>状态</th>
 									<th>操作</th>
 								</tr>
 							</thead>
 
 							<tbody>
 								<c:forEach items="${posts}" var="p">
-									<tr id="postId_${p.id}" aa="bb">
-										<td class="postName">${p.name}</td>
-										<td class="postDescription">${p.description}</td>
+									<tr>
+										<td>${p.name}</td>
+										<td>${p.description}</td>
+										<td>${ping:getDataStatusName(p.dataStatus) }</td>
 										<td><shiro:hasPermission name="posts:update">
-												<a data-toggle="modal" data-target="#modalPostEdit"
-													onclick="btnNew('${p.id}')"><i class="fa fa-pencil"
-													title="修改"></i></a>
-												<a data-toggle="modal" data-target="#myModal"><i
-													class="fa fa-navicon" title="设置岗位职责"></i>
+												<a href="${pageContext.request.contextPath }/system/posts/${p.id}/form" data-toggle="modal" data-target="#modalPostUpdate"> <i class="fa fa-pencil" title="修改"></i></a>
+												<a href="${pageContext.request.contextPath }/system/posts/${p.id}/form" data-toggle="modal" data-target="#modalPostUpdate"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>
+
 											</shiro:hasPermission> <shiro:hasPermission name="posts:delete">
-												<a data-toggle="modal" data-target="#myModal"><i
-													class="fa fa-minus-circle" title="删除"></i> </a>
+												<a data-toggle="modal" data-target="#myModal"> <i class="fa fa-minus-circle" title="删除"></i>
+												</a>
 											</shiro:hasPermission></td>
 									</tr>
 								</c:forEach>
@@ -96,119 +91,41 @@
 	</div>
 	<!-- /page content -->
 
-
-	<!-- 修改 modal -->
-	<div class="modal fade bs-example-modal-lg" id="modalPostEdit"
-		tabindex="-1" role="dialog" aria-hidden="true">
+	<!--  新增 modal -->
+	<div class="modal fade bs-example-modal-lg" id="modalPostCreate" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
-
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">×</span>
-					</button>
-					<h4 class="modal-title" id="myModalLabel">新增岗位</h4>
-				</div>
-
-				</br>
-
-				<form id="postEditForm" data-parsley-validate
-					class="form-horizontal form-label-left">
-					<div class="modal-dialog">
-						<div class="modal-content"></div>
-					</div>
-					<div class="form-group">
-						<input id="modalPostId" class="postId" type="hidden" name="id"
-							value="" />
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12"
-							for="name">岗位名称 <span class="required">*</span>
-						</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<input id="modalPostName" type="text" name="name"
-								required="required" class="form-control col-md-7 col-xs-12">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12"
-							for="description">岗位描述 <span class="required">*</span></label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<input type="text" id="modalPostDescription" id="description"
-								name="description" required="required"
-								class="form-control col-md-7 col-xs-12">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="middle-name"
-							class="control-label col-md-3 col-sm-3 col-xs-12">Middle
-							Name / Initial</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<input id="middle-name" class="form-control col-md-7 col-xs-12"
-								type="text" name="middle-name">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">Gender</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<div id="gender" class="btn-group" data-toggle="buttons">
-								<label class="btn btn-default" data-toggle-class="btn-primary"
-									data-toggle-passive-class="btn-default"> <input
-									type="radio" name="gender" value="male"> &nbsp; Male
-									&nbsp;
-								</label> <label class="btn btn-primary" data-toggle-class="btn-primary"
-									data-toggle-passive-class="btn-default"> <input
-									type="radio" name="gender" value="female"> Female
-								</label>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">Date
-							Of Birth <span class="required">*</span>
-						</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<input id="birthday"
-								class="date-picker form-control col-md-7 col-xs-12"
-								required="required" type="text">
-						</div>
-					</div>
-					<div class="ln_solid"></div>
-					<div class="form-group">
-						<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-							<button class="btn btn-primary" type="button">Cancel</button>
-							<button class="btn btn-primary" type="reset">Reset</button>
-							<button type="submit" class="btn btn-success">Submit</button>
-						</div>
-					</div>
-
-				</form>
-				</br> </br>
 			</div>
 		</div>
 	</div>
+	
+	
+	<!-- 修改 modal -->
+	<div class="modal fade bs-example-modal-lg" id="modalPostUpdate" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+
+			</div>
+		</div>
+	</div>
+	
+	
 
 
 
 	<!-- jQuery -->
-	<script src="../backend/vendors/jquery/dist/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/backend/vendors/jquery/dist/jquery.min.js"></script>
 	<!-- Bootstrap -->
-	<script src="../backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 	<!-- Datatables -->
-	<script
-		src="../backend/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-	<script
-		src="../backend/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/backend/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+	<script src="${pageContext.request.contextPath}/backend/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 	<!-- Custom Theme Scripts -->
-	<script src="../backend/js/custom.min.js"></script>
+	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
+	
 	<script type="text/javascript">
-		function btnNew(id) {
-			//	var index = $('table>thead').html();
-			$('#modalPostId').val(id);
-			$('#modalPostName').val(
-					$('#postId_' + id).children('.postName').text());
-			$('#modalPostDescription').val(
-					$('#postId_' + id).children('.postDescription').text());
+		function loadPostCreateForm(){
+			$('#modalPostCreate').modal({remote:'${pageContext.request.contextPath}/system/posts/edit'});
 		}
 	</script>
 </body>

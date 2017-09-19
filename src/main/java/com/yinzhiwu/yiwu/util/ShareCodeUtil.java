@@ -14,7 +14,7 @@ import java.util.Random;
  * 
  * @author jiayu.qiu
  */
-public class ShareCodeUtil {
+public final class ShareCodeUtil {
 
 	/** 自定义进制(0,1没有加入,容易与o,l混淆) */
 	private static final char[] r = new char[] { 'q', 'w', 'e', '8', 'a', 's', '2', 'd', 'z', 'x', '9', 'c', '7', 'p',

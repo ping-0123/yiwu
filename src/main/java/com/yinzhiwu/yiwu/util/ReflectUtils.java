@@ -2,7 +2,7 @@ package com.yinzhiwu.yiwu.util;
 
 import java.lang.reflect.Field;
 
-public class ReflectUtils {
+public final class ReflectUtils {
 
 	/**
 	 * Returns an array of Field objects reflecting all the fields declared by

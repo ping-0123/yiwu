@@ -275,11 +275,6 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		return super.findPageByCriteria(criteria, pageNo, pageSize, totalSize);
 	}
 
-	@Override
-	public PageBean<OrderYzw> findPageByHql(String hql, int pageNo, int pageSize) {
-		updateLingLingContractDates();
-		return super.findPageByHql(hql, pageNo, pageSize);
-	}
 
 	@Override
 	protected <R> PageBean<R> findPageByHqlWithParams(String hql, String[] namedParams, Object[] values, int pageNo,

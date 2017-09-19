@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+    <description>functions</description>
+    <tlib-version>3.0</tlib-version>
+    <short-name>fn</short-name>
+    <uri>http://yinzhiwu.com/yiwu/tags/ping</uri>
+
+    <function>
+        <description>obj in collection</description>
+        <name>in</name>
+        <function-class>com.yinzhiwu.yiwu.web.tablib.Functions</function-class>
+        <function-signature>boolean in(java.lang.Iterable,java.lang.Object)</function-signature>
+    </function>
+    <function>
+        <description>获取数据状态的中文值</description>
+        <name>getDataStatusName</name>
+        <function-class>com.yinzhiwu.yiwu.web.tablib.Functions</function-class>
+        <function-signature>String getDataStatusName(com.yinzhiwu.yiwu.enums.DataStatus)</function-signature>
+    </function>
+
+
+</taglib>

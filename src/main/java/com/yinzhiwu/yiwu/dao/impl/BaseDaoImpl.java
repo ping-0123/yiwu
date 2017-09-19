@@ -29,6 +29,7 @@ import org.springframework.util.StringUtils;
 import com.yinzhiwu.yiwu.dao.IBaseDao;
 import com.yinzhiwu.yiwu.entity.BaseEntity;
 import com.yinzhiwu.yiwu.entity.yzw.BaseYzwEntity;
+import com.yinzhiwu.yiwu.enums.DataStatus;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.util.ReflectUtils;
@@ -66,48 +67,35 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 
 	protected Session getSession() {
-		try {
-			return getHibernateTemplate().getSessionFactory().getCurrentSession();
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			return null;
-		}
-
+		return sessionFactory.getCurrentSession();
 	}
 
 	public T get(PK id) {
 		Assert.notNull(id, "id is required");
+		
 		return getSession().get(entityClass, id);
 	}
 
 	@SuppressWarnings("unchecked")
 	public PK save(T entity) {
 		Assert.notNull(entity, "entity is required");
-		try {
-			if (entity instanceof BaseEntity)
-				((BaseEntity) entity).init();
-			if (entity instanceof BaseYzwEntity)
-				((BaseYzwEntity) entity).init();
-			return (PK) getHibernateTemplate().save(entity);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
-			return null;
-		}
+		
+		if (entity instanceof BaseEntity)
+			((BaseEntity) entity).init();
+		if (entity instanceof BaseYzwEntity)
+			((BaseYzwEntity) entity).init();
+		
+		return (PK) getSession().save(entity);
 	}
 
-	@Override
-	public List<T> findByProperty(String propertyName, Object value) {
+	protected List<T> findByProperty(String propertyName, Object value) {
 		Assert.hasText(propertyName, "属性名不能为空");
 		
 		String hql = "FROM " + entityClass.getSimpleName() + " t1 WHERE  t1." + propertyName + " =:property";
-		List<T> list = getSession().createQuery(hql, entityClass)
+		return getSession().createQuery(hql, entityClass)
 				.setParameter("property", value)
 				.getResultList();
 		
-		if (list == null)
-			list = new ArrayList<>();
-		return list;
 	}
 	
 	protected T findOneByProperty(String propertyName, Object value) {
@@ -122,8 +110,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return list.size()>0?list.get(0):null;
 	}
 
-	@Override
-	public Long findCountByProperty(String propertyName, Object value) {
+	protected Long findCountByProperty(String propertyName, Object value) {
 		Assert.hasText(propertyName, "属性名不能为空");
 		
 		String hql = "SELECT COUNT(1) FROM " + entityClass.getSimpleName() + " WHERE " + propertyName + " =:property";
@@ -136,15 +123,15 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	@Override
 	public List<T> findAll(){
 		String hql = "FROM " + entityClass.getSimpleName();
-		List<T> list = getSession().createQuery(hql, entityClass) 
+		return getSession().createQuery(hql, entityClass) 
 				.getResultList();
 		
-		if(list == null) list = new ArrayList<>();
-		return list;
 	}
 
 	@Override
 	public PageBean<T> findPageOfAll(int pageNo, int pageSize) {
+			
+		
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
 		Root<T> root = criteria.from(entityClass);
@@ -156,44 +143,53 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	@Override
 	public void saveOrUpdate(T entity) {
 		Assert.notNull(entity, "entity is required");
-		try {
-			getHibernateTemplate().saveOrUpdate(entity);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
+			
+		getSession().saveOrUpdate(entity);
 	}
 
 	@Override
 	public void delete(T entity) {
 		Assert.notNull(entity, "entity is required");
-		try {
-			getHibernateTemplate().delete(entity);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
+		
+		getSession().delete(entity);
 
 	}
 
 	@Override
 	public void delete(PK id) {
 		Assert.notNull(id, "id is required");
-		try {
-			T entity = get(id);
-			if (entity != null) {
-				delete(entity);
-			}
-		} catch (Exception e) {
-			logger.error(e.getMessage());
+			
+		T entity = get(id);
+		delete(entity);
+	}
+
+	
+	
+	@Override
+	public void deleteLogic(T entity) {
+		Assert.notNull(entity, "id is required");
+		if(entity instanceof BaseEntity){
+			((BaseEntity) entity).setDataStatus(DataStatus.DELETE);
+			update(entity);
+		}else if (entity instanceof BaseYzwEntity) {
+			((BaseYzwEntity) entity).setDataStatus(DataStatus.DELETE);
+			update(entity);
 		}
+	}
+
+	@Override
+	public void deleteLogic(PK id) {
+		Assert.notNull(id, "id is required");
+		
+		T entity = get(id);
+		deleteLogic(entity);
 	}
 
 	@Override
 	public List<T> findByExample(T entity){
 		Assert.notNull(entity, "entity is required");
 		
-		List<T> list = getHibernateTemplate().findByExample(entity);
-		if(list == null) list = new ArrayList<>();
-		return list;
+		return getHibernateTemplate().findByExample(entity);
 	}
 
 	@Override
@@ -219,8 +215,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		
 	}
 
-	@Override
-	public List<T> findByProperties(String[] propertyNames, Object[] values) {
+	protected List<T> findByProperties(String[] propertyNames, Object[] values) {
 		if(propertyNames.length != values.length){
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
@@ -250,8 +245,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return list;
 	}
 
-	@Override
-	public Long findCountByProperties(String[] propertyNames, Object[] values) {
+	protected Long findCountByProperties(String[] propertyNames, Object[] values) {
 		if (propertyNames.length != values.length) {
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
@@ -277,8 +271,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		 return query.getSingleResult();
 	}
 
-	@Override
-	public PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize) {
+	protected PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize) {
 		if (propertyNames.length != values.length) {
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
@@ -308,8 +301,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return findPageByCriteria(criteria, pageNo, pageSize, totalSize);
 	}
 
-	@Override
-	public PageBean<T> findPageByProperty(String propertyName, Object value, int pageNo, int pageSize) {
+	protected PageBean<T> findPageByProperty(String propertyName, Object value, int pageNo, int pageSize) {
 		if (!StringUtils.hasLength(propertyName))
 			throw new IllegalArgumentException("propertyName 不能为空");
 		String[] properties = new String[] { propertyName };
@@ -331,8 +323,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return result;
 	}
 
-	@Override
-	public <R> PageBean<R> findPageByCriteria(CriteriaQuery<R> criteria, int pageNo, int pageSize, int totalSize) {
+	protected <R> PageBean<R> findPageByCriteria(CriteriaQuery<R> criteria, int pageNo, int pageSize, int totalSize) {
 		if(totalSize <=0)
 			return null;
 		if (pageNo <= 0)
@@ -346,28 +337,6 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 
 		return new PageBean<>(pageSize, pageNo, totalSize, list);
 	}
-
-	@Override
-	public PageBean<T> findPageByHql(String hql, int pageNo, int pageSize) {
-		Assert.hasLength(hql);
-		if (pageNo <= 0)
-			pageNo = 1;
-		if (pageSize <= 0)
-			pageSize = PageBean.DEFAULT_PAGE_SIZE;
-
-		int totalRecords = findCountByHql(_generateFindCountHql(hql));
-		if (totalRecords == 0)
-			return new PageBean<>(pageSize, pageNo, totalRecords, new ArrayList<>());
-
-		Query<T> query = getSession().createQuery(hql, entityClass);
-		query.setFirstResult((pageNo - 1) * pageSize);
-		query.setMaxResults(pageSize);
-		List<T> list = (List<T>) query.getResultList();
-
-		return new PageBean<>(pageSize, pageNo, totalRecords, list);
-	}
-	
-	
 
 	protected <R> PageBean<R> findPageByHqlWithParams(
 			String hql,  String[] namedParams, Object[] values, int pageNo, int pageSize) {
@@ -407,26 +376,12 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return query.getSingleResult().intValue();
 	}
 
-	public int findCountByHql(String hql) {
-		Assert.hasText(hql, "hql不能为空");
-		return getSession().createQuery(hql, Long.class)
-				.getSingleResult()
-				.intValue();
-	}
 
 	private String _generateFindCountHql(String hql) {
 		int i = hql.toUpperCase().indexOf("FROM");
 		return "SELECT COUNT(1) " + hql.substring(i);
 	}
 
-	@SuppressWarnings("unused")
-	private Throwable _get_root_Exception(Throwable e) {
-		Throwable next = e.getCause();
-		if (next == null)
-			return e;
-		else
-			return _get_root_Exception(next);
-	}
 
 	@Override
 	public void modify(T source, T target) throws IllegalArgumentException, IllegalAccessException {

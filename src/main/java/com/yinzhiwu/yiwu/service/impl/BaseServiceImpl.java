@@ -49,21 +49,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		return baseDao.findAll();
 	}
 
-	@Override
-	public List<T> findByProperty(String propertyName, Object value) {
-		return baseDao.findByProperty(propertyName, value);
-	}
 
-	@Override
-	public Long findCountByProperty(String propertyName, Object value) {
-		return baseDao.findCountByProperty(propertyName, value);
-	}
-
-
-	@Override
-	public List<T> findByProperties(String[] propertyNames, Object[] values) {
-		return baseDao.findByProperties(propertyNames, values);
-	}
 
 	@Override
 	public List<T> findByExample(T entity) {
@@ -80,9 +66,16 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		baseDao.delete(id);
 	}
 
+	
+	
 	@Override
-	public void deleteById(PK id) {
-		baseDao.delete(id);
+	public void deleteLogic(T entity) {
+		baseDao.deleteLogic(entity);
+	}
+
+	@Override
+	public void deleteLogic(PK id) {
+		baseDao.deleteLogic(id);
 	}
 
 	@Override
@@ -100,54 +93,11 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		baseDao.modify(id, entity);
 	}
 
-	// @Override
-	// public void modify(PK id, T entity) throws DataNotFoundException,
-	// IllegalArgumentException, IllegalAccessException{
-	// long start = System.currentTimeMillis();
-	// Assert.notNull(id);
-	// if(entity== null)
-	// return;
-	// T newEntity = baseDao.get(id);
-	//
-	// Field[] fields = entity.getClass().getDeclaredFields();
-	// logger.info(fields.length);
-	// boolean update_flag =false;
-	// long afterReflect = System.currentTimeMillis();
-	// logger.debug("反射所花的时间: " + (afterReflect-start));
-	// for (Field f : fields) {
-	// f.setAccessible(true);
-	// if(!Modifier.isStatic(f.getModifiers())
-	// &&f.get(entity)!=null
-	// && f.getDeclaredAnnotation(Id.class) == null
-	// //排除OneToMany 映射
-	// && f.getDeclaredAnnotation(OneToMany.class) == null
-	// )
-	// {
-	// f.set(newEntity, f.get(entity));
-	// logger.debug(f.get(newEntity));
-	// update_flag = true;
-	// }
-	// }
-	// long afterCompare=System.currentTimeMillis();
-	// logger.debug("对比所化时间: " + (afterCompare-afterReflect));
-	// if(update_flag){
-	// logger.debug("开始更新");
-	// baseDao.update(newEntity);
-	// }
-	//
-	// long end = System.currentTimeMillis();
-	// logger.debug("更新所花时间: " + (end-afterCompare));
-	// logger.debug("所花总时间： " + (end-start));
-	// }
 
 	@Override
-	public PageBean<T> findPage(T entity, int pageNum, int pageSize) {
-		return null;
+	public PageBean<T> findPageOfAll(int pageNo, int pageSize) {
+		return baseDao.findPageOfAll(pageNo, pageSize);
 	}
 
-	@Override
-	public Long findCountByProperties(String[] propertyNames, Object[] values) throws Exception {
-		return baseDao.findCountByProperties(propertyNames, values);
-	}
 
 }

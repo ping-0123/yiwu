@@ -1,4 +1,3 @@
-alter TABLE chenkuserdb1.tblemployee add COLUMN(yiwu_password varchar(128), salt varchar(128));
 alter TABLE chenkuserdb1.tblemployee add COLUMN(dataStatus int);
 
 CREATE 

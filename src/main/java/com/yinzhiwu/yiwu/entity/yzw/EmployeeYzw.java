@@ -37,7 +37,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 	private static final long serialVersionUID = -6739017966853748277L;
 
 	@Id
-	@Column(length = 32)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 

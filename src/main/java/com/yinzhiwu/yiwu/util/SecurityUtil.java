@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class SecurityUtil {
+public final class SecurityUtil {
 
 	private static final Log logger = LogFactory.getLog(SecurityUtil.class);
 

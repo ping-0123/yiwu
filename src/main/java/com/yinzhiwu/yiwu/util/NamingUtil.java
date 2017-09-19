@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * @since 2015.07.04
  * @version 1.0.0
  */
-public class NamingUtil {
+public final class NamingUtil {
 
 	/**
 	 * 下划线转驼峰法

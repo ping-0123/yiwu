@@ -42,7 +42,7 @@
               </div>
               <div>
                	<input  name="rememberMe" type="checkbox" checked/>
-               	<label for="RememberMe">Remember Me</label>
+               	<label for="rememberMe">Remember Me</label>
               </div>
               <div>
               	<button  type="submit" class="btn btn-default submit">Login</button>
