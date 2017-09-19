@@ -63,7 +63,7 @@ public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integ
 
 	@Override
 	public void save_records_produced_by_event(IncomeEvent event) {
-		List<IncomeFactor> factors =  incomeFactorDao.findByProperty("eventType.id", event.getType().getId());
+		List<IncomeFactor> factors =  incomeFactorDao.findByEventType(event.getType());
 		for (IncomeFactor factor : factors) {
 			Distributer benificiary = factor.getRelation().getRelativeDistributer(event.getDistributer());
 			if (benificiary != null && factor.getFactor() != 0f && event.getParam() != 0) {

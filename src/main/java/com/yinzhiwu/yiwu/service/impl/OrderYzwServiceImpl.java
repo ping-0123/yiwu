@@ -203,7 +203,7 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		order.setPayedDate(dto.getPayedDate());
 		if(order.getPayedDate() == null)
 			order.setPayedDate(date);
-		if(orderDao.findCountByProperty("customer.id", customer.getId()) > 0)
+		if(orderDao.findCountByCustomerId(customer.getId()) > 0)
 			order.setVipAttr(VipAttributer.RENEW_MEMBER);
 		else
 			order.setVipAttr(VipAttributer.NEW_MEMBER);
@@ -298,5 +298,11 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		//去除最要一个逗号
 		return s.substring(0,s.length()-1);
 		
+	}
+
+
+	@Override
+	public Long findCountByCustomerId(int customerId) {
+		return orderDao.findCountByCustomerId(customerId);
 	}
 }

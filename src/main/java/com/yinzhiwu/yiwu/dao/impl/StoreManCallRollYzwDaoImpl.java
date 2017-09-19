@@ -16,4 +16,10 @@ public class StoreManCallRollYzwDaoImpl extends BaseDaoImpl<StoreManCallRollYzw,
 	implements StoreManCallRollYzwDao
 {
 
+	@Override
+	public Long findCountByLessonIdAndCallRolledFlag(String string, boolean b) {
+		return findCountByProperties(new String[]{"lessonId", "callRolled"}, 
+				new Object[]{string,b});
+	}
+
 }

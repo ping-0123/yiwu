@@ -10,4 +10,6 @@ import com.yinzhiwu.yiwu.entity.yzw.StoreManCallRollYzw;
 
 public interface StoreManCallRollYzwDao  extends IBaseDao<StoreManCallRollYzw, Integer>{
 
+	Long findCountByLessonIdAndCallRolledFlag(String string, boolean b);
+
 }

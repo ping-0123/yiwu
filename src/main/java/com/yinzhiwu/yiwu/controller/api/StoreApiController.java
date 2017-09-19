@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.entity.StoreInfo;
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
@@ -21,11 +22,11 @@ import com.yinzhiwu.yiwu.service.StoreInfoService;
 public class StoreApiController {
 
 	@Autowired private StoreInfoService storeInfoService;
-	@Autowired private DepartmentYzwService departmentYzwService;
+	@Autowired private DepartmentYzwService departmentService;
 
 	@GetMapping(value = "/list")
 	public List<StoreApiView> getStoreList(@RequestParam Integer districtId) {
-		return departmentYzwService.findStoreApiViewsUnderOrganization(districtId);
+		return departmentService.findStoreApiViewsUnderOrganization(districtId);
 	}
 
 	@Deprecated
@@ -48,11 +49,13 @@ public class StoreApiController {
 	@GetMapping(value = "/getStoresByCity")
 	public List<StoreApiView> getStoresByCity(@RequestParam String city) {
 		List<StoreApiView> views = new ArrayList<>();
-		List<StoreInfo> infos = storeInfoService.findByProperty("address.city", city);
-		if(infos.size() >=0){
-			for (StoreInfo storeInfo : infos) {
-				views.add(new StoreApiView(storeInfo));
-			}
+		List<DepartmentYzw> depts = departmentService.findByCity(city);
+		for (DepartmentYzw dept : depts) {
+			views.add(new StoreApiView(dept.getId(),
+					dept.getName(),
+					dept.getOfficialAddress()==null?"":dept.getOfficialAddress().getDetailAddress(),
+		//TODO department表里没有官方电话， 要加进去 然后把 下面的参数替换掉
+					dept.getOfficialAccount()));
 		}
 		return views;
 	}

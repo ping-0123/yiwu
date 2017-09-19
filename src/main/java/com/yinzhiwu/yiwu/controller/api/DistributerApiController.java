@@ -146,11 +146,9 @@ public class DistributerApiController extends BaseController {
 		List<CapitalAccountApiView> views = new ArrayList<>();
 		List<CapitalAccount> accounts = new ArrayList<>();
 		if (accountTypeId == -1) {
-			accounts = capitalAccountService.findByProperty("distributer.id", distributerId);
+			accounts = capitalAccountService.findByDistributerId( distributerId);
 		} else {
-			accounts = capitalAccountService.findByProperties(
-					new String[] { "distributer.id", "capitalAccountType.id" },
-					new Object[] { distributerId, accountTypeId });
+			accounts = capitalAccountService.findByTypeAndDistributerId(accountTypeId, distributerId);
 		}
 		for (CapitalAccount capitalAccount : accounts) {
 			views.add(new CapitalAccountApiView(capitalAccount));

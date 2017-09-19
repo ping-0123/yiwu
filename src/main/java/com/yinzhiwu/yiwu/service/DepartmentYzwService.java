@@ -26,4 +26,6 @@ public interface DepartmentYzwService extends IBaseService<DepartmentYzw, Intege
 
 	List<DepartmentYzw> findAllWithExclude(DepartmentYzw source);
 
+	List<DepartmentYzw> findByCity(String city);
+
 }

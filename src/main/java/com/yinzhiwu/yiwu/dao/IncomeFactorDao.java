@@ -15,4 +15,6 @@ public interface IncomeFactorDao extends IBaseDao<IncomeFactor, Integer> {
 	 */
 	List<EventType> findEventTypes(int incomeTypeId);
 
+	List<IncomeFactor> findByEventType(EventType type);
+
 }

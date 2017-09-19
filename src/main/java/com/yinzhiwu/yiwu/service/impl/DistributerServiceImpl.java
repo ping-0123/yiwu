@@ -337,10 +337,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				v.setRegisterDate(income.getDistributer().getRegistedTime());
 				v.setSumBrokerageIncome(income.getAccumulativeIncome());
 				v.setSumShareTweetTimes(shareTweeetEventDao.findShareTweetTimes(income.getDistributer().getId()));
-				v.setSumMemberCount(distributerDao.findCountByProperty(
-						"superDistributer.id", 
-						income.getDistributer().getId())
-						.intValue());
+				v.setSumMemberCount(income.getDistributer().getSubordinates().size());
 				v.setSumOrderCount(incomeRecordDao.findCountBy_incomeTypes_relationTypes_eventTypes_benificiary(
 						income.getDistributer().getId(), 
 						Arrays.asList(new Integer[]{10007}), 

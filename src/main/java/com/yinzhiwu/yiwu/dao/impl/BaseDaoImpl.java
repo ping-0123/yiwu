@@ -11,8 +11,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.persistence.Embedded;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
@@ -189,7 +190,91 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	public List<T> findByExample(T entity){
 		Assert.notNull(entity, "entity is required");
 		
-		return getHibernateTemplate().findByExample(entity);
+		
+		List<String> properties = new ArrayList<>();
+		List<Object> values = new ArrayList<>();
+		
+		try {
+			addPair(properties, values, entityClass, entity, "");
+			String[] pros = new String[properties.size()];
+			return findByProperties(properties.toArray(pros), values.toArray());
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param properties
+	 * @param values
+	 * @param field
+	 * @param entity
+	 * @param prefixFiledName prefixFiledName 为空或者已.结束
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	private void addPair(List<String> properties, List<Object> values, Field field, Object fieldValue, String prefixFiledName) throws IllegalArgumentException, IllegalAccessException{
+		Assert.notNull(properties);
+		Assert.notNull(values);
+		Assert.notNull(field);
+		
+		if(fieldValue == null)
+			return;
+		
+		field.setAccessible(true);
+		if( Modifier.isStatic( field.getModifiers())
+				|| field.getDeclaredAnnotation(javax.persistence.OneToMany.class) !=null
+				|| field.getDeclaredAnnotation(ManyToMany.class) != null){
+			return;
+		}else {
+			if(field.getDeclaredAnnotation(javax.persistence.Id.class) != null ){
+				properties.add(prefixFiledName  + field.getName());
+				values.add(fieldValue);
+				return;
+			}else if(field.getDeclaredAnnotation(ManyToOne.class) != null
+					|| field.getDeclaredAnnotation(OneToOne.class) !=null
+					|| field.getDeclaredAnnotation(Embedded.class) != null)
+				addPair(properties, values,field.getDeclaringClass(), fieldValue, field.getName()+ ".");
+			else {
+				properties.add(prefixFiledName  + field.getName());
+				values.add(fieldValue);
+			}
+		}
+		
+	}
+
+	/**
+	 * 
+	 * @param properties
+	 * @param values
+	 * @param clazz
+	 * @param entity
+	 * @param prefixFiledName prefixFiledName 为空或者已.结束
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	private void addPair(List<String> properties, List<Object> values,Class<?> clazz, Object entity, String prefixFiledName) throws IllegalArgumentException, IllegalAccessException {
+		Assert.notNull(properties);
+		Assert.notNull(values);
+		Assert.notNull(clazz);
+		
+		if(entity==null)
+			return;
+		Field[] fields = ReflectUtils.getAllFields(entityClass);
+		for (Field field : fields) {
+			field.setAccessible(true);
+			if(field.getDeclaredAnnotation(javax.persistence.Id.class) != null){
+				addPair(properties, values, field, field.get(entity), prefixFiledName);
+				return;
+			}
+		}
+		
 	}
 
 	@Override
@@ -388,33 +473,12 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		Assert.notNull(source);
 		Assert.notNull(target);
 
-		source = modifySourceEntityProperties(source, target);
+		ReflectUtils.modifySourceEntityPropertiesToTarget(source, target);
 
 		update(source);
 	}
 
-	private <E> E modifySourceEntityProperties(E source, E target) throws IllegalAccessException {
-		Field[] fields = ReflectUtils.getAllFields(source.getClass());
-		for (Field f : fields) {
-			f.setAccessible(true);
-			if (// 静态属性不变
-			!Modifier.isStatic(f.getModifiers())
-					// target属性为null ,source 对应的属性不变
-					&& f.get(target) != null
-					// Id 主键不改变
-					&& f.getDeclaredAnnotation(Id.class) == null
-					// 属性值相同无须改变
-					&& !f.get(target).equals(f.get(source))
-					// 排除OneToMany 映射
-					&& f.getDeclaredAnnotation(OneToMany.class) == null)
-				if (f.getDeclaredAnnotation(Embedded.class) != null) {
-					f.set(source, modifySourceEntityProperties(f.get(source), f.get(target)));
-				} else
-					f.set(source, f.get(target));
-		}
-		return source;
-	}
-
+	
 	@Override
 	public void modify(PK id, T target) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException {
 		Assert.notNull(id);

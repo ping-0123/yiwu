@@ -40,8 +40,7 @@ public class YieldInterestEventServiceImpl extends BaseServiceImpl<YieldInterest
 
 	@Override
 	public void saveYieldInterestByEveryDay() {
-		List<DistributerIncome> distributerIncomes = distributerIncomeDao.findByProperty("incomeType.id",
-				IncomeType.BROKERAGE.getId());
+		List<DistributerIncome> distributerIncomes = distributerIncomeDao.findByIncomeType(IncomeType.BROKERAGE);
 		for (DistributerIncome distributerIncome : distributerIncomes) {
 			saveYieldInterest(distributerIncome);
 		}

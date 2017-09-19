@@ -87,4 +87,17 @@ public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> 
 				.getResultList();
 	}
 
+	@Override
+	public Long findCountByLessonIdByCustomerIdByAppointStatus(Integer id, Integer id2, AppointStatus apponted) {
+		return findCountByProperties(
+				new String[]{"lesson.id", "customer.id", "status"},
+				new Object[]{id, id2, apponted});
+	}
+
+	@Override
+	public Long findCountByLessonIdByAppointStatus(Integer id, AppointStatus apponted) {
+		return findCountByProperties(new String[]{"lesson.id", "status"},
+					new Object[]{id, apponted});
+	}
+
 }

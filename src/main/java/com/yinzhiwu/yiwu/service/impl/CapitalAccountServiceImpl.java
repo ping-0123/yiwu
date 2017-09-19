@@ -1,5 +1,7 @@
 package com.yinzhiwu.yiwu.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,18 @@ public class CapitalAccountServiceImpl extends BaseServiceImpl<CapitalAccount, I
 	@Autowired
 	public void setBaseDao(CapitalAccountDao capitalAccountDao) {
 		super.setBaseDao(capitalAccountDao);
+	}
+
+	@Autowired private CapitalAccountDao capitalAccountDao;
+	
+	@Override
+	public List<CapitalAccount> findByDistributerId(int distributerId) {
+		return capitalAccountDao.findByDistributerId(distributerId);
+	}
+
+	@Override
+	public List<CapitalAccount> findByTypeAndDistributerId(int accountTypeId, int distributerId) {
+		return capitalAccountDao.findByTypeAndDistributerId(accountTypeId, distributerId);
 	}
 
 }

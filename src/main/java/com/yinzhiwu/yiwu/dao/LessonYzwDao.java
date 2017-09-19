@@ -26,4 +26,6 @@ public interface LessonYzwDao extends IBaseDao<LessonYzw, Integer> {
 
 	PageBean<LessonApiView> findPageOfClosedLessonApiViewByStoreIdAndLessonDate(Integer storeId, Date date, int pageNo,
 			int pageSize);
+
+	Long findCountByCourseId(String id);
 }

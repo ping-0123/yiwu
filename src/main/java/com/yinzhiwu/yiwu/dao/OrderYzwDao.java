@@ -51,4 +51,6 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 
 	public PageBean<OrderApiView> findPageOfOrderApiViewByCustomerId(Integer id, int pageNo, int pageSize);
 
+	public Long findCountByCustomerId(int customerId);
+
 }

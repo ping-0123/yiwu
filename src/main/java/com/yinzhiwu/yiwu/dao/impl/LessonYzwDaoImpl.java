@@ -255,4 +255,9 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 				pageSize);
 	}
 
+	@Override
+	public Long findCountByCourseId(String id) {
+		return findCountByProperty("course.id", id);
+	}
+
 }

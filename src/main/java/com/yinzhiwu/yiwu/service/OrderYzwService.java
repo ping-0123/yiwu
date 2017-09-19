@@ -40,5 +40,7 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 		return null;
 	}
 
+	Long findCountByCustomerId(int customerId);
+
 
 }

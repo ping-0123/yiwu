@@ -18,5 +18,7 @@ public interface DepartmentYzwDao extends IBaseDao<DepartmentYzw, Integer> {
 
 	List<DepartmentApiView> findAllOperationDistricts();
 
+	List<DepartmentYzw> findByCity(String city);
+
 
 }

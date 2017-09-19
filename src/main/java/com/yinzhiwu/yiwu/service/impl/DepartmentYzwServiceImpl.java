@@ -92,5 +92,10 @@ public class DepartmentYzwServiceImpl extends BaseServiceImpl<DepartmentYzw, Int
 		}
 		return depts;
 	}
+
+	@Override
+	public List<DepartmentYzw> findByCity(String city) {
+		return departmentDao.findByCity(city);
+	}
 	
 }

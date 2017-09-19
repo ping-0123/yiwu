@@ -44,4 +44,9 @@ public class ShareTweetEventServiceImpl extends BaseServiceImpl<ShareTweetEvent,
 		return incomeEventService.save(e);
 	}
 
+	@Override
+	public Long findCountByDistributerId(int distributerId) {
+		return shareTweetEventDao.findCountByDistributerId(distributerId);
+	}
+
 }

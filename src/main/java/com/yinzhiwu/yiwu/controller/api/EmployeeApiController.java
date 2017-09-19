@@ -40,7 +40,7 @@ public class EmployeeApiController {
 				views.add(new EmployeeApiView(emp));
 			}
 			return new YiwuJson<>(views);
-		} catch (DataNotFoundException e1) {
+		} catch ( Exception e1) {
 			return YiwuJson.createByErrorMessage(e1.getMessage());
 		}
 	}

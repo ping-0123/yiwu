@@ -138,9 +138,10 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		if(customer != null){
 			//TOD this.appointStatus
 			if(CourseType.OPENED == lesson.getCourseType()){
-				Long count = appointmentYzwDao.findCountByProperties(
-						new String[]{"lesson.id", "customer.id", "status"},
-						new Object[]{lesson.getId(), customer.getId(),AppointStatus.APPONTED });
+				Long count = appointmentYzwDao.findCountByLessonIdByCustomerIdByAppointStatus(
+						lesson.getId(),
+						customer.getId(),
+						AppointStatus.APPONTED);
 				if(count > 0)
 					dto.setAppointStatus(AppointStatus.APPONTED);
 				else
@@ -168,19 +169,16 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		}
 		//TOD this.appointedStudentCount = lesson.getAppointedStudentCount();
 		if(CourseType.OPENED == lesson.getCourseType())
-			dto.setAppointedStudentCount(appointmentYzwDao.findCountByProperties(
-					new String[]{"lesson.id", "status"}, 
-					new Object[]{lesson.getId(), AppointStatus.APPONTED})
-					.intValue());
+			dto.setAppointedStudentCount(
+					appointmentYzwDao.findCountByLessonIdByAppointStatus(lesson.getId(), AppointStatus.APPONTED).intValue());
+//					new String[]{"lesson.id", "status"}, 
+//					new Object[]{lesson.getId(), AppointStatus.APPONTED})
 		//TOD storeManCallRollCount
-		dto.setStoreManCallRollCount(storeManCallRollYzwDao.findCountByProperties(
-				new String[]{"lessonId", "callRolled"}, 
-				new Object[]{lesson.getId().toString(),true})
-				.intValue());
+		dto.setStoreManCallRollCount(storeManCallRollYzwDao.findCountByLessonIdAndCallRolledFlag(lesson.getId().toString(),true).intValue());
+//				new String[]{"lessonId", "callRolled"}, 
+//				new Object[]{lesson.getId().toString(),true})
 		//TOD  sumTimesOfCourse
-		dto.setSumTimesOfCourse(lessonDao.findCountByProperty(
-				"course.id", lesson.getCourse().getId())
-				.intValue());
+		dto.setSumTimesOfCourse(lessonDao.findCountByCourseId(lesson.getCourse().getId()).intValue());
 		//TOD  orderInCourse
 		dto.setOrderInCourse(lessonDao.findOrderInCourse(lesson));
 		

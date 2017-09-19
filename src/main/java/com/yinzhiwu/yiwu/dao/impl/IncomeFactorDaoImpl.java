@@ -20,7 +20,13 @@ public class IncomeFactorDaoImpl extends BaseDaoImpl<IncomeFactor, Integer> impl
 		builder.append(" WHERE t1.incomeType.id=:incomeTypeId");
 		builder.append(" AND t1.factor <> 0");
 		return getSession().createQuery(builder.toString(), EventType.class)
-				.setParameter("incomeTypeId", incomeTypeId, IntegerType.INSTANCE).getResultList();
+				.setParameter("incomeTypeId", incomeTypeId, IntegerType.INSTANCE)
+				.getResultList();
+	}
+
+	@Override
+	public List<IncomeFactor> findByEventType(EventType type) {
+		return findByProperty("eventType.id", type.getId());
 	}
 
 }

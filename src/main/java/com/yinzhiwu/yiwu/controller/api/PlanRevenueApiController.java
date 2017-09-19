@@ -95,18 +95,11 @@ public class PlanRevenueApiController {
 	@GetMapping("/list")
 	public String list(@ModelAttribute("plan") PlanRevenue plan, Model model) {
 		List<PlanRevenue> list = new ArrayList<>();
-		logger.debug(plan.getStoreId());
-		int productTypeId = 0;
+
 		if (plan.getId() > 0) {
 			list.add(planService.get(plan.getId()));
 		} else {
-			if (plan.getProductType() != null) {
-				productTypeId = plan.getProductType().getId();
-			}
-			list.addAll(planService.findByProperties(
-							new String[]{"", "", "",""},
-							new Object[]{plan.getStoreId(), plan.getYear(), plan.getMonth(),productTypeId})
-					);
+			list.addAll(planService.findByExample(plan));
 		}
 
 		model.addAttribute("list", list);

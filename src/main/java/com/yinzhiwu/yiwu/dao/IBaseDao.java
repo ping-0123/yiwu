@@ -28,9 +28,9 @@ public interface IBaseDao<T, PK extends Serializable> {
 	 * 
 	 * @param entity
 	 * @return
-	 * @throws DataNotFoundException
+	 * @throws IllegalAccessException 
 	 */
-	public List<T> findByExample(T entity);
+	public List<T> findByExample(T entity) ;
 	
 	//增
 	public PK save(T entity);

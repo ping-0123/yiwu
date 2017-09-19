@@ -193,10 +193,14 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		
 		StringBuilder hql = new StringBuilder();
 		hql.append(" FROM OrderYzw t1");
-		hql.append(" WHERE customer.id = " + customerId);
-		hql.append(" AND contract.status <> '" + Contract.ContractStatus.UN_PAYED.getStatus() + "'");
+		hql.append(" WHERE customer.id = :customerId");
+		hql.append(" AND contract.status <> :unpayedStatus");
 		
-		return findPageByHql(hql.toString(), pageNo, pageSize);
+		return findPage(hql.toString(),
+				OrderYzw.class, 
+				new String[]{"customerId", "unpayedStatus"} ,
+				new Object[]{customerId, ContractStatus.UN_PAYED},
+				pageNo, pageSize);
 	}
 
 	@Override
@@ -434,6 +438,11 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(" ORDER BY t1.payedDate DESC");
 		
 		return findPage(hql.toString(), OrderApiView.class, "customerId", customerId, pageNo, pageSize);
+	}
+
+	@Override
+	public Long findCountByCustomerId(int customerId) {
+		return findCountByProperty("customer.id", customerId);
 	}
 	
 }

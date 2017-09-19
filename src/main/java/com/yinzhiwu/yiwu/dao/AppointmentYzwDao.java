@@ -21,4 +21,8 @@ public interface AppointmentYzwDao extends IBaseDao<AppointmentYzw, Integer> {
 
 	List<AppointmentYzw> findLastDayAppointments();
 
+	Long findCountByLessonIdByCustomerIdByAppointStatus(Integer id, Integer id2, AppointStatus apponted);
+
+	Long findCountByLessonIdByAppointStatus(Integer id, AppointStatus apponted);
+
 }

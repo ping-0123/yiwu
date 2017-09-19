@@ -25,4 +25,6 @@ public interface DistributerIncomeDao extends IBaseDao<DistributerIncome, Intege
 	 */
 	List<DistributerIncome> getTopN(int incomeTypeId, int topN);
 
+	List<DistributerIncome> findByIncomeType(IncomeType brokerage);
+
 }

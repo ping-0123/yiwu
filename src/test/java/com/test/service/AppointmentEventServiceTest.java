@@ -21,28 +21,7 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 
 public class AppointmentEventServiceTest extends BaseTest {
 
-	@Autowired private AppointmentEventService appointmentEventService;
-	@Autowired private LessonYzwDao lessonDao;
 	
-	@Test
-	public void testAppoint(){
-		int distributerId = 3000142;
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_MONTH, 15);
-		List<LessonYzw> lessons = lessonDao.findByProperties(
-				new String[]{"store.id", "lessonDate", "courseType"}, 
-				new Object[]{63, CalendarUtil.getDayBegin(calendar).getTime(), CourseType.OPENED});
-		System.err.println("lesson count is " + lessons.size());
-		for (LessonYzw lesson : lessons) {
-			try {
-				appointmentEventService.saveAppoint(distributerId, lesson.getId());
-				System.out.println("预约成功");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		}
-	}
 	
 	@Test
 	public void test(){

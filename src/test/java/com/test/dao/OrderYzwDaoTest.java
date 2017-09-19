@@ -1,24 +1,24 @@
 package com.test.dao;
 
 import java.lang.reflect.Field;
-import java.util.Calendar;
 import java.util.List;
+
+import javax.validation.constraints.Size;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.test.BaseTest;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
+import com.yinzhiwu.yiwu.dao.DistributerDao;
+import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
-import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
-import com.yinzhiwu.yiwu.util.CalendarUtil;
 import com.yinzhiwu.yiwu.util.ReflectUtils;
 
 /**
@@ -33,26 +33,28 @@ public class OrderYzwDaoTest  extends BaseTest{
 	private OrderYzwDao orderYzwDao;
 	@Autowired private CustomerYzwDao customerDao;
 	@Autowired private LessonYzwDao lessonDao;
+	@Autowired private EmployeeYzwDao employeeDao;
 	
-	@Transactional
+	@Autowired private DistributerDao distributerDao;
+	
 	@Test
-	public void testFindCheckableContractsOfCustomerAndLesson(){
-		CustomerYzw customer = customerDao.get(33897);
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.MONTH, Calendar.SEPTEMBER);
-		calendar.set(Calendar.DAY_OF_MONTH, 9);
-		List<LessonYzw> lessons = lessonDao.findByProperties(
-				new String[]{"store.id", "lessonDate", "courseType"}, 
-				new Object[]{63, CalendarUtil.getDayBegin(calendar).getTime(), CourseType.OPENED});
-		System.out.println("lessons count is " + lessons.size());
-		for (LessonYzw lesson : lessons) {
-			try {
-				orderYzwDao.findCheckableContractOfCustomerAndLesson(customer, lesson);
-				System.out.println("可以预约成功");
-			} catch (DataNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
+	public void testFindByExample2(){
+		Distributer distributer = new Distributer();
+		CustomerYzw customer = new CustomerYzw();
+		customer.setId(31554);
+		customer.setMemberCard("E53000116");
+		distributer.setCustomer(customer);
+		
+		List<Distributer> distributers = distributerDao.findByExample(distributer);
+		System.err.println(distributers.size());
+	}
+	
+	@Test
+	public void testFindByExample(){
+		EmployeeYzw employee = new EmployeeYzw();
+		employee.setId(1);
+		List<EmployeeYzw> emps = employeeDao.findByExample(employee);
+		System.err.println(emps.size());
 	}
 	
 	@Test

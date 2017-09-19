@@ -42,7 +42,7 @@ public class ShareTweetApiController extends BaseController {
 	@GetMapping("/count")
 	public YiwuJson<Long> findCount(int distributerId) {
 		try {
-			Long count = shareTweetEventService.findCountByProperty("distributer.id", distributerId);
+			Long count = shareTweetEventService.findCountByDistributerId( distributerId);
 			return new YiwuJson<>(count);
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());

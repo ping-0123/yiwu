@@ -47,4 +47,9 @@ public class ShareTweetEventDaoImpl extends BaseDaoImpl<ShareTweetEvent, Integer
 				.intValue();
 	}
 
+	@Override
+	public Long findCountByDistributerId(int distributerId) {
+		return findCountByProperty("distributer.id", distributerId);
+	}
+
 }

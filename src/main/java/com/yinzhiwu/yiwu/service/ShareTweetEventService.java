@@ -4,4 +4,6 @@ import com.yinzhiwu.yiwu.entity.income.ShareTweetEvent;
 
 public interface ShareTweetEventService extends IBaseService<ShareTweetEvent, Integer> {
 
+	Long findCountByDistributerId(int distributerId);
+
 }

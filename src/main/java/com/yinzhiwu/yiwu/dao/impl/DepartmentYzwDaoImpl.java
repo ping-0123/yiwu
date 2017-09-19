@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
@@ -129,6 +130,13 @@ public class DepartmentYzwDaoImpl extends BaseDaoImpl<DepartmentYzw, Integer> im
 		if(views == null)
 			return new ArrayList<>();
 		return views;
+	}
+
+	@Override
+	public List<DepartmentYzw> findByCity(String city) {
+		Assert.hasText(city);
+		
+		return findByProperty("officialAddress.city", city);
 	}
 
 	

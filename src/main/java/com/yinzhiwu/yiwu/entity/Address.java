@@ -95,4 +95,7 @@ public class Address {
 		this.address = address;
 	}
 
+	public String getDetailAddress(){
+		return this.province + this.city + this.district + this.address;
+	}
 }

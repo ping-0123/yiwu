@@ -39,7 +39,7 @@ public interface IBaseService<T, PK extends Serializable> {
 	
 	public T get(PK id);
 	public List<T> findAll() ;
-	public List<T> findByExample(T entity) throws DataNotFoundException;
+	public List<T> findByExample(T entity);
 
 	public PageBean<T> findPageOfAll(int pageNum, int pageSize);
 }
