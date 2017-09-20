@@ -5,8 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>post edition</title>
-<!-- Bootstrap -->
 
+<!-- Bootstrap -->
 </head>
 <body>
 

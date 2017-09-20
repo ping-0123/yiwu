@@ -1,0 +1,97 @@
+/* 外边距
+	Name:			style_margin
+	Example:		class="mt-5|mt-10..."
+	Explain:		.mt表示上边距|.mb表示下边距|.ml表示左边距|.mr表示右边距
+*/
+.nom{margin:0px}.nomt{margin-top:0px}.notmr{margin-right:0px}.nomb{marging-bottom:0px}.noml{margin-left:0px}
+.mt-5{margin-top:5px}.mt-10{margin-top:10px}.mt-15{margin-top:15px}.mt-20{margin-top:20px}.mt-25{margin-top:25px}.mt-30{margin-top:30px}.mt-35{margin-top:35px}.mt-40{margin-top:40px}.mt-50{margin-top:50px}
+.mb-5{margin-bottom:5px}.mb-10{margin-bottom:10px}.mb-15{margin-bottom:15px}.mb-20{margin-bottom:20px}.mb-30{margin-bottom:30px}.mb-40{margin-bottom:40px}.mb-50{margin-bottom:50px}
+.ml-5{margin-left:5px}.ml-10{margin-left:10px}.ml-15{margin-left:15px}.ml-20{margin-left:20px}.ml-30{margin-left:30px}.ml-40{margin-left:40px}.ml-50{margin-left:50px}
+.mr-5{margin-right:5px}.mr-10{margin-right:10px}.mr-15{margin-right:15px}.mr-20{margin-right:20px}.mr-30{margin-right:30px}.mr-40{margin-right:40px}.mr-50{margin-right:50px}
+/* 内填充
+	Name:			style_padding
+	Example:		class="pt-5|pt-10|……"
+	Explain:		.pt表示上填充|.pb表示下填充|.pl表示左填充|.pr表示右填充
+*/
+.nop{padding:0px}.nopt{padding-top:0px}.nopr{padding-right:0px}.nopb{padding-bottom:0px}.nopl{padding-left:0px}
+.pd-5{padding:5px}.pd-10{padding:10px}.pd-15{padding:15px}.pd-20{padding:20px}.pd-30{padding:30px}.pd-40{padding:40px}
+.pt-5{padding-top:5px}.pt-10{padding-top:10px}.pt-20{padding-top:20px}
+.pb-5{padding-bottom:5px}.pb-10{padding-bottom:10px}.pb-20{padding-bottom:20px}.pb-30{padding-bottom:30px}
+.pl-5{padding-left:5px}.pl-10{padding-left:10px}.pl-20{padding-left:20px}.pl-30{padding-left:30px}
+.pr-5{padding-right:5px}.pr-10{padding-right:10px}.pr-20{padding-right:20px}
+
+
+/*
+	表格style
+*/
+table.look  {
+	width: 100%;
+	empty-cells: show;
+	background-color: transparent;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+table.look tr td {
+	padding: 10px 20px;
+	    border: 1px solid #e3eaf0;
+}
+
+
+
+.bg-1 {
+	background-color: #f5fafe;
+}
+
+.bk-gray {
+	border: solid 1px #eee;
+}
+
+.br-5 {
+	border-radius: 10px;
+}
+
+.cl, .clearfix {
+	zoom: 1;
+}
+
+.breadcrumb2 {
+	background-color: #f5f5f5;
+	padding: 0 40px;
+	border-bottom: 1px solid #e5e5e5;
+	line-height: 39px;
+	height: 39px;
+	overflow: hidden;
+	padding: 0 15px;
+	margin-bottom: 20px;
+}
+
+.r, .f-r {
+	float: right !important;
+	_display: inline;
+}
+
+.f-l {
+	float: left !important;
+	_display: inline;
+}
+
+.page-container {
+	padding: 20px;
+}
+
+.text-c {
+	text-align: center;
+}
+
+.c-red {
+	color: red;
+}
+
+.tal {
+	text-align: left;
+}
+
+.tac {
+	text-aligh: center;
+}

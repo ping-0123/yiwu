@@ -74,8 +74,7 @@
 												<a href="${pageContext.request.contextPath }/system/posts/${p.id}/form" data-toggle="modal" data-target="#modalPostUpdate"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>
 
 											</shiro:hasPermission> <shiro:hasPermission name="posts:delete">
-												<a href="${pageContext.request.contextPath }/system/posts/${p.id}" > <i class="fa fa-minus-circle" title="删除"></i>
-												</a>
+												<a href="#" data-toggle="modal" data-target="#modalPostDelete"><small><i class="fa fa-trash" title="删除"> </i> </small> </a>
 											</shiro:hasPermission></td>
 									</tr>
 								</c:forEach>
@@ -91,41 +90,105 @@
 	</div>
 	<!-- /page content -->
 
-	<!--  新增 modal -->
+	<!-- create modal -->
 	<div class="modal fade bs-example-modal-lg" id="modalPostCreate" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-			</div>
+			<div class="modal-content"></div>
 		</div>
 	</div>
-	
-	
-	<!-- 修改 modal -->
+
+
+	<!-- update modal -->
 	<div class="modal fade bs-example-modal-lg" id="modalPostUpdate" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+
+
+	<!-- delete modal -->
+	<div id="modalPostDelete" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel2">Modal title</h4>
+				</div>
+				<div class="modal-body">
+					<h4>Text in a modal</h4>
+					<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+					<p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
 
 			</div>
 		</div>
-	</div>
-	
-	
+		
+		<!-- inner Modal -->
+		<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
 
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel2">Modal title</h4>
+					</div>
+					<div class="modal-body">
+						<h4>Text in a modal</h4>
+						<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+						<p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!-- /inner Modal -->
+		
+	</div>
+	<!-- / delete Modal -->
+
+	
+	<!--  增删改查 modal , url param callback() -->
 
 
 	<!-- jQuery -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/jquery/dist/jquery.min.js"></script>
 	<!-- Bootstrap -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+	<!-- validator -->
+	<script src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
+
 	<!-- Datatables -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
 	<script src="${pageContext.request.contextPath}/backend/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 	<!-- Custom Theme Scripts -->
 	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
-	
+
 	<script type="text/javascript">
-		function loadPostCreateForm(){
-			$('#modalPostCreate').modal({remote:'${pageContext.request.contextPath}/system/posts/edit'});
+		$("#modalPostCreate").on("hidden.bs.modal", function() {
+			$(this).removeData("bs.modal");
+		})
+
+		$("#modalPostUpdate").on("hidden.bs.modal", function() {
+			$(this).removeData("bs.modal");
+		})
+
+		function loadPostCreateForm() {
+			$('#modalPostCreate').modal({
+				remote : '${pageContext.request.contextPath}/system/posts/edit'
+			});
 		}
 	</script>
 </body>

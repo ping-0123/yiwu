@@ -7,10 +7,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.BaseTest;
-import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
-import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
@@ -29,8 +27,6 @@ public class OrderYzwDaoTest  extends BaseTest{
 
 	@Autowired
 	private OrderYzwDao orderYzwDao;
-	@Autowired private CustomerYzwDao customerDao;
-	@Autowired private LessonYzwDao lessonDao;
 	@Autowired private EmployeeYzwDao employeeDao;
 	
 	@Autowired private DistributerDao distributerDao;
