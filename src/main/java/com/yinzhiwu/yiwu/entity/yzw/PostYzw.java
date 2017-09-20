@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -41,6 +42,7 @@ public class PostYzw extends BaseYzwEntity {
 	private Integer type=1;
 
 	@Column(length = 50, updatable=false)
+	@Size(min=2, max=50)
 	private String name;
 
 	@Column(length = 200)

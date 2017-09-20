@@ -28,6 +28,8 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 @Table(name = "vcustomer")
 public class CustomerYzw extends BaseYzwEntity {
 
+
+
 	/**
 	 * 
 	 */
@@ -133,7 +135,7 @@ public class CustomerYzw extends BaseYzwEntity {
 	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "salesmanId", foreignKey = @ForeignKey(name = "fk_customerYzw_salesman_id", value = ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "salesman_id", foreignKey = @ForeignKey(name = "fk_customerYzw_salesman_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw salesman;
 
 	@Convert(converter=CustomerAgeTypeConverter.class)
@@ -207,10 +209,10 @@ public class CustomerYzw extends BaseYzwEntity {
 	private String password;
 
 	@Column
-	private Integer credit= 0;
+	private Integer credit;
 
 	//定金
-	private Float earnest = 0f;
+	private Float earnest;
 
 	// @OneToOne(mappedBy="customer",fetch=FetchType.LAZY)
 	// private Distributer distributer;
@@ -241,6 +243,15 @@ public class CustomerYzw extends BaseYzwEntity {
 		this.init();
 	}
 
+	@Override
+	public void init() {
+		super.init();
+		if(this.earnest == null)
+			this.earnest=0f;
+		if(this.credit == null)
+			this.credit=0;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

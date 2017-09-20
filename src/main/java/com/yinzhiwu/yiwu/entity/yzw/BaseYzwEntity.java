@@ -15,13 +15,13 @@ import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.enums.DataStatus;
 
 
+@SuppressWarnings("serial")
 @MappedSuperclass
 public abstract class BaseYzwEntity implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1232031968327117427L;
 
 	@JsonIgnore
 	@Column(updatable = false, name = "sf_create_user")
@@ -59,7 +59,7 @@ public abstract class BaseYzwEntity implements Serializable {
 	@Column(name = "sf_last_change_timeStamp")
 	private Date lastChangeTimestamp;
 
-	private DataStatus dataStatus = DataStatus.NORMAL;
+	private DataStatus dataStatus;
 	
 	public BaseYzwEntity() {
 	}
@@ -70,6 +70,9 @@ public abstract class BaseYzwEntity implements Serializable {
 		this.lastChangeTime = date;
 		this.lastChangeTimestamp = date;
 		this.lastSyncTimeStamp = date;
+		if(dataStatus ==null)
+			dataStatus =DataStatus.NORMAL;
+			
 		User user = UserContext.getUser();
 		if(user != null){
 			this.createUserId = user.getId();

@@ -3,8 +3,6 @@ package com.test.dao;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import javax.validation.constraints.Size;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,7 +39,6 @@ public class OrderYzwDaoTest  extends BaseTest{
 	public void testFindByExample2(){
 		Distributer distributer = new Distributer();
 		CustomerYzw customer = new CustomerYzw();
-		customer.setId(31554);
 		customer.setMemberCard("E53000116");
 		distributer.setCustomer(customer);
 		

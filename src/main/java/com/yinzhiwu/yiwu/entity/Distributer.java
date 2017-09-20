@@ -44,6 +44,7 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
  * @author ping
  *
  */
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "yiwu_distributer", uniqueConstraints = {
 		@UniqueConstraint(name = "uk_distributer_memberId", columnNames = { "memberCard" }),
@@ -60,7 +61,6 @@ public class Distributer extends BaseEntity {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8400038437062433347L;
 
 	public static enum Role{
 		CUSTOMER,
@@ -191,7 +191,8 @@ public class Distributer extends BaseEntity {
 	private List<Message> messages = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "distributer",fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "distributer",fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<DistributerIncome> distributerIncomes = new ArrayList<>();
 
 	@Override

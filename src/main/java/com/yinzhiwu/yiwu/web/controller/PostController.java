@@ -2,9 +2,14 @@ package com.yinzhiwu.yiwu.web.controller;
 
 import java.util.List;
 
+import javax.decorator.Delegate;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +46,10 @@ public class PostController extends BaseController {
 	}
 	
 	@PostMapping
-	public String createNewPost(PostYzw post){
+	public String createNewPost(@Valid PostYzw post, BindingResult bindingResult){
+		if(bindingResult.hasErrors() ){
+			return "/success.jsp";
+		}
 		postService.save(post);
 		return "redirect:posts/list";
 	}
@@ -68,6 +76,12 @@ public class PostController extends BaseController {
 			logger.error(e.getMessage(), e);
 		}
 		
+		return "redirect:list";
+	}
+	
+	@DeleteMapping(value="/{id}")
+	public String modify(@PathVariable(name="id") Integer id){
+		postService.delete(id);
 		return "redirect:list";
 	}
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.persistence.Embedded;
+import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -195,7 +196,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		List<Object> values = new ArrayList<>();
 		
 		try {
-			addPair(properties, values, entityClass, entity, "");
+			addPairs(properties, values, entityClass, entity, "");
 			String[] pros = new String[properties.size()];
 			return findByProperties(properties.toArray(pros), values.toArray());
 		} catch (IllegalArgumentException e) {
@@ -210,6 +211,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 	
 	/**
+	 * 添加(属性名，值)对， 将对象中的一个成员属性加入到属性值对里
 	 * 
 	 * @param properties
 	 * @param values
@@ -233,14 +235,10 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 				|| field.getDeclaredAnnotation(ManyToMany.class) != null){
 			return;
 		}else {
-			if(field.getDeclaredAnnotation(javax.persistence.Id.class) != null ){
-				properties.add(prefixFiledName  + field.getName());
-				values.add(fieldValue);
-				return;
-			}else if(field.getDeclaredAnnotation(ManyToOne.class) != null
+			if(field.getDeclaredAnnotation(ManyToOne.class) != null
 					|| field.getDeclaredAnnotation(OneToOne.class) !=null
 					|| field.getDeclaredAnnotation(Embedded.class) != null)
-				addPair(properties, values,field.getDeclaringClass(), fieldValue, field.getName()+ ".");
+				addPairs(properties, values,fieldValue.getClass(), fieldValue, field.getName()+ ".");
 			else {
 				properties.add(prefixFiledName  + field.getName());
 				values.add(fieldValue);
@@ -250,6 +248,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 
 	/**
+	 * 添加(属性名，值)对， 将对象中所有的成员属性加入到属性值对中
 	 * 
 	 * @param properties
 	 * @param values
@@ -259,24 +258,26 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	private void addPair(List<String> properties, List<Object> values,Class<?> clazz, Object entity, String prefixFiledName) throws IllegalArgumentException, IllegalAccessException {
+	private void addPairs(List<String> properties, List<Object> values,Class<?> clazz, Object entity, String prefixFiledName) throws IllegalArgumentException, IllegalAccessException {
 		Assert.notNull(properties);
 		Assert.notNull(values);
 		Assert.notNull(clazz);
 		
 		if(entity==null)
 			return;
-		Field[] fields = ReflectUtils.getAllFields(entityClass);
+		
+		Field[] fields = ReflectUtils.getAllFields(clazz);
 		for (Field field : fields) {
 			field.setAccessible(true);
-			if(field.getDeclaredAnnotation(javax.persistence.Id.class) != null){
-				addPair(properties, values, field, field.get(entity), prefixFiledName);
-				return;
-			}
+			addPair(properties, values, field, field.get(entity), prefixFiledName);
+			if(field.getDeclaredAnnotation(Id.class) != null 
+					&& field.get(entity) !=null )
+				break;
 		}
 		
 	}
 
+	
 	@Override
 	public void update(T entity) {
 		Assert.notNull(entity, "entity is required");

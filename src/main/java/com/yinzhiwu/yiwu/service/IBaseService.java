@@ -20,6 +20,7 @@ public interface IBaseService<T, PK extends Serializable> {
 	public void saveOrUpdate(T entity);
 	
 	/**
+	 * 
 	 * 通过dao.get(id)从数据库中取出一个新实体newEntity, 将newEntity中的属性值
 	 * 设置为entity对应的值(entity中某一属性为null, 则newEntity中相应属性值不变) 改方法用到了反射
 	 * 该方法忽略@OneToMany注解的属性的修改 该方法不能修改从父类继承过来的成员变量的值

@@ -16,7 +16,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.entity.sys.User;
-import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.enums.DataStatus;
 
 /**
@@ -25,13 +24,10 @@ import com.yinzhiwu.yiwu.enums.DataStatus;
  * uk_{table name}_{unique key column name}
  */
 
+@SuppressWarnings("serial")
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * ID
@@ -58,7 +54,7 @@ public abstract class BaseEntity implements Serializable {
 	protected Date lastModifiedDate;
 	
 	@Enumerated(value=EnumType.ORDINAL)
-	private DataStatus dataStatus = DataStatus.NORMAL;
+	private DataStatus dataStatus;
 
 	public BaseEntity() {
 	}
@@ -67,6 +63,8 @@ public abstract class BaseEntity implements Serializable {
 		Date date = new Date();
 		this.createDate = date;
 		this.lastModifiedDate = date;
+		if(dataStatus ==null)
+			dataStatus = DataStatus.NORMAL;
 		User user = UserContext.getUser();
 		if(user != null){
 			this.createUserId = user.getId();

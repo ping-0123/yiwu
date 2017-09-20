@@ -74,7 +74,7 @@
 												<a href="${pageContext.request.contextPath }/system/posts/${p.id}/form" data-toggle="modal" data-target="#modalPostUpdate"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>
 
 											</shiro:hasPermission> <shiro:hasPermission name="posts:delete">
-												<a data-toggle="modal" data-target="#myModal"> <i class="fa fa-minus-circle" title="删除"></i>
+												<a href="${pageContext.request.contextPath }/system/posts/${p.id}" > <i class="fa fa-minus-circle" title="删除"></i>
 												</a>
 											</shiro:hasPermission></td>
 									</tr>
