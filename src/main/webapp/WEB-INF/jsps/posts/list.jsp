@@ -70,11 +70,11 @@
 										<td>${p.description}</td>
 										<td>${ping:getDataStatusName(p.dataStatus) }</td>
 										<td><shiro:hasPermission name="posts:update">
-												<a href="${pageContext.request.contextPath }/system/posts/${p.id}/form" data-toggle="modal" data-target="#modalPostUpdate"> <i class="fa fa-pencil" title="修改"></i></a>
-												<a href="${pageContext.request.contextPath }/system/posts/${p.id}/form" data-toggle="modal" data-target="#modalPostUpdate"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>
+												<a href="${p.id}/form" data-toggle="modal" data-target="#modalPostUpdate"> <i class="fa fa-pencil" title="修改"></i></a>
+												<a href="${p.id}/form" data-toggle="modal" data-target="#modalPostUpdate"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>
 
 											</shiro:hasPermission> <shiro:hasPermission name="posts:delete">
-												<a href="#" data-toggle="modal" data-target="#modalPostDelete"><small><i class="fa fa-trash" title="删除"> </i> </small> </a>
+												<a href="#" onclick="doDelete(${p.id})"><small><i class="fa fa-trash" title="删除"> </i> </small> </a>
 											</shiro:hasPermission></td>
 									</tr>
 								</c:forEach>
@@ -90,13 +90,14 @@
 	</div>
 	<!-- /page content -->
 
+	<!-- bootstrap modals -->
 	<!-- create modal -->
 	<div class="modal fade bs-example-modal-lg" id="modalPostCreate" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content"></div>
 		</div>
 	</div>
-
+	<!-- create modal -->
 
 	<!-- update modal -->
 	<div class="modal fade bs-example-modal-lg" id="modalPostUpdate" tabindex="-1" role="dialog" aria-hidden="true">
@@ -104,10 +105,11 @@
 			<div class="modal-content"></div>
 		</div>
 	</div>
-
+	<!-- /update modal -->
+	
 
 	<!-- delete modal -->
-	<div id="modalPostDelete" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+	<div id="deleteModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 
@@ -115,52 +117,24 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">×</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel2">Modal title</h4>
+					<h4 class="modal-title" id="myModalLabel2">提示</h4>
 				</div>
 				<div class="modal-body">
-					<h4>Text in a modal</h4>
-					<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-					<p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+					<p>删除之后将不能恢复， 确认要删除吗?</p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button id="cofirm" type="button" class="btn btn-success" data-dismiss="modal">确认</button>
+					<button id="cancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 				</div>
 
 			</div>
 		</div>
-		
-		<!-- inner Modal -->
-		<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
 
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">×</span>
-						</button>
-						<h4 class="modal-title" id="myModalLabel2">Modal title</h4>
-					</div>
-					<div class="modal-body">
-						<h4>Text in a modal</h4>
-						<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-						<p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
-					</div>
 
-				</div>
-			</div>
-		</div>
-		<!-- /inner Modal -->
-		
 	</div>
 	<!-- / delete Modal -->
+	<!-- / bootstrap modals -->
 
-	
-	<!--  增删改查 modal , url param callback() -->
 
 
 	<!-- jQuery -->
@@ -185,11 +159,23 @@
 			$(this).removeData("bs.modal");
 		})
 
-		function loadPostCreateForm() {
-			$('#modalPostCreate').modal({
-				remote : '${pageContext.request.contextPath}/system/posts/edit'
+		function doDelete(url){
+			$('#deleteModal').modal('show');
+			$('#cofirm').click(function() {
+				deleteRequest(url);
 			});
 		}
+		
+		function deleteRequest(url){
+			$.ajax({
+				url:url,
+				type:'DELETE',
+				success:function(data){
+					window.location.reload();
+				}
+			});
+		};
+		
 	</script>
 </body>
 </html>

@@ -2,7 +2,6 @@ package com.yinzhiwu.yiwu.web.controller;
 
 import java.util.List;
 
-import javax.decorator.Delegate;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.service.PostYzwService;
 
 /**
@@ -79,9 +80,10 @@ public class PostController extends BaseController {
 		return "redirect:list";
 	}
 	
+	@ResponseBody
 	@DeleteMapping(value="/{id}")
-	public String modify(@PathVariable(name="id") Integer id){
+	public YiwuJson<?> modify(@PathVariable(name="id") Integer id){
 		postService.delete(id);
-		return "redirect:list";
+		return YiwuJson.createBySuccess();
 	}
 }

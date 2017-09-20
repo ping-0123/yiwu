@@ -25,7 +25,7 @@
 			</div>
 			<div class="x_content">
 				<br />
-				<form method="POST" action="${pageContext.request.contextPath}/system/posts/${post.id}" class="form-horizontal form-label-left">
+				<form method="POST" action="${post.id}" class="form-horizontal form-label-left">
 
 					<input type="hidden" name="_method" value="PUT">
 					<div class="form-group">
