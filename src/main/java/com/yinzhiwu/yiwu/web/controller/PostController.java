@@ -59,14 +59,14 @@ public class PostController extends BaseController {
 	public String showEditionForm(Model model){
 		PostYzw post = new PostYzw();
 		model.addAttribute("post", post);
-		return "posts/formCreate";
+		return "posts/createForm";
 	}
 	
 	@GetMapping("/{id}/form")
 	public String showModifyForm(@PathVariable(name="id") Integer id, Model model){
 		PostYzw post = postService.get(id);
 		model.addAttribute("post", post);
-		return "posts/formEdit";
+		return "posts/editForm";
 	}
 	
 	@PutMapping(value ="/{id}")

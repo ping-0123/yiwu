@@ -14,7 +14,7 @@
 <title>DataTables | Gentelella</title>
 
 <!-- Bootstrap -->
-<link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 <!-- Font Awesome -->
 <link href="${pageContext.request.contextPath}/backend/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <!-- Datatables -->
@@ -22,6 +22,11 @@
 
 <!-- Custom Theme Style -->
 <link href="${pageContext.request.contextPath}/backend/css/custom.min.css" rel="stylesheet">
+<style>
+.Acti{background-color:#f0f0f0!important;}
+.lineSelect:hover{background-color:#f0f0f0;}
+.lineSelect{cursor:pointer;}
+</style>
 
 </head>
 
@@ -38,7 +43,7 @@
 					<div class="x_title">
 						<!-- data-remote="${pageContext.request.contextPath}/system/posts/edit" -->
 						<shiro:hasPermission name="posts:create:*">
-							<button type="button" data-remote="${pageContext.request.contextPath}/system/posts/form" class="btn btn-primary" data-toggle="modal" data-target="#modalPostCreate">
+							<button type="button" data-remote="${pageContext.request.contextPath}/system/posts/form" class="btn btn-primary" data-toggle="modal" data-target=".create-form">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
 						</shiro:hasPermission>
@@ -65,13 +70,13 @@
 
 							<tbody>
 								<c:forEach items="${posts}" var="p">
-									<tr>
+									<tr class="lineSelect">
 										<td>${p.name}</td>
 										<td>${p.description}</td>
 										<td>${ping:getDataStatusName(p.dataStatus) }</td>
 										<td><shiro:hasPermission name="posts:update">
-												<a href="${p.id}/form" data-toggle="modal" data-target="#modalPostUpdate"> <i class="fa fa-pencil" title="修改"></i></a>
-												<a href="${p.id}/form" data-toggle="modal" data-target="#modalPostUpdate"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>
+												<a href="${p.id}/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-pencil" title="修改"></i></a>
+												<a href="${p.id}/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>
 
 											</shiro:hasPermission> <shiro:hasPermission name="posts:delete">
 												<a href="#" onclick="doDelete(${p.id})"><small><i class="fa fa-trash" title="删除"> </i> </small> </a>
@@ -92,15 +97,16 @@
 
 	<!-- bootstrap modals -->
 	<!-- create modal -->
-	<div class="modal fade bs-example-modal-lg" id="modalPostCreate" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg create-form" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content"></div>
 		</div>
 	</div>
+	
 	<!-- create modal -->
 
 	<!-- update modal -->
-	<div class="modal fade bs-example-modal-lg" id="modalPostUpdate" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg edit-form" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content"></div>
 		</div>
@@ -109,7 +115,7 @@
 	
 
 	<!-- delete modal -->
-	<div id="deleteModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-sm delete-promt" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 
@@ -123,8 +129,8 @@
 					<p>删除之后将不能恢复， 确认要删除吗?</p>
 				</div>
 				<div class="modal-footer">
-					<button id="cofirm" type="button" class="btn btn-success" data-dismiss="modal">确认</button>
-					<button id="cancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button  type="button" class="btn btn-success delete-confirm" data-dismiss="modal">确认</button>
+					<button  type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 				</div>
 
 			</div>
@@ -134,9 +140,7 @@
 	</div>
 	<!-- / delete Modal -->
 	<!-- / bootstrap modals -->
-
-
-
+    
 	<!-- jQuery -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/jquery/dist/jquery.min.js"></script>
 	<!-- Bootstrap -->
@@ -149,33 +153,15 @@
 	<script src="${pageContext.request.contextPath}/backend/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 	<!-- Custom Theme Scripts -->
 	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
-
+	
+	<script src="${pageContext.request.contextPath}/backend/js/main.js"></script>
 	<script type="text/javascript">
-		$("#modalPostCreate").on("hidden.bs.modal", function() {
-			$(this).removeData("bs.modal");
-		})
-
-		$("#modalPostUpdate").on("hidden.bs.modal", function() {
-			$(this).removeData("bs.modal");
-		})
-
-		function doDelete(url){
-			$('#deleteModal').modal('show');
-			$('#cofirm').click(function() {
-				deleteRequest(url);
-			});
-		}
-		
-		function deleteRequest(url){
-			$.ajax({
-				url:url,
-				type:'DELETE',
-				success:function(data){
-					window.location.reload();
-				}
-			});
-		};
-		
+	 $(".lineSelect").click(function(){
+    	 $(".lineSelect").removeClass("Acti");
+    	  $(this).addClass("Acti");
+    	});
 	</script>
+	
+   
 </body>
 </html>

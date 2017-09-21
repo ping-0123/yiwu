@@ -1,6 +1,8 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -66,6 +69,9 @@ public class PostYzw extends BaseYzwEntity {
 			inverseJoinColumns=@JoinColumn(name="role_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_postRole_role_id")))
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Role> roles = new HashSet<>();	
+	
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL)
+	private List<EmployeePostYzw> employeePosts = new ArrayList<>();
 	
 	public Integer getId() {
 		return id;
@@ -143,6 +149,14 @@ public class PostYzw extends BaseYzwEntity {
 	 */
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public List<EmployeePostYzw> getEmployeePosts() {
+		return employeePosts;
+	}
+
+	public void setEmployeePosts(List<EmployeePostYzw> employeePosts) {
+		this.employeePosts = employeePosts;
 	}
 
 	
