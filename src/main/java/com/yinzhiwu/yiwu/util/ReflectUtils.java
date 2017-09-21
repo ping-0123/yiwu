@@ -6,7 +6,6 @@ import java.lang.reflect.Modifier;
 import javax.persistence.Embedded;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.xml.transform.Source;
 
 public final class ReflectUtils {
 

@@ -17,7 +17,6 @@ import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
-import org.springframework.core.annotation.Order;
 
 import com.yinzhiwu.yiwu.entity.BaseEntity;
 
