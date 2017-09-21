@@ -23,6 +23,8 @@ function deleteRequest(url) {
 	});
 };
 
-function selectRow() {
-	$(this).addClass(".Acti");
-}
+$('.data-row').click(function() {
+	$('.data-row').removeClass('selected-row');
+	$(this).addClass('selected-row');
+});
+

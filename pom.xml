@@ -301,6 +301,10 @@
 				    <webApp>
 				      <contextPath>/yiwu</contextPath>
 				    </webApp>
+				    <webDefaultXml>src/main/resources/webdefault.xml</webDefaultXml>
+				    <webAppConfig>
+				    	<defaultsDescriptor>src/main/resources/webdefault.xml</defaultsDescriptor>
+				    </webAppConfig>
 				</configuration>
 			</plugin>
 		</plugins>

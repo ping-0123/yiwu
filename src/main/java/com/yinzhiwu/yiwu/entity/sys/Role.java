@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -31,7 +32,8 @@ public class Role extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -7015625301711562788L;
 
-	@Column(length=32)
+	@Column(length=32, updatable=false)
+	@Size(min=2, max=32)
 	private String name;
 
 	@ManyToMany(cascade=CascadeType.ALL)

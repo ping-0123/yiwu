@@ -39,7 +39,7 @@
 				<div class="x_panel">
 					<div class="x_title">
 						<!-- data-remote="${pageContext.request.contextPath}/system/posts/edit" -->
-						<shiro:hasPermission name="posts:create:*">
+						<shiro:hasPermission name="roles:create:*">
 							<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".create-form">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
@@ -58,25 +58,21 @@
 						<table id="datatable" class="table table-striped table-bordered">
 							<thead>
 								<tr>
-									<th>职位</th>
-									<th>描述</th>
+									<th>角色名</th>
 									<th>状态</th>
 									<th>操作</th>
 								</tr>
 							</thead>
 
 							<tbody>
-								<c:forEach items="${posts}" var="p">
+								<c:forEach items="${roles}" var="p">
 									<tr class="data-row" >
 										<td>${p.name}</td>
-										<td>${p.description}</td>
 										<td>${ping:getDataStatusName(p.dataStatus) }</td>
-										<td><shiro:hasPermission name="posts:update">
+										<td><shiro:hasPermission name="roles:update">
 												<a href="${p.id}/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-pencil" title="修改"></i></a>
-												<a href="${p.id}/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>
-
-											</shiro:hasPermission> <shiro:hasPermission name="posts:delete">
-												<a href="#" onclick="doDelete(${p.id})"><small><i class="fa fa-trash" title="删除"> </i> </small> </a>
+											</shiro:hasPermission> <shiro:hasPermission name="roles:delete">
+												<a href="#" ><small><i class="fa fa-trash" title="删除"> </i> </small> </a>
 											</shiro:hasPermission></td>
 									</tr>
 								</c:forEach>

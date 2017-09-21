@@ -1,16 +1,22 @@
 package com.yinzhiwu.yiwu.web.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.sys.Role;
-import com.yinzhiwu.yiwu.service.ResourceService;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.service.RoleService;
 
 /**
@@ -27,63 +33,63 @@ public class RoleController extends BaseController {
     @Autowired
     private RoleService roleService;
 
-    @Autowired
-    private ResourceService resourceService;
-
     @RequestMapping(method = RequestMethod.GET)
-    public String list(Model model) {
-        model.addAttribute("roleList", roleService.findAll());
-        return "role/list";
+    public String index() {
+    	return "redirect:roles/list";
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @GetMapping(value="list")
+    public String list(Model model){
+    	 model.addAttribute("roles", roleService.findAll());
+         return "roles/list";
+    }
+    
+    @RequestMapping(value = "/form", method = RequestMethod.GET)
     public String showCreateForm(Model model) {
-        setCommonData(model);
         model.addAttribute("role", new Role());
-        model.addAttribute("op", "新增");
-        return "role/edit";
+        return "roles/createForm";
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Role role, RedirectAttributes redirectAttributes) {
-    	logger.error(role.getResources());
+    @RequestMapping(method = RequestMethod.POST)
+    public String create(@Valid Role role, BindingResult bindingResult) {
+    	if(bindingResult.hasErrors()){
+    		logger.error(getErrorsMessage(bindingResult));
+    	}
+    	
         roleService.save(role);
-        redirectAttributes.addFlashAttribute("msg", "新增成功");
-        return "redirect:/role";
+        
+        return "redirect:roles/list";
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        setCommonData(model);
+    @RequestMapping(value = "/{id}/form", method = RequestMethod.GET)
+    public String showUpdateForm(@PathVariable(name="id") Integer id, Model model) {
         model.addAttribute("role", roleService.get(id));
-        model.addAttribute("op", "修改");
-        return "role/edit";
+        
+        return "roles/editForm";
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
-    public String update(Role role, RedirectAttributes redirectAttributes) {
-        roleService.update(role);
-        redirectAttributes.addFlashAttribute("msg", "修改成功");
-        return "redirect:/role";
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public String update(@Valid Role role, @PathVariable(name="id") Integer id, BindingResult bindingResult) {
+    	if(bindingResult.hasErrors()){
+    		logger.error(getErrorsMessage(bindingResult));
+    	}
+    	
+        try {
+			roleService.modify(id, role);
+		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
+			logger.error(e.getMessage(),e);
+		}
+        return "redirect:list";
     }
 
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
-    public String showDeleteForm(@PathVariable("id") Integer id, Model model) {
-        setCommonData(model);
-        model.addAttribute("role", roleService.get(id));
-        model.addAttribute("op", "删除");
-        return "role/edit";
-    }
 
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
-    public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+    @DeleteMapping(value = "/{id}")
+    @ResponseBody
+    public YiwuJson<?> delete(@PathVariable(name="id") Integer id) {
         roleService.delete(id);
-        redirectAttributes.addFlashAttribute("msg", "删除成功");
-        return "redirect:/role";
+//        redirectAttributes.addFlashAttribute("msg", "删除成功");
+        return YiwuJson.createBySuccess();
     }
 
-    private void setCommonData(Model model) {
-        model.addAttribute("resourceList", resourceService.findAll());
-    }
 
 }
