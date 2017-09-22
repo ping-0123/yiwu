@@ -24,6 +24,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.entity.sys.Role;
 
 @Entity
@@ -63,6 +64,7 @@ public class PostYzw extends BaseYzwEntity {
 	@Column
 	private Integer lparam;
 	
+	@JsonIgnore
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name="sys_post_role",
 			joinColumns=@JoinColumn(name="post_id",foreignKey=@ForeignKey( name="fk_postRole_post_id", value=ConstraintMode.NO_CONSTRAINT)),
@@ -70,6 +72,7 @@ public class PostYzw extends BaseYzwEntity {
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Role> roles = new HashSet<>();	
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="post", cascade=CascadeType.ALL)
 	private List<EmployeePostYzw> employeePosts = new ArrayList<>();
 	

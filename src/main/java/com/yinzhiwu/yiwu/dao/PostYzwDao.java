@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.dao;
 
 import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 
 /**
 *@Author ping
@@ -9,5 +10,7 @@ import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
 */
 
 public interface PostYzwDao extends IBaseDao<PostYzw,Integer> {
+
+	DataTableBean findDataTable(Integer start, Integer length);
 
 }

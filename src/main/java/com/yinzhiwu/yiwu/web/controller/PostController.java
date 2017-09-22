@@ -20,6 +20,8 @@ import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.service.PostYzwService;
 
 /**
@@ -35,8 +37,12 @@ public class PostController extends BaseController {
 	@Autowired private PostYzwService postService;
 	
 	@GetMapping
-	public String index(){
-		return "redirect:posts/list";
+	@ResponseBody
+	public DataTableBean index(Integer draw,Integer start,Integer length){
+		Integer pageNo =(int) Math.ceil( ((float)(start+1)/length));
+		Integer pageSize = length;
+		PageBean<?> page = postService.findPageOfAll(pageNo, pageSize);
+		return  new DataTableBean(draw,page.getTotalRecord(),page.getTotalRecord(),page.getData(),null);
 	}
 	
 	@GetMapping(value="/list")
@@ -48,7 +54,7 @@ public class PostController extends BaseController {
 	
 	@PostMapping
 	public String createNewPost(@Valid PostYzw post, BindingResult bindingResult){
-		if(bindingResult.hasErrors() ){
+		if(bindingResult.hasErrors() ){	
 			return "/success.jsp";
 		}
 		postService.save(post);

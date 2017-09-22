@@ -3,13 +3,30 @@ package com.yinzhiwu.yiwu.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yinzhiwu.yiwu.dao.RoleDao;
-import com.yinzhiwu.yiwu.entity.sys.Role;
-import com.yinzhiwu.yiwu.service.RoleService;
+import com.yinzhiwu.yiwu.dao.PostYzwDao;
+import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.service.PostYzwService;
+
+/**
+*@Author ping
+*@Time  创建时间:2017年9月14日下午7:53:56
+*
+*/
 
 @Service
-public class PostYzwServiceImpl extends BaseServiceImpl<Role, Integer> implements RoleService {
+public class PostYzwServiceImpl extends BaseServiceImpl<PostYzw,Integer> implements PostYzwService {
 
 	@Autowired
-	public void setBaseDao(RoleDao dao){super.setBaseDao(dao);}
+	public void setBaseDao(PostYzwDao dao){
+		super.setBaseDao(dao);
+	}
+
+	@Autowired private PostYzwDao postDao;
+	
+	@Override
+	public DataTableBean findDataTable(Integer start, Integer length) {
+		return postDao.findDataTable(start, length);
+	}
+
 }
