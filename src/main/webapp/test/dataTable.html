@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>data table test</title>
 <link href="DataTables-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 </head>
 <body>
 
-	<table id="example" class="display" cellspacing="0" width="100%">
+	<table id="example" class="hover row-border cell-border" cellspacing="0" width="100%">
 		<thead>
 			<tr>
 				<th>id</th>
@@ -15,7 +15,7 @@
 			</tr>
 		</thead>
 	</table>
-	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="DataTables-1.10.16/js/jquery.dataTables.min.js"></script>
 
 	<script type="text/javascript">
@@ -23,7 +23,14 @@
 			$('#example').DataTable({
 				"processing":false,
 				"serverSide":true,
-				"ajax":"http://localhost:9090/yiwu/system/posts",
+				"lengthMenu":[5,10,20,50],
+				"ajax":{
+					"url":"http://localhost:9090/yiwu/system/posts/table",
+					"type":"POST",
+					"data": function (d){
+						d.myKey=d.search.value;
+					}
+				},
 				"columns":[{"data":"id"}, {"data":"name"}]
 			});
 		});

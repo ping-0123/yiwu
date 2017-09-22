@@ -1,7 +1,10 @@
 package com.yinzhiwu.yiwu.web.controller;
 
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,9 @@ import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.datatable.Order;
+import com.yinzhiwu.yiwu.model.datatable.QueryParam;
+import com.yinzhiwu.yiwu.model.datatable.Search;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.service.PostYzwService;
 
@@ -36,9 +42,34 @@ public class PostController extends BaseController {
 
 	@Autowired private PostYzwService postService;
 	
-	@GetMapping
+	@PostMapping(value="/table")
 	@ResponseBody
-	public DataTableBean index(Integer draw,Integer start,Integer length){
+	public DataTableBean index(QueryParam param, Search search, Order order, HttpServletRequest request){
+		
+		System.out.println(request.getParameter("start"));
+		
+		Enumeration<String> parameterNames = request.getParameterNames();
+		while (parameterNames.hasMoreElements()) {
+			String string = (String) parameterNames.nextElement();
+			System.out.println("parameter name is " + string);
+		}
+		
+		if(order != null)
+			System.err.println("order length is " +order.getDir());
+		
+		if(search !=null)
+			System.err.println("search value is " + search.getValue());
+//		Enumeration<String> attributeNames = request.getAttributeNames();
+//		Map<String, Object> map = new HashMap<>();
+//		while (attributeNames.hasMoreElements()) {
+//			String name = (String) attributeNames.nextElement();
+//			map.put(name, request.getAttribute(name));
+//		}
+//		
+		Integer start = param.getStart();
+		Integer length = param.getLength();
+		Integer draw = param.getDraw();
+		
 		Integer pageNo =(int) Math.ceil( ((float)(start+1)/length));
 		Integer pageSize = length;
 		PageBean<?> page = postService.findPageOfAll(pageNo, pageSize);

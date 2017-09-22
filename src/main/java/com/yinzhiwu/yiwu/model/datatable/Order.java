@@ -14,6 +14,17 @@ public class Order {
 	private Direction dir;
 	
 	
+	
+	public Order() {
+	}
+	
+	
+	public Order(Integer column, Direction dir) {
+		this.column = column;
+		this.dir = dir;
+	}
+
+
 	public Integer getColumn() {
 		return column;
 	}

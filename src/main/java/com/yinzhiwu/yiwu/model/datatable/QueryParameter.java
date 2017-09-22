@@ -1,6 +1,6 @@
 package com.yinzhiwu.yiwu.model.datatable;
 
-import java.util.List;
+import java.io.Serializable;
 
 /**
 *@Author ping
@@ -8,21 +8,23 @@ import java.util.List;
 *
 */
 
-public class QueryParameter {
+public class QueryParameter implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer draw;
-	private List<Column> column;
+	private Column[] columns;
 	private Integer start;
 	private Integer length;
 	private Search search;
-	private List<Order> order;
+	private Order[] order;
 	
 	public Integer getDraw() {
 		return draw;
 	}
-	public List<Column> getColumn() {
-		return column;
-	}
+
 	public Integer getStart() {
 		return start;
 	}
@@ -35,9 +37,7 @@ public class QueryParameter {
 	public void setDraw(Integer draw) {
 		this.draw = draw;
 	}
-	public void setColumn(List<Column> column) {
-		this.column = column;
-	}
+
 	public void setStart(Integer start) {
 		this.start = start;
 	}
@@ -47,10 +47,32 @@ public class QueryParameter {
 	public void setSearch(Search search) {
 		this.search = search;
 	}
-	public List<Order> getOrder() {
+
+	/**
+	 * @return the columns
+	 */
+	public Column[] getColumns() {
+		return columns;
+	}
+
+	/**
+	 * @param columns the columns to set
+	 */
+	public void setColumns(Column[] columns) {
+		this.columns = columns;
+	}
+
+	/**
+	 * @return the order
+	 */
+	public Order[] getOrder() {
 		return order;
 	}
-	public void setOrder(List<Order> order) {
+
+	/**
+	 * @param order the order to set
+	 */
+	public void setOrder(Order[] order) {
 		this.order = order;
 	}
 	

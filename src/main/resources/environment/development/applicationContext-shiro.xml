@@ -101,6 +101,7 @@
             <value>
             	/api/** = anon
             	/assets/** = anon
+            	/system/** = anon
                 /unauthorized.jsp = anon
                 /system/login = authc
                 /system/logout = logout
