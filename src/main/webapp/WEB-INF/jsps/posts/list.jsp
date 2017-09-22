@@ -54,8 +54,8 @@
 
 						<div class="clearfix"></div>
 					</div>
-					<div class="x_content">
-						<table id="datatable" class="table table-striped table-bordered">
+					<div class="x_content table-responsive">
+						<table id="datatable" class="table table-striped table-bordered table-hover table-condensed">
 							<thead>
 								<tr>
 									<th>职位</th>
