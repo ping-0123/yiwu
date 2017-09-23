@@ -1,7 +1,5 @@
 package com.yinzhiwu.yiwu.model.datatable;
 
-import java.util.List;
-
 /**
 *@Author ping
 *@Time  创建时间:2017年9月22日下午7:40:02
@@ -10,18 +8,18 @@ import java.util.List;
 
 public class QueryParameter {
 	
-	private Integer draw;
-	private List<Column> column;
-	private Integer start;
-	private Integer length;
+	private int draw;
+	private Column[] columns = new Column[50];
+	private int start;
+	private int length;
 	private Search search;
-	private List<Order> order;
+	private Order[] order = new Order[50];
 	
 	public Integer getDraw() {
 		return draw;
 	}
-	public List<Column> getColumn() {
-		return column;
+	public Column[] getColumns() {
+		return columns;
 	}
 	public Integer getStart() {
 		return start;
@@ -32,11 +30,14 @@ public class QueryParameter {
 	public Search getSearch() {
 		return search;
 	}
+	public Order[] getOrder() {
+		return order;
+	}
 	public void setDraw(Integer draw) {
 		this.draw = draw;
 	}
-	public void setColumn(List<Column> column) {
-		this.column = column;
+	public void setColumns(Column[] columns) {
+		this.columns = columns;
 	}
 	public void setStart(Integer start) {
 		this.start = start;
@@ -47,12 +48,11 @@ public class QueryParameter {
 	public void setSearch(Search search) {
 		this.search = search;
 	}
-	public List<Order> getOrder() {
-		return order;
-	}
-	public void setOrder(List<Order> order) {
+	public void setOrder(Order[] order) {
 		this.order = order;
 	}
+	
+	
 	
 	
 }

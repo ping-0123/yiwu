@@ -9,21 +9,24 @@ package com.yinzhiwu.yiwu.model.datatable;
 public class Search {
 	
 	private String value;
-	private String regex;
+	private boolean regex;
 	
 	
 	public String getValue() {
 		return value;
 	}
-	public String getRegex() {
+	public boolean isRegex() {
 		return regex;
 	}
 	public void setValue(String value) {
 		this.value = value;
 	}
-	public void setRegex(String regex) {
+	public void setRegex(boolean regex) {
 		this.regex = regex;
 	}
+	
+	
+	
 	
 	
 }

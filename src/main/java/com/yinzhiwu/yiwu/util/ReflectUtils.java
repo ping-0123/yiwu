@@ -7,6 +7,8 @@ import javax.persistence.Embedded;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
+
 public final class ReflectUtils {
 
 	/**
@@ -34,6 +36,32 @@ public final class ReflectUtils {
 			}
 		}
 		return null;
+	}
+	
+	public static void main(String[] args) {
+		PostYzw post = new PostYzw();
+		post.init();
+		showObject(post);
+	}
+	
+	public static void showObject(Object object){
+		if(object == null )
+			return;
+		
+		if(object.getClass().isPrimitive()){
+			System.out.println("value is " + object);
+		}
+		Field[] fields = getAllFields(object.getClass());
+		for (Field field : fields) {
+			field.setAccessible(true);
+			System.out.println("value of property " + field.getName() + " is :" );
+			try {
+				showObject(field.get(object));
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**

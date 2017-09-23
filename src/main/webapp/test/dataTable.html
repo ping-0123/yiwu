@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>data table test</title>
 <link href="DataTables-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 </head>
 <body>
@@ -12,6 +12,7 @@
 			<tr>
 				<th>id</th>
 				<th>name</th>
+				<th>status</th>
 			</tr>
 		</thead>
 	</table>
@@ -23,8 +24,13 @@
 			$('#example').DataTable({
 				"processing":false,
 				"serverSide":true,
-				"ajax":"http://localhost:9090/yiwu/system/posts",
-				"columns":[{"data":"id"}, {"data":"name"}]
+				"ajax":{
+					"url":"http://localhost:9090/yiwu/system/posts/table",
+					"type":"POST"
+				},
+				"columns":[{"data":"id"},
+				           {"data":"name"},
+				           {"data":"dataStatus"}]
 			});
 		});
 	</script>
