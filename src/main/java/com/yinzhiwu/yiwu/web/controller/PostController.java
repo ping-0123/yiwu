@@ -45,33 +45,6 @@ public class PostController extends BaseController {
 	@Autowired private PostYzwService postService;
 	List<String> list;
 	
-	public static void main(String[] args) {
-		System.err.println(Boolean.valueOf("false"));
-		
-		System.out.println(String.class.equals("aa".getClass()));
-		System.out.println(Direction.asc.toString());
-		System.out.println("Boolean.Type is primative " + Boolean.TYPE.isPrimitive());
-		
-		List<QueryParameter> params = new ArrayList<>();
-		String param = "search][regex]";
-		param = param.replaceFirst("]", "");
-		System.out.println(param);
-		
-		String[] names = new String[]{};
-		names[1] = "22";
-		System.out.println(names[1]);
-		
-		try {
-			ParameterizedType type = (ParameterizedType) PostController.class.getDeclaredField("list").getGenericType();
-			System.out.println(type.getActualTypeArguments()[0]);
-			Field field = PostController.class.getDeclaredField("list");
-			System.out.println(field.getGenericType());
-			
-		} catch (NoSuchFieldException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
 	private QueryParameter parseParameter(HttpServletRequest request) 
 			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InstantiationException{
@@ -145,6 +118,7 @@ public class PostController extends BaseController {
 			 if(subEntity == null){
 				 Class<?> clazz= (Class<?>) field.getGenericType();
 				 subEntity = clazz.newInstance();
+				 field.set(entity, subEntity);
 			 }
 			 String subFieldname = paraName.substring( paraName.indexOf("[") + 1);
 			 subFieldname  = subFieldname.replaceFirst("]", "");
@@ -181,6 +155,7 @@ public class PostController extends BaseController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		Map<String, String[]> map = request.getParameterMap();
 		for (Map.Entry<String, String[]> entry :map.entrySet()) {
 			if(entry.getValue().length>1)

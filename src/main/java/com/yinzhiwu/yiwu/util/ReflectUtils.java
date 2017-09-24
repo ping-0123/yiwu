@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Date;
 
 import javax.persistence.Embedded;
 import javax.persistence.Id;
@@ -47,10 +48,27 @@ public final class ReflectUtils {
 	public static void showObject(Object object){
 		if(object == null )
 			return;
-		
-		if(object.getClass().isPrimitive()){
-			System.out.println("value is " + object);
+		Class<?> clazz = object.getClass();
+		if(clazz.isPrimitive()
+				|| clazz.isEnum()
+				|| clazz.isArray()
+				|| object instanceof Iterable<?>
+				|| clazz==Date.class
+				|| clazz== Boolean.class
+				|| clazz == Integer.class
+				|| clazz == Long.class
+				|| clazz == Short.class
+				|| clazz == Float.class
+				|| clazz == Float.class
+				|| object instanceof Number
+				|| clazz==String.class
+				|| clazz ==Byte.class
+				|| clazz == Character.class
+		){
+			System.out.println(object);
+			return;
 		}
+		
 		Field[] fields = getAllFields(object.getClass());
 		for (Field field : fields) {
 			field.setAccessible(true);
