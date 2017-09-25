@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 
 public interface IBaseService<T, PK extends Serializable> {
@@ -43,4 +45,6 @@ public interface IBaseService<T, PK extends Serializable> {
 	public List<T> findByExample(T entity);
 
 	public PageBean<T> findPageOfAll(int pageNum, int pageSize);
+	
+	public DataTableBean<T> findDataTable(QueryParameter parameter) throws NoSuchFieldException, SecurityException;
 }

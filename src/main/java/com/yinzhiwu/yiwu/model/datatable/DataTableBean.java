@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 */
 
 @JsonInclude(value= Include.NON_NULL)
-public class DataTableBean implements Serializable{
+public class DataTableBean<T> implements Serializable{
 	
 	/**
 	 * 
@@ -22,13 +22,13 @@ public class DataTableBean implements Serializable{
 	private Integer draw;
 	private Integer recordsTotal;
 	private Integer recordsFiltered;
-	private List<?> data;
+	private List<T> data;
 	private String error;
 	
 	public DataTableBean(){};
 	
 	
-	public DataTableBean(Integer draw, Integer recordsTotal, Integer recordsFiltered, List<?> data, String error) {
+	public DataTableBean(Integer draw, Integer recordsTotal, Integer recordsFiltered, List<T> data, String error) {
 		this.draw = draw;
 		this.recordsTotal = recordsTotal;
 		this.recordsFiltered = recordsFiltered;
@@ -62,7 +62,7 @@ public class DataTableBean implements Serializable{
 	public void setRecordsFiltered(Integer recordsFiltered) {
 		this.recordsFiltered = recordsFiltered;
 	}
-	public void setData(List<?> data) {
+	public void setData(List<T> data) {
 		this.data = data;
 	}
 	public void setError(String error) {

@@ -33,6 +33,10 @@ import com.yinzhiwu.yiwu.entity.BaseEntity;
 import com.yinzhiwu.yiwu.entity.yzw.BaseYzwEntity;
 import com.yinzhiwu.yiwu.enums.DataStatus;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.datatable.Column;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.datatable.Order;
+import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.util.ReflectUtils;
 
@@ -557,4 +561,89 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 				.setParameter(namedParameter, value)
 				.getSingleResult();
 	}
+	
+	@Override
+	public DataTableBean<T> findDataTable(QueryParameter parameter) throws NoSuchFieldException, SecurityException{
+		//TODO 不支持正则表达式搜索
+		//TODO 只能实现String列 Integer列搜索
+		List<String> propertyNames = new ArrayList<>();
+		StringBuilder hql = new StringBuilder();
+		StringBuilder countHql = new StringBuilder();
+		hql.append(" FROM " + entityClass.getSimpleName());
+		hql.append(" WHERE 1=1");
+		//Add 搜索条件
+		String searchValue = parameter.getSearch()==null? null: parameter.getSearch().getValue();
+		if(StringUtils.hasText(searchValue)){
+			hql.append(" AND (1=0");
+			int i = 0;
+			Column column = parameter.getColumns()[i];
+			while (column !=null){
+				if(column.isSearchable()){
+					//只支持 Integer ,String 列搜索
+					Field field = ReflectUtils.getField(entityClass, column.getData());
+					if(field == null)
+						throw new NoSuchFieldException();
+					if(field.getGenericType() == Integer.class){
+//						propertyNames.add("search" + String.valueOf(i));
+//						hql.append(" OR cast_to_char(" + column.getData()  + ") LIKE :search" + String.valueOf(i));
+					}else if (field.getGenericType() == String.class) {
+						propertyNames.add("search" + String.valueOf(i));
+						hql.append(" OR " + column.getData()  + " LIKE :search" + String.valueOf(i));
+					}
+					
+				}
+				column = parameter.getColumns()[++i];
+			}
+			//搜索条件结尾
+			hql.append(" )");
+		}
+		
+		countHql.append("SELECT COUNT(1) ");
+		countHql.append(hql);
+		// Add Order
+		int j=0;
+		Order order = parameter.getOrder()[j];
+		while(order !=null){
+			if(j==0){
+				hql.append(" ORDER BY " );
+			}else {
+				hql.append(", ");
+			}
+			//如果是字符串 使用convert(? using gbk)排序
+			String orderedColumnName = parameter.getColumns()[order.getColumn()].getData();
+			Field orderedField = ReflectUtils.getField(entityClass, orderedColumnName);
+			if(orderedField.getGenericType() == String.class)
+				hql.append( "convert_gbk(" + orderedColumnName+ ") " + order.getDir().name());
+			else
+				hql.append( orderedColumnName + " " +  order.getDir().name());
+			
+			order = parameter.getOrder()[++j];
+		}
+		
+		//获取查询结果
+		Query<T> query = getSession().createQuery(hql.toString(), entityClass);
+		if(StringUtils.hasText(searchValue)){
+			String value= "%" + searchValue.trim() + "%";
+			for (String property : propertyNames) {
+				query.setParameter(property, value);
+			}
+		}
+		List<T> list = query.setFirstResult(parameter.getStart())
+			.setMaxResults(parameter.getLength())
+			.getResultList();
+		
+		// 获取查询数量
+		Query<Long> query2 = getSession().createQuery(_generateFindCountHql(countHql.toString()), Long.class);
+		if(StringUtils.hasText(searchValue)){
+			String value= "%" + searchValue.trim() + "%";
+			for (String property : propertyNames) {
+				query2.setParameter(property, value);
+			}
+		}
+		Long filterdCount = query2.getSingleResult();
+		
+		
+		return new DataTableBean<>(parameter.getDraw(), findCount().intValue(),  filterdCount.intValue(), list, "");
+	}
+	
 }

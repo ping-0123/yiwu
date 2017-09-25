@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.PostYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
-import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.service.PostYzwService;
 
 /**
@@ -21,12 +20,6 @@ public class PostYzwServiceImpl extends BaseServiceImpl<PostYzw,Integer> impleme
 	public void setBaseDao(PostYzwDao dao){
 		super.setBaseDao(dao);
 	}
-
-	@Autowired private PostYzwDao postDao;
 	
-	@Override
-	public DataTableBean findDataTable(Integer start, Integer length) {
-		return postDao.findDataTable(start, length);
-	}
 
 }

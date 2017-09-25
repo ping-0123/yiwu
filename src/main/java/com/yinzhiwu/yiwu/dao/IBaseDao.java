@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 
 /**
@@ -73,5 +75,5 @@ public interface IBaseDao<T, PK extends Serializable> {
 	void modify(PK id, T target) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException;
 
 
-
+	public DataTableBean<T> findDataTable(QueryParameter parameter) throws NoSuchFieldException, SecurityException;
 }

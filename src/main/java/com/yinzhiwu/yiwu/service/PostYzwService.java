@@ -1,7 +1,6 @@
 package com.yinzhiwu.yiwu.service;
 
 import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
-import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 
 /**
 *@Author ping
@@ -11,6 +10,4 @@ import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 
 public interface PostYzwService extends IBaseService<PostYzw,Integer> {
 
-	DataTableBean findDataTable(Integer start, Integer length);
-	
 }

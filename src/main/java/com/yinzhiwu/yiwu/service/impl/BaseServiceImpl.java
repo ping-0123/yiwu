@@ -8,6 +8,8 @@ import org.apache.commons.logging.LogFactory;
 
 import com.yinzhiwu.yiwu.dao.IBaseDao;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.service.IBaseService;
 
@@ -99,5 +101,9 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		return baseDao.findPageOfAll(pageNo, pageSize);
 	}
 
+	@Override
+	public DataTableBean<T> findDataTable(QueryParameter parameter) throws NoSuchFieldException, SecurityException{
+		return baseDao.findDataTable(parameter);
+	}
 
 }

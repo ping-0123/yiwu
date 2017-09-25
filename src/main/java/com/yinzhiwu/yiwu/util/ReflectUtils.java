@@ -2,18 +2,25 @@ package com.yinzhiwu.yiwu.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Date;
 
 import javax.persistence.Embedded;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 public final class ReflectUtils {
 
+	@SuppressWarnings("unused")
+	private static Log logger = LogFactory.getLog(ReflectUtils.class);
+	
 	/**
-	 * Returns an array of Field objects reflecting all the fields declared by
+	 * Returns an array contains Field objects reflecting all the fields declared  or inherited by
 	 * the class or interface represented by this Class object. This includes
 	 * public, protected, default (package) access, and private fields, also
 	 * includes inherited fields.
@@ -39,10 +46,20 @@ public final class ReflectUtils {
 		return null;
 	}
 	
-	public static void main(String[] args) {
-		PostYzw post = new PostYzw();
-		post.init();
-		showObject(post);
+	public static Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException,SecurityException{
+		try {
+			return clazz.getDeclaredField(fieldName);
+		} catch (NoSuchFieldException | SecurityException e) {
+			
+			Field[] fields = getAllFields(clazz);
+			for (Field field : fields) {
+				if(fieldName.equals(field.getName()))
+					return field;
+			}
+			
+			throw e;
+		}
+		
 	}
 	
 	public static void showObject(Object object){
@@ -111,4 +128,18 @@ public final class ReflectUtils {
 		}
 		return source;
 	}
+	
+	public static Class<?> getParameterizedType(Field field){
+		Type fieldClass = field.getGenericType();
+		if(fieldClass != null && fieldClass  instanceof ParameterizedType){
+			ParameterizedType pt = (ParameterizedType) fieldClass;
+			Type[] types = pt.getActualTypeArguments();
+			if(types != null && types.length > 0){
+				return (Class<?>) types[0];
+			}
+		}
+	
+		return null;
+	}
+	
 }
