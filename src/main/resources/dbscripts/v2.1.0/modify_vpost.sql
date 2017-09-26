@@ -1,4 +1,5 @@
 ALTER TABLE chenkuserdb1.tblpost add COLUMN(dataStatus int);
+alter TABLE chenkuserdb1.tblpost MODIFY COLUMN id int not null AUTO_INCREMENT;
 
 CREATE 
 	or REPLACE

@@ -19,7 +19,7 @@
 <link href="${pageContext.request.contextPath}/backend/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
 <!-- my datatable -->
-<link href="${pageContext.request.contextPath}/backend/css/datatables.min.css" rel="stylesheet" >
+<link href="${pageContext.request.contextPath}/backend/css/datatables.min.css" rel="stylesheet" > 
 <!-- bootstrap dialog -->
 <link href="${pageContext.request.contextPath}/backend/css/bootstrap-dialog.min.css" rel="stylesheet" >
 <!-- Custom Theme Style -->
@@ -45,7 +45,13 @@
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
 						</shiro:hasPermission>
-
+						<shiro:hasPermission name="posts:update:*">
+							<input type="hidden" id="updatePermission" value="true" />
+						</shiro:hasPermission>
+						<shiro:hasPermission name="posts:delete:*">
+							<input type="hidden" id="deletePermission" value="true" />
+						</shiro:hasPermission>
+						
 						<ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"> <i class="fa fa-chevron-up"></i></a></li>
 							<li><a href=""> <i class="fa fa-refresh"></i></a></li>
@@ -55,8 +61,8 @@
 
 						<div class="clearfix"></div>
 					</div>
-					<div class="x_content">
-						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed">
+					<div class="x_content table-responsive">
+						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" width="100%">
 							<thead>
 								<tr>
 									<th>职位Id</th>
@@ -111,13 +117,12 @@
 					<p>删除之后将不能恢复， 确认要删除吗?</p>
 				</div>
 				<div class="modal-footer">
-					<button  type="button" class="btn btn-success delete-confirm" data-dismiss="modal">确认</button>
+					<button  type="button" class="btn btn-success delete-confirm" data-dismiss="modal" onclick="doDeleteRequest()">确认</button>
 					<button  type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 				</div>
 
 			</div>
 		</div>
-
 
 	</div>
 	<!-- / delete Modal -->
@@ -133,13 +138,12 @@
 	<!-- validator -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
 	<!-- Custom Theme Scripts -->
-<%-- 	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script> --%>
-	<!-- Yiwu Theme Scripts -->
-	<script src="${pageContext.request.contextPath}/backend/js/main.js"></script>
+	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
+	
    
    <script type="text/javascript">
-		$(document).ready(function() {
-			$('#yiwuDatatable').DataTable({
+   		var setting = 
+			{
 				"processing" : false,
 				"serverSide" : true,
 				"ajax" : {
@@ -147,7 +151,8 @@
 					"type" : "POST"
 				},
 				"columns" : [ {
-					"data" : "id"
+					"data" : "id",
+					"name" : "postId"
 				}, {
 					"data" : "name"
 				}, {
@@ -158,15 +163,34 @@
 				},{
 					"data":"id",
 					"render": function(data, type, row, meta) {
-						var html =  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-pencil" title="修改"></i></a>';
-						html = html +  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
-						html = html + '<a href="#" onclick="doDelete(' + row.id + ')"><small><i class="fa fa-trash" title="删除"> </i> </small> </a>';
+						var html =  '';
+						if($('#updatePermission').val()){
+							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-pencil" title="修改"></i></a>';
+							html = html +  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
+						}
+						if($('#deletePermission').val()){
+							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
+						}
 						return html;
 					}
 				} ]
-			});
-		});
-		
+			}; //end .DataTable()
+			
+	/* 	/*   $('#yiwuDatatable tbody').on( 'click', 'tr', function () {
+		        if ( $(this).hasClass('selected') ) {
+		            $(this).removeClass('selected');
+		        }
+		        else {
+		            table.$('tr.selected').removeClass('selected');
+		            $(this).addClass('selected');
+		        } */
+		        
+		       /*  table.$('tr.selected').remove().draw(); 
+		    } ); //end select
+			
+		}); // end ready function */
   </script>
+  
+  <script src="${pageContext.request.contextPath}/backend/js/main.js"></script>
 </body>
 </html>
