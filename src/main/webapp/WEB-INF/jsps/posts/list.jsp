@@ -11,7 +11,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>DataTables | Gentelella</title>
+<title>岗位设置</title>
 
 <!-- Bootstrap -->
 <link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
@@ -38,7 +38,6 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<!-- data-remote="${pageContext.request.contextPath}/system/posts/edit" -->
 						<shiro:hasPermission name="posts:create:*">
 							<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".create-form">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
@@ -55,32 +54,16 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
-						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" style=" overflow:outo">
+						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed">
 							<thead>
 								<tr>
-									<th>职位</th>
-									<th>描述</th>
+									<th>职位Id</th>
+									<th>职位名</th>
 									<th>状态</th>
 									<th>操作</th>
 								</tr>
 							</thead>
 
-							<%-- <tbody>
-								<c:forEach items="${posts}" var="p">
-									<tr class="data-row" >
-										<td>${p.name}</td>
-										<td>${p.description}</td>
-										<td>${ping:getDataStatusName(p.dataStatus) }</td>
-										<td><shiro:hasPermission name="posts:update">
-												<a href="${p.id}/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-pencil" title="修改"></i></a>
-												<a href="${p.id}/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>
-
-											</shiro:hasPermission> <shiro:hasPermission name="posts:delete">
-												<a href="#" onclick="doDelete(${p.id})"><small><i class="fa fa-trash" title="删除"> </i> </small> </a>
-											</shiro:hasPermission></td>
-									</tr>
-								</c:forEach>
-							</tbody> --%>
 						</table>
 					</div>
 				</div>
@@ -141,13 +124,13 @@
 	<!-- jQuery -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/jquery/dist/jquery.min.js"></script>
 	<!-- Bootstrap -->
-	<script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<%-- 解决冲突 	<script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script> --%>
 	<!-- validator -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
 
 	<script src="${pageContext.request.contextPath}/backend/js/datatables.min.js" type="text/javascript"></script>
 	<!-- Custom Theme Scripts -->
-	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
+<%-- 	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script> --%>
 	<!-- Yiwu Theme Scripts -->
 	<script src="${pageContext.request.contextPath}/backend/js/main.js"></script>
    
@@ -172,15 +155,14 @@
 				},{
 					"data":"id",
 					"render": function(data, type, row, meta) {
-						return '<a href="https://www.baidu.com">aa</a>';
+						var html =  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-pencil" title="修改"></i></a>';
+						html = html +  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
+						html = html + '<a href="#" onclick="doDelete(' + row.id + ')"><small><i class="fa fa-trash" title="删除"> </i> </small> </a>';
+						return html;
 					}
 				} ]
 			});
 		});
-		
-	
-			
-		
 		
   </script>
 </body>
