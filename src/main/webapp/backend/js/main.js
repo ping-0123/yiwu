@@ -28,3 +28,14 @@ $('.data-row').click(function() {
 	$(this).addClass('selected-row');
 });
 
+function translateDataStatus(dataStatus) {
+	switch (dataStatus) {
+	case "NORMAL":
+		return "正常";
+	case "FORBID":
+		return "禁用";
+	default:
+		return "删除";
+	}
+}
+

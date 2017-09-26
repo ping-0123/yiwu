@@ -9,7 +9,7 @@ package com.yinzhiwu.yiwu.enums;
 public enum DataStatus {
 	NORMAL(0,"正常"),
 	FORBID(1,"禁用"),
-	DELETE(1,"删除");
+	DELETE(2,"删除");
 	
 	private final int index;
 	private final String name;

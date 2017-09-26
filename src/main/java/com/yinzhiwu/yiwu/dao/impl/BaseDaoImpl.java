@@ -578,7 +578,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			int i = 0;
 			Column column = parameter.getColumns()[i];
 			while (column !=null){
-				if(column.isSearchable()){
+				if(column.isSearchable() && StringUtils.hasLength(column.getData()) ){
 					//只支持 Integer ,String 列搜索
 					Field field = ReflectUtils.getField(entityClass, column.getData());
 					if(field == null)
@@ -597,7 +597,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			//搜索条件结尾
 			hql.append(" )");
 		}
-		
+		//countHql
 		countHql.append("SELECT COUNT(1) ");
 		countHql.append(hql);
 		// Add Order
@@ -633,14 +633,14 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			.getResultList();
 		
 		// 获取查询数量
-		Query<Long> query2 = getSession().createQuery(_generateFindCountHql(countHql.toString()), Long.class);
+		Query<Long> countQuery = getSession().createQuery(_generateFindCountHql(countHql.toString()), Long.class);
 		if(StringUtils.hasText(searchValue)){
 			String value= "%" + searchValue.trim() + "%";
 			for (String property : propertyNames) {
-				query2.setParameter(property, value);
+				countQuery.setParameter(property, value);
 			}
 		}
-		Long filterdCount = query2.getSingleResult();
+		Long filterdCount = countQuery.getSingleResult();
 		
 		
 		return new DataTableBean<>(parameter.getDraw(), findCount().intValue(),  filterdCount.intValue(), list, "");

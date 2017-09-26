@@ -13,6 +13,7 @@
 				<th>id</th>
 				<th>name</th>
 				<th>status</th>
+				<th>operating</th>
 			</tr>
 		</thead>
 	</table>
@@ -20,19 +21,42 @@
 	<script type="text/javascript" src="DataTables-1.10.16/js/jquery.dataTables.min.js"></script>
 
 	<script type="text/javascript">
-		$(document).ready(function(){
+		$(document).ready(function() {
 			$('#example').DataTable({
-				"processing":false,
-				"serverSide":true,
-				"ajax":{
-					"url":"http://localhost:9090/yiwu/system/posts/table",
-					"type":"POST"
+				"processing" : false,
+				"serverSide" : true,
+				"ajax" : {
+					"url" : "http://localhost:9090/yiwu/system/posts/table",
+					"type" : "POST"
 				},
-				"columns":[{"data":"id"},
-				           {"data":"name"},
-				           {"data":"dataStatus"}]
+				"columns" : [ {
+					"data" : "id"
+				}, {
+					"data" : "name"
+				}, {
+					"data" : "dataStatus",
+					"render" : function(data, type, row, meta) {
+						return translateDataStatus(data);
+					}
+				},{
+					"data":"id",
+					"render": function(data, type, row, meta) {
+						return '<a href="https://www.baidu.com">aa</a>';
+					}
+				} ]
 			});
 		});
+
+		function translateDataStatus(dataStatus) {
+			switch (dataStatus) {
+			case "NORMAL":
+				return "正常";
+			case "FORBID":
+				return "禁用";
+			default:
+				return "删除";
+			}
+		}
 	</script>
 </body>
 </html>

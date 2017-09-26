@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.util.StringUtils;
 
 
 public final class ReflectUtils {
@@ -47,6 +48,8 @@ public final class ReflectUtils {
 	}
 	
 	public static Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException,SecurityException{
+		if(clazz==null || !StringUtils.hasText(fieldName)) 
+			throw new IllegalArgumentException("clazz and fieldName can not be null");
 		try {
 			return clazz.getDeclaredField(fieldName);
 		} catch (NoSuchFieldException | SecurityException e) {

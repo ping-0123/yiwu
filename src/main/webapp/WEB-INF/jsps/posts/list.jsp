@@ -17,9 +17,9 @@
 <link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 <!-- Font Awesome -->
 <link href="${pageContext.request.contextPath}/backend/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-<!-- Datatables -->
-<link href="${pageContext.request.contextPath}/backend/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
 
+<!-- my datatable -->
+<link href="${pageContext.request.contextPath}/backend/css/datatables.min.css" rel="stylesheet" >
 <!-- Custom Theme Style -->
 <link href="${pageContext.request.contextPath}/backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
@@ -54,8 +54,8 @@
 
 						<div class="clearfix"></div>
 					</div>
-					<div class="x_content table-responsive">
-						<table id="datatable" class="table table-striped table-bordered table-hover table-condensed">
+					<div class="x_content">
+						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" style=" overflow:outo">
 							<thead>
 								<tr>
 									<th>职位</th>
@@ -65,7 +65,7 @@
 								</tr>
 							</thead>
 
-							<tbody>
+							<%-- <tbody>
 								<c:forEach items="${posts}" var="p">
 									<tr class="data-row" >
 										<td>${p.name}</td>
@@ -80,7 +80,7 @@
 											</shiro:hasPermission></td>
 									</tr>
 								</c:forEach>
-							</tbody>
+							</tbody> --%>
 						</table>
 					</div>
 				</div>
@@ -145,13 +145,43 @@
 	<!-- validator -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
 
-	<!-- Datatables -->
-	<script src="${pageContext.request.contextPath}/backend/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-	<script src="${pageContext.request.contextPath}/backend/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/backend/js/datatables.min.js" type="text/javascript"></script>
 	<!-- Custom Theme Scripts -->
 	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
 	<!-- Yiwu Theme Scripts -->
 	<script src="${pageContext.request.contextPath}/backend/js/main.js"></script>
    
+   <script type="text/javascript">
+		$(document).ready(function() {
+			$('#yiwuDatatable').DataTable({
+				"processing" : false,
+				"serverSide" : true,
+				"ajax" : {
+					"url" : "http://localhost:9090/yiwu/system/posts/table",
+					"type" : "POST"
+				},
+				"columns" : [ {
+					"data" : "id"
+				}, {
+					"data" : "name"
+				}, {
+					"data" : "dataStatus",
+					"render" : function(data, type, row, meta) {
+						return translateDataStatus(data);
+					}
+				},{
+					"data":"id",
+					"render": function(data, type, row, meta) {
+						return '<a href="https://www.baidu.com">aa</a>';
+					}
+				} ]
+			});
+		});
+		
+	
+			
+		
+		
+  </script>
 </body>
 </html>

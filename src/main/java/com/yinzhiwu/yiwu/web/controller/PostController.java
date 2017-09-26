@@ -1,7 +1,5 @@
 package com.yinzhiwu.yiwu.web.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -60,8 +58,6 @@ public class PostController extends BaseController {
 	
 	@GetMapping(value="/list")
 	public String list(Model model){
-		List<PostYzw> posts = postService.findAll();
-		model.addAttribute("posts", posts);
 		return "posts/list";
 	}
 	
