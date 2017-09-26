@@ -5,9 +5,11 @@
 var DELETE_URL,
 	$TABLE =$('#yiwuDatatable'),
 	TABLE;
-
+	
 $(document).ready(function(){
 	TABLE = $TABLE.DataTable(setting);
+	//添加搜索提示
+	$('.input-sm').attr('placeholder', search_hint);
 });
 
 /**

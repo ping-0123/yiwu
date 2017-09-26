@@ -142,6 +142,7 @@
 	
    
    <script type="text/javascript">
+   		var search_hint="输入职位名";
    		var setting = 
 			{
 				"processing" : false,
