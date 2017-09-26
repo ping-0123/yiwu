@@ -32,13 +32,17 @@ function deleteRequest(url) {
 		url : url,
 		type : 'DELETE',
 		success : function(data) {
+			console.log("start delete init....");
 			var dlg = BootstrapDialog.show({
-			    message: '已成功删除'
+			    message: '已成功删除',
+			    size : BootstrapDialog.SIZE_SMALL
 			});
+			
 			setTimeout(function(){
 			    dlg.close();
 			},1000);
-			window.location.reload();
+			
+			/*window.location.reload();*/
 		}
 	});
 };

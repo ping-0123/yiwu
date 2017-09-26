@@ -14,12 +14,14 @@
 <title>岗位设置</title>
 
 <!-- Bootstrap -->
-<link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+ <link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 <!-- Font Awesome -->
 <link href="${pageContext.request.contextPath}/backend/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
 <!-- my datatable -->
 <link href="${pageContext.request.contextPath}/backend/css/datatables.min.css" rel="stylesheet" >
+<!-- bootstrap dialog -->
+<link href="${pageContext.request.contextPath}/backend/css/bootstrap-dialog.min.css" rel="stylesheet" >
 <!-- Custom Theme Style -->
 <link href="${pageContext.request.contextPath}/backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
@@ -62,7 +64,7 @@
 									<th>状态</th>
 									<th>操作</th>
 								</tr>
-							</thead>
+							</thead> 
 
 						</table>
 					</div>
@@ -122,13 +124,14 @@
 	<!-- / bootstrap modals -->
     
 	<!-- jQuery -->
-	<script src="${pageContext.request.contextPath}/backend/vendors/jquery/dist/jquery.min.js"></script>
+<%-- 已继承在datatables.min.js里	<script src="${pageContext.request.contextPath}/backend/vendors/jquery/dist/jquery.min.js"></script> --%>
 	<!-- Bootstrap -->
-<%-- 解决冲突 	<script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script> --%>
+	<%-- <script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script> --%>
+	<script src="${pageContext.request.contextPath}/backend/js/datatables.min.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/backend/js/bootstrap-dialog.min.js" type="text/javascript"></script>
+
 	<!-- validator -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
-
-	<script src="${pageContext.request.contextPath}/backend/js/datatables.min.js" type="text/javascript"></script>
 	<!-- Custom Theme Scripts -->
 <%-- 	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script> --%>
 	<!-- Yiwu Theme Scripts -->
