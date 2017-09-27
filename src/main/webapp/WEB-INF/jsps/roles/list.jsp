@@ -27,6 +27,10 @@
 <!-- Yiwu Theme Style -->
 <link href="${pageContext.request.contextPath}/backend/css/main.css" rel="stylesheet">
 
+<style>
+	.div-a{float:left;width:60%}
+	.div-b{float:right;width:38%}
+</style>
 </head>
 
 <body class="">
@@ -40,7 +44,7 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<shiro:hasPermission name="posts:create:*">
+						<shiro:hasPermission name="roles:create:*">
 							<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
@@ -62,11 +66,29 @@
 
 						<div class="clearfix"></div>
 					</div>
-					<div class="x_content table-responsive">
+					
+					<!-- table -->
+					<div class="x_content table-responsive div-a">
 						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" width="100%">
 
 						</table>
 					</div>
+					<!-- /end table -->
+					
+					<!-- resource tree -->
+					<div class="div-b">
+						<div>
+							<shiro:hasPermission name="roles:update:*">
+								<button class="btn btn-success" onclick=""><small>保存</small></button>
+							</shiro:hasPermission>
+						</div>
+						
+						<div>
+							tree
+						</div>
+					</div> 
+					<!-- /end resource tree -->
+				
 				</div>
 			</div>
 
@@ -111,12 +133,29 @@
 	
    
    <script type="text/javascript">
-   		var search_hint="输入角色名";
    		var column_index_create_time =0;
    		var setting = 
 			{
 				"processing" : false,
 				"serverSide" : true,
+				"language":{
+					//左下
+					"info": "查询 _TOTAL_ 条",
+					"infoFiltered": "(共 _MAX_ 条记录)",
+					"infoEmpty": "没有记录",
+					//左上
+					"lengthMenu": "每页显示: _MENU_",
+					
+					//
+					"paginate":{
+						"previous":"上一页",
+						"next":"下一页"
+					},
+					
+					//
+					"search":"搜索:",
+					"searchPlaceholder":"输入角色名"
+				},
 				"ajax" : {
 					"url" : "http://localhost:9090/yiwu/system/roles/datatable",
 					"type" : "POST"
