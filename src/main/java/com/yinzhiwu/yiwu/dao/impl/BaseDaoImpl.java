@@ -174,6 +174,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	@Override
 	public void deleteLogic(T entity) {
 		Assert.notNull(entity, "id is required");
+		//TODO 处理一对多， 多对多， 一对一，多对一关联关系的级联逻辑删除
+		
 		if(entity instanceof BaseEntity){
 			((BaseEntity) entity).setDataStatus(DataStatus.DELETE);
 			update(entity);
@@ -203,12 +205,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			addPairs(properties, values, entityClass, entity, "");
 			String[] pros = new String[properties.size()];
 			return findByProperties(properties.toArray(pros), values.toArray());
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			logger.error(e.getMessage(), e);
 		}
 		
 		return null;

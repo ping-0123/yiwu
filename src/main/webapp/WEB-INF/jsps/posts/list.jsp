@@ -94,30 +94,6 @@
 	<!-- /update modal -->
 	
 
-	<!-- delete modal -->
-	<div class="modal fade bs-example-modal-sm modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-					<h4 class="modal-title" id="myModalLabel2">提示</h4>
-				</div>
-				<div class="modal-body">
-					<p>删除之后将不能恢复， 确认要删除吗?</p>
-				</div>
-				<div class="modal-footer">
-					<button  type="button" class="btn btn-success delete-confirm" data-dismiss="modal" onclick="doDeleteRequest()">确认</button>
-					<button  type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-				</div>
-
-			</div>
-		</div>
-
-	</div>
-	<!-- / delete Modal -->
 	<!-- / bootstrap modals -->
     
 	<!-- jQuery -->

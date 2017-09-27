@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.entity.yzw;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,11 +19,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 @Entity
@@ -50,7 +53,7 @@ public class EmployeeYzw extends BaseYzwEntity {
 	private String name;
 
 	@Column(length = 128, name="chenk_password")
-	private String chenkPassword;
+	private String password;
 
 	@Enumerated
 	@Column(name = "gender")
@@ -62,7 +65,8 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@Column(length = 20)
 	private String telephone;
 
-	@Column(length = 20)
+	@Pattern(regexp = "^1\\d{10}$", message="请输入有效的11位手机号码")
+	@Column(length = 20, nullable=false)
 	private String cellphone;
 
 	@Column(length = 20)
@@ -72,10 +76,10 @@ public class EmployeeYzw extends BaseYzwEntity {
 	private String email;
 
 	@Column
-	private Integer disabled;
+	private Boolean disabled;
 
 	@Column
-	private Boolean removed = Boolean.FALSE;
+	private Boolean removed;
 
 	@Column
 	private Integer wparam;
@@ -92,7 +96,7 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@Column
 	private Integer userType;
 
-	@Column(length = 128)
+	@Column(length = 128)	
 	private String accessCode;
 
 	@Column(length = 128)
@@ -101,7 +105,8 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@Column(name="fingerprint_code")
 	private String fingerprintCode;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "department_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT, name = "fk_employee_department_id"))
 	private DepartmentYzw department;
 
@@ -123,21 +128,30 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@Column(name = "last_online_timestamp")
 	private Date lastOnlineTimeStamp;
 	
-	@Column(length=128, name="yiwu_password")
-	private String password;
-	@Column(length=123)
-	private String salt;
-	
-	@OneToMany
-	@JoinColumn(name="employee_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	@JsonIgnore
+	@OneToMany(mappedBy="employee", cascade=CascadeType.ALL)
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Set<EmployeePostYzw> employeePosts = new HashSet<>();
+	
+	
 	
 	public EmployeeYzw() {
 	}
 
-	public String getCredentialsSalt() {
-		return this.username + this.salt;
+
+	@Override
+	public void init() {
+		super.init();
+		if(removed== null)
+			removed = Boolean.FALSE;
+		if(password == null || "".equals(password.trim()))
+			password = "yzw123456";
+		if(disabled==null)
+			disabled = Boolean.FALSE;
+		if(outUser == null)
+			outUser =0;
+		if(username == null || "".equals(username.trim()))
+			username = UUID.randomUUID().toString();
 	}
 
 
@@ -163,11 +177,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 		return name;
 	}
 
-
-
-	public String getChenkPassword() {
-		return chenkPassword;
-	}
 
 
 
@@ -203,12 +212,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 
 	public String getEmail() {
 		return email;
-	}
-
-
-
-	public Integer getDisabled() {
-		return disabled;
 	}
 
 
@@ -310,19 +313,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 	}
 
 
-
-	public String getPassword() {
-		return password;
-	}
-
-
-
-	public String getSalt() {
-		return salt;
-	}
-
-
-
 	public Set<EmployeePostYzw> getEmployeePosts() {
 		return employeePosts;
 	}
@@ -349,12 +339,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-
-
-	public void setChenkPassword(String chenkPassword) {
-		this.chenkPassword = chenkPassword;
 	}
 
 
@@ -391,12 +375,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-
-
-	public void setDisabled(Integer disabled) {
-		this.disabled = disabled;
 	}
 
 
@@ -489,12 +467,18 @@ public class EmployeeYzw extends BaseYzwEntity {
 		this.clusterToken = clusterToken;
 	}
 
-
-
 	public void setLastOnlineTimeStamp(Date lastOnlineTimeStamp) {
 		this.lastOnlineTimeStamp = lastOnlineTimeStamp;
 	}
 
+	public void setEmployeePosts(Set<EmployeePostYzw> employeePosts) {
+		this.employeePosts = employeePosts;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
 
 
 	public void setPassword(String password) {
@@ -502,13 +486,12 @@ public class EmployeeYzw extends BaseYzwEntity {
 	}
 
 
-
-	public void setSalt(String salt) {
-		this.salt = salt;
+	public Boolean getDisabled() {
+		return disabled;
 	}
 
 
-	public void setEmployeePosts(Set<EmployeePostYzw> employeePosts) {
-		this.employeePosts = employeePosts;
+	public void setDisabled(Boolean disabled) {
+		this.disabled = disabled;
 	}
 }

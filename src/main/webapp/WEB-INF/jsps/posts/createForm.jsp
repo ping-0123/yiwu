@@ -26,7 +26,7 @@
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">职位名 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
 					<!--  <input type="text" class="form-control" placeholder="设置之后不可修改"  name="name" value="${post.name }"> -->
-					<input id="name" name="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" placeholder="设置之后不可修改" required="required" type="text">
+					<input  name="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2"  placeholder="设置之后不可修改" required="required" type="text">
 				</div>
 			</div>
 
@@ -34,8 +34,8 @@
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">状态 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
 					<select name="dataStatus" class="form-control">
-						<option value="NORMAL" <c:if test="${post.dataStatus eq 'NORMAL'}"> selected="selected"</c:if>>正常</option>
-						<option value="FORBID" <c:if test="${post.dataStatus eq 'FORBID'}"> selected="selected"</c:if>>禁用</option>
+						<option value="NORMAL"  selected="selected">正常</option>
+						<option value="FORBID" >禁用</option>
 					</select>
 				</div>
 			</div>

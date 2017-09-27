@@ -20,13 +20,19 @@
 
 	<!-- modal body -->
 	<div class="modal-body">
-		<form method="POST" action="${pageContext.request.contextPath}/system/roles" class="form-horizontal form-label-left">
+		<form id="form-create" method="POST" action="${pageContext.request.contextPath}/system/roles" class="form-horizontal form-label-left">
+
+			<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">代码 <span class="required">*</span></label>
+				<div class="col-md-9 col-sm-9 col-xs-12">
+					<input name="code" placeholder="设置之后不可修改" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
+				</div>
+			</div>
 
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">角色名 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<!--  <input type="text" class="form-control" placeholder="设置之后不可修改"  name="name" value="${post.name }"> -->
-					<input id="name" name="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" placeholder="设置之后不可修改" required="required" type="text">
+					<input name="name" placeholder="" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
 				</div>
 			</div>
 
@@ -34,11 +40,20 @@
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">状态 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
 					<select name="dataStatus" class="form-control">
-						<option value="NORMAL" <c:if test="${role.dataStatus eq 'NORMAL'}"> selected="selected"</c:if>>正常</option>
-						<option value="FORBID" <c:if test="${role.dataStatus eq 'FORBID'}"> selected="selected"</c:if>>禁用</option>
+						<option value="NORMAL" selected="selected">正常</option>
+						<option value="FORBID">禁用</option>
 					</select>
 				</div>
 			</div>
+
+
+			<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">角色描述 </label>
+				<div class="col-md-9 col-sm-9 col-xs-12">
+					<textarea class="form-control" rows="3" name="description"> </textarea>
+				</div>
+			</div>
+			
 
 			<div class="ln_solid"></div>
 			<div class="form-group">
@@ -49,13 +64,23 @@
 
 		</form>
 	</div>
-	<!-- /modal body -->
 
-	<!-- modal footer
-	<div class="modal-footer">
-		<button type="button" class="btn btn-success" data-dismiss="modal">保存</button>
-	</div>  -->
-	<!-- /modal footer -->
-
+	<script type="text/javascript">
+		$('#form-create').submit(function() {
+			$.ajax({
+				url : $(this).attr("action"),
+				type : $(this).attr("method"),
+				data : $(this).serialize(),
+				success : function(data) {
+					if (data.result) {
+						$('.modal-create').modal('hide');
+						TABLE.order([ CLOUMN_CREATE_TIME, 'desc' ]).draw();
+					} else
+						showSaveFailureModal(data.msg);
+				}
+			});
+			return false;
+		});
+	</script>
 </body>
 </html>

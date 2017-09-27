@@ -1,16 +1,28 @@
 package com.yinzhiwu.yiwu.web.controller;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
+import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 
 
 @Controller
@@ -19,10 +31,79 @@ public class EmployeeController  extends BaseController{
 
 	@Autowired private EmployeeYzwService employeeService;
 	
-	@RequestMapping(method=RequestMethod.GET)
+	@GetMapping
+	public String index(){
+		return "redirect:employees/list";
+	}
+	
+	@GetMapping(value="/list")
 	public String list(Model model){
-		List<EmployeeYzw> employees = employeeService.findAll();
-		model.addAttribute("employees", employees);
 		return "employees/list";
 	}
+	
+	@GetMapping(value="/form")
+	public String showCreateForm(){
+		return "employees/createForm";
+	}
+	
+	@GetMapping(value="/{id}/form")
+	public String showModifyForm(@PathVariable(name="id") Integer id, Model model){
+		EmployeeYzw employee = employeeService.get(id);
+		model.addAttribute("employee",employee);
+		return "employees/updateForm";
+	}
+	
+	@PostMapping(value="/datatable")
+	@ResponseBody
+	public DataTableBean<?> findDatatable(HttpServletRequest request){
+		
+		try {
+			QueryParameter parameter = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
+			return employeeService.findDataTable(parameter);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
+				| InstantiationException e) {
+			logger.error(e.getMessage(),e);
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	@GetMapping(value="/{id}")
+	@ResponseBody
+	public YiwuJson<?> get(@PathVariable(name="id") Integer id ){
+		return YiwuJson.createBySuccess(employeeService.get(id));
+	}
+	
+	@PostMapping
+	@ResponseBody
+	public YiwuJson<?> create(@Valid EmployeeYzw employee, BindingResult bindingResult){
+		if(bindingResult.hasErrors() ){	
+			return YiwuJson.createByErrorMessage(getErrorsMessage(bindingResult));
+		}
+		employeeService.save(employee);
+		return YiwuJson.createBySuccess(employee);
+	}
+	
+	@PutMapping(value="/{id}")
+	@ResponseBody
+	public YiwuJson<?> modify(@PathVariable(name="id") Integer id, EmployeeYzw employee){
+		
+		try {
+			employeeService.modify(id, employee);
+			return YiwuJson.createBySuccess();
+		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
+		
+	}
+	
+	@ResponseBody
+	@DeleteMapping(value="/{id}")
+	public YiwuJson<?> delete(@PathVariable(name="id") Integer id){
+		employeeService.delete(id);
+		return YiwuJson.createBySuccess();
+	}
+	
 }

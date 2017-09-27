@@ -92,7 +92,7 @@ public class PostController extends BaseController {
 	
 	@ResponseBody
 	@DeleteMapping(value="/{id}")
-	public YiwuJson<?> modify(@PathVariable(name="id") Integer id){
+	public YiwuJson<?> delete(@PathVariable(name="id") Integer id){
 		postService.delete(id);
 		return YiwuJson.createBySuccess();
 	}
@@ -100,7 +100,7 @@ public class PostController extends BaseController {
 	
 	@ResponseBody
 	@PostMapping(value="/datatable")
-	public DataTableBean<?> getDatatable(Integer draw,Integer start,Integer length, HttpServletRequest request){
+	public DataTableBean<?> getDatatable(HttpServletRequest request){
 		try {
 			QueryParameter para = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
 			return postService.findDataTable(para);

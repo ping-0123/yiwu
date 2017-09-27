@@ -11,15 +11,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>DataTables | Gentelella</title>
+<title>岗位设置</title>
 
 <!-- Bootstrap -->
-<link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+ <link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 <!-- Font Awesome -->
 <link href="${pageContext.request.contextPath}/backend/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-<!-- Datatables -->
-<link href="${pageContext.request.contextPath}/backend/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
 
+<!-- my datatable -->
+<link href="${pageContext.request.contextPath}/backend/css/datatables.min.css" rel="stylesheet" > 
+<!-- bootstrap dialog -->
+<link href="${pageContext.request.contextPath}/backend/css/bootstrap-dialog.min.css" rel="stylesheet" >
 <!-- Custom Theme Style -->
 <link href="${pageContext.request.contextPath}/backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
@@ -38,13 +40,19 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<!-- data-remote="${pageContext.request.contextPath}/system/posts/edit" -->
-						<shiro:hasPermission name="roles:create:*">
-							<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".create-form">
+						<shiro:hasPermission name="posts:create:*">
+							<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
 						</shiro:hasPermission>
-
+						
+						<shiro:hasPermission name="roles:update:*">
+							<input type="hidden" id="updatePermission" value="true" />
+						</shiro:hasPermission>
+						<shiro:hasPermission name="roles:delete:*">
+							<input type="hidden" id="deletePermission" value="true" />
+						</shiro:hasPermission>
+						
 						<ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"> <i class="fa fa-chevron-up"></i></a></li>
 							<li><a href=""> <i class="fa fa-refresh"></i></a></li>
@@ -54,29 +62,9 @@
 
 						<div class="clearfix"></div>
 					</div>
-					<div class="x_content">
-						<table id="datatable" class="table table-striped table-bordered">
-							<thead>
-								<tr>
-									<th>角色名</th>
-									<th>状态</th>
-									<th>操作</th>
-								</tr>
-							</thead>
+					<div class="x_content table-responsive">
+						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" width="100%">
 
-							<tbody>
-								<c:forEach items="${roles}" var="p">
-									<tr class="data-row" >
-										<td>${p.name}</td>
-										<td>${ping:getDataStatusName(p.dataStatus) }</td>
-										<td><shiro:hasPermission name="roles:update">
-												<a href="${p.id}/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-pencil" title="修改"></i></a>
-											</shiro:hasPermission> <shiro:hasPermission name="roles:delete">
-												<a href="#" ><small><i class="fa fa-trash" title="删除"> </i> </small> </a>
-											</shiro:hasPermission></td>
-									</tr>
-								</c:forEach>
-							</tbody>
 						</table>
 					</div>
 				</div>
@@ -90,7 +78,7 @@
 
 	<!-- bootstrap modals -->
 	<!-- create modal -->
-	<div class="modal fade bs-example-modal-lg create-form" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg modal-create" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content"></div>
 		</div>
@@ -99,7 +87,7 @@
 	<!-- create modal -->
 
 	<!-- update modal -->
-	<div class="modal fade bs-example-modal-lg edit-form" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg modal-update" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content"></div>
 		</div>
@@ -107,47 +95,64 @@
 	<!-- /update modal -->
 	
 
-	<!-- delete modal -->
-	<div class="modal fade bs-example-modal-sm delete-promt" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-					<h4 class="modal-title" id="myModalLabel2">提示</h4>
-				</div>
-				<div class="modal-body">
-					<p>删除之后将不能恢复， 确认要删除吗?</p>
-				</div>
-				<div class="modal-footer">
-					<button  type="button" class="btn btn-success delete-confirm" data-dismiss="modal">确认</button>
-					<button  type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-				</div>
-
-			</div>
-		</div>
-
-
-	</div>
-	<!-- / delete Modal -->
 	<!-- / bootstrap modals -->
     
 	<!-- jQuery -->
-	<script src="${pageContext.request.contextPath}/backend/vendors/jquery/dist/jquery.min.js"></script>
+<%-- 已继承在datatables.min.js里	<script src="${pageContext.request.contextPath}/backend/vendors/jquery/dist/jquery.min.js"></script> --%>
 	<!-- Bootstrap -->
-	<script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+	<%-- <script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script> --%>
+	<script src="${pageContext.request.contextPath}/backend/js/datatables.min.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/backend/js/bootstrap-dialog.min.js" type="text/javascript"></script>
+
 	<!-- validator -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
-
-	<!-- Datatables -->
-	<script src="${pageContext.request.contextPath}/backend/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-	<script src="${pageContext.request.contextPath}/backend/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 	<!-- Custom Theme Scripts -->
 	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
-	<!-- Yiwu Theme Scripts -->
-	<script src="${pageContext.request.contextPath}/backend/js/main.js"></script>
+	
    
+   <script type="text/javascript">
+   		var search_hint="输入角色名";
+   		var column_index_create_time =0;
+   		var setting = 
+			{
+				"processing" : false,
+				"serverSide" : true,
+				"ajax" : {
+					"url" : "http://localhost:9090/yiwu/system/roles/datatable",
+					"type" : "POST"
+				},
+				"columns" : [{
+					"data" : "createDate",
+					"visible" : false
+				},{
+					"title": "角色名",
+					"data" : "name",
+					"name" : "name"
+				}, {
+					"data" : "dataStatus",
+					"title": "状态",
+					"render": function(data,type,row,meta){
+						return translateDataStatus(data)
+					}
+				},{
+					"data":"createDate",
+					"title":"操作",
+					"render": function(data, type, row, meta) {
+						var html =  '';
+						if($('#updatePermission').val()){
+							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
+							html = html +  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
+						}
+						if($('#deletePermission').val()){
+							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
+						}
+						return html;
+					}
+				} ]
+			}; //end setting
+			
+  </script>
+  
+  <script src="${pageContext.request.contextPath}/backend/js/main.js"></script>
 </body>
 </html>

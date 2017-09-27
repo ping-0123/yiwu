@@ -1,4 +1,5 @@
 alter TABLE chenkuserdb1.tblemployee add COLUMN(dataStatus int);
+alter TABLE chenkuserdb1.tblemployee MODIFY COLUMN id int AUTO_INCREMENT;
 
 CREATE 
 	or REPLACE

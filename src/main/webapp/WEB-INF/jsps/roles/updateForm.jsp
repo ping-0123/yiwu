@@ -21,13 +21,20 @@
 
 	<!-- modal body -->
 	<div class="modal-body">
-		<form method="POST" action="${post.id}" class="form-horizontal form-label-left">
+		<form id="form-update" method="POST" action="${role.id}" class="form-horizontal form-label-left">
 
 			<input type="hidden" name="_method" value="PUT">
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">职位名 <span class="required">*</span></label>
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">代码 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<input type="text" class="form-control" placeholder="岗位名" disabled="disabled" name="name" value="${post.name }">
+					<input name="code" placeholder="设置之后不可修改" disabled="disabled" value="${role.code }" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">角色名 <span class="required">*</span></label>
+				<div class="col-md-9 col-sm-9 col-xs-12">
+					<input name="name" placeholder="" value="${role.name }" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
 				</div>
 			</div>
 
@@ -41,12 +48,14 @@
 				</div>
 			</div>
 
+
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">岗位描述 </label>
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">角色描述 </label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<textarea class="form-control" rows="3" name="description"> ${post.description } </textarea>
+					<textarea class="form-control" rows="3" name="description" value="${role.description }"> </textarea>
 				</div>
 			</div>
+			
 
 			<div class="ln_solid"></div>
 			<div class="form-group">
@@ -59,6 +68,22 @@
 	</div>
 	<!-- /modal body -->
 
-
+	<script type="text/javascript">
+		$('#form-update').submit(function(){
+			$.ajax({
+				url: $(this).attr("action"),
+				type: $(this).attr("method"),
+				data: $(this).serialize(),
+				success:function(data){
+					if(data.result){
+						$('.modal-update').modal('hide');
+						TABLE.draw();
+					}else
+						showUpdateFailureModal(data.msg);
+				}
+			});
+			return false;
+		});
+	</script>
 </body>
 </html>
