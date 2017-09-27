@@ -36,24 +36,9 @@ public class PostController extends BaseController {
 
 	@Autowired private PostYzwService postService;
 	
-	
-	
-	
-	@PostMapping(value="/table")
-	@ResponseBody
-	public DataTableBean<?> index(Integer draw,Integer start,Integer length, HttpServletRequest request){
-		try {
-			QueryParameter para = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
-			return postService.findDataTable(para);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return null;
+	@GetMapping
+	public String index(){
+		return "redirect:posts/list";
 	}
 	
 	@GetMapping(value="/list")
@@ -61,14 +46,6 @@ public class PostController extends BaseController {
 		return "posts/list";
 	}
 	
-	@PostMapping
-	public String createNewPost(@Valid PostYzw post, BindingResult bindingResult){
-		if(bindingResult.hasErrors() ){	
-			return "/success.jsp";
-		}
-		postService.save(post);
-		return "redirect:posts/list";
-	}
 	
 	@GetMapping("/form")
 	public String showEditionForm(Model model){
@@ -84,15 +61,33 @@ public class PostController extends BaseController {
 		return "posts/editForm";
 	}
 	
+	@GetMapping("/{id}")
+	@ResponseBody
+	public YiwuJson<PostYzw> get(@PathVariable(name="id") Integer id){
+		return YiwuJson.createBySuccess(postService.get(id));
+	}
+	
+	@PostMapping
+	@ResponseBody
+	public YiwuJson<PostYzw> createNewPost(@Valid PostYzw post, BindingResult bindingResult){
+		if(bindingResult.hasErrors() ){	
+			return YiwuJson.createByError();
+		}
+		postService.save(post);
+		return YiwuJson.createBySuccess(post);
+	}
+	
 	@PutMapping(value ="/{id}")
-	public String modify(@PathVariable(name="id") Integer id, PostYzw post){
+	@ResponseBody
+	public YiwuJson<PostYzw> modify(@PathVariable(name="id") Integer id, PostYzw post){
 		try {
 			postService.modify(id, post);
 		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
 			logger.error(e.getMessage(), e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
 		}
 		
-		return "redirect:list";
+		return YiwuJson.createBySuccess();
 	}
 	
 	@ResponseBody
@@ -101,4 +96,20 @@ public class PostController extends BaseController {
 		postService.delete(id);
 		return YiwuJson.createBySuccess();
 	}
+	
+	
+	@ResponseBody
+	@PostMapping(value="/datatable")
+	public DataTableBean<?> getDatatable(Integer draw,Integer start,Integer length, HttpServletRequest request){
+		try {
+			QueryParameter para = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
+			return postService.findDataTable(para);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException | InstantiationException e) {
+			logger.error(e.getMessage(),e);
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 }

@@ -4,7 +4,8 @@
 
 var DELETE_URL,
 	$TABLE =$('#yiwuDatatable'),
-	TABLE;
+	TABLE,
+	CLOUMN_CREATE_TIME=column_index_create_time===undefined?0:column_index_create_time;
 	
 $(document).ready(function(){
 	TABLE = $TABLE.DataTable(setting);
@@ -20,12 +21,12 @@ $(".modal").on("hidden.bs.modal", function() {
 })
 
 /**
- * 显示删除模态框
+ * 显示 删除模态框
  * @param url
  * @returns
  */
 function showDeleteModal(url) {
-	$('.delete-promt').modal('show');
+	$('.modal-delete').modal('show');
 	DELETE_URL = url;
 }
 
@@ -47,11 +48,12 @@ function doDeleteRequest() {
 			
 			setTimeout(function(){
 			    dlg.close();
-			    TABLE.draw(); //刷新表
+				TABLE.draw(); //刷新表
 			},1000);
 			
 		}
 	});
+	
 };
 
 

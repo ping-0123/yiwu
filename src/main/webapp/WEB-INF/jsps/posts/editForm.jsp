@@ -21,7 +21,7 @@
 
 	<!-- modal body -->
 	<div class="modal-body">
-		<form method="POST" action="${post.id}" class="form-horizontal form-label-left">
+		<form id="form-update" method="POST" action="${post.id}" class="form-horizontal form-label-left">
 
 			<input type="hidden" name="_method" value="PUT">
 			<div class="form-group">
@@ -59,6 +59,19 @@
 	</div>
 	<!-- /modal body -->
 
-
+	<script type="text/javascript">
+		$('#form-update').submit(function(){
+			$.ajax({
+				url: $(this).attr("action"),
+				type: $(this).attr("method"),
+				data: $(this).serialize(),
+				success:function(data){
+					$('.modal-update').modal('hide');
+					TABLE.draw();
+				}
+			});
+			return false;
+		});
+	</script>
 </body>
 </html>

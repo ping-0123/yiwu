@@ -20,7 +20,7 @@
 
 	<!-- modal body -->
 	<div class="modal-body">
-		<form method="POST" action="${pageContext.request.contextPath}/system/posts" class="form-horizontal form-label-left">
+		<form id="form-create"  method="POST" action="${pageContext.request.contextPath}/system/posts"  class="form-horizontal form-label-left">
 
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">职位名 <span class="required">*</span></label>
@@ -56,13 +56,20 @@
 
 		</form>
 	</div>
-	<!-- /modal body -->
 
-	<!-- modal footer
-	<div class="modal-footer">
-		<button type="button" class="btn btn-success" data-dismiss="modal">保存</button>
-	</div>  -->
-	<!-- /modal footer -->
-
+	<script type="text/javascript">
+		$('#form-create').submit(function(){
+			$.ajax({
+				url: $(this).attr("action"),
+				type: $(this).attr("method"),
+				data: $(this).serialize(),
+				success:function(data){
+					$('.modal-create').modal('hide');
+					TABLE.order([CLOUMN_CREATE_TIME,'desc']).draw();
+				}
+			});
+			return false;
+		});
+	</script>
 </body>
 </html>

@@ -41,7 +41,7 @@
 				<div class="x_panel">
 					<div class="x_title">
 						<shiro:hasPermission name="posts:create:*">
-							<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".create-form">
+							<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
 						</shiro:hasPermission>
@@ -63,14 +63,6 @@
 					</div>
 					<div class="x_content table-responsive">
 						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" width="100%">
-							<thead>
-								<tr>
-									<th>职位Id</th>
-									<th>职位名</th>
-									<th>状态</th>
-									<th>操作</th>
-								</tr>
-							</thead> 
 
 						</table>
 					</div>
@@ -85,7 +77,7 @@
 
 	<!-- bootstrap modals -->
 	<!-- create modal -->
-	<div class="modal fade bs-example-modal-lg create-form" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg modal-create" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content"></div>
 		</div>
@@ -94,7 +86,7 @@
 	<!-- create modal -->
 
 	<!-- update modal -->
-	<div class="modal fade bs-example-modal-lg edit-form" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg modal-update" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content"></div>
 		</div>
@@ -103,7 +95,7 @@
 	
 
 	<!-- delete modal -->
-	<div class="modal fade bs-example-modal-sm delete-promt" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-sm modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 
@@ -143,31 +135,39 @@
    
    <script type="text/javascript">
    		var search_hint="输入职位名";
+   		var column_index_create_time =0;
    		var setting = 
 			{
 				"processing" : false,
 				"serverSide" : true,
 				"ajax" : {
-					"url" : "http://localhost:9090/yiwu/system/posts/table",
+					"url" : "http://localhost:9090/yiwu/system/posts/datatable",
 					"type" : "POST"
 				},
-				"columns" : [ {
+				"columns" : [{
+					"data" : "createTime",
+					"visible" : false
+				},{
+					"title": "id",
 					"data" : "id",
 					"name" : "postId"
 				}, {
-					"data" : "name"
+					"data" : "name",
+					"title": "职位名"
 				}, {
 					"data" : "dataStatus",
+					"title": "状态",
 					"render" : function(data, type, row, meta) {
 						return translateDataStatus(data);
 					}
 				},{
-					"data":"id",
+					"data":"createTime",
+					"title":"操作",
 					"render": function(data, type, row, meta) {
 						var html =  '';
 						if($('#updatePermission').val()){
-							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-pencil" title="修改"></i></a>';
-							html = html +  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".edit-form"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
+							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
+							html = html +  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
 						}
 						if($('#deletePermission').val()){
 							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
@@ -175,7 +175,7 @@
 						return html;
 					}
 				} ]
-			}; //end .DataTable()
+			}; //end setting
 			
 	/* 	/*   $('#yiwuDatatable tbody').on( 'click', 'tr', function () {
 		        if ( $(this).hasClass('selected') ) {

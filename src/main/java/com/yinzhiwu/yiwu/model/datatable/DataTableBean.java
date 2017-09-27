@@ -37,6 +37,9 @@ public class DataTableBean<T> implements Serializable{
 			this.error = "";
 	}
 
+	private DataTableBean(String errorMessage){
+		this.error = errorMessage;
+	}
 
 	public Integer getDraw() {
 		return draw;
@@ -67,6 +70,11 @@ public class DataTableBean<T> implements Serializable{
 	}
 	public void setError(String error) {
 		this.error = error;
+	}
+
+
+	public static DataTableBean<?> createByErrorMessage(String message) {
+		return new DataTableBean<>(message);
 	}
 	
 	
