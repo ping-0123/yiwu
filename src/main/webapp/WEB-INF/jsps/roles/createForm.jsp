@@ -20,7 +20,7 @@
 
 	<!-- modal body -->
 	<div class="modal-body">
-		<form id="form-create" method="POST" action="${pageContext.request.contextPath}/system/roles" class="form-horizontal form-label-left">
+		<form id="form-create" method="POST" action="./" class="form-horizontal form-label-left">
 
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">代码 <span class="required">*</span></label>

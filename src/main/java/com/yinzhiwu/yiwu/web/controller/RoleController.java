@@ -65,7 +65,13 @@ public class RoleController extends BaseController {
     @ResponseBody
     @GetMapping(value="/{id}")
     public YiwuJson<?> get(@PathVariable(name="id") Integer id){
-    	return YiwuJson.createBySuccess(roleService.get(id));
+    	
+    	try {
+    		return YiwuJson.createBySuccess(roleService.get(id));
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
     }
     
     @RequestMapping(method = RequestMethod.POST)
@@ -76,8 +82,13 @@ public class RoleController extends BaseController {
     		return YiwuJson.createByErrorMessage(getErrorsMessage(bindingResult));
     	}
     	
-        roleService.save(role);
-        return YiwuJson.createBySuccess(role);
+    	try {
+    		roleService.save(role);
+    		return YiwuJson.createBySuccess(role);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
     }
 
 
@@ -103,8 +114,14 @@ public class RoleController extends BaseController {
     @DeleteMapping(value = "/{id}")
     @ResponseBody
     public YiwuJson<?> delete(@PathVariable(name="id") Integer id) {
-        roleService.delete(id);
-        return YiwuJson.createBySuccess();
+    	
+    	try {
+    		roleService.delete(id);
+    		return YiwuJson.createBySuccess();
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
     }
 
 	@PostMapping(value="/datatable")

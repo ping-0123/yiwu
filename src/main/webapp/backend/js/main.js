@@ -9,9 +9,16 @@ var DELETE_URL,
 	
 $(document).ready(function(){
 	TABLE = $TABLE.DataTable(setting);
-	//添加搜索提示
-	$('.input-sm').attr('placeholder', search_hint);
 	
+	$('#yiwuDatatable tbody').on('click', 'tr', function() {
+		if ($(this).hasClass('selected')) {
+			$(this).removeClass('selected');
+		} else {
+			TABLE.$('tr.selected').removeClass('selected');
+			$(this).addClass('selected');
+		}
+	});
+
 });
 
 /**

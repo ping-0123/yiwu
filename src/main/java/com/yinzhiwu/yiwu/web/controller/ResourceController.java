@@ -31,6 +31,7 @@ public class ResourceController {
         return Resource.ResourceType.values();
     }
 
+    
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
         model.addAttribute("resourceList", resourceService.findAll());

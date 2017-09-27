@@ -18,6 +18,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.entity.BaseEntity;
 
 /**
@@ -64,6 +65,7 @@ public class Resource extends BaseEntity {
 	@JoinColumn(name="parent_id",foreignKey=@ForeignKey(value=ConstraintMode.CONSTRAINT, name="fk_resource_parent_id"))
 	private Resource parent;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private List<Resource> children = new ArrayList<>();
