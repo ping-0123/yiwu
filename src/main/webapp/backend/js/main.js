@@ -17,8 +17,18 @@ $(document).ready(function(){
 			TABLE.$('tr.selected').removeClass('selected');
 			$(this).addClass('selected');
 		}
+		
+		//roles list 需要加载资源树
+		if($TABLE.hasClass('table-roles')){
+			var rowData = TABLE.row(this).data();
+    		var roleId =JSON.parse(JSON.stringify(rowData)).id;
+    		freshResourceTree(roleId);
+		}
+		
 	});
-
+	
+	
+	
 });
 
 /**
@@ -91,6 +101,18 @@ function flashDeleteSuccessModal(){
 	},1000);
 }
 
+function flashSaveSuccessModal(){
+	var dlg = BootstrapDialog.show({
+	    message: '保存成功',
+	    type:BootstrapDialog.TYPE_SUCCESS,
+	    title:'提示',
+	    size : BootstrapDialog.SIZE_SMALL
+	});
+	setTimeout(function(){
+	    dlg.close();
+	},1000);
+}
+
 /**
  * 显示删除失败消息提示框
  * @param message
@@ -141,6 +163,30 @@ function doDeleteRequest() {
 	
 };
 
+
+/**
+ * 保存对权限的修改
+ * @param roleId
+ * @param resourceIds
+ * @returns
+ */
+function requestSaveRoleResources(roleId, resourceIds){
+	$.ajax({
+		"type":"PUT",
+		"url":roleId + "/resources",
+		"data":{
+			"resourceIds":resourceIds
+		},
+		traditional: true,
+		"success":function(data){
+			if(data.result){
+				flashSaveSuccessModal();
+			}else{
+				showSaveFailureModal(data.msg);
+			}
+		}
+	});
+}
 
 
 /**

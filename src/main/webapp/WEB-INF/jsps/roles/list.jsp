@@ -70,35 +70,33 @@
 					
 					<!-- content -->
 					<div class="x_content " >
-						
+					
 						<!-- table -->
+							<div class="Conleft col-md-9 col-xs-9 pull-left" >
 							
-								<div class="Conleft col-md-9 col-xs-9 pull-left" >
-								
-								<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" width="100%">
-		
-								</table>
-								</div>
-							
-							<!-- /end table -->
-							
-							<!-- resource tree -->
-							<div class="conRight col-md-3 col-xs-3 pull-left">
-								<div>
-									<shiro:hasPermission name="roles:update:*">
-										<button class="btn btn-primary btn-sm" onclick="">
-											<small>保存</small>
-										</button>
-									</shiro:hasPermission>
-								</div>
-							
-								<div >
-									<ul id="tree" class="ztree"></ul>
-								</div>
+							<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed table-roles" width="100%">
+	
+							</table>
 							</div>
-							<!-- /end resource tree -->
+						<!-- /end table -->
 						
+						<!-- resource tree -->
+						<div class="conRight col-md-3 col-xs-3 pull-left">
+							<div>
+								<shiro:hasPermission name="roles:update:*">
+									<button class="btn btn-primary btn-sm" onclick="saveRoleResources()">
+										<small>保存</small>
+									</button>
+								</shiro:hasPermission>
+							</div>
 						
+							<div >
+								<ul id="tree" class="ztree"></ul>
+							</div>
+						</div>
+						<!-- /end resource tree -->
+					
+					
 					</div>
 					<!-- /end context -->
 
@@ -148,6 +146,8 @@
 
 
 	<script type="text/javascript">
+	
+		//START datatable SETTING
 		var column_index_create_time = 0;
 		var setting = {
 			"processing" : false,
@@ -184,7 +184,7 @@
 						"data" : "createDate",
 						"title" : "操作",
 						"render" : function(data, type, row, meta) {
-							var html = '';
+							var html = '';	
 							if ($('#updatePermission').val()) {
 								html = html
 										+ '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
@@ -198,7 +198,7 @@
 							return html;
 						}
 					} ]
-		}; //end setting
+		}; //end datatable setting
 		
 		// start ztree
 		var zNodes
@@ -216,6 +216,13 @@
 		};
 		
         $(document).ready(function(){
+        	loadResourceTree();
+        	
+        });
+        //end ztree
+        
+        
+        function loadResourceTree(){
         	$.ajax({
         		"url":"../resources/ztree",
         		"success":function(data){
@@ -224,9 +231,40 @@
 			            $.fn.zTree.init($("#tree"), zSetting, zNodes);
         			}
         		}
-        	})
-        });
-        //end ztree
+        	});
+        }
+        
+        function freshResourceTree(roleId){
+        	$.ajax({
+        		"url":roleId + "/resourceZTree",
+	        	"success":function(data){
+	    			if(data.result){
+	        			zNodes = data.data;
+			            $.fn.zTree.init($("#tree"), zSetting, zNodes);
+	    			}
+	    		}
+        	});
+        }
+        
+        function saveRoleResources(){
+        	var roleId;
+        	var resourceIds = new Array();
+        	var rowData = TABLE.row($('.selected')).data();
+        	if(rowData==undefined){
+        		alert("no rows selected");
+        		return;
+        	}else{
+        		roleId =JSON.parse(JSON.stringify(rowData)).id;
+        	}
+        	
+        	var treeObj = $.fn.zTree.getZTreeObj("tree");
+        	var nodes = treeObj.getCheckedNodes(true);
+        	for(var i=0; i< nodes.length; i++){
+        		resourceIds[i] = nodes[i].id;
+        	}
+        	
+        	requestSaveRoleResources(roleId,resourceIds);
+        }
 	</script>
 
 	<script src="../../backend/js/main.js"></script>

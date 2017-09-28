@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.web.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -144,7 +145,25 @@ public class RoleController extends BaseController {
         
     }
 
-
+    @PutMapping(value="/{id}/resources")
+    @ResponseBody
+    public YiwuJson<?> updateRoleResources(@PathVariable(name="id") Integer id, Integer[] resourceIds){
+    	try {
+			Role role = roleService.get(id);
+			Set<Resource> res = new HashSet<>();
+			for (Integer resId : resourceIds) {
+				res.add(resourceService.get(resId));
+			}
+    		role.setResources(res);
+			roleService.update(role);
+			
+			return YiwuJson.createBySuccess();
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
+    }
+    
     @DeleteMapping(value = "/{id}")
     @ResponseBody
     public YiwuJson<?> delete(@PathVariable(name="id") Integer id) {
