@@ -205,7 +205,7 @@
 
         <!-- page content -->
         <div class="right_col" role="main" style="frameborder：0">
-			   <iframe  name="content" id="iframe" frameborder="0"  marginheight="10" marginwidth = "10" src="welcome" width="100%" height="800" scrolling="auto"  > </iframe> 
+			   <iframe  name="content" id="iframe" frameborder="0"  marginheight="0" marginwidth = "0" src="welcome" width="100%" height="800" scrolling="auto"  > </iframe> 
         </div>
     	<!-- /page content -->
 		

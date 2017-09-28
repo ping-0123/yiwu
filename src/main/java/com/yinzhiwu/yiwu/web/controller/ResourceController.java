@@ -1,15 +1,23 @@
 package com.yinzhiwu.yiwu.web.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.sys.Resource;
+import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.view.ResourceZTreeApiView;
 import com.yinzhiwu.yiwu.service.ResourceService;
 
 
@@ -22,7 +30,7 @@ import com.yinzhiwu.yiwu.service.ResourceService;
 
 @Controller
 @RequestMapping("/system/resources")
-public class ResourceController {
+public class ResourceController extends BaseController {
 
     @Autowired private ResourceService resourceService;
 
@@ -78,5 +86,25 @@ public class ResourceController {
         return "redirect:/resource";
     }
 
-
+    
+    @ResponseBody
+    @GetMapping(value="/ztree")
+    private YiwuJson<?> getResourceZtree(){
+    	try {
+    		List<Resource> allRes = resourceService.findAll();
+    		List<ResourceZTreeApiView> view = new ArrayList<>();
+			for (Resource resource : allRes) {
+				view.add(new ResourceZTreeApiView(
+						resource.getId(),
+						resource.getParent()==null? null:resource.getParent().getId(), 
+						resource.getName(),
+						false));
+			}
+			
+			return YiwuJson.createBySuccess(view);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
+    }
 }

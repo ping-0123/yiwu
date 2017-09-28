@@ -14,42 +14,22 @@
 <title>岗位设置</title>
 
 <!-- Bootstrap -->
-<link
-	href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.css"
-	rel="stylesheet">
+<link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 <!-- Font Awesome -->
-<link
-	href="${pageContext.request.contextPath}/backend/vendors/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet">
+<link href="${pageContext.request.contextPath}/backend/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
 <!-- my datatable -->
-<link
-	href="${pageContext.request.contextPath}/backend/DataTables/datatables.min.css"
-	rel="stylesheet">
+<link href="${pageContext.request.contextPath}/backend/DataTables/datatables.min.css" rel="stylesheet">
 <!-- bootstrap dialog -->
-<link
-	href="${pageContext.request.contextPath}/backend/css/bootstrap-dialog.min.css"
-	rel="stylesheet">
+<link href="${pageContext.request.contextPath}/backend/css/bootstrap-dialog.min.css" rel="stylesheet">
 <!-- Custom Theme Style -->
-<link
-	href="${pageContext.request.contextPath}/backend/css/custom.min.css"
-	rel="stylesheet">
+<link href="${pageContext.request.contextPath}/backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
-<link href="${pageContext.request.contextPath}/backend/css/main.css"
-	rel="stylesheet">
+<link href="../../backend/css/main.css" rel="stylesheet">
 <!-- ztree -->
-<link rel="stylesheet"
-	href="../../backend/jquery-ztree-v3.5.15/css/zTreeStyle/zTreeStyle.css">
+<link rel="stylesheet" href="../../backend/jquery-ztree-v3.5.15/css/zTreeStyle/zTreeStyle.css">
 <style>
-.div-a {
-	float: left;
-	width: 60%
-}
-
-.div-b {
-	float: right;
-	width: 38%
-}
+.dataTables_filter{width:100%!important;}
 </style>
 </head>
 
@@ -63,15 +43,13 @@
 		<div class="row">
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
+					<!-- title -->
 					<div class="x_title">
 						<shiro:hasPermission name="roles:create:*">
-							<button type="button" data-remote="form" class="btn btn-primary"
-								data-toggle="modal" data-target=".modal-create">
-								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-								新增
-							</button>
+								<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
+								</button>
 						</shiro:hasPermission>
-
 						<shiro:hasPermission name="roles:update:*">
 							<input type="hidden" id="updatePermission" value="true" />
 						</shiro:hasPermission>
@@ -80,8 +58,7 @@
 						</shiro:hasPermission>
 
 						<ul class="nav navbar-right panel_toolbox">
-							<li><a class="collapse-link"> <i
-									class="fa fa-chevron-up"></i></a></li>
+							<li><a class="collapse-link"> <i class="fa fa-chevron-up"></i></a></li>
 							<li><a href=""> <i class="fa fa-refresh"></i></a></li>
 							<li><a class="close-link"> <i class="fa fa-close"></i>
 							</a></li>
@@ -89,32 +66,41 @@
 
 						<div class="clearfix"></div>
 					</div>
-
-					<!-- table -->
-					<div class="x_content table-responsive div-a">
-						<table id="yiwuDatatable"
-							class="table table-bordered table-hover table-condensed"
-							width="100%">
-
-						</table>
+					<!-- /end title -->
+					
+					<!-- content -->
+					<div class="x_content " >
+						
+						<!-- table -->
+							
+								<div class="Conleft col-md-9 col-xs-9 pull-left" >
+								
+								<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" width="100%">
+		
+								</table>
+								</div>
+							
+							<!-- /end table -->
+							
+							<!-- resource tree -->
+							<div class="conRight col-md-3 col-xs-3 pull-left">
+								<div>
+									<shiro:hasPermission name="roles:update:*">
+										<button class="btn btn-primary btn-sm" onclick="">
+											<small>保存</small>
+										</button>
+									</shiro:hasPermission>
+								</div>
+							
+								<div >
+									<ul id="tree" class="ztree"></ul>
+								</div>
+							</div>
+							<!-- /end resource tree -->
+						
+						
 					</div>
-					<!-- /end table -->
-
-					<!-- resource tree -->
-					<div class="div-b">
-						<div>
-							<shiro:hasPermission name="roles:update:*">
-								<button class="btn btn-success" onclick="">
-									<small>保存</small>
-								</button>
-							</shiro:hasPermission>
-						</div>
-
-						<div>
-							<ul id="tree" class="ztree"></ul>
-						</div>
-					</div>
-					<!-- /end resource tree -->
+					<!-- /end context -->
 
 				</div>
 			</div>
@@ -127,8 +113,7 @@
 
 	<!-- bootstrap modals -->
 	<!-- create modal -->
-	<div class="modal fade bs-example-modal-lg modal-create" tabindex="-1"
-		role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg modal-create" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content"></div>
 		</div>
@@ -137,8 +122,7 @@
 	<!-- create modal -->
 
 	<!-- update modal -->
-	<div class="modal fade bs-example-modal-lg modal-update" tabindex="-1"
-		role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg modal-update" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content"></div>
 		</div>
@@ -152,22 +136,15 @@
 	<%-- 已继承在datatables.min.js里	<script src="${pageContext.request.contextPath}/backend/vendors/jquery/dist/jquery.min.js"></script> --%>
 	<!-- Bootstrap -->
 	<%-- <script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script> --%>
-	<script
-		src="${pageContext.request.contextPath}/backend/js/datatables.min.js"
-		type="text/javascript"></script>
-	<script
-		src="${pageContext.request.contextPath}/backend/js/bootstrap-dialog.min.js"
-		type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/backend/js/datatables.min.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/backend/js/bootstrap-dialog.min.js" type="text/javascript"></script>
 
 	<!-- validator -->
-	<script
-		src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
+	<script src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
 	<!-- ztree -->
-	<script
-		src="../../backend/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
+	<script src="../../backend/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
 	<!-- Custom Theme Scripts -->
-	<script
-		src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
+	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
 
 
 	<script type="text/javascript">
@@ -179,9 +156,9 @@
 				"url" : "../../backend/config/i18n/datatable-chinese.json",
 				"searchPlaceholder" : "输入角色名"
 			},
-/*  			"buttons" : [ {
-				"extend" : "create"
-			} ], */
+			/*  			"buttons" : [ {
+			 "extend" : "create"
+			 } ], */
 			"ajax" : {
 				"url" : "http://localhost:9090/yiwu/system/roles/datatable",
 				"type" : "POST"
@@ -211,8 +188,6 @@
 							if ($('#updatePermission').val()) {
 								html = html
 										+ '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
-								html = html
-										+ '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
 							}
 							if ($('#deletePermission').val()) {
 								html = html
@@ -224,6 +199,34 @@
 						}
 					} ]
 		}; //end setting
+		
+		// start ztree
+		var zNodes
+		var zSetting = {
+		            data: {
+		                simpleData: {
+		                    enable: true
+		                }
+		            },
+					check:{
+						enable:true,
+						chkStyle:"checkbox",
+						chkboxType:{"Y":"p","N":"s"}
+					}            
+		};
+		
+        $(document).ready(function(){
+        	$.ajax({
+        		"url":"../resources/ztree",
+        		"success":function(data){
+        			if(data.result){
+	        			zNodes = data.data;
+			            $.fn.zTree.init($("#tree"), zSetting, zNodes);
+        			}
+        		}
+        	})
+        });
+        //end ztree
 	</script>
 
 	<script src="../../backend/js/main.js"></script>

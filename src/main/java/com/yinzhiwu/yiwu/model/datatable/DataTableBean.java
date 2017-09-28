@@ -25,6 +25,7 @@ public class DataTableBean<T> implements Serializable{
 	private List<T> data;
 	private String error;
 	
+	
 	public DataTableBean(){};
 	
 	
@@ -76,6 +77,5 @@ public class DataTableBean<T> implements Serializable{
 	public static DataTableBean<?> createByErrorMessage(String message) {
 		return new DataTableBean<>(message);
 	}
-	
-	
+
 }

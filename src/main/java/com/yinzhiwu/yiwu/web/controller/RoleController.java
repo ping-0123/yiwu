@@ -1,5 +1,9 @@
 package com.yinzhiwu.yiwu.web.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -17,11 +21,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
+import com.yinzhiwu.yiwu.entity.sys.Resource;
 import com.yinzhiwu.yiwu.entity.sys.Role;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
+import com.yinzhiwu.yiwu.model.view.ResourceZTreeApiView;
+import com.yinzhiwu.yiwu.service.ResourceService;
 import com.yinzhiwu.yiwu.service.RoleService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 
@@ -38,6 +45,7 @@ public class RoleController extends BaseController {
 
     @Autowired
     private RoleService roleService;
+    @Autowired private ResourceService resourceService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String index() {
@@ -68,6 +76,32 @@ public class RoleController extends BaseController {
     	
     	try {
     		return YiwuJson.createBySuccess(roleService.get(id));
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
+    }
+    
+    @ResponseBody
+    @GetMapping(value="/{id}/resourceZTree")
+    public YiwuJson<?> getResourceZTree(@PathVariable(name="id") Integer id){
+    	try {
+			Role role = roleService.get(id);
+			Set<Resource> hasResources = role.getResources();
+			List<Resource> allRes = resourceService.findAll();
+    		List<ResourceZTreeApiView> view = new ArrayList<>();
+			for (Resource resource : allRes) {
+				boolean checked = false;
+				if (hasResources.contains(resource))
+					checked=true;
+				view.add(new ResourceZTreeApiView(
+						resource.getId(),
+						resource.getParent()==null? null:resource.getParent().getId(), 
+						resource.getName(),
+						checked));
+			}
+			
+			return YiwuJson.createBySuccess(view);
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return YiwuJson.createByErrorMessage(e.getMessage());
