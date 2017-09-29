@@ -13,20 +13,18 @@
 
 <title>岗位设置</title>
 
-<!-- Bootstrap -->
- <link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 <!-- Font Awesome -->
-<link href="${pageContext.request.contextPath}/backend/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
-<!-- my datatable -->
-<link href="${pageContext.request.contextPath}/backend/css/datatables.min.css" rel="stylesheet" > 
+<link href="../../assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<!-- boostrap datatable -->
+<link href="../../assets/datatables/datatables.min.css" rel="stylesheet" > 
 <!-- bootstrap dialog -->
-<link href="${pageContext.request.contextPath}/backend/css/bootstrap-dialog.min.css" rel="stylesheet" >
+<link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
+<!-- ztree -->
+<link rel="stylesheet" href="../../assets/jquery-ztree-v3.5.15/css/zTreeStyle/zTreeStyle.css">
 <!-- Custom Theme Style -->
-<link href="${pageContext.request.contextPath}/backend/css/custom.min.css" rel="stylesheet">
+<link href="../../backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
-<link href="${pageContext.request.contextPath}/backend/css/main.css" rel="stylesheet">
-
+<link href="../../backend/css/main.css" rel="stylesheet">
 <style>
 .dataTables_filter{width:100%!important;}
 </style>
@@ -96,23 +94,37 @@
 		</div>
 	</div>
 	<!-- /update modal -->
-	
+		<!-- start setting modal -->
+	<div class="modal fade bs-example-modal-lg modal-setting" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title" >设置用户角色</h4>
+				</div>
+				<div class="modal-body">
+					&nbsp&nbsp&nbsp
+					<button class="btn btn-primary btn-sm" onclick="savePostRoles()"><small>保存</small></button>
+					<ul id="tree" class="ztree"></ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /end setting modal -->
 
 	<!-- / bootstrap modals -->
     
-	<!-- jQuery -->
-<%-- 已继承在datatables.min.js里	<script src="${pageContext.request.contextPath}/backend/vendors/jquery/dist/jquery.min.js"></script> --%>
-	<!-- Bootstrap -->
-	<%-- <script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script> --%>
-	<script src="${pageContext.request.contextPath}/backend/js/datatables.min.js" type="text/javascript"></script>
-	<script src="${pageContext.request.contextPath}/backend/js/bootstrap-dialog.min.js" type="text/javascript"></script>
-
+    <!-- jquery bootstrap datatable -->	
+	<script src="../../assets/datatables/datatables.min.js" type="text/javascript"></script>
+	<script src="../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
+	<!-- ztree -->
+	<script src="../../assets/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
 	<!-- validator -->
-	<script src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
+	<script src="../../assets/validator/validator.js"></script>
 	<!-- Custom Theme Scripts -->
-	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
-	
-   
+	<script src="../../backend/js/custom.min.js"></script>
    <script type="text/javascript">
    		var column_index_create_time =0;
    		var setting = 
@@ -150,7 +162,7 @@
 						var html =  '';
 						if($('#updatePermission').val()){
 							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
-							html = html +  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-navicon" title="设置岗位角色"></i></a>';
+							html = html +  '<a href="#" onclick="showPostRoles(' + row.id + ')" data-toggle="modal" data-target=".modal-setting"> <i class="fa fa-navicon" title="设置岗位角色"></i></a>';
 						}
 						if($('#deletePermission').val()){
 							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
@@ -159,6 +171,70 @@
 					}
 				} ]
 			}; //end setting
+			
+			// start ztree setting
+			var zNodes
+			var zSetting = {
+			            data: {
+			                simpleData: {
+			                    enable: true
+			                }
+			            },
+						check:{
+							enable:true,
+							chkStyle:"checkbox",
+							chkboxType:{"Y":"ps","N":"s"}
+						}            
+			};
+			
+	        //end ztree setting
+          var postId
+          function showPostRoles(_postId){
+        	postId = _postId;
+        	$.ajax({
+        		"url": _postId + "/roleZtree",
+        		"success":function(data){
+        			if(data.result){
+        				zNodes= data.data;
+        				$.fn.zTree.init($("#tree"), zSetting, zNodes);
+        			}
+        		}
+        	});
+     	 }
+        
+          function savePostRoles(){
+	          	var _postId = postId;
+	          	var _roleIds = new Array();
+	          	
+	          	var treeObj = $.fn.zTree.getZTreeObj("tree");
+	          	var nodes = treeObj.getCheckedNodes(true);
+	          	for(var i=0; i< nodes.length; i++){
+	          		_roleIds[i] = nodes[i].id;
+	          	}
+	          	
+	          	requestSavePostRoles(_postId,_roleIds);
+          }
+          
+          function requestSavePostRoles(_postId,_roleIds){
+        	  $.ajax({
+          		"type":"PUT",
+          		"url":_postId+ "/roles",
+          		"data":{
+          			"roleIds":_roleIds
+          		},
+          		traditional: true,
+          		"success":function(data){
+          			if(data.result){
+          				flashSaveSuccessModal();
+          				setTimeout(function(){
+	          				$(".modal-setting").modal("hide");
+          				},1500);
+          			}else{
+          				showSaveFailureModal(data.msg);
+          			}
+          		}
+          	});
+          }
 			
   </script>
   

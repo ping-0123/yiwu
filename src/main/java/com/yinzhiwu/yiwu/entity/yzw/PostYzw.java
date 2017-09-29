@@ -52,7 +52,7 @@ public class PostYzw extends BaseYzwEntity {
 	private String description;
 	
 	@Column
-	private Boolean removed = Boolean.FALSE;
+	private Boolean removed;
 
 	@Column
 	private Integer flag;
@@ -74,6 +74,12 @@ public class PostYzw extends BaseYzwEntity {
 	@JsonIgnore
 	@OneToMany(mappedBy="post")
 	private List<EmployeePostYzw> employeePosts = new ArrayList<>();
+	
+	@Override
+	public void init(){
+		super.init();
+		removed=removed==null?Boolean.FALSE:removed;
+	}
 	
 	public Integer getId() {
 		return id;

@@ -60,7 +60,7 @@
     </tbody>
 </table>
 
-<script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/backend/js/jquery-1.9.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/jquery-treetable/javascripts/src/jquery.treetable.js"></script>
 <script>
     $(function() {

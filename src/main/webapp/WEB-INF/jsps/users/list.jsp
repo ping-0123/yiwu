@@ -11,21 +11,20 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>岗位设置</title>
+<title>用户列表</title>
 
 <!-- Font Awesome -->
-<link href="${pageContext.request.contextPath}/backend/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
-<!-- my datatable -->
-<link href="${pageContext.request.contextPath}/assets/datatables/datatables.min.css" rel="stylesheet" > 
+<link href="../../assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<!-- boostrap datatable -->
+<link href="../../assets/datatables/datatables.min.css" rel="stylesheet" > 
 <!-- bootstrap dialog -->
-<link href="${pageContext.request.contextPath}/assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
-<!-- Custom Theme Style -->
-<link href="${pageContext.request.contextPath}/backend/css/custom.min.css" rel="stylesheet">
-<!-- Yiwu Theme Style -->
-<link href="${pageContext.request.contextPath}/backend/css/main.css" rel="stylesheet">
+<link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
 <!-- ztree -->
 <link rel="stylesheet" href="../../assets/jquery-ztree-v3.5.15/css/zTreeStyle/zTreeStyle.css">
+<!-- Custom Theme Style -->
+<link href="../../backend/css/custom.min.css" rel="stylesheet">
+<!-- Yiwu Theme Style -->
+<link href="../../backend/css/main.css" rel="stylesheet">
 <style>
 .dataTables_filter{width:100%!important;}
 </style>
@@ -43,16 +42,10 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<shiro:hasPermission name="posts:create:*">
+						<shiro:hasPermission name="users:create:*">
 							<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
-						</shiro:hasPermission>
-						<shiro:hasPermission name="posts:update:*">
-							<input type="hidden" id="updatePermission" value="true" />
-						</shiro:hasPermission>
-						<shiro:hasPermission name="posts:delete:*">
-							<input type="hidden" id="deletePermission" value="true" />
 						</shiro:hasPermission>
 						
 						<ul class="nav navbar-right panel_toolbox">
@@ -113,23 +106,20 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> 
 	<!-- /end setting modal -->
 	
 	<!-- /end bootstrap modals -->
     
-	<!-- jQuery -->
+	<!-- jquery bootstrap datatable -->	
 	<script src="../../assets/datatables/datatables.min.js" type="text/javascript"></script>
-	<!-- datatable -->	
 	<script src="../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
-
-	<!-- validator -->
-	<script src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
-	<!-- Custom Theme Scripts -->
-	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
-		<!-- ztree -->
+	<!-- ztree -->
 	<script src="../../assets/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
-   
+	<!-- validator -->
+	<script src="../../assets/validator/validator.js"></script>
+	<!-- Custom Theme Scripts -->
+	<script src="../../backend/js/custom.min.js"></script>
    <script type="text/javascript">
    		var column_index_create_time =0;
    		var setting = 
@@ -171,13 +161,13 @@
 						if(row.username=="Admin")
 							return "";
 						var html =  '';
-						if($('#updatePermission').val()){
+						<shiro:hasPermission name="users:update:*">
 							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
 							html = html +  '<a href="#" onclick="showUserRoles(' + row.id + ')" data-toggle="modal" data-target=".modal-setting"> <i class="fa fa-navicon" title="设置用户角色"></i></a>';
-						}
-						if($('#deletePermission').val()){
+						</shiro:hasPermission>
+						<shiro:hasPermission name="users:delete:*">
 							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
-						}
+						</shiro:hasPermission>
 						return html;
 					}
 				} ]
@@ -202,7 +192,7 @@
 	        //end ztree setting
           var userId
           function showUserRoles(_userId){
-	        userId = _userId
+	        userId = _userId;
         	$.ajax({
         		"url": _userId + "/roleZtree",
         		"success":function(data){

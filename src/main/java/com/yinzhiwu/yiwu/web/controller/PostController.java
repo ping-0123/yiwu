@@ -1,5 +1,10 @@
 package com.yinzhiwu.yiwu.web.controller;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -16,12 +21,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
+import com.yinzhiwu.yiwu.entity.sys.Role;
 import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
+import com.yinzhiwu.yiwu.model.view.RoleZtreeApiView;
 import com.yinzhiwu.yiwu.service.PostYzwService;
+import com.yinzhiwu.yiwu.service.RoleService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 
 /**
@@ -35,6 +43,7 @@ import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 public class PostController extends BaseController {
 
 	@Autowired private PostYzwService postService;
+	@Autowired private RoleService roleService;
 	
 	@GetMapping
 	public String index(){
@@ -67,6 +76,29 @@ public class PostController extends BaseController {
 		return YiwuJson.createBySuccess(postService.get(id));
 	}
 	
+	@GetMapping("/{id}/roleZtree")
+	@ResponseBody
+	 public YiwuJson<?> getRoleZtree(@PathVariable(name="id") Integer id){
+    	try {
+			PostYzw post = postService.get(id);
+			Set<Role> hasRoles = post.getRoles();
+			List<Role> allRoles = roleService.findAll();
+			List<RoleZtreeApiView> view = new ArrayList<>();
+			for (Role role : allRoles) {
+				boolean checked = false;
+				if(hasRoles.contains(role))
+					checked = true;
+				view.add(new RoleZtreeApiView(role.getId(), role.getName(), checked));
+			}
+			
+			return YiwuJson.createBySuccess(view);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
+    }
+    
+	
 	@PostMapping
 	@ResponseBody
 	public YiwuJson<PostYzw> createNewPost(@Valid PostYzw post, BindingResult bindingResult){
@@ -89,6 +121,26 @@ public class PostController extends BaseController {
 		
 		return YiwuJson.createBySuccess();
 	}
+	
+	@PutMapping(value="/{id}/roles")
+    @ResponseBody
+    public YiwuJson<?> updateUserRoles(@PathVariable(name="id") Integer id, Integer[] roleIds){
+    	try {
+			PostYzw post = postService.get(id);
+			Set<Role> roles = new HashSet<>();
+			if(roleIds!=null && roleIds.length>0)
+				for (Integer roleId : roleIds) {
+					roles.add(roleService.get(roleId));
+				}
+			post.setRoles(roles);
+			postService.update(post);
+			
+			return YiwuJson.createBySuccess();
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
+    }
 	
 	@ResponseBody
 	@DeleteMapping(value="/{id}")
