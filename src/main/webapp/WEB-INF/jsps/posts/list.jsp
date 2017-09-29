@@ -19,12 +19,12 @@
 <link href="../../assets/datatables/datatables.min.css" rel="stylesheet" > 
 <!-- bootstrap dialog -->
 <link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
-<!-- ztree -->
-<link rel="stylesheet" href="../../assets/jquery-ztree-v3.5.15/css/zTreeStyle/zTreeStyle.css">
 <!-- Custom Theme Style -->
 <link href="../../backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
 <link href="../../backend/css/main.css" rel="stylesheet">
+<!-- ztree -->
+<link rel="stylesheet" href="../../assets/jquery-ztree-v3.5.15/css/zTreeStyle/zTreeStyle.css">
 <style>
 .dataTables_filter{width:100%!important;}
 </style>
