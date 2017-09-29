@@ -188,7 +188,7 @@
 			};
 			
 	        //end ztree setting
-          var postId
+          var postId;
           function showPostRoles(_postId){
         	postId = _postId;
         	$.ajax({

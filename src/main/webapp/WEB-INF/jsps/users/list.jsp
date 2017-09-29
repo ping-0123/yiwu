@@ -190,7 +190,7 @@
 			};
 			
 	        //end ztree setting
-          var userId
+          var userId;
           function showUserRoles(_userId){
 	        userId = _userId;
         	$.ajax({
