@@ -77,7 +77,7 @@ public class DepartmentYzwServiceImpl extends BaseServiceImpl<DepartmentYzw, Int
 
 	@Override
 	public void move(DepartmentYzw source, DepartmentYzw target) {
-		source.setSuperior(target);
+		source.setParent(target);
 		super.save(source);
 	}
 

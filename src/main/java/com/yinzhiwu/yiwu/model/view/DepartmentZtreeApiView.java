@@ -5,11 +5,13 @@ public class DepartmentZtreeApiView {
 	private Integer id;
 	private Integer pId;
 	private String name;
+	private boolean open;
 	
-	public DepartmentZtreeApiView(Integer id, Integer pId, String name) {
+	public DepartmentZtreeApiView(Integer id, Integer pId, String name, boolean open) {
 		this.id = id;
 		this.pId = pId;
 		this.name = name;
+		this.open = open;
 	}
 
 	/**
@@ -52,6 +54,20 @@ public class DepartmentZtreeApiView {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the open
+	 */
+	public boolean isOpen() {
+		return open;
+	}
+
+	/**
+	 * @param open the open to set
+	 */
+	public void setOpen(boolean open) {
+		this.open = open;
 	}
 	
 	

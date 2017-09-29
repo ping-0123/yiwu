@@ -80,8 +80,8 @@ public class DepartmentController extends BaseController {
 			for (DepartmentYzw dept : depts) {
 				views.add(new DepartmentZtreeApiView(
 						dept.getId(), 
-						dept.getSuperior()==null?null:dept.getSuperior().getId(),
-						dept.getName()));
+						dept.getParent()==null?null:dept.getParent().getId(),
+						dept.getName(), true));
 			}
 			
 			return YiwuJson.createBySuccess(views);

@@ -42,7 +42,7 @@ public class OrganizationController {
         DepartmentYzw parent = organizationService.get(parentId);
         model.addAttribute("parent", parent);
         DepartmentYzw child = new DepartmentYzw();
-        child.setSuperior(parent);
+        child.setParent(parent);
         model.addAttribute("child", child);
         model.addAttribute("op", "新增");
         return "organization/appendChild";

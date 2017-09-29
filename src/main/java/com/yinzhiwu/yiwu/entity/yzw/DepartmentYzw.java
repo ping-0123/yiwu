@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Embedded;
@@ -49,9 +48,9 @@ public class DepartmentYzw extends BaseYzwEntity{
 	@Column(length = 50, name = "Name")
 	private String name;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "superiorId", foreignKey = @ForeignKey(name = "fk_department_superior_Id", value = ConstraintMode.NO_CONSTRAINT))
-	private DepartmentYzw superior;
+	private DepartmentYzw parent;
 
 	@Column
 	private String path;
@@ -70,7 +69,7 @@ public class DepartmentYzw extends BaseYzwEntity{
 	private String description;
 
 	@Column
-	private Boolean removed = Boolean.FALSE;
+	private Boolean removed;
 
 	@Column
 	private Integer flag;
@@ -93,6 +92,12 @@ public class DepartmentYzw extends BaseYzwEntity{
 	@Embedded
 	private Address officialAddress;
 	
+	@Override
+	public void init(){
+		super.init();
+		removed=removed==null?Boolean.FALSE:removed;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -101,9 +106,6 @@ public class DepartmentYzw extends BaseYzwEntity{
 		return name;
 	}
 
-	public DepartmentYzw getSuperior() {
-		return superior;
-	}
 
 	public String getPath() {
 		return path;
@@ -155,10 +157,6 @@ public class DepartmentYzw extends BaseYzwEntity{
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void setSuperior(DepartmentYzw superior) {
-		this.superior = superior;
 	}
 
 	public void setPath(String path) {
@@ -255,10 +253,19 @@ public class DepartmentYzw extends BaseYzwEntity{
 		}
 		return true;
 	}
-	
-	
-	public boolean isRootNode(){
-		return superior == null;
+
+	/**
+	 * @return the parent
+	 */
+	public DepartmentYzw getParent() {
+		return parent;
+	}
+
+	/**
+	 * @param parent the parent to set
+	 */
+	public void setParent(DepartmentYzw parent) {
+		this.parent = parent;
 	}
 	
 }
