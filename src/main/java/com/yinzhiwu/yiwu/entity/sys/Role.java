@@ -38,7 +38,6 @@ public class Role extends BaseEntity {
 	@Column(length=32, updatable=false)
 	private String code;
 	
-	@Column(length=32, updatable=false)
 	@Size(min=2, max=32)
 	private String name;
 	

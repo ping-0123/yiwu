@@ -14,4 +14,6 @@ public class Constants {
 	 
 	 public static final String CURRENT_EMPLOYEE_USER = "current_employee_user";
 	 public static final String CURRENT_EMPLOYEE = "current_employee";
+	 
+	 public static final String PASSWORD_DEFAULT = "yzw123456";
 }

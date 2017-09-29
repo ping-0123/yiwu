@@ -2,21 +2,29 @@
 <ehcache>
 	<diskStore path="C:/cache/" />
 	<defaultCache
-		maxElementsInMemory="1000" 
+		maxElementsInMemory="10000" 
 		eternal="false"
-		timeToIdleSeconds="3600" 
-		timeToLiveSeconds="600" 
+		timeToIdleSeconds="300" 
+<!-- 		timeToLiveSeconds="600"  -->
 		overflowToDisk="true"
 		diskPersistent="false"
 		diskExpiryThreadIntervalSeconds="60" />
 		
 		<!-- 下面两个缓存必须配置， 否则Hibernate或报警告 -->
-		<cache name="org.hibernate.cache.spi.UpdateTimestampsCache"  
-        maxElementsInMemory="5000" eternal="true" timeToIdleSeconds="0"  
-        timeToLiveSeconds="0" overflowToDisk="false" />  
-        	<cache name="org.hibernate.cache.internal.StandardQueryCache"  
-        maxElementsInMemory="5000" eternal="true" timeToIdleSeconds="0"  
-        timeToLiveSeconds="0" overflowToDisk="false" />  
+		<cache
+		name="org.hibernate.cache.spi.UpdateTimestampsCache"  
+        maxElementsInMemory="5000" 
+        eternal="true" 
+        timeToIdleSeconds="0"  
+        timeToLiveSeconds="0" 
+        overflowToDisk="false" />  
+        <cache 
+        name="org.hibernate.cache.internal.StandardQueryCache"  
+        maxElementsInMemory="5000" 
+        eternal="true" 
+        timeToIdleSeconds="0"  
+        timeToLiveSeconds="0" 
+        overflowToDisk="false" />  
         
 		 <cache   
          name="com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw"  
@@ -79,15 +87,6 @@
          overflowToDisk="false"   
          maxElementsOnDisk="10" /> 
          
-         <!-- 
-        <cache   
-         name="com.github.zhangkaitao.shiro.chapter19.entity.User"  
-         maxElementsInMemory="1000"  
-         memoryStoreEvictionPolicy="LRU"   
-         eternal="true"   
-         diskPersistent="false"  
-         overflowToDisk="true"   
-         maxElementsOnDisk="1000000" /> -->
          
 </ehcache>
 

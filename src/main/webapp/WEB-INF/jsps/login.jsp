@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Gentelella Alela! | </title>
+    <title>login </title>
 
     <!-- Bootstrap -->
     <link href="../backend/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -22,6 +22,7 @@
 
     <!-- Custom Theme Style -->
     <link href="../backend/css/custom.min.css" rel="stylesheet">
+    
   </head>
 
   <body class="login">
@@ -40,30 +41,16 @@
               <div>
                 <input name="password" type="password" class="form-control" placeholder="Password" required="" />
               </div>
-              <div>
-               	<input  name="rememberMe" type="checkbox" checked/>
-               	<label for="rememberMe">Remember Me</label>
+              <div align="left" >
+               	<input  name="rememberMe"   type="checkbox" checked/>
+               	<label for="rememberMe">记住用户密码</label>
               </div>
-              <div>
-              	<button  type="submit" class="btn btn-default submit">Login</button>
-                <a class="reset_pass" href="#">Lost your password?</a>
+              <div align="left">
+              	<button  type="submit" class="btn btn-success submit form-control" >登 录</button>
               </div>
 
               <div class="clearfix"></div>
 
-              <div class="separator">
-                <p class="change_link">New to site?
-                  <a href="#signup" class="to_register"> Create Account </a>
-                </p>
-
-                <div class="clearfix"></div>
-                <br />
-
-                <div>
-                  <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                  <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
-                </div>
-              </div>
             </form>
           </section>
         </div>
@@ -96,8 +83,7 @@
                 <br />
 
                 <div>
-                  <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                  <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                  <p>©2016 All Rights Reserved.</p>
                 </div>
               </div>
             </form>

@@ -58,7 +58,7 @@ public class PostController extends BaseController {
 	public String showModifyForm(@PathVariable(name="id") Integer id, Model model){
 		PostYzw post = postService.get(id);
 		model.addAttribute("post", post);
-		return "posts/editForm";
+		return "posts/updateForm";
 	}
 	
 	@GetMapping("/{id}")

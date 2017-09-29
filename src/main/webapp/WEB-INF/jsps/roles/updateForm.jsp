@@ -6,7 +6,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>post edition</title>
 
-<!-- Bootstrap -->
 </head>
 <body>
 
@@ -34,7 +33,7 @@
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">角色名 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<input name="name" placeholder="" value="${role.name }" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
+					<input name="name" placeholder="" value="${role.name}" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
 				</div>
 			</div>
 
@@ -42,8 +41,8 @@
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">状态 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
 					<select name="dataStatus" class="form-control">
-						<option value="NORMAL" <c:if test="${post.dataStatus eq 'NORMAL'}"> selected="selected"</c:if>>正常</option>
-						<option value="FORBID" <c:if test="${post.dataStatus eq 'FORBID'}"> selected="selected"</c:if>>禁用</option>
+						<option value="NORMAL" <c:if test="${role.dataStatus eq 'NORMAL'}"> selected="selected"</c:if>>正常</option>
+						<option value="FORBID" <c:if test="${role.dataStatus eq 'FORBID'}"> selected="selected"</c:if>>禁用</option>
 					</select>
 				</div>
 			</div>
@@ -52,7 +51,7 @@
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">角色描述 </label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<textarea class="form-control" rows="3" name="description" value="${role.description }"> </textarea>
+					<textarea class="form-control" rows="4" name="description" >${role.description}</textarea>
 				</div>
 			</div>
 			

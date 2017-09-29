@@ -27,6 +27,10 @@
 <!-- Yiwu Theme Style -->
 <link href="${pageContext.request.contextPath}/backend/css/main.css" rel="stylesheet">
 
+<style>
+.dataTables_filter{width:100%!important;}
+</style>
+
 </head>
 
 <body class="">
@@ -110,12 +114,15 @@
 	
    
    <script type="text/javascript">
-   		var search_hint="输入职位名";
    		var column_index_create_time =0;
    		var setting = 
 			{
 				"processing" : false,
 				"serverSide" : true,
+				"language" : {
+					"url" : "../../backend/config/i18n/datatable-chinese.json",
+					"searchPlaceholder" : "输入职位名"
+				},
 				"ajax" : {
 					"url" : "http://localhost:9090/yiwu/system/posts/datatable",
 					"type" : "POST"
@@ -153,19 +160,6 @@
 				} ]
 			}; //end setting
 			
-	/* 	/*   $('#yiwuDatatable tbody').on( 'click', 'tr', function () {
-		        if ( $(this).hasClass('selected') ) {
-		            $(this).removeClass('selected');
-		        }
-		        else {
-		            table.$('tr.selected').removeClass('selected');
-		            $(this).addClass('selected');
-		        } */
-		        
-		       /*  table.$('tr.selected').remove().draw(); 
-		    } ); //end select
-			
-		}); // end ready function */
   </script>
   
   <script src="${pageContext.request.contextPath}/backend/js/main.js"></script>

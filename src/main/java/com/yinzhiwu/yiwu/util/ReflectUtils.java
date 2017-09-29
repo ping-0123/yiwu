@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Embedded;
@@ -115,9 +116,11 @@ public final class ReflectUtils {
 		for (Field f : fields) {
 			f.setAccessible(true);
 			if (// 静态属性不变
-			!Modifier.isStatic(f.getModifiers())
+					!Modifier.isStatic(f.getModifiers())
 					// target属性为null ,source 对应的属性不变
 					&& f.get(target) != null
+					// 如果target属性为Collection, size不能为0;
+					&& (!(f.get(target) instanceof Collection) || ((Collection<?>) f.get(target)).size()>0)
 					// Id 主键不改变
 					&& f.getDeclaredAnnotation(Id.class) == null
 					// 属性值相同无须改变

@@ -476,7 +476,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		Assert.notNull(source);
 		Assert.notNull(target);
 
-		ReflectUtils.modifySourceEntityPropertiesToTarget(source, target);
+		source = ReflectUtils.modifySourceEntityPropertiesToTarget(source, target);
 
 		update(source);
 	}

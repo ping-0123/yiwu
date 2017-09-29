@@ -185,16 +185,16 @@
 						"title" : "操作",
 						"render" : function(data, type, row, meta) {
 							var html = '';	
-							if ($('#updatePermission').val()) {
+							<shiro:hasPermission name="roles:update:*">
 								html = html
 										+ '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
-							}
-							if ($('#deletePermission').val()) {
+							</shiro:hasPermission>
+							<shiro:hasPermission name="roles:delete:*">
 								html = html
 										+ '<a href="#" onclick="showDeleteModal('
 										+ row.id
 										+ ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
-							}
+							</shiro:hasPermission>
 							return html;
 						}
 					} ]
@@ -211,7 +211,7 @@
 					check:{
 						enable:true,
 						chkStyle:"checkbox",
-						chkboxType:{"Y":"p","N":"s"}
+						chkboxType:{"Y":"ps","N":"s"}
 					}            
 		};
 		
