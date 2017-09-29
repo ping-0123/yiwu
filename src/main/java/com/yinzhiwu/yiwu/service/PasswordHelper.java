@@ -39,7 +39,6 @@ public class PasswordHelper {
     public void encryptPassword(User user) {
 
         user.setSalt(randomNumberGenerator.nextBytes().toHex());
-//    	user.setSalt("0f3742030f3d960e735ecaf525589a99");
 
         String newPassword = new SimpleHash(
                 algorithmName,

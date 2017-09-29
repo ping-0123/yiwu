@@ -45,7 +45,7 @@ public class User extends BaseEntity {
 	@Column(length=32)
 	private String salt;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_user_employee_id"))
 	private EmployeeYzw employee;
 	

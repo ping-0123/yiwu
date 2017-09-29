@@ -158,7 +158,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		Assert.notNull(entity, "entity is required");
 		
 		getSession().delete(entity);
-
+		
 	}
 
 	@Override

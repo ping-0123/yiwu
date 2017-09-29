@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
+import com.yinzhiwu.yiwu.context.Constants;
 import com.yinzhiwu.yiwu.dao.UserDao;
 import com.yinzhiwu.yiwu.entity.sys.Resource;
 import com.yinzhiwu.yiwu.entity.sys.Role;
@@ -117,6 +119,14 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements U
 	      passwordHelper.encryptPassword(user);
 	      update(user);
 		
+	}
+
+	@Override
+	public Integer save(User user) {
+		if(!StringUtils.hasText(user.getPassword()))
+			user.setPassword(Constants.PASSWORD_DEFAULT);
+		passwordHelper.encryptPassword(user);
+		return super.save(user);
 	}
 
 	

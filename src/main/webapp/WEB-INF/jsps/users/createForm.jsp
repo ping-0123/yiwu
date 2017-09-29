@@ -23,10 +23,10 @@
 		<form id="form-create"  method="POST" action="./"  class="form-horizontal form-label-left">
 
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">职位名 <span class="required">*</span></label>
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">用户名<span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
 					<!--  <input type="text" class="form-control" placeholder="设置之后不可修改"  name="name" value="${post.name }"> -->
-					<input  name="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2"  placeholder="设置之后不可修改" required="required" type="text">
+					<input  name="username" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2"  placeholder="设置之后不可修改" required="required" type="text">
 				</div>
 			</div>
 
@@ -37,13 +37,6 @@
 						<option value="NORMAL"  selected="selected">正常</option>
 						<option value="FORBID" >禁用</option>
 					</select>
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">岗位描述 </label>
-				<div class="col-md-9 col-sm-9 col-xs-12">
-					<textarea class="form-control" rows="3" name="description"> ${post.description } </textarea>
 				</div>
 			</div>
 

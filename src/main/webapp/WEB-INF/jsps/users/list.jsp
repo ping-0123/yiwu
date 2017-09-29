@@ -94,6 +94,18 @@
 		</div>
 	</div>
 	<!-- /end update modal -->
+	
+	<!-- start setting modal -->
+	<div class="modal fade bs-example-modal-lg modal-setting" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<button class="btn btn-primary btn-sm" onclick="saveUserRoles()"><small>保存</small></button>
+				<ul id="tree" class="ztree"></ul>
+			</div>
+		</div>
+	</div>
+	<!-- /end setting modal -->
+	
 	<!-- /end bootstrap modals -->
     
 	<!-- jQuery -->
@@ -118,7 +130,7 @@
 					"searchPlaceholder" : "输入用户名"
 				},
 				"ajax" : {
-					"url" : "http://localhost:9090/yiwu/system/posts/datatable",
+					"url" : "http://localhost:9090/yiwu/system/users/datatable",
 					"type" : "POST"
 				},
 				"columns" : [{
@@ -128,18 +140,29 @@
 					"data" : "username",
 					"title": "用户名"
 				}, {
+					"data" :"employee",
+					"title":"员工姓名",
+					"render":function(data,type, row, meta){
+						if(data==null)
+							return "";
+						return data.name;
+					}
+				},{
 					"data" : "dataStatus",
 					"title": "状态",
 					"render" : function(data, type, row, meta) {
 						return translateDataStatus(data);
 					}
 				},{
-					"data":"createTime",
+					"data":"createDate",
 					"title":"操作",
 					"render": function(data, type, row, meta) {
+						if(row.username=="Admin")
+							return "";
 						var html =  '';
 						if($('#updatePermission').val()){
 							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
+							html = html +  '<a href="#" data-toggle="modal" data-target=".modal-setting"> <i class="fa fa-navicon" title="设置用户角色"></i></a>';
 						}
 						if($('#deletePermission').val()){
 							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';

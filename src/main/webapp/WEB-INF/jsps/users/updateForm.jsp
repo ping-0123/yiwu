@@ -21,13 +21,13 @@
 
 	<!-- modal body -->
 	<div class="modal-body">
-		<form id="form-update" method="POST" action="${post.id}" class="form-horizontal form-label-left">
+		<form id="form-update" method="POST" action="${user.id}" class="form-horizontal form-label-left">
 
 			<input type="hidden" name="_method" value="PUT">
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">职位名 <span class="required">*</span></label>
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">用户名 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<input type="text" class="form-control" placeholder="岗位名" disabled="disabled" name="name" value="${post.name }">
+					<input type="text" class="form-control"  disabled="disabled" name="name" value="${user.username }">
 				</div>
 			</div>
 
@@ -35,16 +35,9 @@
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">状态 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
 					<select name="dataStatus" class="form-control">
-						<option value="NORMAL" <c:if test="${post.dataStatus eq 'NORMAL'}"> selected="selected"</c:if>>正常</option>
-						<option value="FORBID" <c:if test="${post.dataStatus eq 'FORBID'}"> selected="selected"</c:if>>禁用</option>
+						<option value="NORMAL" <c:if test="${user.dataStatus eq 'NORMAL'}"> selected="selected"</c:if>>正常</option>
+						<option value="FORBID" <c:if test="${user.dataStatus eq 'FORBID'}"> selected="selected"</c:if>>禁用</option>
 					</select>
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">岗位描述 </label>
-				<div class="col-md-9 col-sm-9 col-xs-12">
-					<textarea class="form-control" rows="3" name="description"> ${post.description } </textarea>
 				</div>
 			</div>
 
