@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -65,7 +64,7 @@ public class PostYzw extends BaseYzwEntity {
 	private Integer lparam;
 	
 	@JsonIgnore
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany
 	@JoinTable(name="sys_post_role",
 			joinColumns=@JoinColumn(name="post_id",foreignKey=@ForeignKey( name="fk_postRole_post_id", value=ConstraintMode.NO_CONSTRAINT)),
 			inverseJoinColumns=@JoinColumn(name="role_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_postRole_role_id")))
@@ -73,7 +72,7 @@ public class PostYzw extends BaseYzwEntity {
 	private Set<Role> roles = new HashSet<>();	
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="post", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="post")
 	private List<EmployeePostYzw> employeePosts = new ArrayList<>();
 	
 	public Integer getId() {

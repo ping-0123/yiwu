@@ -164,29 +164,6 @@ function doDeleteRequest() {
 };
 
 
-/**
- * 保存对权限的修改
- * @param roleId
- * @param resourceIds
- * @returns
- */
-function requestSaveRoleResources(roleId, resourceIds){
-	$.ajax({
-		"type":"PUT",
-		"url":roleId + "/resources",
-		"data":{
-			"resourceIds":resourceIds
-		},
-		traditional: true,
-		"success":function(data){
-			if(data.result){
-				flashSaveSuccessModal();
-			}else{
-				showSaveFailureModal(data.msg);
-			}
-		}
-	});
-}
 
 
 /**

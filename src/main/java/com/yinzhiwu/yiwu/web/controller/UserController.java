@@ -151,9 +151,10 @@ public class UserController extends BaseController {
     	try {
 			User user = service.get(id);
 			Set<com.yinzhiwu.yiwu.entity.sys.Role> roles = new HashSet<>();
-			for (Integer roleId : roleIds) {
-				roles.add(roleService.get(roleId));
-			}
+			if(roleIds!=null && roleIds.length>0)
+				for (Integer roleId : roleIds) {
+					roles.add(roleService.get(roleId));
+				}
 			user.setRoles(roles);
 			service.update(user);
 			

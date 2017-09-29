@@ -19,12 +19,13 @@
 <!-- my datatable -->
 <link href="${pageContext.request.contextPath}/assets/datatables/datatables.min.css" rel="stylesheet" > 
 <!-- bootstrap dialog -->
-<link href="${pageContext.request.contextPath}/backend/css/bootstrap-dialog.min.css" rel="stylesheet" >
+<link href="${pageContext.request.contextPath}/assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
 <!-- Custom Theme Style -->
 <link href="${pageContext.request.contextPath}/backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
 <link href="${pageContext.request.contextPath}/backend/css/main.css" rel="stylesheet">
-
+<!-- ztree -->
+<link rel="stylesheet" href="../../assets/jquery-ztree-v3.5.15/css/zTreeStyle/zTreeStyle.css">
 <style>
 .dataTables_filter{width:100%!important;}
 </style>
@@ -99,8 +100,17 @@
 	<div class="modal fade bs-example-modal-lg modal-setting" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
-				<button class="btn btn-primary btn-sm" onclick="saveUserRoles()"><small>保存</small></button>
-				<ul id="tree" class="ztree"></ul>
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title" >设置用户角色</h4>
+				</div>
+				<div class="modal-body">
+					&nbsp&nbsp&nbsp
+					<button class="btn btn-primary btn-sm" onclick="saveUserRoles()"><small>保存</small></button>
+					<ul id="tree" class="ztree"></ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -111,13 +121,14 @@
 	<!-- jQuery -->
 	<script src="../../assets/datatables/datatables.min.js" type="text/javascript"></script>
 	<!-- datatable -->	
-	<script src="${pageContext.request.contextPath}/backend/js/bootstrap-dialog.min.js" type="text/javascript"></script>
+	<script src="../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
 
 	<!-- validator -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
 	<!-- Custom Theme Scripts -->
 	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
-	
+		<!-- ztree -->
+	<script src="../../assets/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
    
    <script type="text/javascript">
    		var column_index_create_time =0;
@@ -162,7 +173,7 @@
 						var html =  '';
 						if($('#updatePermission').val()){
 							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
-							html = html +  '<a href="#" data-toggle="modal" data-target=".modal-setting"> <i class="fa fa-navicon" title="设置用户角色"></i></a>';
+							html = html +  '<a href="#" onclick="showUserRoles(' + row.id + ')" data-toggle="modal" data-target=".modal-setting"> <i class="fa fa-navicon" title="设置用户角色"></i></a>';
 						}
 						if($('#deletePermission').val()){
 							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
@@ -172,8 +183,72 @@
 				} ]
 			}; //end setting
 			
+			
+			// start ztree setting
+			var zNodes
+			var zSetting = {
+			            data: {
+			                simpleData: {
+			                    enable: true
+			                }
+			            },
+						check:{
+							enable:true,
+							chkStyle:"checkbox",
+							chkboxType:{"Y":"ps","N":"s"}
+						}            
+			};
+			
+	        //end ztree setting
+          var userId
+          function showUserRoles(_userId){
+	        userId = _userId
+        	$.ajax({
+        		"url": _userId + "/roleZtree",
+        		"success":function(data){
+        			if(data.result){
+        				zNodes= data.data;
+        				$.fn.zTree.init($("#tree"), zSetting, zNodes);
+        			}
+        		}
+        	});
+     	 }
+        
+          function saveUserRoles(){
+	          	var _userId = userId;
+	          	var _roleIds = new Array();
+	          	
+	          	var treeObj = $.fn.zTree.getZTreeObj("tree");
+	          	var nodes = treeObj.getCheckedNodes(true);
+	          	for(var i=0; i< nodes.length; i++){
+	          		_roleIds[i] = nodes[i].id;
+	          	}
+	          	
+	          	requestSaveUserRoles(_userId,_roleIds);
+          }
+          
+          function requestSaveUserRoles(_userId,_roleIds){
+        	  $.ajax({
+          		"type":"PUT",
+          		"url":_userId+ "/roles",
+          		"data":{
+          			"roleIds":_roleIds
+          		},
+          		traditional: true,
+          		"success":function(data){
+          			if(data.result){
+          				flashSaveSuccessModal();
+          				setTimeout(function(){
+	          				$(".modal-setting").modal("hide");
+          				},1500);
+          			}else{
+          				showSaveFailureModal(data.msg);
+          			}
+          		}
+          	});
+          }
   </script>
   
-  <script src="${pageContext.request.contextPath}/backend/js/main.js"></script>
+  <script src="../../backend/js/main.js"></script>
 </body>
 </html>

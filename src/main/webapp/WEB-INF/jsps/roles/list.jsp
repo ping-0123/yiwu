@@ -27,7 +27,7 @@
 <!-- Yiwu Theme Style -->
 <link href="../../backend/css/main.css" rel="stylesheet">
 <!-- ztree -->
-<link rel="stylesheet" href="../../backend/jquery-ztree-v3.5.15/css/zTreeStyle/zTreeStyle.css">
+<link rel="stylesheet" href="../../assets/jquery-ztree-v3.5.15/css/zTreeStyle/zTreeStyle.css">
 <style>
 .dataTables_filter{width:100%!important;}
 </style>
@@ -140,7 +140,7 @@
 	<!-- validator -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
 	<!-- ztree -->
-	<script src="../../backend/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
+	<script src="../../assets/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
 	<!-- Custom Theme Scripts -->
 	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
 
@@ -200,7 +200,7 @@
 					} ]
 		}; //end datatable setting
 		
-		// start ztree
+		// start ztree setting
 		var zNodes
 		var zSetting = {
 		            data: {
@@ -219,7 +219,7 @@
         	loadResourceTree();
         	
         });
-        //end ztree
+        //end ztree setting
         
         
         function loadResourceTree(){
@@ -265,8 +265,33 @@
         	
         	requestSaveRoleResources(roleId,resourceIds);
         }
-	</script>
+        
+        /**
+         * 保存对权限的修改
+         * @param roleId
+         * @param resourceIds
+         * @returns
+         */
+        function requestSaveRoleResources(roleId, resourceIds){
+        	$.ajax({
+        		"type":"PUT",
+        		"url":roleId + "/resources",
+        		"data":{
+        			"resourceIds":resourceIds
+        		},
+        		traditional: true,
+        		"success":function(data){
+        			if(data.result){
+        				flashSaveSuccessModal();
+        			}else{
+        				showSaveFailureModal(data.msg);
+        			}
+        		}
+        	});
+        }
 
+	</script>
+	
 	<script src="../../backend/js/main.js"></script>
 </body>
 </html>

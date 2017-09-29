@@ -3,11 +3,9 @@ package com.yinzhiwu.yiwu.entity.sys;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -45,11 +43,11 @@ public class User extends BaseEntity {
 	@Column(length=32)
 	private String salt;
 	
-	@OneToOne(fetch=FetchType.EAGER)
+	@OneToOne
 	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_user_employee_id"))
 	private EmployeeYzw employee;
 	
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany
 	@JoinTable(name="sys_user_role", 
 		joinColumns=@JoinColumn(name="user_id", foreignKey=@ForeignKey(name="fk_userRole_user_id")),
 		inverseJoinColumns=@JoinColumn(name="role_id", foreignKey=@ForeignKey(name="fk_userRole_role_id", value=ConstraintMode.NO_CONSTRAINT)))

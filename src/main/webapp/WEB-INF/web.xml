@@ -32,7 +32,21 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-
+		<!-- 延迟加载过滤器 -->
+	<filter>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
+		<!-- <param-name>flushMode</param-name> <param-value>AUTO</param-value> -->
+	</filter>
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>/system/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>/api/*</url-pattern>
+	</filter-mapping>
+	
 
 	<!-- shiro 安全过滤器 -->
 	<!-- The filter-name matches name of a 'shiroFilter' bean inside applicationContext.xml -->
@@ -67,21 +81,6 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>hiddenHttpMethodFilter</filter-name>
-		<url-pattern>/api/*</url-pattern>
-	</filter-mapping>
-
-	<!-- 延迟加载过滤器 -->
-	<filter>
-		<filter-name>openSessionInViewFilter</filter-name>
-		<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
-		<!-- <param-name>flushMode</param-name> <param-value>AUTO</param-value> -->
-	</filter>
-	<filter-mapping>
-		<filter-name>openSessionInViewFilter</filter-name>
-		<url-pattern>/system/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>openSessionInViewFilter</filter-name>
 		<url-pattern>/api/*</url-pattern>
 	</filter-mapping>
 

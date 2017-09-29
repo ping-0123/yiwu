@@ -151,9 +151,10 @@ public class RoleController extends BaseController {
     	try {
 			Role role = roleService.get(id);
 			Set<Resource> res = new HashSet<>();
-			for (Integer resId : resourceIds) {
-				res.add(resourceService.get(resId));
-			}
+			if(resourceIds!=null && resourceIds.length> 0)
+				for (Integer resId : resourceIds) {
+					res.add(resourceService.get(resId));
+				}
     		role.setResources(res);
 			roleService.update(role);
 			

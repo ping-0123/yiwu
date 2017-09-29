@@ -26,6 +26,9 @@
 <link href="${pageContext.request.contextPath}/backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
 <link href="${pageContext.request.contextPath}/backend/css/main.css" rel="stylesheet">
+<style>
+.dataTables_filter{width:100%!important;}
+</style>
 
 </head>
 
@@ -40,7 +43,7 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<shiro:hasPermission name="posts:create:*">
+						<shiro:hasPermission name="employees:create:*">
 							<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
@@ -116,6 +119,10 @@
 			{
 				"processing" : false,
 				"serverSide" : true,
+				"language" : {
+					"url" : "../../backend/config/i18n/datatable-chinese.json",
+					"searchPlaceholder" : "输入员工姓名 手机号码"
+				},
 				"ajax" : {
 					"url" : "http://localhost:9090/yiwu/system/employees/datatable",
 					"type" : "POST"
@@ -154,9 +161,9 @@
 							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
 							html = html +  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
 						}
-						if($('#deletePermission').val()){
+						<shiro:hasPermission name="employees:delete:*">
 							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
-						}
+						</shiro:hasPermission>
 						return html;
 					}
 				} ]

@@ -13,13 +13,11 @@
 
 <title>岗位设置</title>
 
-<!-- Bootstrap -->
- <link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 <!-- Font Awesome -->
 <link href="${pageContext.request.contextPath}/backend/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
 <!-- my datatable -->
-<link href="${pageContext.request.contextPath}/backend/css/datatables.min.css" rel="stylesheet" > 
+<link href="${pageContext.request.contextPath}/assets/datatables/datatables.min.css" rel="stylesheet" > 
 <!-- bootstrap dialog -->
 <link href="${pageContext.request.contextPath}/backend/css/bootstrap-dialog.min.css" rel="stylesheet" >
 <!-- Custom Theme Style -->
@@ -48,12 +46,6 @@
 							<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
-						</shiro:hasPermission>
-						<shiro:hasPermission name="posts:update:*">
-							<input type="hidden" id="updatePermission" value="true" />
-						</shiro:hasPermission>
-						<shiro:hasPermission name="posts:delete:*">
-							<input type="hidden" id="deletePermission" value="true" />
 						</shiro:hasPermission>
 						
 						<ul class="nav navbar-right panel_toolbox">
@@ -104,7 +96,7 @@
 <%-- 已继承在datatables.min.js里	<script src="${pageContext.request.contextPath}/backend/vendors/jquery/dist/jquery.min.js"></script> --%>
 	<!-- Bootstrap -->
 	<%-- <script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script> --%>
-	<script src="${pageContext.request.contextPath}/backend/js/datatables.min.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/assets/datatables/datatables.min.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/backend/js/bootstrap-dialog.min.js" type="text/javascript"></script>
 
 	<!-- validator -->
@@ -114,6 +106,7 @@
 	
    
    <script type="text/javascript">
+   		// start datatable setting
    		var column_index_create_time =0;
    		var setting = 
 			{
@@ -148,17 +141,17 @@
 					"title":"操作",
 					"render": function(data, type, row, meta) {
 						var html =  '';
-						if($('#updatePermission').val()){
+						<shiro:hasPermission name="posts:update:*">
 							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
 							html = html +  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
-						}
-						if($('#deletePermission').val()){
+						</shiro:hasPermission>
+						<shiro:hasPermission name="posts:delete:*">
 							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
-						}
+						</shiro:hasPermission>
 						return html;
 					}
 				} ]
-			}; //end setting
+			}; //end datatable setting
 			
   </script>
   
