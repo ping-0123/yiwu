@@ -13,11 +13,13 @@
 
 <title>岗位设置</title>
 
+<!-- Bootstrap -->
+ <link href="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 <!-- Font Awesome -->
 <link href="${pageContext.request.contextPath}/backend/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
 <!-- my datatable -->
-<link href="${pageContext.request.contextPath}/assets/datatables/datatables.min.css" rel="stylesheet" > 
+<link href="${pageContext.request.contextPath}/backend/css/datatables.min.css" rel="stylesheet" > 
 <!-- bootstrap dialog -->
 <link href="${pageContext.request.contextPath}/backend/css/bootstrap-dialog.min.css" rel="stylesheet" >
 <!-- Custom Theme Style -->
@@ -85,7 +87,7 @@
 		</div>
 	</div>
 	
-	<!-- /end create modal -->
+	<!-- create modal -->
 
 	<!-- update modal -->
 	<div class="modal fade bs-example-modal-lg modal-update" tabindex="-1" role="dialog" aria-hidden="true">
@@ -93,12 +95,16 @@
 			<div class="modal-content"></div>
 		</div>
 	</div>
-	<!-- /end update modal -->
-	<!-- /end bootstrap modals -->
+	<!-- /update modal -->
+	
+
+	<!-- / bootstrap modals -->
     
 	<!-- jQuery -->
-	<script src="../../assets/datatables/datatables.min.js" type="text/javascript"></script>
-	<!-- datatable -->	
+<%-- 已继承在datatables.min.js里	<script src="${pageContext.request.contextPath}/backend/vendors/jquery/dist/jquery.min.js"></script> --%>
+	<!-- Bootstrap -->
+	<%-- <script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script> --%>
+	<script src="${pageContext.request.contextPath}/backend/js/datatables.min.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/backend/js/bootstrap-dialog.min.js" type="text/javascript"></script>
 
 	<!-- validator -->
@@ -115,18 +121,22 @@
 				"serverSide" : true,
 				"language" : {
 					"url" : "../../backend/config/i18n/datatable-chinese.json",
-					"searchPlaceholder" : "输入用户名"
+					"searchPlaceholder" : "输入职位名"
 				},
 				"ajax" : {
 					"url" : "http://localhost:9090/yiwu/system/posts/datatable",
 					"type" : "POST"
 				},
 				"columns" : [{
-					"data" : "createDate",
+					"data" : "createTime",
 					"visible" : false
+				},{
+					"title": "id",
+					"data" : "id",
+					"name" : "postId"
 				}, {
-					"data" : "username",
-					"title": "用户名"
+					"data" : "name",
+					"title": "职位名"
 				}, {
 					"data" : "dataStatus",
 					"title": "状态",
@@ -140,6 +150,7 @@
 						var html =  '';
 						if($('#updatePermission').val()){
 							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
+							html = html +  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
 						}
 						if($('#deletePermission').val()){
 							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
