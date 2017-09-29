@@ -20,7 +20,7 @@
 <!-- bootstrap dialog -->
 <link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
 <!-- Custom Theme Style -->
-<link href="../../backend/css/custom.min.css" rel="stylesheet"> 
+<link href="../../backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
 <link href="../../backend/css/main.css" rel="stylesheet">
 <!-- ztree -->
@@ -42,11 +42,6 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<shiro:hasPermission name="users:create:*">
-							<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
-								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
-							</button>
-						</shiro:hasPermission>
 						
 						<ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"> <i class="fa fa-chevron-up"></i></a></li>
@@ -58,9 +53,7 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content table-responsive">
-						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" width="100%">
-
-						</table>
+						<ul id="tree" class="ztree"></ul>
 					</div>
 				</div>
 			</div>
@@ -121,59 +114,7 @@
 	<!-- Custom Theme Scripts -->
 	<script src="../../backend/js/custom.min.js"></script>
    <script type="text/javascript">
-   		var column_index_create_time =0;
-   		var setting = 
-			{
-				"processing" : false,
-				"serverSide" : true,
-				"language" : {
-					"url" : "../../backend/config/i18n/datatable-chinese.json",
-					"searchPlaceholder" : "输入用户名"
-				},
-				"ajax" : {
-					"url" : "http://localhost:9090/yiwu/system/users/datatable",
-					"type" : "POST"
-				},
-				"columns" : [{
-					"data" : "createTime",
-					"visible" : false
-				}, {
-					"data" : "username",
-					"title": "用户名"
-				}, {
-					"data" :"employee",
-					"title":"员工姓名",
-					"render":function(data,type, row, meta){
-						if(data==null)
-							return "";
-						return data.name;
-					}
-				},{
-					"data" : "dataStatus",
-					"title": "状态",
-					"render" : function(data, type, row, meta) {
-						return translateDataStatus(data);
-					}
-				},{
-					"data":"createTime",
-					"title":"操作",
-					"render": function(data, type, row, meta) {
-						if(row.username=="Admin")
-							return "";
-						var html =  '';
-						<shiro:hasPermission name="users:update:*">
-							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
-							html = html +  '<a href="#" onclick="showUserRoles(' + row.id + ')" data-toggle="modal" data-target=".modal-setting"> <i class="fa fa-navicon" title="设置用户角色"></i></a>';
-						</shiro:hasPermission>
-						<shiro:hasPermission name="users:delete:*">
-							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
-						</shiro:hasPermission>
-						return html;
-					}
-				} ]
-			}; //end setting
-			
-			
+   			column_index_create_time=0;
 			// start ztree setting
 			var zNodes
 			var zSetting = {
@@ -181,62 +122,25 @@
 			                simpleData: {
 			                    enable: true
 			                }
-			            },
-						check:{
-							enable:true,
-							chkStyle:"checkbox",
-							chkboxType:{"Y":"ps","N":"s"}
-						}            
+			            }
 			};
-			
 	        //end ztree setting
-          var userId;
-          function showUserRoles(_userId){
-	        userId = _userId;
-        	$.ajax({
-        		"url": _userId + "/roleZtree",
-        		"success":function(data){
-        			if(data.result){
-        				zNodes= data.data;
-        				$.fn.zTree.init($("#tree"), zSetting, zNodes);
-        			}
-        		}
-        	});
-     	 }
-        
-          function saveUserRoles(){
-	          	var _userId = userId;
-	          	var _roleIds = new Array();
-	          	
-	          	var treeObj = $.fn.zTree.getZTreeObj("tree");
-	          	var nodes = treeObj.getCheckedNodes(true);
-	          	for(var i=0; i< nodes.length; i++){
-	          		_roleIds[i] = nodes[i].id;
-	          	}
-	          	
-	          	requestSaveUserRoles(_userId,_roleIds);
-          }
-          
-          function requestSaveUserRoles(_userId,_roleIds){
-        	  $.ajax({
-          		"type":"PUT",
-          		"url":_userId+ "/roles",
-          		"data":{
-          			"roleIds":_roleIds
-          		},
-          		traditional: true,
-          		"success":function(data){
-          			if(data.result){
-          				flashSaveSuccessModal();
-          				setTimeout(function(){
-	          				$(".modal-setting").modal("hide");
-          				},1500);
-          			}else{
-          				showSaveFailureModal(data.msg);
-          			}
-          		}
-          	});
-          }
+	        
+	        $(document).ready(function(){
+	        	loadDepartmentZtree();
+	        });
+	        
+	        function loadDepartmentZtree(){
+	        	$.ajax({
+	        		"url": "ztree",
+	        		"success":function(data){
+	        			if(data.result){
+	        				zNodes= data.data;
+	        				$.fn.zTree.init($("#tree"), zSetting, zNodes);
+	        			}
+	        		}
+	        	});
+	        }
   </script>
   
   <script src="../../backend/js/main.js"></script>
