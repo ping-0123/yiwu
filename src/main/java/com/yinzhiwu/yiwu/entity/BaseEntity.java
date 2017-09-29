@@ -43,15 +43,16 @@ public abstract class BaseEntity implements Serializable {
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	@Column(updatable = false)
-	private Date createDate;
+	@Column(updatable = false, name="createDate")
+	private Date createTime;
 
-	private Integer lastModifiedUserId;
+	@Column(name="lastModifiedUserId")
+	private Integer lastChangeUserId;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	@Column(insertable = true, updatable = true)
-	protected Date lastModifiedDate;
+	@Column(insertable = true, updatable = true, name="lastModifiedDate")
+	protected Date lastChangeTime;
 	
 	@Enumerated(value=EnumType.ORDINAL)
 	private DataStatus dataStatus;
@@ -61,23 +62,23 @@ public abstract class BaseEntity implements Serializable {
 
 	public void init() {
 		Date date = new Date();
-		this.createDate = date;
-		this.lastModifiedDate = date;
+		this.createTime = date;
+		this.lastChangeTime = date;
 		if(dataStatus ==null)
 			dataStatus = DataStatus.NORMAL;
 		User user = UserContext.getUser();
 		if(user != null){
 			this.createUserId = user.getId();
-			this.lastModifiedUserId = user.getId();
+			this.lastChangeUserId = user.getId();
 		}
 	}
 
 	public void beforeUpdate() {
 		Date date = new Date();
-		this.lastModifiedDate = date;
+		this.lastChangeTime = date;
 		User user = UserContext.getUser();
 		if(user !=null)
-			this.lastModifiedUserId = user.getId();
+			this.lastChangeUserId = user.getId();
 	}
 
 	public Integer getId() {
@@ -88,20 +89,46 @@ public abstract class BaseEntity implements Serializable {
 		this.id = id;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	/**
+	 * @return the createTime
+	 */
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	/**
+	 * @param createTime the createTime to set
+	 */
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
-	public Date getLastModifiedDate() {
-		return lastModifiedDate;
+	/**
+	 * @return the lastChangeUserId
+	 */
+	public Integer getLastChangeUserId() {
+		return lastChangeUserId;
 	}
 
-	public void setLastModifiedDate(Date modifyDate) {
-		this.lastModifiedDate = modifyDate;
+	/**
+	 * @param lastChangeUserId the lastChangeUserId to set
+	 */
+	public void setLastChangeUserId(Integer lastChangeUserId) {
+		this.lastChangeUserId = lastChangeUserId;
+	}
+
+	/**
+	 * @return the lastChangeTime
+	 */
+	public Date getLastChangeTime() {
+		return lastChangeTime;
+	}
+
+	/**
+	 * @param lastChangeTime the lastChangeTime to set
+	 */
+	public void setLastChangeTime(Date lastChangeTime) {
+		this.lastChangeTime = lastChangeTime;
 	}
 
 	@Override
@@ -139,24 +166,12 @@ public abstract class BaseEntity implements Serializable {
 		this.createUserId = createUserId;
 	}
 
-	public Integer getLastModifiedUserId() {
-		return lastModifiedUserId;
-	}
-
-	public void setLastModifiedUserId(int moddifiedUserId) {
-		this.lastModifiedUserId = moddifiedUserId;
-	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
 	public void setCreateUserId(Integer createUserId) {
 		this.createUserId = createUserId;
-	}
-
-	public void setLastModifiedUserId(Integer lastModifiedUserId) {
-		this.lastModifiedUserId = lastModifiedUserId;
 	}
 
 	public DataStatus getDataStatus() {

@@ -134,7 +134,7 @@
 					"type" : "POST"
 				},
 				"columns" : [{
-					"data" : "createDate",
+					"data" : "createTime",
 					"visible" : false
 				}, {
 					"data" : "username",
@@ -154,7 +154,7 @@
 						return translateDataStatus(data);
 					}
 				},{
-					"data":"createDate",
+					"data":"createTime",
 					"title":"操作",
 					"render": function(data, type, row, meta) {
 						if(row.username=="Admin")

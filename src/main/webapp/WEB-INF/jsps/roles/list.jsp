@@ -165,7 +165,7 @@
 			},
 			"columns" : [
 					{
-						"data" : "createDate",
+						"data" : "createTime",
 						"visible" : false
 					},
 					{
@@ -181,7 +181,7 @@
 						}
 					},
 					{
-						"data" : "createDate",
+						"data" : "createTime",
 						"title" : "操作",
 						"render" : function(data, type, row, meta) {
 							var html = '';	

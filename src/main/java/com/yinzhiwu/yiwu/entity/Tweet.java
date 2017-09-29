@@ -57,7 +57,7 @@ public class Tweet extends BaseEntity {
 
 	public Tweet(TweetModel m) {
 		super();
-		this.editDate = super.getCreateDate();
+		this.editDate = super.getCreateTime();
 		this.title = m.getTitle();
 		this.author = m.getAuthor();
 		this.digest = m.getDigest();
@@ -69,7 +69,7 @@ public class Tweet extends BaseEntity {
 	public void init() {
 		super.init();
 		if(this.editDate == null)
-			this.editDate = super.getCreateDate();
+			this.editDate = super.getCreateTime();
 	}
 
 	public String getTitle() {

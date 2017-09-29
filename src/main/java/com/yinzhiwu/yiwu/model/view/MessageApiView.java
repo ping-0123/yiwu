@@ -21,7 +21,7 @@ public class MessageApiView {
 
 	public MessageApiView(Message m) {
 		this.id = m.getId();
-		this.date = m.getCreateDate();
+		this.date = m.getCreateTime();
 		this.content = m.getContent();
 		this.status = m.getStatus();
 	}

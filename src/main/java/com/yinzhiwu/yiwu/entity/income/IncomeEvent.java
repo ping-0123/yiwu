@@ -65,7 +65,7 @@ public class IncomeEvent extends BaseEntity {
 	@Override
 	public void init() {
 		super.init();
-		this.occurTime = super.getCreateDate();
+		this.occurTime = super.getCreateTime();
 	}
 
 	public IncomeRecord getAppointedIncomeRecord(IncomeType type) {

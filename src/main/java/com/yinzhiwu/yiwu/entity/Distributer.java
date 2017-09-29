@@ -200,7 +200,7 @@ public class Distributer extends BaseEntity {
 		super.init();
 		if (!StringUtils.hasLength(getPassword()))
 			this.password = "yzw123456";
-		this.registedTime = super.getCreateDate();
+		this.registedTime = super.getCreateTime();
 
 	}
 
@@ -215,7 +215,7 @@ public class Distributer extends BaseEntity {
 
 	public Distributer(DistributerRegisterModel m) {
 		super();
-		this.registedTime = getCreateDate();
+		this.registedTime = getCreateTime();
 		this.phoneNo = m.getPhoneNo();
 		this.username = m.getUsername();
 		this.password = m.getPassword();

@@ -85,7 +85,7 @@ public class UserController extends BaseController {
     }
     
     @ResponseBody
-    @GetMapping(value="/{id}/roleZTree")
+    @GetMapping(value="/{id}/roleZtree")
     public YiwuJson<?> getRoleZtree(@PathVariable(name="id") Integer id){
     	try {
 			User user = service.get(id);

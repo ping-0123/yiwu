@@ -59,7 +59,7 @@ public class IncomeRecord extends BaseEntity {
 		super.init();
 		this.incomeEvent = event2;
 		this.incomeType = factor.getIncomeType();
-		this.recordTimestamp = super.getCreateDate();
+		this.recordTimestamp = super.getCreateTime();
 		this.contributor = event2.getDistributer();
 		this.contributedValue = event2.getParam();
 		this.benificiary = benificiary;
