@@ -32,7 +32,7 @@
 
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">状态 <span class="required">*</span></label>
-				<div class="col-md-9 col-sm-9 col-xs-12">
+				<div class="col-md col-sm-2 col-xs-12">
 					<select name="dataStatus" class="form-control">
 						<option value="NORMAL"  selected="selected">正常</option>
 						<option value="FORBID" >禁用</option>

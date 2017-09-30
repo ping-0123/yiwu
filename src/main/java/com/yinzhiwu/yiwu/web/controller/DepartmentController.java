@@ -50,15 +50,14 @@ public class DepartmentController extends BaseController {
 		return "departments/list";
 	}
 	
-	
-	@GetMapping("/form")
-	public String showEditionForm(Model model){
-		DepartmentYzw dept = new DepartmentYzw();
-		model.addAttribute("dept", dept);
+	@GetMapping(value="/createForm")
+	public String showAddChildrenForm(Integer parentId, Model model){
+		model.addAttribute("parentId", parentId);
 		return "departments/createForm";
 	}
 	
-	@GetMapping("/{id}/form")
+	
+	@GetMapping("/{id}/updateForm")
 	public String showModifyForm(@PathVariable(name="id") Integer id, Model model){
 		DepartmentYzw dept = deptService.get(id);
 		model.addAttribute("dept", dept);
@@ -81,7 +80,9 @@ public class DepartmentController extends BaseController {
 				views.add(new DepartmentZtreeApiView(
 						dept.getId(), 
 						dept.getParent()==null?null:dept.getParent().getId(),
-						dept.getName(), true));
+						dept.getName(),
+						//TODO 人性化的判断该节点是否因该展开
+						true));
 			}
 			
 			return YiwuJson.createBySuccess(views);
@@ -90,6 +91,7 @@ public class DepartmentController extends BaseController {
 			return YiwuJson.createByErrorMessage(e.getMessage());
 		}
 	}
+	
 	
 	@PostMapping
 	@ResponseBody
@@ -118,8 +120,14 @@ public class DepartmentController extends BaseController {
 	@ResponseBody
 	@DeleteMapping(value="/{id}")
 	public YiwuJson<?> delete(@PathVariable(name="id") Integer id){
-		deptService.delete(id);
-		return YiwuJson.createBySuccess();
+		try {
+			deptService.delete(id);
+			return YiwuJson.createBySuccess();
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
 	}
 	
 	

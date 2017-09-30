@@ -15,6 +15,13 @@ import com.yinzhiwu.yiwu.model.view.StoreApiView;
 public class DepartmentYzwDaoImpl extends BaseDaoImpl<DepartmentYzw, Integer> implements DepartmentYzwDao {
 
 	@Override
+	public void delete(DepartmentYzw dept) {
+		if(dept.getChildren().size()>0)
+			throw new UnsupportedOperationException(dept.getName()+ "存在子部门， 清先将子部门删除");
+		super.delete(dept);
+	}
+	
+	@Override
 	public List<DepartmentYzw> findAllStores() {
 		StringBuilder hql = new StringBuilder();
 //		hql.append("SELECT new com.yinzhiwu.yiwu.web.purchase.dto.StoreDto(d.id, d.name)");

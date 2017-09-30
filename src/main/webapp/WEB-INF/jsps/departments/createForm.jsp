@@ -8,57 +8,51 @@
 
 </head>
 <body>
-
-	<!-- modal header -->
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">
-			<span aria-hidden="true">×</span>
-		</button>
-		<h4 class="modal-title" id="myModalLabel">新增岗位</h4>
-	</div>
-	<!-- /modal header -->
-
-	<!-- modal body -->
-	<div class="modal-body">
-		<form id="form-create"  method="POST" action="./"  class="form-horizontal form-label-left">
-
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">用户名<span class="required">*</span></label>
-				<div class="col-md-9 col-sm-9 col-xs-12">
-					<!--  <input type="text" class="form-control" placeholder="设置之后不可修改"  name="name" value="${post.name }"> -->
-					<input  name="username" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2"  placeholder="设置之后不可修改" required="required" type="text">
-				</div>
+	<form method="POST" action="./" class="form-horizontal form-label-left input_mask" id="form-create">
+		<input type="hidden" name="parent.id" value="${parentId}">
+		<div class="form-group">
+			<label class="control-label col-md-3 col-sm-3 col-xs-12">部门名称</label>
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<input type="text" class="form-control" name="name" value="">
 			</div>
+		</div>
 
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">状态 <span class="required">*</span></label>
-				<div class="col-md-9 col-sm-9 col-xs-12">
-					<select name="dataStatus" class="form-control">
-						<option value="NORMAL"  selected="selected">正常</option>
-						<option value="FORBID" >禁用</option>
-					</select>
-				</div>
+		<div class="form-group">
+			<label class="control-label col-md-3 col-sm-3 col-xs-12">办公电话 </label>
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<input type="text" class="form-control" name="officialAccount" value="">
 			</div>
-
-			<div class="ln_solid"></div>
-			<div class="form-group">
-				<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-					<button type="submit" class="btn btn-success">提交</button>
-				</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-3 col-sm-3 col-xs-12">办公地址</label>
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<input type="text" class="form-control" value="">
 			</div>
-
-		</form>
-	</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-3 col-sm-3 col-xs-12">备注 </label>
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<textarea class="form-control" rows="2" name="description"> </textarea>
+			</div>
+		</div>
+		<div class="ln_solid"></div>
+		<div class="form-group">
+			<label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+			<div class="col-md-6 col-sm-6 col-xs-12" align="left">
+				<button class="btn btn-primary" type="reset">重置</button>
+				<button type="submit" class="btn btn-success">保存</button>
+			</div>
+		</div>
+	</form>
 
 	<script type="text/javascript">
-		$('#form-create').submit(function(){
+		$('#form-create').submit(function() {
 			$.ajax({
-				url: $(this).attr("action"),
-				type: $(this).attr("method"),
-				data: $(this).serialize(),
-				success:function(data){
-					$('.modal-create').modal('hide');
-					TABLE.order([CLOUMN_CREATE_TIME,'desc']).draw();
+				url : $(this).attr("action"),
+				type : $(this).attr("method"),
+				data : $(this).serialize(),
+				success : function(data) {
+					loadDepartmentZtree();
 				}
 			});
 			return false;

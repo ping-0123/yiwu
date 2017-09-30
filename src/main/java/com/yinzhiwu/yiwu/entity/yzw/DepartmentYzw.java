@@ -1,5 +1,8 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Embedded;
@@ -11,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -48,10 +52,13 @@ public class DepartmentYzw extends BaseYzwEntity{
 	@Column(length = 50, name = "Name")
 	private String name;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "superiorId", foreignKey = @ForeignKey(name = "fk_department_superior_Id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw parent;
 
+	@OneToMany(mappedBy="parent",cascade=CascadeType.REMOVE)
+	private List<DepartmentYzw> children;
+	
 	@Column
 	private String path;
 
@@ -96,6 +103,7 @@ public class DepartmentYzw extends BaseYzwEntity{
 	public void init(){
 		super.init();
 		removed=removed==null?Boolean.FALSE:removed;
+		path=path==null?"":path;
 	}
 	
 	public Integer getId() {
@@ -266,6 +274,20 @@ public class DepartmentYzw extends BaseYzwEntity{
 	 */
 	public void setParent(DepartmentYzw parent) {
 		this.parent = parent;
+	}
+
+	/**
+	 * @return the children
+	 */
+	public List<DepartmentYzw> getChildren() {
+		return children;
+	}
+
+	/**
+	 * @param children the children to set
+	 */
+	public void setChildren(List<DepartmentYzw> children) {
+		this.children = children;
 	}
 	
 }

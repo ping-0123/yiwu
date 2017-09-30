@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.web.tablib;
 
 import org.springframework.util.CollectionUtils;
 
+import com.yinzhiwu.yiwu.entity.Address;
 import com.yinzhiwu.yiwu.enums.DataStatus;
 
 
@@ -24,6 +25,11 @@ public class Functions {
 
     public static String getDataStatusName(DataStatus status){
     	return status.getName();
+    }
+    
+    public static String getDetailAddress(Address address){
+    	return address==null?"":address.getDetailAddress();
+    	
     }
 }
 

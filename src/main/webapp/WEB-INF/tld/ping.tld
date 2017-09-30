@@ -20,6 +20,11 @@
         <function-class>com.yinzhiwu.yiwu.web.tablib.Functions</function-class>
         <function-signature>String getDataStatusName(com.yinzhiwu.yiwu.enums.DataStatus)</function-signature>
     </function>
-
+	<function>
+		<description>获取详细地址</description>
+		<name>getDetailAddress</name>
+		<function-class>com.yinzhiwu.yiwu.web.tablib.Functions</function-class>
+		<function-signature>String getDetailAddress(com.yinzhiwu.yiwu.entity.Address)</function-signature>
+	</function>
 
 </taglib>

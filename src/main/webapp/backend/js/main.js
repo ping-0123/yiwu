@@ -5,8 +5,8 @@
 var DELETE_URL,
 	$TABLE =$('#yiwuDatatable'),
 	TABLE,
-	CLOUMN_CREATE_TIME=column_index_create_time===undefined?0:column_index_create_time;
-	
+	CLOUMN_CREATE_TIME=column_index_create_time==undefined?0:column_index_create_time;
+
 $(document).ready(function(){
 	TABLE = $TABLE.DataTable(setting);
 	
@@ -30,6 +30,7 @@ $(document).ready(function(){
 	
 	
 });
+
 
 /**
  * 关闭模态框自动清除数据
@@ -126,6 +127,22 @@ function showDeleteFailureModal(message){
 	    size : BootstrapDialog.SIZE_SMALL,
 	    closable:true
 	});
+}
+
+/**
+ * 闪现修改成功
+ * @returns
+ */
+function flashUpdateSuccessModal(){
+	var dlg = BootstrapDialog.show({
+	    message: '修改成功',
+	    type:BootstrapDialog.TYPE_SUCCESS,
+	    title:'提示',
+	    size : BootstrapDialog.SIZE_SMALL
+	});
+	setTimeout(function(){
+	    dlg.close();
+	},1000);
 }
 
 /**
