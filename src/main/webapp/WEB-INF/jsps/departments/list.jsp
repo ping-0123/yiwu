@@ -17,7 +17,7 @@
 <link href="../../assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <!-- boostrap datatable -->
 <link href="../../assets/datatables/datatables.min.css" rel="stylesheet" > 
-<!-- bootstrap dialog -->
+<!-- ohter bootstrap plugins -->
 <link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
 <!-- Custom Theme Style -->
 <link href="../../backend/css/custom.min.css" rel="stylesheet">
@@ -27,14 +27,16 @@
 <link rel="stylesheet" href="../../assets/jquery-ztree-v3.5.15/css/zTreeStyle/zTreeStyle.css">
 <style>
 .dataTables_filter{width:100%!important;}
-div#right-menu {position:absolute; visibility:hidden; top:0; background-color: #555;text-align: left;padding: 2px;}
+div#right-menu {position:absolute; visibility:hidden;/*  top:0; background-color: #555;text-align: right;padding: 2px; */}
+/* div#right-menu ul{padding:1px; align:center}
 div#right-menu ul li{
 	margin: 1px 0;
-	padding: 0 5px;
+	padding: 0px;
+	align:center;
 	cursor: pointer;
 	list-style: none outside none;
 	background-color: #DFDFDF;
-}
+} */
 </style>
 
 </head>
@@ -95,7 +97,7 @@ div#right-menu ul li{
 	
 	<!-- 右键菜单 -->
 	<div id="right-menu">
-		<ul>
+		<ul class="dropdown-menu" role="menu">
 			<shiro:hasPermission name="departments:create:*">
 				<li id="menu-create" onclick="showCreateForm();">新增</li>
 			</shiro:hasPermission>
@@ -111,9 +113,11 @@ div#right-menu ul li{
 	
 	<!-- /end bootstrap modals -->
     
+    
 	<!-- jquery bootstrap datatable -->	
 	<script src="../../assets/datatables/datatables.min.js" type="text/javascript"></script>
 	<script src="../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
+	<script src="../../assets/bootstrap-menu/BootstrapMenu.min.js" type="text/javascript"></script>
 	<!-- ztree -->
 	<script src="../../assets/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
 	<!-- validator -->
@@ -122,7 +126,7 @@ div#right-menu ul li{
 	<script src="../../backend/js/custom.min.js"></script>
    <script type="text/javascript">
 			// start ztree setting
-			
+			var column_index_create_time=0;
 			var zNodes;
 			var zSetting = {
 			            data: {
@@ -192,7 +196,7 @@ div#right-menu ul li{
 	        	_ztree.selectNode(treeNode);
 	        	
 	        	operating_department_id = treeNode.id;
-	        	showRightMenu(event.clientX, event.clientY);
+	        	showRightMenu(event.pageX, event.pageY);
 	        }
 	        
 	        function showRightMenu(x,y){
