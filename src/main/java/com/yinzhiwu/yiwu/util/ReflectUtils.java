@@ -66,6 +66,25 @@ public final class ReflectUtils {
 		
 	}
 	
+	public static Class<?> getFieldClass(Class<?> clazz, String fieldName) throws NoSuchFieldException, SecurityException{
+		if(clazz==null || !StringUtils.hasText(fieldName)) 
+			throw new IllegalArgumentException("clazz and fieldName can not be null");
+		
+		if(fieldName.contains(".")){
+			int index = fieldName.indexOf(".");
+			String pre = fieldName.substring(0, index);
+			String  suff = fieldName.substring(index+1);
+			return getFieldClass(getFieldClass(clazz, pre), suff);
+		}else {
+			Field field = getField(clazz, fieldName);
+			Class<?> cls = getParameterizedType(field);
+			if(cls != null)
+				return cls;
+			else
+				return (Class<?>) field.getGenericType();
+		}
+	}
+	
 	public static void showObject(Object object){
 		if(object == null )
 			return;

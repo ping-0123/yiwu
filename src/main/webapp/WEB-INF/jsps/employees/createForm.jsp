@@ -14,7 +14,7 @@
 		<button type="button" class="close" data-dismiss="modal">
 			<span aria-hidden="true">×</span>
 		</button>
-		<h4 class="modal-title" id="myModalLabel">新增岗位</h4>
+		<h4 class="modal-title" id="myModalLabel">新增部门</h4>
 	</div>
 	<!-- /modal header -->
 

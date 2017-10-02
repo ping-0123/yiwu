@@ -8,6 +8,7 @@ var DELETE_URL,
 	CLOUMN_CREATE_TIME=column_index_create_time==undefined?0:column_index_create_time;
 
 $(document).ready(function(){
+	if($TABLE==undefined) return;;
 	TABLE = $TABLE.DataTable(setting);
 	
 	$('#yiwuDatatable tbody').on('click', 'tr', function() {
@@ -45,7 +46,6 @@ $(".modal").on("hidden.bs.modal", function() {
  * @returns
  */
 function showDeleteModal(url) {
-	DELETE_URL = url;
 	BootstrapDialog.confirm({
 		title:"删除",
 		message:"删除之后将不能恢复， 确认删除?",
@@ -58,7 +58,7 @@ function showDeleteModal(url) {
 		size:BootstrapDialog.SIZE_SMALL,
 		callback:function(result){
 			if(result){
-				doDeleteRequest();
+				doDeleteRequest(url);
 			}
 		}
 	});
@@ -166,13 +166,14 @@ function showUpdateFailureModal(message){
  * @param url
  * @returns
  */
-function doDeleteRequest() {
+function doDeleteRequest(url) {
 	$.ajax({
-		url : DELETE_URL,
+		url : url,
 		type : 'DELETE',
 		success : function(data) {
-			if(data.result)
+			if(data.result){
 				flashDeleteSuccessModal();
+			}
 			else
 				showDeleteFailureModal(data.error);
 		}

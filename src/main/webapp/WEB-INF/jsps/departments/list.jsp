@@ -28,15 +28,15 @@
 <style>
 .dataTables_filter{width:100%!important;}
 div#right-menu {position:absolute; visibility:hidden;/*  top:0; background-color: #555;text-align: right;padding: 2px; */}
-/* div#right-menu ul{padding:1px; align:center}
+div#right-menu ul{padding:1px; align:center}
 div#right-menu ul li{
 	margin: 1px 0;
 	padding: 0px;
 	align:center;
+	text-align:center;
 	cursor: pointer;
 	list-style: none outside none;
-	background-color: #DFDFDF;
-} */
+} 
 </style>
 
 </head>
@@ -96,28 +96,45 @@ div#right-menu ul li{
 	<!-- /page content -->
 	
 	<!-- 右键菜单 -->
-	<div id="right-menu">
+	<div id="right-menu" class="">
 		<ul class="dropdown-menu" role="menu">
 			<shiro:hasPermission name="departments:create:*">
-				<li id="menu-create" onclick="showCreateForm();">新增</li>
+				<li ><a href="#" id="op-create" data-toggle="modal" data-target=".modal-create"><i class="fa fa-plus" >&nbsp</i>新增</a></li>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="departments:update:*">
-				<li id="menu-update" onclick="showUpdateForm();">修改</li>
+				<li ><a href="#" id="op-update" data-toggle="modal" data-target=".modal-update"><i class="fa fa-edit">&nbsp</i>修改</a></li>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="departments:delete:*">
-				<li id="menu-create" onclick="deleteDepartment();">删除</li>
+				<li  ><a href="#" onclick="deleteDepartment();"><i class="fa fa-remove">&nbsp</i>删除</a></li>
 			</shiro:hasPermission>
 		</ul>
 	</div>
 	<!-- / end 右键菜单 -->
 	
+	<!-- bootstrap modals  -->
+	<!-- create modal -->
+	<div class="modal fade modal-create" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+	<!-- /end create modal -->
+
+	<!-- update modal -->
+	<div class="modal fade modal-update" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+	<!-- /end update modal -->
+	
 	<!-- /end bootstrap modals -->
     
     
-	<!-- jquery bootstrap datatable -->	
-	<script src="../../assets/datatables/datatables.min.js" type="text/javascript"></script>
+    
+	<script src="../../assets/datatables/jQuery-3.2.1/jquery-3.2.1.min.js" type="text/javascript"></script>
+	<script src="../../assets/datatables/Bootstrap-3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
-	<script src="../../assets/bootstrap-menu/BootstrapMenu.min.js" type="text/javascript"></script>
 	<!-- ztree -->
 	<script src="../../assets/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
 	<!-- validator -->
@@ -154,6 +171,7 @@ div#right-menu ul li{
 			};
 	        //end ztree setting
 	        
+
 	        function loadDepartmentZtree(){
 	        	$.ajax({
 	        		"url": "ztree",
@@ -168,7 +186,7 @@ div#right-menu ul li{
 	        
 	        function ztreeOnClick(event, treeId, treeNode, clickFlag){
 	        	var departmentId = treeNode.id;
-	        	showUpdateForm(departmentId);
+	        	showDetail(departmentId);
 	        }
 	        
 	        function ztreeOnDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
@@ -194,14 +212,15 @@ div#right-menu ul li{
 	        	if(treeNode==null) return;
 	        	var _ztree= $.fn.zTree.getZTreeObj(treeId);
 	        	_ztree.selectNode(treeNode);
-	        	
 	        	operating_department_id = treeNode.id;
-	        	showRightMenu(event.pageX, event.pageY);
+	         	$("#op-create").attr("href", "createForm?parentId=" + treeNode.id); 
+	         	$("#op-update").attr("href",treeNode.id + "/updateForm");
+	         	showRightMenu(event.pageX, event.pageY); 
 	        }
 	        
 	        function showRightMenu(x,y){
-	        	$("#right-menu ul").show();
-	        	$("#right-menu").css({"top":y+"px","left":x+"px","visibility":"visible"});
+	         	$("#right-menu ul").show();
+	        	$("#right-menu").css({"top":y+"px","left":x+"px","visibility":"visible"}); 
 	        	$("body").bind("mousedown",onBodyMouseDown);
 	        }
 	        
@@ -211,9 +230,9 @@ div#right-menu ul li{
 	        }
 	        
 	      	function onBodyMouseDown(){
-	      		if (!(event.target.id == "right-menu" || $(event.target).parents("#right-menu").length>0)) {
+	      		 if (!(event.target.id == "right-menu" || $(event.target).parents("#right-menu").length>0)) {
     				$("#right-menu").css({"visibility" : "hidden"});
-    			}
+    			} 
 	      	}
 	        
 	        function ztreeBeforeRightClick(treeId,treeNode){
@@ -241,17 +260,19 @@ div#right-menu ul li{
 	        		},
 	        		"success":function(data){
 	        			$("#departmentDetail").html(data);
+	        		 	$(".modal-content").html(data); 
+	        		 	$(".modal-create").modal('show',true);
 	        		}
 	        	});
 	        	
 	        	hiddenRightMenu();
 	        }
 	        
-	        function showUpdateForm(id){
+	        function showDetail(id){
 	        	var _id=(id==undefined?operating_department_id:id);
 				if(_id==undefined)	return;
 	        	$.ajax({
-	        		"url": _id + "/updateForm",
+	        		"url": _id + "/detailJsp",
 	        		"success":function(data){
 	        			$("#departmentDetail").html(data);
 	        		}
@@ -264,7 +285,9 @@ div#right-menu ul li{
 	 			var _id=(id==undefined?operating_department_id:id);
 				if(_id==undefined)	return;
 	 			showDeleteModal(_id);
-	 			setTimeout(loadDepartmentZtree, 1500);
+	 			setTimeout(() => {
+	 				loadDepartmentZtree();
+				}, 1500);
 	 		}
 	 		
 	 		function doSearch(){
@@ -283,10 +306,8 @@ div#right-menu ul li{
 	 				doSearch();
 	 		}
 	 		
-	 		 var operating_department_id,ztree,$ZTREE, ztreeId;
+	 		var operating_department_id,ztree,$ZTREE, ztreeId,menu;
 	        $(document).ready(function(){
-	        	ztreeId="tree";
-	        	$ZTREE=$("#tree")
 	        	ztree=loadDepartmentZtree();
 	        });
   </script>

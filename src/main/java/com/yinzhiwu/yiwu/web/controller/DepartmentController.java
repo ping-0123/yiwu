@@ -64,6 +64,13 @@ public class DepartmentController extends BaseController {
 		return "departments/updateForm";
 	}
 	
+	@GetMapping("/{id}/detailJsp")
+	public String showDetail(@PathVariable(name="id") Integer id, Model model){
+		DepartmentYzw dept = deptService.get(id);
+		model.addAttribute("dept", dept);
+		return "departments/detail";
+	}
+	
 	@GetMapping("/{id}")
 	@ResponseBody
 	public YiwuJson<?> get(@PathVariable(name="id") Integer id){

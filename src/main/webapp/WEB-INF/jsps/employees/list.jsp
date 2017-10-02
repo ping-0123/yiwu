@@ -81,7 +81,7 @@
 	<!-- bootstrap modals -->
 	<!-- create modal -->
 	<div class="modal fade bs-example-modal-lg modal-create" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
+		<div class="modal-dialog modal-md">
 			<div class="modal-content"></div>
 		</div>
 	</div>
@@ -90,7 +90,7 @@
 
 	<!-- update modal -->
 	<div class="modal fade bs-example-modal-lg modal-update" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
+		<div class="modal-dialog modal-md">
 			<div class="modal-content"></div>
 		</div>
 	</div>

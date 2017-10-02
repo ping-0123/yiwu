@@ -8,6 +8,18 @@
 
 </head>
 <body>
+
+	<!-- modal header -->
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">
+			<span aria-hidden="true">×</span>
+		</button>
+		<h4 class="modal-title" id="myModalLabel">新增部门</h4>
+	</div>
+	<!-- /modal header -->
+
+	<!-- modal body -->
+	<div class="modal-body">
 	<form method="POST" action="./" class="form-horizontal form-label-left input_mask" id="form-create">
 		<input type="hidden" name="parent.id" value="${parentId}">
 		<div class="form-group">
@@ -44,6 +56,7 @@
 			</div>
 		</div>
 	</form>
+	</div>
 
 	<script type="text/javascript">
 		$('#form-create').submit(function() {
@@ -52,6 +65,7 @@
 				type : $(this).attr("method"),
 				data : $(this).serialize(),
 				success : function(data) {
+					$('.modal-create').modal('hide');
 					loadDepartmentZtree();
 				}
 			});
