@@ -74,7 +74,7 @@
 	<!-- bootstrap modals -->
 	<!-- create modal -->
 	<div class="modal fade bs-example-modal-lg modal-create" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
+		<div class="modal-dialog modal-md">
 			<div class="modal-content"></div>
 		</div>
 	</div>
@@ -83,7 +83,7 @@
 
 	<!-- update modal -->
 	<div class="modal fade bs-example-modal-lg modal-update" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
+		<div class="modal-dialog modal-md">
 			<div class="modal-content"></div>
 		</div>
 	</div>
@@ -91,7 +91,7 @@
 	
 	<!-- start setting modal -->
 	<div class="modal fade bs-example-modal-lg modal-setting" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
+		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">
@@ -128,7 +128,7 @@
 				"serverSide" : true,
 				"language" : {
 					"url" : "../../backend/config/i18n/datatable-chinese.json",
-					"searchPlaceholder" : "输入用户名"
+					"searchPlaceholder" : "输入用户名 员工姓名"
 				},
 				"ajax" : {
 					"url" : "http://localhost:9090/yiwu/system/users/datatable",
@@ -141,12 +141,10 @@
 					"data" : "username",
 					"title": "用户名"
 				}, {
-					"data" :"employee",
+					"data" :"employee.name",
 					"title":"员工姓名",
-					"render":function(data,type, row, meta){
-						if(data==null)
-							return "";
-						return data.name;
+ 					"render":function(data,type, row, meta){
+						return data==null?"":data;
 					}
 				},{
 					"data" : "dataStatus",

@@ -54,7 +54,19 @@ public class User extends BaseEntity {
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Role> roles = new HashSet<Role>();
 
+	public User(){};
 	
+	
+	public User(String username) {
+		this.username = username;
+	}
+
+	public User(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
+
+
 	/**
 	 * @return the username
 	 */

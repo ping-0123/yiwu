@@ -1,4 +1,4 @@
-alter TABLE chenkuserdb1.tblemployee add COLUMN(dataStatus int);
+alter TABLE chenkuserdb1.tblemployee add COLUMN(dataStatus int,number varchar(10));
 alter TABLE chenkuserdb1.tblemployee MODIFY COLUMN id int not null AUTO_INCREMENT;
 
 CREATE 
@@ -7,8 +7,7 @@ VIEW `vemployee` AS
     SELECT 
         `chenkuserdb1`.`tblemployee`.`ID` AS `id`,
         `chenkuserdb1`.`tblemployee`.`User` AS `username`,
-        yiwu_password,
-        salt,
+        number,
         `chenkuserdb1`.`tblemployee`.`SeegleUserID` AS `seegle_user_id`,
         `chenkuserdb1`.`tblemployee`.`name` AS `name`,
         `chenkuserdb1`.`tblemployee`.`PassWord` AS `chenk_password`,

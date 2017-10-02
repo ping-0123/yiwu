@@ -577,16 +577,11 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			Column column = parameter.getColumns()[i];
 			while (column !=null){
 				if(column.isSearchable() && StringUtils.hasLength(column.getData()) ){
-					//只支持 Integer ,String 列搜索
-					Field field = ReflectUtils.getField(entityClass, column.getData());
-					if(field == null)
-						throw new NoSuchFieldException();
-					if(field.getGenericType() == Integer.class){
-//						propertyNames.add("search" + String.valueOf(i));
-//						hql.append(" OR cast_to_char(" + column.getData()  + ") LIKE :search" + String.valueOf(i));
-					}else if (field.getGenericType() == String.class) {
+					String fieldName = column.getData();
+					//只支持  String 列搜索
+					if(String.class == ReflectUtils.getFieldClass(entityClass, fieldName)){
 						propertyNames.add("search" + String.valueOf(i));
-						hql.append(" OR " + column.getData()  + " LIKE :search" + String.valueOf(i));
+						hql.append(" OR " + fieldName  + " LIKE :search" + String.valueOf(i));
 					}
 					
 				}
@@ -609,8 +604,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			}
 			//如果是字符串 使用convert(? using gbk)排序
 			String orderedColumnName = parameter.getColumns()[order.getColumn()].getData();
-			Field orderedField = ReflectUtils.getField(entityClass, orderedColumnName);
-			if(orderedField.getGenericType() == String.class)
+			if(String.class ==ReflectUtils.getFieldClass(entityClass, orderedColumnName))
 				hql.append( "convert_gbk(" + orderedColumnName+ ") " + order.getDir().name());
 			else
 				hql.append( orderedColumnName + " " +  order.getDir().name());

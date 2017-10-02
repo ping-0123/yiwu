@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
@@ -26,6 +27,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 @Entity
@@ -48,7 +50,11 @@ public class EmployeeYzw extends BaseYzwEntity {
 
 	@Column(length = 128, name="seegle_user_id")
 	private String seegleUserId;
-
+	
+	//工号
+	@Column(length=10)
+	private String number;
+	
 	@Column(length = 128)
 	private String name;
 
@@ -133,7 +139,9 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Set<EmployeePostYzw> employeePosts = new HashSet<>();
 	
-	
+	@JsonIgnore
+	@OneToOne(mappedBy="employee", fetch=FetchType.LAZY)
+	private User user;
 	
 	public EmployeeYzw() {
 	}
@@ -493,5 +501,37 @@ public class EmployeeYzw extends BaseYzwEntity {
 
 	public void setDisabled(Boolean disabled) {
 		this.disabled = disabled;
+	}
+
+
+	/**
+	 * @return the number
+	 */
+	public String getNumber() {
+		return number;
+	}
+
+
+	/**
+	 * @param number the number to set
+	 */
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
+	}
+
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user) {
+		this.user = user;
 	}
 }
