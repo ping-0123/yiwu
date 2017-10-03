@@ -16,12 +16,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeePostYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.YiwuJson.ReturnCode;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
+import com.yinzhiwu.yiwu.service.DepartmentYzwService;
+import com.yinzhiwu.yiwu.service.EmployeePostYzwService;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
+import com.yinzhiwu.yiwu.service.PostYzwService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 
 
@@ -30,6 +35,9 @@ import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 public class EmployeeController  extends BaseController{
 
 	@Autowired private EmployeeYzwService employeeService;
+	@Autowired private DepartmentYzwService deptService;
+	@Autowired private PostYzwService postService;
+	@Autowired private EmployeePostYzwService epService;
 	
 	@GetMapping
 	public String index(){
@@ -73,6 +81,49 @@ public class EmployeeController  extends BaseController{
 	@ResponseBody
 	public YiwuJson<?> get(@PathVariable(name="id") Integer id ){
 		return YiwuJson.createBySuccess(employeeService.get(id));
+	}
+	
+	@GetMapping(value="/{id}/posts/list")
+	public String getPostsListJsp(@PathVariable(name="id") Integer id , Model model){
+		EmployeeYzw e = employeeService.get(id);
+		model.addAttribute("employee", e);
+		return "employees/posts/list";
+	}
+	
+	@GetMapping(value="/{id}/posts/createForm")
+	public String getPostsCreateForm(@PathVariable(name="id") Integer id, Model model){
+		model.addAttribute("employee", employeeService.get(id));
+		model.addAttribute("departments", deptService.findAll());
+		model.addAttribute("posts", postService.findAll());
+		return "employees/posts/createForm";
+	}
+	
+	@PostMapping(value="/{id}/posts")
+	@ResponseBody
+	public YiwuJson<?> createPosts(@Valid EmployeePostYzw ep, BindingResult result){
+		if(result.hasErrors())
+			return YiwuJson.createByErrorCodeMessage(ReturnCode.ILLEGAL_ARGUMENT.getCode(), getErrorsMessage(result));
+		
+		try {
+			epService.save(ep);
+			return YiwuJson.createBySuccess();
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
+	}
+	
+	@PostMapping(value="/{id}/posts/datatable")
+	@ResponseBody
+	public DataTableBean<?> findPostsDatatable(@PathVariable(name="id") Integer id, HttpServletRequest request){
+		try {
+			QueryParameter parameter = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
+			return epService.findDataTableByEmployeeId(parameter,id);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException | InstantiationException e) {
+			logger.error(e.getMessage(),e);
+		}
+		
+		return null;
 	}
 	
 	@PostMapping

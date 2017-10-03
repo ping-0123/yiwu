@@ -12,12 +12,12 @@ $(document).ready(function(){
 	TABLE = $TABLE.DataTable(setting);
 	
 	$('#yiwuDatatable tbody').on('click', 'tr', function() {
-		if ($(this).hasClass('selected')) {
-			$(this).removeClass('selected');
-		} else {
-			TABLE.$('tr.selected').removeClass('selected');
-			$(this).addClass('selected');
-		}
+//		if ($(this).hasClass('selected')) {
+//			$(this).removeClass('selected');
+//		} else {
+//			TABLE.$('tr.selected').removeClass('selected');
+//			$(this).addClass('selected');
+//		}
 		
 		//roles list 需要加载资源树
 		if($TABLE.hasClass('table-roles')){

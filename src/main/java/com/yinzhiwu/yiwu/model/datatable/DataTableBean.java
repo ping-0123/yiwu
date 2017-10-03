@@ -1,7 +1,7 @@
 package com.yinzhiwu.yiwu.model.datatable;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -22,14 +22,14 @@ public class DataTableBean<T> implements Serializable{
 	private Integer draw;
 	private Integer recordsTotal;
 	private Integer recordsFiltered;
-	private List<T> data;
+	private Collection<T> data;
 	private String error;
 	
 	
 	public DataTableBean(){};
 	
 	
-	public DataTableBean(Integer draw, Integer recordsTotal, Integer recordsFiltered, List<T> data, String error) {
+	public DataTableBean(Integer draw, Integer recordsTotal, Integer recordsFiltered, Collection<T> data, String error) {
 		this.draw = draw;
 		this.recordsTotal = recordsTotal;
 		this.recordsFiltered = recordsFiltered;
@@ -51,7 +51,7 @@ public class DataTableBean<T> implements Serializable{
 	public Integer getRecordsFiltered() {
 		return recordsFiltered;
 	}
-	public List<?> getData() {
+	public Collection<?> getData() {
 		return data;
 	}
 	public String getError() {
@@ -66,7 +66,7 @@ public class DataTableBean<T> implements Serializable{
 	public void setRecordsFiltered(Integer recordsFiltered) {
 		this.recordsFiltered = recordsFiltered;
 	}
-	public void setData(List<T> data) {
+	public void setData(Collection<T> data) {
 		this.data = data;
 	}
 	public void setError(String error) {

@@ -17,6 +17,12 @@ public class Sequence {
 	private String name;
 	private Integer value;
 	
+	public Sequence(){};
+	
+	public Sequence(String sequenceName, int i) {
+		this.name =sequenceName;
+		this.value=i;
+	}
 	public void increase(){
 		this.value++;
 	}

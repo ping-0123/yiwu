@@ -21,8 +21,12 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.Address;
 
+@JsonInclude(value= Include.NON_NULL)
 @Entity
 @Table(name = "vdepartment")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
@@ -52,21 +56,25 @@ public class DepartmentYzw extends BaseYzwEntity{
 	@Column(length = 50, name = "Name")
 	private String name;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "superiorId", foreignKey = @ForeignKey(name = "fk_department_superior_Id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw parent;
 
+	@JsonIgnore
 	@OneToMany(mappedBy="parent",cascade=CascadeType.REMOVE)
 	private List<DepartmentYzw> children;
 	
 	@Column
 	private String path;
 
+	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="manager1", foreignKey=@ForeignKey(
 			name="fk_department_manager1", value=ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw manager1;
 
+	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="manager2",foreignKey=
 			@ForeignKey(name="fk_department_manager2", value = ConstraintMode.NO_CONSTRAINT))

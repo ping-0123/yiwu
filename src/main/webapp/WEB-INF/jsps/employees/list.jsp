@@ -95,8 +95,14 @@
 		</div>
 	</div>
 	<!-- /update modal -->
+		<!-- setting modal -->
+	<div class="modal fade modal-setting" tabindex="-1" role="dialog" aria-hidden="true" height="100%">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+	<!-- /setting modal -->
 	
-
 	<!-- / bootstrap modals -->
     
 	<!-- jQuery -->
@@ -131,6 +137,9 @@
 					"data" : "createTime",
 					"visible" : false
 				},{
+					"title":"工号",
+					"data":"number"
+				},{
 					"title": "姓名",
 					"data" : "name",
 					"name" : "name"
@@ -157,10 +166,10 @@
 					"title":"操作",
 					"render": function(data, type, row, meta) {
 						var html =  '';
-						if($('#updatePermission').val()){
+						<shiro:hasPermission name="employees:update:*">
 							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
-							html = html +  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
-						}
+						</shiro:hasPermission>
+						html = html +  '<a href="' + row.id + '/posts/list" onclick="loadPostDataTable(' + row.id + ');" data-toggle="modal" data-target=".modal-setting"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
 						<shiro:hasPermission name="employees:delete:*">
 							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
 						</shiro:hasPermission>
@@ -169,19 +178,87 @@
 				} ]
 			}; //end setting
 			
-	/* 	/*   $('#yiwuDatatable tbody').on( 'click', 'tr', function () {
-		        if ( $(this).hasClass('selected') ) {
-		            $(this).removeClass('selected');
-		        }
-		        else {
-		            table.$('tr.selected').removeClass('selected');
-		            $(this).addClass('selected');
-		        } */
-		        
-		       /*  table.$('tr.selected').remove().draw(); 
-		    } ); //end select
+			// post datatable setting
+			var postSetting = 
+			{
+				"processing" : false,
+				"serverSide" : true,
+				"searching": false,
+				"destroy":true,
+				"dom":"<'wrapper'f>",
+				"language" : {
+					"url" : "../../backend/config/i18n/datatable-chinese.json",
+					"searchPlaceholder" : "输入员工姓名 手机号码"
+				},
+				"ajax" : {
+					"url" : "./${employee.id}/posts/datatable",
+					"type" : "POST"
+				},
+				"columns" : [{
+					"data" : "createTime",
+					"visible" : false
+				},{
+					"title":"员工工号",
+					"data":"employee.number"
+				},{
+					"title": "员工姓名",
+					"data" : "employee.name",
+					"name" : "name"
+				}, {
+					"data" : "department.name",
+					"title": "部门",
+					"render":function(data,type,row,meta){
+						return data==null?"":data;
+					}
+				}, {
+					"data" : "post.name",
+					"title": "岗位"
+				},{
+					"data" : "start",
+					"title" : "任职开始日期",
+					"render":function(data, type,row,meta){
+						return data==null?"":formatDate(data,'yyyy-MM-dd');
+					}
+				},{
+					"data" : "end",
+					"title" :"任职结束日期",
+					"render":function(data, type,row,meta){
+						return data==null?"":formatDate(data,'yyyy-MM-dd');
+					}
+				},{
+					"title":"是否为主职位",
+					"data":"isDefault",
+					"render":function(data,type,row,meta){
+						return data?"主职位":"兼任";
+					}
+				},{
+					"data":"createTime",
+					"title":"操作",
+					"render": function(data, type, row, meta) {
+						var html =  '';
+						<shiro:hasPermission name="employees:update:*">
+							html = html + '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update-post"> <i class="fa fa-pencil" title="修改"></i></a>';
+						</shiro:hasPermission>
+						<shiro:hasPermission name="employees:delete:*">
+							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
+						</shiro:hasPermission>
+						return html;
+					}
+					
+				} ]
+			}; //end setting
+		var postDatatable;
 			
-		}); // end ready function */
+		function loadPostDataTable(empId){
+			postSetting.ajax.url = "./" + empId + "/posts/datatable";
+		}
+		
+		$(document).ready(function(){
+			$(".modal-setting").on("shown.bs.modal" ,function(){
+				postDatatable= $("#postsDatatable").DataTable(postSetting);
+			});
+			
+		});
   </script>
   
   <script src="${pageContext.request.contextPath}/backend/js/main.js"></script>

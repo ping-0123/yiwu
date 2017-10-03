@@ -638,4 +638,115 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return new DataTableBean<>(parameter.getDraw(), findCount().intValue(),  filterdCount.intValue(), list, "");
 	}
 	
+	protected DataTableBean<T> findDataTableByProperties(QueryParameter parameter, String[] properties, Object[] values) throws NoSuchFieldException, SecurityException{
+		//TODO 不支持正则表达式搜索
+		//TODO 只能实现String列 Integer列搜索
+		if(properties.length != values.length){
+			IllegalArgumentException exception = new IllegalArgumentException("传入的属性名和属性值数量不一致");
+			logger.error(exception.getMessage(), exception);
+			throw exception;
+		}
+		
+		List<String> searchPropertyNames = new ArrayList<>();
+		String[] namedParameters = new String[properties.length];
+		StringBuilder hql = new StringBuilder();
+		StringBuilder filteredCountHql = new StringBuilder();
+		StringBuilder totalCountHql = new StringBuilder();
+		
+		hql.append(" FROM " + entityClass.getSimpleName());
+		hql.append(" WHERE 1=1");
+		//添加查询条件
+		if(properties !=null && properties.length>0){
+			for(int i=0; i<properties.length; i++){
+				hql.append(" AND " + properties[i] + " = :property" + i );
+				namedParameters[i]= "property" + i; 
+			}
+		}
+		totalCountHql.append(_generateFindCountHql(hql.toString()));
+		
+		//Add 搜索条件
+		String searchValue = parameter.getSearch()==null? null: parameter.getSearch().getValue();
+		if(StringUtils.hasText(searchValue)){
+			hql.append(" AND (1=0");
+			int i = 0;
+			Column column = parameter.getColumns()[i];
+			while (column !=null){
+				if(column.isSearchable() && StringUtils.hasLength(column.getData()) ){
+					String fieldName = column.getData();
+					//只支持  String 列搜索
+					if(String.class == ReflectUtils.getFieldClass(entityClass, fieldName)){
+						searchPropertyNames.add("search" + String.valueOf(i));
+						hql.append(" OR " + fieldName  + " LIKE :search" + String.valueOf(i));
+					}
+					
+				}
+				column = parameter.getColumns()[++i];
+			}
+			//搜索条件结尾
+			hql.append(" )");
+		}
+		//countHql
+		filteredCountHql.append("SELECT COUNT(1) ");
+		filteredCountHql.append(hql);
+		// Add Order
+		int j=0;
+		Order order = parameter.getOrder()[j];
+		while(order !=null){
+			if(j==0){
+				hql.append(" ORDER BY " );
+			}else {
+				hql.append(", ");
+			}
+			//如果是字符串 使用convert(? using gbk)排序
+			String orderedColumnName = parameter.getColumns()[order.getColumn()].getData();
+			if(String.class ==ReflectUtils.getFieldClass(entityClass, orderedColumnName))
+				hql.append( "convert_gbk(" + orderedColumnName+ ") " + order.getDir().name());
+			else
+				hql.append( orderedColumnName + " " +  order.getDir().name());
+			
+			order = parameter.getOrder()[++j];
+		}
+		
+		//获取查询结果
+		Query<T> query = getSession().createQuery(hql.toString(), entityClass);
+		if(namedParameters.length>0)
+			for(int i=0;i<namedParameters.length;i++)
+				query.setParameter(namedParameters[i], values[i]);
+		if(StringUtils.hasText(searchValue)){
+			String value= "%" + searchValue.trim() + "%";
+			for (String property : searchPropertyNames) {
+				query.setParameter(property, value);
+			}
+		}
+		List<T> list = query.setFirstResult(parameter.getStart())
+			.setMaxResults(parameter.getLength())
+			.getResultList();
+		
+		// 获取搜索数量
+		Query<Long> filteredCountQuery = getSession().createQuery(_generateFindCountHql(filteredCountHql.toString()), Long.class);
+		if(namedParameters.length>0)
+			for(int i=0;i<namedParameters.length;i++)
+				filteredCountQuery.setParameter(namedParameters[i], values[i]);
+		if(StringUtils.hasText(searchValue)){
+			String value= "%" + searchValue.trim() + "%";
+			for (String property : searchPropertyNames) {
+				filteredCountQuery.setParameter(property, value);
+			}
+		}
+		Long filterdCount = filteredCountQuery.getSingleResult();
+		
+		//获取总数量
+		Query<Long> totalCountQuery = getSession().createQuery(totalCountHql.toString(), Long.class);
+		if(namedParameters.length>0)
+			for(int i=0;i<namedParameters.length;i++)
+				totalCountQuery.setParameter(namedParameters[i], values[i]);
+		Long totalCount= totalCountQuery.getSingleResult();
+		
+		return new DataTableBean<>(parameter.getDraw(), totalCount.intValue(),  filterdCount.intValue(), list, "");
+	}
+	
+	
+	protected DataTableBean<T> findDataTableByProperty(QueryParameter parameter, String propertyName, Object value) throws NoSuchFieldException, SecurityException{
+		return findDataTableByProperties(parameter, new String[]{propertyName}, new Object[]{value});
+	}
 }

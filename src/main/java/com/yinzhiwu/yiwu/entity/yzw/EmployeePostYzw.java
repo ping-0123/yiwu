@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -33,17 +33,19 @@ public class EmployeePostYzw extends BaseYzwEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@NotNull
+	@ManyToOne
 	@JoinColumn(name="employee_id", 
 		foreignKey=@ForeignKey(name="fk_employeePost_employee_id", value=ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw employee;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@NotNull
+	@ManyToOne
 	@JoinColumn(name="department_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw department;
 	
-
-	@ManyToOne(fetch=FetchType.LAZY)
+	@NotNull
+	@ManyToOne
 	@JoinColumn(name = "post_id",
 			foreignKey=@ForeignKey(name="fk_employeePost_post_id", value=ConstraintMode.NO_CONSTRAINT))
 	private PostYzw post;
@@ -56,7 +58,7 @@ public class EmployeePostYzw extends BaseYzwEntity {
 	@Column
 	private Boolean removed =Boolean.FALSE;
 
-
+	
 
 	public DepartmentYzw getDepartment() {
 		return department;

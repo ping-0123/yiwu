@@ -10,12 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
 import com.yinzhiwu.yiwu.dao.SequenceDao;
-import com.yinzhiwu.yiwu.entity.sys.Sequence;
 import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.model.view.EmployeeApiView;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
-import com.yinzhiwu.yiwu.service.PasswordHelper;
 import com.yinzhiwu.yiwu.service.UserService;
 
 /**
@@ -55,7 +53,8 @@ public class EmployeeYzwServiceImpl extends BaseServiceImpl<EmployeeYzw, Integer
 
 	private String generateEmployeeNumber(){
 		DateFormat df = new SimpleDateFormat("yyMMdd");
-		Integer number = sequenceDao.getValue(Sequence.EMPLOYEE_NUMBER);
-		return df.format(new Date()) + String.format("%02d", number);
+		Integer number = sequenceDao.getEmployeeNumber();
+		return df.format(new Date()) + String.format("%02d", number%100);
 	}
+	
 }

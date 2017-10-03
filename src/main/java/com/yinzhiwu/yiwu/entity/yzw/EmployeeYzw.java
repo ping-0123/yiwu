@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -18,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
@@ -27,7 +25,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 @Entity
@@ -135,13 +132,9 @@ public class EmployeeYzw extends BaseYzwEntity {
 	private Date lastOnlineTimeStamp;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="employee", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="employee")
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Set<EmployeePostYzw> employeePosts = new HashSet<>();
-	
-	@JsonIgnore
-	@OneToOne(mappedBy="employee", fetch=FetchType.LAZY)
-	private User user;
 	
 	public EmployeeYzw() {
 	}
@@ -520,18 +513,4 @@ public class EmployeeYzw extends BaseYzwEntity {
 	}
 
 
-	/**
-	 * @return the user
-	 */
-	public User getUser() {
-		return user;
-	}
-
-
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(User user) {
-		this.user = user;
-	}
 }
