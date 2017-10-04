@@ -22,10 +22,12 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.Address;
 
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
 @JsonInclude(value= Include.NON_NULL)
 @Entity
 @Table(name = "vdepartment")

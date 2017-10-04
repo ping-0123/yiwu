@@ -23,6 +23,7 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
+import org.hibernate.validator.constraints.Email;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.enums.Gender;
@@ -42,14 +43,14 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(length = 128, name ="username")
+	@Column(length = 128, name ="username", updatable=false)
 	private String username;
 
 	@Column(length = 128, name="seegle_user_id")
 	private String seegleUserId;
 	
 	//工号
-	@Column(length=10)
+	@Column(length=10, updatable=false)
 	private String number;
 	
 	@Column(length = 128)
@@ -75,6 +76,7 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@Column(length = 20)
 	private String fax;
 
+	@Email
 	@Column(length = 50)
 	private String email;
 

@@ -136,7 +136,7 @@
 					"searchPlaceholder" : "输入职位名"
 				},
 				"ajax" : {
-					"url" : "http://localhost:9090/yiwu/system/posts/datatable",
+					"url" : "./datatable",
 					"type" : "POST"
 				},
 				"columns" : [{

@@ -131,7 +131,7 @@
 					"searchPlaceholder" : "输入用户名 员工姓名"
 				},
 				"ajax" : {
-					"url" : "http://localhost:9090/yiwu/system/users/datatable",
+					"url" : "./datatable",
 					"type" : "POST"
 				},
 				"columns" : [{

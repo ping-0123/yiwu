@@ -18,6 +18,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
 @Entity
 @Table(name = "vemployee_post")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
@@ -50,38 +54,40 @@ public class EmployeePostYzw extends BaseYzwEntity {
 			foreignKey=@ForeignKey(name="fk_employeePost_post_id", value=ConstraintMode.NO_CONSTRAINT))
 	private PostYzw post;
 
-	private Date start;
-	private Date end;
+	@JsonFormat(pattern="yyyy/MM/dd")
+	@Column(name="start")
+	private Date startTime;
+	
+	@JsonFormat(pattern="yyyy-MM-dd")
+	@Column(name="end")
+	private Date endTime;
 	@Column(name="is_default")
-	private Boolean isDefault = Boolean.FALSE;
+	private Boolean isDefault;
 	
 	@Column
-	private Boolean removed =Boolean.FALSE;
+	private Boolean removed;
 
 	
+	
+
+	/* (non-Javadoc)
+	 * @see com.yinzhiwu.yiwu.entity.yzw.BaseYzwEntity#init()
+	 */
+	@Override
+	public void init() {
+		super.init();
+		isDefault=isDefault==null?false:isDefault;
+		removed=removed==null?false:removed;
+	}
+
 
 	public DepartmentYzw getDepartment() {
 		return department;
 	}
 
-	public Date getStart() {
-		return start;
-	}
-
-	public Date getEnd() {
-		return end;
-	}
 
 	public void setDepartment(DepartmentYzw department) {
 		this.department = department;
-	}
-
-	public void setStart(Date start) {
-		this.start = start;
-	}
-
-	public void setEnd(Date end) {
-		this.end = end;
 	}
 
 
@@ -143,6 +149,38 @@ public class EmployeePostYzw extends BaseYzwEntity {
 	 */
 	public void setPost(PostYzw post) {
 		this.post = post;
+	}
+
+
+	/**
+	 * @return the startTime
+	 */
+	public Date getStartTime() {
+		return startTime;
+	}
+
+
+	/**
+	 * @param startTime the startTime to set
+	 */
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+
+	/**
+	 * @return the endTime
+	 */
+	public Date getEndTime() {
+		return endTime;
+	}
+
+
+	/**
+	 * @param endTime the endTime to set
+	 */
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
 	}
 
 }

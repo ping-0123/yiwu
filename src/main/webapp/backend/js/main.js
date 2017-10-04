@@ -12,12 +12,12 @@ $(document).ready(function(){
 	TABLE = $TABLE.DataTable(setting);
 	
 	$('#yiwuDatatable tbody').on('click', 'tr', function() {
-//		if ($(this).hasClass('selected')) {
-//			$(this).removeClass('selected');
-//		} else {
-//			TABLE.$('tr.selected').removeClass('selected');
-//			$(this).addClass('selected');
-//		}
+		if ($(this).hasClass('selected')) {
+			$(this).removeClass('selected');
+		} else {
+			TABLE.$('tr.selected').removeClass('selected');
+			$(this).addClass('selected');
+		}
 		
 		//roles list 需要加载资源树
 		if($TABLE.hasClass('table-roles')){
@@ -45,7 +45,7 @@ $(".modal").on("hidden.bs.modal", function() {
  * @param url
  * @returns
  */
-function showDeleteModal(url) {
+function showDeleteModal(url , callback) {
 	BootstrapDialog.confirm({
 		title:"删除",
 		message:"删除之后将不能恢复， 确认删除?",
@@ -58,7 +58,7 @@ function showDeleteModal(url) {
 		size:BootstrapDialog.SIZE_SMALL,
 		callback:function(result){
 			if(result){
-				doDeleteRequest(url);
+				doDeleteRequest(url,callback);
 			}
 		}
 	});
@@ -88,7 +88,7 @@ function showSaveFailureModal(message){
 /**
  * 
  */
-function flashDeleteSuccessModal(){
+function flashDeleteSuccessModal(callback){
 	var dlg = BootstrapDialog.show({
 	    message: '已成功删除',
 	    type:BootstrapDialog.TYPE_SUCCESS,
@@ -98,8 +98,9 @@ function flashDeleteSuccessModal(){
 	
 	setTimeout(function(){
 	    dlg.close();
-		TABLE.draw(); //刷新表
-	},1000);
+	    callback();
+		/*TABLE.draw(); //刷新表
+*/	},1000);
 }
 
 function flashSaveSuccessModal(){
@@ -166,13 +167,13 @@ function showUpdateFailureModal(message){
  * @param url
  * @returns
  */
-function doDeleteRequest(url) {
+function doDeleteRequest(url, callback) {
 	$.ajax({
 		url : url,
 		type : 'DELETE',
 		success : function(data) {
 			if(data.result){
-				flashDeleteSuccessModal();
+				flashDeleteSuccessModal(callback);
 			}
 			else
 				showDeleteFailureModal(data.error);

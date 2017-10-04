@@ -54,7 +54,7 @@ public class EmployeeController  extends BaseController{
 		return "employees/createForm";
 	}
 	
-	@GetMapping(value="/{id}/form")
+	@GetMapping(value="/{id}/updateForm")
 	public String showModifyForm(@PathVariable(name="id") Integer id, Model model){
 		EmployeeYzw employee = employeeService.get(id);
 		model.addAttribute("employee",employee);

@@ -160,7 +160,7 @@
 			 "extend" : "create"
 			 } ], */
 			"ajax" : {
-				"url" : "http://localhost:9090/yiwu/system/roles/datatable",
+				"url" : "./datatable",
 				"type" : "POST"
 			},
 			"columns" : [
