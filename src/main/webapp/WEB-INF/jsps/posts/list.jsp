@@ -142,7 +142,7 @@
 				},
 				"buttons":["excel"
 				],
-				"dom":"Bfrtip",
+				"dom":"Blfrtip",
 				"ajax" : {
 					"url" : "./datatable",
 					"type" : "POST"

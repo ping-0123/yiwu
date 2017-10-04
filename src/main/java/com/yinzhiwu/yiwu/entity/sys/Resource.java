@@ -44,7 +44,7 @@ public class Resource extends BaseEntity {
 		BUTTON
 	}
 	
-	@Column(length=32)
+	@Column(length=32, updatable=false)
 	private String code;
 	
 	@Column(length=32)
