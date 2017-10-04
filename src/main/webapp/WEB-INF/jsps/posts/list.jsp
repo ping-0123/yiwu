@@ -13,12 +13,14 @@
 
 <title>岗位设置</title>
 
-<!-- Font Awesome -->
-<link href="../../assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <!-- boostrap datatable -->
 <link href="../../assets/datatables/datatables.min.css" rel="stylesheet" > 
+<!-- Font Awesome -->
+<link href="../../assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <!-- bootstrap dialog -->
 <link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
+<!-- datatable button -->
+<link href="../../assets/datatable-plugins/Buttons-1.4.2/css/buttons.bootstrap.min.css" rel="stylesheet">
 <!-- Custom Theme Style -->
 <link href="../../backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
@@ -63,7 +65,7 @@
 
 						<div class="clearfix"></div>
 					</div>
-					<div class="x_content table-responsive">
+					<div class="x_content">
 						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" width="100%">
 
 						</table>
@@ -119,6 +121,9 @@
     <!-- jquery bootstrap datatable -->	
 	<script src="../../assets/datatables/datatables.min.js" type="text/javascript"></script>
 	<script src="../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
+	<script src="../../assets/datatable-plugins/Buttons-1.4.2/js/dataTables.buttons.min.js" type="text/javascript"></script>
+	<script src="../../assets/datatable-plugins/Buttons-1.4.2/js/buttons.bootstrap.min.js" type="text/javascript"></script>
+	<script src="../../assets/datatable-plugins/Buttons-1.4.2/js/buttons.flash.min.js" type="text/javascript"></script>
 	<!-- ztree -->
 	<script src="../../assets/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
 	<!-- validator -->
@@ -135,12 +140,16 @@
 					"url" : "../../backend/config/i18n/datatable-chinese.json",
 					"searchPlaceholder" : "输入职位名"
 				},
+				"buttons":["excel"
+				],
+				"dom":"Bfrtip",
 				"ajax" : {
 					"url" : "./datatable",
 					"type" : "POST"
 				},
 				"columns" : [{
 					"data" : "createTime",
+					"title":"创建日期",
 					"visible" : false
 				},{
 					"title": "id",

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -62,14 +63,14 @@
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">任职开始日期 <span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-6">
-					<input name="startTime" type="date" class="form-control col-md-7 col-xs-12"  required="required" >
+					<input name="startTime" value="<fmt:formatDate value="${startTime}" pattern="yyyy-MM-dd"/>" type="date" class="form-control col-md-7 col-xs-12"  required="required" >
 				</div>
 			</div>
 			
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">任职结束日期 <span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-6">
-					<input  name="endTime"  class="form-control col-md-7 col-xs-12" required="required" type="date">
+					<input  name="endTime"  value="<fmt:formatDate value="${endTime}" pattern="yyyy-MM-dd"/>" class="form-control col-md-7 col-xs-12" required="required" type="date">
 				</div>
 			</div>
 			

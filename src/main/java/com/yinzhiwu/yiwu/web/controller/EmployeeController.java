@@ -1,5 +1,7 @@
 package com.yinzhiwu.yiwu.web.controller;
 
+import java.util.Calendar;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -95,6 +97,10 @@ public class EmployeeController  extends BaseController{
 		model.addAttribute("employee", employeeService.get(id));
 		model.addAttribute("departments", deptService.findAll());
 		model.addAttribute("posts", postService.findAll());
+		Calendar calendar = Calendar.getInstance();
+		model.addAttribute("startTime", calendar.getTime());
+		calendar.add(Calendar.YEAR, 1);
+		model.addAttribute("endTime", calendar.getTime());
 		return "employees/posts/createForm";
 	}
 	

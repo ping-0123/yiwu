@@ -3,6 +3,7 @@ encoding//src/main/java=UTF-8
 encoding//src/main/resources=UTF-8
 encoding//src/main/resources/environment/development=UTF-8
 encoding//src/main/resources/environment/test=UTF-8
+encoding//src/main/webapp/WEB-INF/resource/messages.properties=UTF-8
 encoding//src/main/webapp/ueditor/jsp/config.json=UTF-8
 encoding//src/test/java=UTF-8
 encoding//src/test/resources=UTF-8

@@ -2,3 +2,5 @@
 git clone https://github.com/dgoguerra/bootstrap-menu.git bootstrap-menu
 
 git clone https://github.com/nakupanda/bootstrap3-dialog.git bootstrap3-dialog
+
+git clone https://github.com/nghuuphuoc/bootstrapvalidator.git bootstrap-validator

@@ -1,12 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
 					http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.yinzhiwu</groupId>
 	<artifactId>yiwu</artifactId>
 	<packaging>war</packaging>
-	<!--  使用后台模板 自己修改 -->
+	<!-- 使用后台模板 自己修改 -->
 	<version>2.1.4</version>
 	<name>yiwu</name>
 	<url>http://maven.apache.org</url>
@@ -41,6 +40,7 @@
 		<aspectj.version>1.8.10</aspectj.version>
 		<hibernate.version>5.2.6.Final</hibernate.version>
 		<hibernate.validator.version>5.2.5.Final</hibernate.validator.version>
+		<javax.validation.version>2.0.0.Final</javax.validation.version>
 		<jackson.version>2.8.7</jackson.version>
 		<quartz.version>2.3.0</quartz.version>
 		<qiniu.version>7.2.6</qiniu.version>
@@ -135,7 +135,11 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>${hibernate.validator.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${javax.validation.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator-annotation-processor</artifactId>
@@ -214,18 +218,15 @@
 			<version>${qiniu.version}</version>
 		</dependency>
 
-		<!-- ######### swagger support ############   -->
+		<!-- ######### swagger support ############ -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
-		<!--petstore是官方的一个demo，加入此依赖是为了稍后参考接口描述的编写 生产系统中无须添加 
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-petstore</artifactId>
-			<version>${swagger.version}</version>
-		</dependency> -->
+		<!--petstore是官方的一个demo，加入此依赖是为了稍后参考接口描述的编写 生产系统中无须添加 <dependency> <groupId>io.springfox</groupId> 
+			<artifactId>springfox-petstore</artifactId> <version>${swagger.version}</version> 
+			</dependency> -->
 
 		<!-- #### shiro #### -->
 		<dependency>
@@ -280,7 +281,7 @@
 					<target>1.8</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
-			</plugin> 
+			</plugin>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
@@ -298,9 +299,9 @@
 				<version>9.4.6.v20170531</version>
 				<configuration>
 					<scanIntervalSeconds>10</scanIntervalSeconds>
-				    <webApp>
-				      <contextPath>/yiwu</contextPath>
-				    </webApp>
+					<webApp>
+						<contextPath>/yiwu</contextPath>
+					</webApp>
 				</configuration>
 			</plugin>
 		</plugins>
