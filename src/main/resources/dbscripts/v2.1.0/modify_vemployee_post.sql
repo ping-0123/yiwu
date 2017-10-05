@@ -1,5 +1,11 @@
-alter TABLE chenkuserdb1.tblemployee_post add COLUMN(department_id int, start date, end DATE, is_default BOOLEAN DEFAULT FALSE);
-alter TABLE chenkuserdb1.tblemployee_post add COLUMN(sf_create_user int, sf_create_time DATETIME, dataStatus int);
+alter TABLE chenkuserdb1.tblemployee_post add COLUMN
+	(department_id int,
+	start date, 
+	end DATE, 
+	is_default BOOLEAN DEFAULT FALSE,
+	sf_create_user int,
+	sf_create_time DATETIME, 
+	dataStatus int);
 alter TABLE chenkuserdb1.tblemployee_post MODIFY COLUMN id int not null auto_increment;
 
 CREATE 

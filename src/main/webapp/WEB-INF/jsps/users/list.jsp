@@ -19,6 +19,7 @@
 <link href="../../assets/datatables/datatables.min.css" rel="stylesheet" > 
 <!-- bootstrap dialog -->
 <link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
+<link href="../../assets/datatable-plugins/Select-1.2.3/css/select.bootstrap.min.css" rel="stylesheet">
 <!-- Custom Theme Style -->
 <link href="../../backend/css/custom.min.css" rel="stylesheet"> 
 <!-- Yiwu Theme Style -->
@@ -113,6 +114,7 @@
     
 	<!-- jquery bootstrap datatable -->	
 	<script src="../../assets/datatables/datatables.min.js" type="text/javascript"></script>
+	<script src="../../assets/datatable-plugins/Select-1.2.3/js/dataTables.select.min.js" type="text/javascript"></script>
 	<script src="../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
 	<!-- ztree -->
 	<script src="../../assets/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
@@ -126,6 +128,7 @@
 			{
 				"processing" : false,
 				"serverSide" : true,
+				"select":true,
 				"language" : {
 					"url" : "../../backend/config/i18n/datatable-chinese.json",
 					"searchPlaceholder" : "输入用户名 员工姓名"
