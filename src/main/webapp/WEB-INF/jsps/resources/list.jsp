@@ -100,6 +100,7 @@ li{float:left;list-style:none;}
 	<script src="${pageContext.request.contextPath}/assets/jquery-treetable/javascripts/src/jquery.treetable.js"></script>
 	<script src="../../assets/datatable-plugins/Bootstrap-3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="../../backend/js/custom.min.js"></script>
+	<script src="../../backend/js/main.js"></script>
 	<script>
 		$(function() {
 			$("#table").treetable({
