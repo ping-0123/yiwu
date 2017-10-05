@@ -12,9 +12,9 @@
 	<!-- modal header -->
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">
-			<span aria-hidden="true">×</span>
+			<span aria-hidden="true">x</span>
 		</button>
-		<h4 class="modal-title" id="myModalLabel">新增</h4>
+		<h4 class="modal-title">新增</h4>
 	</div>
 	<!-- /modal header -->
 
@@ -27,7 +27,7 @@
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">资源代号<span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<input name="code" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
+					<input name="code" placeholder="保存之后不能修改" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
 				</div>
 			</div>
 			<div class="form-group">

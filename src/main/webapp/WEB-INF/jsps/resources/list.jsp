@@ -5,8 +5,8 @@
 <head>
 <title></title>
 <link rel="stylesheet" href="../../assets/datatable-plugins/Bootstrap-3.3.7/css/bootstrap.min.css">
+<link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet">
 <link href="../../assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/css.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-treetable/stylesheets/jquery.treetable.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-treetable/stylesheets/jquery.treetable.theme.default.css">
 <style>
@@ -42,7 +42,7 @@ li{float:left;list-style:none;}
 		</div>
 		
 		<div class="x_content">
-		<table id="table">
+		<table id="treeTable">
 			<thead>
 				<tr>
 					<th>名称</th>
@@ -69,7 +69,7 @@ li{float:left;list-style:none;}
 								<a href="${r.id }/updateForm" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"> </i></a>
 							</shiro:hasPermission> 
 							<shiro:hasPermission name="resources:delete:*">
-								<a href="#" onclick="showDeleteModal(./${r.id})"> <i class="fa fa-trash" title="删除"></i></a>
+								<a  onclick="showDeleteModal('./${r.id}',refreshCurrentPage)"> <i class="fa fa-trash" title="删除"></i></a>
 							</shiro:hasPermission>
 						</td>
 					</tr>
@@ -89,7 +89,7 @@ li{float:left;list-style:none;}
 	<!-- create modal -->
 
 	<!-- update modal -->
-	<div class="modal fade bs-example-modal-lg modal-update" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade modal-update" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-md">
 			<div class="modal-content"></div>
 		</div>
@@ -99,21 +99,16 @@ li{float:left;list-style:none;}
 	<script src="${pageContext.request.contextPath}/backend/js/jquery-1.9.1.min.js"></script>
 	<script src="${pageContext.request.contextPath}/assets/jquery-treetable/javascripts/src/jquery.treetable.js"></script>
 	<script src="../../assets/datatable-plugins/Bootstrap-3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
 	<script src="../../backend/js/custom.min.js"></script>
-	<script>
-		$(function() {
-			$("#table").treetable({
-				expandable : true
-			}).treetable("expandNode", 1);
-			
-			$(".deleteBtn").click(function() {
-				if (confirm("确认删除吗?")) {
-					location.href = "${pageContext.request.contextPath}/resources/"
-							+ $(this).data("id") + "/delete";
-				}
-			});
-			
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".modal").on("hidden.bs.modal", function() {
+				$(this).removeData("bs.modal");
+			})
+			$("#treeTable").treetable({"expandable":true});
 		});
 	</script>
+	<script src="../../backend/js/main.js"></script>
 </body>
 </html>

@@ -327,9 +327,6 @@
 		}; //end  post setting
 
 		var postDatatable;
-		$(document).ready(function() {
-		});
-		
 		function showEmployeePosts(empId) {
 			postSetting.ajax.url = "./" + empId + "/posts/datatable";
 			postDatatable = $("#postsDatatable").DataTable(postSetting);

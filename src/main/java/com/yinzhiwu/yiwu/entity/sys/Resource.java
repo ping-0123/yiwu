@@ -67,7 +67,6 @@ public class Resource extends BaseEntity {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private List<Resource> children = new ArrayList<>();
 	
 	public Resource(){}

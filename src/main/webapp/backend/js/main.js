@@ -28,17 +28,15 @@ $(document).ready(function(){
 		
 	});
 	
-	
-	
+	/**
+	 * 关闭模态框自动清除数据
+	 */
+	$(".modal").on("hidden.bs.modal", function() {
+		$(this).removeData("bs.modal");
+	})
 });
 
 
-/**
- * 关闭模态框自动清除数据
- */
-$(".modal").on("hidden.bs.modal", function() {
-	$(this).removeData("bs.modal");
-})
 
 /**
  * 显示 删除模态框
@@ -98,9 +96,11 @@ function flashDeleteSuccessModal(callback){
 	
 	setTimeout(function(){
 	    dlg.close();
-	    callback();
-		/*TABLE.draw(); //刷新表
-*/	},1000);
+	    if(callback !=null)
+	    	callback();
+	    else
+	    	TABLE.draw(); //刷新表
+	},1000);
 }
 
 function flashSaveSuccessModal(){
@@ -175,14 +175,17 @@ function doDeleteRequest(url, callback) {
 			if(data.result){
 				flashDeleteSuccessModal(callback);
 			}
-			else
-				showDeleteFailureModal(data.error);
+			else{
+				showDeleteFailureModal(data.msg);
+			}
 		}
 	});
 	
 };
 
-
+function refreshCurrentPage(){
+	location.reload();
+}
 
 
 /**

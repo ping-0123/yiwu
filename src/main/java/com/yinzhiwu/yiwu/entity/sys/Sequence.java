@@ -1,10 +1,12 @@
 package com.yinzhiwu.yiwu.entity.sys;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name="sys_sequence")
@@ -13,7 +15,9 @@ public class Sequence {
 	public static final String EMPLOYEE_NUMBER = "EMPLOYEE_NUMBER";
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(generator="sequenceIdGenerator")
+	@GenericGenerator(name="sequenceIdGenerator", strategy="assigned")
+	@Column(length=32)
 	private String name;
 	private Integer value;
 	

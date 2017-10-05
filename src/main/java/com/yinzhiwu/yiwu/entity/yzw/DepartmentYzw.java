@@ -1,8 +1,8 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Embedded;
@@ -44,9 +44,10 @@ public class DepartmentYzw extends BaseYzwEntity{
 		STORE,
 		DISTRICT,
 		OPERATING,
-		MAKET,
+		MARKET,
 		HR,
 		FINANCE,
+		SUBCOMPANY,
 		COMPANY
 	}
 
@@ -64,8 +65,8 @@ public class DepartmentYzw extends BaseYzwEntity{
 	private DepartmentYzw parent;
 
 	@JsonIgnore
-	@OneToMany(mappedBy="parent",cascade=CascadeType.REMOVE)
-	private List<DepartmentYzw> children;
+	@OneToMany(mappedBy="parent")
+	private List<DepartmentYzw> children = new ArrayList<>();
 	
 	@Column
 	private String path;
