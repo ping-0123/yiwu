@@ -10,33 +10,14 @@ var DELETE_URL,
 $(document).ready(function(){
 	if($TABLE==undefined) return;;
 	TABLE = $TABLE.DataTable(setting);
-	
-	$('#yiwuDatatable tbody').on('click', 'tr', function() {
-		if ($(this).hasClass('selected')) {
-			$(this).removeClass('selected');
-		} else {
-			TABLE.$('tr.selected').removeClass('selected');
-			$(this).addClass('selected');
-		}
-		
-		//roles list 需要加载资源树
-		if($TABLE.hasClass('table-roles')){
-			var rowData = TABLE.row(this).data();
-    		var roleId =JSON.parse(JSON.stringify(rowData)).id;
-    		freshResourceTree(roleId);
-		}
-		
-	});
-	
-	/**
-	 * 关闭模态框自动清除数据
-	 */
-	$(".modal").on("hidden.bs.modal", function() {
-		$(this).removeData("bs.modal");
-	})
 });
 
-
+/**
+ * 关闭模态框自动清除数据
+ */
+$(".modal").on("hidden.bs.modal", function() {
+	$(this).removeData("bs.modal");
+})
 
 /**
  * 显示 删除模态框

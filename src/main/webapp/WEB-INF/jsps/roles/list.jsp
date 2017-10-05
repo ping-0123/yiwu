@@ -20,6 +20,7 @@
 
 <!-- my datatable -->
 <link href="${pageContext.request.contextPath}/backend/DataTables/datatables.min.css" rel="stylesheet">
+<link href="../../assets/datatable-plugins/Select-1.2.3/css/select.bootstrap.min.css" rel="stylesheet">
 <!-- bootstrap dialog -->
 <link href="${pageContext.request.contextPath}/backend/css/bootstrap-dialog.min.css" rel="stylesheet">
 <!-- Custom Theme Style -->
@@ -135,6 +136,7 @@
 	<!-- Bootstrap -->
 	<%-- <script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script> --%>
 	<script src="${pageContext.request.contextPath}/backend/js/datatables.min.js" type="text/javascript"></script>
+	<script src="../../assets/datatable-plugins/Select-1.2.3/js/dataTables.select.min.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/backend/js/bootstrap-dialog.min.js" type="text/javascript"></script>
 
 	<!-- validator -->
@@ -143,7 +145,7 @@
 	<script src="../../assets/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
 	<!-- Custom Theme Scripts -->
 	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
-
+	<script src="../../backend/js/main.js"></script>
 
 	<script type="text/javascript">
 	
@@ -152,6 +154,7 @@
 		var setting = {
 			"processing" : false,
 			"serverSide" : true,
+			"select":true,
 			"language" : {
 				"url" : "../../backend/config/i18n/datatable-chinese.json",
 				"searchPlaceholder" : "输入角色名"
@@ -217,7 +220,13 @@
 		
         $(document).ready(function(){
         	loadResourceTree();
-        	
+        	if($TABLE==undefined) return;
+        	TABLE = $TABLE.DataTable(setting);
+        	$('#yiwuDatatable tbody').on('click', 'tr', function(){
+        		var rowData = TABLE.row(this).data();
+        		var roleId =JSON.parse(JSON.stringify(rowData)).id;
+        		freshResourceTree(roleId);
+        	});
         });
         //end ztree setting
         
@@ -245,6 +254,7 @@
 	    		}
         	});
         }
+        
         
         function saveRoleResources(){
         	var roleId;
@@ -292,6 +302,5 @@
 
 	</script>
 	
-	<script src="../../backend/js/main.js"></script>
 </body>
 </html>

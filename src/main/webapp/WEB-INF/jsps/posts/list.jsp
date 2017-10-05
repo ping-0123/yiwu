@@ -21,10 +21,9 @@
 <link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
 <!-- datatable button -->
 <link href="../../assets/datatable-plugins/Buttons-1.4.2/css/buttons.bootstrap.min.css" rel="stylesheet">
+<link href="../../assets/datatable-plugins/Select-1.2.3/css/select.bootstrap.min.css" rel="stylesheet">
 <!-- Custom Theme Style -->
 <link href="../../backend/css/custom.min.css" rel="stylesheet">
-<!-- Yiwu Theme Style -->
-<link href="../../backend/css/main.css" rel="stylesheet">
 <!-- ztree -->
 <link rel="stylesheet" href="../../assets/jquery-ztree-v3.5.15/css/zTreeStyle/zTreeStyle.css">
 <style>
@@ -123,7 +122,9 @@
 	<script src="../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
 	<script src="../../assets/datatable-plugins/Buttons-1.4.2/js/dataTables.buttons.min.js" type="text/javascript"></script>
 	<script src="../../assets/datatable-plugins/Buttons-1.4.2/js/buttons.bootstrap.min.js" type="text/javascript"></script>
+	<script src="../../assets/datatable-plugins/Buttons-1.4.2/js/buttons.html5.min.js" type="text/javascript"></script>
 	<script src="../../assets/datatable-plugins/Buttons-1.4.2/js/buttons.flash.min.js" type="text/javascript"></script>
+	<script src="../../assets/datatable-plugins/Select-1.2.3/js/dataTables.select.min.js" type="text/javascript"></script>
 	<!-- ztree -->
 	<script src="../../assets/jquery-ztree-v3.5.15/js/jquery.ztree.all-3.5.min.js"></script>
 	<!-- validator -->
@@ -136,13 +137,19 @@
 			{
 				"processing" : false,
 				"serverSide" : true,
+				"select":true,
 				"language" : {
 					"url" : "../../backend/config/i18n/datatable-chinese.json",
 					"searchPlaceholder" : "输入职位名"
 				},
-				"buttons":["excel"
+				"dom":"<'row'<'col-sm-4' l><'col-sm-4' B><'col-sm-4' f>>tip",
+				"buttons":[
+				            {
+				        	   "extend":"excel",
+				        	   "text":"导 出",
+				        	   "className":"btn-primary"
+				           } 
 				],
-				"dom":"Blfrtip",
 				"ajax" : {
 					"url" : "./datatable",
 					"type" : "POST"

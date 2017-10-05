@@ -21,6 +21,7 @@
 
 <!-- my datatable -->
 <link href="${pageContext.request.contextPath}/backend/css/datatables.min.css" rel="stylesheet">
+<link href="../../assets/datatable-plugins/Select-1.2.3/css/select.bootstrap.min.css" rel="stylesheet">
 <!-- bootstrap dialog -->
 <link href="${pageContext.request.contextPath}/backend/css/bootstrap-dialog.min.css" rel="stylesheet">
 <!-- Custom Theme Style -->
@@ -153,6 +154,7 @@
 	<!-- Bootstrap -->
 	<%-- <script src="${pageContext.request.contextPath}/backend/vendors/bootstrap/dist/js/bootstrap.min.js"></script> --%>
 	<script src="${pageContext.request.contextPath}/backend/js/datatables.min.js" type="text/javascript"></script>
+	<script src="../../assets/datatable-plugins/Select-1.2.3/js/dataTables.select.min.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/backend/js/bootstrap-dialog.min.js" type="text/javascript"></script>
 
 	<!-- validator -->
@@ -167,6 +169,7 @@
 		var setting = {
 			"processing" : false,
 			"serverSide" : true,
+			"select":true,
 			"language" : {
 				"url" : "../../backend/config/i18n/datatable-chinese.json",
 				"searchPlaceholder" : "输入员工姓名 手机号码"
@@ -243,6 +246,7 @@
 			"serverSide" : true,
 			"searching" : false,
 			"destroy" : true,
+			"select"	:true,
 			"dom" : "<'wrapper'f>",
 			"language" : {
 				"url" : "../../backend/config/i18n/datatable-chinese.json",
