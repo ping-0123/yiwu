@@ -1,4 +1,4 @@
-ALTER table chenkuserdb1.skt6 add COLUMN(dataStatus int DEFAULT 0);
+ALTER table chenkuserdb1.skt6 add COLUMN(dataStatus int not null DEFAULT 0);
 
 CREATE 
 or REPLACE

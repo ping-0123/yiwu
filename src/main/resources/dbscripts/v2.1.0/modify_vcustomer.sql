@@ -1,4 +1,4 @@
-alter table chenkuserdb1.skt1 add COLUMN (dataStatus int DEFAULT 0);
+alter table chenkuserdb1.skt1 add COLUMN (dataStatus int not null DEFAULT 0);
 CREATE 
 	or REPLACE
 VIEW `vcustomer` AS

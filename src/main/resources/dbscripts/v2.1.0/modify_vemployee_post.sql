@@ -5,7 +5,7 @@ alter TABLE chenkuserdb1.tblemployee_post add COLUMN
 	is_default BOOLEAN DEFAULT FALSE,
 	sf_create_user int,
 	sf_create_time DATETIME, 
-	dataStatus int);
+	dataStatus int not null default 0);
 alter TABLE chenkuserdb1.tblemployee_post MODIFY COLUMN id int not null auto_increment;
 
 CREATE 

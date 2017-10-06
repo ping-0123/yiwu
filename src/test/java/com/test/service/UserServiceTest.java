@@ -20,8 +20,7 @@ public class UserServiceTest extends BaseTest{
 
 	@Autowired private UserService userService;
 	
-	@Test
-//	@Rollback(value=false)
+//	@Test
 	public void testChangePassword(){
 		int id = 331;
 		try{
@@ -31,12 +30,17 @@ public class UserServiceTest extends BaseTest{
 		}
 	}
 	
-	@Test
+//	@Test
 	@Rollback(value=false)
 	public void initPassword(){
 		List<User>  users = userService.findAll();
 		for (User user : users) {
 			userService.modifyPassword(user.getId(), "yzw123456");
 		}
+	}
+	
+	@Test
+	public void initTest(){
+		System.out.println("fuck the world!");
 	}
 }

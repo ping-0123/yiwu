@@ -126,7 +126,7 @@ public class DepartmentYzwDaoImpl extends BaseDaoImpl<DepartmentYzw, Integer> im
 		hql.append("(d.id, d.name)");
 		hql.append(" FROM DepartmentYzw d");
 		hql.append(" WHERE d.name LIKE :district");
-		hql.append(" AND d.superior.id = :superiorId");
+		hql.append(" AND d.parent.id = :superiorId");
 		hql.append(" AND d.removed = :removed");
 		hql.append(" ORDER BY convert_gbk(d.name)");
 		List<DepartmentApiView> views = getSession().createQuery(hql.toString(), DepartmentApiView.class)

@@ -40,53 +40,7 @@ public class LessonYzw extends BaseYzwEntity {
 	 */
 	private static final long serialVersionUID = -1007567421844511100L;
 	
-	public enum LessonStatus{
-		UN_CHECKED("未审核"),
-		ARRANGED("已排课"),
-		FINISHED("已开课");
-		
-		private final String status;
 
-		public String getStatus() {
-			return status;
-		}
-		
-		private LessonStatus(String status){
-			this.status = status;
-		}
-		
-		public static LessonStatus fromStatus(String status){
-			switch (status) {
-			case "未审核":
-				return LessonStatus.UN_CHECKED;
-			case "已排课":
-				return LessonStatus.ARRANGED;
-			case "已开课":
-				return LessonStatus.FINISHED;
-			default:
-				throw new UnsupportedOperationException(status + " not supported for enum LessonStatus");
-			}
-		}
-	}
-	
-	@Converter
-	public static class LessonStatusConverter implements AttributeConverter<LessonStatus, String>{
-
-		@Override
-		public String convertToDatabaseColumn(LessonStatus attribute) {
-			if(attribute ==null)
-				return null;
-			return attribute.getStatus();
-		}
-
-		@Override
-		public LessonStatus convertToEntityAttribute(String dbData) {
-			if(dbData == null || "".equals(dbData.trim()))
-				return null;
-			return LessonStatus.fromStatus(dbData);
-		}
-		
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -192,30 +146,6 @@ public class LessonYzw extends BaseYzwEntity {
 			@AttributeOverride(name = "audioUrl", column = @Column(name = "audio_link")),
 			@AttributeOverride(name = "danceIntroduction", column = @Column(name = "dance_introduction")) })
 	private Connotation connotation;
-
-	// @Column(name = "neihan")
-	// private String connotation;
-
-	// @Column(name = "help")
-	// private String helpInfomation;
-	//
-	// @Column(name = "jianjie")
-	// private String introduction;
-	//
-	// @Column(name = "picture")
-	// private String pictureNo;
-	//
-	// @Column(name = "video")
-	// private String videoUrl;
-	//
-	// @Column(name = "audio")
-	// private String audioName;
-	//
-	// @Column(name = "audio_link")
-	// private String audioUrl;
-	//
-	// @Column(name = "dance_introduction")
-	// private String danceIntroduction;
 
 	@Column(name = "QRcode")
 	private String qrCode;
@@ -464,4 +394,53 @@ public class LessonYzw extends BaseYzwEntity {
 		this.connotation = connotation;
 	}
 
+	
+	
+	public enum LessonStatus{
+		UN_CHECKED("未审核"),
+		ARRANGED("已排课"),
+		FINISHED("已开课");
+		
+		private final String status;
+
+		public String getStatus() {
+			return status;
+		}
+		
+		private LessonStatus(String status){
+			this.status = status;
+		}
+		
+		public static LessonStatus fromStatus(String status){
+			switch (status) {
+			case "未审核":
+				return LessonStatus.UN_CHECKED;
+			case "已排课":
+				return LessonStatus.ARRANGED;
+			case "已开课":
+				return LessonStatus.FINISHED;
+			default:
+				throw new UnsupportedOperationException(status + " not supported for enum LessonStatus");
+			}
+		}
+	}
+	
+	@Converter
+	public static class LessonStatusConverter implements AttributeConverter<LessonStatus, String>{
+
+		@Override
+		public String convertToDatabaseColumn(LessonStatus attribute) {
+			if(attribute ==null)
+				return null;
+			return attribute.getStatus();
+		}
+
+		@Override
+		public LessonStatus convertToEntityAttribute(String dbData) {
+			if(dbData == null || "".equals(dbData.trim()))
+				return null;
+			return LessonStatus.fromStatus(dbData);
+		}
+		
+	}
 }

@@ -23,7 +23,7 @@ public class ResourceServiceTest extends BaseTest  {
 	
 	@Autowired private ResourceService resourceService;
 	
-	@Test
+//	@Test
 	@Rollback(value=false)
 	@Transactional
 	public void initDatabase(){
@@ -69,7 +69,7 @@ public class ResourceServiceTest extends BaseTest  {
 		}
 	}
 
-	@Test
+//	@Test
 	@Rollback(value=false)
 	public void addHRManager(){
 		
@@ -101,5 +101,10 @@ public class ResourceServiceTest extends BaseTest  {
 		for (Resource resource : res) {
 			resourceService.save(resource);
 		}
+	}
+	
+	@Test
+	public void init(){
+		System.out.println("fuck the world!");
 	}
 }

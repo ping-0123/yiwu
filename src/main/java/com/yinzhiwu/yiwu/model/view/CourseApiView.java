@@ -7,6 +7,8 @@ import org.springframework.beans.BeanUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
+import com.yinzhiwu.yiwu.service.LessonYzwService;
+import com.yinzhiwu.yiwu.util.SpringUtils;
 
 public class CourseApiView {
 
@@ -22,6 +24,7 @@ public class CourseApiView {
 	private Date startDate;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
+	private boolean lessoning;
 	
 	public CourseApiView() {
 	};
@@ -104,8 +107,18 @@ public class CourseApiView {
 		protected CourseApiView doBackward(CourseYzw b) {
 			CourseApiView v = new CourseApiView();
 			BeanUtils.copyProperties(b, v);
+			LessonYzwService service = SpringUtils.getBean(LessonYzwService.class);
+			v.setLessoning(service.findComingLessonByCourseId(b.getId())==null?false:true);
 			return v;
 		}
 		
+	}
+
+	public boolean isLessoning() {
+		return lessoning;
+	}
+
+	public void setLessoning(boolean lessoning) {
+		this.lessoning = lessoning;
 	}
 }

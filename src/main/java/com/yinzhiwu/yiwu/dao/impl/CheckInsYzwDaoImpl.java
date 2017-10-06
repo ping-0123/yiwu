@@ -216,7 +216,7 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 		hql.append("(");
 		hql.append("t1.lesson.store.id");
 		hql.append(",t1.lesson.store.name");
-		hql.append(",t1.lesson.store.superior.id");
+		hql.append(",t1.lesson.store.parent.id");
 		hql.append(")");
 		hql.append(" FROM CheckInsYzw t1");
 		hql.append(" WHERE t1.memberCard = :memberCard");

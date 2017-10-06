@@ -1,4 +1,4 @@
-alter TABLE chenkuserdb1.tblemployee add COLUMN(dataStatus int,number varchar(10));
+alter TABLE chenkuserdb1.tblemployee add COLUMN(dataStatus int not null default 0,number varchar(10));
 alter TABLE chenkuserdb1.tblemployee MODIFY COLUMN id int not null AUTO_INCREMENT;
 
 CREATE 

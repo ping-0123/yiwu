@@ -32,4 +32,6 @@ public interface LessonYzwService extends IBaseService<LessonYzw, Integer> {
 	Object findLessonWeekList(int storeId, String courseType, String teacherName, String danceCatagory, Date date,
 			String weChat);
 
+	LessonYzw findComingLessonByCourseId(String courseId);
+
 }

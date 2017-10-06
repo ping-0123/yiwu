@@ -260,4 +260,18 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		return findCountByProperty("course.id", id);
 	}
 
+	@Override
+	public LessonYzw findByCourseIdAndStartDateTime(String courseId, Date start, Date end) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" FROM LessonYzw");
+		hql.append(" WHERE course.id = :courseId");
+		hql.append(" AND startDateTime BETWEEN :start and :end" );
+		List<LessonYzw> lessons =getSession().createQuery(hql.toString(), LessonYzw.class)
+			.setParameter("courseId", courseId)
+			.setParameter("start", start)
+			.setParameter("end", end)
+			.getResultList();
+		return lessons.size()>0?lessons.get(0):null;
+	}
+
 }

@@ -28,6 +28,7 @@ import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto;
 import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto.CheckedInStatus;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
+import com.yinzhiwu.yiwu.util.CalendarUtil;
 
 @Service
 public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> implements LessonYzwService {
@@ -212,4 +213,13 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public LessonYzw findComingLessonByCourseId(String courseId) {
+		Calendar calendar = Calendar.getInstance();
+		Date start =calendar.getTime();
+		Date end = CalendarUtil.getDayEnd(calendar).getTime();
+		return lessonDao.findByCourseIdAndStartDateTime(courseId, start,end);
+	}
+
 }
