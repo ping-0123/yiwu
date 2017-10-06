@@ -5,7 +5,6 @@
 	<groupId>com.yinzhiwu</groupId>
 	<artifactId>yiwu</artifactId>
 	<packaging>war</packaging>
-	<!-- 使用后台模板 自己修改 -->
 	<version>2.1.4</version>
 	<name>yiwu</name>
 	<url>http://maven.apache.org</url>
@@ -152,7 +151,6 @@
 		</dependency>
 
 		<!-- json支持 -->
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -239,18 +237,6 @@
 			<artifactId>shiro-spring</artifactId>
 			<version>${shiro.version}</version>
 		</dependency>
-		<!--  
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-quartz</artifactId>
-			<version>${shiro.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>org.opensymphony.quartz</artifactId>
-					<groupId>quartz</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency> -->
 	</dependencies>
 
 
