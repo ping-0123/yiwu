@@ -26,8 +26,7 @@ import com.yinzhiwu.yiwu.service.UserService;
 
 public class UserRealm extends AuthorizingRealm {
 
-	@Autowired
-    private UserService userService;
+    @Autowired private UserService userService;
 
     public void setUserService(UserService userService) {
         this.userService = userService;
