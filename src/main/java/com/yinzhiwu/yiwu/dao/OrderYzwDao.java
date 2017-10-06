@@ -3,6 +3,8 @@ package com.yinzhiwu.yiwu.dao;
 import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
@@ -52,5 +54,7 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 	public PageBean<OrderApiView> findPageOfOrderApiViewByCustomerId(Integer id, int pageNo, int pageSize);
 
 	public Long findCountByCustomerId(int customerId);
+
+	public List<CourseYzw> findCoursesByCustomerIdAndCourseType(Integer customerId, CourseType courseType);
 
 }

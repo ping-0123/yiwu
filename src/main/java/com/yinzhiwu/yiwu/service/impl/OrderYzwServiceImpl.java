@@ -20,6 +20,8 @@ import com.yinzhiwu.yiwu.dao.ProductYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
@@ -305,4 +307,11 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 	public Long findCountByCustomerId(int customerId) {
 		return orderDao.findCountByCustomerId(customerId);
 	}
+
+
+	@Override
+	public List<CourseYzw> findCoursesByCustomerIdAndCourseType(Integer customerId, CourseType courseType) {
+		return orderDao.findCoursesByCustomerIdAndCourseType(customerId, courseType);
+	}
+
 }

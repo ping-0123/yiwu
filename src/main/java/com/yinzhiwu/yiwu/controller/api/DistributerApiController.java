@@ -25,15 +25,19 @@ import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.type.CapitalAccountType;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.model.DistributerModifyModel;
 import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
+import com.yinzhiwu.yiwu.model.view.CourseApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 import com.yinzhiwu.yiwu.service.DistributerService;
+import com.yinzhiwu.yiwu.service.OrderYzwService;
 import com.yinzhiwu.yiwu.service.impl.FileService;
 
 import io.swagger.annotations.Api;
@@ -52,6 +56,7 @@ public class DistributerApiController extends BaseController {
 	private CapitalAccountService capitalAccountService;
 	@Autowired
 	private FileService fileService;
+	@Autowired private OrderYzwService orderService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
@@ -121,6 +126,33 @@ public class DistributerApiController extends BaseController {
 		return distributerService.findById(id);
 	}
 
+	@GetMapping(value="/{id}/courses")
+	@ApiOperation(value="获取客户的课程")
+	public YiwuJson<?> getCoures(@PathVariable Integer id, 
+			@ApiParam(name="课程类型",defaultValue="CLOSED",required=false) 
+			@RequestParam(name="courseType", required=false, defaultValue="CLOSED") CourseType courseType)
+	{
+		try {
+			Distributer distributer = distributerService.get(id);
+			if(distributer.getCustomer()==null){
+				logger.error("distributer " + id + "未绑定客户");
+				throw new Exception("distributer " + id + "未绑定客户");
+			}
+			
+			List<CourseYzw> courses = orderService.findCoursesByCustomerIdAndCourseType(distributer.getCustomer().getId(),courseType);
+			List<CourseApiView> views = new ArrayList<>();
+			for (CourseYzw courseYzw : courses) {
+				views.add(CourseApiView.fromDAO(courseYzw));
+			}
+			
+			return YiwuJson.createBySuccess(views);
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
+	}
+	
 	@GetMapping(value = "/capitalAccount/getDefault")
 	@ApiOperation(value = "获取默认的提现帐号")
 	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(Integer distributerId) {

@@ -14,6 +14,7 @@ import org.springframework.util.Assert;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
@@ -443,6 +444,20 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	@Override
 	public Long findCountByCustomerId(int customerId) {
 		return findCountByProperty("customer.id", customerId);
+	}
+
+	@Override
+	public List<CourseYzw> findCoursesByCustomerIdAndCourseType(Integer customerId, CourseType courseType) {
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT t1.contract.course");
+		hql.append(" FROM OrderYzw t1");
+		hql.append(" WHERE t1.customer.id =:customerId");
+		hql.append(" AND t1.contract.type = :courseType");
+		return getSession().createQuery(hql.toString(), CourseYzw.class)
+				.setParameter("customerId", customerId)
+				.setParameter("courseType", courseType)
+				.getResultList();
 	}
 	
 }

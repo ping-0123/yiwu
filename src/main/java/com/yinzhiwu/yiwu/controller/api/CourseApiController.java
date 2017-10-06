@@ -30,12 +30,6 @@ public class CourseApiController extends BaseController {
 	@Autowired
 	private CourseYzwService courseYzwService;
 
-	@Deprecated
-	@GetMapping("/id/{id}")
-	public YiwuJson<CourseApiView> findById(@PathVariable String id) {
-		return courseYzwService.findById(id);
-	}
-	
 	@GetMapping("/{courseId}/lessons")
 	@ApiOperation(value="查询{courseId}下的课时")
 	public YiwuJson<PageBean<LessonApiView>> findPageOfLessonApiViewsOfCourse(
@@ -77,4 +71,6 @@ public class CourseApiController extends BaseController {
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
+	
+	
 }
