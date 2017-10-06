@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns="http://www.springframework.org/schema/beans" 
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xmlns:aop="http://www.springframework.org/schema/aop"
-	   xmlns:tx="http://www.springframework.org/schema/tx"
-	   xmlns:mvc="http://www.springframework.org/schema/mvc"
-	   xsi:schemaLocation="
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
 			http://www.springframework.org/schema/beans   
 			http://www.springframework.org/schema/beans/spring-beans.xsd  
 			http://www.springframework.org/schema/context   
@@ -16,74 +14,98 @@
             http://www.springframework.org/schema/tx/spring-tx.xsd
             http://www.springframework.org/schema/mvc
       		http://www.springframework.org/schema/mvc/spring-mvc.xsd
-			">  
+			">
 
+	<!-- controller scan -->
 	<context:component-scan base-package="com.yinzhiwu.yiwu">
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository" />
 	</context:component-scan>
-	<!--  <context:component-scan base-package="springfox.petstore.controller"></context:component-scan> -->
-	
+	<!-- <context:component-scan base-package="springfox.petstore.controller"></context:component-scan> -->
+
 	<!-- 配置数据格式转换 -->
-	<mvc:annotation-driven conversion-service="conversionService"/>
-	
-	<!-- 静态资源映射, 解决不能js,css的问题 
-	<mvc:resources location="/images/" mapping="/images/**"></mvc:resources> -->
-	
+	<mvc:annotation-driven conversion-service="conversionService" />
+
 	<!-- don't handle the static resource -->
-    <mvc:default-servlet-handler />
-    
+	<mvc:default-servlet-handler />
+
+	<!-- shiro 权限注解支持 -->
+	<aop:config proxy-target-class="true"></aop:config>
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
 	<!-- 全局跨域配置 -->
-	<mvc:cors> 
-    	<mvc:mapping path="/**" allowed-origins="*" allow-credentials="true" max-age="1800" allowed-methods="GET,POST,PUT,DELETE,OPTIONS" />
-	</mvc:cors>  
+	<mvc:cors>
+		<mvc:mapping path="/**" allowed-origins="*"
+			allow-credentials="true" max-age="1800" allowed-methods="GET,POST,PUT,DELETE,OPTIONS" />
+	</mvc:cors>
 	
-	<bean name="applicationSwaggerConfig" class="com.yinzhiwu.yiwu.swagger.ApplicationSwaggerConfig"> </bean>
+	<!-- swagger api document -->
+	<bean name="applicationSwaggerConfig" class="com.yinzhiwu.yiwu.swagger.ApplicationSwaggerConfig">
+	
+	</bean>
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsps/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-	
+
 	<!-- Support JSON in springMVC4 -->
-	<bean id="messageAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">  
-       <property name="messageConverters">  
-           <list>  
-               <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>  
-           </list>  
-       </property>  
-   </bean>  
-    <bean id="exceptionMessageAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver">  
-       <property name="messageConverters">  
-           <list>  
-               <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>  
-           </list>  
-       </property>  
-   </bean> 
-   
-   <!-- 配置Converter -->
-   <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+	<bean id="messageAdapter"
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean
+					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	<bean id="exceptionMessageAdapter"
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver">
+		<property name="messageConverters">
+			<list>
+				<bean
+					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置Converter -->
+	<bean id="conversionService"
+		class="org.springframework.context.support.ConversionServiceFactoryBean">
 		<property name="converters">
 			<list>
 				<bean class="com.yinzhiwu.yiwu.convert.StringToDateConvertor">
-					<constructor-arg type="java.lang.String" value="yyyy-MM-dd"/>
+					<constructor-arg type="java.lang.String" value="yyyy-MM-dd" />
 				</bean>
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- define springmvc validate message source -->
+<!-- 	 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />   -->
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-		<property name="basename" value="/WEB-INF/resource/messages"/>
+		<property name="basename" value="/WEB-INF/resource/messages" />
+		<property name="fileEncodings" value="utf-8"/>  
+        <property name="cacheSeconds" value="120"/>  
+	</bean>  
+  		<!-- 注册验证器 -->
+   <!--  <mvc:annotation-driven validator="validator" />
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+         <property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+         这里配置将使用上面国际化配置的messageSource
+         <property name="validationMessageSource" ref="messageSource" />
+    </bean> 
+ -->
+
+	<!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="maxUploadSize" value="20000000" />
+		<property name="resolveLazily" value="true"></property>
 	</bean>
-	
-	 <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器     -->
-	  <bean id="multipartResolver"
-            class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="defaultEncoding" value="UTF-8" />
-        <property name="maxUploadSize" value="20000000"/>
-        <property name="resolveLazily" value="true"></property>
-    </bean>
 
 </beans>

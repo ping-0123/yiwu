@@ -84,21 +84,16 @@
 		<url-pattern>/api/*</url-pattern>
 	</filter-mapping>
 
-
-
-	<!-- 用户权限过滤 <filter> <filter-name>apiUserFilter</filter-name> <filter-class>com.yinzhiwu.yiwu.web.filter.ApiUserFilter</filter-class> 
-		</filter> <filter-mapping> <filter-name>apiUserFilter</filter-name> <url-pattern>/api/*</url-pattern> 
-		</filter-mapping> -->
-
+	<!-- 
 	<servlet>
 		<servlet-name>default</servlet-name>
-
 		<servlet-class>org.eclipse.jetty.servlet.DefaultServlet</servlet-class>
 		<init-param>
 			<param-name>useFileMappedBuffer</param-name>
 			<param-value>false</param-value>
 		</init-param>
-	</servlet>
+	</servlet>  -->
+	
 	<!-- springmvc servlet -->
 	<servlet>
 		<servlet-name>springmvc</servlet-name>

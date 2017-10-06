@@ -24,7 +24,7 @@ public class CourseApiView {
 	private Date startDate;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
-	private boolean lessoning;
+	private boolean comming;
 	
 	public CourseApiView() {
 	};
@@ -108,17 +108,19 @@ public class CourseApiView {
 			CourseApiView v = new CourseApiView();
 			BeanUtils.copyProperties(b, v);
 			LessonYzwService service = SpringUtils.getBean(LessonYzwService.class);
-			v.setLessoning(service.findComingLessonByCourseId(b.getId())==null?false:true);
+			v.setComming(service.findComingLessonByCourseId(b.getId())!=null);
 			return v;
 		}
 		
 	}
 
-	public boolean isLessoning() {
-		return lessoning;
+	public boolean isComming() {
+		return comming;
 	}
 
-	public void setLessoning(boolean lessoning) {
-		this.lessoning = lessoning;
+	public void setComming(boolean comming) {
+		this.comming = comming;
 	}
+	
+	
 }

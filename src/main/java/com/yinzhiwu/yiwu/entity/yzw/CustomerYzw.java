@@ -18,6 +18,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw.GenderConverter;
@@ -26,6 +29,7 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 
 @Entity
 @Table(name = "vcustomer")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class CustomerYzw extends BaseYzwEntity {
 
 
