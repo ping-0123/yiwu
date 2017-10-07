@@ -89,7 +89,8 @@ public class CourseYzw extends BaseYzwEntity {
 	@Column
 	private Date endDate;
 
-	@Column
+	private Integer sumLessonTimes;
+	
 	private Float sumCourseHours;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -172,7 +173,8 @@ public class CourseYzw extends BaseYzwEntity {
 	private ClassRoomYzw sunRoom;
 
 	@Column(length = 32, name = "status")
-	private String courseStatus;
+	@Convert(converter=CourseStatusconverter.class)
+	private CourseStatus courseStatus;
 
 	@Column
 	private Integer studentCount;
@@ -351,7 +353,7 @@ public class CourseYzw extends BaseYzwEntity {
 		return sunRoom;
 	}
 
-	public String getCourseStatus() {
+	public CourseStatus getCourseStatus() {
 		return courseStatus;
 	}
 
@@ -515,7 +517,7 @@ public class CourseYzw extends BaseYzwEntity {
 		this.sunRoom = sunRoom;
 	}
 
-	public void setCourseStatus(String courseStatus) {
+	public void setCourseStatus(CourseStatus courseStatus) {
 		this.courseStatus = courseStatus;
 	}
 
@@ -726,5 +728,58 @@ public class CourseYzw extends BaseYzwEntity {
 			return SubCourseType.fromId(dbData);
 		}
 		
+	}
+	
+	
+	public static enum CourseStatus{
+		UN_ARRANGED("未排课"),
+		UN_CHECKED("未审核"),
+		READY("已排课");
+			
+		private final String status;
+
+		public String getStatus() {
+			return status;
+		}
+
+		private CourseStatus(String status){
+			this.status=status;
+		}
+		
+		public static CourseStatus fromStatus(String status){
+			switch (status) {
+			case "未排课":
+				return CourseStatus.UN_ARRANGED;
+			case "未审核":
+				return CourseStatus.UN_CHECKED;
+			case "已排课":
+				return CourseStatus.READY;
+			default:
+				throw new UnsupportedOperationException(status + " not supported for enum LessonStatus");
+			}
+		}
+	}
+	
+	@Converter
+	public static class CourseStatusconverter implements AttributeConverter<CourseStatus, String>{
+
+		@Override
+		public String convertToDatabaseColumn(CourseStatus attribute) {
+			return attribute==null?null:attribute.getStatus();
+		}
+
+		@Override
+		public CourseStatus convertToEntityAttribute(String dbData) {
+			return (StringUtils.hasText(dbData))?CourseStatus.fromStatus(dbData):null;
+		}
+		
+	}
+
+	public Integer getSumLessonTimes() {
+		return sumLessonTimes;
+	}
+
+	public void setSumLessonTimes(Integer sumLessonTimes) {
+		this.sumLessonTimes = sumLessonTimes;
 	}
 }

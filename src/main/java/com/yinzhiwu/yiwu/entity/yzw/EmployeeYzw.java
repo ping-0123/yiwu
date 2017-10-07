@@ -15,10 +15,11 @@ import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
@@ -28,13 +29,13 @@ import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Email;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 @Entity
 @Table(name = "vemployee")
+@Inheritance(strategy=InheritanceType.JOINED)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Where(clause="dataStatus <> 2")
+@Where(clause="dataStatus <> 2") //TODO 逻辑删除导致的关联问题， 如懒加载失败
 public class EmployeeYzw extends BaseYzwEntity {
 
 	/**
@@ -83,6 +84,13 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@Column(length = 50)
 	private String email;
 
+	@Column(length=128)
+	private String signature;
+	@Column(length=2000)
+	private String resume;
+	@Column(length=128)
+	private String portraitUri;
+	
 	@Column
 	private Boolean disabled;
 
@@ -136,14 +144,16 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@Column(name = "last_online_timestamp")
 	private Date lastOnlineTimeStamp;
 	
+	
+	
 	@JsonIgnore
 	@OneToMany(mappedBy="employee", cascade=CascadeType.REMOVE)
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Set<EmployeePostYzw> employeePosts = new HashSet<>();
 	
-	@JsonIgnore
-	@OneToOne(mappedBy="employee",fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
-	private User user;
+//	@JsonIgnore
+//	@OneToOne(mappedBy="employee",fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
+//	private User user;
 	
 	public EmployeeYzw() {
 	}
@@ -168,8 +178,6 @@ public class EmployeeYzw extends BaseYzwEntity {
 	public Integer getId() {
 		return id;
 	}
-
-
 
 	public String getUsername() {
 		return username;
@@ -522,14 +530,44 @@ public class EmployeeYzw extends BaseYzwEntity {
 	}
 
 
-	public User getUser() {
-		return user;
+	public String getSignature() {
+		return signature;
 	}
 
 
-	public void setUser(User user) {
-		this.user = user;
+	public String getResume() {
+		return resume;
 	}
+
+
+	public String getPortraitUri() {
+		return portraitUri;
+	}
+
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
+
+	public void setResume(String resume) {
+		this.resume = resume;
+	}
+
+
+	public void setPortraitUri(String portraitUri) {
+		this.portraitUri = portraitUri;
+	}
+
+
+//	public User getUser() {
+//		return user;
+//	}
+//
+//
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
 
 
 }

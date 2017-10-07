@@ -1,4 +1,5 @@
 alter TABLE chenkuserdb1.tblemployee add COLUMN(dataStatus int not null default 0,number varchar(10));
+alter TABLE chenkuserdb1.tblemployee add COLUMN(signature varchar(128), portraitUri varchar(128), resume varchar(2000));
 alter TABLE chenkuserdb1.tblemployee MODIFY COLUMN id int not null AUTO_INCREMENT;
 
 CREATE 
@@ -17,6 +18,9 @@ VIEW `vemployee` AS
         `chenkuserdb1`.`tblemployee`.`CellPhone` AS `cellphone`,
         `chenkuserdb1`.`tblemployee`.`Fax` AS `fax`,
         `chenkuserdb1`.`tblemployee`.`Email` AS `email`,
+        signature,
+        portraitUri,
+        resume,
         `chenkuserdb1`.`tblemployee`.`Disabled` AS `disabled`,
         dataStatus,
         `chenkuserdb1`.`tblemployee`.`Creator` AS `sf_create_user`,

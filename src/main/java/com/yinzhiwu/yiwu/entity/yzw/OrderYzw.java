@@ -41,60 +41,6 @@ public class OrderYzw extends BaseYzwEntity {
 	private static final long serialVersionUID = -8473575190806095432L;
 	public static final int DELETABLE_AFTER_HOURS = 24;
 	
-	public enum VipAttributer{
-		NEW_CARD("新卡"),
-		NEW_MEMBER("新入会员"),
-		RENEW_MEMBER("续费会员"),
-		RECOMMEND_MEMBER("推荐会员");
-		
-		private final String name;
-
-		public String getName() {
-			return name;
-		}
-		private VipAttributer(String name){
-			this.name = name;
-		}
-		
-		public static VipAttributer fromName(String name){
-			switch (name) {
-			case "新卡":
-				return NEW_CARD;
-			case "新入会员":
-				return VipAttributer.NEW_MEMBER;
-			case "续费会员":
-				return VipAttributer.RENEW_MEMBER;
-			case "推荐会员":
-				return VipAttributer.RECOMMEND_MEMBER;
-			default:
-				throw new UnsupportedOperationException(name + "not support for enum VipAttributer");
-			}
-		}
-	}
-	
-	@Converter
-	public static class VipAttributerConverter implements AttributeConverter<VipAttributer, String>{
-
-		@Override
-		public String convertToDatabaseColumn(VipAttributer attribute) {
-			if(attribute == null)
-				return null;
-			return attribute.getName();
-		}
-
-		@Override
-		public VipAttributer convertToEntityAttribute(String dbData) {
-			if(dbData ==null || "".equals(dbData.trim()))
-				return null;
-			return VipAttributer.fromName(dbData);
-		}
-		
-	}
-	
-	public enum EContractStatus{
-		UNCONFIRMED,
-		CONFIRMED
-	}
 	
 	@Id
 	@GeneratedValue(generator = "assigned")
@@ -462,4 +408,60 @@ public class OrderYzw extends BaseYzwEntity {
 	}
 
 
+	
+
+	public enum VipAttributer{
+		NEW_CARD("新卡"),
+		NEW_MEMBER("新入会员"),
+		RENEW_MEMBER("续费会员"),
+		RECOMMEND_MEMBER("推荐会员");
+		
+		private final String name;
+
+		public String getName() {
+			return name;
+		}
+		private VipAttributer(String name){
+			this.name = name;
+		}
+		
+		public static VipAttributer fromName(String name){
+			switch (name) {
+			case "新卡":
+				return NEW_CARD;
+			case "新入会员":
+				return VipAttributer.NEW_MEMBER;
+			case "续费会员":
+				return VipAttributer.RENEW_MEMBER;
+			case "推荐会员":
+				return VipAttributer.RECOMMEND_MEMBER;
+			default:
+				throw new UnsupportedOperationException(name + "not support for enum VipAttributer");
+			}
+		}
+	}
+	
+	@Converter
+	public static class VipAttributerConverter implements AttributeConverter<VipAttributer, String>{
+
+		@Override
+		public String convertToDatabaseColumn(VipAttributer attribute) {
+			if(attribute == null)
+				return null;
+			return attribute.getName();
+		}
+
+		@Override
+		public VipAttributer convertToEntityAttribute(String dbData) {
+			if(dbData ==null || "".equals(dbData.trim()))
+				return null;
+			return VipAttributer.fromName(dbData);
+		}
+		
+	}
+	
+	public enum EContractStatus{
+		UNCONFIRMED,
+		CONFIRMED
+	}
 }

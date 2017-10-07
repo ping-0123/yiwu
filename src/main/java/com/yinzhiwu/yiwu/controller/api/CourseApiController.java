@@ -17,7 +17,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
-import com.yinzhiwu.yiwu.model.view.CourseApiView;
+import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
 
@@ -55,9 +55,17 @@ public class CourseApiController extends BaseController {
 	}
 
 	@GetMapping("/{id}")
-	public YiwuJson<CourseApiView> doGet(@PathVariable String id) {
-		return courseYzwService.findById(id);
+	public YiwuJson<CourseVO> doGet(@PathVariable(name="id") String id) {
+		
+		try {
+			CourseYzw course =  courseYzwService.get(id);
+			return YiwuJson.createBySuccess(CourseVO.fromDAO(course));
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getLocalizedMessage());
+		}
 	}
+
 
 	@GetMapping("/connotation/{courseId}")
 	@ApiOperation(value = "根据课程（课时系列）id获取课程内涵信息")

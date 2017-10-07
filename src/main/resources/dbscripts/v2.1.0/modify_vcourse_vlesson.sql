@@ -1,4 +1,5 @@
 ALTER table chenkuserdb1.skt6 add COLUMN(dataStatus int not null DEFAULT 0);
+ALTER TABLE chenkuserdb1.skt6 add COLUMN(sumLessonTimes int);
 
 CREATE 
 or REPLACE
@@ -18,6 +19,7 @@ VIEW yiwu.`vcourse` AS
         `chenkuserdb1`.`skt6`.`SKF61` AS `endTime`,
         `chenkuserdb1`.`skt6`.`SKF62` AS `startDate`,
         `chenkuserdb1`.`skt6`.`SKF63` AS `endDate`,
+        sumLessonTimes,
         `chenkuserdb1`.`skt6`.`SKF64` AS `sumCourseHours`,
         `chenkuserdb1`.`skt6`.`SKF65` AS `classRoom_id`,
         `chenkuserdb1`.`skt6`.`SKF66` AS `classRoomName`,
@@ -64,6 +66,8 @@ VIEW yiwu.`vcourse` AS
     FROM
         `chenkuserdb1`.`skt6`;
 
+        
+        --------------------------------------
 ALTER table chenkuserdb1.skt7 add COLUMN(dataStatus int DEFAULT 0);
 
 

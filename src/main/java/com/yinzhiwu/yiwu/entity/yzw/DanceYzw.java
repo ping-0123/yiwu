@@ -7,8 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "vdance")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)  //TODO 全缓存 永久有效
 public class DanceYzw extends BaseYzwEntity {
 
 	/**
@@ -19,6 +24,7 @@ public class DanceYzw extends BaseYzwEntity {
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GenericGenerator(name="danceIdGenerator", strategy="assigned")
 	private String id;
 
 	@Column(length = 32)
@@ -29,9 +35,6 @@ public class DanceYzw extends BaseYzwEntity {
 
 	@Column
 	private Float remuneration;
-
-	// @OneToMany(mappedBy="dance")
-	// List<CourseYzw> courses = new ArrayList<>();
 
 	public DanceYzw() {
 		super();

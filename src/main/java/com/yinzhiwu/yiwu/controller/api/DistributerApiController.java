@@ -31,7 +31,7 @@ import com.yinzhiwu.yiwu.model.DistributerModifyModel;
 import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
-import com.yinzhiwu.yiwu.model.view.CourseApiView;
+import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
@@ -100,18 +100,6 @@ public class DistributerApiController extends BaseController {
 		return distributerService.loginByAccount(account, password);
 	}
 
-	/**
-	 * @deprecated use {@link DistributerApiController#doGet(int)}
-	 * @param id
-	 * @return
-	 */
-	@Deprecated
-	@GetMapping(value = "/getById/{id}")
-	@ApiOperation("使用/api/distributer/{id}")
-	public YiwuJson<DistributerApiView> getDistributerInfo(@PathVariable int id) {
-		return distributerService.findById(id);
-	}
-
 	@GetMapping(value="/getInfo.do")
 	@ApiOperation("获取个人信息")
 	public YiwuJson<?> getInfo(@ApiParam(required=false) HttpSession session){
@@ -126,10 +114,10 @@ public class DistributerApiController extends BaseController {
 		return distributerService.findById(id);
 	}
 
-	@GetMapping(value="/{id}/courses")
+	@GetMapping(value="/{id}/cources")
 	@ApiOperation(value="获取客户的课程")
-	public YiwuJson<?> getCoures(@PathVariable Integer id, 
-			@ApiParam(name="课程类型",defaultValue="CLOSED",required=false) 
+	public YiwuJson<List<CourseVO>> getCoures(@PathVariable Integer id, 
+			@ApiParam(name="courseType",defaultValue="CLOSED",required=false,value="CLOSED,OPENED,PRIVATE") 
 			@RequestParam(name="courseType", required=false, defaultValue="CLOSED") CourseType courseType)
 	{
 		try {
@@ -140,9 +128,9 @@ public class DistributerApiController extends BaseController {
 			}
 			
 			List<CourseYzw> courses = orderService.findCoursesByCustomerIdAndCourseType(distributer.getCustomer().getId(),courseType);
-			List<CourseApiView> views = new ArrayList<>();
+			List<CourseVO> views = new ArrayList<>();
 			for (CourseYzw courseYzw : courses) {
-				views.add(CourseApiView.fromDAO(courseYzw));
+				views.add(CourseVO.fromDAO(courseYzw));
 			}
 			
 			return YiwuJson.createBySuccess(views);
@@ -215,17 +203,6 @@ public class DistributerApiController extends BaseController {
 		}
 	}
 
-	/**
-	 * @deprecated not supported
-	 * @param model
-	 * @return
-	 */
-	@Deprecated
-	@GetMapping(value = "/input")
-	public ModelAndView inputProduct(Model model) {
-		model.addAttribute("distributerApiView", new DistributerApiView());
-		return new ModelAndView("distributer/form");
-	}
 
 	@GetMapping(value = "validatyPhoneNo")
 	public YiwuJson<Boolean> validatyIsRegister(String phoneNo) {

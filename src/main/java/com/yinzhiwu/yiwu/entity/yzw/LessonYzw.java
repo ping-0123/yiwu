@@ -50,7 +50,7 @@ public class LessonYzw extends BaseYzwEntity {
 	@JoinColumn(name = "course_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private CourseYzw course;
 
-	@Column
+	private Integer ordinalNo;
 	private Date lessonDate;
 
 	@Column
@@ -157,7 +157,7 @@ public class LessonYzw extends BaseYzwEntity {
 	public Integer getId() {
 		return id;
 	}
-
+	
 	public Date getLessonDate() {
 		return lessonDate;
 	}
@@ -442,5 +442,17 @@ public class LessonYzw extends BaseYzwEntity {
 			return LessonStatus.fromStatus(dbData);
 		}
 		
+	}
+
+	public Integer getOrdinalNo() {
+		return ordinalNo;
+	}
+
+	public void setOrdinalNo(Integer ordinalNo) {
+		this.ordinalNo = ordinalNo;
+	}
+
+	public void setActualTeacher(EmployeeYzw actualTeacher) {
+		this.actualTeacher = actualTeacher;
 	}
 }

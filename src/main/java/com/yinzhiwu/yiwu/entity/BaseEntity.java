@@ -54,6 +54,7 @@ public abstract class BaseEntity implements Serializable {
 	@Column(insertable = true, updatable = true, name="lastModifiedDate")
 	protected Date lastChangeTime;
 	
+	@Column(columnDefinition="TINYINT unsigned not null default 0")
 	@Enumerated(value=EnumType.ORDINAL)
 	private DataStatus dataStatus;
 
