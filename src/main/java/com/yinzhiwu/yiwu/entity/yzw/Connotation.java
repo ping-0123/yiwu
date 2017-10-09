@@ -8,10 +8,10 @@ public class Connotation {
 	private String connotation;
 	private String helpInfomation;
 	private String introduction;
-	private String pictureNo;
-	private String videoUrl;
+	private String pictureUri;
+	private String videoUri;
 	private String audioName;
-	private String audioUrl;
+	private String audioUri;
 	private String danceIntroduction;
 
 	public String getConnotation() {
@@ -26,22 +26,10 @@ public class Connotation {
 		return introduction;
 	}
 
-	public String getPictureNo() {
-		return pictureNo;
-	}
-
-	public String getVideoUrl() {
-		return videoUrl;
-	}
 
 	public String getAudioName() {
 		return audioName;
 	}
-
-	public String getAudioUrl() {
-		return audioUrl;
-	}
-
 	public String getDanceIntroduction() {
 		return danceIntroduction;
 	}
@@ -58,24 +46,36 @@ public class Connotation {
 		this.introduction = introduction;
 	}
 
-	public void setPictureNo(String pictureNo) {
-		this.pictureNo = pictureNo;
-	}
-
-	public void setVideoUrl(String videoUrl) {
-		this.videoUrl = videoUrl;
-	}
-
 	public void setAudioName(String audioName) {
 		this.audioName = audioName;
 	}
 
-	public void setAudioUrl(String audioUrl) {
-		this.audioUrl = audioUrl;
-	}
-
 	public void setDanceIntroduction(String danceIntroduction) {
 		this.danceIntroduction = danceIntroduction;
+	}
+
+	public String getPictureUri() {
+		return pictureUri;
+	}
+
+	public String getVideoUri() {
+		return videoUri;
+	}
+
+	public String getAudioUri() {
+		return audioUri;
+	}
+
+	public void setPictureUri(String pictureUri) {
+		this.pictureUri = pictureUri;
+	}
+
+	public void setVideoUri(String videoUri) {
+		this.videoUri = videoUri;
+	}
+
+	public void setAudioUri(String audioUri) {
+		this.audioUri = audioUri;
 	}
 
 }

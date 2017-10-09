@@ -1,7 +1,9 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.AttributeOverride;
@@ -20,11 +22,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.yinzhiwu.yiwu.entity.LessonAppraise;
+import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseTypeConverter;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
@@ -140,16 +145,24 @@ public class LessonYzw extends BaseYzwEntity {
 	@AttributeOverrides({ @AttributeOverride(name = "connotation", column = @Column(name = "neihan")),
 			@AttributeOverride(name = "helpInfomation", column = @Column(name = "help")),
 			@AttributeOverride(name = "introduction", column = @Column(name = "jianjie")),
-			@AttributeOverride(name = "pictureNo", column = @Column(name = "picture")),
-			@AttributeOverride(name = "videoUrl", column = @Column(name = "video")),
+			@AttributeOverride(name = "pictureUri", column = @Column(name = "picture")),
+			@AttributeOverride(name = "puzzleVideoUri", column = @Column(name = "puzzleVideoUri")),
+			@AttributeOverride(name = "practicalVideoUri", column = @Column(name = "practicalVideoUri")),
+			@AttributeOverride(name = "videoUri", column = @Column(name = "video")),
 			@AttributeOverride(name = "audioName", column = @Column(name = "audio")),
-			@AttributeOverride(name = "audioUrl", column = @Column(name = "audio_link")),
+			@AttributeOverride(name = "audioUri", column = @Column(name = "audio_link")),
 			@AttributeOverride(name = "danceIntroduction", column = @Column(name = "dance_introduction")) })
-	private Connotation connotation;
+	private LessonConnotation connotation;
 
 	@Column(name = "QRcode")
 	private String qrCode;
 
+	@OneToMany(mappedBy="lesson")
+	private List<LessonPraise> praises = new ArrayList<>();
+	
+	@OneToMany(mappedBy="lesson")
+	private List<LessonAppraise> appraises = new ArrayList<>();
+	
 	public LessonYzw() {
 		super();
 	}
@@ -386,11 +399,11 @@ public class LessonYzw extends BaseYzwEntity {
 		this.course = course;
 	}
 
-	public Connotation getConnotation() {
+	public LessonConnotation getConnotation() {
 		return connotation;
 	}
 
-	public void setConnotation(Connotation connotation) {
+	public void setConnotation(LessonConnotation connotation) {
 		this.connotation = connotation;
 	}
 
@@ -455,4 +468,22 @@ public class LessonYzw extends BaseYzwEntity {
 	public void setActualTeacher(EmployeeYzw actualTeacher) {
 		this.actualTeacher = actualTeacher;
 	}
+
+	public List<LessonPraise> getPraises() {
+		return praises;
+	}
+
+	public void setPraises(List<LessonPraise> praises) {
+		this.praises = praises;
+	}
+
+	public List<LessonAppraise> getAppraises() {
+		return appraises;
+	}
+
+	public void setAppraises(List<LessonAppraise> appraises) {
+		this.appraises = appraises;
+	}
+	
+	
 }

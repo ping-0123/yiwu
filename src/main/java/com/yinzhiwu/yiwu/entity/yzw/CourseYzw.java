@@ -192,10 +192,10 @@ public class CourseYzw extends BaseYzwEntity {
 	@AttributeOverrides({ @AttributeOverride(name = "connotation", column = @Column(name = "connotation")),
 			@AttributeOverride(name = "helpInfomation", column = @Column(name = "help")),
 			@AttributeOverride(name = "introduction", column = @Column(name = "briefIntroduction")),
-			@AttributeOverride(name = "pictureNo", column = @Column(name = "picture")),
-			@AttributeOverride(name = "videoUrl", column = @Column(name = "videoUrl")),
+			@AttributeOverride(name = "pictureUri", column = @Column(name = "picture")),
+			@AttributeOverride(name = "videoUri", column = @Column(name = "videoUrl")),
 			@AttributeOverride(name = "audioName", column = @Column(name = "audio")),
-			@AttributeOverride(name = "audioUrl", column = @Column(name = "audioUrl")),
+			@AttributeOverride(name = "audioUri", column = @Column(name = "audioUrl")),
 			@AttributeOverride(name = "danceIntroduction", column = @Column(name = "danceIntroduction")) })
 	private Connotation connotation;
 
@@ -781,5 +781,40 @@ public class CourseYzw extends BaseYzwEntity {
 
 	public void setSumLessonTimes(Integer sumLessonTimes) {
 		this.sumLessonTimes = sumLessonTimes;
+	}
+
+	public List<LessonYzw> getPreviousLessons() {
+		List<LessonYzw> passed = new ArrayList<>();
+		Date current = new Date();
+		for (LessonYzw lesson : this.lessons) {
+			if(lesson.getStartDateTime().before(current))
+				passed.add(lesson);
+		}
+		
+		return passed;
+	}
+	
+	public List<LessonYzw> getNextLessons(){
+		List<LessonYzw> nexts = new ArrayList<>();
+		Date current = new Date();
+		for (LessonYzw lesson : lessons) {
+			if(lesson.getStartDateTime().after(current))
+				nexts.add(lesson);
+		}
+		
+		return nexts;
+	}
+	
+	public LessonYzw getComingLesson(){
+		List<LessonYzw> nexts = getNextLessons();
+		if(nexts.size()==0)
+			return null;
+		LessonYzw coming = nexts.get(0) ;
+		for (LessonYzw lesson : nexts) {
+			if(lesson.getStartDateTime().before(coming.getStartDateTime()))
+				coming = lesson;
+		}
+		
+		return coming;
 	}
 }

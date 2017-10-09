@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.controller.api;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
+import com.yinzhiwu.yiwu.model.view.LessonVO;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
 
 import io.swagger.annotations.ApiOperation;
@@ -27,8 +29,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "/api/course")
 public class CourseApiController extends BaseController {
 
-	@Autowired
-	private CourseYzwService courseYzwService;
+	@Autowired private CourseYzwService courseYzwService;
 
 	@GetMapping("/{courseId}/lessons")
 	@ApiOperation(value="查询{courseId}下的课时")
@@ -65,8 +66,83 @@ public class CourseApiController extends BaseController {
 			return YiwuJson.createByErrorMessage(e.getLocalizedMessage());
 		}
 	}
-
-
+	
+	@GetMapping("/{id}/nextLesson")
+	@ApiOperation(value="获取下一个课时")
+	public YiwuJson<LessonVO> getNextLesson(@PathVariable(name="id") String id){
+		
+		try {
+			Date current = new Date();
+			CourseYzw course = courseYzwService.get(id);
+			if(course.getEndDate().before(current)){
+				throw new Exception("课程已结束");
+			}
+			List<LessonYzw> lessons = course.getLessons();
+			for (LessonYzw lesson : lessons) {
+				if(lesson.getStartDateTime().after(current)){
+					return YiwuJson.createBySuccess(LessonVO.fromDAO(lesson));
+				}
+			}
+			
+			throw new Exception("课程已结束");
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getLocalizedMessage());
+		}
+		
+	}
+	
+	@GetMapping("/{id}/passedLessons")
+	@ApiOperation(value="获取已上过的课时")
+	public YiwuJson<PageBean<LessonVO>> getPageOfPassedLessons(
+			@PathVariable(name="id") String id,
+			@RequestParam(name="pageNo", required=false, defaultValue="1") Integer pageNo,
+			@RequestParam(name="pageSize", required=false, defaultValue="10") Integer pageSize
+	){
+		try {
+			CourseYzw course = courseYzwService.get(id);
+			List<LessonYzw> lessons = course.getPreviousLessons();
+			PageBean<LessonYzw> page1 = new PageBean<>(pageSize,pageNo,lessons);
+			List<LessonVO> vos = new ArrayList<>();
+			for (LessonYzw lesson : page1.getList()) {
+				vos.add(LessonVO.fromDAO(lesson));
+			}
+			
+			PageBean<LessonVO> page2 = new PageBean<>(pageSize,pageNo,lessons.size(),vos);
+			return YiwuJson.createBySuccess(page2);
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getLocalizedMessage());
+		}
+	}
+	
+	
+	@GetMapping("/{id}/nextLessons")
+	@ApiOperation(value="获取未上课的课时列表")
+	public YiwuJson<PageBean<LessonVO>> getPageOfNextLessons(
+			@PathVariable(name="id") String id,
+			@RequestParam(name="pageNo", required=false, defaultValue="1") Integer pageNo,
+			@RequestParam(name="pageSize", required=false, defaultValue="10") Integer pageSize
+	){
+		
+		try {
+			CourseYzw course = courseYzwService.get(id);
+			List<LessonYzw> lessons = course.getNextLessons();
+			PageBean<LessonYzw> page1 = new PageBean<>(pageSize,pageNo,lessons);
+			List<LessonVO> vos = new ArrayList<>();
+			for(LessonYzw lesson: page1.getList()){
+				vos.add(LessonVO.fromDAO(lesson));
+			}
+			
+			PageBean<LessonVO> page2  = new PageBean<>(pageSize,pageNo,lessons.size(), vos);
+			return YiwuJson.createBySuccess(page2);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getLocalizedMessage());
+		}
+	}
+	
 	@GetMapping("/connotation/{courseId}")
 	@ApiOperation(value = "根据课程（课时系列）id获取课程内涵信息")
 	public YiwuJson<Connotation> getConnotationByCourseId(@PathVariable String courseId) {

@@ -193,6 +193,5 @@ public class CourseVO {
 	public void setSumLessonTimes(Integer sumLessonTimes) {
 		this.sumLessonTimes = sumLessonTimes;
 	}
-	
-	
+
 }
