@@ -114,7 +114,7 @@ public class DistributerApiController extends BaseController {
 		return distributerService.findById(id);
 	}
 
-	@GetMapping(value="/{id}/cources")
+	@GetMapping(value="/{id}/courses")
 	@ApiOperation(value="获取客户的课程")
 	public YiwuJson<List<CourseVO>> getCoures(@PathVariable Integer id, 
 			@ApiParam(name="courseType",defaultValue="CLOSED",required=false,value="CLOSED,OPENED,PRIVATE") 

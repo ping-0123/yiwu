@@ -17,5 +17,11 @@ import com.yinzhiwu.yiwu.service.LessonPraiseService;
 public class LessonPraiseServiceImpl extends BaseServiceImpl<LessonPraise,Integer> implements LessonPraiseService {
 
 	@Autowired public void setBaseDao(LessonPraiseDao lpDao){super.setBaseDao(lpDao);}
+	@Autowired private LessonPraiseDao lpDao;
+
+	@Override
+	public LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) {
+		return lpDao.findByDistributerIdAndLessonId(distributerId, lessonId);
+	}
 	
 }

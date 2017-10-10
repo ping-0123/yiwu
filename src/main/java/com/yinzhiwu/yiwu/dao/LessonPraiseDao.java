@@ -10,4 +10,6 @@ import com.yinzhiwu.yiwu.entity.LessonPraise;
 
 public interface LessonPraiseDao extends IBaseDao<LessonPraise, Integer>{
 
+	LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId);
+
 }

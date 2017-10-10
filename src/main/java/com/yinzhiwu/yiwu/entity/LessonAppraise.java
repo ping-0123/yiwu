@@ -1,5 +1,7 @@
 package com.yinzhiwu.yiwu.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -33,7 +35,7 @@ public class LessonAppraise extends BaseEntity{
 	
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_distributer_id", value=ConstraintMode.NO_CONSTRAINT))
-	private Distributer distributer;
+	private Distributer commenter;
 	
 	@Column(length=32)
 	@Enumerated(value=EnumType.STRING)
@@ -43,6 +45,7 @@ public class LessonAppraise extends BaseEntity{
 	
 	private String comment;
 	
+	private Date date;
 	@ManyToOne
 	@JoinColumn(name="replied_id", foreignKey=@ForeignKey(name="fk_praise_replied_id", value= ConstraintMode.NO_CONSTRAINT))
 	private LessonAppraise reAppraise;
@@ -53,12 +56,10 @@ public class LessonAppraise extends BaseEntity{
 		REPLY
 	}
 
+	
+	
 	public LessonYzw getLesson() {
 		return lesson;
-	}
-
-	public Distributer getDistributer() {
-		return distributer;
 	}
 
 	public AppraiseType getType() {
@@ -71,10 +72,6 @@ public class LessonAppraise extends BaseEntity{
 
 	public void setLesson(LessonYzw lesson) {
 		this.lesson = lesson;
-	}
-
-	public void setDistributer(Distributer distributer) {
-		this.distributer = distributer;
 	}
 
 	public void setType(AppraiseType type) {
@@ -99,6 +96,29 @@ public class LessonAppraise extends BaseEntity{
 
 	public void setReAppraise(LessonAppraise reAppraise) {
 		this.reAppraise = reAppraise;
+	}
+
+	public Distributer getCommenter() {
+		return commenter;
+	}
+
+	public void setCommenter(Distributer commenter) {
+		this.commenter = commenter;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	@Override
+	public void init() {
+		super.init();
+		if(this.date == null )
+			this.date = super.getCreateTime();
 	}
 	
 	
