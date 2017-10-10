@@ -9,7 +9,9 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 
@@ -22,6 +24,7 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="yiwu_lesson_appraise")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class LessonAppraise extends BaseEntity{
 	
 	@ManyToOne
@@ -36,7 +39,6 @@ public class LessonAppraise extends BaseEntity{
 	@Enumerated(value=EnumType.STRING)
 	private AppraiseType type;
 	
-	@Size(min=1, max=5)
 	private Integer stars;
 	
 	private String comment;

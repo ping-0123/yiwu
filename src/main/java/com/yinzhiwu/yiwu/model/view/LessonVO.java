@@ -7,10 +7,13 @@ import org.springframework.beans.BeanUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Converter;
-import com.yinzhiwu.yiwu.entity.yzw.Connotation;
+import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
 *@Author ping
@@ -18,24 +21,36 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 *
 */
 
+@ApiModel(description="课时VO")
 public class LessonVO {
 	
 	private Integer id;
 	private String name;
 	private String courseId;
+	@ApiModelProperty(value="课时的序号， 即第几节课")
 	private Integer ordinalNo;
 	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
+	@ApiModelProperty(value="课时的上课日期")
 	private Date lessonDate;
+	@ApiModelProperty(value="课时的开始时间")
 	private Time startTime;
+	@ApiModelProperty(value="课时的结束时间")
 	private Time endTime;
 	private Integer storeId;
+	@ApiModelProperty(value="上课所在门店名")
 	private String storeName;
+	@ApiModelProperty(value="上课所在门店地址")
 	private String storeAddress;
 	private Integer dueTeacherId;
+	@ApiModelProperty(value="排课上课老师姓名")
 	private String dueTeacherName;
 	private Integer actualTeacherId;
+	@ApiModelProperty(value="实际上课老师姓名")
 	private String actualTeacherName;
-	private Connotation connotation;
+	@ApiModelProperty(value="课时内容信息")
+	private LessonConnotationVO connotation;
+	@ApiModelProperty(value="所有点赞人姓名，以逗号分隔")
+	private String praisers;
 	
 	public Integer getId() {
 		return id;
@@ -137,7 +152,15 @@ public class LessonVO {
 				vo.setDueTeacherId(e.getId());
 				vo.setDueTeacherName(e.getName());
 			}
+			StringBuilder praisers = new StringBuilder();
+			for (LessonPraise praise : po.getPraises()) {
+				if(praise.getDistributer() !=null)
+					praisers.append(praise.getDistributer().getName());
+			}
 			
+			if(po.getConnotation() !=null){
+				vo.setConnotation(LessonConnotationVO.fromPO(po.getConnotation()));
+			}
 			return vo;
 		}
 		
@@ -167,10 +190,16 @@ public class LessonVO {
 	public void setActualTeacherName(String actualTeacherName) {
 		this.actualTeacherName = actualTeacherName;
 	}
-	public Connotation getConnotation() {
+	public String getPraisers() {
+		return praisers;
+	}
+	public void setPraisers(String praisers) {
+		this.praisers = praisers;
+	}
+	public LessonConnotationVO getConnotation() {
 		return connotation;
 	}
-	public void setConnotation(Connotation connotation) {
+	public void setConnotation(LessonConnotationVO connotation) {
 		this.connotation = connotation;
 	}
 

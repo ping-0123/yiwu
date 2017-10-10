@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
-import com.yinzhiwu.yiwu.entity.yzw.Connotation;
+import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -51,7 +51,7 @@ public class LessonApiController extends BaseController {
 	@GetMapping(value = "/{id}/connotation")
 	@ResponseBody
 	@ApiOperation(value = "根据课时Id获取课时内涵信息")
-	public YiwuJson<Connotation> getConnotationById(@PathVariable(value="id") int lessonId) {
+	public YiwuJson<LessonConnotation> getConnotationById(@PathVariable(value="id") int lessonId) {
 		try {
 			LessonYzw lesson = lessonYzwService.get(lessonId);
 			if (lesson == null)
@@ -66,11 +66,11 @@ public class LessonApiController extends BaseController {
 	@GetMapping(value = "/connotation/getLastNLessonsConnotation")
 	@ResponseBody
 	@ApiOperation(value = "获取本节课前N节课的课时内涵")
-	public YiwuJson<Connotation> getLastNLessonsConnotation(
+	public YiwuJson<LessonConnotation> getLastNLessonsConnotation(
 			@ApiParam(value = "本节课的课时Id", required = true) Integer thisLessonId,
 			@ApiParam(value = "第前lastN节课, 为0表示返回本节课, 为负返回第后-lastN节课", required = true) Integer lastN) {
 		try {
-			Connotation connotation = lessonYzwService.getLastNLessonConnotation(thisLessonId, lastN);
+			LessonConnotation connotation = lessonYzwService.getLastNLessonConnotation(thisLessonId, lastN);
 			if (connotation != null)
 				return new YiwuJson<>(connotation);
 		} catch (Exception e) {

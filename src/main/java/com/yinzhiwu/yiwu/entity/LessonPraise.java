@@ -5,8 +5,10 @@ import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 
@@ -19,13 +21,12 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="yiwu_praise")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class LessonPraise extends BaseEntity {
 
-	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_lesson_id", value=ConstraintMode.NO_CONSTRAINT))
 	private LessonYzw lesson;
 	
-	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_distributer_id", value=ConstraintMode.NO_CONSTRAINT))
 	private Distributer distributer;
 	

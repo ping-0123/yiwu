@@ -6,7 +6,6 @@ import org.springframework.beans.BeanUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Converter;
-import com.yinzhiwu.yiwu.entity.yzw.Connotation;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
@@ -32,7 +31,7 @@ public class CourseVO {
 	private CourseStatus courseStatus;
 	private Integer studentCount;
 	private Integer sumLessonTimes;
-	private Connotation connotation;
+	private CourseConnotationVO connotation;
 	private boolean comming;
 	
 	public CourseVO() {
@@ -98,17 +97,22 @@ public class CourseVO {
 		}
 
 		@Override
-		protected CourseVO doBackward(CourseYzw c) {
-			CourseVO v = new CourseVO();
-			BeanUtils.copyProperties(c, v);
+		protected CourseVO doBackward(CourseYzw po) {
+			CourseVO vo = new CourseVO();
+			BeanUtils.copyProperties(po, vo);
 			LessonYzwService service = SpringUtils.getBean(LessonYzwService.class);
-			v.setComming(service.findComingLessonByCourseId(c.getId())!=null);
-			if(c.getDance() != null){
-				v.setDanceId(c.getDance().getId());
-				v.setDanceName(c.getDance().getName());}
-			v.setStoreId(c.getStore()==null?null:c.getStore().getId());
-			v.setTeacherId(c.getTeacher()==null?null:c.getTeacher().getId());
-			return v;
+			vo.setComming(service.findComingLessonByCourseId(po.getId())!=null);
+			if(po.getDance() != null){
+				vo.setDanceId(po.getDance().getId());
+				vo.setDanceName(po.getDance().getName());
+			}
+			vo.setStoreId(po.getStore()==null?null:po.getStore().getId());
+			vo.setTeacherId(po.getTeacher()==null?null:po.getTeacher().getId());
+			
+			if(po.getConnotation() !=null){
+				vo.setConnotation(CourseConnotationVO.fromPO(po.getConnotation()));
+			}
+			return vo;
 		}
 		
 	}
@@ -145,15 +149,6 @@ public class CourseVO {
 		return studentCount;
 	}
 
-	public Connotation getConnotation() {
-		return connotation;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-
 	public void setStoreId(Integer storeId) {
 		this.storeId = storeId;
 	}
@@ -174,10 +169,6 @@ public class CourseVO {
 		this.studentCount = studentCount;
 	}
 
-	public void setConnotation(Connotation connotation) {
-		this.connotation = connotation;
-	}
-
 	public String getDanceId() {
 		return danceId;
 	}
@@ -192,6 +183,18 @@ public class CourseVO {
 
 	public void setSumLessonTimes(Integer sumLessonTimes) {
 		this.sumLessonTimes = sumLessonTimes;
+	}
+
+	public CourseConnotationVO getConnotation() {
+		return connotation;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setConnotation(CourseConnotationVO connotation) {
+		this.connotation = connotation;
 	}
 
 }

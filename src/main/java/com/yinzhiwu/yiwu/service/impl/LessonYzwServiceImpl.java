@@ -15,9 +15,9 @@ import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.StoreManCallRollYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
-import com.yinzhiwu.yiwu.entity.yzw.Connotation;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.model.DailyLessonsDto;
@@ -69,7 +69,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	}
 
 	@Override
-	public Connotation getLastNLessonConnotation(int thisLessonId, int lastN) throws Exception {
+	public LessonConnotation getLastNLessonConnotation(int thisLessonId, int lastN) throws Exception {
 		LessonYzw thislesson = lessonDao.get(thisLessonId);
 		LessonYzw lesson = lessonDao.findLastNLesson(thislesson, lastN);
 		if (lesson != null)
@@ -222,4 +222,15 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		return lessonDao.findByCourseIdAndStartDateTime(courseId, start,end);
 	}
 
+	
+	@Override
+	public  void setConnatationUrls(LessonConnotation con){
+		Assert.notNull(con);
+		
+		con.setAudioUri(fileService.getFileUrl(con.getAudioUri()));
+		con.setPictureUri(fileService.getFileUrl(con.getPictureUri()));
+		con.setVideoUri(fileService.getFileUrl(con.getVideoUri()));
+		con.setPracticalVideoUri(fileService.getFileUrl(con.getPracticalVideoUri()));
+		con.setPuzzleVideoUri(fileService.getFileUrl(con.getPuzzleVideoUri()));
+	}
 }
