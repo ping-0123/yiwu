@@ -13,6 +13,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.LessonAppraiseVO;
 import com.yinzhiwu.yiwu.service.LessonAppraiseService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 /**
@@ -23,12 +24,13 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value="/api/appraises")
+@Api(value="Lesson Appraise", tags={"CLOSED"})
 public class LessonAppraiseController extends BaseController {
 	
 	@Autowired LessonAppraiseService laService;
 	
 	@PostMapping
-	@ApiOperation(value="评论课程")
+	@ApiOperation(value="评论课时")
 	public YiwuJson<?> doPost(@Valid LessonAppraiseVO appraiseVO, BindingResult result){
 		if(result.hasErrors()){
 			YiwuJson.createByErrorMessage(getErrorsMessage(result));

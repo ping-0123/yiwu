@@ -3,7 +3,6 @@ package com.yinzhiwu.yiwu.model.view;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.springframework.beans.BeanUtils;
 
@@ -35,7 +34,7 @@ public class LessonAppraiseVO {
 	@ApiModelProperty(value="评论的类型",allowableValues="{FIRST,APPEND,REPLY}")
 	private AppraiseType type;
 	@ApiModelProperty(value="评论星级", allowableValues="{range[1,5]}")
-	@Size(min=1, max=5)
+	
 	private Integer stars;
 	@NotNull
 	@ApiModelProperty(value="评论的内容")
