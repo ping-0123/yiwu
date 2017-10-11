@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value="/api/appraises")
-@Api(value="Lesson Appraise", tags={"CLOSED"})
+@Api(value="Lesson Appraise 课程评论模块", tags={"CLOSED"})
 public class LessonAppraiseController extends BaseController {
 	
 	@Autowired LessonAppraiseService laService;

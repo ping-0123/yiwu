@@ -626,6 +626,8 @@ public class CourseYzw extends BaseYzwEntity {
 		
 		OPEN_A(1,"开放式A", CourseType.OPENED),
 		OPEN_B(2,"开放式B", CourseType.OPENED),
+		OPEN_CJ(5,"少儿集训初级",CourseType.OPENED),
+		OPEN_ZJ(6,"少儿集训中级",CourseType.OPENED),
 		CLOSED(3,"封闭式", CourseType.CLOSED),
 		PRIVATE(4,"私教课", CourseType.PRIVATE);
 		

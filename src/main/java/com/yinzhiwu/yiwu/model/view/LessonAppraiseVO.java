@@ -46,7 +46,7 @@ public class LessonAppraiseVO {
 	@ApiModelProperty(value="被回复的评论的评论者姓名")
 	private String repliedCommenterName;
 	
-	public static LessonAppraiseVO fromVO(LessonAppraise po){
+	public static LessonAppraiseVO fromPO(LessonAppraise po){
 		return VOConverter.instance.reverse().convert(po);
 	}
 	

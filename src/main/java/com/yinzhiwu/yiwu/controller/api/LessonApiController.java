@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.controller.api;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,14 +15,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
+import com.yinzhiwu.yiwu.entity.LessonAppraise;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
+import com.yinzhiwu.yiwu.model.view.LessonAppraiseVO;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -34,17 +38,18 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin(value="*")
 @RestController
 @RequestMapping(value = "api/lesson")
+@Api(value="lesson 课时模块")
 public class LessonApiController extends BaseController {
 
 	@Autowired
-	private LessonYzwService lessonYzwService;
+	private LessonYzwService lessonService;
 
 
 	@RequestMapping(value = "/{id}", method = { RequestMethod.GET })
 	@ResponseBody
 	public LessonYzw getLesson2(@PathVariable String id) {
 		int intId = Integer.parseInt(id);
-		return lessonYzwService.get(intId);
+		return lessonService.get(intId);
 	}
 
 	
@@ -53,7 +58,7 @@ public class LessonApiController extends BaseController {
 	@ApiOperation(value = "根据课时Id获取课时内涵信息")
 	public YiwuJson<LessonConnotation> getConnotationById(@PathVariable(value="id") int lessonId) {
 		try {
-			LessonYzw lesson = lessonYzwService.get(lessonId);
+			LessonYzw lesson = lessonService.get(lessonId);
 			if (lesson == null)
 				throw new Exception("未能找到lesson id为 " + lessonId + "的课时");
 			return YiwuJson.createBySuccess(lesson.getConnotation());
@@ -63,6 +68,26 @@ public class LessonApiController extends BaseController {
 		}
 	}
 
+	@GetMapping(value="/{id}/appraises")
+	@ResponseBody
+	@ApiOperation(value="获取对课时的评论")
+	public YiwuJson<List<LessonAppraiseVO>> getAppraises(@PathVariable(value="id") Integer id){
+		
+		try {
+			LessonYzw lesson = lessonService.get(id);
+			List<LessonAppraise> appraises = lesson.getAppraises();
+			List<LessonAppraiseVO> vos = new ArrayList<>();
+			for (LessonAppraise appraise : appraises) {
+				vos.add(LessonAppraiseVO.fromPO(appraise));
+			}
+			
+			return YiwuJson.createBySuccess(vos);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
+	}
+	
 	@GetMapping(value = "/connotation/getLastNLessonsConnotation")
 	@ResponseBody
 	@ApiOperation(value = "获取本节课前N节课的课时内涵")
@@ -70,7 +95,7 @@ public class LessonApiController extends BaseController {
 			@ApiParam(value = "本节课的课时Id", required = true) Integer thisLessonId,
 			@ApiParam(value = "第前lastN节课, 为0表示返回本节课, 为负返回第后-lastN节课", required = true) Integer lastN) {
 		try {
-			LessonConnotation connotation = lessonYzwService.getLastNLessonConnotation(thisLessonId, lastN);
+			LessonConnotation connotation = lessonService.getLastNLessonConnotation(thisLessonId, lastN);
 			if (connotation != null)
 				return new YiwuJson<>(connotation);
 		} catch (Exception e) {
@@ -89,7 +114,7 @@ public class LessonApiController extends BaseController {
 		if (date == null) {
 			date = new Date();
 		}
-		return lessonYzwService.findLessonWeekList(storeId, courseType, teacherName, danceCatagory, date, weChat);
+		return lessonService.findLessonWeekList(storeId, courseType, teacherName, danceCatagory, date, weChat);
 	}
 
 
@@ -100,7 +125,7 @@ public class LessonApiController extends BaseController {
 	{
 		if(courseId == null || "".equals(courseId))
 			return YiwuJson.createByErrorMessage("请传入正确的courseId");
-		return lessonYzwService.findByCourseId(courseId);
+		return lessonService.findByCourseId(courseId);
 	}
 
 	@ResponseBody
@@ -109,7 +134,7 @@ public class LessonApiController extends BaseController {
 	public YiwuJson<List<LessonApiView>> findApiViewByCourseId(
 			@ApiParam(value = "课程Id", required = true) String courseId) {
 		try {
-			List<LessonApiView> views = lessonYzwService.findApiViewByCourseId(courseId);
+			List<LessonApiView> views = lessonService.findApiViewByCourseId(courseId);
 			return new YiwuJson<>(views);
 		} catch (Exception e) {
 			logger.error(e);
@@ -122,7 +147,7 @@ public class LessonApiController extends BaseController {
 	@ApiOperation("根据会籍合约获取私教课课程列表")
 	public YiwuJson<List<PrivateLessonApiView>> findByContractNo(String contractNo)
 	{
-		return lessonYzwService.findPrivateLessonApiViewsByContracNo(contractNo);
+		return lessonService.findPrivateLessonApiViewsByContracNo(contractNo);
 	}
 	
 	
@@ -139,7 +164,7 @@ public class LessonApiController extends BaseController {
 	{
 		if(date == null)
 			date = new Date();
-		return lessonYzwService.findPageOfClosedLessonApiViewByStoreIdAndLessonDate(storeId, date, pageNo, pageSize);
+		return lessonService.findPageOfClosedLessonApiViewByStoreIdAndLessonDate(storeId, date, pageNo, pageSize);
 	}
 	
 }
