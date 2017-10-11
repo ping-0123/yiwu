@@ -662,6 +662,10 @@ public class CourseYzw extends BaseYzwEntity {
 				return SubCourseType.CLOSED;
 			case 4:
 				return SubCourseType.PRIVATE;
+			case 5:
+				return SubCourseType.OPEN_CJ;
+			case 6:
+				return SubCourseType.OPEN_ZJ;
 			default:
 				throw new UnsupportedOperationException(id + "is not supported from enum SubCourseType");
 			}
@@ -677,6 +681,10 @@ public class CourseYzw extends BaseYzwEntity {
 				return SubCourseType.OPEN_B;
 			case "私教课":
 				return SubCourseType.PRIVATE;
+			case "少儿集训初级":
+				return SubCourseType.OPEN_CJ;
+			case "少儿集训中级":
+				return SubCourseType.OPEN_ZJ;
 			default:
 				throw new UnsupportedOperationException(
 						name + "is not supported from enum SubCourseType");
