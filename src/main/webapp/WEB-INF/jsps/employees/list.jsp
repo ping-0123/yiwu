@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="ping" uri="http://yinzhiwu.com/yiwu/tags/ping"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +24,7 @@
 <link href="../../assets/datatable-plugins/Select-1.2.3/css/select.bootstrap.min.css" rel="stylesheet">
 <!-- bootstrap dialog -->
 <link href="${pageContext.request.contextPath}/backend/css/bootstrap-dialog.min.css" rel="stylesheet">
+<link href="../../assets/dropzone/min/dropzone.min.css" rel="stylesheet">
 <!-- Custom Theme Style -->
 <link href="${pageContext.request.contextPath}/backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
@@ -66,7 +67,9 @@
 						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" width="100%">
 
 						</table>
+
 					</div>
+
 				</div>
 			</div>
 
@@ -81,6 +84,7 @@
 	<div class="modal fade bs-example-modal-lg modal-create" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-md">
 			<div class="modal-content"></div>
+
 		</div>
 	</div>
 
@@ -89,7 +93,9 @@
 	<!-- update modal -->
 	<div class="modal fade bs-example-modal-lg modal-update" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-md">
-			<div class="modal-content"></div>
+			<div class="modal-content">
+				
+			</div>
 		</div>
 	</div>
 	<!-- /update modal -->
@@ -108,8 +114,7 @@
 				<!-- modal body -->
 				<div class="modal-body">
 					<shiro:hasPermission name="employees:update:*">
-						<button id="btn-create-post" data-remote="#" type="button" class="btn btn-primary" data-toggle="modal"
-							data-target=".modal-create-post">
+						<button id="btn-create-post" data-remote="#" type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal-create-post">
 							<span class="glyphicon glyphicon-plus" aria-hidden="false"></span> 新增
 						</button>
 					</shiro:hasPermission>
@@ -120,7 +125,7 @@
 					</div>
 
 					<div>
-						<br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /><br /> <br />
+						<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
 					</div>
 				</div>
 
@@ -153,6 +158,7 @@
 
 	<!-- validator -->
 	<script src="${pageContext.request.contextPath}/backend/vendors/validator/validator.js"></script>
+	<script src="../../assets/dropzone/min/dropzone.min.js" type="text/javascript"></script>
 	<!-- Custom Theme Scripts -->
 	<script src="${pageContext.request.contextPath}/backend/js/custom.min.js"></script>
 
@@ -163,7 +169,7 @@
 		var setting = {
 			"processing" : false,
 			"serverSide" : true,
-			"select":true,
+			"select" : true,
 			"language" : {
 				"url" : "../../backend/config/i18n/datatable-chinese.json",
 				"searchPlaceholder" : "输入员工姓名 手机号码"
@@ -240,7 +246,7 @@
 			"serverSide" : true,
 			"searching" : false,
 			"destroy" : true,
-			"select"	:true,
+			"select" : true,
 			"dom" : "<'wrapper'f>",
 			"language" : {
 				"url" : "../../backend/config/i18n/datatable-chinese.json",
@@ -297,13 +303,15 @@
 						"render" : function(data, type, row, meta) {
 							return data ? "主职位" : "兼任";
 						}
-					},{
-						"title":"状态",
-						"data":"dataStatus",
-						"render":function(data,type,row,meta){
+					},
+					{
+						"title" : "状态",
+						"data" : "dataStatus",
+						"render" : function(data, type, row, meta) {
 							return translateDataStatus(data);
 						}
-					},{
+					},
+					{
 						"data" : "createTime",
 						"title" : "操作",
 						"render" : function(data, type, row, meta) {
@@ -328,15 +336,16 @@
 		function showEmployeePosts(empId) {
 			postSetting.ajax.url = "./" + empId + "/posts/datatable";
 			postDatatable = $("#postsDatatable").DataTable(postSetting);
-			$("#btn-create-post").attr("data-remote","./" + empId + "/posts/createForm");
+			$("#btn-create-post").attr("data-remote",
+					"./" + empId + "/posts/createForm");
 		}
-		
-		function doDeleteEmployeePost(epId){
+
+		function doDeleteEmployeePost(epId) {
 			var url = "../employeePosts/" + epId;
-			showDeleteModal(url,refreshPostDatatable);
+			showDeleteModal(url, refreshPostDatatable);
 		}
-		
-		function refreshPostDatatable(){
+
+		function refreshPostDatatable() {
 			postDatatable.draw();
 		}
 	</script>

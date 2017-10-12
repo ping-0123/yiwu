@@ -5,7 +5,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>post edition</title>
-
 <!-- Bootstrap -->
 </head>
 <body>
@@ -27,16 +26,16 @@
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">姓名 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<input name="name"  value="${employee.name}" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
+					<input name="name" value="${employee.name}" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
 				</div>
 			</div>
-			
+
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">性别 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<select name="gender"  class="form-control">
-							<option value="MALE" <c:if test="${employee.gender eq 'MALE' }"> selected="selected"</c:if> >男</option>
-							<option value="FEMALE" <c:if test="${employee.gender eq 'FEMALE' }"> selected="selected"</c:if>>女</option>
+					<select name="gender" class="form-control">
+						<option value="MALE" <c:if test="${employee.gender eq 'MALE' }"> selected="selected"</c:if>>男</option>
+						<option value="FEMALE" <c:if test="${employee.gender eq 'FEMALE' }"> selected="selected"</c:if>>女</option>
 					</select>
 				</div>
 			</div>
@@ -44,47 +43,83 @@
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">手机号码 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<!--  <input type="text" class="form-control" placeholder="设置之后不可修改"  name="name" value="${post.name }"> -->
-					<input  name="cellphone" value="${employee.cellphone}" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2"  required="required" type="text">
+					<input name="cellphone" value="${employee.cellphone}" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
 				</div>
 			</div>
 
 
-			
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">邮箱 </label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<input class="form-control" rows="3" name="email" value="${employee.email }"/>
+					<input class="form-control" rows="3" name="email" value="${employee.email }" />
+				</div>
+			</div>
+			
+			
+			<div class="form-group">
+				<input type="hidden" name="portraitUri" id="portraitUri" value="${employee.portraitUri}">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">头像  </label>
+				<div class="col-md-9 col-sm-9 col-xs-12 dropzone" id="myDropzone">
+					<div class="am-text-success dz-message">
+						将图片拖拽到此处<br>或点此打开文件管理器选择图片
+					</div>
 				</div>
 			</div>
 
 			<div class="ln_solid"></div>
 			<div class="form-group">
-				<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-					<button type="submit"  class="btn btn-success">提交</button>
+				<div class="col-md-9 col-sm-9 col-xs-9 col-md-offset-3">
+					<button type="submit" class="btn btn-success">提交</button>
 				</div>
 			</div>
-
 		</form>
+
 	</div>
+
+		
 	<!-- /modal body -->
 
 	<script type="text/javascript">
-		$('#form-update').submit(function(){
+		$("#form-update").submit(function(){
 			$.ajax({
-				url: $(this).attr("action"),
-				type: $(this).attr("method"),
-				data: $(this).serialize(),
-				success:function(data){
-					if(data.result){
+				"url" : $(this).attr("action"),
+				type : $(this).attr("method"),
+				data : $(this).serialize(),
+				success :
+				function(data) {
+					if (data.result) {
 						$('.modal-update').modal('hide');
 						TABLE.draw();
-					}else
-						showUpdateFailureModal(data.msg);
+					} else showUpdateFailureModal(data.msg);
 				}
 			});
 			return false;
 		});
+		
+		Dropzone.autoDiscover=false;
+		var myDropzone=new Dropzone("#myDropzone", {
+	        url: "http://localhost:9090/yiwu/api/file",
+	        addRemoveLinks:true,
+	        dictRemoveLinks:"x",
+	        dictRemoveFile:"移除",
+	        dictMaxFilesExceeded:"最多只能上传一个文件",
+	        method: 'post',
+	        maxFiles:1,
+	        filesizeBase: 1024,
+	        sending:function(file, xhr, formData) {
+	            formData.append("filesize", file.size);
+	        },
+	        success:function (file, response, e) {
+	        	$("#portraitUri").val(response.url);
+	           	if (response.error) {
+	                $(file.previewTemplate).children('.dz-error-mark').css('opacity', '1');
+	            }
+	        }
+	    });
+	    var mockFile = {};
+	    myDropzone.emit("addedfile", mockFile);
+	    myDropzone.emit("thumbnail", mockFile, "http://localhost:8080/resources/images/${employee.portraitUri}");
+	    myDropzone.emit("complete", mockFile);
 	</script>
 </body>
 </html>
