@@ -52,12 +52,6 @@
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
 						</shiro:hasPermission>
-						<shiro:hasPermission name="employees:update:*">
-							<input type="hidden" id="updatePermission" value="true" />
-						</shiro:hasPermission>
-						<shiro:hasPermission name="employees:delete:*">
-							<input type="hidden" id="deletePermission" value="true" />
-						</shiro:hasPermission>
 
 						<ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"> <i class="fa fa-chevron-up"></i></a></li>
