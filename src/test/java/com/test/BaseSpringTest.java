@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:applicationContext.xml"})
 @Transactional(value = "transactionManager")
-public abstract class BaseTest {
+public abstract class BaseSpringTest {
 //public abstract class TestBase extends AbstractTransactionalJUnit4SpringContextTests {
 	protected  Log logger = LogFactory.getLog(getClass());
 }

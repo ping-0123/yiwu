@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.test.BaseTest;
+import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.entity.sys.Resource;
 import com.yinzhiwu.yiwu.entity.sys.Resource.ResourceType;
 import com.yinzhiwu.yiwu.service.ResourceService;
@@ -19,7 +19,7 @@ import com.yinzhiwu.yiwu.service.ResourceService;
 *
 */
 
-public class ResourceServiceTest extends BaseTest  {
+public class ResourceServiceTest extends BaseSpringTest  {
 	
 	@Autowired private ResourceService resourceService;
 	

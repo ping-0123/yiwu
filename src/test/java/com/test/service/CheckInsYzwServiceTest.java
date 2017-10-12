@@ -2,7 +2,7 @@ package com.test.service;
 
 import org.junit.Test;
 
-import com.test.BaseTest;
+import com.test.BaseSpringTest;
 
 /**
 *@Author ping
@@ -10,7 +10,7 @@ import com.test.BaseTest;
 *
 */
 
-public class CheckInsYzwServiceTest extends BaseTest{
+public class CheckInsYzwServiceTest extends BaseSpringTest{
 
 	@Test
 	public void test(){

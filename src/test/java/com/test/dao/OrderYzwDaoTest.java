@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.test.BaseTest;
+import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
@@ -23,7 +23,7 @@ import com.yinzhiwu.yiwu.util.ReflectUtils;
 *
 */
 
-public class OrderYzwDaoTest  extends BaseTest{
+public class OrderYzwDaoTest  extends BaseSpringTest{
 
 	@Autowired
 	private OrderYzwDao orderYzwDao;

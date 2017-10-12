@@ -3,7 +3,7 @@ package com.test.service;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.test.BaseTest;
+import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.service.DistributerService;
 
@@ -13,7 +13,7 @@ import com.yinzhiwu.yiwu.service.DistributerService;
 *
 */
 
-public class DistributerServiceTest extends BaseTest {
+public class DistributerServiceTest extends BaseSpringTest {
 	
 	@Autowired private DistributerService distributerService;
 	

@@ -2,7 +2,7 @@ package com.test.util;
 
 import org.junit.Test;
 
-import com.test.BaseTest;
+import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.service.UserService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 
@@ -12,7 +12,7 @@ import com.yinzhiwu.yiwu.util.SpringUtils;
 *
 */
 
-public class SpringUtilsTest  extends BaseTest{
+public class SpringUtilsTest  extends BaseSpringTest{
 	
 	@Test
 	public void test(){

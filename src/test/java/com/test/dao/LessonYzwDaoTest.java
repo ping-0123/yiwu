@@ -3,7 +3,7 @@ package com.test.dao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.test.BaseTest;
+import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 
 /**
@@ -12,7 +12,7 @@ import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 *
 */
 
-public class LessonYzwDaoTest extends BaseTest {
+public class LessonYzwDaoTest extends BaseSpringTest {
 	
 	@Autowired private LessonYzwDao lessonYzwDao;
 	

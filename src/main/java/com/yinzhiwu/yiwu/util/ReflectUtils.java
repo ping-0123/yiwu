@@ -48,22 +48,86 @@ public final class ReflectUtils {
 		return null;
 	}
 	
-	public static Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException,SecurityException{
-		if(clazz==null || !StringUtils.hasText(fieldName)) 
-			throw new IllegalArgumentException("clazz and fieldName can not be null");
+	public static Field getField(Class<?> clazz, String fieldName) 
+			throws NoSuchFieldException,SecurityException{
+		if(clazz==null || fieldName==null || "".equals(fieldName.trim())) 
+			throw new IllegalArgumentException("clazz can not be null and fieldName can not be empty");
 		try {
 			return clazz.getDeclaredField(fieldName);
 		} catch (NoSuchFieldException | SecurityException e) {
-			
-			Field[] fields = getAllFields(clazz);
-			for (Field field : fields) {
-				if(fieldName.equals(field.getName()))
-					return field;
+			Class<?> supClazz = clazz.getSuperclass();
+			if(supClazz!=null){
+				return getField(supClazz,fieldName);
 			}
+//			Field[] fields = getAllFields(clazz);
+//			for (Field field : fields) {
+//				if(fieldName.equals(field.getName()))
+//					return field;
+//			}
 			
 			throw e;
 		}
 		
+	}
+	
+	public static Object getFieldValue(Object object, String fieldName) 
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+		if(object==null)
+			throw new IllegalArgumentException();
+		if(fieldName==null || "".equals(fieldName.trim()))
+			return null;
+		
+		if(fieldName.contains(".")){
+			int position = fieldName.indexOf(".");
+			String preFieldName = fieldName.substring(0,position);
+			String suffixFieldName= fieldName.substring(position + 1);
+			Field preField = getField(object.getClass(), preFieldName);
+			preField.setAccessible(true);
+			Object preObject = preField.get(object);
+			return getFieldValue(preObject, suffixFieldName);
+		}else {
+			Field field = getField(object.getClass(), fieldName);
+			field.setAccessible(true);
+			return field.get(object);
+		}
+		
+	}
+	
+	
+	/**
+	 * 当 fieldName 包含"."时 使用该方法设置field的值,如果object中包含申明类型为接口的属性， 先实例化该属性， 否则会抛出  InstantiationException
+	 * @param object
+	 * @param fieldName
+	 * @param value
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws InstantiationException
+	 */
+	public static void setFieldValue(Object object , String fieldName, Object value) 
+			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, InstantiationException{
+		if(object==null)
+			throw new IllegalArgumentException();
+		if(fieldName==null || "".equals(fieldName.trim()))
+			return ;
+		if(fieldName.contains(".")){
+			int position = fieldName.indexOf(".");
+			String preFieldName = fieldName.substring(0, position);
+			String suffixFieldName = fieldName.substring(position + 1);
+			Field preField = getField(object.getClass(), preFieldName);
+			Object preFieldValue = getFieldValue(object, preFieldName);
+			if (preFieldValue == null){
+				preFieldValue = preField.getClass().newInstance();
+				preField.setAccessible(true);
+				preField.set(object, preFieldValue);
+			}
+			setFieldValue(preFieldValue, suffixFieldName, value);
+		}else {
+			Field field = getField(object.getClass(), fieldName);
+			field.equals(true);
+			field.set(object, value);
+		}
 	}
 	
 	public static Class<?> getFieldClass(Class<?> clazz, String fieldName) throws NoSuchFieldException, SecurityException{

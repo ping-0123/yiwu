@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
-import com.test.BaseTest;
+import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -19,7 +19,7 @@ import com.yinzhiwu.yiwu.service.OrderYzwService;
 */
 
 
-public class OrderYzwServiceTest  extends BaseTest{
+public class OrderYzwServiceTest  extends BaseSpringTest{
 	
 	@Autowired private OrderYzwService orderService;
 	@Autowired private DistributerService distributerService;

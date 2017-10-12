@@ -3,7 +3,7 @@ package com.test.service;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
-import com.test.BaseTest;
+import com.test.BaseSpringTest;
 
 /**
 *@Author ping
@@ -11,7 +11,7 @@ import com.test.BaseTest;
 *
 */
 
-public class RoleServiceTest extends BaseTest {
+public class RoleServiceTest extends BaseSpringTest {
 
 	
 	@Test

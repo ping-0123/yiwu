@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
-import com.test.BaseTest;
+import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.service.UserService;
 
@@ -16,7 +16,7 @@ import com.yinzhiwu.yiwu.service.UserService;
 *
 */
 
-public class UserServiceTest extends BaseTest{
+public class UserServiceTest extends BaseSpringTest{
 
 	@Autowired private UserService userService;
 	

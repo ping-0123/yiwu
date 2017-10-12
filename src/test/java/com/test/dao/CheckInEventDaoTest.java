@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.test.BaseTest;
+import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.dao.CheckInEventDao;
 import com.yinzhiwu.yiwu.model.view.CheckInSuccessApiView;
 import com.yinzhiwu.yiwu.util.ReflectUtils;
@@ -16,7 +16,7 @@ import com.yinzhiwu.yiwu.util.ReflectUtils;
 *
 */
 
-public class CheckInEventDaoTest extends BaseTest{
+public class CheckInEventDaoTest extends BaseSpringTest{
 	
 	@Autowired private CheckInEventDao checkInEventDao;
 	
