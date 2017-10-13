@@ -11,6 +11,8 @@ import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.util.convert.annotation.BeanClass;
+import com.yinzhiwu.yiwu.util.convert.annotation.BeanProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,34 +23,65 @@ import io.swagger.annotations.ApiModelProperty;
 *
 */
 
+@BeanClass(LessonYzw.class)
 @ApiModel(description="课时VO")
 public class LessonVO {
 	
+	@BeanProperty
 	private Integer id;
+	
+	@BeanProperty
 	private String name;
+	
+	@BeanProperty("course.id")
 	private String courseId;
+	
+	@BeanProperty
 	@ApiModelProperty(value="课时的序号， 即第几节课")
 	private Integer ordinalNo;
+	
+	@BeanProperty("lessonDate")
 	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
 	@ApiModelProperty(value="课时的上课日期")
 	private Date lessonDate;
+	
+	@BeanProperty
 	@ApiModelProperty(value="课时的开始时间")
 	private Time startTime;
+	
+	@BeanProperty
 	@ApiModelProperty(value="课时的结束时间")
 	private Time endTime;
+	
+	@BeanProperty("store.id")
 	private Integer storeId;
+	
+	@BeanProperty("store.name")
 	@ApiModelProperty(value="上课所在门店名")
 	private String storeName;
+	
+	@BeanProperty(value="store.officialAddress.detailAddress", inverse=false)
 	@ApiModelProperty(value="上课所在门店地址")
 	private String storeAddress;
+	
+	@BeanProperty("dueTeacher.id")
 	private Integer dueTeacherId;
+	
+	@BeanProperty("dueTeacher.name")
 	@ApiModelProperty(value="排课上课老师姓名")
 	private String dueTeacherName;
+	
+	@BeanProperty("actualTeacher.id")
 	private Integer actualTeacherId;
+	
+	@BeanProperty("actualTeacher.name")
 	@ApiModelProperty(value="实际上课老师姓名")
 	private String actualTeacherName;
+	
+	@BeanProperty
 	@ApiModelProperty(value="课时内容信息")
 	private LessonConnotationVO connotation;
+	
 	@ApiModelProperty(value="所有点赞人姓名，以逗号分隔")
 	private String praisers;
 	

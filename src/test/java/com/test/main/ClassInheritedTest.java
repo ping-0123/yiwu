@@ -12,7 +12,7 @@ public class ClassInheritedTest extends BaseBlockJUnitTest{
 	public void testClassInherited(){
 		Class<?> a = BaseDaoImpl.class;
 		Class<?> b = OrderYzwDaoImpl.class;
-		if(b.isAssignableFrom(a))
+		if(a.isAssignableFrom(b))
 			logger.info("a 是  b 的父类");
 		else
 			logger.info("a 不是  b 的父类");

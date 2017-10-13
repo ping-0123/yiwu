@@ -1,6 +1,8 @@
 package com.yinzhiwu.yiwu.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -18,7 +20,6 @@ import org.springframework.util.StringUtils;
 
 public final class ReflectUtils {
 
-	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(ReflectUtils.class);
 	
 	/**
@@ -70,28 +71,70 @@ public final class ReflectUtils {
 		
 	}
 	
+	
+	public static Field getNestedField(Class<?> clazz, String fieldName){
+		if(clazz==null || fieldName==null || "".equals(fieldName.trim())) 
+			throw new IllegalArgumentException("clazz can not be null and fieldName can not be empty");
+		
+		
+		return null;
+	}
+	
+	
+	/**
+	 * 
+	 * @param object
+	 * @param fieldName
+	 * @return 如果fieldName为空，返回null
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 */
 	public static Object getFieldValue(Object object, String fieldName) 
-			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+	{
 		if(object==null)
 			throw new IllegalArgumentException();
 		if(fieldName==null || "".equals(fieldName.trim()))
 			return null;
 		
-		if(fieldName.contains(".")){
-			int position = fieldName.indexOf(".");
-			String preFieldName = fieldName.substring(0,position);
-			String suffixFieldName= fieldName.substring(position + 1);
-			Field preField = getField(object.getClass(), preFieldName);
-			preField.setAccessible(true);
-			Object preObject = preField.get(object);
-			return getFieldValue(preObject, suffixFieldName);
-		}else {
-			Field field = getField(object.getClass(), fieldName);
-			field.setAccessible(true);
-			return field.get(object);
+		try{
+			if(fieldName.contains(".")){
+				int position = fieldName.indexOf(".");
+				String preFieldName = fieldName.substring(0,position);
+				String suffixFieldName= fieldName.substring(position + 1);
+				Field preField = getField(object.getClass(), preFieldName);
+				preField.setAccessible(true);
+				/*满足 hibernate 延迟加载*/
+				Object preObject = getFieldValue(object,preFieldName);
+				if(preObject==null) return null;
+				return getFieldValue(preObject, suffixFieldName);
+			}else {
+				/**
+				 * 通过Method获取值, 已满足hibernate session延迟加载
+				 */
+				StringBuilder methodName=new StringBuilder().append("get");
+				methodName.append(fieldName.substring(0,1).toUpperCase());
+				methodName.append(fieldName.substring(1));
+				Method method = object.getClass().getMethod(methodName.toString());
+				return method.invoke(object);
+				/**
+				 * 通过Field获取值
+				 *
+				Field field = getField(object.getClass(), fieldName);
+				field.setAccessible(true);
+				return field.get(object);
+				*/
+			}
+		}catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+			logger.error(e.getMessage(),e);
+			return null;
 		}
 		
 	}
+	
 	
 	
 	/**
@@ -104,12 +147,14 @@ public final class ReflectUtils {
 	 * @throws NoSuchFieldException
 	 * @throws SecurityException
 	 * @throws InstantiationException
+	 * @throws InvocationTargetException 
+	 * @throws NoSuchMethodException 
 	 */
 	public static void setFieldValue(Object object , String fieldName, Object value) 
-			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, InstantiationException{
+			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, InstantiationException, NoSuchMethodException, InvocationTargetException{
 		if(object==null)
 			throw new IllegalArgumentException();
-		if(fieldName==null || "".equals(fieldName.trim()))
+		if(value==null || fieldName==null || "".equals(fieldName.trim()))
 			return ;
 		if(fieldName.contains(".")){
 			int position = fieldName.indexOf(".");
@@ -118,14 +163,14 @@ public final class ReflectUtils {
 			Field preField = getField(object.getClass(), preFieldName);
 			Object preFieldValue = getFieldValue(object, preFieldName);
 			if (preFieldValue == null){
-				preFieldValue = preField.getClass().newInstance();
+				preFieldValue = ((Class<?>)preField.getGenericType()).newInstance();
 				preField.setAccessible(true);
 				preField.set(object, preFieldValue);
 			}
 			setFieldValue(preFieldValue, suffixFieldName, value);
 		}else {
 			Field field = getField(object.getClass(), fieldName);
-			field.equals(true);
+			field.setAccessible(true);
 			field.set(object, value);
 		}
 	}

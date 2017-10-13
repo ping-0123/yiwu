@@ -6,6 +6,8 @@ import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.service.impl.FileService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
+import com.yinzhiwu.yiwu.util.convert.annotation.BeanClass;
+import com.yinzhiwu.yiwu.util.convert.annotation.BeanProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,28 +18,49 @@ import io.swagger.annotations.ApiModelProperty;
 *
 */
 
+@BeanClass(LessonConnotation.class)
 @ApiModel(description="课时内容")
 public class LessonConnotationVO {
 	
+	@BeanProperty
 	@ApiModelProperty(value="课时内容")
 	private String connotation;
+	
+	@BeanProperty
 	@ApiModelProperty(value="帮助信息")
 	private String helpInfomation;
+	
+	@BeanProperty
 	@ApiModelProperty(value="简介")
 	private String introduction;
+	
+	@BeanProperty(value="pictureUri")
 	@ApiModelProperty(value="图片URL")
 	private String pictureUrl;
+	
+	@BeanProperty(value="videoUri")
 	@ApiModelProperty(value="标准视频URL")
 	private String videoUrl;
+	
+	@BeanProperty
 	private String audioName;
+	
+	@BeanProperty(value="audioUri")
 	@ApiModelProperty(value="音乐URL")
 	private String audioUrl;
+	
+	@BeanProperty
 	@ApiModelProperty(value="舞蹈简介")
 	private String danceIntroduction;
+	
+	@BeanProperty(value="puzzleVideoUri")
 	@ApiModelProperty(value="疑难点解析视频URL")
 	private String puzzleVideoUrl;
+	
+	@BeanProperty("practicalVideoUri")
 	@ApiModelProperty(value="上课实际视频URL")
 	private String practicalVideoUrl;
+	
 	public String getConnotation() {
 		return connotation;
 	}

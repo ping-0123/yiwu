@@ -8,7 +8,6 @@ import java.util.List;
 import javax.persistence.AttributeConverter;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Convert;
@@ -51,7 +50,7 @@ public class LessonYzw extends BaseYzwEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "course_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private CourseYzw course;
 
@@ -67,7 +66,7 @@ public class LessonYzw extends BaseYzwEntity {
 	@Column(name = "courseDesc")
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "storeId", foreignKey = @ForeignKey(name = "fk_lesson_store_id", value = ConstraintMode.NO_CONSTRAINT))
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private DepartmentYzw store;
@@ -78,14 +77,14 @@ public class LessonYzw extends BaseYzwEntity {
 	@Column
 	private Float lessonTime;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "yindaoTeacherId", foreignKey = @ForeignKey(name = "fk_lesson_dueTeacher_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw dueTeacher;
 
 	@Column(length = 32, name = "yindaoTeacherName")
 	private String dueTeacherName;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "classRoomId", foreignKey = @ForeignKey(name = "fk_lesson_classRoom_id", value = ConstraintMode.NO_CONSTRAINT))
 	private ClassRoomYzw classRoom;
 
