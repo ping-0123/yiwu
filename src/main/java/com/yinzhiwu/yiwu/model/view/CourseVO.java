@@ -11,27 +11,74 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
+import com.yinzhiwu.yiwu.util.convert.annotation.BeanClass;
+import com.yinzhiwu.yiwu.util.convert.annotation.BeanProperty;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@BeanClass(CourseYzw.class)
+@ApiModel(description="课程VO")
 public class CourseVO {
-
+	
+	@BeanProperty
 	private String id;
+	
+	@BeanProperty
+	@ApiModelProperty("课程名")
 	private String name;
+	
+	@BeanProperty("dance.id")
+	@ApiModelProperty("舞种Id")
 	private String danceId;
+	
+	@BeanProperty("dance.name")
+	@ApiModelProperty("舞种名")
 	private String danceName;
+	
+	@BeanProperty
+	@ApiModelProperty("舞种等级")
 	private String danceGrade;
 	
+	@BeanProperty("store.id")
+	@ApiModelProperty("门店Id")
 	private Integer storeId;
+	
+	@BeanProperty("teacher.id")
+	@ApiModelProperty("教练Id")
 	private Integer teacherId;
 
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@BeanProperty
+	@ApiModelProperty("课程开始日期")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date startDate;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	
+	@BeanProperty
+	@ApiModelProperty("课程结束日期")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date endDate;
+	
+	@BeanProperty
+	@ApiModelProperty(value="课程类型", allowableValues="{PRIVATE, CLOSED,OPENED}")
 	private CourseType courseType;
+	
+	@BeanProperty
+	@ApiModelProperty(value="课程状态", allowableValues="{UN_ARRANGED,UN_CHECKED,READY}")
 	private CourseStatus courseStatus;
+	
+	@BeanProperty
+	@ApiModelProperty("上该课程的学员数量")
 	private Integer studentCount;
+	
+	@BeanProperty
+	@ApiModelProperty("总课时数")
 	private Integer sumLessonTimes;
+	
+	@BeanProperty
+	@ApiModelProperty("课程内容信息")
 	private CourseConnotationVO connotation;
+	
+	@ApiModelProperty("是否为即将上课")
 	private boolean comming;
 	
 	public CourseVO() {

@@ -6,6 +6,8 @@ import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.entity.yzw.Connotation;
 import com.yinzhiwu.yiwu.service.impl.FileService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
+import com.yinzhiwu.yiwu.util.convert.annotation.BeanClass;
+import com.yinzhiwu.yiwu.util.convert.annotation.BeanProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,24 +18,43 @@ import io.swagger.annotations.ApiModelProperty;
 *
 */
 
+@BeanClass(Connotation.class)
 @ApiModel(description="课时内容")
 public class CourseConnotationVO {
 	
+	@BeanProperty
 	@ApiModelProperty(value="课时内容")
 	private String connotation;
+	
+	@BeanProperty
 	@ApiModelProperty(value="帮助信息")
 	private String helpInfomation;
+	
+	@BeanProperty
 	@ApiModelProperty(value="简介")
 	private String introduction;
+	
+	@BeanProperty("pictureUri")
 	@ApiModelProperty(value="图片URL")
 	private String pictureUrl;
+	
+	@BeanProperty("videoUri")
 	@ApiModelProperty(value="标准视频URL")
 	private String videoUrl;
+	
+	@BeanProperty
+	@ApiModelProperty("音乐名称")
 	private String audioName;
+	
+	@BeanProperty("audioUri")
 	@ApiModelProperty(value="音乐URL")
 	private String audioUrl;
+	
+	@BeanProperty
 	@ApiModelProperty(value="舞蹈简介")
 	private String danceIntroduction;
+	
+	
 	public String getConnotation() {
 		return connotation;
 	}

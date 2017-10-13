@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.test.BaseSpringTest;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.view.CoachVO;
+import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.LessonVO;
+import com.yinzhiwu.yiwu.service.CourseYzwService;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 import com.yinzhiwu.yiwu.util.convert.BeanUtils;
@@ -27,6 +30,7 @@ public class BeanClassTest extends BaseSpringTest{
 
 	@Autowired private EmployeeYzwService empService;
 	@Autowired private LessonYzwService lessonService;
+	@Autowired private CourseYzwService courseService;
 	
 	
 	@Test
@@ -61,6 +65,27 @@ public class BeanClassTest extends BaseSpringTest{
 			System.err.println("lesson is " + new Gson().toJson(lesson2));
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException
 				| InstantiationException | ConvertException | NoSuchMethodException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Test
+	public void testCourseVO(){
+		String courseId = "20170905004";
+		CourseYzw course = courseService.get(courseId);
+		CourseVO courseVO = new CourseVO();
+		CourseYzw course2 = new CourseYzw();
+		
+		try {
+			BeanUtils.copyProperties(course, courseVO);
+			System.err.println("courseVO is " + new Gson().toJson(courseVO));
+			System.out.println();
+			BeanUtils.copyProperties(courseVO, course2);
+			System.err.println("course2 is "  + new Gson().toJson(course2));
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException | InstantiationException | NoSuchMethodException | InvocationTargetException
+				| ConvertException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

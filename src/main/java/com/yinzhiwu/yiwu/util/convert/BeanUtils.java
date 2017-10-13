@@ -42,26 +42,26 @@ public class BeanUtils {
 			Field[] targetFields = ReflectUtils.getAllFields(target.getClass());
 			for (Field field : targetFields) {
 				BeanProperty beanProperty = field.getDeclaredAnnotation(BeanProperty.class);
-				if(beanProperty!=null){
-					String mapedFieldName=("".equals(beanProperty.value()))?field.getName():beanProperty.value();
-					Object mapedFieldValue = ReflectUtils.getFieldValue(source,mapedFieldName);
-					if(mapedFieldValue == null ) 
-						continue;
-					Class<?> targetFieldClass =(Class<?>) field.getGenericType();
-					BeanClass targetfieldClassAnnotation = targetFieldClass.getDeclaredAnnotation(BeanClass.class);
-					if(targetfieldClassAnnotation !=null){
-						/*深度复制*/
-						field.setAccessible(true);
-						Object targetFieldObject = field.get(target);
-						if(targetFieldObject == null){
-							targetFieldObject = targetFieldClass.newInstance();
-							field.set(target, targetFieldObject);
-						}
-						copyProperties(mapedFieldValue, targetFieldObject);
-					}else{
-						field.setAccessible(true);
-						field.set(target, mapedFieldValue);
+				if(beanProperty == null) continue;
+				
+				String mapedFieldName=("".equals(beanProperty.value()))?field.getName():beanProperty.value();
+				Object mapedFieldValue = ReflectUtils.getFieldValue(source,mapedFieldName);
+				if(mapedFieldValue == null ) 
+					continue;
+				Class<?> targetFieldClass =(Class<?>) field.getGenericType();
+				BeanClass targetfieldClassAnnotation = targetFieldClass.getDeclaredAnnotation(BeanClass.class);
+				if(targetfieldClassAnnotation !=null){
+					/*深度复制*/
+					field.setAccessible(true);
+					Object targetFieldObject = field.get(target);
+					if(targetFieldObject == null){
+						targetFieldObject = targetFieldClass.newInstance();
+						field.set(target, targetFieldObject);
 					}
+					copyProperties(mapedFieldValue, targetFieldObject);
+				}else{
+					field.setAccessible(true);
+					field.set(target, mapedFieldValue);
 				}
 			}
 			return ;
