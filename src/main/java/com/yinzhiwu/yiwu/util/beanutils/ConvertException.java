@@ -1,4 +1,4 @@
-package com.yinzhiwu.yiwu.util.convert;
+package com.yinzhiwu.yiwu.util.beanutils;
 
 @SuppressWarnings("serial")
 public class ConvertException extends Exception{

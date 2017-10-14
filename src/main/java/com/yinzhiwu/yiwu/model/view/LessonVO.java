@@ -11,8 +11,8 @@ import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.util.convert.annotation.BeanClass;
-import com.yinzhiwu.yiwu.util.convert.annotation.BeanProperty;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.BeanClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.BeanProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

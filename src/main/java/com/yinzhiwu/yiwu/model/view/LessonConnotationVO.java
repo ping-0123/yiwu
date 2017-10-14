@@ -6,8 +6,8 @@ import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.service.impl.FileService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
-import com.yinzhiwu.yiwu.util.convert.annotation.BeanClass;
-import com.yinzhiwu.yiwu.util.convert.annotation.BeanProperty;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.BeanClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.BeanProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,6 +1,8 @@
 package com.yinzhiwu.yiwu.model.view;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 
@@ -9,10 +11,11 @@ import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
-import com.yinzhiwu.yiwu.util.convert.annotation.BeanClass;
-import com.yinzhiwu.yiwu.util.convert.annotation.BeanProperty;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.BeanClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.BeanProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -74,12 +77,15 @@ public class CourseVO {
 	@ApiModelProperty("总课时数")
 	private Integer sumLessonTimes;
 	
-	@BeanProperty
+	@BeanProperty("connotation")
 	@ApiModelProperty("课程内容信息")
 	private CourseConnotationVO connotation;
 	
 	@ApiModelProperty("是否为即将上课")
 	private boolean comming;
+	
+	@BeanProperty(ignored=true)
+	List<LessonYzw> lessons = new ArrayList<>();
 	
 	public CourseVO() {
 	};
@@ -157,7 +163,7 @@ public class CourseVO {
 			vo.setTeacherId(po.getTeacher()==null?null:po.getTeacher().getId());
 			
 			if(po.getConnotation() !=null){
-				vo.setConnotation(CourseConnotationVO.fromPO(po.getConnotation()));
+//				vo.setConnotation(CourseConnotationVO.fromPO(po.getConnotation()));
 			}
 			return vo;
 		}
@@ -228,16 +234,24 @@ public class CourseVO {
 		return sumLessonTimes;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<LessonYzw> getLessons() {
+		return lessons;
+	}
+
+	public void setLessons(List<LessonYzw> lessons) {
+		this.lessons = lessons;
+	}
+
 	public void setSumLessonTimes(Integer sumLessonTimes) {
 		this.sumLessonTimes = sumLessonTimes;
 	}
 
 	public CourseConnotationVO getConnotation() {
 		return connotation;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void setConnotation(CourseConnotationVO connotation) {

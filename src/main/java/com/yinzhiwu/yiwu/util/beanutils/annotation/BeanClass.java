@@ -1,4 +1,4 @@
-package com.yinzhiwu.yiwu.util.convert.annotation;
+package com.yinzhiwu.yiwu.util.beanutils.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
