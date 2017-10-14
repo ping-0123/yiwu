@@ -82,6 +82,7 @@ public class LessonVO {
 	@ApiModelProperty(value="课时内容信息")
 	private LessonConnotationVO connotation;
 	
+	@BeanProperty(ignored=true)
 	@ApiModelProperty(value="所有点赞人姓名，以逗号分隔")
 	private String praisers;
 	

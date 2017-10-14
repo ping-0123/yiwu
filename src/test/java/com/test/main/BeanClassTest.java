@@ -1,5 +1,7 @@
 package com.test.main;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +17,7 @@ import com.yinzhiwu.yiwu.model.view.LessonVO;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
-import com.yinzhiwu.yiwu.util.beanutils.BeanUtils;
+import com.yinzhiwu.yiwu.util.beanutils.BeanClassUtils;
 import com.yinzhiwu.yiwu.util.beanutils.ConvertException;
 
 /**
@@ -38,12 +40,12 @@ public class BeanClassTest extends BaseSpringTest{
 		CoachVO coachVO = new CoachVO();
 		EmployeeYzw emp2 = new EmployeeYzw();
 		try {
-			BeanUtils.copyProperties(emp, coachVO);
+			BeanClassUtils.copyProperties(emp, coachVO);
 			System.err.println("coachVO is " +  new GsonBuilder().create().toJson(coachVO));
-			BeanUtils.copyProperties(coachVO, emp2);
+			BeanClassUtils.copyProperties(coachVO, emp2);
 			System.err.println("emp2 is " + new Gson().toJson(emp2));
 		} catch (IllegalArgumentException | IllegalAccessException |  SecurityException
-				| InstantiationException | ConvertException e) {
+				| InstantiationException | ConvertException | NoSuchFieldException | NoSuchMethodException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -57,12 +59,12 @@ public class BeanClassTest extends BaseSpringTest{
 		LessonVO lessonVO = new LessonVO();
 		LessonYzw lesson2 = new LessonYzw();
 		try {
-			BeanUtils.copyProperties(lesson, lessonVO);
+			BeanClassUtils.copyProperties(lesson, lessonVO);
 			System.err.println("lessonVO is " +  new GsonBuilder().create().toJson(lessonVO));
-			BeanUtils.copyProperties(lessonVO, lesson2);
+			BeanClassUtils.copyProperties(lessonVO, lesson2);
 			System.err.println("lesson is " + new Gson().toJson(lesson2));
 		} catch (IllegalArgumentException | IllegalAccessException |  SecurityException
-				| InstantiationException | ConvertException  e) {
+				| InstantiationException | ConvertException | NoSuchFieldException | NoSuchMethodException | InvocationTargetException  e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -77,13 +79,13 @@ public class BeanClassTest extends BaseSpringTest{
 		CourseYzw course2 = new CourseYzw();
 		
 		try {
-			BeanUtils.copyProperties(course, courseVO);
+			BeanClassUtils.copyProperties(course, courseVO);
 			System.err.println("courseVO is " + new Gson().toJson(courseVO));
 			System.out.println();
-			BeanUtils.copyProperties(courseVO, course2);
+			BeanClassUtils.copyProperties(courseVO, course2);
 			System.err.println("course2 is "  + new Gson().toJson(course2));
 		} catch (IllegalArgumentException | IllegalAccessException |  SecurityException | InstantiationException
-				| ConvertException e) {
+				| ConvertException | NoSuchFieldException | NoSuchMethodException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -95,7 +97,7 @@ public class BeanClassTest extends BaseSpringTest{
 		CourseVO courseVO = new CourseVO();
 		String uri = "aaaaaaaaaaa";
 		
-		BeanUtils.copyProperty(courseVO, "connotation.connotation", uri);
+		BeanClassUtils.copyProperty(courseVO, "connotation.connotation", uri);
 		System.err.println(courseVO.getConnotation().getConnotation());
 	}
 }

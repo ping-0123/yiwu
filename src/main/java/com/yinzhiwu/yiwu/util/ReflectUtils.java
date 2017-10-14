@@ -72,12 +72,27 @@ public final class ReflectUtils {
 	}
 	
 	
-	public static Field getNestedField(Class<?> clazz, String fieldName){
+	public static Field getNestedField(Class<?> clazz, String fieldName) throws NoSuchFieldException, SecurityException{
 		if(clazz==null || fieldName==null || "".equals(fieldName.trim())) 
 			throw new IllegalArgumentException("clazz can not be null and fieldName can not be empty");
 		
+		if(fieldName.contains(".")){
+			int position = fieldName.indexOf(".");
+			String preFieldName = fieldName.substring(0,position);
+			String suffixFieldName= fieldName.substring(position + 1);
+			Field preField = getNestedField(clazz, preFieldName);
+			return getNestedField((Class<?>)preField.getGenericType(), suffixFieldName);
+		}
 		
-		return null;
+		try {
+			return clazz.getDeclaredField(fieldName);
+		} catch (NoSuchFieldException | SecurityException e) {
+			Class<?> supClazz = clazz.getSuperclass();
+			if(supClazz!=null){
+				return getField(supClazz,fieldName);
+			}
+			throw e;
+		}
 	}
 	
 	
@@ -139,7 +154,7 @@ public final class ReflectUtils {
 	
 	/**
 	 * 当 fieldName 包含"."时 使用该方法设置field的值,如果object中包含申明类型为接口的属性， 先实例化该属性， 否则会抛出  InstantiationException
-	 * @param object
+	 * @param bean
 	 * @param fieldName
 	 * @param value
 	 * @throws IllegalArgumentException
@@ -150,9 +165,9 @@ public final class ReflectUtils {
 	 * @throws InvocationTargetException 
 	 * @throws NoSuchMethodException 
 	 */
-	public static void setFieldValue(Object object , String fieldName, Object value) 
+	public static void setFieldValue(Object bean , String fieldName, Object value) 
 			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, InstantiationException, NoSuchMethodException, InvocationTargetException{
-		if(object==null)
+		if(bean==null)
 			throw new IllegalArgumentException();
 		if(value==null || fieldName==null || "".equals(fieldName.trim()))
 			return ;
@@ -160,18 +175,18 @@ public final class ReflectUtils {
 			int position = fieldName.indexOf(".");
 			String preFieldName = fieldName.substring(0, position);
 			String suffixFieldName = fieldName.substring(position + 1);
-			Field preField = getField(object.getClass(), preFieldName);
-			Object preFieldValue = getFieldValue(object, preFieldName);
+			Field preField = getField(bean.getClass(), preFieldName);
+			Object preFieldValue = getFieldValue(bean, preFieldName);
 			if (preFieldValue == null){
 				preFieldValue = ((Class<?>)preField.getGenericType()).newInstance();
 				preField.setAccessible(true);
-				preField.set(object, preFieldValue);
+				preField.set(bean, preFieldValue);
 			}
 			setFieldValue(preFieldValue, suffixFieldName, value);
 		}else {
-			Field field = getField(object.getClass(), fieldName);
+			Field field = getField(bean.getClass(), fieldName);
 			field.setAccessible(true);
-			field.set(object, value);
+			field.set(bean, value);
 		}
 	}
 	
@@ -187,7 +202,7 @@ public final class ReflectUtils {
 		}else {
 			Field field = getField(clazz, fieldName);
 			Class<?> cls = getParameterizedType(field);
-			if(cls != null)
+			if(cls != null) 
 				return cls;
 			else
 				return (Class<?>) field.getGenericType();
