@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface BeanClass {
+public @interface MapedClass {
 	
 	/**
 	 * Bean 的全路径类型

@@ -5,7 +5,6 @@ import org.junit.Test;
 import com.test.BaseBlockJUnitTest;
 import com.yinzhiwu.yiwu.model.view.CourseConnotationVO;
 import com.yinzhiwu.yiwu.model.view.CourseVO;
-import com.yinzhiwu.yiwu.util.beanutils.BeanClassUtils;
 
 /**
 *@Author ping
@@ -22,7 +21,6 @@ public class BeanUtilTest extends BaseBlockJUnitTest{
 		courseVO.setConnotation(connotationVO);
 		String uri = "aaaaaaaaaaa";
 		
-		BeanClassUtils.copyProperty(courseVO, "connotation.helpInfomation", uri);
 		System.err.println(courseVO.getConnotation().getHelpInfomation());
 	}
 }

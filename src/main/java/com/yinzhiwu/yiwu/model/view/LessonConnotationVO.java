@@ -6,8 +6,8 @@ import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.service.impl.FileService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
-import com.yinzhiwu.yiwu.util.beanutils.annotation.BeanClass;
-import com.yinzhiwu.yiwu.util.beanutils.annotation.BeanProperty;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,46 +18,46 @@ import io.swagger.annotations.ApiModelProperty;
 *
 */
 
-@BeanClass(LessonConnotation.class)
+@MapedClass(LessonConnotation.class)
 @ApiModel(description="课时内容")
 public class LessonConnotationVO {
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty(value="课时内容")
 	private String connotation;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty(value="帮助信息")
 	private String helpInfomation;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty(value="简介")
 	private String introduction;
 	
-	@BeanProperty(value="pictureUri")
+	@MapedProperty(value="pictureUri")
 	@ApiModelProperty(value="图片URL")
 	private String pictureUrl;
 	
-	@BeanProperty(value="videoUri")
+	@MapedProperty(value="videoUri")
 	@ApiModelProperty(value="标准视频URL")
 	private String videoUrl;
 	
-	@BeanProperty
+	@MapedProperty
 	private String audioName;
 	
-	@BeanProperty(value="audioUri")
+	@MapedProperty(value="audioUri")
 	@ApiModelProperty(value="音乐URL")
 	private String audioUrl;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty(value="舞蹈简介")
 	private String danceIntroduction;
 	
-	@BeanProperty(value="puzzleVideoUri")
+	@MapedProperty(value="puzzleVideoUri")
 	@ApiModelProperty(value="疑难点解析视频URL")
 	private String puzzleVideoUrl;
 	
-	@BeanProperty("practicalVideoUri")
+	@MapedProperty("practicalVideoUri")
 	@ApiModelProperty(value="上课实际视频URL")
 	private String practicalVideoUrl;
 	

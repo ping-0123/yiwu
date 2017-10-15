@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface BeanProperty {
+public @interface MapedProperty {
 	
 	/**
 	 * 如果值不设置，表示与注解的field({@link Field#getName()})同名

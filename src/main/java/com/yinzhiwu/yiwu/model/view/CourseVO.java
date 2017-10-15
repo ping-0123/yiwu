@@ -14,77 +14,77 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
-import com.yinzhiwu.yiwu.util.beanutils.annotation.BeanClass;
-import com.yinzhiwu.yiwu.util.beanutils.annotation.BeanProperty;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@BeanClass(CourseYzw.class)
+@MapedClass(CourseYzw.class)
 @ApiModel(description="课程VO")
 public class CourseVO {
 	
-	@BeanProperty
+	@MapedProperty
 	private String id;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty("课程名")
 	private String name;
 	
-	@BeanProperty("dance.id")
+	@MapedProperty("dance.id")
 	@ApiModelProperty("舞种Id")
 	private String danceId;
 	
-	@BeanProperty("dance.name")
+	@MapedProperty("dance.name")
 	@ApiModelProperty("舞种名")
 	private String danceName;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty("舞种等级")
 	private String danceGrade;
 	
-	@BeanProperty("store.id")
+	@MapedProperty("store.id")
 	@ApiModelProperty("门店Id")
 	private Integer storeId;
 	
-	@BeanProperty("teacher.id")
+	@MapedProperty("teacher.id")
 	@ApiModelProperty("教练Id")
 	private Integer teacherId;
 
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty("课程开始日期")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date startDate;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty("课程结束日期")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date endDate;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty(value="课程类型", allowableValues="{PRIVATE, CLOSED,OPENED}")
 	private CourseType courseType;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty(value="课程状态", allowableValues="{UN_ARRANGED,UN_CHECKED,READY}")
 	private CourseStatus courseStatus;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty("上该课程的学员数量")
 	private Integer studentCount;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty("总课时数")
 	private Integer sumLessonTimes;
 	
-	@BeanProperty("connotation")
+	@MapedProperty("connotation")
 	@ApiModelProperty("课程内容信息")
 	private CourseConnotationVO connotation;
 	
+	@MapedProperty(ignored=true)
 	@ApiModelProperty("是否为即将上课")
 	private boolean comming;
 	
-	@BeanProperty(ignored=true)
 	List<LessonYzw> lessons = new ArrayList<>();
 	
 	public CourseVO() {

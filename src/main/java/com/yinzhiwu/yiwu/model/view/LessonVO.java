@@ -7,12 +7,11 @@ import org.springframework.beans.BeanUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Converter;
-import com.yinzhiwu.yiwu.entity.LessonPraise;
-import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
-import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.util.beanutils.annotation.BeanClass;
-import com.yinzhiwu.yiwu.util.beanutils.annotation.BeanProperty;
+import com.yinzhiwu.yiwu.util.beanutils.AbstractVO;
+import com.yinzhiwu.yiwu.util.beanutils.MapedClassUtils;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,66 +22,68 @@ import io.swagger.annotations.ApiModelProperty;
 *
 */
 
-@BeanClass(LessonYzw.class)
+@MapedClass(LessonYzw.class)
 @ApiModel(description="课时VO")
-public class LessonVO {
+public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
 	
-	@BeanProperty
+	
+	
+	@MapedProperty
 	private Integer id;
 	
-	@BeanProperty
+	@MapedProperty
 	private String name;
 	
-	@BeanProperty("course.id")
+	@MapedProperty("course.id")
 	private String courseId;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty(value="课时的序号， 即第几节课")
 	private Integer ordinalNo;
 	
-	@BeanProperty("lessonDate")
+	@MapedProperty("lessonDate")
 	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
 	@ApiModelProperty(value="课时的上课日期")
 	private Date lessonDate;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty(value="课时的开始时间")
 	private Time startTime;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty(value="课时的结束时间")
 	private Time endTime;
 	
-	@BeanProperty("store.id")
+	@MapedProperty("store.id")
 	private Integer storeId;
 	
-	@BeanProperty("store.name")
+	@MapedProperty("store.name")
 	@ApiModelProperty(value="上课所在门店名")
 	private String storeName;
 	
-	@BeanProperty(value="store.officialAddress.detailAddress", inverse=false)
+	@MapedProperty(value="store.officialAddress.detailAddress", inverse=false)
 	@ApiModelProperty(value="上课所在门店地址")
 	private String storeAddress;
 	
-	@BeanProperty("dueTeacher.id")
+	@MapedProperty("dueTeacher.id")
 	private Integer dueTeacherId;
 	
-	@BeanProperty("dueTeacher.name")
+	@MapedProperty("dueTeacher.name")
 	@ApiModelProperty(value="排课上课老师姓名")
 	private String dueTeacherName;
 	
-	@BeanProperty("actualTeacher.id")
+	@MapedProperty("actualTeacher.id")
 	private Integer actualTeacherId;
 	
-	@BeanProperty("actualTeacher.name")
+	@MapedProperty("actualTeacher.name")
 	@ApiModelProperty(value="实际上课老师姓名")
 	private String actualTeacherName;
 	
-	@BeanProperty
+	@MapedProperty
 	@ApiModelProperty(value="课时内容信息")
 	private LessonConnotationVO connotation;
 	
-	@BeanProperty(ignored=true)
+	@MapedProperty(ignored=true)
 	@ApiModelProperty(value="所有点赞人姓名，以逗号分隔")
 	private String praisers;
 	
@@ -169,32 +170,7 @@ public class LessonVO {
 		@Override
 		protected LessonVO doBackward(LessonYzw po) {
 			LessonVO vo = new LessonVO();
-			BeanUtils.copyProperties(po, vo);
-			if(po.getStore() !=null){
-				DepartmentYzw s = po.getStore();
-				vo.setStoreId(s.getId());
-				vo.setStoreName(s.getName());
-				vo.setStoreAddress(s.getOfficialAddress()!=null?s.getOfficialAddress().getDetailAddress():null);
-			}
-			if(po.getActualTeacher() != null){
-				EmployeeYzw e = po.getActualTeacher();
-				vo.setActualTeacherId(e.getId());
-				vo.setActualTeacherName(e.getName());
-			}
-			if(po.getDueTeacher() !=null){
-				EmployeeYzw e = po.getDueTeacher();
-				vo.setDueTeacherId(e.getId());
-				vo.setDueTeacherName(e.getName());
-			}
-			StringBuilder praisers = new StringBuilder();
-			for (LessonPraise praise : po.getPraises()) {
-				if(praise.getDistributer() !=null)
-					praisers.append(praise.getDistributer().getName());
-			}
-			
-			if(po.getConnotation() !=null){
-				vo.setConnotation(LessonConnotationVO.fromPO(po.getConnotation()));
-			}
+			MapedClassUtils.copyProperties(po, vo);
 			return vo;
 		}
 		

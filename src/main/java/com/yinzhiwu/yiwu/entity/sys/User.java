@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -43,7 +44,7 @@ public class User extends BaseEntity {
 	@Column(length=32)
 	private String salt;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_user_employee_id"))
 	private EmployeeYzw employee;
 	

@@ -20,7 +20,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
@@ -30,7 +29,6 @@ import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Email;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 @Entity
@@ -153,9 +151,10 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private Set<EmployeePostYzw> employeePosts = new HashSet<>();
 	
-	@JsonIgnore
-	@OneToOne(mappedBy="employee",fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
-	private User user;
+//	@JsonIgnore
+//	@OneToOne(mappedBy="employee",fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
+//	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+//	private User user;
 	
 	public EmployeeYzw() {
 	}
@@ -562,14 +561,14 @@ public class EmployeeYzw extends BaseYzwEntity {
 	}
 
 
-	public User getUser() {
-		return user;
-	}
-
-
-	public void setUser(User user) {
-		this.user = user;
-	}
+//	public User getUser() {
+//		return user;
+//	}
+//
+//
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
 
 
 }

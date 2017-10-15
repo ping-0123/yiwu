@@ -22,6 +22,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.LessonAppraiseVO;
+import com.yinzhiwu.yiwu.model.view.LessonVO;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
@@ -47,9 +48,8 @@ public class LessonApiController extends BaseController {
 
 	@RequestMapping(value = "/{id}", method = { RequestMethod.GET })
 	@ResponseBody
-	public LessonYzw getLesson2(@PathVariable String id) {
-		int intId = Integer.parseInt(id);
-		return lessonService.get(intId);
+	public LessonVO getLesson2(@PathVariable Integer id) {
+		return new LessonVO().fromPO(lessonService.get(id));
 	}
 
 	

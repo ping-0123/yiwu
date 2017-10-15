@@ -1,7 +1,5 @@
 package com.test.main;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,8 +15,9 @@ import com.yinzhiwu.yiwu.model.view.LessonVO;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
-import com.yinzhiwu.yiwu.util.beanutils.BeanClassUtils;
-import com.yinzhiwu.yiwu.util.beanutils.ConvertException;
+import com.yinzhiwu.yiwu.util.beanutils.MapedClassUtils;
+import com.yinzhiwu.yiwu.util.beanutils.MapedPropertyDismatchException;
+import com.yinzhiwu.yiwu.util.beanutils.MapedClassDismatchException;
 
 /**
 *@Author ping
@@ -26,7 +25,7 @@ import com.yinzhiwu.yiwu.util.beanutils.ConvertException;
 *
 */
 
-public class BeanClassTest extends BaseSpringTest{
+public class MappedClassTest extends BaseSpringTest{
 
 	@Autowired private EmployeeYzwService empService;
 	@Autowired private LessonYzwService lessonService;
@@ -40,12 +39,12 @@ public class BeanClassTest extends BaseSpringTest{
 		CoachVO coachVO = new CoachVO();
 		EmployeeYzw emp2 = new EmployeeYzw();
 		try {
-			BeanClassUtils.copyProperties(emp, coachVO);
+			MapedClassUtils.copyProperties(emp, coachVO);
 			System.err.println("coachVO is " +  new GsonBuilder().create().toJson(coachVO));
-			BeanClassUtils.copyProperties(coachVO, emp2);
+			MapedClassUtils.copyProperties(coachVO, emp2);
 			System.err.println("emp2 is " + new Gson().toJson(emp2));
-		} catch (IllegalArgumentException | IllegalAccessException |  SecurityException
-				| InstantiationException | ConvertException | NoSuchFieldException | NoSuchMethodException | InvocationTargetException e) {
+		} catch (IllegalArgumentException |   SecurityException  | MapedClassDismatchException | MapedPropertyDismatchException
+				e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -59,12 +58,12 @@ public class BeanClassTest extends BaseSpringTest{
 		LessonVO lessonVO = new LessonVO();
 		LessonYzw lesson2 = new LessonYzw();
 		try {
-			BeanClassUtils.copyProperties(lesson, lessonVO);
+			MapedClassUtils.copyProperties(lesson, lessonVO);
 			System.err.println("lessonVO is " +  new GsonBuilder().create().toJson(lessonVO));
-			BeanClassUtils.copyProperties(lessonVO, lesson2);
+			MapedClassUtils.copyProperties(lessonVO, lesson2);
 			System.err.println("lesson is " + new Gson().toJson(lesson2));
-		} catch (IllegalArgumentException | IllegalAccessException |  SecurityException
-				| InstantiationException | ConvertException | NoSuchFieldException | NoSuchMethodException | InvocationTargetException  e) {
+		} catch (IllegalArgumentException |  SecurityException
+				 | MapedClassDismatchException |  MapedPropertyDismatchException  e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -79,25 +78,17 @@ public class BeanClassTest extends BaseSpringTest{
 		CourseYzw course2 = new CourseYzw();
 		
 		try {
-			BeanClassUtils.copyProperties(course, courseVO);
+			MapedClassUtils.copyProperties(course, courseVO);
 			System.err.println("courseVO is " + new Gson().toJson(courseVO));
 			System.out.println();
-			BeanClassUtils.copyProperties(courseVO, course2);
+			MapedClassUtils.copyProperties(courseVO, course2);
 			System.err.println("course2 is "  + new Gson().toJson(course2));
-		} catch (IllegalArgumentException | IllegalAccessException |  SecurityException | InstantiationException
-				| ConvertException | NoSuchFieldException | NoSuchMethodException | InvocationTargetException e) {
+		} catch (IllegalArgumentException |  SecurityException
+				| MapedClassDismatchException | MapedPropertyDismatchException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	
-	@Test
-	public void testCopyProperty(){
-		CourseVO courseVO = new CourseVO();
-		String uri = "aaaaaaaaaaa";
-		
-		BeanClassUtils.copyProperty(courseVO, "connotation.connotation", uri);
-		System.err.println(courseVO.getConnotation().getConnotation());
-	}
 }
