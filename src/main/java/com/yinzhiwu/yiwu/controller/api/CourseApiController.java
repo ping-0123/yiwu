@@ -34,7 +34,7 @@ public class CourseApiController extends BaseController {
 	@GetMapping("/{id}/lessons")
 	@ApiOperation(value="查询课程{id}下的课时: /{id}/lessons?pageSize=1&ordinalNo=1, 查询第一节课")
 	public YiwuJson<PageBean<LessonVO>> findLessons(
-			@PathVariable(value="id", required = true) String courseId, 
+			@PathVariable(value="id", required = true) String id, 
 			@RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo,
 			@RequestParam(value="pageSize", required=false, defaultValue="10") int pageSize,
 			LessonVO search)
@@ -42,7 +42,7 @@ public class CourseApiController extends BaseController {
 		if(search==null){
 			search = new LessonVO();
 		}
-		search.setCourseId(courseId);
+		search.setCourseId(id);
 		LessonYzw lesson  = search.toPO();
 		PageBean<LessonYzw> page = lessonService.findPageByExample(lesson, pageNo, pageSize);
 		if(page.getData()==null || page.getData().size()==0)

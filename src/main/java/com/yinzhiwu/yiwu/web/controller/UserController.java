@@ -29,6 +29,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.model.view.RoleZtreeApiView;
+import com.yinzhiwu.yiwu.model.view.UserVO;
 import com.yinzhiwu.yiwu.service.RoleService;
 import com.yinzhiwu.yiwu.service.UserService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
@@ -187,7 +188,18 @@ public class UserController extends BaseController {
 		
 		try {
 			QueryParameter parameter = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
-			return service.findDataTable(parameter);
+			ServletRequestUtils.transferQueryParamter(parameter, UserVO.class);
+			DataTableBean<User> dtb =  service.findDataTable(parameter);
+			@SuppressWarnings("unchecked")
+			List<User> users = (List<User>) dtb.getData();
+			List<UserVO> vos = new ArrayList<>();
+			for (User user : users) {
+				vos.add(new UserVO().fromPO(user));
+			}
+			
+			return new DataTableBean<>(
+					dtb.getDraw(), dtb.getRecordsTotal(), dtb.getRecordsFiltered(), vos,dtb.getError());
+			
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
 				| InstantiationException e) {
 			logger.error(e.getMessage(),e);

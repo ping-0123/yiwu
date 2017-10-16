@@ -6,7 +6,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.yinzhiwu.yiwu.model.datatable.Order.Direction;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.yinzhiwu.yiwu.model.datatable.Column;
+import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
+import com.yinzhiwu.yiwu.util.reflect.FieldUtils;
 
 /**
 *@Author ping
@@ -15,7 +22,8 @@ import com.yinzhiwu.yiwu.model.datatable.Order.Direction;
 */
 
 public class ServletRequestUtils {
-
+	
+	private static final Log log = LogFactory.getLog(ServletRequestUtils.class);
 	
 	public static Object parseParameter(HttpServletRequest request, Class<?> parameterType) 
 			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InstantiationException{
@@ -34,7 +42,6 @@ public class ServletRequestUtils {
 					&& entry.getValue().length>0 
 					&& !"".equals(entry.getValue()[0].trim()))
 				setComplexFieldValue(entry.getKey(),entry.getValue()[0],para);
-			
 		}
 		return para;
 	}
@@ -110,12 +117,13 @@ public class ServletRequestUtils {
 		 setComplexFieldValue(subFieldname, value, subEntity);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static void setPrimaryTypeFieoldValue(String paraName, String value, Object entity)
 			throws NoSuchFieldException, IllegalAccessException {
 		String  fieldname = paraName;
 		 Field field = entity.getClass().getDeclaredField(fieldname);
 		 field.setAccessible(true);
-		 Class<?> fieldClass = (Class<?>) field.getGenericType();
+		Class fieldClass = (Class) field.getGenericType();
 		if ("boolean".equals(fieldClass.getSimpleName()) || fieldClass.equals(Boolean.class))
 			field.set(entity, Boolean.valueOf(value));
 		else if ("int".equals(fieldClass.getName()) || fieldClass.equals(Integer.class))
@@ -133,9 +141,7 @@ public class ServletRequestUtils {
 		else if (fieldClass.equals(Byte.TYPE.getClass()) || fieldClass.equals(Byte.class))
 			field.set(entity, Byte.valueOf(value));
 		else if (fieldClass.isEnum()) {
-			//TODO 	 思考其他枚举类型怎么转换
-			if (fieldClass.equals(Direction.class))
-				field.set(entity, Direction.valueOf(value));
+			field.set(entity, Enum.valueOf(fieldClass,value));
 		 }else if(fieldClass.equals(String.class)){
 			field.set(entity, value);
 		}else {
@@ -144,5 +150,33 @@ public class ServletRequestUtils {
 	}
 	
 	
+	public static void transferQueryParamter(QueryParameter query, Class<?> from){
+		MapedClass mapedClass = from.getDeclaredAnnotation(MapedClass.class);
+		if(mapedClass!=null ){
+			com.yinzhiwu.yiwu.model.datatable.Column[] columns = query.getColumns();
+			if(columns !=null && columns.length> 0){
+				for (Column column : columns) {
+					if(column !=null){
+						try {
+							Field field = FieldUtils.getField(from, column.getData());
+							MapedProperty mapedProperty = field.getDeclaredAnnotation(MapedProperty.class);
+							if(mapedProperty==null)
+								continue;
+							else if (mapedProperty.ignored() || !mapedProperty.inverse()) {
+								column.setData(null);
+							}else {
+								column.setData(mapedProperty.value());
+							}
+						} catch (NoSuchFieldException e) {
+							log.error(e);
+							throw new RuntimeException(e);
+						}
+					}else{
+						break;
+					}
+				}
+			}
+		}
+	}
 
 }

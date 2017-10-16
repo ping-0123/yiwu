@@ -785,7 +785,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 	
 	
-	protected DataTableBean<T> findDataTableByProperty(QueryParameter parameter, String propertyName, Object value) throws NoSuchFieldException, SecurityException{
+	protected DataTableBean<T> findDataTableByProperty(QueryParameter parameter, String propertyName, Object value)
+			throws NoSuchFieldException, SecurityException{
 		return findDataTableByProperties(parameter, new String[]{propertyName}, new Object[]{value});
 	}
 }

@@ -142,7 +142,7 @@
 			},
 			"columns" : [
 					{
-						"data" : "createTime",
+						"data" : "id",
 						"visible" : false
 					},
 					{
@@ -150,7 +150,7 @@
 						"title" : "用户名"
 					},
 					{
-						"data" : "employee.name",
+						"data" : "employeeName",
 						"title" : "员工姓名",
 						"render" : function(data, type, row, meta) {
 							return data == null ? "" : data;
@@ -164,7 +164,7 @@
 						}
 					},
 					{
-						"data" : "createTime",
+						"data" : "id",
 						"title" : "操作",
 						"render" : function(data, type, row, meta) {
 							if (row.username == "Admin")
