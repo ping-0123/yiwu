@@ -201,8 +201,7 @@ public final class MapedClassUtils {
 				if(mapedSourceFieldValue == null ) continue;  // 值为null 忽略
 				
 				// 赋值给 target field
-				
-				Class<?> targetFieldClass =(Class<?>) field.getGenericType();
+				Class<?> targetFieldClass =(Class<?>) field.getGenericType(); //TODO 当field.getGenericType返回值为ParameterizedType时报错
 				MapedClass targetfieldClassAnnotation = targetFieldClass.getDeclaredAnnotation(MapedClass.class);
 				try{
 					if(targetfieldClassAnnotation !=null){

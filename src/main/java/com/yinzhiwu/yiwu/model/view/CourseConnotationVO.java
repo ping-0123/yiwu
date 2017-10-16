@@ -42,6 +42,12 @@ public class CourseConnotationVO {
 	@ApiModelProperty(value="标准视频URL")
 	private String videoUrl;
 	
+	@MapedProperty("videoPosterUri")
+	@ApiModelProperty(value="标准视频的Poster图片链接")
+	private String videoPosterUrl;
+	@ApiModelProperty(value="标准视频的标题")
+	private String videoTitle;
+	
 	@MapedProperty
 	@ApiModelProperty("音乐名称")
 	private String audioName;
@@ -134,5 +140,20 @@ public class CourseConnotationVO {
 		return vo;
 	}
 	
+	}
+
+
+	public String getVideoTitle() {
+		return videoTitle;
+	}
+
+	public void setVideoTitle(String videoTitle) {
+		this.videoTitle = videoTitle;
+	}
+	public String getVideoPosterUrl() {
+		return videoPosterUrl;
+	}
+	public void setVideoPosterUrl(String videoPosterUrl) {
+		this.videoPosterUrl = videoPosterUrl;
 	}
 }

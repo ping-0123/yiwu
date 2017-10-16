@@ -130,7 +130,7 @@ public class DistributerApiController extends BaseController {
 			List<CourseYzw> courses = orderService.findCoursesByCustomerIdAndCourseType(distributer.getCustomer().getId(),courseType);
 			List<CourseVO> views = new ArrayList<>();
 			for (CourseYzw courseYzw : courses) {
-				views.add(CourseVO.fromDAO(courseYzw));
+				views.add(new CourseVO().fromPO(courseYzw));
 			}
 			
 			return YiwuJson.createBySuccess(views);

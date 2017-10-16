@@ -52,6 +52,8 @@ import com.yinzhiwu.yiwu.util.ReflectUtils;
  */
 public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements IBaseDao<T, PK> {
 
+	private static final char NESTED        = '.';
+	
 	private Class<T> entityClass;
 	protected SessionFactory sessionFactory;
 
@@ -197,19 +199,13 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	public List<T> findByExample(T entity){
 		Assert.notNull(entity, "entity is required");
 		
-		
 		List<String> properties = new ArrayList<>();
 		List<Object> values = new ArrayList<>();
 		
-		try {
-			addPairs(properties, values, entityClass, entity, "");
-			String[] pros = new String[properties.size()];
-			return findByProperties(properties.toArray(pros), values.toArray());
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			logger.error(e.getMessage(), e);
-		}
+		addPairs(properties, values, entityClass, entity, "");
+		String[] pros = new String[properties.size()];
+		return findByProperties(properties.toArray(pros), values.toArray());
 		
-		return null;
 	}
 	
 	/**
@@ -223,7 +219,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	private void addPair(List<String> properties, List<Object> values, Field field, Object fieldValue, String prefixFiledName) throws IllegalArgumentException, IllegalAccessException{
+	private void addPair(List<String> properties, List<Object> values, Field field, Object fieldValue, String prefixFiledName){
 		Assert.notNull(properties);
 		Assert.notNull(values);
 		Assert.notNull(field);
@@ -240,7 +236,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			if(field.getDeclaredAnnotation(ManyToOne.class) != null
 					|| field.getDeclaredAnnotation(OneToOne.class) !=null
 					|| field.getDeclaredAnnotation(Embedded.class) != null)
-				addPairs(properties, values,fieldValue.getClass(), fieldValue, field.getName()+ ".");
+				addPairs(properties, values,fieldValue.getClass(), fieldValue, field.getName()+ NESTED);
 			else {
 				properties.add(prefixFiledName  + field.getName());
 				values.add(fieldValue);
@@ -255,26 +251,31 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	 * @param properties
 	 * @param values
 	 * @param clazz
-	 * @param entity
+	 * @param value
 	 * @param prefixFiledName prefixFiledName 为空或者已.结束
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	private void addPairs(List<String> properties, List<Object> values,Class<?> clazz, Object entity, String prefixFiledName) throws IllegalArgumentException, IllegalAccessException {
+	private void addPairs(List<String> properties, List<Object> values,Class<?> clazz, Object value, String prefixFiledName){
 		Assert.notNull(properties);
 		Assert.notNull(values);
 		Assert.notNull(clazz);
 		
-		if(entity==null)
+		if(value==null)
 			return;
 		
 		Field[] fields = ReflectUtils.getAllFields(clazz);
 		for (Field field : fields) {
 			field.setAccessible(true);
-			addPair(properties, values, field, field.get(entity), prefixFiledName);
-			if(field.getDeclaredAnnotation(Id.class) != null 
-					&& field.get(entity) !=null )
-				break;
+			try {
+				Object fieldValue = field.get(value);
+				addPair(properties, values, field, fieldValue, prefixFiledName);
+				if(field.getDeclaredAnnotation(Id.class) != null && fieldValue !=null )
+					break;
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				logger.error(e);
+				throw new RuntimeException(e);
+			}
 		}
 		
 	}
@@ -359,7 +360,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		 return query.getSingleResult();
 	}
 
-	protected PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, int pageNo, int pageSize) {
+	protected PageBean<T> findPageByPropertiesThroughCriteria(String[] propertyNames, Object[] values, int pageNo, int pageSize) {
 		if (propertyNames.length != values.length) {
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
@@ -377,24 +378,9 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		}
 		criteria.where(predicate);
 
-		// 查询数量
-		// CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
-		// countCriteria.from(entityClass);
-		// countCriteria.select(builder.count(root));
-		// countCriteria.where(predicate);
-		// Long totalSize =
-		// getSession().createQuery(countCriteria).getSingleResult();
 		int totalSize = findCountByProperties(propertyNames, values).intValue();
 
 		return findPageByCriteria(criteria, pageNo, pageSize, totalSize);
-	}
-
-	protected PageBean<T> findPageByProperty(String propertyName, Object value, int pageNo, int pageSize) {
-		if (!StringUtils.hasLength(propertyName))
-			throw new IllegalArgumentException("propertyName 不能为空");
-		String[] properties = new String[] { propertyName };
-		Object[] values = new Object[] { value };
-		return findPageByProperties(properties, values, pageNo, pageSize);
 	}
 
 	private <X> Path<?> _getPath(Path<X> path, String propertyName) {
@@ -500,7 +486,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			IllegalArgumentException exception = new IllegalArgumentException("传入的属性名和属性值数量不一致");
 			logger.error(exception.getMessage(), exception);
 			throw exception;
-			}
+		}
 		if(Arrays.asList(namedParameters).contains(null)) {
 			IllegalArgumentException exception=  new IllegalArgumentException("hql的命名参数不能为null");
 			logger.error(exception.getMessage(), exception);
@@ -531,7 +517,60 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		Object[] values = {value};
 		return findPage(hql, resultClass, namedParameters, values, pageNum, PageSize);
 	}
+	
+	/**
+	 * 
+	 * @param propertyNames 形参T 的属性，支持嵌套
+	 * @param values
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	protected PageBean<T> findPageByProperties(String[] propertyNames, Object[] values, Integer pageNum, Integer pageSize){
+		if(propertyNames == null || values == null)
+			throw new IllegalArgumentException("propertyNames and values 不能为 null");
+		if(propertyNames.length != values.length)
+			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
+
+		String[] properties = new String[propertyNames.length];
+		StringBuilder hql = new StringBuilder();
+		hql.append("FROM " + entityClass.getSimpleName());
+		hql.append(" WHERE 1=1");
 		
+		for(int i = 0; i<propertyNames.length; i++){
+			if(StringUtils.hasLength(propertyNames[i])){
+				properties[i] = propertyNames[i].replace(".", "");
+				hql.append(" AND " + propertyNames[i] + "=:" +properties[i]);
+			}else {
+				throw new IllegalArgumentException("属性名不能为空为null");
+			}
+		}
+		
+		return findPage(hql.toString(), entityClass, properties, values, pageNum, pageSize);
+	}
+	
+	
+	protected PageBean<T> findPageByProperty(String propertyName, Object value, Integer pageNo, Integer pageSize) {
+		Assert.hasText(propertyName);
+		
+		String[] properties = new String[] { propertyName };
+		Object[] values = new Object[] { value };
+		return findPageByProperties(properties, values, pageNo, pageSize);
+	}
+	
+	
+	@Override
+	public PageBean<T> findPageByExample(T example, Integer pageNo, Integer pageSize){
+		Assert.notNull(example);
+		
+		List<String> properties = new ArrayList<>();
+		List<Object> values = new ArrayList<>();
+		addPairs(properties, values, entityClass, example, "");
+		String[] propertyNames = new String[properties.size()];
+		
+		return findPageByProperties(properties.toArray(propertyNames), values.toArray(), pageNo, pageSize);
+	}
+	
 	/**
 	 * 
 	 * @param hql 必须是"SELECT COUNT(1) FROM"开头

@@ -21,7 +21,9 @@ public class LessonConnotation {
 	@ApiModelProperty(value="图片URI")
 	private String pictureUri;
 	@ApiModelProperty(value="标准视频URI")
-	private String videoUri;
+	private String standardVideoUri;
+	private String standardVideoPosterUri;
+	private String standardVideoTitle;
 	private String audioName;
 	@ApiModelProperty(value="音乐URI")
 	private String audioUri;
@@ -29,8 +31,12 @@ public class LessonConnotation {
 	private String danceIntroduction;
 	@ApiModelProperty(value="疑难点解析视频URI")
 	private String puzzleVideoUri;
+	private String puzzleVideoPosterUri;
+	private String puzzleVideoTitle;
 	@ApiModelProperty(value="上课实际视频URI")
 	private String practicalVideoUri;
+	private String practicalVideoPosterUri;
+	private String practicalVideoTitle;
 	
 	public String getPuzzleVideoUri() {
 		return puzzleVideoUri;
@@ -56,9 +62,6 @@ public class LessonConnotation {
 	public String getPictureUri() {
 		return pictureUri;
 	}
-	public String getVideoUri() {
-		return videoUri;
-	}
 	public String getAudioName() {
 		return audioName;
 	}
@@ -80,9 +83,6 @@ public class LessonConnotation {
 	public void setPictureUri(String pictureUri) {
 		this.pictureUri = pictureUri;
 	}
-	public void setVideoUri(String videoUri) {
-		this.videoUri = videoUri;
-	}
 	public void setAudioName(String audioName) {
 		this.audioName = audioName;
 	}
@@ -91,6 +91,48 @@ public class LessonConnotation {
 	}
 	public void setDanceIntroduction(String danceIntroduction) {
 		this.danceIntroduction = danceIntroduction;
+	}
+	public String getStandardVideoUri() {
+		return standardVideoUri;
+	}
+	public void setStandardVideoUri(String standardVideoUri) {
+		this.standardVideoUri = standardVideoUri;
+	}
+	public String getStandardVideoPosterUri() {
+		return standardVideoPosterUri;
+	}
+	public String getStandardVideoTitle() {
+		return standardVideoTitle;
+	}
+	public String getPuzzleVideoPosterUri() {
+		return puzzleVideoPosterUri;
+	}
+	public String getPuzzleVideoTitle() {
+		return puzzleVideoTitle;
+	}
+	public String getPracticalVideoPosterUri() {
+		return practicalVideoPosterUri;
+	}
+	public String getPracticalVideoTitle() {
+		return practicalVideoTitle;
+	}
+	public void setStandardVideoPosterUri(String standardVideoPosterUri) {
+		this.standardVideoPosterUri = standardVideoPosterUri;
+	}
+	public void setStandardVideoTitle(String standardVideoTitle) {
+		this.standardVideoTitle = standardVideoTitle;
+	}
+	public void setPuzzleVideoPosterUri(String puzzleVideoPosterUri) {
+		this.puzzleVideoPosterUri = puzzleVideoPosterUri;
+	}
+	public void setPuzzleVideoTitle(String puzzleVideoTitle) {
+		this.puzzleVideoTitle = puzzleVideoTitle;
+	}
+	public void setPracticalVideoPosterUri(String practicalVideoPosterUri) {
+		this.practicalVideoPosterUri = practicalVideoPosterUri;
+	}
+	public void setPracticalVideoTitle(String practicalVideoTitle) {
+		this.practicalVideoTitle = practicalVideoTitle;
 	}
 	
 	

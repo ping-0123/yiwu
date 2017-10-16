@@ -194,6 +194,8 @@ public class CourseYzw extends BaseYzwEntity {
 			@AttributeOverride(name = "introduction", column = @Column(name = "briefIntroduction")),
 			@AttributeOverride(name = "pictureUri", column = @Column(name = "picture")),
 			@AttributeOverride(name = "videoUri", column = @Column(name = "videoUrl")),
+			@AttributeOverride(name="videoPosterUri", column=@Column(name="videoPosterUri")),
+			@AttributeOverride(name="videoTitle",column=@Column(name="videoTitle")),
 			@AttributeOverride(name = "audioName", column = @Column(name = "audio")),
 			@AttributeOverride(name = "audioUri", column = @Column(name = "audioUrl")),
 			@AttributeOverride(name = "danceIntroduction", column = @Column(name = "danceIntroduction")) })

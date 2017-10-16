@@ -1,6 +1,10 @@
 ALTER table chenkuserdb1.skt7 add COLUMN(dataStatus int DEFAULT 0);
 alter table chenkuserdb1.skt7 add column(ordinalNo int);
 alter table chenkuserdb1.skt7 add COLUMN(puzzleVideoUri varchar(128), practicalVideoUri varchar(128));
+alter table chenkuserdb1.skt7 add column(
+	standardVideoPosterUri varchar(128), standardVideoTitle varchar(128), 
+	puzzleVideoPosterUri varchar(128), puzzleVideoTitle varchar(128),
+	practicalVideoPosterUri varchar(128),practicalVideoTitle varchar(128) );
 
 CREATE 
 	or REPLACE
@@ -39,9 +43,15 @@ VIEW  yiwu.vlesson AS
         `chenkuserdb1`.`skt7`.`SKF856` AS `help`,
         `chenkuserdb1`.`skt7`.`SKF857` AS `jianjie`,
         `chenkuserdb1`.`skt7`.`SKF858` AS `picture`,
-        `chenkuserdb1`.`skt7`.`SKF859` AS `video`,
+        `chenkuserdb1`.`skt7`.`SKF859` AS `standardVideoUri`,
+        standardVideoPosterUri,
+        standardVideoTitle,
         puzzleVideoUri,
+        puzzleVideoPosterUri,
+        puzzleVideoTitle,
         practicalVideoUri,
+        practicalVideoPosterUri,
+        practicalVideoTitle,
         `chenkuserdb1`.`skt7`.`SKF860` AS `audio`,
         `chenkuserdb1`.`skt7`.`SKF861` AS `audio_link`,
         `chenkuserdb1`.`skt7`.`SKF950` AS `dance_introduction`,

@@ -1,14 +1,11 @@
 package com.test.dao;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
-import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
 
 /**
 *@Author ping
@@ -20,11 +17,6 @@ public class FindPrivateContractsTest  extends BaseSpringTest{
 	
 	@Autowired private OrderYzwDao orderDao;
 	
-	@Test
-	public void testFindPrivateContracts(){
-		 List<PrivateContractApiView> views = orderDao.getPrivateContractsByCustomer(19308);
-		System.err.println(views.size());
-	}
 	
 	@Test
 	public void testGet(){

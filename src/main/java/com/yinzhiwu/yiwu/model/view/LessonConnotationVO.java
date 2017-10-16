@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @MapedClass(LessonConnotation.class)
 @ApiModel(description="课时内容")
-public class LessonConnotationVO {
+public class LessonConnotationVO{
 	
 	@MapedProperty
 	@ApiModelProperty(value="课时内容")
@@ -38,9 +38,14 @@ public class LessonConnotationVO {
 	@ApiModelProperty(value="图片URL")
 	private String pictureUrl;
 	
-	@MapedProperty(value="videoUri")
+	@MapedProperty(value="standardVideoUri")
 	@ApiModelProperty(value="标准视频URL")
-	private String videoUrl;
+	private String standardVideoUrl;
+	@MapedProperty(value="standardVideoPosterUri")
+	@ApiModelProperty(value="标准视频poster url")
+	private String standardVideoPosterUrl;
+	@ApiModelProperty(value="标准视频标题")
+	private String standardVideoTitle;
 	
 	@MapedProperty
 	private String audioName;
@@ -57,9 +62,24 @@ public class LessonConnotationVO {
 	@ApiModelProperty(value="疑难点解析视频URL")
 	private String puzzleVideoUrl;
 	
+	@MapedProperty(value="puzzleVideoPosterUri")
+	@ApiModelProperty(value="疑难点解析视频poster url")
+	private String puzzleVideoPosterUrl;
+	
+	@ApiModelProperty(value="疑难点解析视频标题")
+	private String puzzleVideoTitle;
+	
+	
 	@MapedProperty("practicalVideoUri")
 	@ApiModelProperty(value="上课实际视频URL")
 	private String practicalVideoUrl;
+	
+	@ApiModelProperty(value="上课实际视频 poster url")
+	@MapedProperty("practicalVideoPosterUri")
+	private String practicalVideoPosterUrl;
+	
+	@ApiModelProperty(value="上课实际视频的标题")
+	private String practicalVideoTitle;
 	
 	public String getConnotation() {
 		return connotation;
@@ -72,9 +92,6 @@ public class LessonConnotationVO {
 	}
 	public String getPictureUrl() {
 		return pictureUrl;
-	}
-	public String getVideoUrl() {
-		return videoUrl;
 	}
 	public String getAudioName() {
 		return audioName;
@@ -102,9 +119,6 @@ public class LessonConnotationVO {
 	}
 	public void setPictureUrl(String pictureUrl) {
 		this.pictureUrl = pictureUrl;
-	}
-	public void setVideoUrl(String videoUrl) {
-		this.videoUrl = videoUrl;
 	}
 	public void setAudioName(String audioName) {
 		this.audioName = audioName;
@@ -149,10 +163,53 @@ public class LessonConnotationVO {
 		vo.setAudioUrl(fileService.getFileUrl(po.getAudioUri()));
 		vo.setPracticalVideoUrl(fileService.getFileUrl(po.getPracticalVideoUri()));
 		vo.setPuzzleVideoUrl(fileService.getFileUrl(po.getPuzzleVideoUri()));
-		vo.setVideoUrl(fileService.getFileUrl(po.getVideoUri()));
+		vo.setStandardVideoPosterUrl(fileService.getFileUrl(po.getStandardVideoUri()));
 		
 		return vo;
 	}
 	
+	}
+
+	public String getStandardVideoUrl() {
+		return standardVideoUrl;
+	}
+	public String getStandardVideoPosterUrl() {
+		return standardVideoPosterUrl;
+	}
+	public String getStandardVideoTitle() {
+		return standardVideoTitle;
+	}
+	public String getPuzzleVideoPosterUrl() {
+		return puzzleVideoPosterUrl;
+	}
+	public String getPuzzleVideoTitle() {
+		return puzzleVideoTitle;
+	}
+	public String getPracticalVideoPosterUrl() {
+		return practicalVideoPosterUrl;
+	}
+	public String getPracticalVideoTitle() {
+		return practicalVideoTitle;
+	}
+	public void setStandardVideoUrl(String standardVideoUrl) {
+		this.standardVideoUrl = standardVideoUrl;
+	}
+	public void setStandardVideoPosterUrl(String standardVideoPosterUrl) {
+		this.standardVideoPosterUrl = standardVideoPosterUrl;
+	}
+	public void setStandardVideoTitle(String standardVideoTitle) {
+		this.standardVideoTitle = standardVideoTitle;
+	}
+	public void setPuzzleVideoPosterUrl(String puzzleVideoPosterUrl) {
+		this.puzzleVideoPosterUrl = puzzleVideoPosterUrl;
+	}
+	public void setPuzzleVideoTitle(String puzzleVideoTitle) {
+		this.puzzleVideoTitle = puzzleVideoTitle;
+	}
+	public void setPracticalVideoPosterUrl(String practicalVideoPosterUrl) {
+		this.practicalVideoPosterUrl = practicalVideoPosterUrl;
+	}
+	public void setPracticalVideoTitle(String practicalVideoTitle) {
+		this.practicalVideoTitle = practicalVideoTitle;
 	}
 }

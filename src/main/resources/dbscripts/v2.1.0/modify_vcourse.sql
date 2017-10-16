@@ -1,5 +1,6 @@
 ALTER table chenkuserdb1.skt6 add COLUMN(dataStatus int not null DEFAULT 0);
 ALTER TABLE chenkuserdb1.skt6 add COLUMN(sumLessonTimes int);
+alter TABLE chenkuserdb1.skt6 add COLUMN(videoPosterUri VARCHAR(128), videoTitle VARCHAR(128));
 
 CREATE 
 or REPLACE
@@ -59,10 +60,11 @@ VIEW yiwu.`vcourse` AS
         `chenkuserdb1`.`skt6`.`SKF921` AS `briefIntroduction`,
         `chenkuserdb1`.`skt6`.`SKF922` AS `picture`,
         `chenkuserdb1`.`skt6`.`SKF923` AS `videoURL`,
+        videoPosterUri,
+        videoTitle,
         `chenkuserdb1`.`skt6`.`SKF924` AS `audio`,
         `chenkuserdb1`.`skt6`.`SKF925` AS `audioURL`,
         `chenkuserdb1`.`skt6`.`SKF949` AS `danceIntroduction`,
         `chenkuserdb1`.`skt6`.`SKF1034` AS `subCourseType`
     FROM
         `chenkuserdb1`.`skt6`;
-

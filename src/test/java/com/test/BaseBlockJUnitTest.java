@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
 @RunWith(BlockJUnit4ClassRunner.class)
-public class BaseBlockJUnitTest {
+public abstract class BaseBlockJUnitTest {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 }

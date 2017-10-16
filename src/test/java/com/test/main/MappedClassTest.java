@@ -32,7 +32,7 @@ public class MappedClassTest extends BaseSpringTest{
 	@Autowired private CourseYzwService courseService;
 	
 	
-	@Test
+//	@Test
 	public void testConvert(){
 		int empId = 22;
 		EmployeeYzw emp = empService.get(empId);
@@ -51,7 +51,7 @@ public class MappedClassTest extends BaseSpringTest{
 		
 	}
 	
-	@Test
+//	@Test
 	public void testLessonVO(){
 		int lessonId = 208693;
 		LessonYzw lesson = lessonService.get(lessonId);
@@ -70,7 +70,7 @@ public class MappedClassTest extends BaseSpringTest{
 	}
 	
 	
-	@Test
+//	@Test
 	public void testCourseVO(){
 		String courseId = "20170905004";
 		CourseYzw course = courseService.get(courseId);
@@ -90,5 +90,8 @@ public class MappedClassTest extends BaseSpringTest{
 		}
 	}
 	
-	
+	@Test
+	public void test(){
+		System.out.println("fuck you!");
+	}
 }

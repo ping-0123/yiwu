@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.model.view;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +12,9 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
+import com.yinzhiwu.yiwu.service.impl.FileService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
+import com.yinzhiwu.yiwu.util.beanutils.AbstractVO;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
@@ -22,7 +23,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @MapedClass(CourseYzw.class)
 @ApiModel(description="课程VO")
-public class CourseVO {
+public class CourseVO extends AbstractVO<CourseYzw, CourseVO> {
 	
 	@MapedProperty
 	private String id;
@@ -85,8 +86,40 @@ public class CourseVO {
 	@ApiModelProperty("是否为即将上课")
 	private boolean comming;
 	
-	List<LessonYzw> lessons = new ArrayList<>();
+	@MapedProperty(ignored=true)
+	@ApiModelProperty("第一节课的课时内容信息")
+	private LessonConnotationVO firstLessonConnotation;
 	
+	@Override
+	public CourseVO fromPO(CourseYzw po) {
+		super.fromPO(po);
+		if(this.connotation !=null){
+			FileService fileService = SpringUtils.getBean(FileService.class);
+			connotation.setAudioUrl(fileService.getFileUrl(connotation.getAudioUrl()));
+			connotation.setPictureUrl(fileService.getFileUrl(connotation.getPictureUrl()));
+			connotation.setVideoUrl(fileService.getFileUrl(connotation.getVideoUrl()));
+			connotation.setVideoPosterUrl(fileService.getFileUrl(connotation.getVideoPosterUrl()));
+		}
+		List<LessonYzw> lessons = po.getLessons();
+		if(lessons.size() >0){
+			for (LessonYzw lesson : lessons) {
+				if(1==lesson.getOrdinalNo()){
+					firstLessonConnotation = new LessonVO().fromPO(lesson).getConnotation();
+					break;
+				}
+			}
+		}
+		return this;
+	}
+	
+	public LessonConnotationVO getFirstLessonConnotation() {
+		return firstLessonConnotation;
+	}
+
+	public void setFirstLessonConnotation(LessonConnotationVO firstLessonConnotation) {
+		this.firstLessonConnotation = firstLessonConnotation;
+	}
+
 	public CourseVO() {
 	};
 
@@ -236,14 +269,6 @@ public class CourseVO {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public List<LessonYzw> getLessons() {
-		return lessons;
-	}
-
-	public void setLessons(List<LessonYzw> lessons) {
-		this.lessons = lessons;
 	}
 
 	public void setSumLessonTimes(Integer sumLessonTimes) {

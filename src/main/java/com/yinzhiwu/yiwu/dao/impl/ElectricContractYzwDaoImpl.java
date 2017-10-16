@@ -14,4 +14,5 @@ public class ElectricContractYzwDaoImpl extends BaseDaoImpl<ElectricContractYzw,
 		econtract.init();
 		return (String) getSession().save(econtract);
 	}
+
 }

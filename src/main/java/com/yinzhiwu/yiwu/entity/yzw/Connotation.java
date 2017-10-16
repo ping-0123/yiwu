@@ -2,27 +2,18 @@ package com.yinzhiwu.yiwu.entity.yzw;
 
 import javax.persistence.Embeddable;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
-@ApiModel(description="课程内容")
 @Embeddable
 public class Connotation {
 
-	@ApiModelProperty(value="课程内容")
 	private String connotation;
-	@ApiModelProperty(value="帮助信息")
 	private String helpInfomation;
-	@ApiModelProperty(value="简介")
 	private String introduction;
-	@ApiModelProperty(value="图片URI")
 	private String pictureUri;
-	@ApiModelProperty(value="标准视频URI")
 	private String videoUri;
+	private String videoPosterUri;
+	private String videoTitle;
 	private String audioName;
-	@ApiModelProperty(value="音乐URI")
 	private String audioUri;
-	@ApiModelProperty(value="舞蹈简介")
 	private String danceIntroduction;
 
 	public String getConnotation() {
@@ -88,5 +79,23 @@ public class Connotation {
 	public void setAudioUri(String audioUri) {
 		this.audioUri = audioUri;
 	}
+
+	public String getVideoPosterUri() {
+		return videoPosterUri;
+	}
+
+	public String getVideoTitle() {
+		return videoTitle;
+	}
+
+	public void setVideoPosterUri(String videoPosterUri) {
+		this.videoPosterUri = videoPosterUri;
+	}
+
+	public void setVideoTitle(String videoTitle) {
+		this.videoTitle = videoTitle;
+	}
+	
+	
 
 }

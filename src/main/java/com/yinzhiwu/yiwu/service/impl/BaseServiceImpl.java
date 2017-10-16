@@ -100,6 +100,12 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	public PageBean<T> findPageOfAll(int pageNo, int pageSize) {
 		return baseDao.findPageOfAll(pageNo, pageSize);
 	}
+	
+	
+	@Override
+	public PageBean<T> findPageByExample(T example, Integer pageNum, Integer pageSize) {
+		return baseDao.findPageByExample(example, pageNum, pageSize);
+	}
 
 	@Override
 	public DataTableBean<T> findDataTable(QueryParameter parameter) throws NoSuchFieldException, SecurityException{

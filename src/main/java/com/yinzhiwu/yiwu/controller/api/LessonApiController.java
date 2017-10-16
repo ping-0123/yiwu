@@ -45,14 +45,12 @@ public class LessonApiController extends BaseController {
 	@Autowired
 	private LessonYzwService lessonService;
 
-
-	@RequestMapping(value = "/{id}", method = { RequestMethod.GET })
+	@RequestMapping(value = "/{id}", method = {RequestMethod.GET})
 	@ResponseBody
 	public LessonVO getLesson2(@PathVariable Integer id) {
 		return new LessonVO().fromPO(lessonService.get(id));
 	}
 
-	
 	@GetMapping(value = "/{id}/connotation")
 	@ResponseBody
 	@ApiOperation(value = "根据课时Id获取课时内涵信息")

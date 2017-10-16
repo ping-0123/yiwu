@@ -33,8 +33,7 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 @Service
 public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> implements LessonYzwService {
 
-	@Autowired
-	private LessonYzwDao lessonDao;
+	@Autowired private LessonYzwDao lessonDao;
 	@Autowired private AppointmentYzwDao appointmentYzwDao;
 	@Autowired private CustomerYzwDao customerYzwDao;
 	@Autowired private StoreManCallRollYzwDao storeManCallRollYzwDao;
@@ -229,7 +228,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		
 		con.setAudioUri(fileService.getFileUrl(con.getAudioUri()));
 		con.setPictureUri(fileService.getFileUrl(con.getPictureUri()));
-		con.setVideoUri(fileService.getFileUrl(con.getVideoUri()));
+		con.setStandardVideoPosterUri(fileService.getFileUrl(con.getStandardVideoUri()));
 		con.setPracticalVideoUri(fileService.getFileUrl(con.getPracticalVideoUri()));
 		con.setPuzzleVideoUri(fileService.getFileUrl(con.getPuzzleVideoUri()));
 	}

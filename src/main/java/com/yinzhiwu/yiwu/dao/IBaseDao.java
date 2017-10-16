@@ -23,8 +23,9 @@ public interface IBaseDao<T, PK extends Serializable> {
 	public T get(PK id);
 	public List<T> findAll();
 	public Long findCount();
-	PageBean<T> findPageOfAll(int pageNo, int pageSize);
-
+	public PageBean<T> findPageOfAll(int pageNo, int pageSize);
+	public PageBean<T> findPageByExample(T example, Integer pageNo, Integer pageSize);
+	
 	/**
 	 * 如果T中的某一成员变量的class为@Entity注解, 则查询时忽略该属性， 即查询语句没有表的关联
 	 * 

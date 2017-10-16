@@ -56,7 +56,7 @@ public class IndexController extends BaseController {
     	return "redirect:/system/index";
     }
     	
-    @RequestMapping("/system/welcome")
+    @GetMapping("/system/welcome")
     public String welcome() {
         return "welcome";
     }

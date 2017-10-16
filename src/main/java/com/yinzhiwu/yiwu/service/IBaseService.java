@@ -45,6 +45,7 @@ public interface IBaseService<T, PK extends Serializable> {
 	public List<T> findByExample(T entity);
 
 	public PageBean<T> findPageOfAll(int pageNum, int pageSize);
+	public PageBean<T> findPageByExample(T example, Integer pageNum, Integer pageSize);
 	
 	public DataTableBean<T> findDataTable(QueryParameter parameter) throws NoSuchFieldException, SecurityException;
 }

@@ -2,12 +2,16 @@ package com.yinzhiwu.yiwu.model.view;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Converter;
+import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.service.impl.FileService;
+import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractVO;
 import com.yinzhiwu.yiwu.util.beanutils.MapedClassUtils;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
@@ -25,8 +29,6 @@ import io.swagger.annotations.ApiModelProperty;
 @MapedClass(LessonYzw.class)
 @ApiModel(description="课时VO")
 public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
-	
-	
 	
 	@MapedProperty
 	private Integer id;
@@ -62,7 +64,7 @@ public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
 	private String storeName;
 	
 	@MapedProperty(value="store.officialAddress.detailAddress", inverse=false)
-	@ApiModelProperty(value="上课所在门店地址")
+	@ApiModelProperty(value="上课所在门店地址", required=false)
 	private String storeAddress;
 	
 	@MapedProperty("dueTeacher.id")
@@ -84,8 +86,35 @@ public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
 	private LessonConnotationVO connotation;
 	
 	@MapedProperty(ignored=true)
-	@ApiModelProperty(value="所有点赞人姓名，以逗号分隔")
+	@ApiModelProperty(value="所有点赞人姓名，以逗号分隔", required=false)
 	private String praisers;
+	
+	
+	@Override
+	public LessonVO fromPO(LessonYzw po) {
+		super.fromPO(po);
+		if(connotation !=null){
+			FileService fileService = SpringUtils.getBean(FileService.class);
+			connotation.setAudioUrl(fileService.getFileUrl(connotation.getAudioUrl()));
+			connotation.setPictureUrl(fileService.getFileUrl(connotation.getPictureUrl()));
+			connotation.setStandardVideoUrl(fileService.getFileUrl(connotation.getStandardVideoUrl()));
+			connotation.setStandardVideoPosterUrl(fileService.getFileUrl(connotation.getStandardVideoPosterUrl()));
+			connotation.setPuzzleVideoPosterUrl(fileService.getFileUrl(connotation.getPuzzleVideoPosterUrl()));
+			connotation.setPuzzleVideoUrl(fileService.getFileUrl(connotation.getPuzzleVideoUrl()));
+			connotation.setPracticalVideoPosterUrl(fileService.getFileUrl(connotation.getPracticalVideoPosterUrl()));
+			connotation.setPracticalVideoUrl(fileService.getFileUrl(connotation.getPracticalVideoUrl()));
+		}
+		List<LessonPraise> lps = po.getPraises();
+		if(lps.size()>0){
+			StringBuilder builder =new StringBuilder();
+			for(LessonPraise praise:lps){
+				builder.append(praise.getDistributer().getName()).append(",");
+			}
+			praisers = builder.substring(0, builder.length()-1);
+		}
+		return this;
+	}
+	
 	
 	public Integer getId() {
 		return id;

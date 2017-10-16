@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,11 +11,13 @@ import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.LessonPraiseService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -26,6 +29,7 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping(value="/api/praises")
+@Api(value="课时点赞模块")
 public class LessonPraiseController extends BaseController {
 	
 	@Autowired private LessonPraiseService lpService;
@@ -35,7 +39,7 @@ public class LessonPraiseController extends BaseController {
 	@PostMapping
 	@ApiOperation(value = "点赞")
 	public YiwuJson<?> doPost(
-			@ApiParam(value="客户的distributerId", required =true) Integer distributerId,
+			@ApiParam(value="客户的distributerId", required =true) int distributerId,
 			@ApiParam(value="课时Id", required=true) Integer lessonId
 	){
 		
@@ -62,10 +66,23 @@ public class LessonPraiseController extends BaseController {
 	){
 		try {
 			LessonPraise lp = lpService.findByDistributerIdAndLessonId(distributerId, lessonId);
+			if(lp==null) throw new DataNotFoundException();
 			lpService.delete(lp);
-			
 			return YiwuJson.createBySuccess();
 		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
+	}
+	
+	@DeleteMapping(value="/{id}")
+	@ApiOperation(value="删除点赞记录")
+	public YiwuJson<?> delete(@PathVariable(name="id") Integer id){
+		
+		try{
+			lpService.delete(id);
+			return YiwuJson.createBySuccess();
+		}catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return YiwuJson.createByErrorMessage(e.getMessage());
 		}
