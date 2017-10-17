@@ -117,6 +117,11 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		
 		return list.size()>0?list.get(0):null;
 	}
+	
+	protected T findOneByProperties(String[] propertyNames, Object[] values){
+		
+		return null;
+	}
 
 	protected Long findCountByProperty(String propertyName, Object value) {
 		Assert.hasText(propertyName, "属性名不能为空");

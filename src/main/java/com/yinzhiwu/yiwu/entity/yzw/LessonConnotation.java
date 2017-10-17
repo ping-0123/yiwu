@@ -1,5 +1,7 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
+import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -9,8 +11,9 @@ import io.swagger.annotations.ApiModelProperty;
 *
 */
 
+@SuppressWarnings("serial")
 @ApiModel(description="课时内容")
-public class LessonConnotation {
+public class LessonConnotation implements Serializable{
 	
 	@ApiModelProperty(value="课时内容")
 	private String connotation;

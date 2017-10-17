@@ -34,4 +34,6 @@ public interface LessonYzwService extends IBaseService<LessonYzw, Integer> {
 
 	LessonYzw findComingLessonByCourseId(String courseId);
 	public  void setConnatationUrls(LessonConnotation con);
+
+	LessonYzw findByCourseIdAndOrdinalNo(String id, Integer ordinalNo);
 }

@@ -89,6 +89,9 @@ public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
 	@ApiModelProperty(value="所有点赞人姓名，以逗号分隔", required=false)
 	private String praisers;
 	
+	@MapedProperty(ignored=true)
+	@ApiModelProperty(value="是否已点赞",required=false)
+	private boolean praised;
 	
 	@Override
 	public LessonVO fromPO(LessonYzw po) {
@@ -116,6 +119,16 @@ public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
 	}
 	
 	
+	public boolean isPraised() {
+		return praised;
+	}
+
+
+	public void setPraised(boolean praised) {
+		this.praised = praised;
+	}
+
+
 	public Integer getId() {
 		return id;
 	}

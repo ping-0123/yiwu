@@ -274,4 +274,9 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		return lessons.size()>0?lessons.get(0):null;
 	}
 
+	@Override
+	public LessonYzw findByCourseIdAndOrdinalNo(String courseId, Integer ordinalNo) {
+		return findOneByProperty(propertyName, value)(new String[]{"course.id", "ordinalNo"}, new Object[]{courseId, ordinalNo} );
+	}
+
 }

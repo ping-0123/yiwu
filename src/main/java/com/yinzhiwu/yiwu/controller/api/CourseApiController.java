@@ -23,6 +23,7 @@ import com.yinzhiwu.yiwu.service.CourseYzwService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping(value = "/api/course")
@@ -54,6 +55,19 @@ public class CourseApiController extends BaseController {
 		
 		return YiwuJson.createBySuccess(
 				new PageBean<>(pageSize, pageNo, page.getTotalRecord(), vos));
+	}
+	
+	@GetMapping("/{id}/lessons/{ordinalNo}")
+	@ApiOperation(value="获取课程{id}的第{ordinalNo}节课")
+	public YiwuJson<LessonVO> findTheOrdinalNoLesson(
+			@ApiParam(value="课程Id") @PathVariable(value="id", required = true) String id,
+			@ApiParam(value="课时序号， 即第几节课") @PathVariable(value="id", required=true) Integer ordinalNo )
+	{
+		LessonYzw lesson = lessonService.findByCourseIdAndOrdinalNo(id, ordinalNo);
+		if(lesson !=null)
+			return YiwuJson.createBySuccess(new LessonVO().fromPO(lesson));
+		else
+			return YiwuJson.createByErrorMessage("系统中未找到符合条件的记录");
 	}
 	
 	@GetMapping("/{id}")

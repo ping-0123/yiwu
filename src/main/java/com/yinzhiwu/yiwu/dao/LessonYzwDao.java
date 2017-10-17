@@ -30,4 +30,6 @@ public interface LessonYzwDao extends IBaseDao<LessonYzw, Integer> {
 	Long findCountByCourseId(String id);
 
 	LessonYzw findByCourseIdAndStartDateTime(String courseId, Date start, Date end);
+
+	LessonYzw findByCourseIdAndOrdinalNo(String courseId, Integer ordinalNo);
 }

@@ -26,4 +26,5 @@ public class QiniuService {
 		Auth auth = Auth.create(config.getAccessKey(), config.getSecretKey());
 		return auth.uploadToken(config.getBucket());
 	}
+	
 }

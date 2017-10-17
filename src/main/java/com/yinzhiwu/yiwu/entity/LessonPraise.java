@@ -5,6 +5,7 @@ import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -26,16 +27,26 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 public class LessonPraise extends BaseEntity {
 
 	@NotNull
+	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_lesson_id", value=ConstraintMode.NO_CONSTRAINT))
 	private LessonYzw lesson;
 	
 	@NotNull
+	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_distributer_id", value=ConstraintMode.NO_CONSTRAINT))
 	private Distributer distributer;
 	
 	@Column(columnDefinition="boolean default false")
-	private boolean canceled;
+	private Boolean canceled;
 	
+	
+	
+	@Override
+	public void init() {
+		super.init();
+		canceled = false;
+	}
+
 	public LessonYzw getLesson() {
 		return lesson;
 	}

@@ -232,4 +232,12 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		con.setPracticalVideoUri(fileService.getFileUrl(con.getPracticalVideoUri()));
 		con.setPuzzleVideoUri(fileService.getFileUrl(con.getPuzzleVideoUri()));
 	}
+
+	@Override
+	public LessonYzw findByCourseIdAndOrdinalNo(String courseId, Integer ordinalNo) {
+		Assert.hasLength(courseId);
+		Assert.notNull(ordinalNo);
+		
+		return lessonDao.findByCourseIdAndOrdinalNo(courseId, ordinalNo);
+	}
 }
