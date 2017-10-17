@@ -119,8 +119,36 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 	
 	protected T findOneByProperties(String[] propertyNames, Object[] values){
+		if(propertyNames.length != values.length){
+			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
+		}
+		String[] properties = new String[propertyNames.length];
 		
-		return null;
+		StringBuilder builder = new StringBuilder();
+		builder.append("FROM " + entityClass.getSimpleName());
+		builder.append(" WHERE 1=1");
+		for(int i = 0; i<propertyNames.length; i++){
+			if(StringUtils.hasLength(propertyNames[i])){
+				properties[i] = propertyNames[i].replace(".", "");
+				builder.append(" AND " + propertyNames[i] + "=:" +properties[i]);
+			}else {
+				throw new IllegalArgumentException("属性名不能为空为null");
+			}
+		}
+		
+		 Query<T> query = getSession().createQuery(builder.toString(), entityClass)
+				 .setMaxResults(1);
+		 for(int j=0; j<properties.length;j++){
+			 query.setParameter(properties[j], values[j]);
+		 }
+		 
+		 List<T> list = query.getResultList();
+		if(list == null || list.size()==0) 
+			return null;
+		else {
+			return list.get(0);
+		}
+		
 	}
 
 	protected Long findCountByProperty(String propertyName, Object value) {

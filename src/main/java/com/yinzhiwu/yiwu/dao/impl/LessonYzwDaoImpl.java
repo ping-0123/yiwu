@@ -276,7 +276,7 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 
 	@Override
 	public LessonYzw findByCourseIdAndOrdinalNo(String courseId, Integer ordinalNo) {
-		return findOneByProperty(propertyName, value)(new String[]{"course.id", "ordinalNo"}, new Object[]{courseId, ordinalNo} );
+		return findOneByProperties(new String[]{"course.id", "ordinalNo"}, new Object[]{courseId, ordinalNo} );
 	}
 
 }

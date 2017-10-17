@@ -121,7 +121,7 @@ public class CourseApiController extends BaseController {
 			PageBean<LessonYzw> page1 = new PageBean<>(pageSize,pageNo,lessons);
 			List<LessonVO> vos = new ArrayList<>();
 			for (LessonYzw lesson : page1.getList()) {
-				vos.add(LessonVO.fromDAO(lesson));
+				vos.add(new LessonVO().fromPO(lesson));
 			}
 			
 			PageBean<LessonVO> page2 = new PageBean<>(pageSize,pageNo,lessons.size(),vos);
