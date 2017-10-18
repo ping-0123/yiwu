@@ -22,5 +22,5 @@ public class BeanUtilTest extends BaseBlockJUnitTest{
 		String uri = "aaaaaaaaaaa";
 		
 		System.err.println(courseVO.getConnotation().getHelpInfomation());
-	}
+	}	
 }

@@ -7,6 +7,7 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
@@ -22,7 +23,8 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="yiwu_praise")
+@Table(name="yiwu_praise", uniqueConstraints=
+	@UniqueConstraint(name="uk_praise_lessonId_distributerId", columnNames={"lesson_id", "distributer_id"}))
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class LessonPraise extends BaseEntity {
 

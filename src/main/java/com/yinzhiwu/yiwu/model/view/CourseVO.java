@@ -103,7 +103,7 @@ public class CourseVO extends AbstractVO<CourseYzw, CourseVO> {
 		List<LessonYzw> lessons = po.getLessons();
 		if(lessons.size() >0){
 			for (LessonYzw lesson : lessons) {
-				if(1==lesson.getOrdinalNo()){
+				if(lesson.getOrdinalNo() !=null && lesson.getOrdinalNo() == 1){
 					firstLessonConnotation = new LessonVO().fromPO(lesson).getConnotation();
 					break;
 				}
