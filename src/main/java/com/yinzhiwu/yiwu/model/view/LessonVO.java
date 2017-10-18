@@ -8,6 +8,8 @@ import org.springframework.beans.BeanUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Converter;
+import com.yinzhiwu.yiwu.context.UserContext;
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.service.impl.FileService;
@@ -110,8 +112,18 @@ public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
 		List<LessonPraise> lps = po.getPraises();
 		if(lps.size()>0){
 			StringBuilder builder =new StringBuilder();
-			for(LessonPraise praise:lps){
-				builder.append(praise.getDistributer().getName()).append(",");
+			Distributer currentDistributer = UserContext.getDistributer();
+			if(currentDistributer == null){
+				for(LessonPraise praise:lps){
+					builder.append(praise.getDistributer().getName()).append(",");
+				}
+			}else{
+				for(LessonPraise praise:lps){
+					builder.append(praise.getDistributer().getName()).append(",");
+					if(!praised && currentDistributer.equals(praise.getDistributer())){
+						praised=true;
+					}
+				}
 			}
 			praisers = builder.substring(0, builder.length()-1);
 		}

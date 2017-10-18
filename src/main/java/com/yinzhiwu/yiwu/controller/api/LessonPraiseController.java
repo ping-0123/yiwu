@@ -44,6 +44,8 @@ public class LessonPraiseController extends BaseController {
 	){
 		
 		try {
+			if(lpService.findByDistributerIdAndLessonId(distributerId, lessonId) !=null)
+				return YiwuJson.createByErrorMessage("已点赞,无须重复点赞");
 			Distributer distributer = distributerService.get(distributerId);
 			LessonYzw lesson = lessonService.get(lessonId);
 			LessonPraise lp = new LessonPraise();

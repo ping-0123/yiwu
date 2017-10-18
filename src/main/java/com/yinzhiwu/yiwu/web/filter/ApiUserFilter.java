@@ -6,13 +6,13 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.yinzhiwu.yiwu.context.Constants;
 import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.service.DistributerService;
+import com.yinzhiwu.yiwu.util.SpringUtils;
 
 /**
 *@Author ping
@@ -25,6 +25,7 @@ public class ApiUserFilter extends OncePerRequestFilter {
 	private static final String LOGIN_API_URL = "/api/distributer/login";
 	private static final String REGISTER_API_URL = "/api/distributer/register.do";
 	private static final String ERROR_API_URL = "/api/error";
+	@SuppressWarnings("unused")
 	private static final String ERROR_UNLOGIN_API_URL = "/api/error/unlogin";
 
 	@Override
@@ -48,14 +49,24 @@ public class ApiUserFilter extends OncePerRequestFilter {
 			return;
 		}
 		
-		HttpSession session = request.getSession();
-		Distributer distributer = (Distributer) session.getAttribute(Constants.CURRENT_USER);
-		if(distributer!= null && distributer instanceof Distributer){
-			UserContext.setDistributer(distributer);
-			filterChain.doFilter(request, response);
-		}else {
-			request.getRequestDispatcher(ERROR_UNLOGIN_API_URL).forward(request, response);
+		String distributerId = request.getParameter("distributerId");
+		if(distributerId !=null && distributerId.trim().length()>0){
+			DistributerService disService = SpringUtils.getBean(DistributerService.class);
+			Distributer distributer = disService.get(Integer.valueOf(distributerId));
+			if(distributer !=null)
+				UserContext.setDistributer(distributer);
 		}
+		
+		filterChain.doFilter(request, response);
+
+//		HttpSession session = request.getSession();
+//		Distributer distributer = (Distributer) session.getAttribute(Constants.CURRENT_USER);
+//		if(distributer!= null && distributer instanceof Distributer){
+//			UserContext.setDistributer(distributer);
+//			filterChain.doFilter(request, response);
+//		}else {
+////			request.getRequestDispatcher(ERROR_UNLOGIN_API_URL).forward(request, response);
+//		}
 	}
 
 }

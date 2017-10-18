@@ -84,6 +84,15 @@
 		<url-pattern>/api/*</url-pattern>
 	</filter-mapping>
 
+	<!-- api Filter -->
+	<filter>
+		<filter-name>ApiUserFilter</filter-name>
+		<filter-class>com.yinzhiwu.yiwu.web.filter.ApiUserFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ApiUserFilter</filter-name>
+		<url-pattern>/api/*</url-pattern>
+	</filter-mapping>
 	<!-- 
 	<servlet>
 		<servlet-name>default</servlet-name>
