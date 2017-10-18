@@ -288,6 +288,7 @@ div#right-menu ul li{
 	 			setTimeout(() => {
 	 				loadDepartmentZtree();
 				}, 1500);
+	 			hiddenRightMenu();
 	 		}
 	 		
 	 		function doSearch(){
@@ -306,9 +307,14 @@ div#right-menu ul li{
 	 				doSearch();
 	 		}
 	 		
+
+	 		
 	 		var operating_department_id,ztree,$ZTREE, ztreeId,menu;
 	        $(document).ready(function(){
 	        	ztree=loadDepartmentZtree();
+	        	
+		 		$(".modal-create").on("show.bs.modal",hiddenRightMenu);
+		 		$(".modal-update").on("show.bs.modal", hiddenRightMenu);
 	        });
   </script>
   
