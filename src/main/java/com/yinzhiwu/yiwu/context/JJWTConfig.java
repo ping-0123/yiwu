@@ -12,6 +12,7 @@ import io.jsonwebtoken.impl.crypto.MacProvider;
 
 public abstract class JJWTConfig {
 	
-	public static final String AUTHORIZATION_HEADER_PREFIX = "Bearer ";
+	public static final String AUTHORIZATION_HEADER_PREFIX = "Yiwu ";
 	public static final Key secretKey = MacProvider.generateKey();
+	public static final long lifeCycleInSeconds = 7200; //两小时
 }
