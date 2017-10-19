@@ -7,8 +7,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.yinzhiwu.yiwu.context.JJWTConfig;
 import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.service.DistributerService;
@@ -31,15 +33,6 @@ public class ApiUserFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		/**
-		response.setContentType("textml;charset=UTF-8");
-		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
-		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-		response.setHeader("Access-Control-Max-Age", "0");
-		response.setHeader("Access-Control-Allow-Headers", "Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With,userId,token");
-		response.setHeader("Access-Control-Allow-Credentials", "true");
-		response.setHeader("XDomainRequestAllowed","1");
-		*/
 		
 		if(request.getServletPath().contains(LOGIN_API_URL)
 				|| request.getServletPath().contains(ERROR_API_URL)
@@ -49,6 +42,13 @@ public class ApiUserFilter extends OncePerRequestFilter {
 			return;
 		}
 		
+		final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+		if(authHeader==null || !authHeader.startsWith(JJWTConfig.AUTHORIZATION_HEADER_PREFIX)){
+			throw new ServletException("Missing or invaid Authorization header");
+		}
+		
+		final String token = authHeader.substring(JJWTConfig.AUTHORIZATION_HEADER_PREFIX.length());
+		
 		String distributerId = request.getParameter("distributerId");
 		if(distributerId !=null && distributerId.trim().length()>0){
 			DistributerService disService = SpringUtils.getBean(DistributerService.class);
@@ -56,17 +56,9 @@ public class ApiUserFilter extends OncePerRequestFilter {
 			if(distributer !=null)
 				UserContext.setDistributer(distributer);
 		}
-		
+		 
 		filterChain.doFilter(request, response);
 
-//		HttpSession session = request.getSession();
-//		Distributer distributer = (Distributer) session.getAttribute(Constants.CURRENT_USER);
-//		if(distributer!= null && distributer instanceof Distributer){
-//			UserContext.setDistributer(distributer);
-//			filterChain.doFilter(request, response);
-//		}else {
-////			request.getRequestDispatcher(ERROR_UNLOGIN_API_URL).forward(request, response);
-//		}
 	}
 
 }
