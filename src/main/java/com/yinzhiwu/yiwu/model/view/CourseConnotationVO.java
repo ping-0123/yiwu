@@ -4,7 +4,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.entity.yzw.Connotation;
-import com.yinzhiwu.yiwu.service.impl.FileService;
+import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
@@ -132,7 +132,7 @@ public class CourseConnotationVO {
 	protected CourseConnotationVO doBackward(Connotation po) {
 		CourseConnotationVO vo = new CourseConnotationVO();
 		BeanUtils.copyProperties(po, vo);
-		FileService fileService = SpringUtils.getBean(FileService.class);
+		FileServiceImpl fileService = SpringUtils.getBean(FileServiceImpl.class);
 		vo.setPictureUrl(fileService.getFileUrl(po.getPictureUri()));
 		vo.setAudioUrl(fileService.getFileUrl(po.getAudioUri()));
 		vo.setVideoUrl(fileService.getFileUrl(po.getVideoUri()));

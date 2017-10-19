@@ -5,7 +5,7 @@ import org.springframework.beans.BeanUtils;
 import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.enums.Gender;
-import com.yinzhiwu.yiwu.service.impl.FileService;
+import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractVO;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
@@ -70,7 +70,7 @@ public class CoachVO extends AbstractVO<EmployeeYzw, CoachVO>{
 		protected CoachVO doBackward(EmployeeYzw b) {
 			CoachVO coach = new CoachVO();
 			BeanUtils.copyProperties(b, coach);
-			FileService fileService=SpringUtils.getBean(FileService.class);
+			FileServiceImpl fileService=SpringUtils.getBean(FileServiceImpl.class);
 			coach.setPortraitUri(fileService.getFileUrl(coach.getPortraitUri()));
 			return coach;
 		}

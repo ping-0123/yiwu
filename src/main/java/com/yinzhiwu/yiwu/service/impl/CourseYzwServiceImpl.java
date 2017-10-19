@@ -8,6 +8,7 @@ import com.yinzhiwu.yiwu.dao.CourseYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.Connotation;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
+import com.yinzhiwu.yiwu.service.FileService;
 
 @Service
 public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> implements CourseYzwService {

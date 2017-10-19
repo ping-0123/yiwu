@@ -12,7 +12,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
-import com.yinzhiwu.yiwu.service.impl.FileService;
+import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractVO;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
@@ -94,7 +94,7 @@ public class CourseVO extends AbstractVO<CourseYzw, CourseVO> {
 	public CourseVO fromPO(CourseYzw po) {
 		super.fromPO(po);
 		if(this.connotation !=null){
-			FileService fileService = SpringUtils.getBean(FileService.class);
+			FileServiceImpl fileService = SpringUtils.getBean(FileServiceImpl.class);
 			connotation.setAudioUrl(fileService.getFileUrl(connotation.getAudioUrl()));
 			connotation.setPictureUrl(fileService.getFileUrl(connotation.getPictureUrl()));
 			connotation.setVideoUrl(fileService.getFileUrl(connotation.getVideoUrl()));

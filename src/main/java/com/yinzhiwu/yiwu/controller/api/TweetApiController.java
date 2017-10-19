@@ -20,8 +20,9 @@ import com.yinzhiwu.yiwu.model.TweetModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.TweetAbbrApiView;
 import com.yinzhiwu.yiwu.model.view.TweetApiView;
+import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.TweetService;
-import com.yinzhiwu.yiwu.service.impl.FileService;
+import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
 
 import io.swagger.annotations.ApiOperation;
 

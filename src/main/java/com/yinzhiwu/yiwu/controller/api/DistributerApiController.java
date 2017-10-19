@@ -37,8 +37,9 @@ import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 import com.yinzhiwu.yiwu.service.DistributerService;
+import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
-import com.yinzhiwu.yiwu.service.impl.FileService;
+import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

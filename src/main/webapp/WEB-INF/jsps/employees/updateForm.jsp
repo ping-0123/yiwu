@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>post edition</title>
 <!-- Bootstrap -->
+<style type="text/css">
+img{width:120px, height:120px}
+</style>
 </head>
 <body>
 
@@ -46,7 +49,6 @@
 					<input name="cellphone" value="${employee.cellphone}" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
 				</div>
 			</div>
-
 
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">邮箱 </label>
@@ -98,28 +100,29 @@
 		
 		Dropzone.autoDiscover=false;
 		var myDropzone=new Dropzone("#myDropzone", {
-	        url: "http://localhost:9090/yiwu/api/file",
+	        url: "${uploadUrl}",
+	        method: "POST",
+	        params:{"token":"${uploadToken}"},
 	        addRemoveLinks:true,
 	        dictRemoveLinks:"x",
 	        dictRemoveFile:"移除",
-	        dictMaxFilesExceeded:"最多只能上传一个文件",
-	        method: 'post',
+	        dictMaxFilesExceeded:"",
 	        maxFiles:1,
 	        filesizeBase: 1024,
+	        
 	        sending:function(file, xhr, formData) {
 	            formData.append("filesize", file.size);
 	        },
 	        success:function (file, response, e) {
-	        	$("#portraitUri").val(response.url);
-	           	if (response.error) {
-	                $(file.previewTemplate).children('.dz-error-mark').css('opacity', '1');
-	            }
+	        	$("#portraitUri").val(response.key);
+	        },
+	        init:function(){
+			    var mockFile = {name:"${employee.portraitUri}", width:"120px", height:"120px"};
+			    this.emit("addedfile", mockFile);
+			    this.emit("thumbnail", mockFile, "${cdnUrl}/${employee.portraitUri}");
+			    this.emit("complete", mockFile);
 	        }
 	    });
-	    var mockFile = {};
-	    myDropzone.emit("addedfile", mockFile);
-	    myDropzone.emit("thumbnail", mockFile, "http://localhost:8080/resources/images/${employee.portraitUri}");
-	    myDropzone.emit("complete", mockFile);
 	</script>
 </body>
 </html>

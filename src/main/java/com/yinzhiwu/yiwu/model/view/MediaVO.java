@@ -7,7 +7,7 @@ import com.yinzhiwu.yiwu.entity.Media;
 import com.yinzhiwu.yiwu.entity.Media.MediaTag;
 import com.yinzhiwu.yiwu.entity.Media.MediaType;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
-import com.yinzhiwu.yiwu.service.impl.FileService;
+import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 
 /**
@@ -55,7 +55,7 @@ public class MediaVO {
 		protected MediaVO doBackward(Media media) {
 			MediaVO vo = new MediaVO();
 			BeanUtils.copyProperties(media, vo);
-			FileService fileService=SpringUtils.getBean(FileService.class);
+			FileServiceImpl fileService=SpringUtils.getBean(FileServiceImpl.class);
 			vo.setUrl(fileService.getFileUrl(vo.getUri()));
 			if(media.getCoach() !=null){
 				vo.setCoachId(media.getCoach().getId());

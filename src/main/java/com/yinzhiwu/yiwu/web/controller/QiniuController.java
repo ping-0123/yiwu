@@ -28,7 +28,7 @@ public class QiniuController extends BaseController{
 	public Map getUploadToken(){
 		String uptoken =  qiniuService.createToken();
 		Map<String, String> map = new HashMap<>();
-		map.put("uptoken",uptoken);
+		map.put("uploadToken",uptoken);
 		return map;
 	}
 }

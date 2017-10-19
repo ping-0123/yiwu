@@ -27,4 +27,11 @@ public class QiniuService {
 		return auth.uploadToken(config.getBucket());
 	}
 	
+	public String getUploadUrl(){
+		return config.getUploadUrl();
+	}
+
+	public Object getCdnUrl() {
+		return config.getCdnUrl();
+	}
 }

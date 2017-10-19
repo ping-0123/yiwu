@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -27,6 +28,7 @@ import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto;
 import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto.CheckedInStatus;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
+import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
 
@@ -38,7 +40,9 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	@Autowired private CustomerYzwDao customerYzwDao;
 	@Autowired private StoreManCallRollYzwDao storeManCallRollYzwDao;
 	@Autowired private CheckInsYzwDao checkInsYzwDao;
-	@Autowired private FileService fileService;
+	@Autowired 
+	@Qualifier(value="fileServiceImpl")
+	private FileService fileService;
 	
 	@Autowired
 	public void setBaseDao(LessonYzwDao lessonDao) {

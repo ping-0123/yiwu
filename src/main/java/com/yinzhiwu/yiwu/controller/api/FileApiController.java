@@ -10,7 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.model.view.FileApiView;
-import com.yinzhiwu.yiwu.service.impl.FileService;
+import com.yinzhiwu.yiwu.service.FileService;
+import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
 
 import io.swagger.annotations.Api;
 

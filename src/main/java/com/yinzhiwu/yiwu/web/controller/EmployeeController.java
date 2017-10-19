@@ -29,6 +29,7 @@ import com.yinzhiwu.yiwu.service.DepartmentYzwService;
 import com.yinzhiwu.yiwu.service.EmployeePostYzwService;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 import com.yinzhiwu.yiwu.service.PostYzwService;
+import com.yinzhiwu.yiwu.service.QiniuService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 
 
@@ -40,6 +41,7 @@ public class EmployeeController  extends BaseController{
 	@Autowired private DepartmentYzwService deptService;
 	@Autowired private PostYzwService postService;
 	@Autowired private EmployeePostYzwService epService;
+	@Autowired private QiniuService qiniuService;
 	
 	@GetMapping
 	public String index(){
@@ -60,6 +62,9 @@ public class EmployeeController  extends BaseController{
 	public String showModifyForm(@PathVariable(name="id") Integer id, Model model){
 		EmployeeYzw employee = employeeService.get(id);
 		model.addAttribute("employee",employee);
+		model.addAttribute("uploadToken", qiniuService.createToken());
+		model.addAttribute("uploadUrl", qiniuService.getUploadUrl());
+		model.addAttribute("cdnUrl",qiniuService.getCdnUrl());
 		return "employees/updateForm";
 	}
 	

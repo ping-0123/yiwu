@@ -45,6 +45,7 @@ import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.DistributerService;
+import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.IncomeEventService;
 import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.EmpDistributerDto;
@@ -250,7 +251,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				IncomeType.EXP,
 				distributer.getDistributerIncome(IncomeType.EXP).getIncome());
 		DistributerApiView view = new DistributerApiView(distributer, rate);
-		view.setHeadIconUrl(fileService.getHeadImageUrl( distributer.getHeadIconName()));
+		view.setHeadIconUrl(fileService.getImageUrl( distributer.getHeadIconName()));
 		return view;
 	}
 
@@ -344,7 +345,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 						Arrays.asList(new Integer[]{10016,10017}), 
 						Arrays.asList(new Integer[]{10014}))
 						.intValue());
-				v.setHeadIconUrl(fileService.getHeadImageUrl((income.getDistributer().getHeadIconName())));
+				v.setHeadIconUrl(fileService.getImageUrl((income.getDistributer().getHeadIconName())));
 			} catch (Exception e) {
 				logger.error(e);
 			}

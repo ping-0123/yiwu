@@ -27,6 +27,9 @@ public class QiniuConfig {
 	@Value("${qiniu.cdnUrl}")
 	private String cdnUrl;
 	
+	@Value("${qiniu.uploadUrl}")
+	private String uploadUrl;
+	
 	public long getExpired() {
 		return expired;
 	}
@@ -56,6 +59,18 @@ public class QiniuConfig {
 	}
 	public void setCdnUrl(String cdnUrl) {
 		this.cdnUrl = cdnUrl;
+	}
+	/**
+	 * @return the uploadUrl
+	 */
+	public String getUploadUrl() {
+		return uploadUrl;
+	}
+	/**
+	 * @param uploadUrl the uploadUrl to set
+	 */
+	public void setUploadUrl(String uploadUrl) {
+		this.uploadUrl = uploadUrl;
 	}
 	
 	
