@@ -8,8 +8,12 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Distributer.Role;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
+import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
-public class DistributerApiView implements Serializable {
+@MapedClass(Distributer.class)
+public class DistributerApiView  implements Serializable {
 
 	/**
 	 * 
@@ -22,18 +26,37 @@ public class DistributerApiView implements Serializable {
 	private String phoneNo;
 	private String memberCard;
 	private String shareCode;
+	@MapedProperty("headIconName")
 	private String headIconUrl;
 	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
 	private Date birthDay;
+	
+	@MapedProperty("registedTime")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date registerDate;
+	
+	@MapedProperty(ignored=true)
 	private float exp;
+	
+	@MapedProperty(ignored=true)
 	private int expGradeNo;
+	
+	@MapedProperty(ignored=true)
 	private float neededExpForUpdate;
+	
+	@MapedProperty(ignored=true)
 	private float brokerage;
+	
+	@MapedProperty(ignored=true)
 	private float funds;
+	
+	@MapedProperty("customer.id")
 	private int customerId;
+	
+	@MapedProperty("employee.id")
 	private int empoyeeId;
+	
+	@MapedProperty(ignored=true)
 	private float beatRate;
 	
 	public DistributerApiView() {
@@ -250,4 +273,9 @@ public class DistributerApiView implements Serializable {
 		this.memberCard = memberCard;
 	}
 
+	
+	
+	public final static class DistributerApiViewConverter extends AbstractConverter<Distributer, DistributerApiView>{
+		public final static DistributerApiViewConverter instance = new DistributerApiViewConverter(); 
+	}
 }

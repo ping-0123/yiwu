@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
-import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.LessonPraiseService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
@@ -33,20 +33,19 @@ import io.swagger.annotations.ApiParam;
 public class LessonPraiseController extends BaseController {
 	
 	@Autowired private LessonPraiseService lpService;
-	@Autowired private DistributerService distributerService;
 	@Autowired private LessonYzwService lessonService;
 	
 	@PostMapping
 	@ApiOperation(value = "点赞")
 	public YiwuJson<?> doPost(
-			@ApiParam(value="客户的distributerId", required =true) int distributerId,
+			@ApiParam(value="客户的distributerId", required =false) int distributerId,
 			@ApiParam(value="课时Id", required=true) Integer lessonId
 	){
 		
 		try {
-			if(lpService.findByDistributerIdAndLessonId(distributerId, lessonId) !=null)
+			Distributer distributer = UserContext.getDistributer();
+			if(lpService.findByDistributerIdAndLessonId(distributer.getId(), lessonId) !=null)
 				return YiwuJson.createByErrorMessage("已点赞,无须重复点赞");
-			Distributer distributer = distributerService.get(distributerId);
 			LessonYzw lesson = lessonService.get(lessonId);
 			LessonPraise lp = new LessonPraise();
 			lp.setDistributer(distributer);
@@ -63,11 +62,12 @@ public class LessonPraiseController extends BaseController {
 	@DeleteMapping
 	@ApiOperation(value="取消点赞")
 	public YiwuJson<?> cancelPraise(
-		@ApiParam(value="客户的distributerId", required =true) Integer distributerId,
+		@ApiParam(value="客户的distributerId") Integer distributerId,
 		@ApiParam(value="课时Id", required=true) Integer lessonId
 	){
 		try {
-			LessonPraise lp = lpService.findByDistributerIdAndLessonId(distributerId, lessonId);
+			Distributer distributer = UserContext.getDistributer();
+			LessonPraise lp = lpService.findByDistributerIdAndLessonId(distributer.getId(), lessonId);
 			if(lp==null) throw new DataNotFoundException();
 			lpService.delete(lp);
 			return YiwuJson.createBySuccess();

@@ -1,6 +1,8 @@
 package com.yinzhiwu.yiwu.web.filter;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.Enumeration;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -28,8 +30,7 @@ import io.jsonwebtoken.Jwts;
 
 public class ApiUserFilter extends OncePerRequestFilter {
 	
-	private static final String LOGIN_API_URL = "/api/distributer/login";
-	private static final String LOGIN2_API_URL = "/api/login";
+	private static final String LOGIN_API_URL = "/api/login";
 	private static final String REGISTER_API_URL = "/api/distributer/register.do";
 	private static final String ERROR_API_URL = "/api/error";
 	@SuppressWarnings("unused")
@@ -40,16 +41,20 @@ public class ApiUserFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		
 		final String path = request.getServletPath();
-		if(request.getServletPath().contains(LOGIN_API_URL)
-				|| request.getServletPath().contains(ERROR_API_URL)
-				|| request.getServletPath().contains(REGISTER_API_URL)
-				|| path.contains(LOGIN2_API_URL))
+		if(path.contains(LOGIN_API_URL) || path.contains(ERROR_API_URL) || path.contains(REGISTER_API_URL))
 		{
 			filterChain.doFilter(request, response);
 			return;
 		}
 		
 		final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+		Enumeration<String> headerNames = request.getHeaderNames();
+		System.out.println("start output request headers.........");
+		while (headerNames.hasMoreElements()) {
+			String name = (String) headerNames.nextElement();
+			System.out.println(name + ": " + request.getHeader(name));
+			
+		}
 		if(authHeader==null || !authHeader.startsWith(JJWTConfig.AUTHORIZATION_HEADER_PREFIX)){
 			throw new ServletException("Missing or invaid Authorization header");
 		}
@@ -58,6 +63,9 @@ public class ApiUserFilter extends OncePerRequestFilter {
 		Claims claims =  Jwts.parser().setSigningKey(JJWTConfig.secretKey)
 			.parseClaimsJws(token)
 			.getBody();
+		//判断凭证是否过期 
+		if(claims.getExpiration().before(new Date()))
+			throw new ServletException("token 已过期");
 		Integer distributerId = claims.get(Constants.CURRENT_DISTRIBUTER_ID, Integer.class);
 		if(distributerId !=null){
 			DistributerService disService = SpringUtils.getBean(DistributerService.class);

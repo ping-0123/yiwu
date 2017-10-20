@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yinzhiwu.yiwu.context.Constants;
 import com.yinzhiwu.yiwu.context.JJWTConfig;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.service.DistributerService;
 
 import io.jsonwebtoken.Jwts;
@@ -35,19 +36,16 @@ public class CustomerLoginController {
 	
 	@SuppressWarnings("rawtypes")
 	@PostMapping(value="/login")
-	public Map login(
-			@ApiParam(name="openId", value="微信OpenId", required=true) String openId){
-		Map<String,Object> map = new HashMap<String, Object>();
+	public YiwuJson login(
+			@ApiParam(name="openId", value="微信openId", required=true) String openId){
 		
 		if(openId==null || openId.trim().length() ==0){
-			map.put("error","请传入openId");
-			return map;
+			return YiwuJson.createByErrorMessage("请传入openId");
 		}
 		
 		Distributer distributer = distributerService.findByWechatNo(openId);
 		if(distributer==null){
-			map.put("error", "用户尚未注册， 请先注册");
-			return map;
+			return YiwuJson.createByErrorMessage("用户尚未注册");
 		}
 		
 		Calendar calendar = Calendar.getInstance();
@@ -55,9 +53,10 @@ public class CustomerLoginController {
 		String token = Jwts.builder().setExpiration(calendar.getTime())
 			.setSubject(distributer.getName())
 			.claim(Constants.CURRENT_DISTRIBUTER_ID, distributer.getId())
-			.signWith(SignatureAlgorithm.HS512,JJWTConfig.secretKey)
+			.signWith(SignatureAlgorithm.HS256,JJWTConfig.secretKey)
 			.compact();
+		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("token", token);
-		return map;
+		return YiwuJson.createBySuccess(map);
 	}
 }

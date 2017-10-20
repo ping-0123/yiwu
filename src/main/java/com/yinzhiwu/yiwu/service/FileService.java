@@ -35,4 +35,5 @@ public interface FileService {
 	 * @return image url, 如果uri为空，则返回一个默认的图片url 
 	 */
 	public String getImageUrl(String uri);
+	
 }

@@ -11,8 +11,8 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
-import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractVO;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
@@ -83,18 +83,18 @@ public class CourseVO extends AbstractVO<CourseYzw, CourseVO> {
 	private CourseConnotationVO connotation;
 	
 	@MapedProperty(ignored=true)
-	@ApiModelProperty("是否为即将上课")
+	@ApiModelProperty(value= "是否为即将上课", required = false)
 	private boolean comming;
 	
 	@MapedProperty(ignored=true)
-	@ApiModelProperty("第一节课的课时内容信息")
+	@ApiModelProperty(value="第一节课的课时内容信息", required =false)
 	private LessonConnotationVO firstLessonConnotation;
 	
 	@Override
 	public CourseVO fromPO(CourseYzw po) {
 		super.fromPO(po);
 		if(this.connotation !=null){
-			FileServiceImpl fileService = SpringUtils.getBean(FileServiceImpl.class);
+			FileService fileService = SpringUtils.getBean("fileServiceImpl");
 			connotation.setAudioUrl(fileService.getFileUrl(connotation.getAudioUrl()));
 			connotation.setPictureUrl(fileService.getFileUrl(connotation.getPictureUrl()));
 			connotation.setVideoUrl(fileService.getFileUrl(connotation.getVideoUrl()));

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yinzhiwu.yiwu.context.Constants;
+import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -33,19 +34,18 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
 import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
+import com.yinzhiwu.yiwu.model.view.DistributerApiView.DistributerApiViewConverter;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
-import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-//@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/distributer")
 @Api(value = "distributer")
@@ -101,13 +101,12 @@ public class DistributerApiController extends BaseController {
 		return distributerService.loginByAccount(account, password);
 	}
 
-	@GetMapping(value="/getInfo.do")
+	@GetMapping(value="/information")
 	@ApiOperation("获取个人信息")
-	public YiwuJson<?> getInfo(@ApiParam(required=false) HttpSession session){
-		DistributerApiView view =  (DistributerApiView) session.getAttribute(Constants.CURRENT_DISTRIBUTER_VIWE);
-		if(view == null )
-			return YiwuJson.createByErrorMessage("请登录");
-		return YiwuJson.createBySuccess(view);
+	public YiwuJson<?> getInfo(){
+		Distributer distributer = UserContext.getDistributer();
+		DistributerApiViewConverter converter = DistributerApiView.DistributerApiViewConverter.instance;
+		return YiwuJson.createBySuccess(converter.fromPO(distributer));
 	}
 	
 	@GetMapping(value = "/{id}")
@@ -115,6 +114,26 @@ public class DistributerApiController extends BaseController {
 		return distributerService.findById(id);
 	}
 
+	@GetMapping(value="/myClosedCourses")
+	@ApiOperation(value="获取客户的私教课课程")
+	public YiwuJson<List<CourseVO>> findClosedCourses(){
+		Distributer distributer = UserContext.getDistributer();
+		List<CourseYzw> courses = orderService.findCoursesByCustomerIdAndCourseType(distributer.getCustomer().getId(),CourseType.CLOSED);
+		List<CourseVO> views = new ArrayList<>();
+		for (CourseYzw courseYzw : courses) {
+			views.add(new CourseVO().fromPO(courseYzw));
+		}
+		
+		return YiwuJson.createBySuccess(views);
+	}
+	
+	/**
+	 * {@linkplain /api/distributer/myClosedCourses}
+	 * @param id
+	 * @param courseType
+	 * @return
+	 */
+	@Deprecated
 	@GetMapping(value="/{id}/courses")
 	@ApiOperation(value="获取客户的课程")
 	public YiwuJson<List<CourseVO>> getCoures(@PathVariable Integer id, 
