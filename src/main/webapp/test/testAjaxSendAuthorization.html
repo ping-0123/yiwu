@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ajax send authorization</title>
+</head>
+<body>
+	
+	<script src="../js/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$.ajax({
+			url:"http://localhost:8080/yiwu/api/distributer/myClosedCourses",
+			type:"GET",
+			data:{},
+			headers: {"Authorization": 
+				"Yiwu eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg1MTg1OTEsInN1YiI6IuW-kOWwj-WnkCIsImN1cnJlbnREaXN0cmlidXRlcklkIjozMDAyMDA1fQ.wxc3S8aKmDKTcB2h7JpJs-ShJCds45mmCcplAmyL07I"
+			},
+			success:function(res){
+				alert(JSON.stringify(res.data));
+			}
+			
+		});
+		
+		
+	</script>
+</body>
+</html>

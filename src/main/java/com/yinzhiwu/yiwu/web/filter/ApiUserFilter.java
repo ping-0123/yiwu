@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.yinzhiwu.yiwu.context.Constants;
@@ -40,6 +41,13 @@ public class ApiUserFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
+		// 通过 http preflight
+		if(request.getMethod().equals(HttpMethod.OPTIONS.toString())){
+			filterChain.doFilter(request, response);
+			return;
+		}
+		
+		//通过  login error url
 		final String path = request.getServletPath();
 		if(path.contains(LOGIN_API_URL) || path.contains(ERROR_API_URL) || path.contains(REGISTER_API_URL))
 		{
@@ -48,13 +56,6 @@ public class ApiUserFilter extends OncePerRequestFilter {
 		}
 		
 		final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-		Enumeration<String> headerNames = request.getHeaderNames();
-		System.out.println("start output request headers.........");
-		while (headerNames.hasMoreElements()) {
-			String name = (String) headerNames.nextElement();
-			System.out.println(name + ": " + request.getHeader(name));
-			
-		}
 		if(authHeader==null || !authHeader.startsWith(JJWTConfig.AUTHORIZATION_HEADER_PREFIX)){
 			throw new ServletException("Missing or invaid Authorization header");
 		}
