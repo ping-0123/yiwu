@@ -6,6 +6,8 @@ var DELETE_URL,
 	$TABLE =$('#yiwuDatatable'),
 	TABLE,
 	CLOUMN_CREATE_TIME=column_index_create_time==undefined?0:column_index_create_time;
+var QINIU_UPLOAD_URL="http://up-z2.qiniu.com";
+var WEB_BASE_URL="http://192.168.0.115:9090/y"
 
 $(document).ready(function(){
 	if($TABLE==undefined) return;;

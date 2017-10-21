@@ -59,7 +59,7 @@ img{width:120px, height:120px}
 			
 			
 			<div class="form-group">
-				<input type="hidden" name="portraitUri" id="portraitUri" value="${employee.portraitUri}">
+				<input type="hidden" name="portraitUri" id="portraitUri" value="${employee.portraitUrl}">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">头像  </label>
 				<div class="col-md-9 col-sm-9 col-xs-12 dropzone" id="myDropzone">
 					<div class="am-text-success dz-message">
@@ -91,7 +91,7 @@ img{width:120px, height:120px}
 				function(data) {
 					if (data.result) {
 						$('.modal-update').modal('hide');
-						TABLE.draw();
+						TABLE.draw(false);
 					} else showUpdateFailureModal(data.msg);
 				}
 			});
@@ -100,7 +100,7 @@ img{width:120px, height:120px}
 		
 		Dropzone.autoDiscover=false;
 		var myDropzone=new Dropzone("#myDropzone", {
-	        url: "${uploadUrl}",
+	        url: QINIU_UPLOAD_URL,
 	        method: "POST",
 	        params:{"token":"${uploadToken}"},
 	        addRemoveLinks:true,
@@ -117,12 +117,37 @@ img{width:120px, height:120px}
 	        	$("#portraitUri").val(response.key);
 	        },
 	        init:function(){
-			    var mockFile = {name:"${employee.portraitUri}", width:"120px", height:"120px"};
-			    this.emit("addedfile", mockFile);
-			    this.emit("thumbnail", mockFile, "${cdnUrl}/${employee.portraitUri}");
-			    this.emit("complete", mockFile);
+	        	this.on("removedfile",function(file){
+	        		console.log(file.name);
+	        		$.ajax({
+		        		type:"delete",
+		        		url:"../qiniu/" + file.name,
+		        		async:true,
+		        		success:function(data){
+		        			console.log("删除成功");
+		        		}
+		        	});
+	        	});
+	        	
 	        }
 	    });
+		
+		$(document).ready(function(){
+			var mockFile = {name:"${employee.portraitUri}"};
+			myDropzone.emit("addedfile", mockFile);
+			myDropzone.emit("thumbnail", mockFile, "${employee.portraitUrl}");
+			myDropzone.emit("complete", mockFile);
+		 //   var existingFileCount=1;
+		  //  myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+		    
+		    $(".dz-image img").css({
+				"width":"100%",
+			    "height":"100%" 
+			});
+		    
+		});
+		
+		
 	</script>
 </body>
 </html>

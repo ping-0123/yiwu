@@ -2,7 +2,6 @@ package com.yinzhiwu.yiwu.web.filter;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.Enumeration;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

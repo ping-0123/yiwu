@@ -69,4 +69,18 @@ public class FileServiceImpl implements FileService{
 			uri = defaultHeadImageName;
 		return url + uri;
 	}
+
+
+	@Override
+	public boolean delete(String fileName) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public String createAccessToken() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

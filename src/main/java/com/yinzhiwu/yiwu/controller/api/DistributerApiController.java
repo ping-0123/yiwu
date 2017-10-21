@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -55,8 +56,8 @@ public class DistributerApiController extends BaseController {
 	private DistributerService distributerService;
 	@Autowired
 	private CapitalAccountService capitalAccountService;
-	@Autowired
-	private FileService fileService;
+	@Qualifier("fileServiceImpl")
+	@Autowired private FileService fileService;
 	@Autowired private OrderYzwService orderService;
 
 	@InitBinder

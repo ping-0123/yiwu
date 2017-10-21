@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.BaseTypeDao;
@@ -24,6 +25,7 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet, Integer> implements
 	private TweetDao tweetDao;
 	@Autowired
 	private BaseTypeDao baseTypeDao;
+	@Qualifier("fileServiceImpl")
 	@Autowired private FileService fileService;
 	
 	@Autowired

@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.controller.api;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,7 @@ import io.swagger.annotations.Api;
 @Api(value="/file", description="文件图片上传服务")
 public class FileApiController extends BaseController {
 	
+	@Qualifier("fileServiceImpl")
 	@Autowired private  FileService fileService;
 	
 	@PostMapping(value="")

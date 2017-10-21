@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -74,6 +75,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Autowired private IncomeRecordDao incomeRecordDao;
 	@Autowired private EmployeeYzwDao employeeDao;
 	@Autowired private EmployeeDepartmentYzwDao empDeptDao;
+	@Qualifier("fileServiceImpl")
 	@Autowired private FileService fileService;
 //	@Autowired private EmployeePostYzwDao empPostDao;
 	@Autowired private CheckInsYzwDao checkInsDao;

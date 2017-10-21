@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -14,6 +15,7 @@ import com.yinzhiwu.yiwu.service.FileService;
 public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> implements CourseYzwService {
 	@SuppressWarnings("unused")
 	@Autowired private CourseYzwDao courseDao;
+	@Qualifier("fileServiceImpl")
 	@Autowired private FileService fileService;
 
 	@Autowired

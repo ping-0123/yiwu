@@ -36,4 +36,16 @@ public interface FileService {
 	 */
 	public String getImageUrl(String uri);
 	
+	/**
+	 * 从文件服务器上删除文件
+	 * @param fileName 被删除的文件名
+	 * @return 删除成功返回true, 否则false
+	 */
+	public boolean delete(String fileName);
+	
+	/**
+	 * 生成访问文件服务器的口令
+	 * @return 口令
+	 */
+	public String createAccessToken();
 }

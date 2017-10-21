@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.util.beanutils;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.InputMismatchException;
@@ -117,6 +118,9 @@ public final class MapedClassUtils {
 			Field[] sourceFields = com.yinzhiwu.yiwu.util.reflect.ClassUtils.getAllFields(source.getClass());
 			for (Field sourceField : sourceFields) {
 				
+				//静态属性不变换
+				if(Modifier.isStatic( sourceField.getModifiers()))
+					continue;
 				//判断是否需要赋值给 maped target filed
 				MapedProperty sourceFieldDeclaredBeanProperty = sourceField.getDeclaredAnnotation(MapedProperty.class);
 				if(sourceFieldDeclaredBeanProperty !=null && (!sourceFieldDeclaredBeanProperty.inverse() || sourceFieldDeclaredBeanProperty.ignored()))
@@ -186,6 +190,9 @@ public final class MapedClassUtils {
 		if(targetAnnotation !=null && targetAnnotation.value().isInstance(source)){
 			Field[] targetFields = com.yinzhiwu.yiwu.util.reflect.ClassUtils.getAllFields(target.getClass());
 			for (Field field : targetFields) {
+				//静态属性不变换
+				if(Modifier.isStatic( field.getModifiers()))
+					continue;
 				
 				//判断是否忽略该属性赋值
 				MapedProperty beanProperty = field.getDeclaredAnnotation(MapedProperty.class);

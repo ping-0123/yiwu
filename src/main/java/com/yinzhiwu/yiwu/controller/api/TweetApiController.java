@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class TweetApiController extends BaseController {
 
 	@Autowired
 	private TweetService tweetService;
+	@Qualifier("fileServiceImpl")
 	@Autowired private FileService fileService;
 
 	@PostMapping("/save")

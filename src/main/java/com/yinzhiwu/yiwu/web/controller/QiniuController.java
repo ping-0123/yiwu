@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
-import com.yinzhiwu.yiwu.service.QiniuService;
+import com.yinzhiwu.yiwu.service.FileService;
 
 /**
 *@Author ping
@@ -21,14 +24,23 @@ import com.yinzhiwu.yiwu.service.QiniuService;
 @RequestMapping("/system/qiniu")
 public class QiniuController extends BaseController{
 	
-	@Autowired private QiniuService qiniuService;
+	@Qualifier("qiniuServiceImpl")
+	@Autowired private FileService qiniuService;
 	
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/uploadToken")
 	public Map getUploadToken(){
-		String uptoken =  qiniuService.createToken();
+		String uptoken =  qiniuService.createAccessToken();
 		Map<String, String> map = new HashMap<>();
 		map.put("uploadToken",uptoken);
 		return map;
 	}
+	
+	@SuppressWarnings("rawtypes")
+	@DeleteMapping(value="/{key}")
+	public Map deleteFile(@PathVariable(name="key") String key){
+		return (Map) new HashMap<>()
+				.put("result", qiniuService.delete(key));
+	}
+	
 }

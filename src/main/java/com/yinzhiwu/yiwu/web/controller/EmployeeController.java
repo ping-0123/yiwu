@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,11 +26,12 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.YiwuJson.ReturnCode;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
+import com.yinzhiwu.yiwu.model.view.EmployeeVO;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
 import com.yinzhiwu.yiwu.service.EmployeePostYzwService;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
+import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.PostYzwService;
-import com.yinzhiwu.yiwu.service.QiniuService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 
 
@@ -41,7 +43,8 @@ public class EmployeeController  extends BaseController{
 	@Autowired private DepartmentYzwService deptService;
 	@Autowired private PostYzwService postService;
 	@Autowired private EmployeePostYzwService epService;
-	@Autowired private QiniuService qiniuService;
+	@Qualifier("qiniuServiceImpl")
+	@Autowired private FileService qiniuService;
 	
 	@GetMapping
 	public String index(){
@@ -61,10 +64,9 @@ public class EmployeeController  extends BaseController{
 	@GetMapping(value="/{id}/updateForm")
 	public String showModifyForm(@PathVariable(name="id") Integer id, Model model){
 		EmployeeYzw employee = employeeService.get(id);
-		model.addAttribute("employee",employee);
-		model.addAttribute("uploadToken", qiniuService.createToken());
-		model.addAttribute("uploadUrl", qiniuService.getUploadUrl());
-		model.addAttribute("cdnUrl",qiniuService.getCdnUrl());
+		EmployeeVO vo = EmployeeVO.converter.fromPO(employee);
+		model.addAttribute("employee",vo);
+		model.addAttribute("uploadToken", qiniuService.createAccessToken());
 		return "employees/updateForm";
 	}
 	

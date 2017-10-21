@@ -294,9 +294,10 @@
 				<version>9.4.6.v20170531</version>
 				<configuration>
 					<scanIntervalSeconds>10</scanIntervalSeconds>
-					<webApp>
+					<webAppConfig>
 						<contextPath>/yiwu</contextPath>
-					</webApp>
+						<defaultsDescriptor>src/main/resources/webdefault.xml</defaultsDescriptor>
+					</webAppConfig>
 				</configuration>
 			</plugin>
 		</plugins>
