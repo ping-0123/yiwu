@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+		<link rel="stylesheet" href="css/wallet.css" />
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+		<title>我要提现</title>
+	</head>
+	<body>
+		<header>
+		<a href="../index.html" title=""><img src="img/e5_logo.png" width="66" height="34" alt=""></a>
+		<div class="ins">
+			<img src="img/logo.png" width="20" height="20" alt="">
+			<strong>音之舞</strong>
+		</div>
+		<div class="scan">
+			<a href="my.html">返回</a>
+		</div>
+	    </header>
+		
+		
+		<div class="check">
+			<p>提现前请再次核对</p>
+			<p>提现至支付宝账号：15055962072</p>
+		</div>
+		
+		<div class="cash">
+			  <p>可提现金额：109.00元</p>
+			  <div class="cash_mult">
+	          <span>¥:<input type="" value="" placeholder="请输入提现金额"></span>
+	          <span>全部提现</span>
+	         </div>
+	    </div>   
+	    
+	   
+	           <div class="acco">
+	           <input class="settime" type="button" id="btn" value="免费获取验证码" onclick="settime(this)" />
+	           <input class="identity" type="text" value="" placeholder="请输入验证码">
+	           </div>
+	     <div class="tip">提现金额会在3~7个工作提到账，请注意查收！</div>
+		
+		<div class="bottom">
+	    	<a href="">提现</a>
+	    	<a href="">取消</a>
+	        </div>
+		
+		
+	<footer>
+		<div class="nav f-cb">
+			<ul>
+				<li>
+					<a href="index.html" title="">首页</a>
+				</li>
+				<li>
+					<a href="open.html" title="">开放课程</a>
+				</li>
+				<li>
+					<a href="close.html" title="">封闭课程</a>
+				</li>
+				<li>
+					<a href="private.html" title="">私教课</a>
+				</li>
+				<li>
+					<a class="active"  href="my.html" title="">我的</a>
+				</li>
+			</ul>
+		</div>
+	</footer> 
+	
+	 <script type="text/javascript">
+	  	  var second=60;
+	  	  function settime(dom){
+	  	  	if (second == 0) { 
+				dom.value="免费获取验证码"; 
+				second = 60; 
+				return;
+				}
+            else { 
+					dom.setAttribute("disabled", true); 
+					dom.value="重新发送(" + second + ")"; 
+					second--; 
+					} 
+					setTimeout(function() { 
+					settime(dom) }
+					,1000) 
+					}
+	   </script>    
+	
+	</body>
+	
+</html>
