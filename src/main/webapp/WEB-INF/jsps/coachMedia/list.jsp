@@ -21,6 +21,8 @@
 <link href="../../assets/datatable-plugins/Select-1.2.3/css/select.bootstrap.min.css" rel="stylesheet">
 <!-- bootstrap dialog -->
 <link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
+	<!-- dropzone -->
+<link href="../../assets/dropzone/min/dropzone.min.css" rel="stylesheet">
 <!-- Custom Theme Style -->
 <link href="../../backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
@@ -92,6 +94,8 @@
 	<script src="../../assets/datatables/datatables.min.js" type="text/javascript"></script>
 	<script src="../../assets/datatable-plugins/Select-1.2.3/js/dataTables.select.min.js" type="text/javascript"></script>
 	<script src="../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
+	<!-- dropzone -->
+	<script src="../../assets/dropzone/min/dropzone.min.js" type="text/javascript"></script>
 	<!-- validator -->
 	<script src="../../assets/validator/validator.js"></script>
 	<!-- Custom Theme Scripts -->

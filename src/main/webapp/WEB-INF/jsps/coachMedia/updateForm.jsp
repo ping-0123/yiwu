@@ -15,59 +15,136 @@
 		<button type="button" class="close" data-dismiss="modal">
 			<span aria-hidden="true">×</span>
 		</button>
-		<h4 class="modal-title" id="myModalLabel">修改</h4>
+		<h4 class="modal-title" id="myModalLabel">修改教师资料</h4>
 	</div>
 	<!-- /modal header -->
 
 	<!-- modal body -->
 	<div class="modal-body">
-		<form id="form-update" method="POST" action="${post.id}" class="form-horizontal form-label-left">
+		<ul class="nav nav-tabs">
+			<li><a href="#header" data-toggle="tab">顶部图片</a></li>
+			<li><a href="#certificate" data-toggle="tab">资质＆证书</a></li>
+			<li><a href="#daily" data-toggle="tab">生活照</a></li>
+			<li><a href="#dance" data-toggle="tab">舞蹈视频</a></li>
+		</ul>
 
-			<input type="hidden" name="_method" value="PUT">
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">职位名 <span class="required">*</span></label>
-				<div class="col-md-9 col-sm-9 col-xs-12">
-					<input type="text" class="form-control" placeholder="岗位名" disabled="disabled" name="name" value="${post.name }">
-				</div>
+		<br /> <br />
+
+		<div id="tab-content" class="tab-content">
+			<div class="tab-pane fade in active" id="header">
+				<form id="form-update-header" method="POST" action="./" class="form-horizontal form-label-left">
+					<input type="hidden" name="id" value="${headerMedia.id }">
+					 <input type="hidden" name="coach.id" value="${headerMedia.coach.id }">
+					<input type="hidden" name="type" value="IMAGE"> 
+					<input type="hidden" name="tag" value="HEADER">
+					<input type="hidden" name="coverage" value="true">
+
+					<div class="form-group">
+						<input type="hidden" name="uri" id="headerUri" value=""> <label class="control-label col-md-3 col-sm-3 col-xs-12">头像 </label>
+						<div class="col-md-9 col-sm-9 col-xs-12 dropzone" id="dropzone-header">
+							<div class="am-text-success dz-message">
+								将图片拖拽到此处<br>或点此打开文件管理器选择图片
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3 col-sm-3 col-xs-12">说明</label>
+						<div class="col-md-9 col-sm-9 col-xs-12">
+							<textarea class="form-control" rows="2" name="text"> ${headerMedia.text } </textarea>
+						</div>
+					</div>
+
+					<div class="ln_solid"></div>
+					<div class="form-group">
+						<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+							<button type="submit" class="btn btn-success">提交</button>
+						</div>
+					</div>
+				</form>
 			</div>
 
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">状态 <span class="required">*</span></label>
-				<div class="col-md-9 col-sm-9 col-xs-12">
-					<select name="dataStatus" class="form-control">
-						<option value="NORMAL" <c:if test="${post.dataStatus eq 'NORMAL'}"> selected="selected"</c:if>>正常</option>
-						<option value="FORBID" <c:if test="${post.dataStatus eq 'FORBID'}"> selected="selected"</c:if>>禁用</option>
-					</select>
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">岗位描述 </label>
-				<div class="col-md-9 col-sm-9 col-xs-12">
-					<textarea class="form-control" rows="3" name="description"> ${post.description } </textarea>
-				</div>
-			</div>
-
-			<div class="ln_solid"></div>
-			<div class="form-group">
-				<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-					<button type="submit" class="btn btn-success">提交</button>
-				</div>
-			</div>
-
-		</form>
+			<div class="tab-pane fade " id="certificate">this is certificate</div>
+			<div class="tab-pane fade " id="daily">this is daily</div>
+			<div class="tab-pane fade " id="dance">this is dance</div>
+		</div>
 	</div>
 	<!-- /modal body -->
 
 	<script type="text/javascript">
-		$('#form-update').submit(function(){
+		$('#form-update').submit(function() {
+			$.ajax({
+				url : $(this).attr("action"),
+				type : $(this).attr("method"),
+				data : $(this).serialize(),
+				success : function(data) {
+					$('.modal-update').modal('hide');
+					TABLE.draw(false);
+				}
+			});
+			return false;
+		});
+
+		Dropzone.autoDiscover = false;
+		var myDropzone = new Dropzone("#dropzone-header", {
+			url : QINIU_UPLOAD_URL,
+			method : "POST",
+			params : {
+				"token" : "${uploadToken}"
+			},
+			addRemoveLinks : true,
+			dictRemoveLinks : "x",
+			dictRemoveFile : "移除",
+			dictMaxFilesExceeded : "",
+			maxFiles : 1,
+			filesizeBase : 1024,
+
+			sending : function(file, xhr, formData) {
+				formData.append("filesize", file.size);
+			},
+			success : function(file, response, e) {
+				$("#headerUri").val(response.key);
+			},
+			init : function() {
+				
+				this.on("removedfile", function(file) {
+					console.log(file.name);
+					$.ajax({
+						type : "delete",
+						url : "../qiniu/" + file.name,
+						async : true,
+						success : function(data) {
+							console.log("删除成功");
+						}
+					});
+				});
+				
+				var mockFile = {name:"${headerMedia.uri}"};
+				myDropzone.emit("addedfile", mockFile);
+				myDropzone.emit("thumbnail", mockFile, "${headerMedia.uri}");
+				myDropzone.emit("complete", mockFile);
+			 //   var existingFileCount=1;
+			  //  myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+			    
+			    $(".dz-image img").css({
+					"width":"100%",
+				    "height":"100%" 
+				});
+
+			}
+		});
+		
+		
+		$('#form-update-header').submit(function(){
 			$.ajax({
 				url: $(this).attr("action"),
 				type: $(this).attr("method"),
 				data: $(this).serialize(),
 				success:function(data){
-					$('.modal-update').modal('hide');
-					TABLE.draw();
+					if(data.result)
+						flashUpdateSuccessModal();
+					else
+						showUpdateFailureModal(data.msg);
 				}
 			});
 			return false;

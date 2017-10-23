@@ -184,7 +184,18 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	@Override
 	public void saveOrUpdate(T entity) {
 		Assert.notNull(entity, "entity is required");
-			
+		
+		if(entity instanceof BaseEntity){
+			if(((BaseEntity) entity).getId() == null)
+				((BaseEntity) entity).init();
+			else {
+				((BaseEntity) entity).beforeUpdate();
+			}
+		}else if (entity instanceof BaseYzwEntity) {
+			if(((BaseYzwEntity) entity).getDataStatus()==null)
+				((BaseYzwEntity) entity).setDataStatus(DataStatus.NORMAL);
+		}
+		
 		getSession().saveOrUpdate(entity);
 	}
 

@@ -10,4 +10,6 @@ import com.yinzhiwu.yiwu.entity.CoachMedia;
 
 public interface CoachMediaService extends IBaseService<CoachMedia,Integer>{
 
+	CoachMedia findHeaderMediaByCoachId(Integer coachId);
+
 }

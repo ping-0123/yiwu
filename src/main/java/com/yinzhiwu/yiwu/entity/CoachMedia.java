@@ -9,6 +9,7 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 
@@ -23,6 +24,7 @@ import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 @Table(name="yiwu_coach_media")
 public class CoachMedia extends BaseEntity {
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_media_coach_id", value=ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw coach;
@@ -37,6 +39,7 @@ public class CoachMedia extends BaseEntity {
 	@Enumerated(value=EnumType.STRING)
 	private MediaType type;
 
+	@NotNull
 	@Enumerated(value=EnumType.STRING)
 	private MediaTag tag;
 	
