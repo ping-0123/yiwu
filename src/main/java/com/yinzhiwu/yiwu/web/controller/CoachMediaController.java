@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,7 +42,11 @@ public class CoachMediaController extends BaseController{
 		return "coachMedia/list";
 	}
 	
-	
+	@GetMapping(value="/{coachId}/updateForm")
+	public String showUpdateForm(@PathVariable(name="coachId") Integer coachId){
+		
+		return "coachMedia/updateForm";
+	}
 	
 	@PostMapping(value="/datatable")
 	@ResponseBody
