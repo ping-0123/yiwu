@@ -29,8 +29,10 @@ import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Email;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.yinzhiwu.yiwu.enums.Gender;
 
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler"})
 @Entity
 @Table(name = "vemployee")
 @Inheritance(strategy=InheritanceType.JOINED)

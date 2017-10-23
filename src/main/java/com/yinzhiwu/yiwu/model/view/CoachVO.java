@@ -5,7 +5,7 @@ import org.springframework.beans.BeanUtils;
 import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.enums.Gender;
-import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
+import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractVO;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
@@ -44,10 +44,25 @@ public class CoachVO extends AbstractVO<EmployeeYzw, CoachVO>{
 	@ApiModelProperty(value="资历介绍")
 	private String resume;
 	
-	@MapedProperty("portraitUri")
 	@ApiModelProperty(value="头像Uri")
 	private String portraitUri;
 	
+	@MapedProperty(ignored=true)
+	@ApiModelProperty(value="头像Url")
+	private String portraitUrl;
+	
+	@MapedProperty(ignored=true)
+	@ApiModelProperty(value="教学区域")
+	private String departmentName;
+	
+	public String getPortraitUrl() {
+		return portraitUrl;
+	}
+
+	public void setPortraitUrl(String portraitUrl) {
+		this.portraitUrl = portraitUrl;
+	}
+
 	public static CoachVO fromDAO(EmployeeYzw dao){
 		return VOConverter.instance.reverse().convert(dao);
 	}
@@ -70,8 +85,8 @@ public class CoachVO extends AbstractVO<EmployeeYzw, CoachVO>{
 		protected CoachVO doBackward(EmployeeYzw b) {
 			CoachVO coach = new CoachVO();
 			BeanUtils.copyProperties(b, coach);
-			FileServiceImpl fileService=SpringUtils.getBean(FileServiceImpl.class);
-			coach.setPortraitUri(fileService.getFileUrl(coach.getPortraitUri()));
+			FileService fileService=SpringUtils.getBean("qiniuServiceImpl");
+			coach.setPortraitUrl(fileService.getFileUrl(coach.getPortraitUri()));
 			return coach;
 		}
 		
@@ -112,6 +127,14 @@ public class CoachVO extends AbstractVO<EmployeeYzw, CoachVO>{
 	}
 	public void setPortraitUri(String portraitUri) {
 		this.portraitUri = portraitUri;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
 	
 	

@@ -26,5 +26,4 @@ VIEW `vpost` AS
         `chenkuserdb1`.`tblpost`;
         
 update vpost set dataStatus=2 where removed=TRUE;
-UPDATE vpost set datastatus=0 where datastatus is null;
 alter table chenkuserdb1.tblpost modify column id int AUTO_INCREMENT;

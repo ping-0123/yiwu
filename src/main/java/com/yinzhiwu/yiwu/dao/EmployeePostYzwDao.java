@@ -21,4 +21,7 @@ public interface EmployeePostYzwDao extends IBaseDao<EmployeePostYzw, Integer> {
 
 	DataTableBean<?> findDataTableByEmployeeId(QueryParameter parameter, Integer empId) throws NoSuchFieldException, SecurityException;
 
+	DataTableBean<EmployeePostYzw> findDataTableByPostId(QueryParameter parameter, Integer postId);
+
+
 }

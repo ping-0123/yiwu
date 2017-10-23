@@ -3,7 +3,7 @@ package com.yinzhiwu.yiwu.dao.impl;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.MediaDao;
-import com.yinzhiwu.yiwu.entity.Media;
+import com.yinzhiwu.yiwu.entity.CoachMedia;
 
 /**
 *@Author ping
@@ -12,6 +12,6 @@ import com.yinzhiwu.yiwu.entity.Media;
 */
 
 @Repository
-public class MediaDaoImpl extends BaseDaoImpl<Media,Integer> implements MediaDao {
+public class MediaDaoImpl extends BaseDaoImpl<CoachMedia,Integer> implements MediaDao {
 
 }

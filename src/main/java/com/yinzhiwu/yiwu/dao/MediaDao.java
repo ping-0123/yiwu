@@ -1,6 +1,6 @@
 package com.yinzhiwu.yiwu.dao;
 
-import com.yinzhiwu.yiwu.entity.Media;
+import com.yinzhiwu.yiwu.entity.CoachMedia;
 
 /**
 *@Author ping
@@ -8,6 +8,6 @@ import com.yinzhiwu.yiwu.entity.Media;
 *
 */
 
-public interface MediaDao extends IBaseDao<Media,Integer>{
+public interface MediaDao extends IBaseDao<CoachMedia,Integer>{
 
 }

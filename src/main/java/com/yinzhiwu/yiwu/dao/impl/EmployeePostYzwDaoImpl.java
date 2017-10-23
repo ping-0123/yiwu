@@ -100,4 +100,13 @@ public class EmployeePostYzwDaoImpl extends BaseDaoImpl<EmployeePostYzw, Integer
 	public DataTableBean<?> findDataTableByEmployeeId(QueryParameter parameter, Integer empId) throws NoSuchFieldException, SecurityException {
 		return findDataTableByProperty(parameter, "employee.id", empId);
 	}
+
+	@Override
+	public DataTableBean<EmployeePostYzw> findDataTableByPostId(QueryParameter parameter, Integer postId) {
+		try {
+			return findDataTableByProperty(parameter, "post.id", postId);
+		} catch (NoSuchFieldException | SecurityException e) {
+			return null;
+		}
+	}
 }

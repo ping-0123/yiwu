@@ -12,4 +12,6 @@ public interface EmployeePostYzwService extends IBaseService<EmployeePostYzw,Int
 
 	DataTableBean<?> findDataTableByEmployeeId(QueryParameter parameter, Integer empId) throws NoSuchFieldException, SecurityException;
 
+	DataTableBean<EmployeePostYzw> findDataTableOfCoach(QueryParameter parameter);
+
 }

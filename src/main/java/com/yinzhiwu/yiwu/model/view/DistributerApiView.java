@@ -12,13 +12,13 @@ import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
+@SuppressWarnings("serial")
 @MapedClass(Distributer.class)
 public class DistributerApiView  implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1063578788280665376L;
 
 	private int id;
 	private String name;
@@ -29,7 +29,7 @@ public class DistributerApiView  implements Serializable {
 	@MapedProperty("headIconName")
 	private String headIconUrl;
 	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
-	private Date birthDay;
+	private Date birthday;
 	
 	@MapedProperty("registedTime")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
@@ -73,7 +73,7 @@ public class DistributerApiView  implements Serializable {
 		this.phoneNo = d.getPhoneNo();
 		this.memberCard = d.getMemberCard();
 		this.shareCode = d.getShareCode();
-		this.birthDay = d.getBirthday();
+		this.birthday = d.getBirthday();
 		this.registerDate = d.getRegistedTime();
 		this.brokerage = d.getIncomeValue(IncomeType.BROKERAGE);
 		this.funds = d.getIncomeValue(IncomeType.FUNDS);
@@ -97,7 +97,7 @@ public class DistributerApiView  implements Serializable {
 		this.phoneNo = d.getPhoneNo();
 		this.memberCard = d.getMemberCard();
 		this.shareCode = d.getShareCode();
-		this.birthDay = d.getBirthday();
+		this.birthday = d.getBirthday();
 		this.registerDate = d.getRegistedTime();
 		this.beatRate = rate;
 		this.brokerage = d.getIncomeValue(IncomeType.BROKERAGE);
@@ -219,13 +219,6 @@ public class DistributerApiView  implements Serializable {
 		this.phoneNo = phoneNo;
 	}
 
-	public Date getBirthDay() {
-		return birthDay;
-	}
-
-	public void setBirthDay(Date birthDay) {
-		this.birthDay = birthDay;
-	}
 
 	public float getExp() {
 		return exp;
@@ -253,7 +246,7 @@ public class DistributerApiView  implements Serializable {
 		this.memberCard = memeberId;
 		this.shareCode = shareCode;
 		this.headIconUrl = headIconUrl;
-		this.birthDay = birthDay;
+		this.birthday = birthDay;
 		this.registerDate = registerDate;
 		this.exp = exp;
 		this.expGradeNo = expGradeNo;
@@ -275,6 +268,16 @@ public class DistributerApiView  implements Serializable {
 
 	
 	
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+
+
 	public final static class DistributerApiViewConverter extends AbstractConverter<Distributer, DistributerApiView>{
 		public final static DistributerApiViewConverter instance = new DistributerApiViewConverter(); 
 	}

@@ -99,7 +99,7 @@ public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
 	public LessonVO fromPO(LessonYzw po) {
 		super.fromPO(po);
 		if(connotation !=null){
-			FileService fileService = SpringUtils.getBean(FileService.class);
+			FileService fileService = SpringUtils.getBean("qiniuServiceImpl");
 			connotation.setAudioUrl(fileService.getFileUrl(connotation.getAudioUrl()));
 			connotation.setPictureUrl(fileService.getFileUrl(connotation.getPictureUrl()));
 			connotation.setStandardVideoUrl(fileService.getFileUrl(connotation.getStandardVideoUrl()));

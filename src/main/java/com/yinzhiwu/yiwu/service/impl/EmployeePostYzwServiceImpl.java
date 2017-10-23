@@ -27,6 +27,12 @@ public class EmployeePostYzwServiceImpl extends BaseServiceImpl<EmployeePostYzw,
 		return epDao.findDataTableByEmployeeId(parameter,empId);
 	}
 
+	@Override
+	public DataTableBean<EmployeePostYzw> findDataTableOfCoach(QueryParameter parameter) {
+		Integer coachPostId = 6;
+		return epDao.findDataTableByPostId(parameter, coachPostId);
+	}
+
 	
 	
 	
