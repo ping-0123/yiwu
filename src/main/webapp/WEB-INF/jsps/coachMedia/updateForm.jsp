@@ -123,8 +123,6 @@
 				myDropzone.emit("addedfile", mockFile);
 				myDropzone.emit("thumbnail", mockFile, "${headerMedia.uri}");
 				myDropzone.emit("complete", mockFile);
-			 //   var existingFileCount=1;
-			  //  myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
 			    
 			    $(".dz-image img").css({
 					"width":"100%",

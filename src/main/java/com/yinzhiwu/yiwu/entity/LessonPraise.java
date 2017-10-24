@@ -23,7 +23,7 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="yiwu_praise", uniqueConstraints=
+@Table(name="yiwu_lesson_praise", uniqueConstraints=
 	@UniqueConstraint(name="uk_praise_lessonId_distributerId", columnNames={"lesson_id", "distributer_id"}))
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class LessonPraise extends BaseEntity {

@@ -9,7 +9,7 @@
     <uri>http://yinzhiwu.com/yiwu/tags/ping</uri>
 
     <function>
-        <description>obj in collection</description>
+        <description>is obj in collection</description>
         <name>in</name>
         <function-class>com.yinzhiwu.yiwu.web.tablib.Functions</function-class>
         <function-signature>boolean in(java.lang.Iterable,java.lang.Object)</function-signature>
@@ -26,5 +26,11 @@
 		<function-class>com.yinzhiwu.yiwu.web.tablib.Functions</function-class>
 		<function-signature>String getDetailAddress(com.yinzhiwu.yiwu.entity.Address)</function-signature>
 	</function>
-
+	<function>
+		<description>the length of list</description>
+		<name>length</name>
+		<function-class>com.yinzhiwu.yiwu.web.tablib.Functions</function-class>
+		<function-signature>int length(java.util.List)</function-signature>
+	</function>
+	
 </taglib>

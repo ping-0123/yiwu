@@ -1,6 +1,8 @@
 package com.yinzhiwu.yiwu.web.tablib;
 
 
+import java.util.List;
+
 import org.springframework.util.CollectionUtils;
 
 import com.yinzhiwu.yiwu.entity.Address;
@@ -30,6 +32,10 @@ public class Functions {
     public static String getDetailAddress(Address address){
     	return address==null?"":address.getDetailAddress();
     	
+    }
+    
+    public static int length(List<?> list){
+    	return list==null?0: list.size();
     }
 }
 

@@ -1,5 +1,7 @@
 package com.yinzhiwu.yiwu.service;
 
+import java.util.List;
+
 import com.yinzhiwu.yiwu.entity.CoachMedia;
 
 /**
@@ -11,5 +13,7 @@ import com.yinzhiwu.yiwu.entity.CoachMedia;
 public interface CoachMediaService extends IBaseService<CoachMedia,Integer>{
 
 	CoachMedia findHeaderMediaByCoachId(Integer coachId);
+
+	List<CoachMedia> findByCoachId(Integer coachId);
 
 }

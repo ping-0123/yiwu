@@ -22,4 +22,9 @@ public class CoachMediaDaoImpl extends BaseDaoImpl<CoachMedia,Integer> implement
 		return findByProperties(new String[]{"coach.id", "tag"}, new Object[]{coachId,header});
 	}
 
+	@Override
+	public List<CoachMedia> findByCoachId(Integer coachId) {
+		return findByProperty("coach.id", coachId);
+	}
+
 }

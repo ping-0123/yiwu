@@ -102,14 +102,6 @@ public class CoachMedia extends BaseEntity {
 		this.text = text;
 	}
 
-	public boolean isCoverage() {
-		return coverage;
-	}
-
-	public void setCoverage(boolean coverage) {
-		this.coverage = coverage;
-	}
-	
 	public String getVideoPosterUri() {
 		return videoPosterUri;
 	}
@@ -124,5 +116,13 @@ public class CoachMedia extends BaseEntity {
 
 	public void setVideoTitle(String videoTitle) {
 		this.videoTitle = videoTitle;
+	}
+
+	public Boolean getCoverage() {
+		return coverage;
+	}
+
+	public void setCoverage(Boolean coverage) {
+		this.coverage = coverage;
 	}
 }

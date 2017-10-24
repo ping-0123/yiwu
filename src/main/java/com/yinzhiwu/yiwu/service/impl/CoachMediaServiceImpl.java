@@ -28,4 +28,9 @@ public class CoachMediaServiceImpl extends BaseServiceImpl<CoachMedia,Integer> i
 			return medias.get(0);
 		return null;
 	}
+
+	@Override
+	public List<CoachMedia> findByCoachId(Integer coachId) {
+		return coachMediaDao.findByCoachId(coachId);
+	}
 }

@@ -26,6 +26,7 @@ public class BaseController {
 		return null;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@ExceptionHandler
 	@ResponseBody
 	public ResponseEntity handlerException(HttpServletRequest request,HttpServletResponse response, Exception e){

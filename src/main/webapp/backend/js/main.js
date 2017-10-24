@@ -14,12 +14,24 @@ $(document).ready(function(){
 	TABLE = $TABLE.DataTable(setting);
 });
 
+
 /**
  * 关闭模态框自动清除数据
  */
 $(".modal").on("hidden.bs.modal", function() {
 	$(this).removeData("bs.modal");
 })
+
+
+
+/**
+ * 
+ * @param table
+ * @returns
+ */
+function refreshDataTable(table){
+	table.draw(false);
+}
 
 /**
  * 显示 删除模态框
@@ -81,8 +93,6 @@ function flashDeleteSuccessModal(callback){
 	    dlg.close();
 	    if(callback !=null)
 	    	callback();
-	    else
-	    	TABLE.draw(); //刷新表
 	},1000);
 }
 
@@ -166,6 +176,10 @@ function doDeleteRequest(url, callback) {
 	
 };
 
+/**
+ * 刷新当前页面
+ * @returns
+ */
 function refreshCurrentPage(){
 	location.reload();
 }

@@ -9,51 +9,31 @@
 </head>
 <body>
 
-	<!-- modal header -->
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">
-			<span aria-hidden="true">×</span>
-		</button>
-		<h4 class="modal-title" >新增岗位</h4>
-	</div>
-	<!-- /modal header -->
-
 	<!-- modal body -->
-	<div class="modal-body">
+	<div class="modal-body" style="min-height: 480px">
 		<form id="form-create"  method="POST" action="./"  class="form-horizontal form-label-left">
-
+			<input type="hidden" name="id" value="${media.id }">
+			<input type="hidden" name="coach.id" value="${media.coach.id }">
+			<input type="hidden" name="type" value="${media.type }"> 
+			<input type="hidden" name="tag" value="${media.tag }">
+			<input type="hidden" name="coverage" value="false">
+				
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">职位名 <span class="required">*</span></label>
-				<div class="col-md-9 col-sm-9 col-xs-12">
-					<!--  <input type="text" class="form-control" placeholder="设置之后不可修改"  name="name" value="${post.name }"> -->
-					<input  name="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2"  placeholder="设置之后不可修改" required="required" type="text">
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">状态 <span class="required">*</span></label>
-				<div class="col-md-9 col-sm-9 col-xs-12">
-					<select name="dataStatus" class="form-control">
-						<option value="NORMAL"  selected="selected">正常</option>
-						<option value="FORBID" >禁用</option>
-					</select>
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">岗位描述 </label>
-				<div class="col-md-9 col-sm-9 col-xs-12">
-					<textarea class="form-control" rows="3" name="description"> ${post.description } </textarea>
+				<input type="hidden" name="uri" id="media-uri" value=""> 
+				<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+				<div class="col-md-9 col-sm-9 col-xs-12 dropzone" id="dropzone-media">
+					<div class="am-text-success dz-message">
+						将图片拖拽到此处<br>或点此打开文件管理器选择图片
+					</div>
 				</div>
 			</div>
 
 			<div class="ln_solid"></div>
 			<div class="form-group">
 				<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-					<button type="submit" class="btn btn-success">提交</button>
+					<button type="submit" class="btn btn-success">保存</button>
 				</div>
 			</div>
-
 		</form>
 	</div>
 
@@ -65,10 +45,44 @@
 				data: $(this).serialize(),
 				success:function(data){
 					$('.modal-create').modal('hide');
-					TABLE.order([CLOUMN_CREATE_TIME,'desc']).draw();
 				}
 			});
 			return false;
+		});
+		
+		Dropzone.autoDiscover = false;
+		var myDropzone = new Dropzone("#dropzone-media", {
+			url : QINIU_UPLOAD_URL,
+			method : "POST",
+			params : {
+				"token" : "${uploadToken}"
+			},
+			addRemoveLinks : true,
+			dictRemoveLinks : "x",
+			dictRemoveFile : "移除",
+			dictMaxFilesExceeded : "",
+			maxFiles : 1,
+			filesizeBase : 1024,
+
+			sending : function(file, xhr, formData) {
+				formData.append("filesize", file.size);
+			},
+			success : function(file, response, e) {
+				$("#media-uri").val(response.key);
+			},
+			init : function() {
+				this.on("removedfile", function(file) {
+					console.log(file.name);
+					$.ajax({
+						type : "delete",
+						url : "../qiniu/" + file.name,
+						async : true,
+						success : function(data) {
+							console.log("删除成功");
+						}
+					});
+				});
+			}
 		});
 	</script>
 </body>

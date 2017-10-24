@@ -15,4 +15,6 @@ public interface CoachMediaDao extends IBaseDao<CoachMedia,Integer>{
 
 	List<CoachMedia> findByCoachIdAndTag(Integer coachId, MediaTag header);
 
+	List<CoachMedia> findByCoachId(Integer coachId);
+
 }

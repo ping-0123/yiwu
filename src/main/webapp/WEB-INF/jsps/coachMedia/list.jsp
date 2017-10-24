@@ -62,8 +62,6 @@
 				</div>
 			</div>
 
-
-
 		</div>
 	</div>
 	<!-- /page content -->
@@ -72,7 +70,9 @@
 	<!-- create modal -->
 	<div class="modal fade bs-example-modal-lg modal-detail" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
-			<div class="modal-content"></div>
+			<div class="modal-content">
+				
+			</div>
 		</div>
 	</div>
 	
@@ -147,7 +147,7 @@
 					"render": function(data, type, row, meta) {
 						var html =  '';
 						<shiro:hasPermission name="coachMedia:view:*">
-							html = html + '<a href="' + row.employee.id + '/detailPage" data-toggle="modal" data-target=".modal-detail"> [查看]  </a>';
+							html = html + '<a href="details?coachId=' + row.employee.id + '" data-toggle="modal" data-target=".modal-detail"> [查看详情]  </a>';
 						</shiro:hasPermission>
 						
 						<shiro:hasPermission name="coachMedia:update:*">

@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,10 +8,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,14 +20,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.CoachMedia;
+import com.yinzhiwu.yiwu.entity.CoachMedia.MediaTag;
+import com.yinzhiwu.yiwu.entity.CoachMedia.MediaType;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeePostYzw;
-import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
+import com.yinzhiwu.yiwu.model.view.CoachMediaVO;
+import com.yinzhiwu.yiwu.model.view.CoachMediaVO.CoachMediaVOConverter;
 import com.yinzhiwu.yiwu.service.CoachMediaService;
 import com.yinzhiwu.yiwu.service.EmployeePostYzwService;
-import com.yinzhiwu.yiwu.service.EmployeeService;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
@@ -57,21 +60,63 @@ public class CoachMediaController extends BaseController{
 		return "coachMedia/list";
 	}
 	
-	@GetMapping(value="/{coachId}/updateForm")
-	public String showUpdateForm(@PathVariable(name="coachId") Integer coachId, Model model){
-		//添加七牛云上传token
+	@GetMapping(value="details")
+	public String getMediaDetails(Integer coachId, Model model){
+		model.addAttribute("coachId", coachId);
 		model.addAttribute("uploadToken", qiniuService.createAccessToken());
 		
-		// add header media
-		CoachMedia headerMedia = coachMediaService.findHeaderMediaByCoachId(coachId);
-		if(headerMedia==null) {
-			headerMedia= new CoachMedia();
-			EmployeeYzw coach = employeeService.get(coachId);
-			headerMedia.setCoach(coach);
+		List<CoachMedia> medias = coachMediaService.findByCoachId(coachId);
+		List<CoachMediaVO> headerMedias = new ArrayList<>();
+		List<CoachMediaVO> certificateMedias = new ArrayList<>();
+		List<CoachMediaVO> dailyMedias = new ArrayList<>();
+		List<CoachMediaVO> danceMedias = new ArrayList<>();
+		CoachMediaVOConverter converter =CoachMediaVOConverter.instance;
+		for (CoachMedia media : medias) {
+			switch (media.getTag()) {
+			case HEADER:
+				headerMedias.add(converter.fromPO(media));
+				break;
+			case CERTIFICATE:
+				certificateMedias.add(converter.fromPO(media));
+				break;
+			case DAILY:
+				dailyMedias.add(converter.fromPO(media));
+				break;
+			case DANCE:
+				danceMedias.add(converter.fromPO(media));
+			default:
+				break;
+			}
 		}
-		model.addAttribute("headerMedia", headerMedia);
 		
-		return "coachMedia/updateForm";
+		model.addAttribute("headerMedia", headerMedias.size()>0?headerMedias.get(0):null);
+		model.addAttribute("certificateMedias", certificateMedias);
+		model.addAttribute("dailyMedias", dailyMedias);
+		model.addAttribute("danceMedias", danceMedias);
+		
+		return "coachMedia/details";
+	}
+	
+	@GetMapping(value="createForm")
+	public String showCreateForm(Integer coachId, MediaTag tag, Model model){
+		model.addAttribute("uploadToken", qiniuService.createAccessToken());
+		
+		CoachMedia media = new CoachMedia();
+		media.setCoach(employeeService.get(coachId));
+		media.setTag(tag);
+		
+		switch (tag) {
+		case DANCE:
+			media.setType(MediaType.VIDEO);
+			model.addAttribute("media", media);
+			return "coachMedia/createForm_dance";
+		default:
+			media.setType(MediaType.IMAGE);
+			model.addAttribute("media", media);
+			return "coachMedia/createForm";
+		}
+		
+		
 	}
 	
 	@PostMapping
@@ -80,8 +125,15 @@ public class CoachMediaController extends BaseController{
 		if(result.hasErrors())
 			return YiwuJson.createByErrorMessage(getErrorsMessage(result));
 		
-		coachMediaService.saveOrUpdate(coachMedia);
+		coachMediaService.save(coachMedia);
 		
+		return YiwuJson.createBySuccess();
+	}
+	
+	@ResponseBody
+	@DeleteMapping(value="/{id}")
+	public YiwuJson<?> delete(@PathVariable(name="id") Integer id){
+		coachMediaService.delete(id);
 		return YiwuJson.createBySuccess();
 	}
 	
