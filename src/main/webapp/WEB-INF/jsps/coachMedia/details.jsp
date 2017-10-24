@@ -20,7 +20,7 @@
 	<!-- /modal header -->
 
 	<!-- modal body -->
-	<div class="modal-body" style="min-height: 400px">
+	<div class="modal-body" style="min-height: 720px">
 		<ul class="nav nav-tabs">
 			<li><a href="#header" data-toggle="tab">顶部图片</a></li>
 			<li><a href="#certificate" data-toggle="tab">资质＆证书</a></li>
@@ -49,6 +49,14 @@
 
 			<!-- certificate tab pane -->
 			<div class="tab-pane fade " id="certificate">
+				<div>
+					<shiro:hasPermission name="coachMedia:create:*">
+						<a  href="./createForm?coachId=${coachId }&tag=CERTIFICATE" data-toggle="modal"  data-target=".modal-create"><button class="btn btn-primary">新增</button></a>
+					</shiro:hasPermission>
+					<shiro:hasPermission name="coachMedia:delete:*">
+						<button onclick="showDeleteModal(${headerMedia.id})" class="btn btn-primary">删除</button>
+					</shiro:hasPermission>
+				</div>
 				<div id="carousel-certificate" class="carousel slide">
 					<ol class="carousel-indicators">
 						<c:forEach items="${certificateMedias}" var="media" varStatus="status">
@@ -84,9 +92,66 @@
 				</div>
 			</div>
 			<!-- daily tab pane -->
-			<div class="tab-pane fade " id="daily">this is daily</div>
+			<div class="tab-pane fade " id="daily">
+				<div>
+					<shiro:hasPermission name="coachMedia:create:*">
+						<a  href="./createForm?coachId=${coachId }&tag=DAILY" data-toggle="modal"  data-target=".modal-create"><button class="btn btn-primary">新增</button></a>
+					</shiro:hasPermission>
+					<shiro:hasPermission name="coachMedia:delete:*">
+						<button onclick="showDeleteModal(${headerMedia.id})" class="btn btn-primary">删除</button>
+					</shiro:hasPermission>
+				</div>
+				<div id="carousel-certificate" class="carousel slide">
+					<ol class="carousel-indicators">
+						<c:forEach items="${dailyMedias}" var="media" varStatus="status">
+							<c:if test="${status.index eq 0 }">
+								<li data-target="#carousel-certificate"  data-slide-to=${status.index} class="active"></li>
+							</c:if>
+							<c:if test="${status.index lt 0 }">
+								<li data-target="#carousel-certificate"  data-slide-to=${status.index}></li>
+							</c:if>
+						</c:forEach>
+					</ol>
+					<div class="carousel-inner">
+						<c:forEach items="${dailyMedias}" var="media" varStatus="status">
+							<c:if test="${status.index eq 0 }">
+								<div class="item active">
+									<img alt=""  src="${media.url }">
+								</div>
+							</c:if>
+							<c:if test="${status.index lt 0 }">
+								<div class="item">
+									<img alt=""  src="${media.url }">
+								</div>
+							</c:if>
+						</c:forEach>
+					</div>
+					
+					<a class="carousel-control left" href="#carousel-certificate" 
+				        data-slide="prev">&lsaquo;
+				    </a>
+				    <a class="carousel-control right" href="#carousel-certificate" 
+				        data-slide="next">&rsaquo;
+				    </a>
+				</div>
+			</div>
 			<!-- dance tab pane -->
-			<div class="tab-pane fade " id="dance">this is dance</div>
+			<div class="tab-pane fade " id="dance">
+				<div>
+					<shiro:hasPermission name="coachMedia:create:*">
+						<a  href="./createForm?coachId=${coachId }&tag=DANCE" data-toggle="modal"  data-target=".modal-create"><button class="btn btn-primary">新增</button></a>
+					</shiro:hasPermission>
+					<shiro:hasPermission name="coachMedia:delete:*">
+						<button onclick="showDeleteModal(${headerMedia.id})" class="btn btn-primary">删除</button>
+					</shiro:hasPermission>
+				</div>
+				
+				<div>
+					<c:forEach items="${danceMedias }" var="video">
+						<video width="320" height="240" controls="controls" poster="${video.videoPosterUrl }" src="${video.url }">
+						</video>
+					</c:forEach>
+				</div>
 		</div>
 	</div>
 	<!-- end modal body -->
@@ -123,9 +188,6 @@
 			});
 		}
 		
-/*  		$('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-			$('#carousel-certificate').carousel('cycle');
-		});  */
 	</script>
 </body>
 </html>

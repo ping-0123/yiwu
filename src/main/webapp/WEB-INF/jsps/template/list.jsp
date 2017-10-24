@@ -14,13 +14,15 @@
 <title>岗位设置</title>
 
 <!-- Font Awesome -->
-<link href="../../assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link href="../../assets/font-awe	some/css/font-awesome.min.css" rel="stylesheet">
 
 <!-- my datatable -->
 <link href="../../assets/datatables/datatables.min.css" rel="stylesheet" > 
 <link href="../../assets/datatable-plugins/Select-1.2.3/css/select.bootstrap.min.css" rel="stylesheet">
 <!-- bootstrap dialog -->
 <link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
+	<!-- dropzone -->
+<link href="../../assets/dropzone/min/dropzone.min.css" rel="stylesheet">
 <!-- Custom Theme Style -->
 <link href="../../backend/css/custom.min.css" rel="stylesheet">
 <!-- Yiwu Theme Style -->
@@ -60,17 +62,17 @@
 				</div>
 			</div>
 
-
-
 		</div>
 	</div>
 	<!-- /page content -->
 
 	<!-- bootstrap modals -->
 	<!-- create modal -->
-	<div class="modal fade bs-example-modal-lg modal-create" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg modal-detail" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
-			<div class="modal-content"></div>
+			<div class="modal-content">
+				
+			</div>
 		</div>
 	</div>
 	
@@ -92,7 +94,8 @@
 	<script src="../../assets/datatables/datatables.min.js" type="text/javascript"></script>
 	<script src="../../assets/datatable-plugins/Select-1.2.3/js/dataTables.select.min.js" type="text/javascript"></script>
 	<script src="../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
-
+	<!-- dropzone -->
+	<script src="../../assets/dropzone/min/dropzone.min.js" type="text/javascript"></script>
 	<!-- validator -->
 	<script src="../../assets/validator/validator.js"></script>
 	<!-- Custom Theme Scripts -->
@@ -143,12 +146,12 @@
 					"title":"操作",
 					"render": function(data, type, row, meta) {
 						var html =  '';
-						<shiro:hasPermission name="posts:update:*">
-							html = html + '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
-							html = html +  '<a href="' + row.id + '/form" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-navicon" title="设置岗位职责"></i></a>';
+						<shiro:hasPermission name="coachMedia:view:*">
+							html = html + '<a href="details?coachId=' + row.employee.id + '" data-toggle="modal" data-target=".modal-detail"> [查看详情]  </a>';
 						</shiro:hasPermission>
-						<shiro:hasPermission name="posts:delete:*">
-							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
+						
+						<shiro:hasPermission name="coachMedia:update:*">
+							html = html +  '<a href="' + row.employee.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> [编辑]</a>';
 						</shiro:hasPermission>
 						return html;
 					}

@@ -205,18 +205,19 @@
 
         <!-- page content -->
         <div class="right_col" role="main" style="frameborder：0">
-			   <iframe  name="content" id="iframe" frameborder="0"  marginheight="0" marginwidth = "0" src="welcome" width="100%" height="800" scrolling="auto"  > </iframe> 
+			   <iframe  name="content" id="iframe" frameborder="0"  marginheight="0" marginwidth = "0" src="welcome" width="100%" height="800" scrolling="auto"  > </iframe>
         </div>
     	<!-- /page content -->
 		
-    
-        <!--<footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by Colorlib. More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>-->
-     
+		<!-- index modal -->
+		<div class="modal fade bs-example-modal-lg modal-index" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					
+				</div>
+			</div>
+		</div>
+		<!-- index modal -->     
       </div>
     </div>
 	

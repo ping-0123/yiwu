@@ -150,9 +150,6 @@
 							html = html + '<a href="details?coachId=' + row.employee.id + '" data-toggle="modal" data-target=".modal-detail"> [查看详情]  </a>';
 						</shiro:hasPermission>
 						
-						<shiro:hasPermission name="coachMedia:update:*">
-							html = html +  '<a href="' + row.employee.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> [编辑]</a>';
-						</shiro:hasPermission>
 						return html;
 					}
 				} ]
