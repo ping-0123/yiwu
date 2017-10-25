@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.entity;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,12 +30,12 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 public class LessonPraise extends BaseEntity {
 
 	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_lesson_id", value=ConstraintMode.NO_CONSTRAINT))
 	private LessonYzw lesson;
 	
 	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_distributer_id", value=ConstraintMode.NO_CONSTRAINT))
 	private Distributer distributer;
 	

@@ -13,6 +13,7 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.service.FileService;
+import com.yinzhiwu.yiwu.service.LessonCommentService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractVO;
 import com.yinzhiwu.yiwu.util.beanutils.MapedClassUtils;
@@ -95,6 +96,14 @@ public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
 	@ApiModelProperty(value="是否已点赞",required=false)
 	private boolean praised;
 	
+	@MapedProperty(ignored=true)
+	@ApiModelProperty(value="是否已首评",required=false)
+	private boolean isFirstCommented;
+	
+	@MapedProperty(ignored=true)
+	@ApiModelProperty(value="是否已追评")
+	private boolean isAppendCommented;
+	
 	@Override
 	public LessonVO fromPO(LessonYzw po) {
 		super.fromPO(po);
@@ -127,6 +136,8 @@ public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
 			}
 			praisers = builder.substring(0, builder.length()-1);
 		}
+		
+		LessonCommentService lcService = SpringUtils.getBean(LessonCommentService.class);
 		return this;
 	}
 	
@@ -265,6 +276,38 @@ public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
 	}
 	public void setConnotation(LessonConnotationVO connotation) {
 		this.connotation = connotation;
+	}
+
+
+	/**
+	 * @return the isFirstCommented
+	 */
+	public boolean isFirstCommented() {
+		return isFirstCommented;
+	}
+
+
+	/**
+	 * @param isFirstCommented the isFirstCommented to set
+	 */
+	public void setFirstCommented(boolean isFirstCommented) {
+		this.isFirstCommented = isFirstCommented;
+	}
+
+
+	/**
+	 * @return the isAppendCommented
+	 */
+	public boolean isAppendCommented() {
+		return isAppendCommented;
+	}
+
+
+	/**
+	 * @param isAppendCommented the isAppendCommented to set
+	 */
+	public void setAppendCommented(boolean isAppendCommented) {
+		this.isAppendCommented = isAppendCommented;
 	}
 
 }
