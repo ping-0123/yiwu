@@ -102,16 +102,16 @@
 					</shiro:hasPermission>
 				</div>
 				<div id="carousel-certificate" class="carousel slide">
-					<ol class="carousel-indicators">
+					<%-- <ol class="carousel-indicators">
 						<c:forEach items="${dailyMedias}" var="media" varStatus="status">
 							<c:if test="${status.index eq 0 }">
-								<li data-target="#carousel-certificate"  data-slide-to=${status.index} class="active"></li>
+								<li data-target="#carousel-certificate"  data-slide-to="${status.index}" class="active"></li>
 							</c:if>
-							<c:if test="${status.index lt 0 }">
-								<li data-target="#carousel-certificate"  data-slide-to=${status.index}></li>
+							<c:if test="${status.index gt 0 }">
+								<li data-target="#carousel-certificate"  data-slide-to="${status.index}" ></li>
 							</c:if>
 						</c:forEach>
-					</ol>
+					</ol> --%>
 					<div class="carousel-inner">
 						<c:forEach items="${dailyMedias}" var="media" varStatus="status">
 							<c:if test="${status.index eq 0 }">
@@ -119,7 +119,7 @@
 									<img alt=""  src="${media.url }">
 								</div>
 							</c:if>
-							<c:if test="${status.index lt 0 }">
+							<c:if test="${status.index gt 0 }">
 								<div class="item">
 									<img alt=""  src="${media.url }">
 								</div>

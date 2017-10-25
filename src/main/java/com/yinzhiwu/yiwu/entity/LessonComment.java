@@ -25,9 +25,9 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="yiwu_lesson_appraise")
+@Table(name="yiwu_lesson_comment")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-public class LessonAppraise extends BaseEntity{
+public class LessonComment extends BaseEntity{
 	
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_lesson_id", value=ConstraintMode.NO_CONSTRAINT))
@@ -48,7 +48,7 @@ public class LessonAppraise extends BaseEntity{
 	private Date date;
 	@ManyToOne
 	@JoinColumn(name="replied_id", foreignKey=@ForeignKey(name="fk_praise_replied_id", value= ConstraintMode.NO_CONSTRAINT))
-	private LessonAppraise reAppraise;
+	private LessonComment reAppraise;
 	
 	public static enum AppraiseType{
 		FIRST,
@@ -86,7 +86,7 @@ public class LessonAppraise extends BaseEntity{
 		return stars;
 	}
 
-	public LessonAppraise getReAppraise() {
+	public LessonComment getReAppraise() {
 		return reAppraise;
 	}
 
@@ -94,7 +94,7 @@ public class LessonAppraise extends BaseEntity{
 		this.stars = stars;
 	}
 
-	public void setReAppraise(LessonAppraise reAppraise) {
+	public void setReAppraise(LessonComment reAppraise) {
 		this.reAppraise = reAppraise;
 	}
 

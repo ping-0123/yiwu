@@ -39,7 +39,7 @@
 	<!-- 全局跨域配置 -->
 	<mvc:cors>
 		<mvc:mapping path="/**" allowed-origins="*"
-			allow-credentials="true" max-age="1800" allowed-methods="GET,POST,PUT,DELETE,OPTIONS" />
+			allow-credentials="true" exposed-headers="Authorization" allowed-headers="Authorization" max-age="1800" allowed-methods="GET,POST,PUT,DELETE,OPTIONS" />
 	</mvc:cors>
 	
 	<!-- swagger api document -->

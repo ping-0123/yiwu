@@ -39,6 +39,7 @@ import com.yinzhiwu.yiwu.model.datatable.Order;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.util.ReflectUtils;
+import com.yinzhiwu.yiwu.util.reflect.FieldUtils;
 
 /**
  * 
@@ -644,7 +645,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 	
 	@Override
-	public DataTableBean<T> findDataTable(QueryParameter parameter) throws NoSuchFieldException, SecurityException{
+	public DataTableBean<T> findDataTable(QueryParameter parameter){
 		//TODO 不支持正则表达式搜索
 		//TODO 只能实现String列 Integer列搜索
 		List<String> propertyNames = new ArrayList<>();
@@ -662,7 +663,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 				if(column.isSearchable() && StringUtils.hasLength(column.getData()) ){
 					String fieldName = column.getData();
 					//只支持  String 列搜索
-					if(String.class == ReflectUtils.getFieldClass(entityClass, fieldName)){
+					if(String.class == FieldUtils.getFieldClass(entityClass, fieldName)){
 						propertyNames.add("search" + String.valueOf(i));
 						hql.append(" OR " + fieldName  + " LIKE :search" + String.valueOf(i));
 					}
@@ -687,7 +688,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			}
 			//如果是字符串 使用convert(? using gbk)排序
 			String orderedColumnName = parameter.getColumns()[order.getColumn()].getData();
-			if(String.class ==ReflectUtils.getFieldClass(entityClass, orderedColumnName))
+			if(String.class ==FieldUtils.getFieldClass(entityClass, orderedColumnName))
 				hql.append( "convert_gbk(" + orderedColumnName+ ") " + order.getDir().name());
 			else
 				hql.append( orderedColumnName + " " +  order.getDir().name());
@@ -721,7 +722,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return new DataTableBean<>(parameter.getDraw(), findCount().intValue(),  filterdCount.intValue(), list, "");
 	}
 	
-	protected DataTableBean<T> findDataTableByProperties(QueryParameter parameter, String[] properties, Object[] values) throws NoSuchFieldException, SecurityException{
+	protected DataTableBean<T> findDataTableByProperties(QueryParameter parameter, String[] properties, Object[] values){
 		//TODO 不支持正则表达式搜索
 		//TODO 只能实现String列 Integer列搜索
 		if(properties.length != values.length){
@@ -757,7 +758,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 				if(column.isSearchable() && StringUtils.hasLength(column.getData()) ){
 					String fieldName = column.getData();
 					//只支持  String 列搜索
-					if(String.class == ReflectUtils.getFieldClass(entityClass, fieldName)){
+					if(String.class == FieldUtils.getFieldClass(entityClass, fieldName)){
 						searchPropertyNames.add("search" + String.valueOf(i));
 						hql.append(" OR " + fieldName  + " LIKE :search" + String.valueOf(i));
 					}
@@ -782,7 +783,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			}
 			//如果是字符串 使用convert(? using gbk)排序
 			String orderedColumnName = parameter.getColumns()[order.getColumn()].getData();
-			if(String.class ==ReflectUtils.getFieldClass(entityClass, orderedColumnName))
+			if(String.class ==FieldUtils.getFieldClass(entityClass, orderedColumnName))
 				hql.append( "convert_gbk(" + orderedColumnName+ ") " + order.getDir().name());
 			else
 				hql.append( orderedColumnName + " " +  order.getDir().name());

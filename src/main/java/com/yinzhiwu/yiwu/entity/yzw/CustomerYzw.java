@@ -27,112 +27,12 @@ import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw.GenderConverter;
 import com.yinzhiwu.yiwu.enums.Gender;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "vcustomer")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class CustomerYzw extends BaseYzwEntity {
 
-
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1246891395254977126L;
-	
-	public enum CustomerAgeType{
-		
-		CHILDREN("少儿"),
-		ADULT("成人");
-		
-		private final String name;
-		private CustomerAgeType(String name){
-			this.name = name;
-		}
-		public String getName() {
-			return name;
-		}
-		
-		public static CustomerAgeType fromName(String name){
-			switch (name) {
-			case "少儿":
-				return CustomerAgeType.CHILDREN;
-			case "成人":
-				return CustomerAgeType.ADULT;
-			default:
-				throw new UnsupportedOperationException(name + "not supported for enum CustomerAgeType");
-			}
-		}
-	}
-	
-	@Converter
-	public static class CustomerAgeTypeConverter implements AttributeConverter<CustomerAgeType, String>{
-
-		@Override
-		public String convertToDatabaseColumn(CustomerAgeType attribute) {
-			if(attribute == null)
-				return null;
-			return attribute.getName();
-		}
-
-		@Override
-		public CustomerAgeType convertToEntityAttribute(String dbData) {
-			if(dbData == null || "".equals(dbData.trim()))
-				return null;
-			return CustomerAgeType.fromName(dbData);
-		}
-		
-	}
-	
-	public enum MemberStatus{
-		MEMBER("会员"),
-		POTENTIAL("潜在"),
-		LOST("流失"),
-		FORBIDDEN("禁用");
-		
-		private final String status;
-
-		public String getStatus() {
-			return status;
-		}
-		
-		private MemberStatus(String status){
-			this.status = status;
-		}
-		
-		public static MemberStatus fromStatus(String status){
-			switch (status) {
-			case "会员":
-				return MemberStatus.MEMBER;
-			case "潜在":
-				return MemberStatus.POTENTIAL;
-			case "流失":
-				return LOST;
-			case "禁用":
-				return FORBIDDEN;
-			default:
-				throw new UnsupportedOperationException(status + "not supported for enum MemberStatus");
-			}
-		}
-	}
-
-	@Converter
-	public static class MemberStatusCoverter implements AttributeConverter<MemberStatus, String>{
-
-		@Override
-		public String convertToDatabaseColumn(MemberStatus attribute) {
-			if(attribute == null)
-				return null;
-			return attribute.getStatus();
-		}
-
-		@Override
-		public MemberStatus convertToEntityAttribute(String dbData) {
-			if(dbData== null || "".equals(dbData.trim()))
-				return null;
-			return MemberStatus.fromStatus(dbData);
-		}
-		
-	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -465,4 +365,100 @@ public class CustomerYzw extends BaseYzwEntity {
 		this.customerAgeType = customerAgeType;
 	}
 
+	
+	
+	public enum CustomerAgeType{
+		
+		CHILDREN("少儿"),
+		ADULT("成人");
+		
+		private final String name;
+		private CustomerAgeType(String name){
+			this.name = name;
+		}
+		public String getName() {
+			return name;
+		}
+		
+		public static CustomerAgeType fromName(String name){
+			switch (name) {
+			case "少儿":
+				return CustomerAgeType.CHILDREN;
+			case "成人":
+				return CustomerAgeType.ADULT;
+			default:
+				throw new UnsupportedOperationException(name + "not supported for enum CustomerAgeType");
+			}
+		}
+	}
+	
+	@Converter
+	public static class CustomerAgeTypeConverter implements AttributeConverter<CustomerAgeType, String>{
+
+		@Override
+		public String convertToDatabaseColumn(CustomerAgeType attribute) {
+			if(attribute == null)
+				return null;
+			return attribute.getName();
+		}
+
+		@Override
+		public CustomerAgeType convertToEntityAttribute(String dbData) {
+			if(dbData == null || "".equals(dbData.trim()))
+				return null;
+			return CustomerAgeType.fromName(dbData);
+		}
+		
+	}
+	
+	public enum MemberStatus{
+		MEMBER("会员"),
+		POTENTIAL("潜在"),
+		LOST("流失"),
+		FORBIDDEN("禁用");
+		
+		private final String status;
+
+		public String getStatus() {
+			return status;
+		}
+		
+		private MemberStatus(String status){
+			this.status = status;
+		}
+		
+		public static MemberStatus fromStatus(String status){
+			switch (status) {
+			case "会员":
+				return MemberStatus.MEMBER;
+			case "潜在":
+				return MemberStatus.POTENTIAL;
+			case "流失":
+				return LOST;
+			case "禁用":
+				return FORBIDDEN;
+			default:
+				throw new UnsupportedOperationException(status + "not supported for enum MemberStatus");
+			}
+		}
+	}
+
+	@Converter
+	public static class MemberStatusCoverter implements AttributeConverter<MemberStatus, String>{
+
+		@Override
+		public String convertToDatabaseColumn(MemberStatus attribute) {
+			if(attribute == null)
+				return null;
+			return attribute.getStatus();
+		}
+
+		@Override
+		public MemberStatus convertToEntityAttribute(String dbData) {
+			if(dbData== null || "".equals(dbData.trim()))
+				return null;
+			return MemberStatus.fromStatus(dbData);
+		}
+		
+	}
 }

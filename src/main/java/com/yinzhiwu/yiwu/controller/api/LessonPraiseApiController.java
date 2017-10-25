@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.context.UserContext;
@@ -30,7 +31,7 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @RequestMapping(value="/api/praises")
 @Api(value="课时点赞模块")
-public class LessonPraiseController extends BaseController {
+public class LessonPraiseApiController extends BaseController {
 	
 	@Autowired private LessonPraiseService lpService;
 	@Autowired private LessonYzwService lessonService;
@@ -38,7 +39,6 @@ public class LessonPraiseController extends BaseController {
 	@PostMapping
 	@ApiOperation(value = "点赞")
 	public YiwuJson<?> doPost(
-			@ApiParam(value="客户的distributerId", required =false) int distributerId,
 			@ApiParam(value="课时Id", required=true) Integer lessonId
 	){
 		
@@ -62,13 +62,13 @@ public class LessonPraiseController extends BaseController {
 	@DeleteMapping
 	@ApiOperation(value="取消点赞")
 	public YiwuJson<?> cancelPraise(
-		@ApiParam(value="客户的distributerId") Integer distributerId,
-		@ApiParam(value="课时Id", required=true) Integer lessonId
+		@ApiParam(value="课时Id", required=true) 
+		@RequestParam(name="lessonId", required=true) Integer lessonId
 	){
 		try {
 			Distributer distributer = UserContext.getDistributer();
 			LessonPraise lp = lpService.findByDistributerIdAndLessonId(distributer.getId(), lessonId);
-			if(lp==null) throw new DataNotFoundException();
+			if(lp==null) throw new DataNotFoundException("用户未点赞改课时");
 			lpService.delete(lp);
 			return YiwuJson.createBySuccess();
 		} catch (Exception e) {

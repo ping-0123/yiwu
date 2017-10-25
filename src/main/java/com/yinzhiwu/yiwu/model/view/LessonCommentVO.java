@@ -8,10 +8,11 @@ import org.springframework.beans.BeanUtils;
 
 import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.entity.Distributer;
-import com.yinzhiwu.yiwu.entity.LessonAppraise;
-import com.yinzhiwu.yiwu.entity.LessonAppraise.AppraiseType;
+import com.yinzhiwu.yiwu.entity.LessonComment;
+import com.yinzhiwu.yiwu.entity.LessonComment.AppraiseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -20,7 +21,8 @@ import io.swagger.annotations.ApiModelProperty;
 *
 */
 
-public class LessonAppraiseVO {
+@ApiModel(description="课程评论")
+public class LessonCommentVO {
 	
 	@NotNull
 	@ApiModelProperty(value="评论的课时Id", required=true)
@@ -46,21 +48,21 @@ public class LessonAppraiseVO {
 	@ApiModelProperty(value="被回复的评论的评论者姓名")
 	private String repliedCommenterName;
 	
-	public static LessonAppraiseVO fromPO(LessonAppraise po){
+	public static LessonCommentVO fromPO(LessonComment po){
 		return VOConverter.instance.reverse().convert(po);
 	}
 	
-	public static LessonAppraise toPO(LessonAppraiseVO vo){
+	public static LessonComment toPO(LessonCommentVO vo){
 		return VOConverter.instance.convert(vo);
 	}
 	
 	
-	private static class VOConverter extends Converter<LessonAppraiseVO, LessonAppraise>{
+	private static class VOConverter extends Converter<LessonCommentVO, LessonComment>{
 		public static final VOConverter instance = new VOConverter();
 		
 		@Override
-		protected LessonAppraise doForward(LessonAppraiseVO vo) {
-			LessonAppraise po = new LessonAppraise();
+		protected LessonComment doForward(LessonCommentVO vo) {
+			LessonComment po = new LessonComment();
 			BeanUtils.copyProperties(vo, po);
 			
 			LessonYzw lesson = new LessonYzw();
@@ -71,15 +73,15 @@ public class LessonAppraiseVO {
 			distributer.setId(vo.getCommenterId());
 			po.setCommenter(distributer);
 			
-			LessonAppraise reAppraise = new LessonAppraise();
+			LessonComment reAppraise = new LessonComment();
 			reAppraise.setId(vo.getReAppraiseId());
 			po.setReAppraise(reAppraise);
 			return po;
 		}
 
 		@Override
-		protected LessonAppraiseVO doBackward(LessonAppraise po) {
-			LessonAppraiseVO vo = new LessonAppraiseVO();
+		protected LessonCommentVO doBackward(LessonComment po) {
+			LessonCommentVO vo = new LessonCommentVO();
 			if(po.getLesson() !=null){
 				vo.setLessonId(po.getLesson().getId());
 			}
@@ -92,7 +94,7 @@ public class LessonAppraiseVO {
 			vo.setComment(po.getComment());
 			vo.setDate(po.getDate());
 			if(po.getType()== AppraiseType.REPLY && po.getReAppraise() != null){
-				LessonAppraise re = po.getReAppraise();
+				LessonComment re = po.getReAppraise();
 				vo.setReAppraiseId(re.getId());
 				vo.setRepliedCommenterName(re.getCommenter().getName());
 			}

@@ -108,7 +108,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	}
 
 	@Override
-	public DataTableBean<T> findDataTable(QueryParameter parameter) throws NoSuchFieldException, SecurityException{
+	public DataTableBean<T> findDataTable(QueryParameter parameter) {
 		return baseDao.findDataTable(parameter);
 	}
 

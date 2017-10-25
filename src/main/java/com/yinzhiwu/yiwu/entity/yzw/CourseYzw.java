@@ -49,7 +49,7 @@ public class CourseYzw extends BaseYzwEntity {
 	@Column(length = 128)
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "dance_id", foreignKey = @ForeignKey(name = "fk_course_dance_id", value = ConstraintMode.NO_CONSTRAINT))
 	private DanceYzw dance;
 

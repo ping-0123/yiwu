@@ -7,6 +7,8 @@ import java.lang.reflect.Method;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.yinzhiwu.yiwu.util.beanutils.ReflectException;
+
 public final class FieldUtils {
 
 	private static final Log log = LogFactory.getLog(FieldUtils.class);
@@ -47,12 +49,7 @@ public final class FieldUtils {
 			String preFieldName = fieldName.substring(0,position);
 			String suffixFieldName= fieldName.substring(position + 1);
 			Field preField;
-			try {
-				preField = getField(object.getClass(), preFieldName);
-			} catch (NoSuchFieldException e) {
-				log.error("no field " + preFieldName + " in class " + object.getClass().getName(), e);
-				return null;
-			}
+			preField = getField(object.getClass(), preFieldName);
 			preField.setAccessible(true);
 			/*满足 hibernate 延迟加载*/
 			Object preObject = getFieldValue(object,preFieldName);
@@ -80,9 +77,21 @@ public final class FieldUtils {
 		}
 	}
 
-	public static Field getField(Class<?> clazz, String fieldName)  throws NoSuchFieldException{
-		if(clazz==null || fieldName==null || "".equals(fieldName.trim())) 
+	/**
+	 * 
+	 * @param clazz  a Class object
+	 * @param fieldName 
+	 * @return
+	 * @throws ReflectException  if clazz is primitive or Object.class or if a field with the specified fieldName is
+     *          not found
+	 */
+	public static Field getField(Class<?> clazz, String fieldName){
+		if(null ==clazz 
+				|| fieldName==null || "".equals(fieldName.trim())) 
 			throw new IllegalArgumentException("clazz can not be null and fieldName can not be empty");
+		
+		if(Object.class==clazz || clazz.isPrimitive())
+			throw new ReflectException("no any field in primitive data nor Object class instance");
 		
 		if(fieldName.contains(".")){
 			int position = fieldName.indexOf(".");
@@ -99,13 +108,14 @@ public final class FieldUtils {
 			if(supClazz!=null){
 				return getField(supClazz,fieldName);
 			}else{
-				log.error("no field " + fieldName + " in class " + clazz.getName(), e);
-				throw e;
+				String message ="no field " + fieldName + " in class " + clazz.getName();
+				log.error(message, e);
+				throw new ReflectException(message, e);
 			}
 		}
 	}
 
-	public static Class<?> getFieldClass(Class<? extends Object> clazz, String fieldName) throws NoSuchFieldException {
+	public static Class<?> getFieldClass(Class<? extends Object> clazz, String fieldName){
 		if(clazz==null || fieldName==null || fieldName.trim().length()==0) 
 			throw new IllegalArgumentException("clazz and fieldName can not be null");
 		

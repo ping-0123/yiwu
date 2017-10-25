@@ -86,6 +86,14 @@
          overflowToDisk="false"   
          maxElementsOnDisk="10" /> 
          
+         <cache   
+         name="com.yinzhiwu.yiwu.entity.yzw.DanceGrade"  
+         maxElementsInMemory="30"  
+         memoryStoreEvictionPolicy="LRU"   
+         eternal="true"   
+         diskPersistent="false"  
+         overflowToDisk="false"   
+         maxElementsOnDisk="10" /> 
          
 </ehcache>
 

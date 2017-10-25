@@ -27,7 +27,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.yinzhiwu.yiwu.entity.LessonAppraise;
+import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseTypeConverter;
@@ -159,7 +159,7 @@ public class LessonYzw extends BaseYzwEntity {
 	private List<LessonPraise> praises = new ArrayList<>();
 	
 	@OneToMany(mappedBy="lesson")
-	private List<LessonAppraise> appraises = new ArrayList<>();
+	private List<LessonComment> appraises = new ArrayList<>();
 	
 	public LessonYzw() {
 		super();
@@ -475,11 +475,11 @@ public class LessonYzw extends BaseYzwEntity {
 		this.praises = praises;
 	}
 
-	public List<LessonAppraise> getAppraises() {
+	public List<LessonComment> getAppraises() {
 		return appraises;
 	}
 
-	public void setAppraises(List<LessonAppraise> appraises) {
+	public void setAppraises(List<LessonComment> appraises) {
 		this.appraises = appraises;
 	}
 	

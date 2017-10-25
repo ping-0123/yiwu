@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yinzhiwu.yiwu.entity.LessonAppraise;
+import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.model.YiwuJson;
-import com.yinzhiwu.yiwu.model.view.LessonAppraiseVO;
-import com.yinzhiwu.yiwu.service.LessonAppraiseService;
+import com.yinzhiwu.yiwu.model.view.LessonCommentVO;
+import com.yinzhiwu.yiwu.service.LessonCommentService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,21 +23,21 @@ import io.swagger.annotations.ApiOperation;
 */
 
 @RestController
-@RequestMapping(value="/api/appraises")
+@RequestMapping(value="/api/lessonComments")
 @Api(value="Lesson Appraise 课程评论模块", tags={"CLOSED"})
-public class LessonAppraiseController extends BaseController {
+public class LessonCommentApiController extends BaseController {
 	
-	@Autowired LessonAppraiseService laService;
+	@Autowired LessonCommentService laService;
 	
 	@PostMapping
 	@ApiOperation(value="评论课时")
-	public YiwuJson<?> doPost(@Valid LessonAppraiseVO appraiseVO, BindingResult result){
+	public YiwuJson<?> doPost(@Valid LessonCommentVO commentVO, BindingResult result){
 		if(result.hasErrors()){
 			YiwuJson.createByErrorMessage(getErrorsMessage(result));
 		}
 		
 		try {
-			LessonAppraise appraise = LessonAppraiseVO.toPO(appraiseVO);
+			LessonComment appraise = LessonCommentVO.toPO(commentVO);
 			laService.save(appraise);
 			
 			return YiwuJson.createBySuccess();

@@ -3,8 +3,8 @@ ALTER TABLE chenkuserdb1.skt6 add COLUMN(sumLessonTimes int);
 alter TABLE chenkuserdb1.skt6 add COLUMN(videoPosterUri VARCHAR(128), videoTitle VARCHAR(128));
 
 CREATE 
-or REPLACE
-VIEW yiwu.`vcourse` AS
+	or REPLACE
+VIEW `vcourse` AS
     SELECT 
         `chenkuserdb1`.`skt6`.`SKF50` AS `id`,
         `chenkuserdb1`.`skt6`.`SKF51` AS `name`,
@@ -20,11 +20,11 @@ VIEW yiwu.`vcourse` AS
         `chenkuserdb1`.`skt6`.`SKF61` AS `endTime`,
         `chenkuserdb1`.`skt6`.`SKF62` AS `startDate`,
         `chenkuserdb1`.`skt6`.`SKF63` AS `endDate`,
-        sumLessonTimes,
+        `chenkuserdb1`.`skt6`.`sumLessonTimes` AS `sumLessonTimes`,
         `chenkuserdb1`.`skt6`.`SKF64` AS `sumCourseHours`,
         `chenkuserdb1`.`skt6`.`SKF65` AS `classRoom_id`,
         `chenkuserdb1`.`skt6`.`SKF66` AS `classRoomName`,
-		dataStatus,
+        `chenkuserdb1`.`skt6`.`dataStatus` AS `dataStatus`,
         `chenkuserdb1`.`skt6`.`SF_CREATE_USER` AS `sf_create_user`,
         `chenkuserdb1`.`skt6`.`SF_LAST_CHANGE_USER` AS `sf_last_change_user`,
         `chenkuserdb1`.`skt6`.`SF_CREATE_TIME` AS `sf_create_time`,
@@ -50,7 +50,7 @@ VIEW yiwu.`vcourse` AS
         `chenkuserdb1`.`skt6`.`SKF177` AS `sunInterval_id`,
         `chenkuserdb1`.`skt6`.`SKF178` AS `sunRoom_id`,
         `chenkuserdb1`.`skt6`.`SKF197` AS `status`,
-        `chenkuserdb1`.`skt6`.`SKF224` AS `StudentCount`,
+        `chenkuserdb1`.`skt6`.`SKF224` AS `studentCount`,
         `chenkuserdb1`.`skt6`.`SF_Last_Change_Timestamp` AS `sf_last_change_timeStamp`,
         `chenkuserdb1`.`skt6`.`SKF367` AS `include_holeday_flag`,
         `chenkuserdb1`.`skt6`.`SKF388` AS `DanceGrade`,
@@ -60,8 +60,8 @@ VIEW yiwu.`vcourse` AS
         `chenkuserdb1`.`skt6`.`SKF921` AS `briefIntroduction`,
         `chenkuserdb1`.`skt6`.`SKF922` AS `picture`,
         `chenkuserdb1`.`skt6`.`SKF923` AS `videoURL`,
-        videoPosterUri,
-        videoTitle,
+        `chenkuserdb1`.`skt6`.`videoPosterUri` AS `videoPosterUri`,
+        `chenkuserdb1`.`skt6`.`videoTitle` AS `videoTitle`,
         `chenkuserdb1`.`skt6`.`SKF924` AS `audio`,
         `chenkuserdb1`.`skt6`.`SKF925` AS `audioURL`,
         `chenkuserdb1`.`skt6`.`SKF949` AS `danceIntroduction`,

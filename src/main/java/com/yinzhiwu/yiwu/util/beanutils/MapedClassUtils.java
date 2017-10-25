@@ -151,12 +151,7 @@ public final class MapedClassUtils {
 						Object mapedTargetFieldObject = FieldUtils.getFieldValue(target, mapedTargetFieldName);
 						if(mapedTargetFieldObject == null){
 							Class<?> mapedTargetFieldClass;
-							try {
-								mapedTargetFieldClass = FieldUtils.getFieldClass(target.getClass(), mapedTargetFieldName);
-							} catch (NoSuchFieldException e) {
-								logger.error(e.getMessage(),e);
-								throw new MapedPropertyDismatchException(e);
-							}
+							mapedTargetFieldClass = FieldUtils.getFieldClass(target.getClass(), mapedTargetFieldName);
 							mapedTargetFieldObject = mapedTargetFieldClass.newInstance();
 							try {
 								FieldUtils.setFieldValue(target, mapedTargetFieldName, mapedTargetFieldObject);
@@ -238,9 +233,38 @@ public final class MapedClassUtils {
 	}
 	
 	
+	public static String getMapedPropertyName(Field field){
+		if(field==null) return null;
+		MapedProperty mapedProperty = field.getDeclaredAnnotation(MapedProperty.class);
+		if(mapedProperty==null)
+			return field.getName();
+		else{
+			if(mapedProperty.ignored())
+				return null;
+			else 
+				return "".equals(mapedProperty.value())?field.getName():mapedProperty.value();
+		}
+		
+	}
+	
+	public static Object getMapedPropertyValue(Object mapedClassObject, Field field){
+		//TODO;
+		return null;
+	}
 
+	public static void setMapedPropertyValue(Object mapedClassObject, Field field){
+		//TODO
+		return;
+	}
 	
-	
-
-	
+	public static boolean isInversable(Field field){
+		MapedProperty mapedProperty = field.getDeclaredAnnotation(MapedProperty.class);
+		if(mapedProperty ==null) return true;
+		else{
+			if(mapedProperty.ignored())
+				return false;
+			else
+				return mapedProperty.inverse();
+		}
+	}
 }

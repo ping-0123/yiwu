@@ -23,6 +23,7 @@ import com.yinzhiwu.yiwu.util.reflect.FieldUtils;
 
 public class ServletRequestUtils {
 	
+	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(ServletRequestUtils.class);
 	
 	public static Object parseParameter(HttpServletRequest request, Class<?> parameterType) 
@@ -157,19 +158,14 @@ public class ServletRequestUtils {
 			if(columns !=null && columns.length> 0){
 				for (Column column : columns) {
 					if(column !=null){
-						try {
-							Field field = FieldUtils.getField(from, column.getData());
-							MapedProperty mapedProperty = field.getDeclaredAnnotation(MapedProperty.class);
-							if(mapedProperty==null)
-								continue;
-							else if (mapedProperty.ignored() || !mapedProperty.inverse()) {
-								column.setData(null);
-							}else {
-								column.setData(mapedProperty.value());
-							}
-						} catch (NoSuchFieldException e) {
-							log.error(e);
-							throw new RuntimeException(e);
+						Field field = FieldUtils.getField(from, column.getData());
+						MapedProperty mapedProperty = field.getDeclaredAnnotation(MapedProperty.class);
+						if(mapedProperty==null)
+							continue; //保存不变
+						else if (mapedProperty.ignored() || !mapedProperty.inverse()) {
+							column.setData(null);
+						}else {
+							column.setData(mapedProperty.value());
 						}
 					}else{
 						break;

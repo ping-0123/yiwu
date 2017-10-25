@@ -76,5 +76,5 @@ public interface IBaseDao<T, PK extends Serializable> {
 	void modify(PK id, T target) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException;
 
 
-	public DataTableBean<T> findDataTable(QueryParameter parameter) throws NoSuchFieldException, SecurityException;
+	public DataTableBean<T> findDataTable(QueryParameter parameter);
 }

@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
-import com.yinzhiwu.yiwu.entity.LessonAppraise;
+import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
-import com.yinzhiwu.yiwu.model.view.LessonAppraiseVO;
+import com.yinzhiwu.yiwu.model.view.LessonCommentVO;
 import com.yinzhiwu.yiwu.model.view.LessonVO;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
@@ -69,14 +69,14 @@ public class LessonApiController extends BaseController {
 	@GetMapping(value="/{id}/appraises")
 	@ResponseBody
 	@ApiOperation(value="获取对课时的评论")
-	public YiwuJson<List<LessonAppraiseVO>> getAppraises(@PathVariable(value="id") Integer id){
+	public YiwuJson<List<LessonCommentVO>> getAppraises(@PathVariable(value="id") Integer id){
 		
 		try {
 			LessonYzw lesson = lessonService.get(id);
-			List<LessonAppraise> appraises = lesson.getAppraises();
-			List<LessonAppraiseVO> vos = new ArrayList<>();
-			for (LessonAppraise appraise : appraises) {
-				vos.add(LessonAppraiseVO.fromPO(appraise));
+			List<LessonComment> appraises = lesson.getAppraises();
+			List<LessonCommentVO> vos = new ArrayList<>();
+			for (LessonComment appraise : appraises) {
+				vos.add(LessonCommentVO.fromPO(appraise));
 			}
 			
 			return YiwuJson.createBySuccess(vos);
