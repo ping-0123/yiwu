@@ -11,6 +11,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.model.view.LessonVO.LessonVOConverter;
 import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
@@ -104,7 +105,7 @@ public class CourseVO extends AbstractVO<CourseYzw, CourseVO> {
 		if(lessons.size() >0){
 			for (LessonYzw lesson : lessons) {
 				if(lesson.getOrdinalNo() !=null && lesson.getOrdinalNo() == 1){
-					firstLessonConnotation = new LessonVO().fromPO(lesson).getConnotation();
+					firstLessonConnotation = LessonVOConverter.instance.fromPO(lesson).getConnotation();
 					break;
 				}
 			}

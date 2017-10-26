@@ -156,6 +156,7 @@ public class LessonYzw extends BaseYzwEntity {
 	private String qrCode;
 
 	@OneToMany(mappedBy="lesson")
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private List<LessonPraise> praises = new ArrayList<>();
 	
 	@OneToMany(mappedBy="lesson")

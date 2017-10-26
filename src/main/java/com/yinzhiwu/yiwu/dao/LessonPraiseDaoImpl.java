@@ -18,8 +18,18 @@ public class LessonPraiseDaoImpl extends BaseDaoImpl<LessonPraise, Integer> impl
 
 	@Override
 	public LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) {
-		List<LessonPraise> praises = findByProperties(new String[]{"distributer.id", "lesson.id"},  new Object[]{distributerId, lessonId});
+		List<LessonPraise> praises = findByProperties(
+				new String[]{"distributer.id", "lesson.id"},  
+				new Object[]{distributerId, lessonId});
+		
 		return praises.size()>0?praises.get(0):null;
+	}
+
+	@Override
+	public Long findCountByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) {
+		return findCountByProperties(
+				new String[]{"distributer.id", "lesson.id"},  
+				new Object[]{distributerId, lessonId});
 	}
 
 }

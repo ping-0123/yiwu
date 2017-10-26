@@ -23,7 +23,9 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.LessonCommentVO;
 import com.yinzhiwu.yiwu.model.view.LessonVO;
+import com.yinzhiwu.yiwu.model.view.LessonVO.LessonVOConverter;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
+import com.yinzhiwu.yiwu.model.view.LessonCommentVO.LessonCommentVOConverter;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
 import io.swagger.annotations.Api;
@@ -48,7 +50,7 @@ public class LessonApiController extends BaseController {
 	@RequestMapping(value = "/{id}", method = {RequestMethod.GET})
 	@ResponseBody
 	public LessonVO getLesson2(@PathVariable Integer id) {
-		return new LessonVO().fromPO(lessonService.get(id));
+		return LessonVOConverter.instance.fromPO(lessonService.get(id));
 	}
 
 	@GetMapping(value = "/{id}/connotation")
@@ -76,7 +78,7 @@ public class LessonApiController extends BaseController {
 			List<LessonComment> appraises = lesson.getAppraises();
 			List<LessonCommentVO> vos = new ArrayList<>();
 			for (LessonComment appraise : appraises) {
-				vos.add(LessonCommentVO.fromPO(appraise));
+				vos.add(LessonCommentVOConverter.instance.fromPO(appraise));
 			}
 			
 			return YiwuJson.createBySuccess(vos);

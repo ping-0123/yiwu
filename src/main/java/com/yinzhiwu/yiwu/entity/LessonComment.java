@@ -11,6 +11,7 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -29,40 +30,51 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class LessonComment extends BaseEntity{
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_lesson_id", value=ConstraintMode.NO_CONSTRAINT))
 	private LessonYzw lesson;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_distributer_id", value=ConstraintMode.NO_CONSTRAINT))
 	private Distributer commenter;
 	
+	@NotNull
 	@Column(length=32)
 	@Enumerated(value=EnumType.STRING)
-	private AppraiseType type;
+	private CommentType type;
 	
 	private Integer stars;
 	
 	private String comment;
 	
 	private Date date;
+	
 	@ManyToOne
 	@JoinColumn(name="replied_id", foreignKey=@ForeignKey(name="fk_praise_replied_id", value= ConstraintMode.NO_CONSTRAINT))
 	private LessonComment reAppraise;
 	
-	public static enum AppraiseType{
+	public static enum CommentType{
 		FIRST,
 		APPEND,
 		REPLY
 	}
 
 	
+	@Override
+	public void init() {
+		super.init();
+		if(this.date == null )
+			this.date = super.getCreateTime();
+	}
+	
 	
 	public LessonYzw getLesson() {
 		return lesson;
 	}
 
-	public AppraiseType getType() {
+	public CommentType getType() {
 		return type;
 	}
 
@@ -74,7 +86,7 @@ public class LessonComment extends BaseEntity{
 		this.lesson = lesson;
 	}
 
-	public void setType(AppraiseType type) {
+	public void setType(CommentType type) {
 		this.type = type;
 	}
 
@@ -114,12 +126,6 @@ public class LessonComment extends BaseEntity{
 		this.date = date;
 	}
 
-	@Override
-	public void init() {
-		super.init();
-		if(this.date == null )
-			this.date = super.getCreateTime();
-	}
 	
 	
 }

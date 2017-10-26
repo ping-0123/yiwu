@@ -23,5 +23,10 @@ public class LessonPraiseServiceImpl extends BaseServiceImpl<LessonPraise,Intege
 	public LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) {
 		return lpDao.findByDistributerIdAndLessonId(distributerId, lessonId);
 	}
+
+	@Override
+	public boolean checkIsPraised(Integer distributerId, Integer lessonId) {
+		return lpDao.findCountByDistributerIdAndLessonId(distributerId, lessonId) > 0;
+	}
 	
 }

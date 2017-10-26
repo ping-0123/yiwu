@@ -19,6 +19,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.LessonVO;
+import com.yinzhiwu.yiwu.model.view.LessonVO.LessonVOConverter;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
@@ -33,24 +34,25 @@ public class CourseApiController extends BaseController {
 	@Autowired private LessonYzwService lessonService;
 
 	@GetMapping("/{id}/lessons")
-	@ApiOperation(value="查询课程{id}下的课时: /{id}/lessons?pageSize=1&ordinalNo=1, 查询第一节课")
+	@ApiOperation(value="查询课程{id}下的课时: /{id}/lessons?pageSize=1&ordinalNo=n, 查询第n节课")
 	public YiwuJson<PageBean<LessonVO>> findLessons(
 			@PathVariable(value="id", required = true) String id, 
 			@RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo,
 			@RequestParam(value="pageSize", required=false, defaultValue="10") int pageSize,
 			LessonVO search)
 	{
+		
 		if(search==null){
 			search = new LessonVO();
 		}
 		search.setCourseId(id);
-		LessonYzw lesson  = search.toPO();
+		LessonYzw lesson  = LessonVOConverter.instance.toPO(search);
 		PageBean<LessonYzw> page = lessonService.findPageByExample(lesson, pageNo, pageSize);
 		if(page.getData()==null || page.getData().size()==0)
 			return YiwuJson.createByErrorMessage("没有查到任何数据");
 		List<LessonVO> vos = new ArrayList<>();
 		for(LessonYzw lesson1: page.getData()){
-			vos.add(new LessonVO().fromPO(lesson1));
+			vos.add(LessonVOConverter.instance.fromPO(lesson1));
 		}
 		
 		return YiwuJson.createBySuccess(
@@ -65,7 +67,7 @@ public class CourseApiController extends BaseController {
 	{
 		LessonYzw lesson = lessonService.findByCourseIdAndOrdinalNo(id, ordinalNo);
 		if(lesson !=null)
-			return YiwuJson.createBySuccess(new LessonVO().fromPO(lesson));
+			return YiwuJson.createBySuccess(LessonVOConverter.instance.fromPO(lesson));
 		else
 			return YiwuJson.createByErrorMessage("系统中未找到符合条件的记录");
 	}
@@ -93,10 +95,11 @@ public class CourseApiController extends BaseController {
 			if(course.getEndDate().before(current)){
 				throw new Exception("课程已结束");
 			}
+			
 			List<LessonYzw> lessons = course.getLessons();
 			for (LessonYzw lesson : lessons) {
 				if(lesson.getStartDateTime().after(current)){
-					return YiwuJson.createBySuccess(LessonVO.fromDAO(lesson));
+					return YiwuJson.createBySuccess(LessonVOConverter.instance.fromPO(lesson));
 				}
 			}
 			
@@ -121,7 +124,7 @@ public class CourseApiController extends BaseController {
 			PageBean<LessonYzw> page1 = new PageBean<>(pageSize,pageNo,lessons);
 			List<LessonVO> vos = new ArrayList<>();
 			for (LessonYzw lesson : page1.getList()) {
-				vos.add(new LessonVO().fromPO(lesson));
+				vos.add(LessonVOConverter.instance.fromPO(lesson));
 			}
 			
 			PageBean<LessonVO> page2 = new PageBean<>(pageSize,pageNo,lessons.size(),vos);
@@ -148,7 +151,7 @@ public class CourseApiController extends BaseController {
 			PageBean<LessonYzw> page1 = new PageBean<>(pageSize,pageNo,lessons);
 			List<LessonVO> vos = new ArrayList<>();
 			for(LessonYzw lesson: page1.getList()){
-				vos.add(LessonVO.fromDAO(lesson));
+				vos.add(LessonVOConverter.instance.fromPO(lesson));
 			}
 			
 			PageBean<LessonVO> page2  = new PageBean<>(pageSize,pageNo,lessons.size(), vos);

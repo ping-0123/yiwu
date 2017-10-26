@@ -12,4 +12,6 @@ public interface LessonPraiseDao extends IBaseDao<LessonPraise, Integer>{
 
 	LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId);
 
+	Long findCountByDistributerIdAndLessonId(Integer distributerId, Integer lessonId);
+
 }

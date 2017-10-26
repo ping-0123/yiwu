@@ -11,5 +11,6 @@ import com.yinzhiwu.yiwu.entity.LessonPraise;
 public interface LessonPraiseService extends IBaseService<LessonPraise,Integer>{
 
 	LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId);
-
+	
+	boolean checkIsPraised(Integer distributerId, Integer lessonId);
 }

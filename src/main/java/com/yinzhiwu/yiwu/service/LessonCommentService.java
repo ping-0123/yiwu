@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.service;
 
 import com.yinzhiwu.yiwu.entity.LessonComment;
+import com.yinzhiwu.yiwu.entity.LessonComment.CommentType;
 
 /**
 *@Author ping
@@ -10,4 +11,9 @@ import com.yinzhiwu.yiwu.entity.LessonComment;
 
 public interface LessonCommentService  extends IBaseService<LessonComment,Integer>{
 
+	LessonComment findByDistributerIdAndLessonIdAndType(Integer distributerId, Integer lessonId, CommentType type);
+	
+	boolean checkFirstComment(Integer distributerId, Integer lessonId);
+	
+	boolean checkAppendComment(Integer distributerId, Integer lessonId);
 }

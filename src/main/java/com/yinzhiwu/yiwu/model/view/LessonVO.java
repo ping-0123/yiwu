@@ -4,19 +4,16 @@ import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.LessonCommentService;
+import com.yinzhiwu.yiwu.service.LessonPraiseService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
-import com.yinzhiwu.yiwu.util.beanutils.AbstractVO;
-import com.yinzhiwu.yiwu.util.beanutils.MapedClassUtils;
+import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
@@ -31,7 +28,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @MapedClass(LessonYzw.class)
 @ApiModel(description="课时VO")
-public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
+public class LessonVO  {
 	
 	@MapedProperty
 	private Integer id;
@@ -101,46 +98,49 @@ public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
 	private boolean isFirstCommented;
 	
 	@MapedProperty(ignored=true)
-	@ApiModelProperty(value="是否已追评")
+	@ApiModelProperty(value="是否已追评", required=false)
 	private boolean isAppendCommented;
 	
-	@Override
-	public LessonVO fromPO(LessonYzw po) {
-		super.fromPO(po);
-		if(connotation !=null){
-			FileService fileService = SpringUtils.getBean("qiniuServiceImpl");
-			connotation.setAudioUrl(fileService.getFileUrl(connotation.getAudioUrl()));
-			connotation.setPictureUrl(fileService.getFileUrl(connotation.getPictureUrl()));
-			connotation.setStandardVideoUrl(fileService.getFileUrl(connotation.getStandardVideoUrl()));
-			connotation.setStandardVideoPosterUrl(fileService.getFileUrl(connotation.getStandardVideoPosterUrl()));
-			connotation.setPuzzleVideoPosterUrl(fileService.getFileUrl(connotation.getPuzzleVideoPosterUrl()));
-			connotation.setPuzzleVideoUrl(fileService.getFileUrl(connotation.getPuzzleVideoUrl()));
-			connotation.setPracticalVideoPosterUrl(fileService.getFileUrl(connotation.getPracticalVideoPosterUrl()));
-			connotation.setPracticalVideoUrl(fileService.getFileUrl(connotation.getPracticalVideoUrl()));
-		}
-		List<LessonPraise> lps = po.getPraises();
-		if(lps.size()>0){
-			StringBuilder builder =new StringBuilder();
-			Distributer currentDistributer = UserContext.getDistributer();
-			if(currentDistributer == null){
-				for(LessonPraise praise:lps){
-					builder.append(praise.getDistributer().getName()).append(",");
-				}
-			}else{
-				for(LessonPraise praise:lps){
-					builder.append(praise.getDistributer().getName()).append(",");
-					if(!praised && currentDistributer.equals(praise.getDistributer())){
-						praised=true;
-					}
-				}
+	public static final class LessonVOConverter extends AbstractConverter<LessonYzw, LessonVO>{
+		public static final LessonVOConverter instance = new LessonVOConverter();
+
+		@Override
+		public LessonVO fromPO(LessonYzw po) {
+			LessonVO vo = super.fromPO(po);
+			LessonConnotationVO connotation = vo.getConnotation();
+			if(connotation !=null){
+				FileService fileService = SpringUtils.getBean("qiniuServiceImpl");
+				connotation.setAudioUrl(fileService.getFileUrl(connotation.getAudioUrl()));
+				connotation.setPictureUrl(fileService.getFileUrl(connotation.getPictureUrl()));
+				connotation.setStandardVideoUrl(fileService.getFileUrl(connotation.getStandardVideoUrl()));
+				connotation.setStandardVideoPosterUrl(fileService.getFileUrl(connotation.getStandardVideoPosterUrl()));
+				connotation.setPuzzleVideoPosterUrl(fileService.getFileUrl(connotation.getPuzzleVideoPosterUrl()));
+				connotation.setPuzzleVideoUrl(fileService.getFileUrl(connotation.getPuzzleVideoUrl()));
+				connotation.setPracticalVideoPosterUrl(fileService.getFileUrl(connotation.getPracticalVideoPosterUrl()));
+				connotation.setPracticalVideoUrl(fileService.getFileUrl(connotation.getPracticalVideoUrl()));
 			}
-			praisers = builder.substring(0, builder.length()-1);
+			List<LessonPraise> lps = po.getPraises();
+			if(lps.size()>0){
+				StringBuilder builder =new StringBuilder();
+				for(LessonPraise praise:lps)
+					builder.append(praise.getDistributer().getName()).append(",");
+				vo.setPraisers(builder.substring(0, builder.length()-1));
+			}
+			
+			Distributer distributer = UserContext.getDistributer();
+			if(null != distributer){
+				LessonPraiseService lpService = SpringUtils.getBean(LessonPraiseService.class);
+				vo.setPraised(null != lpService.findByDistributerIdAndLessonId(distributer.getId(), po.getId()));
+				LessonCommentService lcService = SpringUtils.getBean(LessonCommentService.class);
+				vo.setFirstCommented(lcService.checkFirstComment(distributer.getId(), po.getId()));
+				vo.setAppendCommented(lcService.checkAppendComment(distributer.getId(), po.getId()));
+			}
+			
+			return vo;
 		}
 		
-		LessonCommentService lcService = SpringUtils.getBean(LessonCommentService.class);
-		return this;
+		
 	}
-	
 	
 	public boolean isPraised() {
 		return praised;
@@ -213,34 +213,6 @@ public class LessonVO extends AbstractVO<LessonYzw, LessonVO> {
 		this.storeAddress = storeAddress;
 	}
 	
-	public static LessonVO fromDAO(LessonYzw po){
-		return VOConverter.instance.reverse().convert(po);
-	}
-	
-	public static LessonYzw toDAO(LessonVO vo){
-		return VOConverter.instance.convert(vo);
-	}
-	
-	private static class VOConverter extends Converter<LessonVO, LessonYzw>{
-
-		public static final VOConverter instance = new VOConverter();
-		
-		@Override
-		protected LessonYzw doForward(LessonVO vo) {
-			LessonYzw po = new LessonYzw();
-			BeanUtils.copyProperties(vo, po);
-			return po;
-		}
-
-		@Override
-		protected LessonVO doBackward(LessonYzw po) {
-			LessonVO vo = new LessonVO();
-			MapedClassUtils.copyProperties(po, vo);
-			return vo;
-		}
-		
-	}
-
 	public Integer getDueTeacherId() {
 		return dueTeacherId;
 	}

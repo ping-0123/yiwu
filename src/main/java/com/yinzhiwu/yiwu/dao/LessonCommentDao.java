@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.dao;
 
 import com.yinzhiwu.yiwu.entity.LessonComment;
+import com.yinzhiwu.yiwu.entity.LessonComment.CommentType;
 
 /**
 *@Author ping
@@ -9,5 +10,8 @@ import com.yinzhiwu.yiwu.entity.LessonComment;
 */
 
 public interface LessonCommentDao extends IBaseDao<LessonComment,Integer> {
+
+	LessonComment findByDistributerIdAndLessonIdAndType(Integer distributerId, Integer lessonId, CommentType type);
 	
+	Long findCountByDistributerIdAndLessonIdAndType(Integer distributerId, Integer lessonId, CommentType type);
 }
