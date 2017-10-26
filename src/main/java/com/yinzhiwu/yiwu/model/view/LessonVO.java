@@ -86,7 +86,7 @@ public class LessonVO  {
 	
 	@MapedProperty(value="connotation", ignored=true)
 	@ApiModelProperty(value="课时内容信息")
-	private LessonConnotationVO lessonConnotation;
+	private LessonConnotationVO connotation;
 	
 	@MapedProperty(ignored=true)
 	@ApiModelProperty(value="所有点赞人姓名，以逗号分隔", required=false)
@@ -122,7 +122,7 @@ public class LessonVO  {
 				connotation.setPuzzleVideoUrl(fileService.generateFileUrl(lc.getPuzzleVideoUri()));
 				connotation.setPracticalVideoPosterUrl(fileService.generateFileUrl(lc.getPracticalVideoPosterUri()));
 				connotation.setPracticalVideoUrl(fileService.generateFileUrl(lc.getPracticalVideoUri()));
-				vo.setLessonConnotation(connotation);
+				vo.setConnotation(connotation);
 			}
 			List<LessonPraise> lps = po.getPraises();
 			if(lps.size()>0){
@@ -283,13 +283,21 @@ public class LessonVO  {
 	}
 
 
-	public LessonConnotationVO getLessonConnotation() {
-		return lessonConnotation;
+	/**
+	 * @return the connotation
+	 */
+	public LessonConnotationVO getConnotation() {
+		return connotation;
 	}
 
 
-	public void setLessonConnotation(LessonConnotationVO lessonConnotation) {
-		this.lessonConnotation = lessonConnotation;
+	/**
+	 * @param connotation the connotation to set
+	 */
+	public void setConnotation(LessonConnotationVO connotation) {
+		this.connotation = connotation;
 	}
+
+
 
 }
