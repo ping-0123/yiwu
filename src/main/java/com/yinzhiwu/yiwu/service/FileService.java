@@ -28,6 +28,12 @@ public interface FileService {
 	 */
 	public String getFileUrl(String uri);
 	
+	/**
+	 * 同 {@link #getFileUrl(String)} 不使用代理和事物管理
+	 * @param uri
+	 * @return
+	 */
+	public String generateFileUrl(String uri);
 	
 	/**
 	 * 同 {@link #getFileUrl(String)}

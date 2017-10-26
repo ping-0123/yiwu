@@ -5,10 +5,15 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yinzhiwu.yiwu.context.UserContext;
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.FileService;
+import com.yinzhiwu.yiwu.service.LessonCommentService;
+import com.yinzhiwu.yiwu.service.LessonPraiseService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
@@ -109,14 +114,14 @@ public class LessonVO  {
 			LessonConnotation lc = po.getConnotation();
 			if(lc !=null){
 				LessonConnotationVO connotation = new LessonConnotationVO();
-				connotation.setAudioUrl(fileService.getFileUrl(lc.getAudioUri()));
-				connotation.setPictureUrl(fileService.getFileUrl(lc.getPictureUri()));
-				connotation.setStandardVideoUrl(fileService.getFileUrl(lc.getStandardVideoUri()));
-				connotation.setStandardVideoPosterUrl(fileService.getFileUrl(lc.getStandardVideoPosterUri()));
-				connotation.setPuzzleVideoPosterUrl(fileService.getFileUrl(lc.getPuzzleVideoPosterUri()));
-				connotation.setPuzzleVideoUrl(fileService.getFileUrl(lc.getPuzzleVideoUri()));
-				connotation.setPracticalVideoPosterUrl(fileService.getFileUrl(lc.getPracticalVideoPosterUri()));
-				connotation.setPracticalVideoUrl(fileService.getFileUrl(lc.getPracticalVideoUri()));
+				connotation.setAudioUrl(fileService.generateFileUrl(lc.getAudioUri()));
+				connotation.setPictureUrl(fileService.generateFileUrl(lc.getPictureUri()));
+				connotation.setStandardVideoUrl(fileService.generateFileUrl(lc.getStandardVideoUri()));
+				connotation.setStandardVideoPosterUrl(fileService.generateFileUrl(lc.getStandardVideoPosterUri()));
+				connotation.setPuzzleVideoPosterUrl(fileService.generateFileUrl(lc.getPuzzleVideoPosterUri()));
+				connotation.setPuzzleVideoUrl(fileService.generateFileUrl(lc.getPuzzleVideoUri()));
+				connotation.setPracticalVideoPosterUrl(fileService.generateFileUrl(lc.getPracticalVideoPosterUri()));
+				connotation.setPracticalVideoUrl(fileService.generateFileUrl(lc.getPracticalVideoUri()));
 				vo.setLessonConnotation(connotation);
 			}
 			List<LessonPraise> lps = po.getPraises();
@@ -127,15 +132,15 @@ public class LessonVO  {
 				vo.setPraisers(builder.substring(0, builder.length()-1));
 			}
 			
-//			Distributer distributer = UserContext.getDistributer();
-//			distributer = SpringUtils.getBean(DistributerService.class).get(3002005);
-//			if(null != distributer){
-//				LessonPraiseService lpService = SpringUtils.getBean(LessonPraiseService.class);
-//				vo.setPraised(null != lpService.findByDistributerIdAndLessonId(distributer.getId(), po.getId()));
-//				LessonCommentService lcService = SpringUtils.getBean(LessonCommentService.class);
-//				vo.setFirstCommented(lcService.checkFirstComment(distributer.getId(), po.getId()));
-//				vo.setAppendCommented(lcService.checkAppendComment(distributer.getId(), po.getId()));
-//			}
+			Distributer distributer = UserContext.getDistributer();
+			distributer = SpringUtils.getBean(DistributerService.class).get(3002005);
+			if(null != distributer){
+				LessonPraiseService lpService = SpringUtils.getBean(LessonPraiseService.class);
+				vo.setPraised(null != lpService.findByDistributerIdAndLessonId(distributer.getId(), po.getId()));
+				LessonCommentService lcService = SpringUtils.getBean(LessonCommentService.class);
+				vo.setFirstCommented(lcService.checkFirstComment(distributer.getId(), po.getId()));
+				vo.setAppendCommented(lcService.checkAppendComment(distributer.getId(), po.getId()));
+			}
 			
 			return vo;
 		}

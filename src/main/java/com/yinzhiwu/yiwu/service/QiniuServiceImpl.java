@@ -80,4 +80,9 @@ public class QiniuServiceImpl implements FileService {
 		return false;
 	}
 
+	@Override
+	public String generateFileUrl(String uri) {
+		return uri==null?null:(config.getCdnUrl()+uri);
+	}
+
 }

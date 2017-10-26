@@ -83,4 +83,11 @@ public class FileServiceImpl implements FileService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	public String generateFileUrl(String uri) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
