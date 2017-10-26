@@ -5,13 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.context.UserContext;
-import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
+import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.service.FileService;
-import com.yinzhiwu.yiwu.service.LessonCommentService;
-import com.yinzhiwu.yiwu.service.LessonPraiseService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
@@ -29,6 +26,7 @@ import io.swagger.annotations.ApiModelProperty;
 @MapedClass(LessonYzw.class)
 @ApiModel(description="课时VO")
 public class LessonVO  {
+	
 	
 	@MapedProperty
 	private Integer id;
@@ -81,9 +79,9 @@ public class LessonVO  {
 	@ApiModelProperty(value="实际上课老师姓名")
 	private String actualTeacherName;
 	
-	@MapedProperty
+	@MapedProperty(value="connotation", ignored=true)
 	@ApiModelProperty(value="课时内容信息")
-	private LessonConnotationVO connotation;
+	private LessonConnotationVO lessonConnotation;
 	
 	@MapedProperty(ignored=true)
 	@ApiModelProperty(value="所有点赞人姓名，以逗号分隔", required=false)
@@ -103,21 +101,23 @@ public class LessonVO  {
 	
 	public static final class LessonVOConverter extends AbstractConverter<LessonYzw, LessonVO>{
 		public static final LessonVOConverter instance = new LessonVOConverter();
+		private static final FileService fileService = SpringUtils.getBean("qiniuServiceImpl");
 
 		@Override
 		public LessonVO fromPO(LessonYzw po) {
 			LessonVO vo = super.fromPO(po);
-			LessonConnotationVO connotation = vo.getConnotation();
-			if(connotation !=null){
-				FileService fileService = SpringUtils.getBean("qiniuServiceImpl");
-				connotation.setAudioUrl(fileService.getFileUrl(connotation.getAudioUrl()));
-				connotation.setPictureUrl(fileService.getFileUrl(connotation.getPictureUrl()));
-				connotation.setStandardVideoUrl(fileService.getFileUrl(connotation.getStandardVideoUrl()));
-				connotation.setStandardVideoPosterUrl(fileService.getFileUrl(connotation.getStandardVideoPosterUrl()));
-				connotation.setPuzzleVideoPosterUrl(fileService.getFileUrl(connotation.getPuzzleVideoPosterUrl()));
-				connotation.setPuzzleVideoUrl(fileService.getFileUrl(connotation.getPuzzleVideoUrl()));
-				connotation.setPracticalVideoPosterUrl(fileService.getFileUrl(connotation.getPracticalVideoPosterUrl()));
-				connotation.setPracticalVideoUrl(fileService.getFileUrl(connotation.getPracticalVideoUrl()));
+			LessonConnotation lc = po.getConnotation();
+			if(lc !=null){
+				LessonConnotationVO connotation = new LessonConnotationVO();
+				connotation.setAudioUrl(fileService.getFileUrl(lc.getAudioUri()));
+				connotation.setPictureUrl(fileService.getFileUrl(lc.getPictureUri()));
+				connotation.setStandardVideoUrl(fileService.getFileUrl(lc.getStandardVideoUri()));
+				connotation.setStandardVideoPosterUrl(fileService.getFileUrl(lc.getStandardVideoPosterUri()));
+				connotation.setPuzzleVideoPosterUrl(fileService.getFileUrl(lc.getPuzzleVideoPosterUri()));
+				connotation.setPuzzleVideoUrl(fileService.getFileUrl(lc.getPuzzleVideoUri()));
+				connotation.setPracticalVideoPosterUrl(fileService.getFileUrl(lc.getPracticalVideoPosterUri()));
+				connotation.setPracticalVideoUrl(fileService.getFileUrl(lc.getPracticalVideoUri()));
+				vo.setLessonConnotation(connotation);
 			}
 			List<LessonPraise> lps = po.getPraises();
 			if(lps.size()>0){
@@ -127,14 +127,15 @@ public class LessonVO  {
 				vo.setPraisers(builder.substring(0, builder.length()-1));
 			}
 			
-			Distributer distributer = UserContext.getDistributer();
-			if(null != distributer){
-				LessonPraiseService lpService = SpringUtils.getBean(LessonPraiseService.class);
-				vo.setPraised(null != lpService.findByDistributerIdAndLessonId(distributer.getId(), po.getId()));
-				LessonCommentService lcService = SpringUtils.getBean(LessonCommentService.class);
-				vo.setFirstCommented(lcService.checkFirstComment(distributer.getId(), po.getId()));
-				vo.setAppendCommented(lcService.checkAppendComment(distributer.getId(), po.getId()));
-			}
+//			Distributer distributer = UserContext.getDistributer();
+//			distributer = SpringUtils.getBean(DistributerService.class).get(3002005);
+//			if(null != distributer){
+//				LessonPraiseService lpService = SpringUtils.getBean(LessonPraiseService.class);
+//				vo.setPraised(null != lpService.findByDistributerIdAndLessonId(distributer.getId(), po.getId()));
+//				LessonCommentService lcService = SpringUtils.getBean(LessonCommentService.class);
+//				vo.setFirstCommented(lcService.checkFirstComment(distributer.getId(), po.getId()));
+//				vo.setAppendCommented(lcService.checkAppendComment(distributer.getId(), po.getId()));
+//			}
 			
 			return vo;
 		}
@@ -243,12 +244,6 @@ public class LessonVO  {
 	public void setPraisers(String praisers) {
 		this.praisers = praisers;
 	}
-	public LessonConnotationVO getConnotation() {
-		return connotation;
-	}
-	public void setConnotation(LessonConnotationVO connotation) {
-		this.connotation = connotation;
-	}
 
 
 	/**
@@ -280,6 +275,16 @@ public class LessonVO  {
 	 */
 	public void setAppendCommented(boolean isAppendCommented) {
 		this.isAppendCommented = isAppendCommented;
+	}
+
+
+	public LessonConnotationVO getLessonConnotation() {
+		return lessonConnotation;
+	}
+
+
+	public void setLessonConnotation(LessonConnotationVO lessonConnotation) {
+		this.lessonConnotation = lessonConnotation;
 	}
 
 }

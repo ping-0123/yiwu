@@ -80,7 +80,7 @@
 	<filter-mapping>
 		<filter-name>ApiUserFilter</filter-name>
 		<url-pattern>/api/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping>  
 
 	<!--org.springframework.web.filter.HiddenHttpMethodFilter:可以把Post请求转变为put和delete请求 -->
 	<filter>
