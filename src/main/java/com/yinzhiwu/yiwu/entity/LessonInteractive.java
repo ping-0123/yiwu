@@ -42,6 +42,12 @@ public class LessonInteractive extends BaseEntity{
 	private  Boolean checkedIn;
 	
 	@Column(columnDefinition="boolean not null default false")
+	private Boolean storemanCalled;
+	
+	@Column(columnDefinition="boolean not null default false")
+	private Boolean coachCalled;
+	
+	@Column(columnDefinition="boolean not null default false")
 	private  Boolean praised;
 	
 	@Column(columnDefinition="boolean not null default false")
@@ -59,6 +65,8 @@ public class LessonInteractive extends BaseEntity{
 		
 		this.appointed=false;
 		this.checkedIn=false;
+		this.storemanCalled=false;
+		this.coachCalled=false;
 		this.praised=false;
 		this.firstCommented=false;
 		this.appendCommented=false;
@@ -135,6 +143,34 @@ public class LessonInteractive extends BaseEntity{
 
 	public void setWorkFinished(Boolean workFinished) {
 		this.workFinished = workFinished;
+	}
+
+	/**
+	 * @return the storemanCalled
+	 */
+	public Boolean getStoremanCalled() {
+		return storemanCalled;
+	}
+
+	/**
+	 * @param storemanCalled the storemanCalled to set
+	 */
+	public void setStoremanCalled(Boolean storemanCalled) {
+		this.storemanCalled = storemanCalled;
+	}
+
+	/**
+	 * @return the coachCalled
+	 */
+	public Boolean getCoachCalled() {
+		return coachCalled;
+	}
+
+	/**
+	 * @param coachCalled the coachCalled to set
+	 */
+	public void setCoachCalled(Boolean coachCalled) {
+		this.coachCalled = coachCalled;
 	}
 
 	

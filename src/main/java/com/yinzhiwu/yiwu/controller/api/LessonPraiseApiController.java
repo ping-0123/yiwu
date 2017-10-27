@@ -28,14 +28,14 @@ import io.swagger.annotations.ApiParam;
 */
 
 @RestController
-@RequestMapping(value="/api/praises")
+@RequestMapping(value="/api/lessonPraises")
 @Api(value="课时点赞模块")
 public class LessonPraiseApiController extends BaseController {
 	
 	@Autowired private LessonPraiseService lpService;
 	@Autowired private LessonYzwService lessonService;
 	
-	@PostMapping
+	@PostMapping(value="/doPraise.do")
 	@ApiOperation(value = "点赞")
 	public YiwuJson<?> doPost(
 			@ApiParam(value="课时Id", required=true) Integer lessonId
@@ -43,14 +43,13 @@ public class LessonPraiseApiController extends BaseController {
 		
 		try {
 			Distributer distributer = UserContext.getDistributer();
-			if(lpService.findByDistributerIdAndLessonId(distributer.getId(), lessonId) !=null)
-				return YiwuJson.createByErrorMessage("已点赞,无须重复点赞");
 			LessonYzw lesson = lessonService.get(lessonId);
+			
 			LessonPraise lp = new LessonPraise();
 			lp.setDistributer(distributer);
 			lp.setLesson(lesson);
 			
-			lpService.save(lp);
+			lpService.doLessonPraise(lp);
 			return YiwuJson.createBySuccess();
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
@@ -58,21 +57,23 @@ public class LessonPraiseApiController extends BaseController {
 		}
 	}
 	
-	@DeleteMapping
+	@PostMapping(value="/cancelPraise.do")
 	@ApiOperation(value="取消点赞")
 	public YiwuJson<?> cancelPraise(
 			@ApiParam(value="课时Id", required=true) Integer lessonId
 	){
-		try {
+			
+			//TODO 
 			Distributer distributer = UserContext.getDistributer();
-			LessonPraise lp = lpService.findByDistributerIdAndLessonId(distributer.getId(), lessonId);
-			if(lp==null) throw new DataNotFoundException("用户未点赞改课时");
-			lpService.delete(lp);
+			LessonPraise lp;
+			try {
+				lp = lpService.findByDistributerIdAndLessonId(distributer.getId(), lessonId);
+			} catch (DataNotFoundException e) {
+				throw new RuntimeException("未点赞,不能取消点赞", e);
+			}
+			lp.setCanceled(true);
+			lpService.cancelLessonPraise(lp);
 			return YiwuJson.createBySuccess();
-		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
-			return YiwuJson.createByErrorMessage(e.getMessage());
-		}
 	}
 	
 	@DeleteMapping(value="/{id}")

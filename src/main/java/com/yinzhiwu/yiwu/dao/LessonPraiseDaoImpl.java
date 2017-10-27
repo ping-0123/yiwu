@@ -1,11 +1,10 @@
 package com.yinzhiwu.yiwu.dao;
 
-import java.util.List;
-
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.impl.BaseDaoImpl;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 /**
 *@Author ping
@@ -17,19 +16,19 @@ import com.yinzhiwu.yiwu.entity.LessonPraise;
 public class LessonPraiseDaoImpl extends BaseDaoImpl<LessonPraise, Integer> implements LessonPraiseDao {
 
 	@Override
-	public LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) {
-		List<LessonPraise> praises = findByProperties(
-				new String[]{"distributer.id", "lesson.id"},  
-				new Object[]{distributerId, lessonId});
+	public LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) throws DataNotFoundException {
+		return findOneByProperties(
+				new String[]{"distributer.id", "lesson.id","canceled"},  
+				new Object[]{distributerId, lessonId, false});
 		
-		return praises.size()>0?praises.get(0):null;
+		
 	}
 
 	@Override
 	public Long findCountByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) {
 		return findCountByProperties(
-				new String[]{"distributer.id", "lesson.id"},  
-				new Object[]{distributerId, lessonId});
+				new String[]{"distributer.id", "lesson.id","canceled"},  
+				new Object[]{distributerId, lessonId, false});
 	}
 
 }

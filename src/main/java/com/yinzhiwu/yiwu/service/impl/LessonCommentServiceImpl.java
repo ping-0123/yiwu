@@ -1,11 +1,13 @@
 package com.yinzhiwu.yiwu.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.LessonCommentDao;
 import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.entity.LessonComment.CommentType;
+import com.yinzhiwu.yiwu.event.LessonCommentEvent;
 import com.yinzhiwu.yiwu.service.LessonCommentService;
 
 /**
@@ -19,6 +21,7 @@ public class LessonCommentServiceImpl  extends BaseServiceImpl<LessonComment,Int
 
 		@Autowired public void setBaseDao(LessonCommentDao laDao){super.setBaseDao(laDao);}
 		@Autowired private LessonCommentDao lessonCommentDao;
+		@Autowired private ApplicationContext applicationContext;
 		
 		@Override
 		public LessonComment findByDistributerIdAndLessonIdAndType(Integer distributerId, Integer lessonId,
@@ -35,5 +38,15 @@ public class LessonCommentServiceImpl  extends BaseServiceImpl<LessonComment,Int
 		public boolean checkAppendComment(Integer distributerId, Integer lessonId) {
 			return lessonCommentDao.findCountByDistributerIdAndLessonIdAndType(distributerId, lessonId, CommentType.APPEND                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ) >0;
 		}
+
+
+		@Override
+		public LessonComment doLessonComment(LessonComment comment) {
+			if(CommentType.FIRST==comment.getType() || CommentType.APPEND==comment.getType())
+				applicationContext.publishEvent(comment);
+			lessonCommentDao.save(comment);
+			return comment;
+		}
+		
 		
 }

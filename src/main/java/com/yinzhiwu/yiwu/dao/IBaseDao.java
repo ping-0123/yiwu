@@ -37,6 +37,12 @@ public interface IBaseDao<T, PK extends Serializable> {
 	
 	//增
 	public PK save(T entity);
+	
+	/**
+	 * 如果 entity 是新创建的并且 是 BaseEntity 或 BaseYzwEntity的子类
+	 * 调用此函数前先调用entity.init()
+	 * @param entity
+	 */
 	public void saveOrUpdate(T entity);
 
 	//删

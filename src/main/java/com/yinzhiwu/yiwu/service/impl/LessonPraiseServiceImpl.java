@@ -1,10 +1,12 @@
 package com.yinzhiwu.yiwu.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.LessonPraiseDao;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.LessonPraiseService;
 
 /**
@@ -17,16 +19,31 @@ import com.yinzhiwu.yiwu.service.LessonPraiseService;
 public class LessonPraiseServiceImpl extends BaseServiceImpl<LessonPraise,Integer> implements LessonPraiseService {
 
 	@Autowired public void setBaseDao(LessonPraiseDao lpDao){super.setBaseDao(lpDao);}
-	@Autowired private LessonPraiseDao lpDao;
+	@Autowired private LessonPraiseDao lessonPraiseDao;
+	@Autowired private ApplicationContext applicationContext;
 
 	@Override
-	public LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) {
-		return lpDao.findByDistributerIdAndLessonId(distributerId, lessonId);
+	public LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) throws DataNotFoundException {
+		return lessonPraiseDao.findByDistributerIdAndLessonId(distributerId, lessonId);
 	}
 
 	@Override
 	public boolean checkIsPraised(Integer distributerId, Integer lessonId) {
-		return lpDao.findCountByDistributerIdAndLessonId(distributerId, lessonId) > 0;
+		return lessonPraiseDao.findCountByDistributerIdAndLessonId(distributerId, lessonId) > 0;
+	}
+
+	@Override
+	public LessonPraise doLessonPraise(LessonPraise praise) {
+		applicationContext.publishEvent(praise);
+		lessonPraiseDao.save(praise);
+		return praise;
+	}
+
+	@Override
+	public LessonPraise cancelLessonPraise(LessonPraise praise) {
+		applicationContext.publishEvent(praise);
+		lessonPraiseDao.update(praise);
+		return praise;
 	}
 	
 }

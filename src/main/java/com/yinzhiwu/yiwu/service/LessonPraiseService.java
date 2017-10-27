@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.service;
 
 import com.yinzhiwu.yiwu.entity.LessonPraise;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 /**
 *@Author ping
@@ -10,7 +11,11 @@ import com.yinzhiwu.yiwu.entity.LessonPraise;
 
 public interface LessonPraiseService extends IBaseService<LessonPraise,Integer>{
 
-	LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId);
+	LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) throws DataNotFoundException;
 	
 	boolean checkIsPraised(Integer distributerId, Integer lessonId);
+	
+	public LessonPraise doLessonPraise(LessonPraise praise);
+	
+	public LessonPraise cancelLessonPraise(LessonPraise praise);
 }

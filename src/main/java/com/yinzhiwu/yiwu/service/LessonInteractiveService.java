@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.service;
 
 import com.yinzhiwu.yiwu.entity.LessonInteractive;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 /**
 *@Author ping
@@ -9,5 +10,7 @@ import com.yinzhiwu.yiwu.entity.LessonInteractive;
 */
 
 public interface LessonInteractiveService extends IBaseService<LessonInteractive,Integer> {
+
+	LessonInteractive findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) throws DataNotFoundException;
 
 }

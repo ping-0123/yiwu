@@ -119,7 +119,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return list.size()>0?list.get(0):null;
 	}
 	
-	protected T findOneByProperties(String[] propertyNames, Object[] values){
+	protected T findOneByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException{
 		if(propertyNames.length != values.length){
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
@@ -145,7 +145,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		 
 		 List<T> list = query.getResultList();
 		if(list == null || list.size()==0) 
-			return null;
+			//TODO 
+			throw new DataNotFoundException();
 		else {
 			return list.get(0);
 		}
@@ -186,15 +187,10 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	public void saveOrUpdate(T entity) {
 		Assert.notNull(entity, "entity is required");
 		
-		if(entity instanceof BaseEntity){
-			if(((BaseEntity) entity).getId() == null)
-				((BaseEntity) entity).init();
-			else {
-				((BaseEntity) entity).beforeUpdate();
-			}
-		}else if (entity instanceof BaseYzwEntity) {
-			if(((BaseYzwEntity) entity).getDataStatus()==null)
-				((BaseYzwEntity) entity).setDataStatus(DataStatus.NORMAL);
+		if(entity instanceof BaseEntity)
+			((BaseEntity) entity).beforeUpdate();
+		else if (entity instanceof BaseYzwEntity) {
+			((BaseYzwEntity) entity).beforeUpdate();
 		}
 		
 		getSession().saveOrUpdate(entity);

@@ -66,13 +66,20 @@ public class LessonPraise extends BaseEntity {
 		this.distributer = distributer;
 	}
 
-	public boolean isCanceled() {
+	/**
+	 * @return the canceled
+	 */
+	public Boolean getCanceled() {
 		return canceled;
 	}
 
-	public void setCanceled(boolean canceled) {
+	/**
+	 * @param canceled the canceled to set
+	 */
+	public void setCanceled(Boolean canceled) {
 		this.canceled = canceled;
 	}
+
 	
 	
 	

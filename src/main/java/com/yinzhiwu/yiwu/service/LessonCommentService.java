@@ -16,4 +16,6 @@ public interface LessonCommentService  extends IBaseService<LessonComment,Intege
 	boolean checkFirstComment(Integer distributerId, Integer lessonId);
 	
 	boolean checkAppendComment(Integer distributerId, Integer lessonId);
+	
+	public LessonComment doLessonComment(LessonComment comment);
 }

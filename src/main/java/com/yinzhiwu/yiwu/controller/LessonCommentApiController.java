@@ -43,7 +43,7 @@ public class LessonCommentApiController extends BaseController {
 			Converter<LessonComment,LessonCommentVO> converter = LessonCommentVOConverter.instance;
 			LessonComment comment = converter.toPO(commentVO);
 			comment.setCommenter(UserContext.getDistributer());
-			laService.save(comment);
+			laService.doLessonComment(comment);
 			
 			return YiwuJson.createBySuccess(converter.fromPO(comment));
 		} catch (Exception e) {

@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.dao;
 
 import com.yinzhiwu.yiwu.entity.LessonPraise;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 /**
 *@Author ping
@@ -10,7 +11,7 @@ import com.yinzhiwu.yiwu.entity.LessonPraise;
 
 public interface LessonPraiseDao extends IBaseDao<LessonPraise, Integer>{
 
-	LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId);
+	LessonPraise findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) throws DataNotFoundException;
 
 	Long findCountByDistributerIdAndLessonId(Integer distributerId, Integer lessonId);
 

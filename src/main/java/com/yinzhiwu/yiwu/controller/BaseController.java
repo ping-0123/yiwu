@@ -1,18 +1,16 @@
 package com.yinzhiwu.yiwu.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.yinzhiwu.yiwu.model.YiwuJson;
 
 public class BaseController {
 
@@ -29,11 +27,10 @@ public class BaseController {
 	@SuppressWarnings("rawtypes")
 	@ExceptionHandler
 	@ResponseBody
-	public ResponseEntity handlerException(HttpServletRequest request,HttpServletResponse response, Exception e){
+	public YiwuJson handlerException(HttpServletRequest request,HttpServletResponse response, Exception e){
 		logger.error(e.getMessage(),e);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("error", e.getMessage());
-		return ResponseEntity.status(response.getStatus()).body(map);
+		return YiwuJson.createByErrorCodeMessage(response.getStatus(), e.getStackTrace().toString());
+//		return ResponseEntity.status(response.getStatus()).body(map);
 		
 	}
 }
