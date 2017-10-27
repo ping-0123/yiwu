@@ -23,8 +23,8 @@ public class LisiListener implements ApplicationListener<ApplicationEvent> {
 	}
 	
 	
-	@EventListener
-	public  void useEventListener(){
-		
+	@EventListener(classes={String.class})
+	public  void useEventListener(ApplicationEvent event){
+		System.out.println("李四在EventListener中收到了新额内容: " +  event.getSource());
 	}
 }

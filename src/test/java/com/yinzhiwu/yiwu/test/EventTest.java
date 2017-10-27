@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.test.BaseSpringTest;
-import com.yinzhiwu.yiwu.event.ContentEvent;
 
 /**
 *@Author ping
@@ -19,6 +18,6 @@ public class EventTest extends BaseSpringTest {
 	
 	@Test
 	public void testPublishEvent(){
-		applicationContext.publishEvent(new ContentEvent("张开涛的博客更新"));
+		applicationContext.publishEvent("张开涛的博客更新");
 	}
 }
