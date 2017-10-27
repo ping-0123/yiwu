@@ -22,6 +22,8 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description="课程评论")
 @MapedClass(LessonComment.class)
 public class LessonCommentVO {
+		
+	private Integer id;
 	
 	@NotNull
 	@ApiModelProperty(value="评论的课时Id", required=true)
@@ -115,6 +117,12 @@ public class LessonCommentVO {
 	}
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 	

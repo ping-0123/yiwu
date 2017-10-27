@@ -5,15 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.context.UserContext;
-import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.FileService;
-import com.yinzhiwu.yiwu.service.LessonCommentService;
-import com.yinzhiwu.yiwu.service.LessonPraiseService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
@@ -92,17 +87,6 @@ public class LessonVO  {
 	@ApiModelProperty(value="所有点赞人姓名，以逗号分隔", required=false)
 	private String praisers;
 	
-	@MapedProperty(ignored=true)
-	@ApiModelProperty(value="是否已点赞",required=false)
-	private boolean praised;
-	
-	@MapedProperty(ignored=true)
-	@ApiModelProperty(value="是否已首评",required=false)
-	private boolean isFirstCommented;
-	
-	@MapedProperty(ignored=true)
-	@ApiModelProperty(value="是否已追评", required=false)
-	private boolean isAppendCommented;
 	
 	public static final class LessonVOConverter extends AbstractConverter<LessonYzw, LessonVO>{
 		public static final LessonVOConverter instance = new LessonVOConverter();
@@ -132,15 +116,15 @@ public class LessonVO  {
 				vo.setPraisers(builder.substring(0, builder.length()-1));
 			}
 			
-			Distributer distributer = UserContext.getDistributer();
-			distributer = SpringUtils.getBean(DistributerService.class).get(3002005);
-			if(null != distributer){
-				LessonPraiseService lpService = SpringUtils.getBean(LessonPraiseService.class);
-				vo.setPraised(null != lpService.findByDistributerIdAndLessonId(distributer.getId(), po.getId()));
-				LessonCommentService lcService = SpringUtils.getBean(LessonCommentService.class);
-				vo.setFirstCommented(lcService.checkFirstComment(distributer.getId(), po.getId()));
-				vo.setAppendCommented(lcService.checkAppendComment(distributer.getId(), po.getId()));
-			}
+//			Distributer distributer = UserContext.getDistributer();
+//			distributer = SpringUtils.getBean(DistributerService.class).get(3002005);
+//			if(null != distributer){
+//				LessonPraiseService lpService = SpringUtils.getBean(LessonPraiseService.class);
+//				vo.setPraised(null != lpService.findByDistributerIdAndLessonId(distributer.getId(), po.getId()));
+//				LessonCommentService lcService = SpringUtils.getBean(LessonCommentService.class);
+//				vo.setFirstCommented(lcService.checkFirstComment(distributer.getId(), po.getId()));
+//				vo.setAppendCommented(lcService.checkAppendComment(distributer.getId(), po.getId()));
+//			}
 			
 			return vo;
 		}
@@ -148,16 +132,6 @@ public class LessonVO  {
 		
 	}
 	
-	public boolean isPraised() {
-		return praised;
-	}
-
-
-	public void setPraised(boolean praised) {
-		this.praised = praised;
-	}
-
-
 	public Integer getId() {
 		return id;
 	}
@@ -248,38 +222,6 @@ public class LessonVO  {
 	}
 	public void setPraisers(String praisers) {
 		this.praisers = praisers;
-	}
-
-
-	/**
-	 * @return the isFirstCommented
-	 */
-	public boolean isFirstCommented() {
-		return isFirstCommented;
-	}
-
-
-	/**
-	 * @param isFirstCommented the isFirstCommented to set
-	 */
-	public void setFirstCommented(boolean isFirstCommented) {
-		this.isFirstCommented = isFirstCommented;
-	}
-
-
-	/**
-	 * @return the isAppendCommented
-	 */
-	public boolean isAppendCommented() {
-		return isAppendCommented;
-	}
-
-
-	/**
-	 * @param isAppendCommented the isAppendCommented to set
-	 */
-	public void setAppendCommented(boolean isAppendCommented) {
-		this.isAppendCommented = isAppendCommented;
 	}
 
 
