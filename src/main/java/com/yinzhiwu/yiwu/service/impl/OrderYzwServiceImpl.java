@@ -289,7 +289,13 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		ids.replace(" ","");
 		String[] idArr = ids.split(";");
 		for (String id : idArr) {
-			DepartmentYzw dept =  deptDao.get(Integer.valueOf(id.trim()));
+			Integer deptId;
+			try{
+				deptId = Integer.valueOf(id.trim());
+			}catch (NumberFormatException e) {
+				continue;
+			}
+			DepartmentYzw dept =  deptDao.get(deptId);
 			if(dept != null){
 				names.append(dept.getName());
 				names.append(",");

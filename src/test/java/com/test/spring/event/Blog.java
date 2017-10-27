@@ -1,4 +1,4 @@
-package com.test.springevent;
+package com.test.spring.event;
 
 /**
 *@Author ping
