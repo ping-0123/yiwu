@@ -74,14 +74,14 @@ public class ResourceController extends BaseController {
     }
     
     @GetMapping(value="/createForm")
-    public String showCreateForm(Integer parentId, Model model){
+    public String showCreateForm(Integer parentId, Model model) throws DataNotFoundException{
     	Resource parent = parentId==null?null:service.get(parentId);
     	model.addAttribute("parent",parent );
     	return "resources/createForm";
     }
     
     @GetMapping(value="/{id}/updateForm")
-    public String showUpdateForm(@PathVariable(name="id") Integer id, Model model){
+    public String showUpdateForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
     	model.addAttribute("resource", service.get(id));
     	return "resources/updateForm";
     }

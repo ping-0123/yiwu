@@ -58,14 +58,14 @@ public class DepartmentController extends BaseController {
 	
 	
 	@GetMapping("/{id}/updateForm")
-	public String showModifyForm(@PathVariable(name="id") Integer id, Model model){
+	public String showModifyForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
 		DepartmentYzw dept = deptService.get(id);
 		model.addAttribute("dept", dept);
 		return "departments/updateForm";
 	}
 	
 	@GetMapping("/{id}/detailJsp")
-	public String showDetail(@PathVariable(name="id") Integer id, Model model){
+	public String showDetail(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
 		DepartmentYzw dept = deptService.get(id);
 		model.addAttribute("dept", dept);
 		return "departments/detail";
@@ -73,7 +73,7 @@ public class DepartmentController extends BaseController {
 	
 	@GetMapping("/{id}")
 	@ResponseBody
-	public YiwuJson<?> get(@PathVariable(name="id") Integer id){
+	public YiwuJson<?> get(@PathVariable(name="id") Integer id) throws DataNotFoundException{
 		return YiwuJson.createBySuccess(deptService.get(id));
 	}
 	

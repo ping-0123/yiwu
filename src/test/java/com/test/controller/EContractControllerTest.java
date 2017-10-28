@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.ElectricContractYzwService;
 
 /**
@@ -19,7 +20,13 @@ public class EContractControllerTest extends BaseSpringTest {
 	
 	@Test
 	public void testGet(){
-		ElectricContractYzw electricContractYzw = econtractService.get("YZW20170617444");
-		System.err.println(electricContractYzw.getContractType().getContent());
+		ElectricContractYzw electricContractYzw;
+		try {
+			electricContractYzw = econtractService.get("YZW20170617444");
+			System.err.println(electricContractYzw.getContractType().getContent());
+		} catch (DataNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

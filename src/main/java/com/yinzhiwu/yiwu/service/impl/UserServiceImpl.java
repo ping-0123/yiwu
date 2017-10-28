@@ -16,6 +16,7 @@ import com.yinzhiwu.yiwu.entity.sys.Role;
 import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeePostYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.PasswordHelper;
 import com.yinzhiwu.yiwu.service.RoleService;
 import com.yinzhiwu.yiwu.service.UserService;
@@ -114,7 +115,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements U
 
 	@Override
 	public void modifyPassword(Integer userId, String newPasswords) {
-	      User user =get(userId);
+	      User user;
+		try {
+			user = get(userId);
+		} catch (DataNotFoundException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 	      user.setPassword(newPasswords);
 	      passwordHelper.encryptPassword(user);
 	      update(user);

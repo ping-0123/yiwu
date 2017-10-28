@@ -32,7 +32,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	}
 
 	@Override
-	public T get(PK id) {
+	public T get(PK id) throws DataNotFoundException {
 		return baseDao.get(id);
 	}
 

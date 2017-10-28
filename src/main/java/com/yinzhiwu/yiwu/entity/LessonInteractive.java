@@ -32,7 +32,6 @@ public class LessonInteractive extends BaseEntity{
 	@JoinColumn(name="distributer_id", foreignKey=@ForeignKey(name="fk_lessoninteractive_distributer_id", value=ConstraintMode.NO_CONSTRAINT))
 	private Distributer distributer;
 	
-	@NotNull
 	private String contracNo;
 	
 	@Column(columnDefinition="boolean not null default false")

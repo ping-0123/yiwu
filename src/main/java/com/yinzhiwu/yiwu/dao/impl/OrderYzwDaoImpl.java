@@ -82,7 +82,12 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	@Override
 	public OrderYzw get(String id) {
 		updateLingLingContractDates();
-		return super.get(id);
+		try {
+			return super.get(id);
+		} catch (DataNotFoundException e) {
+			logger.error(e.getMessage(),e);
+			return null;
+		}
 	}
 
 	@Override
@@ -302,7 +307,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	}
 
 	@Override
-	public Contract findContractByContractNo(String contractNo) {
+	public Contract findContractByContractNo(String contractNo) throws DataNotFoundException {
 		cleanNullCourseIds();
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT t1.contract");
@@ -319,12 +324,9 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		switch (contracts.size()) {
 		case 0:
 			logger.error("传入的会籍合约号\"" + contractNo + "\"不正确");
-			return null;
-		case 1:
-			return contracts.get(0);
+			throw new DataNotFoundException(OrderYzw.class, "contract.contractNo", contractNo);
 		default:
-			logger.error("会籍合约\"" + contractNo+ "\"重复");
-			return null;
+			return contracts.get(0);
 		}
 			
 	}

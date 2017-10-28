@@ -20,6 +20,7 @@ import com.yinzhiwu.yiwu.service.LessonYzwService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.Authorization;
 
 /**
 *@Author ping
@@ -29,14 +30,14 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping(value="/api/lessonPraises")
-@Api(value="课时点赞模块")
+@Api(description="课时点赞APIs")
 public class LessonPraiseApiController extends BaseController {
 	
 	@Autowired private LessonPraiseService lpService;
 	@Autowired private LessonYzwService lessonService;
 	
-	@PostMapping(value="/doPraise.do")
-	@ApiOperation(value = "点赞")
+	@PostMapping
+	@ApiOperation(value = "点赞",authorizations=@Authorization("Authorization"))
 	public YiwuJson<?> doPost(
 			@ApiParam(value="课时Id", required=true) Integer lessonId
 	){
@@ -57,7 +58,7 @@ public class LessonPraiseApiController extends BaseController {
 		}
 	}
 	
-	@PostMapping(value="/cancelPraise.do")
+	@DeleteMapping
 	@ApiOperation(value="取消点赞")
 	public YiwuJson<?> cancelPraise(
 			@ApiParam(value="课时Id", required=true) Integer lessonId

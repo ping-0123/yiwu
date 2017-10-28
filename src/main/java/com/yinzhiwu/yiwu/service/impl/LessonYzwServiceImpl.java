@@ -10,17 +10,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
+import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.StoreManCallRollYzwDao;
-import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.DailyLessonsDto;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -36,7 +37,7 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> implements LessonYzwService {
 
 	@Autowired private LessonYzwDao lessonDao;
-	@Autowired private AppointmentYzwDao appointmentYzwDao;
+	@Autowired private LessonAppointmentYzwDao appointmentYzwDao;
 	@Autowired private CustomerYzwDao customerYzwDao;
 	@Autowired private StoreManCallRollYzwDao storeManCallRollYzwDao;
 	@Autowired private CheckInsYzwDao checkInsYzwDao;
@@ -238,7 +239,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	}
 
 	@Override
-	public LessonYzw findByCourseIdAndOrdinalNo(String courseId, Integer ordinalNo) {
+	public LessonYzw findByCourseIdAndOrdinalNo(String courseId, Integer ordinalNo) throws DataNotFoundException {
 		Assert.hasLength(courseId);
 		Assert.notNull(ordinalNo);
 		

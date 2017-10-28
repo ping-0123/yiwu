@@ -6,6 +6,7 @@ import java.util.List;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
@@ -35,5 +36,5 @@ public interface LessonYzwService extends IBaseService<LessonYzw, Integer> {
 	LessonYzw findComingLessonByCourseId(String courseId);
 	public  void setConnatationUrls(LessonConnotation con);
 
-	LessonYzw findByCourseIdAndOrdinalNo(String id, Integer ordinalNo);
+	LessonYzw findByCourseIdAndOrdinalNo(String id, Integer ordinalNo) throws DataNotFoundException;
 }

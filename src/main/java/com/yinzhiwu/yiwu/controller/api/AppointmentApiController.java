@@ -14,10 +14,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 /**
- * 
+ * @deprecated
+ * @see {@link LessonAppointmentApiController}
  * @author ping
  */
 
+@Deprecated
 @RestController
 @RequestMapping("/api/appointment")
 public class AppointmentApiController extends BaseController {
@@ -27,20 +29,19 @@ public class AppointmentApiController extends BaseController {
 
 	@PostMapping(value = "/appoint")
 	@ApiOperation(value = "预约课程")
-	public YiwuJson<AppointSuccessApiView> appointLesson(
+	public YiwuJson<AppointSuccessApiView> doAppoint(
 			@ApiParam(required = false) Integer distributerId,
 			@ApiParam(required = true) int lessonId) {
 		try {
 			return new YiwuJson<>(appointmentEventService.saveAppoint(distributerId, lessonId));
 		} catch (Exception e) {
-//			e.printStackTrace();
 			return new YiwuJson<>(e.getMessage());
 		}
 	}
 
 	@PostMapping(value = "/unAppoint")
 	@ApiOperation(value = "取消课程预约")
-	public YiwuJson<AppointSuccessApiView> unAppointLesson(
+	public YiwuJson<AppointSuccessApiView> cancelAppoint(
 			@ApiParam(required = true) Integer distributerId,
 			@ApiParam(required = true) int lessonId) {
 		try {

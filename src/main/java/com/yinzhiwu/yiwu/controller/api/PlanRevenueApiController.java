@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.entity.PlanRevenue;
 import com.yinzhiwu.yiwu.entity.type.ProductType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.ReturnedJson;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
@@ -59,7 +60,7 @@ public class PlanRevenueApiController {
 	}
 
 	@GetMapping("/edit/{id}")
-	public String edit(@PathVariable int id, Model model) {
+	public String edit(@PathVariable int id, Model model) throws DataNotFoundException {
 		PlanRevenue plan = planService.get(id);
 		model.addAttribute("plan", plan);
 		return "planRevenue/edit";
@@ -67,7 +68,7 @@ public class PlanRevenueApiController {
 
 	@ResponseBody
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public YiwuJson<PlanRevenue> doGet(@PathVariable int id) {
+	public YiwuJson<PlanRevenue> doGet(@PathVariable int id) throws DataNotFoundException {
 		return new YiwuJson<>(planService.get(id));
 
 	}
@@ -93,7 +94,7 @@ public class PlanRevenueApiController {
 	}
 
 	@GetMapping("/list")
-	public String list(@ModelAttribute("plan") PlanRevenue plan, Model model) {
+	public String list(@ModelAttribute("plan") PlanRevenue plan, Model model) throws DataNotFoundException {
 		List<PlanRevenue> list = new ArrayList<>();
 
 		if (plan.getId() > 0) {

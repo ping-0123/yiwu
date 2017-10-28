@@ -25,6 +25,7 @@ import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.sys.Role;
 import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.enums.DataStatus;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
@@ -68,7 +69,7 @@ public class UserController extends BaseController {
     }
     
     @GetMapping(value="/{id}/form")
-    public String showUpdateForm(@PathVariable(name="id") Integer id, Model model){
+    public String showUpdateForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
     	model.addAttribute("user", service.get(id));
     	return "users/updateForm";
     }
@@ -127,7 +128,7 @@ public class UserController extends BaseController {
 
     @PutMapping(value = "/{id}")
     @ResponseBody
-    public YiwuJson<?> update(@Valid User user, @PathVariable(name="id") Integer id, BindingResult bindingResult) {
+    public YiwuJson<?> update(@Valid User user, @PathVariable(name="id") Integer id, BindingResult bindingResult) throws DataNotFoundException {
     	if(bindingResult.hasErrors()){
     		logger.error(getErrorsMessage(bindingResult));
     		return YiwuJson.createByErrorMessage(getErrorsMessage(bindingResult));

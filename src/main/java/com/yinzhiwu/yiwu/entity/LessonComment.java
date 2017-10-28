@@ -32,12 +32,12 @@ public class LessonComment extends BaseEntity{
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_lesson_id", value=ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(foreignKey=@ForeignKey(name="fk_lessonComment_lesson_id", value=ConstraintMode.NO_CONSTRAINT))
 	private LessonYzw lesson;
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_distributer_id", value=ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(foreignKey=@ForeignKey(name="fk_lessonComment_distributer_id"))
 	private Distributer commenter;
 	
 	@NotNull

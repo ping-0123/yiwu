@@ -62,7 +62,7 @@ public class EmployeeController  extends BaseController{
 	}
 	
 	@GetMapping(value="/{id}/updateForm")
-	public String showModifyForm(@PathVariable(name="id") Integer id, Model model){
+	public String showModifyForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
 		EmployeeYzw employee = employeeService.get(id);
 		EmployeeVO vo = EmployeeVO.converter.fromPO(employee);
 		model.addAttribute("employee",vo);
@@ -88,19 +88,19 @@ public class EmployeeController  extends BaseController{
 	
 	@GetMapping(value="/{id}")
 	@ResponseBody
-	public YiwuJson<?> get(@PathVariable(name="id") Integer id ){
+	public YiwuJson<?> get(@PathVariable(name="id") Integer id ) throws DataNotFoundException{
 		return YiwuJson.createBySuccess(employeeService.get(id));
 	}
 	
 	@GetMapping(value="/{id}/posts/list")
-	public String getPostsListJsp(@PathVariable(name="id") Integer id , Model model){
+	public String getPostsListJsp(@PathVariable(name="id") Integer id , Model model) throws DataNotFoundException{
 		EmployeeYzw e = employeeService.get(id);
 		model.addAttribute("employee", e);
 		return "employees/posts/list";
 	}
 	
 	@GetMapping(value="/{id}/posts/createForm")
-	public String getPostsCreateForm(@PathVariable(name="id") Integer id, Model model){
+	public String getPostsCreateForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
 		model.addAttribute("employee", employeeService.get(id));
 		model.addAttribute("departments", deptService.findAll());
 		model.addAttribute("posts", postService.findAll());

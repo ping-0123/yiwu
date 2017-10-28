@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.service;
 
 import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.entity.LessonComment.CommentType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 /**
 *@Author ping
@@ -11,7 +12,7 @@ import com.yinzhiwu.yiwu.entity.LessonComment.CommentType;
 
 public interface LessonCommentService  extends IBaseService<LessonComment,Integer>{
 
-	LessonComment findByDistributerIdAndLessonIdAndType(Integer distributerId, Integer lessonId, CommentType type);
+	LessonComment findByDistributerIdAndLessonIdAndType(Integer distributerId, Integer lessonId, CommentType type) throws DataNotFoundException;
 	
 	boolean checkFirstComment(Integer distributerId, Integer lessonId);
 	

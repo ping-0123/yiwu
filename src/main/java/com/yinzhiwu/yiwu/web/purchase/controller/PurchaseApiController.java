@@ -22,6 +22,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw.ProductCardType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -135,9 +136,8 @@ public class PurchaseApiController  extends BaseController{
 	
 	@GetMapping(value="/subCourseType/list")
 	@ApiOperation(value="根据产品Id获取所有的产品中类类型,\"开放式A\", \"开放式B\", \"封闭式\", \"私教课\", 产品中类可以决定产品大类")
-	public YiwuJson<List<SubCourseType>> getPossibleSubCourseTypesOfProduct(int productId){
+	public YiwuJson<List<SubCourseType>> getPossibleSubCourseTypesOfProduct(int productId) throws DataNotFoundException{
 		ProductYzw product = productService.get(productId);
-		if(product == null ) return new YiwuJson<>("无效产品Id" + productId);
 		CourseType courseType = null;
 		if(product.getContractType() != null)
 			courseType = product.getContractType().getContractType();
@@ -192,11 +192,9 @@ public class PurchaseApiController  extends BaseController{
 	
 	@GetMapping(value="/order/{id}")
 	@ApiOperation(value="获取订单详情")
-	public YiwuJson<OrderDto> findById(@PathVariable String id){
+	public YiwuJson<OrderDto> findById(@PathVariable String id) throws DataNotFoundException{
 		OrderYzw order = orderSerivice.get(id);
-		if(order != null)
-			return new YiwuJson<>(OrderDto.fromOrder(order));
-		return new YiwuJson<>("无效的订单Id" + id);
+		return new YiwuJson<>(OrderDto.fromOrder(order));
 	}
 	
 	@PutMapping(value="/order/{id}")
@@ -212,7 +210,7 @@ public class PurchaseApiController  extends BaseController{
 	
 	@DeleteMapping(value="/order/{id}")
 	@ApiOperation(value="删除订单")
-	public YiwuJson<Boolean> delete(@PathVariable String id){
+	public YiwuJson<Boolean> delete(@PathVariable String id) throws DataNotFoundException{
 		OrderYzw order = orderSerivice.get(id);
 		try {
 			if(order.isOperatable())

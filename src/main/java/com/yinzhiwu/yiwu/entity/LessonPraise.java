@@ -5,10 +5,10 @@ import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
@@ -24,8 +24,9 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="yiwu_lesson_praise", uniqueConstraints=
-	@UniqueConstraint(name="uk_praise_lessonId_distributerId", columnNames={"lesson_id", "distributer_id"}))
+@Table(name="yiwu_lesson_praise", indexes = {
+		@Index(name="ind_lessonPraise_lessonId_distributerId", columnList="lesson_id,distributer_id")
+})
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class LessonPraise extends BaseEntity {
 

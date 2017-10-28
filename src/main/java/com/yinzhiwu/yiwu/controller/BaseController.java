@@ -29,8 +29,6 @@ public class BaseController {
 	@ResponseBody
 	public YiwuJson handlerException(HttpServletRequest request,HttpServletResponse response, Exception e){
 		logger.error(e.getMessage(),e);
-		return YiwuJson.createByErrorCodeMessage(response.getStatus(), e.getStackTrace().toString());
-//		return ResponseEntity.status(response.getStatus()).body(map);
-		
+		return YiwuJson.createByErrorCodeMessage(response.getStatus(), e.getLocalizedMessage());
 	}
 }

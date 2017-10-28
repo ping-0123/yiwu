@@ -44,7 +44,7 @@ public class EmployeePostController extends BaseController{
 	}
 	
 	@GetMapping(value="/{id}/updateForm")
-	public String showUpdateForm(@PathVariable(name="id") Integer id, Model model){
+	public String showUpdateForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
 		model.addAttribute("ep", epService.get(id));
 		return "employeePosts/updateForm";
 	}

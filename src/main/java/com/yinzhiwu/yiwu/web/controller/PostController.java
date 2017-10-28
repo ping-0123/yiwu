@@ -64,7 +64,7 @@ public class PostController extends BaseController {
 	}
 	
 	@GetMapping("/{id}/form")
-	public String showModifyForm(@PathVariable(name="id") Integer id, Model model){
+	public String showModifyForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
 		PostYzw post = postService.get(id);
 		model.addAttribute("post", post);
 		return "posts/updateForm";
@@ -72,7 +72,7 @@ public class PostController extends BaseController {
 	
 	@GetMapping("/{id}")
 	@ResponseBody
-	public YiwuJson<PostYzw> get(@PathVariable(name="id") Integer id){
+	public YiwuJson<PostYzw> get(@PathVariable(name="id") Integer id) throws DataNotFoundException{
 		return YiwuJson.createBySuccess(postService.get(id));
 	}
 	

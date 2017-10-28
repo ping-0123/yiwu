@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
+import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.CheckInEventDao;
 import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
@@ -41,7 +41,7 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 	@Autowired
 	private OrderYzwDao orderDao;
 	@Autowired
-	private AppointmentYzwDao appointmentDao;
+	private LessonAppointmentYzwDao appointmentDao;
 	@Autowired
 	private IncomeEventService incomeEventService;
 	@Autowired
@@ -64,20 +64,38 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 
 	@Override
 	public int findCheckedInLessonsCountOfCustomer(int customerId) {
-		String memberCard = customerDao.get(customerId).getMemberCard();
+		String memberCard;
+		try {
+			memberCard = customerDao.get(customerId).getMemberCard();
+		} catch (DataNotFoundException e) {
+			logger.error(e.getMessage(),e);
+			throw new RuntimeException(e);
+		}
 		return checkInsYzwDao.findCheckedInLessonsCountByMemeberCard(memberCard);
 	}
 	
 	@Override
 	public YiwuJson<List<LessonApiView>> findByCustomerId(int customerId) {
-		String memberCard = customerDao.get(customerId).getMemberCard();
+		String memberCard;
+		try {
+			memberCard = customerDao.get(customerId).getMemberCard();
+		} catch (DataNotFoundException e) {
+			logger.error(e.getMessage(),e);
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
 		List<LessonApiView> lessonApiViews = checkInsYzwDao.findLessonApiViewsByMemeberCard(memberCard);
 		return YiwuJson.createBySuccess(lessonApiViews);
 	}
 
 	@Override
 	public PageBean<LessonApiView> findPageViewByCustomer(int customerId, Integer pageNo, Integer pageSize) {
-		String memberCard = customerDao.get(customerId).getMemberCard();
+		String memberCard;
+		try {
+			memberCard = customerDao.get(customerId).getMemberCard();
+		} catch (DataNotFoundException e) {
+			logger.error(e.getMessage(),e);
+			return null;
+		}
 		return checkInsYzwDao.findPageCheckedInLessonApiViewsByMemberCard(memberCard, pageNo, pageSize);
 
 	}
@@ -87,10 +105,20 @@ public class CheckInsYzwServiceImpl extends BaseServiceImpl<CheckInsYzw, Integer
 			throws YiwuException {
 		
 		boolean isAppointed = false;
-		Distributer distributer = distibuterDao.get(distributerId);
+		Distributer distributer;
+		try {
+			distributer = distibuterDao.get(distributerId);
+		} catch (DataNotFoundException e1) {
+			throw new RuntimeException(e1);
+		}
 		if (distributer == null)
 			throw new YiwuException(distributerId + "用户不存在.");
-		LessonYzw lesson = lessonDao.get(lessonId);
+		LessonYzw lesson;
+		try {
+			lesson = lessonDao.get(lessonId);
+		} catch (DataNotFoundException e1) {
+			throw new RuntimeException(e1);
+		}
 		if (lesson == null)
 			throw new YiwuException(lessonId + "预约的课程不存在");
 		CustomerYzw customer = distributer.getCustomer();

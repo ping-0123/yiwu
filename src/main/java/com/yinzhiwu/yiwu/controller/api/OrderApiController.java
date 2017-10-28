@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.ReturnedJson;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.YiwuJson.ReturnCode;
@@ -26,6 +26,7 @@ import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
 import com.yinzhiwu.yiwu.service.CheckInsYzwService;
+import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +40,7 @@ public class OrderApiController {
 	@Autowired
 	private OrderYzwService orderYzwService;
 	@Autowired
-	private DistributerDao distributerDao;
+	private DistributerService distributerService;
 	@Autowired
 	private CheckInsYzwService checkInsService;
 
@@ -59,11 +60,9 @@ public class OrderApiController {
 	public YiwuJson<PageBean<OrderApiView>>  findPageOfOrderApiViewByDistributerId(
 			@RequestParam(value="distributerId", required =true) Integer distributerId,
 			@RequestParam(value="pageNo", defaultValue="1", required=false) int pageNo,
-			@RequestParam(value="pageSize",defaultValue="10", required=false) int pageSize){
+			@RequestParam(value="pageSize",defaultValue="10", required=false) int pageSize) throws DataNotFoundException{
 		
-		Distributer distributer = distributerDao.get(distributerId);
-		if(distributer == null )
-			return YiwuJson.createByErrorMessage("不存在Id为:" + distributerId + " 的客户");
+		Distributer distributer = distributerService.get(distributerId);
 		return orderYzwService.findPageOfOrderApiViewByDistributer(distributer,  pageNo,  pageSize);
 	}
 	
@@ -89,11 +88,9 @@ public class OrderApiController {
 			@ApiParam(name="orderId", required=true) @PathVariable(name="orderId",  required=true) 
 			String id, 
 			@ApiParam(name="status", value="VERIFIED,CHECKED,LEFT,RETURNED_PREMIUM,FORBIDDEN,EXPIRED", required=true)
-			ContractStatus status) 
+			ContractStatus status) throws DataNotFoundException 
 	{
 		OrderYzw order = orderYzwService.get(id);
-		if(order == null)
-			return YiwuJson.createByErrorCodeMessage(ReturnCode.ILLEGAL_ARGUMENT.getCode(), "无效的订单Id" + id);
 		Contract contract = order.getContract();
 		if(contract == null)
 			return YiwuJson.createByErrorMessage("order:" + id + "不存在会籍合约");
