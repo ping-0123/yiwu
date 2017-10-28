@@ -15,6 +15,7 @@ import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.Connotation;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.CourseVO;
@@ -63,13 +64,11 @@ public class CourseApiController extends BaseController {
 	@ApiOperation(value="获取课程{id}的第{ordinalNo}节课")
 	public YiwuJson<LessonVO> findTheOrdinalNoLesson(
 			@ApiParam(value="课程Id") @PathVariable(value="id", required = true) String id,
-			@ApiParam(value="课时序号， 即第几节课") @PathVariable(value="id", required=true) Integer ordinalNo )
+			@ApiParam(value="课时序号， 即第几节课") @PathVariable(value="id", required=true) Integer ordinalNo ) throws DataNotFoundException
 	{
 		LessonYzw lesson = lessonService.findByCourseIdAndOrdinalNo(id, ordinalNo);
-		if(lesson !=null)
-			return YiwuJson.createBySuccess(LessonVOConverter.instance.fromPO(lesson));
-		else
-			return YiwuJson.createByErrorMessage("系统中未找到符合条件的记录");
+		return YiwuJson.createBySuccess(LessonVOConverter.instance.fromPO(lesson));
+		
 	}
 	
 	@GetMapping("/{id}")

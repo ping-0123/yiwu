@@ -34,7 +34,7 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 
 	public int updateContractWithHoldTimes(String contractNo, int i);
 
-	public Contract findContractByContractNo(String contractNo);
+	public Contract findContractByContractNo(String contractNo) throws DataNotFoundException;
 
 	public int cleanWithHoldTimes();
 

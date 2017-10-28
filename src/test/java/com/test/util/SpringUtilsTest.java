@@ -3,6 +3,7 @@ package com.test.util;
 import org.junit.Test;
 
 import com.test.BaseSpringTest;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.UserService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 
@@ -17,6 +18,10 @@ public class SpringUtilsTest  extends BaseSpringTest{
 	@Test
 	public void test(){
 		UserService bean = SpringUtils.getBean(UserService.class);
-		System.err.println(bean.get(1));
+		try {
+			System.err.println(bean.get(1));
+		} catch (DataNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }

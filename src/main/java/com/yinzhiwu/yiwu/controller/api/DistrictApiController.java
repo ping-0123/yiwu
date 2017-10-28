@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.view.DepartmentApiView;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
 
@@ -34,7 +35,7 @@ public class DistrictApiController extends BaseController {
 	@GetMapping(value="/{id}")
 	@ResponseBody
 	@ApiOperation(value="返回区域的部门信息")
-	public DepartmentYzw getById(@PathVariable Integer id){
+	public DepartmentYzw getById(@PathVariable Integer id) throws DataNotFoundException{
 		return departmentYzwService.get(id);
 	}
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.entity.StoreInfo;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
@@ -29,21 +30,11 @@ public class StoreApiController {
 		return departmentService.findStoreApiViewsUnderOrganization(districtId);
 	}
 
-	@Deprecated
-	@GetMapping(value = "/id/{id}")
-	public StoreApiView getStore(@PathVariable int id) {
-		StoreInfo  info = storeInfoService.get(id);
-		if(info != null)
-			return new StoreApiView(info);
-		return null;
-	}
 
 	@GetMapping(value = "/{storeId}")
-	public StoreApiView getStoreById(@PathVariable int storeId) {
+	public StoreApiView getStoreById(@PathVariable int storeId) throws DataNotFoundException {
 		StoreInfo  info = storeInfoService.get(storeId);
-		if(info != null)
-			return new StoreApiView(info);
-		return null;
+		return new StoreApiView(info);
 	}
 
 	@GetMapping(value = "/getStoresByCity")

@@ -9,6 +9,7 @@ import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.view.CoachVO;
 import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.LessonVO;
@@ -35,7 +36,13 @@ public class MappedClassTest extends BaseSpringTest{
 //	@Test
 	public void testConvert(){
 		int empId = 22;
-		EmployeeYzw emp = empService.get(empId);
+		EmployeeYzw emp;
+		try {
+			emp = empService.get(empId);
+		} catch (DataNotFoundException e1) {
+			e1.printStackTrace();
+			return;
+		}
 		CoachVO coachVO = new CoachVO();
 		EmployeeYzw emp2 = new EmployeeYzw();
 		try {
@@ -54,7 +61,13 @@ public class MappedClassTest extends BaseSpringTest{
 //	@Test
 	public void testLessonVO(){
 		int lessonId = 208693;
-		LessonYzw lesson = lessonService.get(lessonId);
+		LessonYzw lesson;
+		try {
+			lesson = lessonService.get(lessonId);
+		} catch (DataNotFoundException e1) {
+			e1.printStackTrace();
+			return;
+		}
 		LessonVO lessonVO = new LessonVO();
 		LessonYzw lesson2 = new LessonYzw();
 		try {
@@ -73,7 +86,13 @@ public class MappedClassTest extends BaseSpringTest{
 //	@Test
 	public void testCourseVO(){
 		String courseId = "20170905004";
-		CourseYzw course = courseService.get(courseId);
+		CourseYzw course;
+		try {
+			course = courseService.get(courseId);
+		} catch (DataNotFoundException e1) {
+			e1.printStackTrace();
+			return;
+		}
 		CourseVO courseVO = new CourseVO();
 		CourseYzw course2 = new CourseYzw();
 		

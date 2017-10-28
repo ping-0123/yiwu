@@ -5,31 +5,46 @@ import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @MapedClass(LessonInteractive.class)
+@ApiModel("描述用户与课时交互结果")
 public class LessonInteractiveVO {
 	
 	@MapedProperty(value="lesson.id")
+	@ApiModelProperty("课时Id")
 	private Integer lessonId;
 	
 	@MapedProperty(value="distributer.id")
+	@ApiModelProperty("用户Id")
 	private Integer distributerId;
 	
+	@ApiModelProperty("交互所使用的会籍合约编号")
 	private String contracNo;
 	
+	@ApiModelProperty("是否已预约")
 	private  Boolean appointed;
 	
+	@ApiModelProperty("是否已签到")
 	private  Boolean checkedIn;
 	
+	@ApiModelProperty("是否已被店员点名")
 	private Boolean storemanCalled;
 	
+	@ApiModelProperty("是否已被教练点名")
 	private Boolean coachCalled;
 	
+	@ApiModelProperty("是否已点赞")
 	private  Boolean praised;
 	
+	@ApiModelProperty("是否已评论")
 	private  Boolean firstCommented;
 	
+	@ApiModelProperty("是否已追评")
 	private  Boolean appendCommented;
 	
+	@ApiModelProperty("是否已完成老师布置的作业")
 	private  Boolean workFinished;
 
 	public static final class LessonInteractiveVOConverter extends AbstractConverter<LessonInteractive, LessonInteractiveVO>{

@@ -6,6 +6,7 @@ import com.yinzhiwu.yiwu.dao.LessonCommentDao;
 import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.entity.LessonComment.CommentType;
 import com.yinzhiwu.yiwu.exception.DataConsistencyException;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 /**
 *@Author ping
@@ -18,7 +19,7 @@ public class LessonCommentDaoImpl extends BaseDaoImpl<LessonComment,Integer> imp
 
 	@Override
 	public LessonComment findByDistributerIdAndLessonIdAndType(Integer distributerId, Integer lessonId,
-			CommentType type) {
+			CommentType type) throws DataNotFoundException {
 		
 		return findOneByProperties(
 				new String[]{"commenter.id", "lesson.id","type"}, 

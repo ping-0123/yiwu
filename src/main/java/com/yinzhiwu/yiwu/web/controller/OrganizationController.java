@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
 
 /**
@@ -38,7 +39,7 @@ public class OrganizationController {
     }
 
     @RequestMapping(value = "/{parentId}/appendChild", method = RequestMethod.GET)
-    public String showAppendChildForm(@PathVariable("parentId") Integer parentId, Model model) {
+    public String showAppendChildForm(@PathVariable("parentId") Integer parentId, Model model) throws DataNotFoundException {
         DepartmentYzw parent = organizationService.get(parentId);
         model.addAttribute("parent", parent);
         DepartmentYzw child = new DepartmentYzw();
@@ -55,7 +56,7 @@ public class OrganizationController {
     }
 
     @RequestMapping(value = "/{id}/maintain", method = RequestMethod.GET)
-    public String showMaintainForm(@PathVariable("id") Integer id, Model model) {
+    public String showMaintainForm(@PathVariable("id") Integer id, Model model) throws DataNotFoundException {
         model.addAttribute("organization", organizationService.get(id));
         return "organization/maintain";
     }
@@ -81,7 +82,7 @@ public class OrganizationController {
 
 
     @RequestMapping(value = "/{sourceId}/move", method = RequestMethod.GET)
-    public String showMoveForm(@PathVariable("sourceId") Integer sourceId, Model model) {
+    public String showMoveForm(@PathVariable("sourceId") Integer sourceId, Model model) throws DataNotFoundException {
         DepartmentYzw source = organizationService.get(sourceId);
         model.addAttribute("source", source);
         model.addAttribute("targetList", organizationService.findAllWithExclude(source));
@@ -91,7 +92,7 @@ public class OrganizationController {
     @RequestMapping(value = "/{sourceId}/move", method = RequestMethod.POST)
     public String move(
             @PathVariable("sourceId") Integer sourceId,
-            @RequestParam("targetId") Integer targetId) {
+            @RequestParam("targetId") Integer targetId) throws DataNotFoundException {
     	DepartmentYzw source = organizationService.get(sourceId);
     	DepartmentYzw target = organizationService.get(targetId);
         organizationService.move(source, target);

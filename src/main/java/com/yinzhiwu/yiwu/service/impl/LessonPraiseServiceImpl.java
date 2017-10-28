@@ -34,15 +34,15 @@ public class LessonPraiseServiceImpl extends BaseServiceImpl<LessonPraise,Intege
 
 	@Override
 	public LessonPraise doLessonPraise(LessonPraise praise) {
-		applicationContext.publishEvent(praise);
 		lessonPraiseDao.save(praise);
+		applicationContext.publishEvent(praise);
 		return praise;
 	}
 
 	@Override
 	public LessonPraise cancelLessonPraise(LessonPraise praise) {
-		applicationContext.publishEvent(praise);
 		lessonPraiseDao.update(praise);
+		applicationContext.publishEvent(praise);
 		return praise;
 	}
 	

@@ -79,10 +79,13 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return sessionFactory.getCurrentSession();
 	}
 
-	public T get(PK id) {
+	public T get(PK id) throws DataNotFoundException {
 		Assert.notNull(id, "id is required");
 		
-		return getSession().get(entityClass, id);
+		T entity =  getSession().get(entityClass, id);
+		if(null == entity)
+			throw new DataNotFoundException(entityClass, "id", id);
+		return entity;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -208,7 +211,13 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	public void delete(PK id) {
 		Assert.notNull(id, "id is required");
 			
-		T entity = get(id);
+		T entity;
+		try {
+			entity = get(id);
+		} catch (DataNotFoundException e) {
+			logger.error(e.getMessage(),e);
+			return;
+		}
 		delete(entity);
 	}
 
@@ -232,7 +241,14 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	public void deleteLogic(PK id) {
 		Assert.notNull(id, "id is required");
 		
-		T entity = get(id);
+		T entity;
+		try {
+			entity = get(id);
+		} catch (DataNotFoundException e) {
+			logger.error(e.getMessage(),e);
+			return;
+		}
+		
 		deleteLogic(entity);
 	}
 

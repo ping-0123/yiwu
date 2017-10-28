@@ -16,6 +16,7 @@ import com.yinzhiwu.yiwu.context.Constants;
 import com.yinzhiwu.yiwu.context.JJWTConfig;
 import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 
@@ -69,7 +70,12 @@ public class ApiUserFilter extends OncePerRequestFilter {
 		Integer distributerId = claims.get(Constants.CURRENT_DISTRIBUTER_ID, Integer.class);
 		if(distributerId !=null){
 			DistributerService disService = SpringUtils.getBean(DistributerService.class);
-			Distributer distributer = disService.get(distributerId);
+			Distributer distributer;
+			try {
+				distributer = disService.get(distributerId);
+			} catch (DataNotFoundException e) {
+				throw new RuntimeException(e);
+			}
 			UserContext.setDistributer(distributer);
 			filterChain.doFilter(request, response);
 		}else {

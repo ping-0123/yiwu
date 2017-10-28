@@ -14,9 +14,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
-import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
@@ -275,8 +276,10 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 	}
 
 	@Override
-	public LessonYzw findByCourseIdAndOrdinalNo(String courseId, Integer ordinalNo) {
-		return findOneByProperties(new String[]{"course.id", "ordinalNo"}, new Object[]{courseId, ordinalNo} );
+	public LessonYzw findByCourseIdAndOrdinalNo(String courseId, Integer ordinalNo) throws DataNotFoundException {
+		return findOneByProperties(
+				new String[]{"course.id", "ordinalNo"},
+				new Object[]{courseId, ordinalNo} );
 	}
 
 }

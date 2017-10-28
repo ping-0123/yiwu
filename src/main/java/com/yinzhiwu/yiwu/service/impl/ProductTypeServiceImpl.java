@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.ProductTypeDao;
 import com.yinzhiwu.yiwu.entity.type.ProductType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.ProductTypeService;
 
 @Service
@@ -17,7 +18,11 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
 	@Override
 	public ProductType findById(Integer id) {
-		return productTypeDao.get(id);
+		try {
+			return productTypeDao.get(id);
+		} catch (DataNotFoundException e) {
+			return null;
+		}
 	}
 
 	@Override

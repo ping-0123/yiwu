@@ -8,6 +8,7 @@ import com.yinzhiwu.yiwu.dao.LessonCommentDao;
 import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.entity.LessonComment.CommentType;
 import com.yinzhiwu.yiwu.event.LessonCommentEvent;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.LessonCommentService;
 
 /**
@@ -25,7 +26,7 @@ public class LessonCommentServiceImpl  extends BaseServiceImpl<LessonComment,Int
 		
 		@Override
 		public LessonComment findByDistributerIdAndLessonIdAndType(Integer distributerId, Integer lessonId,
-				CommentType type) {
+				CommentType type) throws DataNotFoundException {
 			return lessonCommentDao.findByDistributerIdAndLessonIdAndType(distributerId, lessonId,type);
 		}
 

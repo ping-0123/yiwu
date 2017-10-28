@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 /**
 *@Author ping
@@ -34,5 +36,18 @@ public class LessonYzwDaoTest extends BaseSpringTest {
 			// TODO: handle exception
 		}
 		
+	}
+	
+	@Test
+	public void testGet(){
+		Integer lessonId= 1;
+		LessonYzw lesson;
+		try {
+			lesson = lessonYzwDao.get(lessonId);
+			System.err.println("the lesson which id equal 1 is : " + lesson);
+		} catch (DataNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

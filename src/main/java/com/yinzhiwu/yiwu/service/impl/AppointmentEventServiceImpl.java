@@ -5,11 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.AppointmentEventDao;
-import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
+import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
@@ -19,8 +21,8 @@ import com.yinzhiwu.yiwu.entity.income.AbstractAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.AppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.BreakAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.UnAppointmentEvent;
-import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw;
-import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
@@ -45,7 +47,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	@Autowired
 	private LessonYzwDao lessonDao;
 	@Autowired
-	private AppointmentYzwDao appointmentDao;
+	private LessonAppointmentYzwDao appointmentDao;
 	@Autowired 
 	private AppointmentEventDao appointmentEventDao;
 	@Autowired
@@ -75,7 +77,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 
 		if (isAppointed(customer, lesson))
 			throw new Exception("您已预约课程：" + lesson.getName() + "无须重复预约");
-		//仅开放式课程可以预约
+		//仅开放式课程可以预约>
 		if(CourseType.CLOSED == lesson.getCourseType()  )
 			throw new Exception("封闭式课程无须预约");
 		//判断上课时间是否已过
@@ -87,7 +89,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		// 判断卡权益是否可以预约
 		Contract contract = orderDao.findCheckableContractOfCustomerAndLesson(customer, lesson);
 		
-		AppointmentYzw appoint = new AppointmentYzw(lesson, distributer, contract.getContractNo());
+		LessonAppointmentYzw appoint = new LessonAppointmentYzw(lesson, distributer, contract.getContractNo());
 		appointmentDao.save(appoint);
 		orderDao.updateContractWithHoldTimes(contract.getContractNo(), 1);
 		AppointmentEvent event = new AppointmentEvent(distributer,  lesson);
@@ -101,7 +103,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		Distributer distributer = distributerDao.get(distributerId);
 		LessonYzw lesson = lessonDao.get(lessonId);
 		CustomerYzw customer = distributer.getCustomer();
-		AppointmentYzw appointment = appointmentDao.findAppointed(customer, lesson, AppointStatus.APPONTED);
+		LessonAppointmentYzw appointment = appointmentDao.findAppointed(customer, lesson, AppointStatus.APPONTED);
 		if (appointment == null)
 			throw new Exception("您尚未预约课程\"" + lesson.getName() + "\", 不能做取消操作");
 		// 判断是否可以取消预约
@@ -137,8 +139,8 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	
 	@Override
 	public void saveAllLastDayBreakAppointments(){
-		List<AppointmentYzw> appointments = appointmentDao.findLastDayAppointments();
-		for (AppointmentYzw appointment : appointments) {
+		List<LessonAppointmentYzw> appointments = appointmentDao.findLastDayAppointments();
+		for (LessonAppointmentYzw appointment : appointments) {
 			if(appointment.getDistributer()!=null 
 					&& appointment.getLesson() !=null
 					&& !checkInsDao.isCheckedIn(appointment.getDistributer().getId(), appointment.getLesson().getId()))
@@ -148,5 +150,13 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 			}
 		}
 		orderDao.cleanWithHoldTimes();
+	}
+	
+	@Async
+	@EventListener(classes={LessonAppointmentYzw.class})
+	public void handleLessonAppointment(LessonAppointmentYzw appointment){
+		AppointmentEvent event = new AppointmentEvent(
+				appointment.getDistributer(),  appointment.getLesson());
+		this.save(event);
 	}
 }

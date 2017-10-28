@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.view.CourseConnotationVO;
 import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.LessonVO;
@@ -39,7 +40,13 @@ public class BeanUtilTest extends BaseSpringTest{
 	@Test
 	public void testMapedClassRatio(){
 		String courseId = "20170826004";
-		List<LessonYzw> lessons = courseService.get(courseId).getLessons();
+		List<LessonYzw> lessons;
+		try {
+			lessons = courseService.get(courseId).getLessons();
+		} catch (DataNotFoundException e1) {
+			e1.printStackTrace();
+			return;
+		}
 		List<LessonVO> mapedVos = new ArrayList<LessonVO>();
 		List<LessonVO> apachiVos = new ArrayList<>();
 		long start = System.currentTimeMillis();

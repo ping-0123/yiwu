@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
@@ -31,5 +32,5 @@ public interface LessonYzwDao extends IBaseDao<LessonYzw, Integer> {
 
 	LessonYzw findByCourseIdAndStartDateTime(String courseId, Date start, Date end);
 
-	LessonYzw findByCourseIdAndOrdinalNo(String courseId, Integer ordinalNo);
+	LessonYzw findByCourseIdAndOrdinalNo(String courseId, Integer ordinalNo) throws DataNotFoundException;
 }

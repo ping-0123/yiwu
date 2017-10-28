@@ -136,8 +136,8 @@
 			<tx:method name="login*" propagation="REQUIRED" />
 			<tx:method name="register" propagation="REQUIRED" />
 			<tx:method name="share*" />
-			<tx:method name="do*", propagation="REQUIRED"/>
-			<tx:method name="cancel*", propagation="REQUIRED"/>
+			<tx:method name="do*" propagation="REQUIRED"/>
+			<tx:method name="cancel*"  propagation="REQUIRED"/>
 		</tx:attributes>
 	</tx:advice>
 	<aop:config>

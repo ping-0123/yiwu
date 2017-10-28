@@ -22,51 +22,8 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 
 @Entity
 @Table(name = "vappointment")
-public class AppointmentYzw {
+public class LessonAppointmentYzw {
 
-	public enum AppointStatus {
-		APPONTED("预约"), UN_APOINTED("取消");
-		private final String status;
-
-		public static AppointStatus fromStatus(String status) {
-			switch (status) {
-			case "预约":
-				return AppointStatus.APPONTED;
-			case "取消":
-				return AppointStatus.UN_APOINTED;
-			default:
-				throw new UnsupportedOperationException(status + "is not supported for enum AppointStatus");
-			}
-		}
-
-		public String getStatus() {
-			return status;
-		}
-
-		private AppointStatus(String status) {
-			this.status = status;
-		}
-
-	}
-
-	@Converter
-	public static class AppointStatusConverter implements AttributeConverter<AppointStatus, String> {
-
-		@Override
-		public String convertToDatabaseColumn(AppointStatus attribute) {
-			if (attribute == null)
-				return null;
-			return attribute.getStatus();
-		}
-
-		@Override
-		public AppointStatus convertToEntityAttribute(String dbData) {
-			if (dbData == null)
-				return null;
-			return AppointStatus.fromStatus(dbData);
-		}
-
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -115,16 +72,16 @@ public class AppointmentYzw {
 	@Column(name = "sf_Last_Sync_TimeStamp")
 	private Date lastSyncTimeStamp;
 
-	public AppointmentYzw() {
+	public LessonAppointmentYzw() {
 	};
 
-	public AppointmentYzw(LessonYzw lesson, CustomerYzw customer) {
+	public LessonAppointmentYzw(LessonYzw lesson, CustomerYzw customer) {
 		init();
 		this.lesson = lesson;
 		this.customer = customer;
 	};
 	
-	public AppointmentYzw(LessonYzw lesson , Distributer distributer, String contractNo){
+	public LessonAppointmentYzw(LessonYzw lesson , Distributer distributer, String contractNo){
 		init();
 		this.distributer =distributer;
 		this.customer = distributer.getCustomer();
@@ -238,4 +195,48 @@ public class AppointmentYzw {
 		this.contractNo = contractNo;
 	}
 
+	
+	public enum AppointStatus {
+		APPONTED("预约"), UN_APOINTED("取消");
+		private final String status;
+
+		public static AppointStatus fromStatus(String status) {
+			switch (status) {
+			case "预约":
+				return AppointStatus.APPONTED;
+			case "取消":
+				return AppointStatus.UN_APOINTED;
+			default:
+				throw new UnsupportedOperationException(status + "is not supported for enum AppointStatus");
+			}
+		}
+
+		public String getStatus() {
+			return status;
+		}
+
+		private AppointStatus(String status) {
+			this.status = status;
+		}
+
+	}
+
+	@Converter
+	public static class AppointStatusConverter implements AttributeConverter<AppointStatus, String> {
+
+		@Override
+		public String convertToDatabaseColumn(AppointStatus attribute) {
+			if (attribute == null)
+				return null;
+			return attribute.getStatus();
+		}
+
+		@Override
+		public AppointStatus convertToEntityAttribute(String dbData) {
+			if (dbData == null)
+				return null;
+			return AppointStatus.fromStatus(dbData);
+		}
+
+	}
 }

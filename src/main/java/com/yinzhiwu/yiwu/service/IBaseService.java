@@ -40,7 +40,7 @@ public interface IBaseService<T, PK extends Serializable> {
 	
 	public void modify(T source, T target) throws IllegalArgumentException, IllegalAccessException;
 	
-	public T get(PK id);
+	public T get(PK id) throws DataNotFoundException;
 	public List<T> findAll() ;
 	public List<T> findByExample(T entity);
 

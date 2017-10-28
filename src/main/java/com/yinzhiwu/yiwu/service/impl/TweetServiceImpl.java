@@ -11,6 +11,7 @@ import com.yinzhiwu.yiwu.dao.BaseTypeDao;
 import com.yinzhiwu.yiwu.dao.TweetDao;
 import com.yinzhiwu.yiwu.entity.Tweet;
 import com.yinzhiwu.yiwu.entity.type.TweetType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.TweetModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.TweetAbbrApiView;
@@ -39,7 +40,11 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet, Integer> implements
 		// System.out.println(m.getCo	erIconUrl() + " " +
 		// m.getCoverIconUrl().length());
 		TweetType type;
-		type = (TweetType) baseTypeDao.get(m.getTweetTypeId());
+		try {
+			type = (TweetType) baseTypeDao.get(m.getTweetTypeId());
+		} catch (DataNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 		tweet.setTweetType(type);
 
 		return tweetDao.save(tweet);
@@ -64,7 +69,11 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet, Integer> implements
 	@Override
 	public YiwuJson<TweetApiView> findById(int id) {
 		Tweet tweet;
-		tweet = tweetDao.get(id);
+		try {
+			tweet = tweetDao.get(id);
+		} catch (DataNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 		return new YiwuJson<>(new TweetApiView(tweet));
 	}
 	

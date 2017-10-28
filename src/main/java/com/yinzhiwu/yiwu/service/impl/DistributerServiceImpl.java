@@ -214,9 +214,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 
 	@Override
 	public YiwuJson<DistributerApiView> findById(int id) {
-		Distributer distributer = distributerDao.get(id);
-		if(distributer == null)
-			return new YiwuJson<>("未找到id为" + id + "的客户");
+		Distributer distributer;
+		try {
+			distributer = distributerDao.get(id);
+		} catch (DataNotFoundException e) {
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
 		DistributerApiView view = _wrapDaoToApiView(distributer);
 		return new YiwuJson<>(view);
 	}
@@ -260,7 +263,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Deprecated
 	@Override
 	public YiwuJson<DistributerApiView> modifyHeadIcon(int id, MultipartFile multipartFile, String fileSavePath) {
-			Distributer distributer = distributerDao.get(id);
+			Distributer distributer;
+			try {
+				distributer = distributerDao.get(id);
+			} catch (DataNotFoundException e1) {
+				return YiwuJson.createByErrorMessage(e1.getMessage());
+			}
 			String imageName = distributer.getMemberCard() + ".jpg";
 			File imageFile = new File(fileSavePath, imageName);
 			try {
@@ -291,7 +299,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Override
 	public YiwuJson<CapitalAccountApiView> getCapitalAccount(int distributerId, String typeName) {
 		YiwuJson<CapitalAccountApiView> yiwuJson = new YiwuJson<>();
-		Distributer d = distributerDao.get(distributerId);
+		Distributer d;
+		try {
+			d = distributerDao.get(distributerId);
+		} catch (DataNotFoundException e) {
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
 		Set<CapitalAccount> accounts = d.getCapitalAccounts();
 		for (CapitalAccount a : accounts) {
 			if (typeName.equals(a.getCapitalAccountType().getName())) {
@@ -419,7 +432,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	public PageBean<CustomerDto> findVisableDistributersByEmployee(int distributerId, String key,  int pageNo,
 			int pageSize) throws YiwuException {
 		//必须,找出自己的employeeId
-		Distributer distributer = distributerDao.get(distributerId);
+		Distributer distributer;
+		try {
+			distributer = distributerDao.get(distributerId);
+		} catch (DataNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 		if(distributer == null) throw new YiwuException("无效的distributerId: " + distributerId);
 		EmployeeYzw employee = distributer.getEmployee();
 		if(employee == null ) throw new YiwuException(distributerId + " 非内部员工, 不允许查询");
@@ -448,9 +466,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 
 	@Override
 	public YiwuJson<StoreApiView> findDefaultStoreApiView(Integer distributerId) {
-		Distributer distributer = distributerDao.get(distributerId);
-		if(distributer == null)
-			return YiwuJson.createByErrorMessage("无效的分销者Id" +distributerId);
+		Distributer distributer;
+		try {
+			distributer = distributerDao.get(distributerId);
+		} catch (DataNotFoundException e) {
+			return YiwuJson.createByErrorMessage(e.getMessage());
+		}
 		
 		StoreApiView view = checkInsDao.findStoreApiViewOfLastCheckedOpenLesson(distributer.getMemberCard());
 		if(view == null){

@@ -16,13 +16,12 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 public class LessonInteractiveDaoImpl extends BaseDaoImpl<LessonInteractive,Integer> implements LessonInteractiveDao{
 
 	@Override
-	public LessonInteractive findByCommenterIdAndLessonId(Integer commenterId, Integer lessonId) throws DataNotFoundException {
-		LessonInteractive interactive = findOneByProperties(
-				new String[]{"commenter.id", "lesson.id"}, 
-				new Object[]{commenterId,lessonId});
-		if(interactive == null ) throw new DataNotFoundException(LessonInteractive.class,"commenter.id", commenterId);
-		return interactive;
+	public LessonInteractive findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) throws DataNotFoundException {
+		return findOneByProperties(
+				new String[]{"distributer.id", "lesson.id"}, 
+				new Object[]{distributerId,lessonId});
 	}
+
 
 	
 }

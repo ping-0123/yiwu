@@ -6,15 +6,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.yinzhiwu.yiwu.dao.AppointmentYzwDao;
-import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw;
-import com.yinzhiwu.yiwu.entity.yzw.AppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
 
 @Repository
-public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> implements AppointmentYzwDao {
+public class LessonAppointmentYzwDaoImpl extends BaseDaoImpl<LessonAppointmentYzw, Integer> implements LessonAppointmentYzwDao {
 
 	@Override
 	public boolean isAppointed(CustomerYzw customer, LessonYzw lesson) {
@@ -39,8 +39,8 @@ public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> 
 	}
 
 	@Override
-	public AppointmentYzw findAppointed(CustomerYzw customer, LessonYzw lesson, AppointStatus status) {
-		List<AppointmentYzw> appointments = findByProperties(
+	public LessonAppointmentYzw findAppointed(CustomerYzw customer, LessonYzw lesson, AppointStatus status) {
+		List<LessonAppointmentYzw> appointments = findByProperties(
 				new String[] { "customer.id", "lesson.id", "status" },
 				new Object[] { customer.getId(), lesson.getId(), status });
 		if(appointments.size() ==0 )
@@ -68,7 +68,7 @@ public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> 
 	}
 
 	@Override
-	public List<AppointmentYzw> findLastDayAppointments() {
+	public List<LessonAppointmentYzw> findLastDayAppointments() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_MONTH, -1);
 		Date start = CalendarUtil.getDayBegin(calendar).getTime();
@@ -80,7 +80,7 @@ public class AppointmentYzwDaoImpl extends BaseDaoImpl<AppointmentYzw, Integer> 
 		hql.append(" AND t1.status = :status");
 		hql.append(" AND t1.distributer.id IS NOT NULL");
 		
-		return getSession().createQuery(hql.toString(), AppointmentYzw.class)
+		return getSession().createQuery(hql.toString(), LessonAppointmentYzw.class)
 				.setParameter("start", start)
 				.setParameter("end", end)
 				.setParameter("status", AppointStatus.APPONTED)

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -26,6 +27,8 @@ import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw.VipAttributer;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
@@ -143,9 +146,15 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 
 	private OrderDto _wrapToView(OrderYzw order) {
 		OrderDto view = OrderDto.fromOrder(order);
-		EmployeeYzw employee = employeeDao.get(view.getSalesmanId());
-		if(employee != null)
+		EmployeeYzw employee;
+		try {
+			employee = employeeDao.get(view.getSalesmanId());
 			view.setSalesmanName(employee.getName());
+		} catch (DataNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
 		return view;
 	}
 
@@ -295,10 +304,14 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 			}catch (NumberFormatException e) {
 				continue;
 			}
-			DepartmentYzw dept =  deptDao.get(deptId);
-			if(dept != null){
+			DepartmentYzw dept;
+			try {
+				dept = deptDao.get(deptId);
 				names.append(dept.getName());
 				names.append(",");
+			} catch (DataNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		
@@ -320,4 +333,16 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		return orderDao.findCoursesByCustomerIdAndCourseType(customerId, courseType);
 	}
 
+	@EventListener(classes={LessonAppointmentYzw.class})
+	public void handleLessonAppointment(LessonAppointmentYzw appointment){
+		orderDao.updateContractWithHoldTimes(
+				appointment.getContractNo(), 
+				appointment.getStatus()==AppointStatus.APPONTED?1:-1);
+	}
+
+
+	@Override
+	public Contract findContractByContractNo(String contractNo) throws DataNotFoundException {
+		return orderDao.findContractByContractNo(contractNo);
+	}
 }

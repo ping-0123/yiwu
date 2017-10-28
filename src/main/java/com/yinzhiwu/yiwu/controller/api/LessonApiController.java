@@ -14,11 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.controller.BaseController;
-import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonComment;
-import com.yinzhiwu.yiwu.entity.LessonInteractive;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
@@ -26,13 +23,10 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.LessonCommentVO;
+import com.yinzhiwu.yiwu.model.view.LessonCommentVO.LessonCommentVOConverter;
 import com.yinzhiwu.yiwu.model.view.LessonVO;
 import com.yinzhiwu.yiwu.model.view.LessonVO.LessonVOConverter;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
-import com.yinzhiwu.yiwu.model.view.LessonCommentVO.LessonCommentVOConverter;
-import com.yinzhiwu.yiwu.model.view.LessonInteractiveVO.LessonInteractiveVOConverter;
-import com.yinzhiwu.yiwu.model.view.LessonInteractiveVO;
-import com.yinzhiwu.yiwu.service.LessonInteractiveService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
 import io.swagger.annotations.Api;
@@ -48,17 +42,16 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin(value="*")
 @RestController
 @RequestMapping(value = "api/lesson")
-@Api(value="lesson 课时模块")
+@Api(description="课时APIs")
 public class LessonApiController extends BaseController {
 
 	@Autowired
 	private LessonYzwService lessonService;
-	@Autowired private LessonInteractiveService lessonInteractiveService;
 	
 
 	@RequestMapping(value = "/{id}", method = {RequestMethod.GET})
 	@ResponseBody
-	public LessonVO getLesson2(@PathVariable Integer id) {
+	public LessonVO getLesson2(@PathVariable Integer id) throws DataNotFoundException {
 		return LessonVOConverter.instance.fromPO(lessonService.get(id));
 	}
 
@@ -95,24 +88,6 @@ public class LessonApiController extends BaseController {
 			logger.error(e.getMessage(), e);
 			return YiwuJson.createByErrorMessage(e.getMessage());
 		}
-	}
-	
-	@GetMapping(value="/{id}/interactive")
-	@ResponseBody
-	@ApiOperation(value="获取课时id与当前用户的交互结果")
-	public YiwuJson<LessonInteractiveVO> getLessonInteractive(
-			@PathVariable(name="id") Integer lessonId)
-	{
-		Distributer distributer = UserContext.getDistributer();
-		LessonInteractive interactive;
-		
-		try {
-			interactive = lessonInteractiveService.findByDistributerIdAndLessonId(distributer.getId(), lessonId);
-		} catch (DataNotFoundException e) {
-			return YiwuJson.createByErrorMessage(distributer.getId() + " 与 " + lessonId + " 暂时没有没有任何交互");
-		}
-		
-		return YiwuJson.createBySuccess(LessonInteractiveVOConverter.INSTANCE.fromPO(interactive));
 	}
 	
 	@GetMapping(value = "/connotation/getLastNLessonsConnotation")

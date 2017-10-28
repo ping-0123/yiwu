@@ -20,7 +20,7 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 public interface IBaseDao<T, PK extends Serializable> {
 
 	//查
-	public T get(PK id);
+	public T get(PK id) throws DataNotFoundException;
 	public List<T> findAll();
 	public Long findCount();
 	public PageBean<T> findPageOfAll(int pageNo, int pageSize);

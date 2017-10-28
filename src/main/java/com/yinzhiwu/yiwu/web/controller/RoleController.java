@@ -66,7 +66,7 @@ public class RoleController extends BaseController {
     }
     
     @RequestMapping(value = "/{id}/form", method = RequestMethod.GET)
-    public String showUpdateForm(@PathVariable(name="id") Integer id, Model model) {
+    public String showUpdateForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException {
     	model.addAttribute("role", roleService.get(id));
     	return "roles/updateForm";
     }
