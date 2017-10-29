@@ -7,6 +7,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
@@ -16,6 +17,7 @@ import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
 import io.swagger.annotations.ApiModel;
+import net.sf.ehcache.pool.Pool;
 
 /**
 *@Author ping
@@ -98,7 +100,7 @@ public class LessonAppointmentSuccessVO {
 			LessonAppointmentSuccessVO vo =  super.fromPO(po);
 			
 			vo.setTimes(1);
-			vo.setExp(20f);
+			vo.setExp(po.getStatus()==AppointStatus.APPONTED?20f:-20f);
 			Contract contract;
 			try {
 				contract = orderService.findContractByContractNo(vo.getContractNo());

@@ -2,10 +2,11 @@ package com.yinzhiwu.yiwu.dao;
 
 import java.util.List;
 
-import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
-import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 public interface LessonAppointmentYzwDao extends IBaseDao<LessonAppointmentYzw, Integer> {
 
@@ -16,6 +17,7 @@ public interface LessonAppointmentYzwDao extends IBaseDao<LessonAppointmentYzw, 
 	boolean isAppointable(CustomerYzw customer, LessonYzw lesson);
 
 	LessonAppointmentYzw findAppointed(CustomerYzw customer, LessonYzw lesson, AppointStatus status);
+	LessonAppointmentYzw findAppointedOne(Integer distributeId, Integer lessonId) throws DataNotFoundException;
 
 	String getAppointedContractNo(Integer distributerId, Integer lessonId);
 
@@ -24,5 +26,6 @@ public interface LessonAppointmentYzwDao extends IBaseDao<LessonAppointmentYzw, 
 	Long findCountByLessonIdByCustomerIdByAppointStatus(Integer id, Integer id2, AppointStatus apponted);
 
 	Long findCountByLessonIdByAppointStatus(Integer id, AppointStatus apponted);
+
 
 }

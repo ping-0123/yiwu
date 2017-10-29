@@ -16,4 +16,6 @@ public interface LessonAppointmentYzwService extends IBaseService<LessonAppointm
 
 	LessonAppointmentYzw doAppoint(Distributer distributer, LessonYzw lesson) throws LessonAppointmentException, DataNotFoundException;
 
+	LessonAppointmentYzw cancelAppoint(Distributer distributer, LessonYzw lesson) throws LessonAppointmentException;
+
 }

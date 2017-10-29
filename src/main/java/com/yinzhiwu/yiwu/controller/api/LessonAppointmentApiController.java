@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,7 +46,18 @@ public class LessonAppointmentApiController extends BaseController {
 			LessonYzw lesson = lessonService.get(lessonId);
 			LessonAppointmentYzw appointment  = lessonAppointmentService.doAppoint(distributer, lesson);
 			
-			//TODO
+			return YiwuJson.createBySuccess(LessonAppointmentSuccessVOConverter.INSTANCE.fromPO(appointment));
+		}
+		
+		@DeleteMapping
+		@ApiOperation(value="取消预约课时lessonId")
+		public YiwuJson<LessonAppointmentSuccessVO> cancelAppoint(@RequestParam(required=true )Integer lessonId) 
+				throws DataNotFoundException, LessonAppointmentException{
+			
+			Distributer distributer = UserContext.getDistributer();
+			LessonYzw lesson = lessonService.get(lessonId);
+			LessonAppointmentYzw appointment  = lessonAppointmentService.cancelAppoint(distributer, lesson);
+			
 			return YiwuJson.createBySuccess(LessonAppointmentSuccessVOConverter.INSTANCE.fromPO(appointment));
 		}
 }

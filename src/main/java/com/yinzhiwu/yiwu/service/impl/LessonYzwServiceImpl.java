@@ -7,17 +7,19 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
+import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.StoreManCallRollYzwDao;
-import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
@@ -244,5 +246,16 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		Assert.notNull(ordinalNo);
 		
 		return lessonDao.findByCourseIdAndOrdinalNo(courseId, ordinalNo);
+	}
+	
+	@EventListener(classes={LessonAppointmentYzw.class})
+	public void handleLessonAppointment(LessonAppointmentYzw appointment){
+		LessonYzw lesson = appointment.getLesson();
+		Integer appointedStudentCount = lesson.getAppointedStudentCount()==null? 0:lesson.getActualStudentCount();
+		appointedStudentCount = 
+				appointment.getStatus()==AppointStatus.APPONTED?appointedStudentCount+1:appointedStudentCount-1;
+		lesson.setAppointedStudentCount(appointedStudentCount);
+		
+		lessonDao.update(lesson);
 	}
 }

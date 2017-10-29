@@ -9,8 +9,10 @@ import org.springframework.stereotype.Repository;
 import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
 
 @Repository
@@ -98,6 +100,13 @@ public class LessonAppointmentYzwDaoImpl extends BaseDaoImpl<LessonAppointmentYz
 	public Long findCountByLessonIdByAppointStatus(Integer id, AppointStatus apponted) {
 		return findCountByProperties(new String[]{"lesson.id", "status"},
 					new Object[]{id, apponted});
+	}
+
+	@Override
+	public LessonAppointmentYzw findAppointedOne(Integer distributeId, Integer lessonId) throws DataNotFoundException {
+		return findOneByProperties(
+				new String[]{"distributer.id", "lesson.id"},
+				new Object[]{distributeId, lessonId});
 	}
 
 }

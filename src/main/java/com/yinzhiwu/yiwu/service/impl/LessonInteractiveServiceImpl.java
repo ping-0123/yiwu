@@ -13,8 +13,8 @@ import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
-import com.yinzhiwu.yiwu.exception.business.LessonAppointmentException;
 import com.yinzhiwu.yiwu.exception.business.LessonCommentException;
+import com.yinzhiwu.yiwu.exception.business.LessonInteractiveException;
 import com.yinzhiwu.yiwu.exception.business.LessonPraiseException;
 import com.yinzhiwu.yiwu.service.LessonInteractiveService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
@@ -104,44 +104,28 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 	public void handleLessonAppointment(LessonAppointmentYzw appointment){
 		LessonInteractive interactive;
 		try {
-			interactive = lessonInteractiveDao
-					.findByDistributerIdAndLessonId(appointment.getDistributer().getId(), appointment.getLesson().getId());
-		} catch (DataNotFoundException e) {
-			interactive = new LessonInteractive();
-			interactive.init();
-			interactive.setDistributer(appointment.getDistributer());
-			interactive.setLesson(appointment.getLesson());
-			interactive.setContracNo(appointment.getContractNo());
+			interactive = ensureInteractive(appointment.getLesson(), appointment.getDistributer());
+		} catch (LessonInteractiveException e1) {
+			throw new RuntimeException(e1);
 		}
-		
-		try{
-			switch (appointment.getStatus()) {
-			case APPONTED:
-				if(interactive.getAppointed())
-					throw new LessonAppointmentException("已预约， 无须重复预约");
-				interactive.setContracNo(appointment.getContractNo()); //设置两个会籍合约一样
-				interactive.setAppointed(true);
-				break;
-			case UN_APOINTED:
-				if(!interactive.getAppointed())
-					throw new LessonAppointmentException("未预约， 不能取消预约");
-				interactive.setAppointed(false);
-				break;
-			default:
-				break;
-			}
+	
+		switch (appointment.getStatus()) {
+		case APPONTED:
+			interactive.setAppointed(true);
+			break;
+		case UN_APOINTED:
+			interactive.setAppointed(false);
+			break;
+		default:
+			break;
+		}
 				
-			
-		}catch (LessonAppointmentException	e) {
-			throw new RuntimeException(e);
-		}
-		
-		lessonInteractiveDao.saveOrUpdate(interactive);
+		lessonInteractiveDao.update(interactive);
 	}
 	
 
 	@Override
-	public LessonInteractive ensureInteractive(LessonYzw lesson, Distributer distributer) throws DataNotFoundException {
+	public LessonInteractive ensureInteractive(LessonYzw lesson, Distributer distributer) throws LessonInteractiveException {
 		
 		
 		LessonInteractive interactive;
@@ -150,11 +134,17 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 					.findByDistributerIdAndLessonId(distributer.getId(), lesson.getId());
 		} catch (DataNotFoundException e) {
 			interactive = new LessonInteractive();
-			interactive.init();
 			interactive.setDistributer(distributer);
 			interactive.setLesson(lesson);
-			Contract contract = orderService.findEnableInteractiveContractByLessonAndDistributer(lesson, distributer);
+			Contract contract;
+			try {
+				contract = orderService.findEnableInteractiveContractByLessonAndDistributer(lesson, distributer);
+			} catch (DataNotFoundException e1) {
+				throw new LessonInteractiveException(distributer.getId() +"无权与" + lesson.getId() + "交互",e1);
+			}
 			interactive.setContracNo(contract.getContractNo());
+			
+			lessonInteractiveDao.save(interactive);
 		}
 		return interactive;
 	}
