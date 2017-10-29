@@ -29,6 +29,7 @@ import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw.VipAttributer;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
@@ -345,4 +346,12 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 	public Contract findContractByContractNo(String contractNo) throws DataNotFoundException {
 		return orderDao.findContractByContractNo(contractNo);
 	}
+
+
+	@Override
+	public Contract findEnableInteractiveContractByLessonAndDistributer(LessonYzw lesson, Distributer distributer) throws DataNotFoundException {
+		return orderDao.findCheckableContractOfCustomerAndLesson(distributer.getCustomer(), lesson);
+	}
+	
+	
 }

@@ -8,6 +8,13 @@ import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * 
+ * @author ping
+ * @Date 2017年10月29日 下午1:44:29
+ *
+ */
+
 @MapedClass(LessonInteractive.class)
 @ApiModel("描述用户与课时交互结果")
 public class LessonInteractiveVO {

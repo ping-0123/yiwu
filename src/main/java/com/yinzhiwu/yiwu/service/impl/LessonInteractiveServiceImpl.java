@@ -5,15 +5,19 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.LessonInteractiveDao;
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.entity.LessonInteractive;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
+import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.business.LessonAppointmentException;
 import com.yinzhiwu.yiwu.exception.business.LessonCommentException;
 import com.yinzhiwu.yiwu.exception.business.LessonPraiseException;
 import com.yinzhiwu.yiwu.service.LessonInteractiveService;
+import com.yinzhiwu.yiwu.service.OrderYzwService;
 
 /**
 *@Author ping
@@ -24,8 +28,11 @@ import com.yinzhiwu.yiwu.service.LessonInteractiveService;
 @Service
 public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteractive,Integer> implements LessonInteractiveService {
 	
-	@Autowired public void setBaseDao(LessonInteractiveDao dao){super.setBaseDao(dao);}
 	@Autowired private LessonInteractiveDao lessonInteractiveDao;
+	@Autowired private OrderYzwService orderService;
+
+	
+	@Autowired public void setBaseDao(LessonInteractiveDao dao){super.setBaseDao(dao);}
 	
 	@Override
 	public LessonInteractive findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) throws DataNotFoundException {
@@ -36,13 +43,9 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 	public void handlelessonComment(LessonComment comment){
 		LessonInteractive interactive;
 		try {
-			interactive = lessonInteractiveDao
-					.findByDistributerIdAndLessonId(comment.getCommenter().getId(), comment.getLesson().getId());
-		} catch (DataNotFoundException e) {
-			interactive = new LessonInteractive();
-			interactive.init();
-			interactive.setDistributer(comment.getCommenter());
-			interactive.setLesson(comment.getLesson());
+			interactive = ensureInteractive( comment.getLesson(),comment.getCommenter());
+		} catch (DataNotFoundException e1) {
+			throw new RuntimeException(e1);
 		}
 		
 		try{
@@ -68,19 +71,15 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 		
 		lessonInteractiveDao.saveOrUpdate(interactive);
 	}
-	
+
 	
 	@EventListener(classes={LessonPraise.class})
 	public void handleLessonPraise(LessonPraise praise) {
 		LessonInteractive interactive;
 		try {
-			interactive = lessonInteractiveDao
-					.findByDistributerIdAndLessonId(praise.getDistributer().getId(),praise.getLesson().getId());
-		} catch (DataNotFoundException e) {
-			interactive = new LessonInteractive();
-			interactive.init();
-			interactive.setDistributer(praise.getDistributer());
-			interactive.setLesson(praise.getLesson());
+			interactive = ensureInteractive(praise.getLesson(), praise.getDistributer());
+		} catch (DataNotFoundException e1) {
+			throw new RuntimeException(e1);
 		}
 		
 		try{
@@ -141,4 +140,22 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 	}
 	
 
+	@Override
+	public LessonInteractive ensureInteractive(LessonYzw lesson, Distributer distributer) throws DataNotFoundException {
+		
+		
+		LessonInteractive interactive;
+		try {
+			interactive = lessonInteractiveDao
+					.findByDistributerIdAndLessonId(distributer.getId(), lesson.getId());
+		} catch (DataNotFoundException e) {
+			interactive = new LessonInteractive();
+			interactive.init();
+			interactive.setDistributer(distributer);
+			interactive.setLesson(lesson);
+			Contract contract = orderService.findEnableInteractiveContractByLessonAndDistributer(lesson, distributer);
+			interactive.setContracNo(contract.getContractNo());
+		}
+		return interactive;
+	}
 }

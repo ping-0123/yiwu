@@ -7,6 +7,7 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
@@ -49,5 +50,7 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 	List<CourseYzw> findCoursesByCustomerIdAndCourseType(Integer customerId, CourseType courseType);
 
 	Contract findContractByContractNo(String contractNo) throws DataNotFoundException;
+
+	Contract findEnableInteractiveContractByLessonAndDistributer(LessonYzw lesson, Distributer distributer) throws DataNotFoundException;
 
 }

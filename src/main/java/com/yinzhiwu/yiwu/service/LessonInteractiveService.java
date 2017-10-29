@@ -1,6 +1,8 @@
 package com.yinzhiwu.yiwu.service;
 
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonInteractive;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 /**
@@ -12,5 +14,7 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 public interface LessonInteractiveService extends IBaseService<LessonInteractive,Integer> {
 
 	LessonInteractive findByDistributerIdAndLessonId(Integer distributerId, Integer lessonId) throws DataNotFoundException;
+
+	LessonInteractive ensureInteractive(LessonYzw lesson, Distributer distributer) throws DataNotFoundException;
 
 }
