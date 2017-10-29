@@ -20,8 +20,15 @@ public class UnAppointmentEvent extends AbstractAppointmentEvent {
 		super();
 	}
 
-	public UnAppointmentEvent(Distributer distributer, Float param, LessonYzw lesson) {
-		super(distributer, EventType.UN_APPOINTMENT, param, lesson);
+	
+	
+	public UnAppointmentEvent(Distributer distributer, EventType type, Float param, LessonYzw lesson) {
+		super(distributer, type, param, lesson);
+	}
+
+
+	public UnAppointmentEvent(Distributer distributer, LessonYzw lesson) {
+		super(distributer, EventType.UN_APPOINTMENT, 1f, lesson);
 	}
 
 }

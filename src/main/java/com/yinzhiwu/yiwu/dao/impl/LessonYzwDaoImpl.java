@@ -187,6 +187,20 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 				.getSingleResult();
 		if(count ==0 )
 			lesson.setCourse(null);
+		
+		if(null ==lesson.getDueStudentCount())
+			lesson.setDueStudentCount(0);
+		if(null==lesson.getExperienceStudentCount())
+			lesson.setExperienceStudentCount(0);
+		if(null==lesson.getRollCalledStudentCount())
+			lesson.setRollCalledStudentCount(0);
+		if(null==lesson.getActualStudentCount())
+			lesson.setActualStudentCount(0);
+		if(null==lesson.getCheckedInStudentCount())
+			lesson.setCheckedInStudentCount(0);
+		if(null==lesson.getAppointedStudentCount())
+			lesson.setAppointedStudentCount(0);
+		
 		return lesson;
 	}
 

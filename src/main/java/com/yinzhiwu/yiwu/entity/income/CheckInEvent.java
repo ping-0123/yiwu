@@ -10,7 +10,7 @@ import javax.persistence.OneToOne;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.type.EventType;
-import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 
 @Entity
 @DiscriminatorValue("CheckInEvent")
@@ -23,26 +23,35 @@ public abstract class CheckInEvent extends IncomeEvent {
 
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-	private CheckInsYzw checkIn;
+	private LessonCheckInYzw checkIn;
 
-	public CheckInsYzw getCheckIn() {
+	public LessonCheckInYzw getCheckIn() {
 		return checkIn;
 	}
 
-	public void setCheckIn(CheckInsYzw checkIn) {
+	public void setCheckIn(LessonCheckInYzw checkIn) {
 		this.checkIn = checkIn;
 	}
 
 	public CheckInEvent() {
 	}
 
-	public CheckInEvent(Distributer distributer, EventType type, Float param, CheckInsYzw checkIn) {
+	public CheckInEvent(Distributer distributer, EventType type, Float param, LessonCheckInYzw checkIn) {
 		super(distributer, type, param);
 		this.checkIn = checkIn;
 	}
 
-	public CheckInEvent(Distributer distributer, Float param, CheckInsYzw checkIn) {
+	public CheckInEvent(Distributer distributer, Float param, LessonCheckInYzw checkIn) {
 		super(distributer, null, param);
 		this.checkIn = checkIn;
+	}
+	
+	public CheckInEvent(LessonCheckInYzw checkIn) {
+		super(checkIn.getDistributer(), null, 1f);
+		this.checkIn = checkIn;
+		if(checkIn.getAppointed())
+			this.setType(EventType.CHECK_IN_AFTER_APPOINTMENT);
+		else
+			this.setType(EventType.CHECK_IN_WITHOUT_APPOINTMENT);
 	}
 }

@@ -3,14 +3,14 @@ package com.yinzhiwu.yiwu.dao;
 import java.util.Date;
 import java.util.List;
 
-import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 
-public interface CheckInsYzwDao extends IBaseDao<CheckInsYzw, Integer> {
+public interface LessonCheckInYzwDao extends IBaseDao<LessonCheckInYzw, Integer> {
 
 	int findCountByCustomerId(int customerId);
 

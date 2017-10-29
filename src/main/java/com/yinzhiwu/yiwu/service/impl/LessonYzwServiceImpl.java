@@ -11,7 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
+import com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
@@ -20,6 +20,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
@@ -42,7 +43,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	@Autowired private LessonAppointmentYzwDao appointmentYzwDao;
 	@Autowired private CustomerYzwDao customerYzwDao;
 	@Autowired private StoreManCallRollYzwDao storeManCallRollYzwDao;
-	@Autowired private CheckInsYzwDao checkInsYzwDao;
+	@Autowired private LessonCheckInYzwDao checkInsYzwDao;
 	@Autowired 
 	@Qualifier(value="fileServiceImpl")
 	private FileService fileService;
@@ -256,6 +257,13 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 				appointment.getStatus()==AppointStatus.APPONTED?appointedStudentCount+1:appointedStudentCount-1;
 		lesson.setAppointedStudentCount(appointedStudentCount);
 		
+		lessonDao.update(lesson);
+	}
+	
+	@EventListener(classes={LessonCheckInYzw.class})
+	public void handleLessonCheckIn(LessonCheckInYzw checkIn){
+		LessonYzw lesson = checkIn.getLesson();
+		lesson.setCheckedInStudentCount(lesson.getCheckedInStudentCount()+1);
 		lessonDao.update(lesson);
 	}
 }

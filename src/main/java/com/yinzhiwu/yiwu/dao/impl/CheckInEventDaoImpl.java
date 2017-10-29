@@ -7,15 +7,15 @@ import org.springframework.stereotype.Repository;
 import com.yinzhiwu.yiwu.dao.CheckInEventDao;
 import com.yinzhiwu.yiwu.entity.income.CheckInEvent;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
-import com.yinzhiwu.yiwu.model.view.CheckInSuccessApiView;
+import com.yinzhiwu.yiwu.model.view.LessonCheckInSuccessApiView;
 
 @Repository
 public class CheckInEventDaoImpl extends BaseDaoImpl<CheckInEvent, Integer> implements CheckInEventDao {
 
 	@Override
-	public CheckInSuccessApiView findCheckInSuccessApiViewById(int eventId) {
+	public LessonCheckInSuccessApiView findCheckInSuccessApiViewById(int eventId) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("SELECT new " + CheckInSuccessApiView.class.getName());
+		hql.append("SELECT new " + LessonCheckInSuccessApiView.class.getName());
 		hql.append("(");
 		hql.append("t1.param");
 		hql.append(",t6.incomeValue");
@@ -49,7 +49,7 @@ public class CheckInEventDaoImpl extends BaseDaoImpl<CheckInEvent, Integer> impl
 		hql.append(" AND t6.incomeType.id =:incomeTypeId");
 		hql.append(" ORDER BY t5.createTime DESC");
 		
-		List<CheckInSuccessApiView> views = getSession().createQuery(hql.toString(), CheckInSuccessApiView.class)
+		List<LessonCheckInSuccessApiView> views = getSession().createQuery(hql.toString(), LessonCheckInSuccessApiView.class)
 				.setParameter("Id", eventId)
 				.setParameter("incomeTypeId", IncomeType.EXP.getId())
 				.setMaxResults(1)

@@ -8,41 +8,28 @@ import javax.persistence.Table;
 
 import org.springframework.util.Assert;
 
-import com.yinzhiwu.yiwu.entity.type.MessageType;
-
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "yiwu_message")
 public class Message extends BaseEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4309449622965840107L;
 
-	public enum Status {
-		UNREAD(0), READ(1);
-		private Status(int index) {
-		}
-	}
+	
 
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_Message_receiver_id"))
 	private Distributer receiver;
 
-	private Status status = Status.UNREAD;
+	private Status status;
 
 	private String content;
 
-	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_Message_messageType_id"))
-	private MessageType messageType;
 
 	public Message() {
 	}
 
 	public Message(Distributer receiver, String content) {
 		Assert.notNull(receiver);
-
 		init();
 		this.receiver = receiver;
 		this.content = content;
@@ -70,14 +57,6 @@ public class Message extends BaseEntity {
 		this.content = content;
 	}
 
-	public MessageType getMessageType() {
-		return messageType;
-	}
-
-	public void setMessageType(MessageType messageType) {
-		this.messageType = messageType;
-	}
-
 	public Status getStatus() {
 		return status;
 	}
@@ -86,4 +65,9 @@ public class Message extends BaseEntity {
 		this.status = status;
 	}
 
+	public enum Status {
+		UNREAD(0), READ(1);
+		private Status(int index) {
+		}
+	}
 }

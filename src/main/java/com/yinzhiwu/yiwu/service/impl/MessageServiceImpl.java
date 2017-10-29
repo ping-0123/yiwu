@@ -1,18 +1,22 @@
 package com.yinzhiwu.yiwu.service.impl;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.MessageDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Message;
+import com.yinzhiwu.yiwu.entity.WithdrawBrokerage;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
+import com.yinzhiwu.yiwu.event.PayWithdrawEvent;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.MessageApiView;
 import com.yinzhiwu.yiwu.service.MessageService;
@@ -22,14 +26,15 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 
 	@Autowired
 	private MessageDao messageDao;
+	private SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
+	private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();;
 
+	
+	
 	@Autowired
 	private void setBaseDao(MessageDao messageDao) {
 		super.setBaseDao(messageDao);
 	}
-
-	private SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
-
 	@Override
 	public void saveBrockerageIncomeMessage(Distributer receiver, String customerName, float consumeValue,
 			float inComeValue) {
@@ -102,4 +107,17 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 			super.save(m);
 	}
 
+	@EventListener(classes={PayWithdrawEvent.class})
+	public void handlePayWithdrawEvent(PayWithdrawEvent event){
+		WithdrawBrokerage withdraw = (WithdrawBrokerage) event.getSource();
+		String msg = "您于" + format.format(withdraw.getCreateTime())
+				+ "从音之舞E5系统账户中提现RMB " + currencyFormat.format( withdraw.getAmount())
+				+ "元，已经打款，请注意查收";
+		
+		Message message = new Message();
+		message.setReceiver(withdraw.getDistributer());
+		message.setContent(msg);
+		
+		super.update(message);
+	}
 }

@@ -12,6 +12,14 @@ import com.yinzhiwu.yiwu.service.WithdrawEventService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+/**
+ * @deprecated since v2.1.4
+ * @author ping
+ * @Date 2017年10月29日 下午9:44:17
+ *
+ */
+
+@Deprecated
 @RestController
 @RequestMapping("/api/event/withdraw")
 @Api(value = "withdraw")

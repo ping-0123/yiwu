@@ -33,8 +33,8 @@ public class CapitalAccountApiView {
 		this.distributerId = c.getDistributer().getId();
 		this.accountId = c.getId();
 		this.accountName = c.getAccount();
-		this.accountTypeId = c.getCapitalAccountType().getId();
-		this.accountTypeName = c.getCapitalAccountType().getName();
+		this.accountTypeId = c.getPaymentMode().getId();
+		this.accountTypeName = c.getPaymentMode().toString();
 	}
 
 	public int getDistributerId() {

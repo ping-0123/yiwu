@@ -13,8 +13,8 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
-import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
+import com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao;
+import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
@@ -24,7 +24,7 @@ import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 
 @Repository
-public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implements CheckInsYzwDao {
+public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integer> implements LessonCheckInYzwDao {
 
 
 	@Override
@@ -48,8 +48,8 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 			return null;
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<LessonApiView> criteria = builder.createQuery(LessonApiView.class);
-		Root<?> checkIn = criteria.from(CheckInsYzw.class);
-		Join<CheckInsYzw, LessonYzw> lessonJoin = checkIn.join("lesson", JoinType.LEFT);
+		Root<?> checkIn = criteria.from(LessonCheckInYzw.class);
+		Join<LessonCheckInYzw, LessonYzw> lessonJoin = checkIn.join("lesson", JoinType.LEFT);
 		Join<LessonYzw, CourseYzw> courseJoin = lessonJoin.join("course", JoinType.LEFT);
 		// Path<LessonYzw> lesson = checkIn.get("lesson");
 		criteria.select(builder.construct(LessonApiView.class,
@@ -70,7 +70,7 @@ public class CheckInsYzwDaoImpl extends BaseDaoImpl<CheckInsYzw, Integer> implem
 
 		// 找出记录总数量
 		CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
-		Root<CheckInsYzw> countRoot = countCriteria.from(CheckInsYzw.class);
+		Root<LessonCheckInYzw> countRoot = countCriteria.from(LessonCheckInYzw.class);
 		countCriteria.select(builder.count(countRoot));
 		Predicate countPredicate = countRoot.get("contractNo").in(contractNos);
 		countCriteria.where(countPredicate);

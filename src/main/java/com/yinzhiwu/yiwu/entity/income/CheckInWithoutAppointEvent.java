@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.type.EventType;
-import com.yinzhiwu.yiwu.entity.yzw.CheckInsYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 
 /**
 *@Author ping
@@ -24,10 +24,12 @@ public class CheckInWithoutAppointEvent extends CheckInEvent{
 	public CheckInWithoutAppointEvent() {
 	}
 
-	public CheckInWithoutAppointEvent(Distributer distributer, CheckInsYzw checkIn) {
+	public CheckInWithoutAppointEvent(Distributer distributer, LessonCheckInYzw checkIn) {
 		super(distributer, EventType.CHECK_IN_WITHOUT_APPOINTMENT,1f,checkIn);
 	}
 
-	
-	
+	public CheckInWithoutAppointEvent(LessonCheckInYzw checkIn) {
+		super(checkIn);
+	}
+
 }

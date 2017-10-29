@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.dao.CheckInEventDao;
-import com.yinzhiwu.yiwu.model.view.CheckInSuccessApiView;
+import com.yinzhiwu.yiwu.model.view.LessonCheckInSuccessApiView;
 import com.yinzhiwu.yiwu.util.ReflectUtils;
 
 /**
@@ -24,11 +24,11 @@ public class CheckInEventDaoTest extends BaseSpringTest{
 	public void testfindCheckInSuccessApiViewById(){
 		int eventId = 5004600;
 		long start = System.currentTimeMillis();
-		CheckInSuccessApiView view = checkInEventDao.findCheckInSuccessApiViewById(eventId);
+		LessonCheckInSuccessApiView view = checkInEventDao.findCheckInSuccessApiViewById(eventId);
 		long end = System.currentTimeMillis();
 		System.err.println("查询执行时间是: " + (end-start));
 		if(view !=null){
-			Field[] fields = ReflectUtils.getAllFields(CheckInSuccessApiView.class);
+			Field[] fields = ReflectUtils.getAllFields(LessonCheckInSuccessApiView.class);
 			for (Field field : fields) {
 				field.setAccessible(true);
 				try {

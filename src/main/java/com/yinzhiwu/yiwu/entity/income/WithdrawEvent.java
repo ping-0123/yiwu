@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Message;
+import com.yinzhiwu.yiwu.entity.WithdrawBrokerage;
 import com.yinzhiwu.yiwu.entity.type.EventType;
 import com.yinzhiwu.yiwu.util.MessageTemplate;
 
@@ -36,6 +37,10 @@ public class WithdrawEvent extends IncomeEvent {
 		this.capitalAccount = capitalAccount;
 	}
 
+	public WithdrawEvent(WithdrawBrokerage withdraw){
+		super(withdraw.getDistributer(),EventType.WITHDRAW ,withdraw.getAmount());
+		this.capitalAccount = withdraw.getCapitalAccount();
+	}
 	public WithdrawEvent() {
 	}
 
@@ -44,7 +49,7 @@ public class WithdrawEvent extends IncomeEvent {
 		try {
 			return new Message(record.getBenificiary(),
 					MessageTemplate.BrokerageMessage.generate_withdraw_message(this.getOccurTime(), this.getParam(),
-							this.getCapitalAccount().getCapitalAccountType().getName(),
+							this.getCapitalAccount().getPaymentMode().toString(),
 							this.getCapitalAccount().getAccount()));
 		} catch (Exception e) {
 			return null;

@@ -17,7 +17,7 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 
 @Entity
 @Table(name = "vcheck_ins")
-public class CheckInsYzw extends BaseYzwEntity {
+public class LessonCheckInYzw extends BaseYzwEntity {
 
 	/**
 	 * 
@@ -61,14 +61,16 @@ public class CheckInsYzw extends BaseYzwEntity {
 
 	@Column
 	private String uncallrollReason;
+	
+	private Boolean appointed;
 
 //	@OneToOne(mappedBy = "checkIn", fetch=FetchType.LAZY)
 //	private CheckInEvent event;
 
-	public CheckInsYzw() {
+	public LessonCheckInYzw() {
 	}
 
-	public CheckInsYzw(String memberCard, LessonYzw lesson, String contractNo, EmployeeYzw teacher) {
+	public LessonCheckInYzw(String memberCard, LessonYzw lesson, String contractNo, EmployeeYzw teacher) {
 		super.init();
 		this.memberCard = memberCard;
 		this.lesson = lesson;
@@ -76,7 +78,7 @@ public class CheckInsYzw extends BaseYzwEntity {
 		this.teacher = teacher;
 	}
 
-	public CheckInsYzw(Distributer distributer, LessonYzw lesson, String contractNo){
+	public LessonCheckInYzw(Distributer distributer, LessonYzw lesson, String contractNo){
 		this.distributer = distributer;
 		this.memberCard = distributer.getMemberCard();
 		this.lesson = lesson;
@@ -85,6 +87,9 @@ public class CheckInsYzw extends BaseYzwEntity {
 	@Override
 	public void init() {
 		super.init();
+		appointed=false;
+		storemanCallroll=false;
+		flag=false;
 	}
 
 	public Integer getId() {
@@ -173,6 +178,20 @@ public class CheckInsYzw extends BaseYzwEntity {
 
 	public void setDistributer(Distributer distributer) {
 		this.distributer = distributer;
+	}
+
+	/**
+	 * @return the appointed
+	 */
+	public Boolean getAppointed() {
+		return appointed;
+	}
+
+	/**
+	 * @param appointed the appointed to set
+	 */
+	public void setAppointed(Boolean appointed) {
+		this.appointed = appointed;
 	}
 
 //	public CheckInEvent getEvent() {

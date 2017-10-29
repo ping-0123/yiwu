@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
-import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
+import com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
@@ -78,7 +78,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Qualifier("fileServiceImpl")
 	@Autowired private FileService fileService;
 //	@Autowired private EmployeePostYzwDao empPostDao;
-	@Autowired private CheckInsYzwDao checkInsDao;
+	@Autowired private LessonCheckInYzwDao checkInsDao;
 	@Autowired private OrderYzwDao orderDao;
 	
 	@Value("${system.headIcon.savePath}")
@@ -307,7 +307,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		}
 		Set<CapitalAccount> accounts = d.getCapitalAccounts();
 		for (CapitalAccount a : accounts) {
-			if (typeName.equals(a.getCapitalAccountType().getName())) {
+			if (typeName.equals(a.getPaymentMode().toString())) {
 				yiwuJson.setData(new CapitalAccountApiView(a));
 				break;
 			}

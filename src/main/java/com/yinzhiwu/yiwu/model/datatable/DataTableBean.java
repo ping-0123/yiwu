@@ -12,13 +12,13 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 *
 */
 
+@SuppressWarnings("serial")
 @JsonInclude(value= Include.NON_NULL)
 public class DataTableBean<T> implements Serializable{
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6766541790023377659L;
 	private Integer draw;
 	private Integer recordsTotal;
 	private Integer recordsFiltered;
@@ -51,7 +51,7 @@ public class DataTableBean<T> implements Serializable{
 	public Integer getRecordsFiltered() {
 		return recordsFiltered;
 	}
-	public Collection<?> getData() {
+	public Collection<T> getData() {
 		return data;
 	}
 	public String getError() {

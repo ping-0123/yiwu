@@ -5,15 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.AppointmentEventDao;
-import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
-import com.yinzhiwu.yiwu.dao.CheckInsYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
+import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
+import com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -21,11 +19,11 @@ import com.yinzhiwu.yiwu.entity.income.AbstractAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.AppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.BreakAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.UnAppointmentEvent;
-import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
-import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.model.view.AppointSuccessApiView;
 import com.yinzhiwu.yiwu.service.AppointmentEventService;
@@ -53,7 +51,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 	@Autowired
 	private OrderYzwDao orderDao;
 	@Autowired 
-	private CheckInsYzwDao checkInsDao;
+	private LessonCheckInYzwDao checkInsDao;
 
 	/**
 	 * 调用该函数前，先判断是否满足预约， 取消预约条件
@@ -121,7 +119,7 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		appointmentDao.update(appointment);
 		orderDao.updateContractWithHoldTimes(appointment.getContractNo(), -1);
 		
-		UnAppointmentEvent event = new UnAppointmentEvent(distributer, 1f, lesson);
+		UnAppointmentEvent event = new UnAppointmentEvent(distributer, lesson);
 		save(event);
 		
 		return appointmentEventDao.findAppointSuccessApiViewById(event.getId());
@@ -152,11 +150,5 @@ public class AppointmentEventServiceImpl extends BaseServiceImpl<AbstractAppoint
 		orderDao.cleanWithHoldTimes();
 	}
 	
-	@Async
-	@EventListener(classes={LessonAppointmentYzw.class})
-	public void handleLessonAppointment(LessonAppointmentYzw appointment){
-		AppointmentEvent event = new AppointmentEvent(
-				appointment.getDistributer(),  appointment.getLesson());
-		this.save(event);
-	}
+	
 }

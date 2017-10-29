@@ -29,6 +29,7 @@ import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw.VipAttributer;
@@ -43,6 +44,8 @@ import com.yinzhiwu.yiwu.service.ElectricContractYzwService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderSaveDto;
+
+import cn.jiguang.common.resp.IRateLimiting;
 
 @Service
 public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> implements OrderYzwService {
@@ -334,14 +337,7 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		return orderDao.findCoursesByCustomerIdAndCourseType(customerId, courseType);
 	}
 
-	@EventListener(classes={LessonAppointmentYzw.class})
-	public void handleLessonAppointment(LessonAppointmentYzw appointment){
-		orderDao.updateContractWithHoldTimes(
-				appointment.getContractNo(), 
-				appointment.getStatus()==AppointStatus.APPONTED?1:-1);
-	}
-
-
+	
 	@Override
 	public Contract findContractByContractNo(String contractNo) throws DataNotFoundException {
 		return orderDao.findContractByContractNo(contractNo);
@@ -353,5 +349,17 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		return orderDao.findCheckableContractOfCustomerAndLesson(distributer.getCustomer(), lesson);
 	}
 	
+	@EventListener(classes={LessonAppointmentYzw.class})
+	public void handleLessonAppointment(LessonAppointmentYzw appointment){
+		orderDao.updateContractWithHoldTimes(
+				appointment.getContractNo(), 
+				appointment.getStatus()==AppointStatus.APPONTED?1:-1);
+	}
+
+	@EventListener(classes={LessonCheckInYzw.class})
+	public void hanbleLessonCheckIn(LessonCheckInYzw checkIn){
+		if(!checkIn.getAppointed())
+			orderDao.updateContractWithHoldTimes(checkIn.getContractNo(), 1);
+	}
 	
 }

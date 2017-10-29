@@ -11,6 +11,7 @@ import com.yinzhiwu.yiwu.entity.LessonInteractive;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.business.LessonCommentException;
@@ -44,7 +45,7 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 		LessonInteractive interactive;
 		try {
 			interactive = ensureInteractive( comment.getLesson(),comment.getCommenter());
-		} catch (DataNotFoundException e1) {
+		} catch (LessonInteractiveException e1) {
 			throw new RuntimeException(e1);
 		}
 		
@@ -78,8 +79,8 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 		LessonInteractive interactive;
 		try {
 			interactive = ensureInteractive(praise.getLesson(), praise.getDistributer());
-		} catch (DataNotFoundException e1) {
-			throw new RuntimeException(e1);
+		} catch (LessonInteractiveException e) {
+			throw new RuntimeException(e);
 		}
 		
 		try{
@@ -120,6 +121,18 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 			break;
 		}
 				
+		lessonInteractiveDao.update(interactive);
+	}
+	
+	@EventListener(classes={LessonCheckInYzw.class})
+	public void handleLessonCheckIn(LessonCheckInYzw checkIn){
+		LessonInteractive interactive;
+		try {
+			interactive = ensureInteractive(checkIn.getLesson(), checkIn.getDistributer());
+		} catch (LessonInteractiveException e) {
+			throw new RuntimeException(e);
+		}
+		interactive.setCheckedIn(true);
 		lessonInteractiveDao.update(interactive);
 	}
 	

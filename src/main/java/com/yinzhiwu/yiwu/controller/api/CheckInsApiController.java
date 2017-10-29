@@ -12,21 +12,31 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
-import com.yinzhiwu.yiwu.model.view.CheckInSuccessApiView;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
-import com.yinzhiwu.yiwu.service.CheckInsYzwService;
+import com.yinzhiwu.yiwu.model.view.LessonCheckInSuccessApiView;
+import com.yinzhiwu.yiwu.service.LessonCheckInYzwService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+
+/**
+ * @deprecated since v2.1.4
+ * @see {@link LessonCheckInsApiController}
+ * @author ping
+ * @Date 2017年10月29日 下午6:21:38
+ *
+ */
+
+@Deprecated
 @RestController
 @RequestMapping("/api/checkIns")
 @Api(value = "check-in")
 public class CheckInsApiController extends BaseController {
 
 	@Autowired
-	private CheckInsYzwService checkInsYzwService;
+	private LessonCheckInYzwService checkInsYzwService;
 
 	@GetMapping("/lesson/count")
 	@ApiOperation(value = "获取学员已上课总节数")
@@ -72,11 +82,18 @@ public class CheckInsApiController extends BaseController {
 
 	}
 
+	/**
+	 * @see {@link LessonCheckInApiController#doCheckIn(Integer )}
+	 * @param distributerId
+	 * @param lessonId
+	 * @return
+	 */
+	@Deprecated
 	@PostMapping
-	@ApiOperation(value = "学员签到")
-	public YiwuJson<CheckInSuccessApiView> saveCustomerCheckIn(int distributerId, int lessonId) {
+	@ApiOperation(value = "学员签到, 已放弃,请使用接口/api/lessonCheckIns Post")
+	public YiwuJson<LessonCheckInSuccessApiView> saveCustomerCheckIn(int distributerId, int lessonId) {
 		try {
-			CheckInSuccessApiView view = checkInsYzwService.saveCustomerCheckIn(distributerId, lessonId);
+			LessonCheckInSuccessApiView view = checkInsYzwService.saveCustomerCheckIn(distributerId, lessonId);
 			if(view != null)
 				return YiwuJson.createBySuccess(view);
 			else
