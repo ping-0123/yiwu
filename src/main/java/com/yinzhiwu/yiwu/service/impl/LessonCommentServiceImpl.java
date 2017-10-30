@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.yiwu.dao.LessonCommentDao;
 import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.entity.LessonComment.CommentType;
-import com.yinzhiwu.yiwu.event.LessonCommentEvent;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.LessonCommentService;
 

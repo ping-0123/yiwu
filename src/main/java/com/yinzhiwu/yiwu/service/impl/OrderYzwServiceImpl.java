@@ -45,8 +45,6 @@ import com.yinzhiwu.yiwu.service.OrderYzwService;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderSaveDto;
 
-import cn.jiguang.common.resp.IRateLimiting;
-
 @Service
 public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> implements OrderYzwService {
 

@@ -34,6 +34,7 @@ public class FieldGenericTypeTest {
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void testDeclareList(){
 		List<CourseVO>  vos = new ArrayList<CourseVO>();

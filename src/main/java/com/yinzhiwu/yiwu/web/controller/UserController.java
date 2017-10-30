@@ -191,7 +191,6 @@ public class UserController extends BaseController {
 			QueryParameter parameter = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
 			ServletRequestUtils.transferQueryParamter(parameter, UserVO.class);
 			DataTableBean<User> dtb =  service.findDataTable(parameter);
-			@SuppressWarnings("unchecked")
 			List<User> users = (List<User>) dtb.getData();
 			List<UserVO> vos = new ArrayList<>();
 			for (User user : users) {

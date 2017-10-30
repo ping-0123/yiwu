@@ -15,7 +15,7 @@ public class StringFunctionTest extends BaseBlockJUnitTest{
 	@Test
 	public void testSplit(){
 		String source = ";66";
-		String[] strings = ";66".split(";");
+		String[] strings = source.split(";");
 		System.err.println(strings.length);
 		for (String string : strings) {
 			System.err.println(string);
