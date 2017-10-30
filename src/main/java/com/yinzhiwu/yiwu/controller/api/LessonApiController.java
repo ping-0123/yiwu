@@ -70,14 +70,15 @@ public class LessonApiController extends BaseController {
 		}
 	}
 
+	@Deprecated
 	@GetMapping(value="/{id}/appraises")
 	@ResponseBody
-	@ApiOperation(value="获取对课时的评论")
+	@ApiOperation(value="获取对课时的评论, 即将弃用， 请使用/api/lesson/{id}/comments")
 	public YiwuJson<List<LessonCommentVO>> getAppraises(@PathVariable(value="id") Integer id){
 		
 		try {
 			LessonYzw lesson = lessonService.get(id);
-			List<LessonComment> appraises = lesson.getAppraises();
+			List<LessonComment> appraises = lesson.getComments();
 			List<LessonCommentVO> vos = new ArrayList<>();
 			for (LessonComment appraise : appraises) {
 				vos.add(LessonCommentVOConverter.instance.fromPO(appraise));
@@ -88,6 +89,20 @@ public class LessonApiController extends BaseController {
 			logger.error(e.getMessage(), e);
 			return YiwuJson.createByErrorMessage(e.getMessage());
 		}
+	}
+	
+	@GetMapping(value="/{id}/comments")
+	@ResponseBody
+	@ApiOperation(value="获取对课时的评论")
+	public YiwuJson<List<LessonCommentVO>> getComments(@PathVariable(value="id") Integer id) throws DataNotFoundException
+	{
+		List<LessonComment> comments = lessonService.get(id).getComments();
+		List<LessonCommentVO> vos = new ArrayList<>();
+		for(LessonComment comment: comments){
+			vos.add(LessonCommentVOConverter.instance.fromPO(comment));
+		}
+		
+		return YiwuJson.createBySuccess(vos);
 	}
 	
 	@GetMapping(value = "/connotation/getLastNLessonsConnotation")

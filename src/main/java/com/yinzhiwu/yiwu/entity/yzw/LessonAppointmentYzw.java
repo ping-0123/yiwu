@@ -38,7 +38,7 @@ public class LessonAppointmentYzw {
 	private CustomerYzw customer;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_lessonAppointment_distributer_id"))
+	@JoinColumn(foreignKey=@ForeignKey(name="fk_lessonAppointment_distributer_id", value=ConstraintMode.NO_CONSTRAINT))
 	private Distributer distributer;
 	
 	@Column(length=32)

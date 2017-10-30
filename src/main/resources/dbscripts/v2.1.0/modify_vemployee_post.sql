@@ -1,3 +1,4 @@
+alter TABLE chenkuserdb1.tblemployee_post add FOREIGN KEY fk_employeePost_employee_id(EmployeeID) REFERENCES chenkuserdb1.tblemployee(id);
 alter TABLE chenkuserdb1.tblemployee_post add COLUMN
 	(department_id int,
 	start date, 

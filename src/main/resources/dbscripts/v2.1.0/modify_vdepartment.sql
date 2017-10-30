@@ -1,6 +1,7 @@
 alter TABLE chenkuserdb1.tbldept add COLUMN(nation varchar(32), district varchar(32), address varchar(128), longitude FLOAT, latitude FLOAT);
 alter TABLE chenkuserdb1.tbldept add COLUMN(dataStatus int not null default 0);
 alter TABLE chenkuserdb1.tbldept MODIFY COLUMN id int not null AUTO_INCREMENT;
+alter TABLE chenkuserdb1.tbldept add FOREIGN KEY fk_department_superior_Id(SuperiorID) REFERENCES chenkuserdb1.tbldept(id);
 
 CREATE 
 or REPLACE 

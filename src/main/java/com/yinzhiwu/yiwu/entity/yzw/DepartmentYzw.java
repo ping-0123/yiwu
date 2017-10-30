@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.Address;
 
+@SuppressWarnings("serial")
 @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
 @JsonInclude(value= Include.NON_NULL)
 @Entity
@@ -35,21 +36,7 @@ import com.yinzhiwu.yiwu.entity.Address;
 @Where(clause="dataStatus <> 2")
 public class DepartmentYzw extends BaseYzwEntity{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2093904107877155678L;
-	
-	public static enum OrgnizationType{
-		STORE,
-		DISTRICT,
-		OPERATING,
-		MARKET,
-		HR,
-		FINANCE,
-		SUBCOMPANY,
-		COMPANY
-	}
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -116,6 +103,8 @@ public class DepartmentYzw extends BaseYzwEntity{
 		removed=removed==null?Boolean.FALSE:removed;
 		path=path==null?"":path;
 	}
+	
+	
 	
 	public Integer getId() {
 		return id;
@@ -301,4 +290,15 @@ public class DepartmentYzw extends BaseYzwEntity{
 		this.children = children;
 	}
 	
+	
+	public static enum OrgnizationType{
+		STORE,
+		DISTRICT,
+		OPERATING,
+		MARKET,
+		HR,
+		FINANCE,
+		SUBCOMPANY,
+		COMPANY
+	}
 }

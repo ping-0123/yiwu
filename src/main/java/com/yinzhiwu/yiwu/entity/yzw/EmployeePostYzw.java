@@ -21,6 +21,7 @@ import org.hibernate.annotations.Where;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@SuppressWarnings("serial")
 @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
 @Entity
 @Table(name = "vemployee_post")
@@ -28,10 +29,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Where(clause="dataStatus <> 2")
 public class EmployeePostYzw extends BaseYzwEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 247786828073130079L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -34,16 +34,11 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseTypeConverter;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseTypeConverter;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "vlesson")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class LessonYzw extends BaseYzwEntity {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1007567421844511100L;
-	
 
 
 	@Id
@@ -160,7 +155,8 @@ public class LessonYzw extends BaseYzwEntity {
 	private List<LessonPraise> praises = new ArrayList<>();
 	
 	@OneToMany(mappedBy="lesson")
-	private List<LessonComment> appraises = new ArrayList<>();
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+	private List<LessonComment> comments = new ArrayList<>();
 	
 	public LessonYzw() {
 		super();
@@ -476,13 +472,13 @@ public class LessonYzw extends BaseYzwEntity {
 		this.praises = praises;
 	}
 
-	public List<LessonComment> getAppraises() {
-		return appraises;
+	public List<LessonComment> getComments() {
+		return comments;
 	}
 
-	public void setAppraises(List<LessonComment> appraises) {
-		this.appraises = appraises;
+	public void setComments(List<LessonComment> comments) {
+		this.comments = comments;
 	}
-	
+
 	
 }
