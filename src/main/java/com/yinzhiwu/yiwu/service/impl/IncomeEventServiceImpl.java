@@ -2,7 +2,6 @@ package com.yinzhiwu.yiwu.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.IncomeEventDao;
@@ -36,7 +35,6 @@ public class IncomeEventServiceImpl extends BaseServiceImpl<IncomeEvent, Integer
 		return event.getId();
 	}
 
-	@Async
 	@EventListener(classes={LessonAppointmentYzw.class})
 	public void handleLessonAppointment(LessonAppointmentYzw appointment){
 		IncomeEvent event;

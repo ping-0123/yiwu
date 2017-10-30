@@ -1,5 +1,7 @@
 package com.yinzhiwu.yiwu.entity;
 
+import java.util.Date;
+
 import javax.persistence.ConstraintMode;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -47,7 +49,14 @@ public class CourseTemplate extends BaseEntity {
 	
 	private Integer minStudentCount;
 	
+	private Date effectiveStart;
+	
+	private Date effectiveEnd;
+	
+	
 	private DepartmentYzw usableRange;
+	
+	//TODO 增加教材由哪个组织出版
 	
 	@Embedded
 	private Connotation connotation;
@@ -130,6 +139,22 @@ public class CourseTemplate extends BaseEntity {
 
 	public void setSubCourseType(SubCourseType subCourseType) {
 		this.subCourseType = subCourseType;
+	}
+
+	public Date getEffectiveStart() {
+		return effectiveStart;
+	}
+
+	public Date getEffectiveEnd() {
+		return effectiveEnd;
+	}
+
+	public void setEffectiveStart(Date effectiveStart) {
+		this.effectiveStart = effectiveStart;
+	}
+
+	public void setEffectiveEnd(Date effectiveEnd) {
+		this.effectiveEnd = effectiveEnd;
 	}
 	
 	

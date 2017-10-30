@@ -45,11 +45,6 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<shiro:hasPermission name="employees:create:*">
-							<button type="button" data-remote="./createForm" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
-								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
-							</button>
-						</shiro:hasPermission>
 						
 						<ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"> <i class="fa fa-chevron-up"></i></a></li>
@@ -118,52 +113,67 @@
 				"select":true,
 				"language" : {
 					"url" : "../../backend/config/i18n/datatable-chinese.json",
-					"searchPlaceholder" : "输入职位名"
+					"searchPlaceholder" : "输入提现人姓名,提现帐号"
 				},
 				"ajax" : {
 					"url" : "./datatable",
 					"type" : "POST"
 				},
 				"columns" : [{
-					"data" : "employee.id",
-					"title" : "教练Id",
+					"data" : "id",
+					"title" : "id",
 					"visible" : false
 				},{
-					"title": "教练姓名",
-					"data" : "employee.name",
+					"title": "distributerId",
+					"data" : "distributerId",
+					"visible": false,
 					"name" : ""
 				}, {
-					"title" :"性别",
-					"data":"employee.gender",
-					"render":function(data, type, row, meta) {
-						return translateGender(data)
-					}
+					"title" :"提现人",
+					"data":"distributerName"
 				},{
-					"data" : "department.name",
-					"title": "教学区域",
-					"render":function(data, type, row, meta){
-						if(row.department ==null)
-							return "";
+					"data" : "amount",
+					"title": "提现金额"
+				},{
+					"data":"capitalAccount",
+					"title":"提现帐号"
+				},{
+					"data":"capitalAccountType",
+					"title":"帐号类型"
+				},{
+					"data":"payed",
+					"title":"是否已打款",
+					"render":function(data,type,row,meta){
+						if(data)
+							return "是";
 						else
-							return data;
+							return "否";
 					}
 				},{
-					"data":"createTime",
+					"data":"id",
 					"title":"操作",
 					"render": function(data, type, row, meta) {
 						var html =  '';
-						<shiro:hasPermission name="coachMedia:view:*">
-							html = html + '<a href="details?coachId=' + row.employee.id + '" data-toggle="modal" data-target=".modal-detail"> [查看详情]  </a>';
-						</shiro:hasPermission>
-						
-						<shiro:hasPermission name="coachMedia:update:*">
-							html = html +  '<a href="' + row.employee.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> [编辑]</a>';
+						if(row.payed)
+							return html;
+						<shiro:hasPermission name="withdrawBrokerages:update:*">
+							html = html +  '<a href="#" onclick="doPay(' + row.id + ')" > [打款]</a>';
 						</shiro:hasPermission>
 						return html;
 					}
 				} ]
 			}; //end datatable setting
 			
+			function doPay(id){
+				$.ajax({
+					type:"PUT",
+					url:id + "/payed",
+					success:function(data){
+						flashUpdateSuccessModal("打款成功");
+						TABLE.draw(false);
+					}
+				});
+			}
   </script>
   
   <script src="../../backend/js/main.js"></script>

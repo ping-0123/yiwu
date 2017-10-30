@@ -127,9 +127,9 @@ function showDeleteFailureModal(message){
  * 闪现修改成功
  * @returns
  */
-function flashUpdateSuccessModal(){
+function flashUpdateSuccessModal(msg){
 	var dlg = BootstrapDialog.show({
-	    message: '修改成功',
+	    message:msg==null? '修改成功':msg,
 	    type:BootstrapDialog.TYPE_SUCCESS,
 	    title:'提示',
 	    size : BootstrapDialog.SIZE_SMALL
@@ -211,6 +211,7 @@ function translateGender(gender){
 		return "保密";
 	}
 }
+
 
 /**
  * 格式化日期

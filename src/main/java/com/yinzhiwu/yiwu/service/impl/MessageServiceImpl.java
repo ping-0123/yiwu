@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -109,7 +108,6 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 	}
 
 	//TODO test @TransactionalEventListener  or reference http://www.jdon.com/dl/best/springevent.html
-	@Async
 	@EventListener(classes={PayWithdrawEvent.class})
 	public void handlePayWithdrawEvent(PayWithdrawEvent event){
 		WithdrawBrokerage withdraw = (WithdrawBrokerage) event.getSource();
@@ -121,6 +119,6 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 		message.setReceiver(withdraw.getDistributer());
 		message.setContent(msg);
 		
-		super.update(message);
+		super.save(message);
 	}
 }

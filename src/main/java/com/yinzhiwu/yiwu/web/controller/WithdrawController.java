@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -58,6 +58,7 @@ public class WithdrawController {
 	public DataTableBean<?> findDatatable(HttpServletRequest request) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InstantiationException{
 		
 		QueryParameter parameter = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
+		ServletRequestUtils.transferQueryParamter(parameter, WithdrawBrokerageVO.class);
 		DataTableBean<WithdrawBrokerage> table =  withdrawService.findDataTable(parameter);
 		
 		//转换
@@ -71,7 +72,7 @@ public class WithdrawController {
 				table.getDraw(), table.getRecordsTotal(), table.getRecordsFiltered(), vos, table.getError());
 	}
 	
-	@PatchMapping(value="/{id}/payed")
+	@PutMapping(value="/{id}/payed")
 	@ResponseBody
 	public YiwuJson<?> payWithdraw(@PathVariable(name="id") Integer id) throws DataNotFoundException, WithdrawBrokerageException{
 		

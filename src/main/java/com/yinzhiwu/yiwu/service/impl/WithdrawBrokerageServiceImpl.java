@@ -3,7 +3,6 @@ package com.yinzhiwu.yiwu.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.yinzhiwu.yiwu.dao.WithdrawBrokerageDao;
 import com.yinzhiwu.yiwu.entity.WithdrawBrokerage;
@@ -40,7 +39,6 @@ public class WithdrawBrokerageServiceImpl extends BaseServiceImpl<WithdrawBroker
 	/**
 	 * listened by {@link MessageServiceImpl#handlePayWithdrawEvent(PayWithdrawEvent)}
 	 */
-	@TransactionalEventListener
 	@Override
 	public WithdrawBrokerage doPayWithdraw(WithdrawBrokerage withdraw) {
 		super.update(withdraw);
