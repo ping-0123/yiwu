@@ -1,5 +1,8 @@
 package com.yinzhiwu.yiwu.web.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
+import com.yinzhiwu.yiwu.entity.CourseTemplate;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
+import com.yinzhiwu.yiwu.model.view.CourseTemplateVO;
+import com.yinzhiwu.yiwu.model.view.CourseTemplateVO.CourseTemplateVOConverter;
 import com.yinzhiwu.yiwu.service.CourseTemplateService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 
@@ -49,17 +55,18 @@ public class CourseTemplateController extends BaseController{
 	
 	@PostMapping(value="/datatable")
 	@ResponseBody
-	public DataTableBean<?> findDatatable(HttpServletRequest request){
+	public DataTableBean<?> findDatatable(HttpServletRequest request) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InstantiationException{
 		
-		try {
-			QueryParameter parameter = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
-			return courseTemplateService.findDataTable(parameter);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-				| InstantiationException e) {
-			logger.error(e.getMessage(),e);
-			e.printStackTrace();
+		QueryParameter parameter = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
+		ServletRequestUtils.transferQueryParamter(parameter, CourseTemplateVO.class);
+		
+		DataTableBean<CourseTemplate> table = courseTemplateService.findDataTable(parameter);
+		List<CourseTemplateVO> vos = new ArrayList<CourseTemplateVO>();
+		for(CourseTemplate course: table.getData()){
+			vos.add(CourseTemplateVOConverter.INSTANCE.fromPO(course));
 		}
 		
-		return new DataTableBean<>();
+		return new DataTableBean<>(table.getDraw(), table.getRecordsTotal(), table.getRecordsFiltered(), vos, table.getError());
+		
 	}
 }

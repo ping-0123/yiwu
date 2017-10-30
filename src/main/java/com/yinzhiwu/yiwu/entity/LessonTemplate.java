@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.entity;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,7 +21,7 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 @Table(name="yiwu_lesson_template")
 public class LessonTemplate extends BaseEntity {
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_lessonTemplate_courseTemplate_id"))
 	private CourseTemplate courseTemplate;
 	

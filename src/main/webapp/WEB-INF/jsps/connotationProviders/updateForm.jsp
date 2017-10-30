@@ -4,9 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>post edition</title>
+<title>create post</title>
 
-<!-- Bootstrap -->
 </head>
 <body>
 
@@ -21,35 +20,33 @@
 
 	<!-- modal body -->
 	<div class="modal-body">
-		<form id="form-update" method="POST" action="${post.id}" class="form-horizontal form-label-left">
-
+		<form id="form-update"  method="POST" action="./${provider.id }"  class="form-horizontal form-label-left">
+			
 			<input type="hidden" name="_method" value="PUT">
-			<input type="hidden" name="id" value="${provider.id }">
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">名称<span class="required">*</span></label>
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">名称 <span class="required">*</span></label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<input name="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2"  required="required" type="text">
+					<input name="name" value="${provider.name }" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2"  required="required" type="text">
 				</div>
 			</div>
 			
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">描述 </label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<textarea class="form-control" rows="3" name="briefIntroduction"> </textarea>
+					<textarea class="form-control" rows="3" name="briefIntroduction">${provider.briefIntroduction } </textarea>
 				</div>
 			</div>
 
 			<div class="ln_solid"></div>
 			<div class="form-group">
 				<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-					<button type="submit" class="btn btn-primary">提交</button>
+					<button type="submit"  class="btn btn-success">保存</button>
 				</div>
 			</div>
 
 		</form>
 	</div>
-	<!-- /modal body -->
-
+	
 	<script type="text/javascript">
 		$('#form-update').submit(function(){
 			$.ajax({
@@ -57,8 +54,11 @@
 				type: $(this).attr("method"),
 				data: $(this).serialize(),
 				success:function(data){
-					$('.modal-update').modal('hide');
-					TABLE.draw(false);
+					if(data.result){
+						$('.modal-update').modal('hide');
+						TABLE.draw(false);
+					}else
+						showSaveFailureModal(data.msg);						
 				}
 			});
 			return false;

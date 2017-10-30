@@ -4,8 +4,10 @@ import org.springframework.beans.BeanUtils;
 
 import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
+import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
 import com.yinzhiwu.yiwu.util.SpringUtils;
+import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
@@ -80,6 +82,28 @@ public class LessonConnotationVO{
 	
 	@ApiModelProperty(value="上课实际视频的标题")
 	private String practicalVideoTitle;
+	
+	public static final class LessonConnotationVOConverter extends AbstractConverter<LessonConnotation, LessonConnotationVO>{
+		public final static LessonConnotationVOConverter INSTANCE = new LessonConnotationVOConverter();
+		
+		private final static FileService qiniuService = SpringUtils.getBean("qiniuServiceImpl");
+
+		@Override
+		public LessonConnotationVO fromPO(LessonConnotation po) {
+			LessonConnotationVO vo =  super.fromPO(po);
+			vo.setPictureUrl(qiniuService.generateFileUrl(vo.getPictureUrl()));
+			vo.setAudioUrl(qiniuService.generateFileUrl(vo.getAudioUrl()));
+			vo.setStandardVideoUrl(qiniuService.generateFileUrl(vo.getStandardVideoUrl()));
+			vo.setStandardVideoPosterUrl(qiniuService.generateFileUrl(vo.getStandardVideoPosterUrl()));
+			vo.setPuzzleVideoUrl(qiniuService.generateFileUrl(vo.getPuzzleVideoUrl()));
+			vo.setPuzzleVideoPosterUrl(qiniuService.generateFileUrl(vo.getPuzzleVideoPosterUrl()));
+			vo.setPracticalVideoUrl(qiniuService.generateFileUrl(vo.getPracticalVideoUrl()));
+			vo.setPracticalVideoPosterUrl(qiniuService.generateFileUrl(vo.getPracticalVideoPosterUrl()));
+			return vo;
+		}
+		
+		
+	}
 	
 	public String getConnotation() {
 		return connotation;

@@ -25,7 +25,8 @@
 		classpath:properties/hibernate.properties,
 		classpath:properties/qiniu.properties,
 		classpath:properties/quartz.properties,
-		classpath:properties/system.properties" />
+		classpath:properties/system.properties,
+		classpath:properties/jpush.properties" />
 
 	<context:component-scan base-package="com.yinzhiwu.yiwu">
 		<context:exclude-filter type="annotation"

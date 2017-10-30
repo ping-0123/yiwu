@@ -45,6 +45,11 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
+						<shiro:hasPermission name="connotationProviders:create:*">
+							<button type="button" data-remote="./createForm" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
+							</button>
+						</shiro:hasPermission>
 						
 						<ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"> <i class="fa fa-chevron-up"></i></a></li>
@@ -113,7 +118,7 @@
 				"select":true,
 				"language" : {
 					"url" : "../../backend/config/i18n/datatable-chinese.json",
-					"searchPlaceholder" : "输入提现人姓名,提现帐号"
+					"searchPlaceholder" : "输入职位名"
 				},
 				"ajax" : {
 					"url" : "./datatable",
@@ -121,79 +126,35 @@
 				},
 				"columns" : [{
 					"data" : "id",
-					"title" : "id",
-					"visible" : false
+					"title" : "教材提供者编码",
+					"visible" : true
 				},{
-					"title": "distributerId",
-					"data" : "distributerId",
-					"visible": false,
+					"title": "教材提供者",
+					"data" : "name",
 					"name" : ""
 				}, {
-					"title" :"提现人",
-					"data":"distributerName"
+					"title" :"简介",
+					"data":"briefIntroduction"
 				},{
-					"data" : "amount",
-					"title": "提现金额"
-				},{
-					"data":"capitalAccount",
-					"title":"提现帐号"
-				},{
-					"data":"capitalAccountType",
-					"title":"帐号类型"
-				},{
-					"data":"payed",
-					"title":"是否已打款",
-					"render":function(data,type,row,meta){
-						if(data)
-							return "是";
-						else
-							return "否";
-					}
-				},{
-					"data":"id",
+					"data":"createTime",
 					"title":"操作",
 					"render": function(data, type, row, meta) {
 						var html =  '';
-						if(row.payed)
-							return html;
-						<shiro:hasPermission name="withdrawBrokerages:update:*">
-							html = html +  '<a href="#" onclick="doPay(' + row.id + ')" > [打款]</a>';
+						<shiro:hasPermission name="connotationProviders:update:*">
+							html = html +  '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i></a>';
+						</shiro:hasPermission>
+						<shiro:hasPermission name="connotationProviders:delete:*">
+							html = html  + '<a href="#" onclick="showDeleteModal(' + row.id + ', refreshTable)"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
 						</shiro:hasPermission>
 						return html;
 					}
 				} ]
 			}; //end datatable setting
 			
-			function doPay(id){
-				$.ajax({
-					type:"PUT",
-					url:id + "/payed",
-					success:function(data){
-						showConfirmPayModal();
-					}
-				});
+			function  refreshTable(){
+				TABLE.draw(false);
 			}
-			
-			function showConfirmPayModal() {
-				BootstrapDialog.confirm({
-					title:"确认支付",
-					message:"确认支付?",
-					type:BootstrapDialog.TYPE_WARNING,
-					closable:true,
-					draggable:true,
-					btnCancelLabel:"取消",
-					btnOKLabel:"确定",
-					btnOKClass: "btn-warning",
-					size:BootstrapDialog.SIZE_SMALL,
-					callback:function(result){
-						if(result){
-							flashUpdateSuccessModal("打款成功");
-							TABLE.draw(false);
-						}
-					}
-				});
-				
-			}
+
   </script>
   
   <script src="../../backend/js/main.js"></script>

@@ -4,8 +4,10 @@ import org.springframework.beans.BeanUtils;
 
 import com.google.common.base.Converter;
 import com.yinzhiwu.yiwu.entity.yzw.Connotation;
+import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
 import com.yinzhiwu.yiwu.util.SpringUtils;
+import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
@@ -60,6 +62,22 @@ public class CourseConnotationVO {
 	@ApiModelProperty(value="舞蹈简介")
 	private String danceIntroduction;
 	
+	
+	public static final class CourseConnotationVOConverter extends AbstractConverter<Connotation, CourseConnotationVO>{
+		public static final CourseConnotationVOConverter INSTANCE =  new CourseConnotationVOConverter();
+		private FileService qiniuService = SpringUtils.getBean("qiniuServiceImpl");
+
+		@Override
+		public CourseConnotationVO fromPO(Connotation po) {
+			CourseConnotationVO  vo =  super.fromPO(po);
+			vo.setPictureUrl(qiniuService.generateFileUrl(vo.getPictureUrl()));
+			vo.setVideoUrl(qiniuService.generateFileUrl(vo.getVideoUrl()));
+			vo.setVideoPosterUrl(qiniuService.generateFileUrl(vo.getVideoPosterUrl()));
+			return vo;
+		}
+		
+		
+	}
 	
 	public String getConnotation() {
 		return connotation;

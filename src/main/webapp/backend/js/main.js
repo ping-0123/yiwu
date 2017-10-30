@@ -30,6 +30,8 @@ $(".modal").on("hidden.bs.modal", function() {
  * @returns
  */
 function refreshDataTable(table){
+	if(table==null)
+		TABLE.draw(false);
 	table.draw(false);
 }
 
@@ -122,6 +124,8 @@ function showDeleteFailureModal(message){
 	    closable:true
 	});
 }
+
+
 
 /**
  * 闪现修改成功

@@ -49,14 +49,21 @@ public class CourseTemplate extends BaseEntity {
 	
 	private Integer minStudentCount;
 	
+	private Integer maxStudentCount;
+	
 	private Date effectiveStart;
 	
 	private Date effectiveEnd;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="usableDepartment_id", foreignKey=
+		@ForeignKey(name="fk_courseTemplate_usableDepartment_id", value=ConstraintMode.NO_CONSTRAINT))
+	private DepartmentYzw usableDepartment;
 	
-	private DepartmentYzw usableRange;
-	
-	//TODO 增加教材由哪个组织出版
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="connotation_provider_id",
+			foreignKey=@ForeignKey(name="fk_courseTemplate_provider_id"))
+	private ConnotationProvider provider;
 	
 	@Embedded
 	private Connotation connotation;
@@ -117,14 +124,6 @@ public class CourseTemplate extends BaseEntity {
 		this.connotation = connotation;
 	}
 
-	public DepartmentYzw getUsableRange() {
-		return usableRange;
-	}
-
-	public void setUsableRange(DepartmentYzw usableRange) {
-		this.usableRange = usableRange;
-	}
-
 	public CourseType getCourseType() {
 		return courseType;
 	}
@@ -155,6 +154,30 @@ public class CourseTemplate extends BaseEntity {
 
 	public void setEffectiveEnd(Date effectiveEnd) {
 		this.effectiveEnd = effectiveEnd;
+	}
+
+	public Integer getMaxStudentCount() {
+		return maxStudentCount;
+	}
+
+	public void setMaxStudentCount(Integer maxStudentCount) {
+		this.maxStudentCount = maxStudentCount;
+	}
+
+	public DepartmentYzw getUsableDepartment() {
+		return usableDepartment;
+	}
+
+	public void setUsableDepartment(DepartmentYzw usableDepartment) {
+		this.usableDepartment = usableDepartment;
+	}
+
+	public ConnotationProvider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(ConnotationProvider provider) {
+		this.provider = provider;
 	}
 	
 	

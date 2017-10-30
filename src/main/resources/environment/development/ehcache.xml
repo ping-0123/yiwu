@@ -95,6 +95,15 @@
          overflowToDisk="false"   
          maxElementsOnDisk="10" /> 
          
+          <cache   
+         name="com.yinzhiwu.yiwu.entity.yzw.ConnotationProvider"  
+         maxElementsInMemory="10"  
+         memoryStoreEvictionPolicy="LRU"   
+         eternal="true"   
+         diskPersistent="false"  
+         overflowToDisk="false"   
+         maxElementsOnDisk="10" /> 
+         
 </ehcache>
 
 <!-- maxElementsInMemory：属性用于指定缓存中最多可放多少个对象。 
