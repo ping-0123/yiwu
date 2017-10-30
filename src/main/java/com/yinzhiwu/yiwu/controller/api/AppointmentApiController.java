@@ -10,6 +10,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.AppointSuccessApiView;
 import com.yinzhiwu.yiwu.service.AppointmentEventService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -22,13 +23,14 @@ import io.swagger.annotations.ApiParam;
 @Deprecated
 @RestController
 @RequestMapping("/api/appointment")
+@Api(value="预约APIs 即将弃用,请使用/api/lessonAppointments")
 public class AppointmentApiController extends BaseController {
 
 	@Autowired
 	private AppointmentEventService appointmentEventService;
 
 	@PostMapping(value = "/appoint")
-	@ApiOperation(value = "预约课程")
+	@ApiOperation(value = "预约课程, 已弃用， 请使用 POST /api/lessonAppointments")
 	public YiwuJson<AppointSuccessApiView> doAppoint(
 			@ApiParam(required = false) Integer distributerId,
 			@ApiParam(required = true) int lessonId) {
@@ -40,7 +42,7 @@ public class AppointmentApiController extends BaseController {
 	}
 
 	@PostMapping(value = "/unAppoint")
-	@ApiOperation(value = "取消课程预约")
+	@ApiOperation(value = "取消课程预约, 已弃用， 请使用DELETE /api/lessonAppointments")
 	public YiwuJson<AppointSuccessApiView> cancelAppoint(
 			@ApiParam(required = true) Integer distributerId,
 			@ApiParam(required = true) int lessonId) {

@@ -86,13 +86,7 @@ public final class FieldUtils {
      *          not found
 	 */
 	public static Field getField(Class<?> clazz, String fieldName){
-		if(null ==clazz 
-				|| fieldName==null || "".equals(fieldName.trim())) 
-			throw new IllegalArgumentException("clazz can not be null and fieldName can not be empty");
-		
-		if(Object.class==clazz || clazz.isPrimitive())
-			throw new ReflectException("no any field in primitive data nor Object class instance");
-		
+
 		if(fieldName.contains(".")){
 			int position = fieldName.indexOf(".");
 			String preFieldName = fieldName.substring(0,position);

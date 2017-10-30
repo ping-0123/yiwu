@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.model.view;
 
 import com.yinzhiwu.yiwu.entity.WithdrawBrokerage;
+import com.yinzhiwu.yiwu.enums.PaymentMode;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
@@ -34,8 +35,8 @@ public class WithdrawBrokerageVO {
 	@MapedProperty("capitalAccount.account")
 	private String capitalAccount;
 	
-	@MapedProperty("account.paymentMode")
-	private String capitalAccountType;
+	@MapedProperty("capitalAccount.paymentMode")
+	private PaymentMode capitalAccountType;
 
 	
 	public static final  class WithdrawBrokerageVOConverter extends AbstractConverter<WithdrawBrokerage, WithdrawBrokerageVO>{
@@ -90,13 +91,13 @@ public class WithdrawBrokerageVO {
 		this.capitalAccount = capitalAccount;
 	}
 
-	public String getCapitalAccountType() {
+	public PaymentMode getCapitalAccountType() {
 		return capitalAccountType;
 	}
 
-	public void setCapitalAccountType(String capitalAccountType) {
+	public void setCapitalAccountType(PaymentMode capitalAccountType) {
 		this.capitalAccountType = capitalAccountType;
 	}
-	
+
 	
 }

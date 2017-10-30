@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiOperation;
 @Deprecated
 @RestController
 @RequestMapping("/api/event/withdraw")
-@Api(value = "withdraw")
+@Api(value = "提现APIs 即将弃用 请使用/api/withdraws")
 public class WithdrawApiController extends BaseController {
 
 	@Autowired

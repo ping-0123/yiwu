@@ -47,7 +47,6 @@ public class IncomeEventServiceImpl extends BaseServiceImpl<IncomeEvent, Integer
 		this.save(event);
 	}
 	
-	@Async
 	@EventListener(classes={LessonCheckInYzw.class})
 	public void handlerLessonCheckIn(LessonCheckInYzw checkIn){
 		IncomeEvent event;
@@ -59,7 +58,6 @@ public class IncomeEventServiceImpl extends BaseServiceImpl<IncomeEvent, Integer
 		this.save(event);
 	}
 	
-	@Async
 	@EventListener(classes={WithdrawEvent.class})
 	public void handleWithdrawBrokerage(WithdrawEvent event){
 		this.save(event);

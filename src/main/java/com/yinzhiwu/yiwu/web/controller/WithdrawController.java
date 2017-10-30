@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,20 @@ public class WithdrawController {
 	
 	@Autowired private WithdrawBrokerageService withdrawService;
 	
+	@GetMapping
+	public String home(){
+		return "redirect:withdraws/list";
+	}
+	
+	@GetMapping("/index")
+	public String index(){
+		return "redirect:withdraws/list";
+	}
+	
+	@GetMapping("/list")
+	public String list(){
+		return "withdraws/list";
+	}
 	
 	@PostMapping(value="/datatable")
 	@ResponseBody
@@ -44,6 +59,8 @@ public class WithdrawController {
 		
 		QueryParameter parameter = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
 		DataTableBean<WithdrawBrokerage> table =  withdrawService.findDataTable(parameter);
+		
+		//转换
 		List<WithdrawBrokerageVO> vos = new ArrayList<WithdrawBrokerageVO>();
 		WithdrawBrokerageVOConverter converter = WithdrawBrokerageVOConverter.INSTANCE;
 		for(WithdrawBrokerage withdraw: table.getData()){

@@ -31,7 +31,7 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 	public int findCountByCustomerId(int customerId) {
 		StringBuilder hql = new StringBuilder();
 		hql.append(" SELECT COUNT(1)");
-		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" FROM LessonCheckInYzw t1");
 		hql.append(" JOIN CustomerYzw t2 ON (t1.memberCard = t2.memberCard)");
 		hql.append(" WHERE t2.id =:customerId");
 		
@@ -143,7 +143,7 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 		hql.append(",t1.lesson.actualTeacherName");
 		hql.append(",t1.lesson.storeName");
 		hql.append(")");
-		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" FROM LessonCheckInYzw t1");
 		hql.append(" WHERE t1.memberCard = :memberCard");
 		hql.append(" AND t1.lesson.actualTeacher.id IS NOT NULL");
 		hql.append(" AND t1.lesson.actualTeacher.id <>  0");
@@ -165,7 +165,7 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 		hql.append(",t1.lesson.actualTeacherName");
 		hql.append(",t1.lesson.storeName");
 		hql.append(")");
-		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" FROM LessonCheckInYzw t1");
 		hql.append(" WHERE t1.memberCard = :memberCard");
 		hql.append(" AND t1.lesson.actualTeacher.id IS NOT NULL");
 		hql.append(" AND t1.lesson.actualTeacher.id <>  0");

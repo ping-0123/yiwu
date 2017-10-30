@@ -25,7 +25,7 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
-import com.yinzhiwu.yiwu.service.LessonCheckInYzwService;
+import com.yinzhiwu.yiwu.service.LessonCheckinService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 
@@ -42,7 +42,7 @@ public class OrderApiController {
 	@Autowired
 	private DistributerService distributerService;
 	@Autowired
-	private LessonCheckInYzwService checkInsService;
+	private LessonCheckinService checkInsService;
 
 	@RequestMapping(value = "/getDailyOrders", method = { RequestMethod.GET })
 	public ReturnedJson getDailyOrdersByStore(@RequestParam int storeId, @RequestParam Date payedDate,

@@ -108,6 +108,7 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 			super.save(m);
 	}
 
+	//TODO test @TransactionalEventListener  or reference http://www.jdon.com/dl/best/springevent.html
 	@Async
 	@EventListener(classes={PayWithdrawEvent.class})
 	public void handlePayWithdrawEvent(PayWithdrawEvent event){

@@ -20,7 +20,7 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.LessonCheckInSuccessApiView;
 import com.yinzhiwu.yiwu.model.view.LessonCheckInSuccessApiView.LessonCheckInSuccessApiViewConverter;
-import com.yinzhiwu.yiwu.service.LessonCheckInYzwService;
+import com.yinzhiwu.yiwu.service.LessonCheckinService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
 
 import io.swagger.annotations.Api;
@@ -34,11 +34,11 @@ import io.swagger.annotations.ApiOperation;
  */
 
 @RestController
-@RequestMapping("/api/lessonCheckIns")
+@RequestMapping("/api/lessonCheckins")
 @Api(description="课程签到APIs")
-public class LessonCheckInApiController extends BaseController{
+public class LessonCheckinApiController extends BaseController{
 
-	@Autowired private LessonCheckInYzwService lessonCheckInService;
+	@Autowired private LessonCheckinService lessonCheckInService;
 	@Autowired private LessonYzwService lessonService;
 	
 	@PostMapping

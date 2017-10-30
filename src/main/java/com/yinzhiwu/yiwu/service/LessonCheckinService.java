@@ -14,7 +14,7 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonCheckInSuccessApiView;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 
-public interface LessonCheckInYzwService extends IBaseService<LessonCheckInYzw, Integer> {
+public interface LessonCheckinService extends IBaseService<LessonCheckInYzw, Integer> {
 
 	YiwuJson<List<LessonApiView>> findByCustomerId(int customerId);
 

@@ -34,11 +34,11 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.LessonCheckInSuccessApiView;
 import com.yinzhiwu.yiwu.service.IncomeEventService;
-import com.yinzhiwu.yiwu.service.LessonCheckInYzwService;
+import com.yinzhiwu.yiwu.service.LessonCheckinService;
 import com.yinzhiwu.yiwu.service.LessonInteractiveService;
 
 @Service
-public class LessonCheckInYzwServiceImpl extends BaseServiceImpl<LessonCheckInYzw, Integer> implements LessonCheckInYzwService {
+public class LessonCheckinServiceImpl extends BaseServiceImpl<LessonCheckInYzw, Integer> implements LessonCheckinService {
 
 	@Autowired
 	private LessonCheckInYzwDao lessonCheckInDao;
@@ -207,12 +207,15 @@ public class LessonCheckInYzwServiceImpl extends BaseServiceImpl<LessonCheckInYz
 		Date checkInStart = calendar.getTime();
 		if(current.before(checkInStart))
 			throw new LessonCheckInException("离上课时间还远,请在上课前1小时内刷卡");
-		Calendar checkInEndCalendar = Calendar.getInstance();
+		
+/*   TODO 刷卡结束时间暂不做限制
+ * 		Calendar checkInEndCalendar = Calendar.getInstance();
 		checkInEndCalendar.setTime(lesson.getEndTime());
 		calendar.set(Calendar.HOUR_OF_DAY, checkInEndCalendar.get(Calendar.HOUR_OF_DAY));
 		Date checkInEnd = calendar.getTime();
 		if(current.after(checkInEnd))
-			throw new LessonCheckInException("上课已结束, 请在上课前1小时内刷卡");
+			throw new LessonCheckInException("上课已结束, 请在上课前1小时内刷卡");*/
+		
 		//判断上课人数是否已满
 		if(lesson.getCheckedInStudentCount()> lesson.getClassRoom().getMaxStudentCount())
 			throw new LessonCheckInException("上课人数已满");

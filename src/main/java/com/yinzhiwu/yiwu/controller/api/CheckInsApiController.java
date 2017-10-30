@@ -14,7 +14,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.LessonCheckInSuccessApiView;
-import com.yinzhiwu.yiwu.service.LessonCheckInYzwService;
+import com.yinzhiwu.yiwu.service.LessonCheckinService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,11 +32,11 @@ import io.swagger.annotations.ApiParam;
 @Deprecated
 @RestController
 @RequestMapping("/api/checkIns")
-@Api(value = "check-in")
+@Api(value = "签到APIs 即将弃用 请使用/api/lessonCheckIns")
 public class CheckInsApiController extends BaseController {
 
 	@Autowired
-	private LessonCheckInYzwService checkInsYzwService;
+	private LessonCheckinService checkInsYzwService;
 
 	@GetMapping("/lesson/count")
 	@ApiOperation(value = "获取学员已上课总节数")
@@ -83,7 +83,7 @@ public class CheckInsApiController extends BaseController {
 	}
 
 	/**
-	 * @see {@link LessonCheckInApiController#doCheckIn(Integer )}
+	 * @see {@link LessonCheckinApiController#doCheckIn(Integer )}
 	 * @param distributerId
 	 * @param lessonId
 	 * @return
