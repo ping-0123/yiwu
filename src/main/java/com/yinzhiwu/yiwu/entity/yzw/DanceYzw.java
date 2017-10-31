@@ -29,7 +29,7 @@ public class DanceYzw extends BaseYzwEntity {
 
 	@Column(length = 32)
 	private String name;
-
+	
 	@Column(length = 32)
 	private String danceClass;
 

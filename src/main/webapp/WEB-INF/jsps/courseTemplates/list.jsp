@@ -21,6 +21,7 @@
 <link href="../../assets/datatable-plugins/Select-1.2.3/css/select.bootstrap.min.css" rel="stylesheet">
 <!-- bootstrap dialog -->
 <link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
+<link href="../../assets/bootstrap-validator/css/bootstrapValidator.min.css" rel="stylesheet">
 	<!-- dropzone -->
 <link href="../../assets/dropzone/min/dropzone.min.css" rel="stylesheet">
 <!-- Custom Theme Style -->
@@ -100,10 +101,9 @@
 	<script src="../../assets/datatables/datatables.min.js" type="text/javascript"></script>
 	<script src="../../assets/datatable-plugins/Select-1.2.3/js/dataTables.select.min.js" type="text/javascript"></script>
 	<script src="../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
-	<!-- dropzone -->
+	<script src="../../assets/bootstrap-validator/js/bootstrapValidator.min.js" type="text/javascript"></script>
+	<script src="../../assets/bootstrap-validator/js/language/zh_CN.js" type="text/javascript"></script>
 	<script src="../../assets/dropzone/min/dropzone.min.js" type="text/javascript"></script>
-	<!-- validator -->
-	<script src="../../assets/validator/validator.js"></script>
 	<!-- Custom Theme Scripts -->
 	<script src="../../backend/js/custom.min.js"></script>
 	
@@ -125,30 +125,49 @@
 					"type" : "POST"
 				},
 				"columns" : [{
-					"data" : "employee.id",
-					"title" : "教练Id",
+					"data" : "id",
+					"title" : "模板编号",
 					"visible" : false
 				},{
-					"title": "教练姓名",
-					"data" : "employee.name",
+					"title": "模板名",
+					"data" : "name",
 					"name" : ""
 				}, {
-					"title" :"性别",
-					"data":"employee.gender",
-					"render":function(data, type, row, meta) {
-						return translateGender(data)
-					}
+					"title" :"舞种名",
+					"data":"danceName"
 				},{
-					"data" : "department.name",
-					"title": "教学区域",
-					"render":function(data, type, row, meta){
-						if(row.department ==null)
-							return "";
-						else
-							return data;
-					}
+					"data" : "danceGradeName",
+					"title": "舞种等级"
 				},{
-					"data":"createTime",
+				},{
+					"data" : "courseType",
+					"title": "课程类型"
+				},{
+					"data" : "subCourseType",
+					"title": "课程中类"
+				},{
+					"data" : "times",
+					"title": "课程总节数"
+				},{
+					"data" : "hoursPerTime",
+					"title": "每节课时长"
+				},{
+					"data" : "minStudentCount",
+					"title": "最小学生数量"
+				},{
+					"data" : "maxStudentCount",
+					"title": "最大学员数量"
+				},{
+					"data" : "effectiveStart",
+					"title": "有效开始日期"
+				},{
+					"data" : "effectiveEnd",
+					"title": "有效结束日期"
+				},{
+					"data" : "providerName",
+					"title": "教材提供商"
+				},{
+					"data":"id",
 					"title":"操作",
 					"render": function(data, type, row, meta) {
 						var html =  '';

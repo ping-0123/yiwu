@@ -10,6 +10,11 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.yinzhiwu.yiwu.entity.yzw.Connotation;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
@@ -29,37 +34,49 @@ import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 @Table(name="yiwu_course_template")
 public class CourseTemplate extends BaseEntity {
 	
+	@Size(min=2,max=32)
 	private String name;
 	
+	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "dance_id", foreignKey = @ForeignKey(name = "fk_courseTemplate_dance_id", value = ConstraintMode.NO_CONSTRAINT))
 	private DanceYzw dance;
 	
+	@NotNull
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="danceGrade_id", foreignKey=@ForeignKey(name="fk_courseTemplate_danceGrade_id",value=ConstraintMode.NO_CONSTRAINT))
 	private DanceGradeYzw danceGrade;
 	
+	@NotNull
 	private CourseType courseType;
 	
+	@NotNull
 	private SubCourseType subCourseType;
 	
+	@Min(1)
 	private Integer times;
 	
+	@DecimalMin("0.01")
 	private Float hoursPerTime;
 	
+	@Min(1)
 	private Integer minStudentCount;
 	
+	@Min(1)
+	@Max(40)
 	private Integer maxStudentCount;
 	
 	private Date effectiveStart;
 	
 	private Date effectiveEnd;
 	
+	@NotNull
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="usableDepartment_id", foreignKey=
 		@ForeignKey(name="fk_courseTemplate_usableDepartment_id", value=ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw usableDepartment;
 	
+	@NotNull
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="connotation_provider_id",
 			foreignKey=@ForeignKey(name="fk_courseTemplate_provider_id"))

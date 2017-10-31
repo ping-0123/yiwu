@@ -1,7 +1,9 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
@@ -104,7 +106,15 @@ public class DepartmentYzw extends BaseYzwEntity{
 		path=path==null?"":path;
 	}
 	
-	
+	public Set<DepartmentYzw> fimily(){
+		Set<DepartmentYzw> depts = new HashSet<>();
+		depts.add(this);
+		for (DepartmentYzw dept : this.getChildren()) {
+			depts.addAll(dept.fimily());
+		}
+		
+		return depts;
+	}
 	
 	public Integer getId() {
 		return id;

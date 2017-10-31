@@ -3,7 +3,9 @@ package com.yinzhiwu.yiwu.service.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
 import com.yinzhiwu.yiwu.dao.SequenceDao;
 import com.yinzhiwu.yiwu.entity.sys.User;
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeePostYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.model.view.EmployeeApiView;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
@@ -55,6 +59,17 @@ public class EmployeeYzwServiceImpl extends BaseServiceImpl<EmployeeYzw, Integer
 		DateFormat df = new SimpleDateFormat("yyMMdd");
 		Integer number = sequenceDao.getEmployeeNumber();
 		return df.format(new Date()) + String.format("%02d", number%100);
+	}
+
+	@Override
+	public Set<DepartmentYzw> getVisableDepartments(EmployeeYzw employee) {
+		Set<EmployeePostYzw> eps = employee.getEmployeePosts();
+		Set<DepartmentYzw> deptments = new HashSet<>();
+		for(EmployeePostYzw ep: eps){
+			deptments.addAll(ep.getDepartment().fimily());
+		}
+		
+		return deptments;
 	}
 	
 }

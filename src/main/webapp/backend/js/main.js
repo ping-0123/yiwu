@@ -216,7 +216,37 @@ function translateGender(gender){
 	}
 }
 
+function translateCourseType(courseType){
+	switch (courseType) {
+	case "CLOSED":
+		return "封闭式";
+	case "OPENED":
+		return "开放式";
+	case "PRIVATE":
+		return "私教课"
+	default:
+		return "";
+	}
+}
 
+function translateSubCourseType(subCourseType){
+	switch (subCourseType) {
+	case "OPEN_A":
+		return "开放式A"
+	case "OPEN_B":
+		return "开放式B"
+	case "OPEN_CJ":
+		return "少儿集训初级"
+	case "OPEN_ZJ":
+		return "少儿集训中级"
+	case "CLOSED":
+		return "封闭式"
+	case "PRIVATE":
+		return "私教课"
+	default:
+		return "";
+	}
+}
 /**
  * 格式化日期
  * @param time

@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +17,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.CourseTemplate;
+import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.model.view.CourseTemplateVO;
 import com.yinzhiwu.yiwu.model.view.CourseTemplateVO.CourseTemplateVOConverter;
+import com.yinzhiwu.yiwu.service.ConnotationProviderService;
 import com.yinzhiwu.yiwu.service.CourseTemplateService;
+import com.yinzhiwu.yiwu.service.DanceGradeYzwService;
+import com.yinzhiwu.yiwu.service.DanceYzwService;
+import com.yinzhiwu.yiwu.service.DepartmentYzwService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 
 /**
@@ -31,7 +39,11 @@ import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 @RequestMapping("/system/courseTemplates")
 public class CourseTemplateController extends BaseController{
 	
-	@Autowired CourseTemplateService courseTemplateService;
+	@Autowired  private CourseTemplateService courseTemplateService;
+	@Autowired private DepartmentYzwService deptmentService;
+	@Autowired private ConnotationProviderService connotationProviderService;
+	@Autowired private DanceGradeYzwService danceGradeService;
+	@Autowired private DanceYzwService danceService;
 	
 	@GetMapping(value="/list")
 	public String list(){
@@ -49,7 +61,13 @@ public class CourseTemplateController extends BaseController{
 	}
 	
 	@GetMapping(value="/createForm")
-	public String showCreateForm(){
+	public String showCreateForm(Model model){
+		//TODO 只输出可见的部门
+		model.addAttribute("departments", deptmentService.findAll());
+		model.addAttribute("providers", connotationProviderService.findAll());
+		model.addAttribute("danceGrades", danceGradeService.findAll());
+		model.addAttribute("dances", danceService.findAll());
+		
 		return "courseTemplates/createForm";
 	}
 	
@@ -68,5 +86,15 @@ public class CourseTemplateController extends BaseController{
 		
 		return new DataTableBean<>(table.getDraw(), table.getRecordsTotal(), table.getRecordsFiltered(), vos, table.getError());
 		
+	}
+	
+	@PostMapping
+	@ResponseBody
+	public YiwuJson<?>  doCreate(@Valid CourseTemplate course, BindingResult result){
+		if(result.hasErrors())
+			return YiwuJson.createBySuccess(getErrorsMessage(result));
+		courseTemplateService.save(course);
+		
+		return YiwuJson.createBySuccess(CourseTemplateVOConverter.INSTANCE.fromPO(course));
 	}
 }

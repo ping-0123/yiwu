@@ -76,6 +76,13 @@ public class CourseTemplateVO {
 			vo.setConnotation(CourseConnotationVOConverter.INSTANCE.fromPO(po.getConnotation()));
 			return vo;
 		}
+
+		@Override
+		public CourseTemplate toPO(CourseTemplateVO vo) {
+			CourseTemplate course =  super.toPO(vo);
+			course.setConnotation(CourseConnotationVOConverter.INSTANCE.toPO(vo.getConnotation()));
+			return course;
+		}
 		
 		
 	}

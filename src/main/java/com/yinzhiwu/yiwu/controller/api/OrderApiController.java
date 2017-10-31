@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
@@ -67,13 +68,12 @@ public class OrderApiController {
 	}
 	
 	@GetMapping(value = "/count")
-	public YiwuJson<Long> findCount(int customerId) {
-		try {
-			Long count = orderYzwService.findCountByCustomerId(customerId);
+	@ApiOperation(value="获取订单数量")
+	public YiwuJson<Long> findCount() {
+			Distributer distributer = UserContext.getDistributer();
+			
+			Long count = orderYzwService.findCountByCustomerId(distributer.getCustomer().getId());
 			return new YiwuJson<>(count);
-		} catch (Exception e) {
-			return new YiwuJson<>(e.getMessage());
-		}
 	}
 
 	@GetMapping(value = "/{id}")
