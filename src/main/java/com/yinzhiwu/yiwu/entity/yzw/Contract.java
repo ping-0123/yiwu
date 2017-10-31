@@ -17,8 +17,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
+import com.yinzhiwu.yiwu.enums.CourseType;
+import com.yinzhiwu.yiwu.enums.CourseType.CourseTypeConverter;
+import com.yinzhiwu.yiwu.enums.SubCourseType;
+import com.yinzhiwu.yiwu.enums.SubCourseType.SubCourseTypeConverter;
 
 @Embeddable
 public class Contract {
@@ -126,11 +128,11 @@ public class Contract {
 	private Short withHoldTimes = 0;
 
 	@Column(name = "product_type", length=32)
-	@Convert(converter=CourseYzw.CourseTypeConverter.class)
+	@Convert(converter=CourseTypeConverter.class)
 	private CourseType type;
 
 	@Column(name = "product_subType", length=32)
-	@Convert(converter=CourseYzw.SubCourseTypeConverter.class)
+	@Convert(converter=SubCourseTypeConverter.class)
 	private SubCourseType subType;
 
 	@Column(name = "valid_storeids")

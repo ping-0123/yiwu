@@ -30,6 +30,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.StringUtils;
 
+import com.yinzhiwu.yiwu.enums.CourseType;
+import com.yinzhiwu.yiwu.enums.CourseType.CourseTypeConverter;
+import com.yinzhiwu.yiwu.enums.SubCourseType;
+import com.yinzhiwu.yiwu.enums.SubCourseType.SubCourseTypeConverter;
+
 @Entity
 @Table(name = "vcourse")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
@@ -557,190 +562,8 @@ public class CourseYzw extends BaseYzwEntity {
 
 	
 	
-	public enum CourseType{
-		CLOSED("封闭式"),
-		OPENED("开放式"),
-		PRIVATE("私教课"),
-		GRADE_EXAM("考级"),
-		REFERENCE_ORDER("以订单为准");
-		
-		
-		private final String name;
-		public String getName(){
-			return name;
-		}
-		private CourseType(String name){
-			this.name = name;
-		}
-		
-		/**
-		 * 
-		 * @return 可以用于排课的课程类型
-		 */
-		public static List<CourseType>  getEffectiveCourseTypes(){
-			List<CourseType> types = new ArrayList<>();
-			types.add(CourseType.CLOSED);
-			types.add(CourseType.OPENED);
-			types.add(CourseType.PRIVATE);
-			return types;
-		}
-		public static CourseType fromName(String name){
-			switch (name) {
-				case "封闭式":
-					return CourseType.CLOSED;
-				case "开放式":
-				return CourseType.OPENED;
-				case "私教课":
-					return CourseType.PRIVATE;
-				case "考级":
-					return CourseType.GRADE_EXAM;
-				case "以订单为准":
-					return CourseType.REFERENCE_ORDER;
-				default:
-					throw new UnsupportedOperationException(name + "is not supported for enum CourseType");
-			}
-		}
-	}
-	
-	@Converter
-	public static class CourseTypeConverter implements AttributeConverter<CourseType, String>{
-
-		@Override
-		public String convertToDatabaseColumn(CourseType attribute) {
-			if(attribute == null 
-					|| attribute == CourseType.GRADE_EXAM 
-					|| attribute == CourseType.REFERENCE_ORDER)
-				return null;
-			return attribute.getName();
-		}
-
-		@Override
-		public CourseType convertToEntityAttribute(String dbData) {
-			if(dbData == null || "".equals(dbData.trim()))
-				return null;
-			return CourseType.fromName(dbData);
-		}
-		
-	}
 	
 	
-	public enum SubCourseType {
-		
-		OPEN_A(1,"开放式A", CourseType.OPENED),
-		OPEN_B(2,"开放式B", CourseType.OPENED),
-		OPEN_CJ(5,"少儿集训初级",CourseType.OPENED),
-		OPEN_ZJ(6,"少儿集训中级",CourseType.OPENED),
-		CLOSED(3,"封闭式", CourseType.CLOSED),
-		PRIVATE(4,"私教课", CourseType.PRIVATE);
-		
-		private final int id;
-		private final String name;
-		private final CourseType supperType;
-		
-		private SubCourseType(int id,String name ,CourseType type){
-			this.id = id;
-			this.name= name;
-			this.supperType= type;
-		}
-
-		public Integer getId() {
-			return id;
-		}
-		public String getName() {
-			return name;
-		}
-
-		public CourseType getSupperType() {
-			return supperType;
-		}
-		
-		public static SubCourseType fromId(Integer id){
-			switch (id) {
-			case 1:
-				return SubCourseType.OPEN_A;
-			case 2:
-				return SubCourseType.OPEN_B;
-			case 3:
-				return SubCourseType.CLOSED;
-			case 4:
-				return SubCourseType.PRIVATE;
-			case 5:
-				return SubCourseType.OPEN_CJ;
-			case 6:
-				return SubCourseType.OPEN_ZJ;
-			default:
-				throw new UnsupportedOperationException(id + "is not supported from enum SubCourseType");
-			}
-		}
-		
-		public static SubCourseType fromName(String name){
-			switch (name) {
-			case "封闭式":
-				return SubCourseType.CLOSED;
-			case "开放式A":
-				return SubCourseType.OPEN_A;
-			case "开放式B":
-				return SubCourseType.OPEN_B;
-			case "私教课":
-				return SubCourseType.PRIVATE;
-			case "少儿集训初级":
-				return SubCourseType.OPEN_CJ;
-			case "少儿集训中级":
-				return SubCourseType.OPEN_ZJ;
-			default:
-				throw new UnsupportedOperationException(
-						name + "is not supported from enum SubCourseType");
-			}
-		}
-		
-		public static List<SubCourseType> fromCourseType(CourseType type){
-			List<SubCourseType> subs = new ArrayList<>();
-			for (SubCourseType sub : SubCourseType.values()) {
-				if(sub.getSupperType() == type)
-					subs.add(sub);
-			}
-			return subs;
-		}
-
-	}
-
-	@Converter
-	public static class SubCourseTypeConverter implements AttributeConverter<SubCourseType, String>{
-
-		@Override
-		public String convertToDatabaseColumn(SubCourseType attribute) {
-			if(attribute == null)
-				return null;
-			return attribute.getName();
-		}
-
-		@Override
-		public SubCourseType convertToEntityAttribute(String dbData) {
-			if(!StringUtils.hasLength(dbData))
-				return null;
-			return SubCourseType.fromName(dbData);
-		}
-		
-	}
-	
-	@Converter
-	public static class SubCourseTypeIntegerConverter implements AttributeConverter<SubCourseType, Integer>{
-
-		@Override
-		public Integer convertToDatabaseColumn(SubCourseType attribute) {
-			if(attribute == null)
-				return null;
-			return attribute.getId();
-		}
-
-		@Override
-		public SubCourseType convertToEntityAttribute(Integer dbData) {
-			if(dbData == null)
-				return null;
-			return SubCourseType.fromId(dbData);
-		}
-		
-	}
 	
 	
 	public static enum CourseStatus{

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.CourseTemplate;
+import com.yinzhiwu.yiwu.enums.CourseType;
+import com.yinzhiwu.yiwu.enums.SubCourseType;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
@@ -67,6 +69,7 @@ public class CourseTemplateController extends BaseController{
 		model.addAttribute("providers", connotationProviderService.findAll());
 		model.addAttribute("danceGrades", danceGradeService.findAll());
 		model.addAttribute("dances", danceService.findAll());
+		model.addAttribute("courseTypes", CourseType.getEffectiveCourseTypes());
 		
 		return "courseTemplates/createForm";
 	}
@@ -86,6 +89,13 @@ public class CourseTemplateController extends BaseController{
 		
 		return new DataTableBean<>(table.getDraw(), table.getRecordsTotal(), table.getRecordsFiltered(), vos, table.getError());
 		
+	}
+	
+	@GetMapping("/subCourseTypes")
+	@ResponseBody
+	public YiwuJson<List<SubCourseType>>  getSubCourseTypes(CourseType courseType){
+		
+		return YiwuJson.createBySuccess(courseType.getSubCourseTypes());
 	}
 	
 	@PostMapping

@@ -32,5 +32,11 @@
 		<function-class>com.yinzhiwu.yiwu.web.tablib.Functions</function-class>
 		<function-signature>int length(java.util.List)</function-signature>
 	</function>
+	<function>
+		<description>get the name of CourseType</description>
+		<name>getCourseTypeName</name>
+		<function-class>com.yinzhiwu.yiwu.web.tablib.Functions</function-class>
+		<function-signature>String getCourseTypeName(com.yinzhiwu.yiwu.enums.CourseType)</function-signature>
+	</function>
 	
 </taglib>

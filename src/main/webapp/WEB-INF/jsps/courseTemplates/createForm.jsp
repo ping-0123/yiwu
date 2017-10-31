@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="ping" uri="http://yinzhiwu.com/yiwu/tags/ping"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -23,9 +24,9 @@
 		<form id="form-create"  method="POST" action="./"  class="form-horizontal form-label-left">
 
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12"> 模板名 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input name="name" class="form-control " type="text"> 
+				<label class="control-label col-md-3 col-sm-3 col-xs-3"> 模板名 <span class="required">*</span></label>
+				<div class="col-md-6 col-sm-6 col-xs-9">
+					<input name="name" class="form-control" type="text"> 
 				</div>
 			</div>
 			
@@ -52,38 +53,78 @@
 			</div>
 			
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-6"> 课程类型 <span class="required">*</span></label>
-				<div class="col-md-3 col-sm-3 col-xs-6">
-					<select name="courseType" class="form-control" required>
-						<option value="CLOSED">封闭式</option>
-						<option value="OPEND">开放式</option>
-						<option value="PRIVATE">私教课</option>
-					</select>
-				</div>
-				<label class="control-label col-md-3 col-sm-3 col-xs-6"> 中类<span class="required">*</span></label>
-				<div class="col-md-3 col-sm-3 col-xs-6">
-					<select name="courseType" class="form-control" required>
-						<option value="CLOSED">封闭式</option>
-						<option value="OPEND">开放式</option>
-						<option value="PRIVATE">私教课</option>
-					</select>
-				</div>
-			</div>
-			
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">手机号码 <span class="required">*</span></label>
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">课程类型<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-					<!--  <input type="text" class="form-control" placeholder="设置之后不可修改"  name="name" value="${post.name }"> -->
-					<input id="cellphone" name="cellphone" class="form-control col-md-7 col-xs-12"  type="text">
+					<select name="courseType" id="courseType" class="form-control " required>
+						<c:forEach items="${courseTypes }" var ="courseType">
+							<option value="${courseType}">${ping:getCourseTypeName(courseType)}</option>
+						</c:forEach>
+					</select>
 				</div>
 			</div>
-
-
+			<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">中类<span class="required">*</span></label>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<select name="subCourseType" id="subCourseType" class="form-control col-md-3 col-sm-3 col-xs-6" required></select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">课程总节数<span class="required">*</span></label>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<input  name="times" class="form-control" required type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">每节课时长(单位:小时)<span class="required">*</span></label>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<input  name="hoursPerTime" class="form-control" required  type="text">
+				</div>
+			</div>
 			
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">邮箱 </label>
-				<div class="col-md-9 col-sm-9 col-xs-12">
-					<input class="form-control" rows="3" name="email" />
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">开课最小学员数量 <span class="required">*</span></label>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<input  name="minStudentCount" class="form-control"  required type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">可容纳学员数量 <span class="required">*</span></label>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<input  name="maxStudentCount" class="form-control" required  type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">有效开始日期 <span class="required">*</span></label>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<input  name="effectiveStart" class="form-control" required  type="date">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">有效结束日期 <span class="required">*</span></label>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<input  name="effectiveEnd" class="form-control" required  type="date">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12"> 可使用范围 (子部门可用)<span class="required">*</span></label>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<select name="usableDepartment.id" class="form-control" required>
+						<c:forEach items="${departments }" var="dept">
+							<option value="${dept.id }">${dept.name }</option>
+						</c:forEach>
+					</select>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12"> 教材提供者<span class="required">*</span></label>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<select name="provider.id" class="form-control" required>
+						<c:forEach items="${providers }" var="item">
+							<option value="${item.id }">${item.name }</option>
+						</c:forEach>
+					</select>
 				</div>
 			</div>
 
@@ -98,22 +139,6 @@
 	</div>
 	
 	<script type="text/javascript">
-		/* $('#form-create').submit(function(){
-			$.ajax({
-				url: $(this).attr("action"),
-				type: $(this).attr("method"),
-				data: $(this).serialize(),
-				success:function(data){
-					if(data.result){
-						$('.modal-create').modal('hide');
-						TABLE.order([CLOUMN_CREATE_TIME,'desc']).draw();
-					}else
-						showSaveFailureModal(data.msg);						
-				}
-			});
-			return false;
-		}); */
-		
 		$(document).ready(function(){
 			$('#form-create').bootstrapValidator({
 		        feedbackIcons: {
@@ -131,6 +156,11 @@
 		                        max: 30
 		                    }
 		                }
+		        	},
+		        	times:{
+		        		validators:{
+		        			notEmpty:{}
+		        		}
 		        	}
 		        
 		        },
@@ -151,7 +181,30 @@
 					});
 		        }
 			});
+			
+			loadHtmlForSubCourseType($('#courseType').val());
+			
+			$('#courseType').change(function(){
+				loadHtmlForSubCourseType($(this).val());
+			});
 		});
+		
+		function loadHtmlForSubCourseType(v_courseType){
+			var html;
+			$.ajax({
+				url:"./subCourseTypes?courseType=" + v_courseType,
+				type:"GET",
+				success:function(response){
+					if(response.result){
+						var types = response.data;
+						for(var i=0; i<types.length;i++){
+							html = html + '<option value="' +types[i] + '">' + translateSubCourseType(types[i]) + '</option>';
+						}
+						$('#subCourseType').html(html);
+					}
+				}
+			});
+		}
 	</script>
 </body>
 </html>

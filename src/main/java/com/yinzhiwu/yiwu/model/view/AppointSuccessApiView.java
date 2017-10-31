@@ -7,9 +7,9 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.income.AbstractAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.enums.SubCourseType;
 
 public class AppointSuccessApiView {
 

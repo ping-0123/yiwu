@@ -16,7 +16,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
+import com.yinzhiwu.yiwu.enums.CourseType;
 
 @Entity
 @Table(name = "velectric_contract_type")

@@ -6,8 +6,8 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
+import com.yinzhiwu.yiwu.enums.SubCourseType;
 
 import io.swagger.annotations.ApiModelProperty;
 

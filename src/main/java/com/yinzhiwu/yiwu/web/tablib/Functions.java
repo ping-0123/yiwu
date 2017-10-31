@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.util.CollectionUtils;
 
 import com.yinzhiwu.yiwu.entity.Address;
+import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.DataStatus;
 
 
@@ -36,6 +37,10 @@ public class Functions {
     
     public static int length(List<?> list){
     	return list==null?0: list.size();
+    }
+    
+    public static String getCourseTypeName(CourseType courseType){
+    	return courseType.getName();
     }
 }
 
