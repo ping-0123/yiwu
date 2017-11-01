@@ -125,14 +125,10 @@
 					"type" : "POST"
 				},
 				"columns" : [{
-					"data" : "id",
-					"title" : "模板编号",
-					"visible" : false
-				},{
 					"title": "模板名",
 					"data" : "name",
 					"name" : ""
-				}, {
+				},{
 					"title" :"舞种名",
 					"data":"danceName"
 				},{
