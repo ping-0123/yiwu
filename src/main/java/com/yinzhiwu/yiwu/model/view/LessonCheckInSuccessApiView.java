@@ -5,8 +5,8 @@ import java.sql.Time;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
+import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;

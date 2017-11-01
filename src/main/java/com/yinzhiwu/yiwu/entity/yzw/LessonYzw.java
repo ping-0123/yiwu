@@ -29,10 +29,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseTypeConverter;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseTypeConverter;
+import com.yinzhiwu.yiwu.enums.CourseType;
+import com.yinzhiwu.yiwu.enums.CourseType.CourseTypeConverter;
+import com.yinzhiwu.yiwu.enums.SubCourseType;
+import com.yinzhiwu.yiwu.enums.SubCourseType.SubCourseTypeConverter;
 
 @SuppressWarnings("serial")
 @Entity

@@ -1,10 +1,10 @@
 package com.yinzhiwu.yiwu.web.purchase.dto;
 
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractTypeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw.ProductCardType;
+import com.yinzhiwu.yiwu.enums.CourseType;
 
 /**
 *@Author ping

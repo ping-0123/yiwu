@@ -3,8 +3,8 @@ package com.yinzhiwu.yiwu.model.view;
 import java.util.Date;
 
 import com.yinzhiwu.yiwu.entity.CourseTemplate;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
+import com.yinzhiwu.yiwu.enums.CourseType;
+import com.yinzhiwu.yiwu.enums.SubCourseType;
 import com.yinzhiwu.yiwu.model.view.CourseConnotationVO.CourseConnotationVOConverter;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;

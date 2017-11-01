@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
+import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.page.PageBean;

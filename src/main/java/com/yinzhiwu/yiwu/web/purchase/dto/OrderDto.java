@@ -10,12 +10,12 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw.ProductCardType;
+import com.yinzhiwu.yiwu.enums.CourseType;
+import com.yinzhiwu.yiwu.enums.SubCourseType;
 
 import io.swagger.annotations.ApiModelProperty;
 

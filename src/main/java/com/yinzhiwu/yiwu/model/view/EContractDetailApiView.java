@@ -5,8 +5,8 @@ import java.util.Date;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
+import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.Gender;
 
 public class EContractDetailApiView {

@@ -2,9 +2,12 @@ package com.yinzhiwu.yiwu.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
@@ -15,13 +18,14 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.validation.metadata.ValidateUnwrappedValue;
 
 import com.yinzhiwu.yiwu.entity.yzw.Connotation;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseType;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.SubCourseType;
 import com.yinzhiwu.yiwu.entity.yzw.DanceGradeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DanceYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.enums.CourseType;
+import com.yinzhiwu.yiwu.enums.SubCourseType;
 
 /**
 *@Author ping
@@ -48,9 +52,13 @@ public class CourseTemplate extends BaseEntity {
 	private DanceGradeYzw danceGrade;
 	
 	@NotNull
+	@Enumerated(value=EnumType.STRING)
+	@Column(length=32)
 	private CourseType courseType;
 	
 	@NotNull
+	@Enumerated(value=EnumType.STRING)
+	@Column(length=32)
 	private SubCourseType subCourseType;
 	
 	@Min(1)

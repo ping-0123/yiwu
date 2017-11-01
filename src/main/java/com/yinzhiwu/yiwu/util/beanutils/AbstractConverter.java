@@ -31,7 +31,7 @@ public abstract class AbstractConverter<PO, VO> implements Converter<PO, VO> {
 	
 	@Override
 	public VO fromPO(PO po) {
-		if(po==null) throw new IllegalArgumentException();
+		if(po==null) return null;
 		
 		try {
 			VO vo = voClass.newInstance();
@@ -46,7 +46,7 @@ public abstract class AbstractConverter<PO, VO> implements Converter<PO, VO> {
 
 	@Override
 	public PO toPO(VO vo) {
-		if(vo==null) throw new IllegalArgumentException();
+		if(vo==null) return null;
 		try {
 			PO po = poClass.newInstance();
 			MapedClassUtils.copyProperties(vo, po);
