@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -19,6 +22,7 @@ import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.CourseTemplate;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.SubCourseType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
@@ -74,6 +78,17 @@ public class CourseTemplateController extends BaseController{
 		return "courseTemplates/createForm";
 	}
 	
+	@GetMapping(value="/{id}/updateForm")
+	public String showUpdateForm(Model model){
+		
+		model.addAttribute("departments", deptmentService.findAll());
+		model.addAttribute("providers", connotationProviderService.findAll());
+		model.addAttribute("danceGrades", danceGradeService.findAll());
+		model.addAttribute("dances", danceService.findAll());
+		model.addAttribute("courseTypes", CourseType.getEffectiveCourseTypes());
+		return "courseTemplates/updateForm";
+	}
+	
 	@PostMapping(value="/datatable")
 	@ResponseBody
 	public DataTableBean<?> findDatatable(HttpServletRequest request) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InstantiationException{
@@ -106,5 +121,21 @@ public class CourseTemplateController extends BaseController{
 		courseTemplateService.save(course);
 		
 		return YiwuJson.createBySuccess(CourseTemplateVOConverter.INSTANCE.fromPO(course));
+	}
+	
+	@PutMapping("/{id}")
+	@ResponseBody
+	public YiwuJson<?> doUpdate(@PathVariable(name="id") Integer id,  CourseTemplate course, BindingResult result) throws IllegalArgumentException, IllegalAccessException, DataNotFoundException{
+		courseTemplateService.modify(id, course);
+		
+		return YiwuJson.createBySuccess(CourseTemplateVOConverter.INSTANCE.fromPO(course));
+	}
+	
+	@DeleteMapping("/{id}")
+	@ResponseBody
+	public YiwuJson<?> doDelete(@PathVariable(name="id") Integer id){
+		courseTemplateService.delete(id);
+		
+		return YiwuJson.createBySuccess();
 	}
 }

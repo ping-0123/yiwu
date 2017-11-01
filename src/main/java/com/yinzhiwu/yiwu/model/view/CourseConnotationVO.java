@@ -69,6 +69,7 @@ public class CourseConnotationVO {
 
 		@Override
 		public CourseConnotationVO fromPO(Connotation po) {
+			if(null==po) return null;
 			CourseConnotationVO  vo =  super.fromPO(po);
 			vo.setPictureUrl(qiniuService.generateFileUrl(vo.getPictureUrl()));
 			vo.setVideoUrl(qiniuService.generateFileUrl(vo.getVideoUrl()));

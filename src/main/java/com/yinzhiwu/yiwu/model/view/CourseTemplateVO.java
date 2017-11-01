@@ -55,7 +55,7 @@ public class CourseTemplateVO {
 	private Integer usableDepartmentId;
 	
 	@MapedProperty(value="usableDepartment.name")
-	private Integer usableDepartmentName;
+	private String usableDepartmentName;
 	
 	@MapedProperty(value="provider.id")
 	private Integer providerId;
@@ -73,7 +73,8 @@ public class CourseTemplateVO {
 		@Override
 		public CourseTemplateVO fromPO(CourseTemplate po) {
 			CourseTemplateVO vo = super.fromPO(po);
-			vo.setConnotation(CourseConnotationVOConverter.INSTANCE.fromPO(po.getConnotation()));
+			if(null != po.getConnotation())
+				vo.setConnotation(CourseConnotationVOConverter.INSTANCE.fromPO(po.getConnotation()));
 			return vo;
 		}
 
@@ -205,14 +206,6 @@ public class CourseTemplateVO {
 
 	public void setUsableDepartmentId(Integer usableDepartmentId) {
 		this.usableDepartmentId = usableDepartmentId;
-	}
-
-	public Integer getUsableDepartmentName() {
-		return usableDepartmentName;
-	}
-
-	public void setUsableDepartmentName(Integer usableDepartmentName) {
-		this.usableDepartmentName = usableDepartmentName;
 	}
 
 	public Integer getProviderId() {

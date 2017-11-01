@@ -130,8 +130,10 @@
 
 			<div class="ln_solid"></div>
 			<div class="form-group">
+				
 				<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-					<button type="submit"  class="btn btn-success">提交</button>
+					<button type="reset"  class="btn btn-primary">重置</button>
+					<button type="submit"  class="btn btn-success">保存</button>
 				</div>
 			</div>
 
@@ -140,7 +142,7 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$('#form-create').bootstrapValidator({
+			var validator = $('#form-create').bootstrapValidator({
 		        feedbackIcons: {
 		            valid: 'glyphicon glyphicon-ok',
 		            invalid: 'glyphicon glyphicon-remove',
@@ -165,24 +167,35 @@
 		        
 		        },
 		        
-		        submitHandler: function(validator, form, submitButton){
-		        	validator.validatte();
-		        	$.ajax({
-						url: form.attr("action"),
-						type: form.attr("method"),
-						data: form.serialize(),
-						success:function(data){
-							if(data.result){
-								$('.modal-create').modal('hide');
-								TABLE.draw(false);
-							}else
-								showSaveFailureModal(data.msg);						
-						}
-					});
-		        }
+		         submitHandler: function(validator, form, submitButton){
+		        	 $.ajax({
+		        		 url:form.attr("action"),
+		        		 type:form.attr("method"),
+		        		 data:form.serialize(),
+		        		 success:function(data){
+		        			 $('.modal-create').modal('hide');
+		        			 TABLE.draw(false);
+		        		 }
+		        	 });
+		        } 
 			});
 			
+			
+			
 			loadHtmlForSubCourseType($('#courseType').val());
+			
+		/* 	$('#form-create').submit(function() {	
+				$(this).data('bootstrapValidator').validate();
+				$.ajax({
+					url : $(this).attr("action"),
+					type : $(this).attr("method"),
+					data : $(this).serialize(),
+					success : function(data) {
+						$('.modal-create').modal('hide');
+						TABLE.draw(false);
+					}
+				});
+			}); */
 			
 			$('#courseType').change(function(){
 				loadHtmlForSubCourseType($(this).val());

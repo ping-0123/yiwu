@@ -46,7 +46,7 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<shiro:hasPermission name="courseTemplates:create:*">
+						<shiro:hasPer mission name="courseTemplates:create:*">
 							<button type="button" data-remote="./createForm" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
@@ -109,8 +109,7 @@
 	
    
    <script type="text/javascript">
-   		// start datatable setting
-   		var column_index_create_time =0;
+   		var column_index_create_time=0;
    		var setting = 
 			{
 				"processing" : false,
@@ -118,7 +117,7 @@
 				"select":true,
 				"language" : {
 					"url" : "../../backend/config/i18n/datatable-chinese.json",
-					"searchPlaceholder" : "输入职位名"
+					"searchPlaceholder" : "输入模板名,舞种名"
 				},
 				"ajax" : {
 					"url" : "./datatable",
@@ -135,12 +134,17 @@
 					"data" : "danceGradeName",
 					"title": "舞种等级"
 				},{
-				},{
 					"data" : "courseType",
-					"title": "课程类型"
+					"title": "课程类型",
+					"render":function(data, type, row, meta){
+						return translateCourseType(data);
+					}
 				},{
 					"data" : "subCourseType",
-					"title": "课程中类"
+					"title": "课程中类",
+					"render": function(data,type,row, meta){
+						return translateSubCourseType(data);
+					}
 				},{
 					"data" : "times",
 					"title": "课程总节数"
@@ -155,10 +159,16 @@
 					"title": "最大学员数量"
 				},{
 					"data" : "effectiveStart",
-					"title": "有效开始日期"
+					"title": "有效开始日期",
+					"render":function(data,type,row, meta){
+						return formatDate(data, "yyyy-MM-dd");
+					}
 				},{
 					"data" : "effectiveEnd",
-					"title": "有效结束日期"
+					"title": "有效结束日期",
+					"render":function(data,type,row, meta){
+						return formatDate(data, "yyyy-MM-dd");
+					}
 				},{
 					"data" : "providerName",
 					"title": "教材提供商"
@@ -167,12 +177,16 @@
 					"title":"操作",
 					"render": function(data, type, row, meta) {
 						var html =  '';
-						<shiro:hasPermission name="coachMedia:view:*">
-							html = html + '<a href="details?coachId=' + row.employee.id + '" data-toggle="modal" data-target=".modal-detail"> [查看详情]  </a>';
+						<shiro:hasPermission name="courseTemplates:view:*">
+							html = html + '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i>  </a>';
 						</shiro:hasPermission>
 						
-						<shiro:hasPermission name="coachMedia:update:*">
-							html = html +  '<a href="' + row.employee.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> [编辑]</a>';
+						<shiro:hasPermission name="courseTemplates:update:*">
+							html = html +  '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update">  <i class="fa fa-navicon" title="修改教材内容"></i></a>';
+						</shiro:hasPermission>
+						
+						<shiro:hasPermission name="courseTemplates:delete:*">
+							html = html +  '<a onclick="showDeleteModal(' + row.id + ',refreshDataTable)"> <small> <i class="fa fa-trash" title="删除"> </i> </small></a>';
 						</shiro:hasPermission>
 						return html;
 					}
