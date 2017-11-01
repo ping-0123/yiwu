@@ -71,7 +71,7 @@
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">课程总节数<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input  name="times" class="form-control" required type="text">
+					<input  name="times" class="form-control" required type="number">
 				</div>
 			</div>
 			<div class="form-group">
@@ -84,13 +84,13 @@
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">开课最小学员数量 <span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input  name="minStudentCount" class="form-control"  required type="text">
+					<input  name="minStudentCount" class="form-control"  required type="number">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">可容纳学员数量 <span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input  name="maxStudentCount" class="form-control" required  type="text">
+					<input  name="maxStudentCount" class="form-control" required  type="number">
 				</div>
 			</div>
 			<div class="form-group">
@@ -142,60 +142,85 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
-			var validator = $('#form-create').bootstrapValidator({
-		        feedbackIcons: {
-		            valid: 'glyphicon glyphicon-ok',
-		            invalid: 'glyphicon glyphicon-remove',
-		            validating: 'glyphicon glyphicon-refresh'
-		        },
-		        fields:{
-		        	name:{
-		                validators: {
-		                    notEmpty: {
-		                    },
-		                    stringLength: {
-		                        min: 2,
-		                        max: 30
-		                    }
-		                }
-		        	},
-		        	times:{
-		        		validators:{
-		        			notEmpty:{}
-		        		}
-		        	}
-		        
-		        },
-		        
-		         submitHandler: function(validator, form, submitButton){
-		        	 $.ajax({
-		        		 url:form.attr("action"),
-		        		 type:form.attr("method"),
-		        		 data:form.serialize(),
-		        		 success:function(data){
-		        			 $('.modal-create').modal('hide');
-		        			 TABLE.draw(false);
-		        		 }
-		        	 });
-		        } 
-			});
-			
+			 $('#form-create')
+			 	.bootstrapValidator({
+			        feedbackIcons: {
+			            valid: 'glyphicon glyphicon-ok',
+			            invalid: 'glyphicon glyphicon-remove',
+			            validating: 'glyphicon glyphicon-refresh'
+			        },
+			        fields:{
+			        	name:{
+			                validators: {
+			                    notEmpty: {
+			                    },
+			                    stringLength: {
+			                        min: 2,
+			                        max: 30
+			                    }
+			                }
+			        	},
+			        	times:{
+			        		validators:{
+			        			notEmpty:{}
+			        		}
+			        	},
+			        	minStudentCount:{
+			        		validators:{
+			        			greaterThan:{
+			        				value:4
+			        			}
+			        		}
+			        	}
+			        
+			        }
+			        
+	/* 		         submitHandler: function(validator, form, submitButton){
+			        	 $.ajax({
+			        		 url:form.attr("action"),
+			        		 type:form.attr("method"),
+			        		 data:form.serialize(),
+			        		 success:function(data){
+			        			 $('.modal-create').modal('hide');
+			        			 TABLE.draw(false);
+			        		 }
+			        	 });
+			        } 
+	 */			})
+	 			.on('success.form.bv', function(e) {
+	 	            // Prevent form submission
+	 	            e.preventDefault();
+	
+	 	            // Get the form instance
+	 	            var $form = $(e.target);
+
+	 	            // Get the BootstrapValidator instance
+	 	            var bv = $form.data('bootstrapValidator');
+	
+	 	            // Use Ajax to submit form data
+	 	            $.post($form.attr('action'), $form.serialize(), function(result) {
+	 	            	$('.modal-create').modal('hide');
+						TABLE.draw(false);
+	 	            }, 'json');
+	 	        });
+				
 			
 			
 			loadHtmlForSubCourseType($('#courseType').val());
 			
-		/* 	$('#form-create').submit(function() {	
-				$(this).data('bootstrapValidator').validate();
-				$.ajax({
-					url : $(this).attr("action"),
-					type : $(this).attr("method"),
-					data : $(this).serialize(),
-					success : function(data) {
-						$('.modal-create').modal('hide');
-						TABLE.draw(false);
-					}
-				});
-			}); */
+		 	/* $('#form-create').submit(function() {	
+				if($(this).data('bootstrapValidator').validate().isValid()){
+					$.ajax({
+						url : $(this).attr("action"),
+						type : $(this).attr("method"),
+						data : $(this).serialize(),
+						success : function(data) {
+							$('.modal-create').modal('hide');
+							TABLE.draw(false);
+						}
+					});
+				}
+			});  */
 			
 			$('#courseType').change(function(){
 				loadHtmlForSubCourseType($(this).val());

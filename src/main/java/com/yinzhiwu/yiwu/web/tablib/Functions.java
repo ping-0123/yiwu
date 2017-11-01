@@ -8,6 +8,7 @@ import org.springframework.util.CollectionUtils;
 import com.yinzhiwu.yiwu.entity.Address;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.DataStatus;
+import com.yinzhiwu.yiwu.enums.SubCourseType;
 
 
 /**
@@ -41,6 +42,10 @@ public class Functions {
     
     public static String getCourseTypeName(CourseType courseType){
     	return courseType.getName();
+    }
+    
+    public static String getSubCourseTypeName(SubCourseType subCourseType){
+    	return subCourseType.getName();
     }
 }
 

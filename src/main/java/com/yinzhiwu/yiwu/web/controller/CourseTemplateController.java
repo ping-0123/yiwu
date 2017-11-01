@@ -79,13 +79,14 @@ public class CourseTemplateController extends BaseController{
 	}
 	
 	@GetMapping(value="/{id}/updateForm")
-	public String showUpdateForm(Model model){
+	public String showUpdateForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
 		
-		model.addAttribute("departments", deptmentService.findAll());
-		model.addAttribute("providers", connotationProviderService.findAll());
-		model.addAttribute("danceGrades", danceGradeService.findAll());
-		model.addAttribute("dances", danceService.findAll());
-		model.addAttribute("courseTypes", CourseType.getEffectiveCourseTypes());
+		model.addAttribute("template", courseTemplateService.get(id));
+//		model.addAttribute("departments", deptmentService.findAll());
+//		model.addAttribute("providers", connotationProviderService.findAll());
+//		model.addAttribute("danceGrades", danceGradeService.findAll());
+//		model.addAttribute("dances", danceService.findAll());
+//		model.addAttribute("courseTypes", CourseType.getEffectiveCourseTypes());
 		return "courseTemplates/updateForm";
 	}
 	
