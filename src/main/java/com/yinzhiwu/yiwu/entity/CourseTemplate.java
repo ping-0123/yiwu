@@ -19,7 +19,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.yinzhiwu.yiwu.entity.yzw.Connotation;
+import com.yinzhiwu.yiwu.entity.yzw.CourseConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.DanceGradeYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DanceYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
@@ -90,7 +90,7 @@ public class CourseTemplate extends BaseEntity {
 	private ConnotationProvider provider;
 	
 	@Embedded
-	private Connotation connotation;
+	private CourseConnotation connotation;
 
 	public String getName() {
 		return name;
@@ -116,7 +116,7 @@ public class CourseTemplate extends BaseEntity {
 		return minStudentCount;
 	}
 
-	public Connotation getConnotation() {
+	public CourseConnotation getConnotation() {
 		return connotation;
 	}
 
@@ -144,7 +144,7 @@ public class CourseTemplate extends BaseEntity {
 		this.minStudentCount = minStudentCount;
 	}
 
-	public void setConnotation(Connotation connotation) {
+	public void setConnotation(CourseConnotation connotation) {
 		this.connotation = connotation;
 	}
 

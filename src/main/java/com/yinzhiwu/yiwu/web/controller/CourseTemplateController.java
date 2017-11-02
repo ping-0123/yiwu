@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +34,7 @@ import com.yinzhiwu.yiwu.service.CourseTemplateService;
 import com.yinzhiwu.yiwu.service.DanceGradeYzwService;
 import com.yinzhiwu.yiwu.service.DanceYzwService;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
+import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 
 /**
@@ -50,6 +52,8 @@ public class CourseTemplateController extends BaseController{
 	@Autowired private ConnotationProviderService connotationProviderService;
 	@Autowired private DanceGradeYzwService danceGradeService;
 	@Autowired private DanceYzwService danceService;
+	@Qualifier("qiniuServiceImpl")
+	@Autowired private FileService qiniuService;
 	
 	@GetMapping(value="/list")
 	public String list(){
@@ -81,6 +85,7 @@ public class CourseTemplateController extends BaseController{
 	@GetMapping(value="/{id}/updateForm")
 	public String showUpdateForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
 		
+		model.addAttribute("uploadToken", qiniuService.createAccessToken());
 		model.addAttribute("template", courseTemplateService.get(id));
 //		model.addAttribute("departments", deptmentService.findAll());
 //		model.addAttribute("providers", connotationProviderService.findAll());

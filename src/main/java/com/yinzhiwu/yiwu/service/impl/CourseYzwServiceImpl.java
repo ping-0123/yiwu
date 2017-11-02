@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.CourseYzwDao;
-import com.yinzhiwu.yiwu.entity.yzw.Connotation;
+import com.yinzhiwu.yiwu.entity.yzw.CourseConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
 import com.yinzhiwu.yiwu.service.FileService;
@@ -24,7 +24,7 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 	}
 	
 	@Override
-	public  void setConnatationUrls(Connotation con){
+	public  void setConnatationUrls(CourseConnotation con){
 		Assert.notNull(con);
 		con.setAudioUri(fileService.getFileUrl(con.getAudioUri()));
 		con.setPictureUri(fileService.getFileUrl(con.getPictureUri()));

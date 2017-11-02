@@ -75,7 +75,7 @@ public class QiniuServiceImpl implements FileService {
 			bucketManager.delete(config.getBucket(), fileName);
 			return true;
 		} catch (QiniuException e) {
-			log.error(e, e);
+			log.error("can not delete file " + fileName, e);
 		}
 		return false;
 	}

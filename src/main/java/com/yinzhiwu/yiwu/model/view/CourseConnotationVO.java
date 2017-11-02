@@ -3,7 +3,7 @@ package com.yinzhiwu.yiwu.model.view;
 import org.springframework.beans.BeanUtils;
 
 import com.google.common.base.Converter;
-import com.yinzhiwu.yiwu.entity.yzw.Connotation;
+import com.yinzhiwu.yiwu.entity.yzw.CourseConnotation;
 import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.impl.FileServiceImpl;
 import com.yinzhiwu.yiwu.util.SpringUtils;
@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiModelProperty;
 *
 */
 
-@MapedClass(Connotation.class)
+@MapedClass(CourseConnotation.class)
 @ApiModel(description="课时内容")
 public class CourseConnotationVO {
 	
@@ -63,12 +63,12 @@ public class CourseConnotationVO {
 	private String danceIntroduction;
 	
 	
-	public static final class CourseConnotationVOConverter extends AbstractConverter<Connotation, CourseConnotationVO>{
+	public static final class CourseConnotationVOConverter extends AbstractConverter<CourseConnotation, CourseConnotationVO>{
 		public static final CourseConnotationVOConverter INSTANCE =  new CourseConnotationVOConverter();
 		private FileService qiniuService = SpringUtils.getBean("qiniuServiceImpl");
 
 		@Override
-		public CourseConnotationVO fromPO(Connotation po) {
+		public CourseConnotationVO fromPO(CourseConnotation po) {
 			if(null==po) return null;
 			CourseConnotationVO  vo =  super.fromPO(po);
 			vo.setPictureUrl(qiniuService.generateFileUrl(vo.getPictureUrl()));
@@ -129,26 +129,26 @@ public class CourseConnotationVO {
 		this.danceIntroduction = danceIntroduction;
 	}
 
-	public static CourseConnotationVO fromPO(Connotation po){
+	public static CourseConnotationVO fromPO(CourseConnotation po){
 		return VOConverter.instance.reverse().convert(po);
 	}
 	
-	public static Connotation toPO(CourseConnotationVO vo){
+	public static CourseConnotation toPO(CourseConnotationVO vo){
 		return VOConverter.instance.convert(vo);
 	}
 	
-	private static class VOConverter extends Converter<CourseConnotationVO, Connotation>{
+	private static class VOConverter extends Converter<CourseConnotationVO, CourseConnotation>{
 
 	public static final VOConverter instance = new VOConverter();
 
 	@Override
-	protected Connotation doForward(CourseConnotationVO vo) {
+	protected CourseConnotation doForward(CourseConnotationVO vo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected CourseConnotationVO doBackward(Connotation po) {
+	protected CourseConnotationVO doBackward(CourseConnotation po) {
 		CourseConnotationVO vo = new CourseConnotationVO();
 		BeanUtils.copyProperties(po, vo);
 		FileServiceImpl fileService = SpringUtils.getBean(FileServiceImpl.class);

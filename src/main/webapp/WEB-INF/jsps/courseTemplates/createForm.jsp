@@ -24,26 +24,23 @@
 		<form id="form-create"  method="POST" action="./"  class="form-horizontal form-label-left">
 
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-3"> 模板名 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-9">
+				<label class="control-label col-md-2 col-sm-2 col-xs-3"> 模板名 <span class="required">*</span></label>
+				<div class="col-md-10 col-sm-10 col-xs-9">
 					<input name="name" class="form-control" type="text"> 
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12"> 舞种 *</label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<label class="control-label col-md-2 col-sm-2 col-xs-4"> 舞种 *</label>
+				<div class="col-md-4 col-sm-4 col-xs-8">
 					<select name="dance.id" class="form-control" required>
 						<c:forEach items="${dances }" var="dance">
 							<option value="${dance.id }">${dance.name }</option>
 						</c:forEach>
 					</select>
 				</div>
-			</div>
-			
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12"> 舞种等级 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<label class="control-label col-md-2 col-sm-2 col-xs-4"> 舞种等级 <span class="required">*</span></label>
+				<div class="col-md-4 col-sm-4 col-xs-8	">
 					<select name="danceGrade.id" class="form-control" required>
 						<c:forEach items="${danceGrades }" var="grade">
 							<option value="${grade.id }">${grade.name }</option>
@@ -52,74 +49,65 @@
 				</div>
 			</div>
 			
+			
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">课程类型<span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<label class="control-label col-md-2 col-sm-2 col-xs-4">课程类型<span class="required">*</span></label>
+				<div class="col-md-4 col-sm-4 col-xs-8">
 					<select name="courseType" id="courseType" class="form-control " required>
 						<c:forEach items="${courseTypes }" var ="courseType">
 							<option value="${courseType}">${ping:getCourseTypeName(courseType)}</option>
 						</c:forEach>
 					</select>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">中类<span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<label class="control-label col-md-2 col-sm-2 col-xs-4">中类<span class="required">*</span></label>
+				<div class="col-md-4 col-sm-4 col-xs-8">
 					<select name="subCourseType" id="subCourseType" class="form-control col-md-3 col-sm-3 col-xs-6" required></select>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">课程总节数<span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input  name="times" class="form-control" required type="number">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">每节课时长(单位:小时)<span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input  name="hoursPerTime" class="form-control" required  type="text">
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">开课最小学员数量 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input  name="minStudentCount" class="form-control"  required type="number">
+				<label class="control-label col-md-2 col-sm-2 col-xs-4">课程总节数<span class="required">*</span></label>
+				<div class="col-md-4 col-sm-4 col-xs-8">
+					<input  name="times" class="form-control" required type="number">
+				</div>
+				<label class="control-label col-md-2 col-sm-2 col-xs-8">每节课时长<span class="required">*</span></label>
+				<div class="col-md-4 col-sm-4 col-xs-8">
+					<input  name="hoursPerTime" class="form-control" placeholder="单位:小时" required  type="text">
 				</div>
 			</div>
+			
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">可容纳学员数量 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<label class="control-label col-md-2 col-sm-2 col-xs-4">开课最小学员数量 <span class="required">*</span></label>
+				<div class="col-md-4 col-sm-4 col-xs-8">
+					<input  name="minStudentCount" class="form-control"  required type="number">
+				</div>
+				<label class="control-label col-md-2 col-sm-2 col-xs-4">可容纳学员数量 <span class="required">*</span></label>
+				<div class="col-md-4 col-sm-4 col-xs-8">
 					<input  name="maxStudentCount" class="form-control" required  type="number">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">有效开始日期 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<label class="control-label col-md-2 col-sm-2 col-xs-4">有效开始日期 <span class="required">*</span></label>
+				<div class="col-md-4 col-sm-4 col-xs-8">
 					<input  name="effectiveStart" class="form-control" required  type="date">
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">有效结束日期 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<label class="control-label col-md-2 col-sm-2 col-xs-12">有效结束日期 <span class="required">*</span></label>
+				<div class="col-md-4 col-sm-4 col-xs-8">
 					<input  name="effectiveEnd" class="form-control" required  type="date">
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12"> 可使用范围 (子部门可用)<span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<label class="control-label col-md-2 col-sm-2 col-xs-4"> 可使用范围 (子部门可用)<span class="required">*</span></label>
+				<div class="col-md-4 col-sm-4 col-xs-8">
 					<select name="usableDepartment.id" class="form-control" required>
 						<c:forEach items="${departments }" var="dept">
 							<option value="${dept.id }">${dept.name }</option>
 						</c:forEach>
 					</select>
 				</div>
-			</div>
-			
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12"> 教材提供者<span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<label class="control-label col-md-2 col-sm-2 col-xs-4"> 教材提供者<span class="required">*</span></label>
+				<div class="col-md-4 col-sm-4 col-xs-8">
 					<select name="provider.id" class="form-control" required>
 						<c:forEach items="${providers }" var="item">
 							<option value="${item.id }">${item.name }</option>
@@ -127,11 +115,10 @@
 					</select>
 				</div>
 			</div>
-
+			
 			<div class="ln_solid"></div>
 			<div class="form-group">
-				
-				<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+				<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-2">
 					<button type="reset"  class="btn btn-primary">重置</button>
 					<button type="submit"  class="btn btn-success">保存</button>
 				</div>
@@ -175,18 +162,7 @@
 			        
 			        }
 			        
-	/* 		         submitHandler: function(validator, form, submitButton){
-			        	 $.ajax({
-			        		 url:form.attr("action"),
-			        		 type:form.attr("method"),
-			        		 data:form.serialize(),
-			        		 success:function(data){
-			        			 $('.modal-create').modal('hide');
-			        			 TABLE.draw(false);
-			        		 }
-			        	 });
-			        } 
-	 */			})
+				})
 	 			.on('success.form.bv', function(e) {
 	 	            // Prevent form submission
 	 	            e.preventDefault();
@@ -204,23 +180,7 @@
 	 	            }, 'json');
 	 	        });
 				
-			
-			
 			loadHtmlForSubCourseType($('#courseType').val());
-			
-		 	/* $('#form-create').submit(function() {	
-				if($(this).data('bootstrapValidator').validate().isValid()){
-					$.ajax({
-						url : $(this).attr("action"),
-						type : $(this).attr("method"),
-						data : $(this).serialize(),
-						success : function(data) {
-							$('.modal-create').modal('hide');
-							TABLE.draw(false);
-						}
-					});
-				}
-			});  */
 			
 			$('#courseType').change(function(){
 				loadHtmlForSubCourseType($(this).val());

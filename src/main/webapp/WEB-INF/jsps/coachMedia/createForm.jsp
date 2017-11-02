@@ -18,19 +18,17 @@
 			<input type="hidden" name="tag" value="${media.tag }">
 			<input type="hidden" name="coverage" value="false">
 				
-			<div class="form-group">
+			<div class="form-group ">
 				<input type="hidden" name="uri" id="media-uri" value=""> 
-				<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
-				<div class="col-md-9 col-sm-9 col-xs-12 dropzone" id="dropzone-media">
+				<div class="form-control dropzone" id="dropzone-media">
 					<div class="am-text-success dz-message">
 						将图片拖拽到此处<br>或点此打开文件管理器选择图片
 					</div>
 				</div>
 			</div>
 
-			<div class="ln_solid"></div>
 			<div class="form-group">
-				<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+				<div class="col-md-3 col-sm-3 col-xs-6">
 					<button type="submit" class="btn btn-success">保存</button>
 				</div>
 			</div>
@@ -59,8 +57,8 @@
 			},
 			addRemoveLinks : true,
 			dictRemoveLinks : "x",
-			dictRemoveFile : "移除",
-			dictMaxFilesExceeded : "",
+			dictRemoveFile : "删除",
+			dictMaxFilesExceeded : "已超出允许的最大上传文件数量",
 			maxFiles : 1,
 			filesizeBase : 1024,
 

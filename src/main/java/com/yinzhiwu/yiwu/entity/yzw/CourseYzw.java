@@ -204,7 +204,7 @@ public class CourseYzw extends BaseYzwEntity {
 			@AttributeOverride(name = "audioName", column = @Column(name = "audio")),
 			@AttributeOverride(name = "audioUri", column = @Column(name = "audioUrl")),
 			@AttributeOverride(name = "danceIntroduction", column = @Column(name = "danceIntroduction")) })
-	private Connotation connotation;
+	private CourseConnotation connotation;
 
 	 @OneToMany
 	 @JoinColumn(name="course_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
@@ -544,11 +544,11 @@ public class CourseYzw extends BaseYzwEntity {
 		this.auditorId = auditorId;
 	}
 
-	public Connotation getConnotation() {
+	public CourseConnotation getConnotation() {
 		return connotation;
 	}
 
-	public void setConnotation(Connotation connotation) {
+	public void setConnotation(CourseConnotation connotation) {
 		this.connotation = connotation;
 	}
 

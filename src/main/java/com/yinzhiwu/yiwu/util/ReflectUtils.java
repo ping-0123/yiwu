@@ -252,9 +252,12 @@ public final class ReflectUtils {
 	 * @param source
 	 * @param target
 	 * @return
-	 * @throws IllegalAccessException
+	 * @throws IllegalAccessException if source or target is null
 	 */
 	public static <E> E modifySourceEntityPropertiesToTarget(E source, E target) throws IllegalAccessException{
+		if(null==source || null ==target)
+			throw new IllegalArgumentException("source and target can not be null");
+			
 		Field[] fields = getAllFields(source.getClass());
 		for (Field f : fields) {
 			f.setAccessible(true);
@@ -270,8 +273,13 @@ public final class ReflectUtils {
 					&& !f.get(target).equals(f.get(source))
 					// 排除OneToMany 映射
 					&& f.getDeclaredAnnotation(OneToMany.class) == null)
+					// 不支持修改关联表对象 && f.getDeclaredAnnotation(ManyToOne.class) == null
 				if (f.getDeclaredAnnotation(Embedded.class) != null) {
-					f.set(source, modifySourceEntityPropertiesToTarget(f.get(source), f.get(target)));
+					Object embededSource = f.get(source);
+					if(null == embededSource)
+						f.set(source, f.get(target));
+					else
+						f.set(source, modifySourceEntityPropertiesToTarget(f.get(source), f.get(target)));
 				} else
 					f.set(source, f.get(target));
 		}

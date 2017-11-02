@@ -3,7 +3,7 @@ package com.yinzhiwu.yiwu.entity.yzw;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Connotation {
+public class CourseConnotation {
 
 	private String connotation;
 	private String helpInfomation;

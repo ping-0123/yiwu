@@ -23,111 +23,173 @@
 	<div class="modal-body">
 		<form id="form-update"  method="POST" action="./${template.id}"  class="form-horizontal form-label-left">
 			<input type="hidden" name="_method" value="PUT">
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-3"> 模板名 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-9">
-					<input name="name" class="form-control" type="text" value="${template.name }"> 
-				</div>
-			</div>
+			<!-- tab nav-->
+			<ul class="nav nav-tabs">
+				<li><a href="#basic" data-toggle="tab">基本信息</a></li>
+				<li><a href="#connotation" data-toggle="tab">课程内容</a></li>
+				<li><a href="#picture" data-toggle="tab">上传图片</a></li>
+				<li><a href="#audio" data-toggle="tab">上传音乐</a></li>
+				<li><a href="#video" data-toggle="tab">上传视频</a></li>
+			</ul> <!-- end tab nav -->
 			
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12"> 舞种 *</label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<select name="dance.id" class="form-control" disabled="disabled" required>
-							<option value="${template.dance.id }">${template.dance.name }</option>
-					</select>
-				</div>
-			</div>
+			<br />
 			
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12"> 舞种等级 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<select name="danceGrade.id" class="form-control" disabled="disabled" required>
-						<option value="${template.danceGrade.id }">${template.danceGrade.name }</option>
-					</select>
+			<!-- tab content -->
+			<div class="tab-content container">
+				
+				<!-- basic tab pane -->
+				<div class="tab-pane fade in active" id="basic">
+					<div class="form-group">
+						<label class="control-label col-md-2 col-sm-2 col-xs-4"> 模板名 <span class="required">*</span></label>
+						<div class="col-md-10 col-sm-10 col-xs-8">
+							<input name="name" class="form-control" type="text" value="${template.name }"> 
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-2 col-sm-2 col-xs-4"> 舞种 *</label>
+						<div class="col-md-4 col-sm-4 col-xs-8">
+							<select name="dance.id" class="form-control" required>
+								<option value="${template.dance.id }">${template.dance.name }</option>
+							</select>
+						</div>
+						<label class="control-label col-md-2 col-sm-2 col-xs-4"> 舞种等级 <span class="required">*</span></label>
+						<div class="col-md-4 col-sm-4 col-xs-8	">
+							<select name="danceGrade.id" class="form-control" required>
+								<option value="${template.danceGrade.id }">${template.danceGrade.name }</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-md-2 col-sm-2 col-xs-4">课程类型<span class="required">*</span></label>
+						<div class="col-md-4 col-sm-4 col-xs-8">
+							<select name="courseType" id="courseType" class="form-control " required>
+								<option value="${template.courseType}">${ping:getCourseTypeName(template.courseType)}</option>
+							</select>
+						</div>
+						<label class="control-label col-md-2 col-sm-2 col-xs-4">中类<span class="required">*</span></label>
+						<div class="col-md-4 col-sm-4 col-xs-8">
+							<select name="subCourseType" id="subCourseType" class="form-control col-md-3 col-sm-3 col-xs-6" required>
+								<option value="${template.subCourseType }">${ping:getCourseTypeName(template.courseType) }</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-md-2 col-sm-2 col-xs-4">课程总节数<span class="required">*</span></label>
+						<div class="col-md-4 col-sm-4 col-xs-8">
+							<input  name="times" value=${template.times } class="form-control" required type="number">
+						</div>
+						<label class="control-label col-md-2 col-sm-2 col-xs-8">每节课时长<span class="required">*</span></label>
+						<div class="col-md-4 col-sm-4 col-xs-8">
+							<input  name="hoursPerTime" value="${template.times }" class="form-control" placeholder="单位:小时" required  type="text">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-md-2 col-sm-2 col-xs-4">开课最小学员数量 <span class="required">*</span></label>
+						<div class="col-md-4 col-sm-4 col-xs-8">
+							<input  name="minStudentCount" value=${template.minStudentCount } class="form-control"  required type="number">
+						</div>
+						<label class="control-label col-md-2 col-sm-2 col-xs-4">可容纳学员数量 <span class="required">*</span></label>
+						<div class="col-md-4 col-sm-4 col-xs-8">
+							<input  name="maxStudentCount" value=${template.maxStudentCount } class="form-control" required  type="number">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-2 col-sm-2 col-xs-4">有效开始日期 <span class="required">*</span></label>
+						<div class="col-md-4 col-sm-4 col-xs-8">
+							<input  name="effectiveStart" value=${template.effectiveStart } class="form-control" required  type="date">
+						</div>
+						<label class="control-label col-md-2 col-sm-2 col-xs-12">有效结束日期 <span class="required">*</span></label>
+						<div class="col-md-4 col-sm-4 col-xs-8">
+							<input  name="effectiveEnd" value=${template.effectiveEnd } class="form-control" required  type="date">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-md-2 col-sm-2 col-xs-4"> 可使用范围 (子部门可用)<span class="required">*</span></label>
+						<div class="col-md-4 col-sm-4 col-xs-8">
+							<select name="usableDepartment.id" class="form-control" required>
+								<option value=${template.usableDepartment.id }>${template.usableDepartment.name }</option>
+							</select>
+						</div>
+						<label class="control-label col-md-2 col-sm-2 col-xs-4"> 教材提供者<span class="required">*</span></label>
+						<div class="col-md-4 col-sm-4 col-xs-8">
+							<select name="provider.id" class="form-control" required>
+								<option value="${template.provider.id }">${template.provider.name }</option>
+							</select>
+						</div>
+					</div>
+				</div> <!-- end basic tab pane -->
+				
+				<!-- connotation tab pane  -->
+				<div class="tab-pane fade" id="connotation">
+					<div class="form-group">
+						<label class="control-label col-md-2 col-sm-2 col-xs-4">课程简介</label>
+						<div class="col-md-10 col-sm-10 col-xs-8">
+							<textarea name="connotation.introduction" rows="2"  class="form-control">${template.connotation.introduction }</textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-2 col-sm-2 col-xs-4">课程内容</label>
+						<div class="col-md-10 col-sm-10 col-xs-8">
+							<textarea class="form-control"  name="connotation.connotation" rows="2" >${template.connotation.connotation }</textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-2 col-sm-2 col-xs-4">课程内容</label>
+						<div class="col-md-10 col-sm-10 col-xs-8">
+							<textarea class="form-control"  name="connotation.helpInfomation" rows="2" >${template.connotation.helpInfomation }</textarea>
+						</div>
+					</div>			
+					<div class="form-group">
+						<label class="control-label col-md-2 col-sm-2 col-xs-4">舞蹈简介</label>
+						<div class="col-md-10 col-sm-10 col-xs-8">
+							<textarea class="form-control" name="connotation.danceIntroduction" rows="2" >${template.connotation.danceIntroduction }</textarea>
+						</div>
+					</div>			
+				</div>
+				<!-- end conotation tab pane -->
+				
+				<!-- picture tab pane  -->
+				<div class="tab-pane fade" id="picture">
+					<div class="form-group">
+						<div class="form-group ">
+						<input type="hidden" name="connotation.pictureUri" id="picture-uri" value=""> 
+						<div class="form-control dropzone" id="dropzone-picture">
+							<div class="am-text-success dz-message">
+								将图片拖拽到此处<br>或点此打开文件管理器选择图片
+						</div>
 				</div>
 			</div>
+					</div>
+				</div>
+				<!-- end picture tab pane -->
+				
+				<!-- audio tab pane  -->
+				<div class="tab-pane fade" id="audio">
+				</div>
+				<!-- end audio tab pane -->
+				
+				<!-- video tab pane  -->
+				<div class="tab-pane fade" id="video">
+				</div>
+				<!-- end video tab pane -->
+				
+				
 			
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">课程类型<span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<select name="courseType" id="courseType" class="form-control " disabled="disabled"  required>
-						<option value="${template.courseType}">${ping:getCourseTypeName(template.courseType)}</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">中类<span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<select name="subCourseType" id="subCourseType" class="form-control" disabled="disabled" required>
-						<option value="${template.subCourseType }">${ping.getSubCourseTypeName(template.subCourseType) }</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">课程总节数<span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input  name="times" class="form-control" required type="number" value="${template.times }">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">每节课时长(单位:小时)<span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input  name="hoursPerTime" class="form-control" required  type="text" value="${template.hoursPerTime }">
-				</div>
-			</div>
+			</div> 
+			<!--  end tab-content -->
 			
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">开课最小学员数量 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input  name="minStudentCount" class="form-control"  required type="number" value="${template.minStudentCount }">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">可容纳学员数量 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input  name="maxStudentCount" class="form-control" required  type="number" value="${template.maxStudentCount }">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">有效开始日期 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input  name="effectiveStart" class="form-control" required disabled="disabled" type="date" value=${template.effectiveStart}>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">有效结束日期 <span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<input  name="effectiveEnd" class="form-control" required  type="date" value=${template.effectiveEnd }>
-				</div>
-			</div>
-			
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12"> 可使用范围 (子部门可用)<span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<select name="usableDepartment.id" class="form-control" disabled required>
-						<option value="${template.usableDepartment.id }">${template.usableDepartment.name }</option>
-					</select>
-				</div>
-			</div>
-			
-			<div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12"> 教材提供者<span class="required">*</span></label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<select name="provider.id" class="form-control" disabled required>
-						<option value="${template.provider.id }">${template.provider.name }</option>
-					</select>
-				</div>
-			</div>
-
 			<div class="ln_solid"></div>
 			<div class="form-group">
-				
-				<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+				<div class="col-md-9 col-sm-9 col-xs-12">
 					<button type="reset"  class="btn btn-primary">重置</button>
 					<button type="submit"  class="btn btn-success">修改</button>
 				</div>
 			</div>
+			
 
 		</form>
 	</div>
@@ -167,18 +229,7 @@
 			        
 			        }
 			        
-	/* 		         submitHandler: function(validator, form, submitButton){
-			        	 $.ajax({
-			        		 url:form.attr("action"),
-			        		 type:form.attr("method"),
-			        		 data:form.serialize(),
-			        		 success:function(data){
-			        			 $('.modal-create').modal('hide');
-			        			 TABLE.draw(false);
-			        		 }
-			        	 });
-			        } 
-	 */			})
+				})
 	 			.on('success.form.bv', function(e) {
 	 	            // Prevent form submission
 	 	            e.preventDefault();
@@ -187,14 +238,14 @@
 	 	            var $form = $(e.target);
 
 	 	            // Get the BootstrapValidator instance
-	 	            var bv = $form.data('bootstrapValidator');
+	 	      /*        var bv = $form.data('bootstrapValidator'); */
 	
 	 	            // Use Ajax to submit form data
 	 	            $.ajax({
 	 	            	url:$form.attr('action'),
 	 	            	type:$form.attr('method'),
 	 	            	data:$form.serialize(),
-	 	            	dataType:json,
+	 	            	dataType:'json',
 	 	            	success:function(data){
 	 	            		if(data.result){
 	 	            			flashUpdateSuccessModal();
@@ -211,23 +262,41 @@
 			
 			loadHtmlForSubCourseType($('#courseType').val());
 			
-		 	/*  $('#form-create').submit(function() {	
-				if($(this).data('bootstrapValidator').validate().isValid()){
-					$.ajax({
-						url : $(this).attr("action"),
-						type : $(this).attr("method"),
-						data : $(this).serialize(),
-						success : function(data) {
-							$('.modal-create').modal('hide');
-							TABLE.draw(false);
-						}
-					});
-				}
-			});  */ */
-			
 			$('#courseType').change(function(){
 				loadHtmlForSubCourseType($(this).val());
 			});
+			
+			// upload picture dropzone
+			Dropzone.autoDiscover=false;
+			var pictureDropzone = new Dropzone('#dropzone-picture', {
+				url : QINIU_UPLOAD_URL,
+				method : "POST",
+				params : {
+					"token" : "${uploadToken}"
+				},
+				addRemoveLinks : true,
+				dictRemoveLinks : "x",
+				dictRemoveFile : "删除",
+				dictMaxFilesExceeded : "已超出允许的最大上传文件数量",
+				maxFiles : 1,
+				filesizeBase : 1024,
+				success : function(file, response, e) {
+					$("#picture-uri").val(response.key);},
+				init : function() {
+					this.on("removedfile", function(file) {
+						console.log(file.name);
+						$.ajax({
+							type : "delete",
+							url : "../qiniu/" + $('#picture-uri').val(),
+							async : true,
+							success : function(data) {
+								console.log("删除成功");
+							}
+						});
+					});
+				}
+			});
+			
 		});
 		
 		function loadHtmlForSubCourseType(v_courseType){

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
-import com.yinzhiwu.yiwu.entity.yzw.Connotation;
+import com.yinzhiwu.yiwu.entity.yzw.CourseConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
@@ -163,7 +163,7 @@ public class CourseApiController extends BaseController {
 	
 	@GetMapping("/connotation/{courseId}")
 	@ApiOperation(value = "根据课程（课时系列）id获取课程内涵信息")
-	public YiwuJson<Connotation> getConnotationByCourseId(@PathVariable String courseId) {
+	public YiwuJson<CourseConnotation> getConnotationByCourseId(@PathVariable String courseId) {
 		try {
 			CourseYzw course = courseService.get(courseId);
 			if (course == null)
