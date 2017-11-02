@@ -25,7 +25,6 @@
 			<input type="hidden" name="_method" value="PUT">
 			<!-- tab nav-->
 			<ul class="nav nav-tabs">
-				<li><a href="#basic" data-toggle="tab">基本信息</a></li>
 				<li><a href="#connotation" data-toggle="tab">课程内容</a></li>
 				<li><a href="#picture" data-toggle="tab">上传图片</a></li>
 				<li><a href="#audio" data-toggle="tab">上传音乐</a></li>
@@ -39,92 +38,7 @@
 			<div class="tab-content container">
 
 				<!-- basic tab pane -->
-				<div class="tab-pane fade in active" id="basic">
-					<div class="form-group">
-						<label class="control-label col-md-2 col-sm-2 col-xs-4"> 模板名 <span class="required">*</span></label>
-						<div class="col-md-10 col-sm-10 col-xs-8">
-							<input name="name" class="form-control" type="text" value="${template.name }">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-2 col-sm-2 col-xs-4"> 舞种 *</label>
-						<div class="col-md-4 col-sm-4 col-xs-8">
-							<select name="dance.id" class="form-control" required>
-								<option value="${template.dance.id }">${template.dance.name }</option>
-							</select>
-						</div>
-						<label class="control-label col-md-2 col-sm-2 col-xs-4"> 舞种等级 <span class="required">*</span></label>
-						<div class="col-md-4 col-sm-4 col-xs-8	">
-							<select name="danceGrade.id" class="form-control" required>
-								<option value="${template.danceGrade.id }">${template.danceGrade.name }</option>
-							</select>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-2 col-sm-2 col-xs-4">课程类型<span class="required">*</span></label>
-						<div class="col-md-4 col-sm-4 col-xs-8">
-							<select name="courseType" id="courseType" class="form-control " required>
-								<option value="${template.courseType}">${ping:getCourseTypeName(template.courseType)}</option>
-							</select>
-						</div>
-						<label class="control-label col-md-2 col-sm-2 col-xs-4">中类<span class="required">*</span></label>
-						<div class="col-md-4 col-sm-4 col-xs-8">
-							<select name="subCourseType" id="subCourseType" class="form-control col-md-3 col-sm-3 col-xs-6" required>
-								<option value="${template.subCourseType }">${ping:getCourseTypeName(template.courseType) }</option>
-							</select>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-2 col-sm-2 col-xs-4">课程总节数<span class="required">*</span></label>
-						<div class="col-md-4 col-sm-4 col-xs-8">
-							<input name="times" value=${template.times } class="form-control" required type="number">
-						</div>
-						<label class="control-label col-md-2 col-sm-2 col-xs-8">每节课时长<span class="required">*</span></label>
-						<div class="col-md-4 col-sm-4 col-xs-8">
-							<input name="hoursPerTime" value="${template.times }" class="form-control" placeholder="单位:小时" required type="text">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-2 col-sm-2 col-xs-4">开课最小学员数量 <span class="required">*</span></label>
-						<div class="col-md-4 col-sm-4 col-xs-8">
-							<input name="minStudentCount" value=${template.minStudentCount } class="form-control" required type="number">
-						</div>
-						<label class="control-label col-md-2 col-sm-2 col-xs-4">可容纳学员数量 <span class="required">*</span></label>
-						<div class="col-md-4 col-sm-4 col-xs-8">
-							<input name="maxStudentCount" value=${template.maxStudentCount } class="form-control" required type="number">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-2 col-sm-2 col-xs-4">有效开始日期 <span class="required">*</span></label>
-						<div class="col-md-4 col-sm-4 col-xs-8">
-							<input name="effectiveStart" value=${template.effectiveStart } class="form-control" required type="date">
-						</div>
-						<label class="control-label col-md-2 col-sm-2 col-xs-12">有效结束日期 <span class="required">*</span></label>
-						<div class="col-md-4 col-sm-4 col-xs-8">
-							<input name="effectiveEnd" value=${template.effectiveEnd } class="form-control" required type="date">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-2 col-sm-2 col-xs-4"> 可使用范围 (子部门可用)<span class="required">*</span></label>
-						<div class="col-md-4 col-sm-4 col-xs-8">
-							<select name="usableDepartment.id" class="form-control" required>
-								<option value=${template.usableDepartment.id }>${template.usableDepartment.name }</option>
-							</select>
-						</div>
-						<label class="control-label col-md-2 col-sm-2 col-xs-4"> 教材提供者<span class="required">*</span></label>
-						<div class="col-md-4 col-sm-4 col-xs-8">
-							<select name="provider.id" class="form-control" required>
-								<option value="${template.provider.id }">${template.provider.name }</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<!-- end basic tab pane -->
-
+				
 				<!-- connotation tab pane  -->
 				<div class="tab-pane fade" id="connotation">
 					<div class="form-group">

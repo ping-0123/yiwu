@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.LessonTemplateDao;
 import com.yinzhiwu.yiwu.entity.LessonTemplate;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.service.LessonTemplateService;
 
 /**
@@ -15,6 +17,13 @@ import com.yinzhiwu.yiwu.service.LessonTemplateService;
 
 @Service
 public class LessonTemplateServiceImpl extends BaseServiceImpl<LessonTemplate,Integer> implements LessonTemplateService {
-
+	
+	@Autowired private LessonTemplateDao lessonTemplateDao;
+	
 	@Autowired public void setBaseDao(LessonTemplateDao dao){super.setBaseDao(dao);}
+
+	@Override
+	public DataTableBean<LessonTemplate> findDataTableByCourseTemplateId(QueryParameter parameter, Integer id) {
+		return lessonTemplateDao.findDataTableByCourseTemplateId(parameter,id);
+	}
 }

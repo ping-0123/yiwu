@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.model.view;
 
 import com.yinzhiwu.yiwu.entity.LessonTemplate;
+import com.yinzhiwu.yiwu.model.view.LessonConnotationVO.LessonConnotationVOConverter;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
@@ -33,7 +34,8 @@ public class LessonTemplateVO {
 		@Override
 		public LessonTemplateVO fromPO(LessonTemplate po) {
 			LessonTemplateVO vo =  super.fromPO(po);
-			
+			if(null !=po.getConnotation())
+				vo.setConnotation(LessonConnotationVOConverter.INSTANCE.fromPO(po.getConnotation()));
 			return vo;
 		}
 		

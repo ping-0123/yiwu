@@ -13,25 +13,19 @@
 
 <title>岗位设置</title>
 
-<!-- Font Awesome -->
+<!--css stylesheet -->
 <link href="../../assets/font-awe	some/css/font-awesome.min.css" rel="stylesheet">
-
-<!-- my datatable -->
 <link href="../../assets/datatables/datatables.min.css" rel="stylesheet" > 
 <link href="../../assets/datatable-plugins/Select-1.2.3/css/select.bootstrap.min.css" rel="stylesheet">
-<!-- bootstrap dialog -->
 <link href="../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
 <link href="../../assets/bootstrap-validator/css/bootstrapValidator.min.css" rel="stylesheet">
-	<!-- dropzone -->
 <link href="../../assets/dropzone/min/dropzone.min.css" rel="stylesheet">
-<!-- Custom Theme Style -->
 <link href="../../backend/css/custom.min.css" rel="stylesheet">
-<!-- Yiwu Theme Style -->
 <link href="../../backend/css/main.css" rel="stylesheet">
-
 <style>
 .dataTables_filter{width:100%!important;}
 </style>
+<!-- end css stylesheet -->
 
 </head>
 
@@ -82,7 +76,6 @@
 			</div>
 		</div>
 	</div>
-	
 	<!-- create modal -->
 
 	<!-- update modal -->
@@ -93,6 +86,44 @@
 	</div>
 	<!-- /update modal -->
 	
+	<!-- lessonTemplate model -->
+	<div class="modal fade bs-example-modal-lg modal-lessonTemplate" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<div class="x_panel">
+							<!-- x title -->
+							<div class="x_title">
+								<ul class="nav navbar-right panel_toolbox">
+									<li><a class="collapse-link"> <i class="fa fa-chevron-up"></i></a></li>
+									<li><a class="close-link"> <i class="fa fa-close"></i>
+									</a></li>
+								</ul>
+								<div class="clearfix"></div>
+							</div>
+							<!-- /end x title -->
+							<!-- datatable -->
+							<div class="x_content table-responsive">
+								<table id="lessonTemplate-datatable" class="table table-bordered table-hover table-condensed" width="100%">
+		
+								</table>
+							</div>
+							<!-- /end datatable -->
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal fade bs-example-modal-lg modal-update-lessonTemplate" tabindex="-1" role="dialog" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+	<!-- /lessonTemplate model -->
 
 	<!-- / bootstrap modals -->
     
@@ -182,7 +213,7 @@
 						</shiro:hasPermission>
 						
 						<shiro:hasPermission name="courseTemplates:update:*">
-							html = html +  '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update">  <i class="fa fa-navicon" title="修改教材内容"></i></a>';
+							html = html +  '<a href="#" onclick="showLessonTemplate(' + row.id + ')" data-toggle="modal" data-target=".modal-lessonTemplate">  <i class="fa fa-navicon" title="查看标准模板课时"></i></a>';
 						</shiro:hasPermission>
 						
 						<shiro:hasPermission name="courseTemplates:delete:*">
@@ -193,6 +224,46 @@
 				} ]
 			}; //end datatable setting
 			
+			var lessonTemplateDatatable;
+			var lessonTemplate_datatable_setting = 
+			{
+				"processing" : false,
+				"serverSide" : true,
+				"select":true,
+				"language" : {
+					"url" : "../../backend/config/i18n/datatable-chinese.json",
+					"searchPlaceholder" : "输入模板名,舞种名"
+				},
+				"ajax" : {
+					"url" : "./datatable?courseTempId=${courseTemplateId}" ,
+					"type" : "POST"
+				},
+				"columns" : [{
+					"title" :"课程模板Id",
+					"data":"courseTemplateId"
+				},{
+					"data" : "ordinalNo",
+					"title": "课时序号"
+				},{
+					"data":"id",
+					"title":"操作",
+					"render": function(data, type, row, meta) {
+						var html =  '';
+						<shiro:hasPermission name="courseTemplates:view:*">
+							html = html + '<a href="' + row.courseTemplateId +'/lessonTemplates/' +  row.id + '/updateForm" data-toggle="modal" data-target=".modal-update-lessonTemplate"> <i class="fa fa-pencil" title="修改"></i>  </a>';
+						</shiro:hasPermission>
+						
+						return html;
+					}
+				} ]
+			}; //end lessonTemplate_datatable_setting setting
+			
+			
+			
+			function showLessonTemplate(v_courseTemplateId){
+				lessonTemplate_datatable_setting.ajax.url="./" +v_courseTemplateId + "/lessonTemplates/datatable";
+				lessonTemplateDatatable=$("#lessonTemplate-datatable").DataTable(lessonTemplate_datatable_setting);
+			}
   </script>
   
   <script src="../../backend/js/main.js"></script>

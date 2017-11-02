@@ -1,6 +1,8 @@
 package com.yinzhiwu.yiwu.service;
 
 import com.yinzhiwu.yiwu.entity.LessonTemplate;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 
 /**
 * @author 作者 ping
@@ -9,5 +11,7 @@ import com.yinzhiwu.yiwu.entity.LessonTemplate;
 */
 
 public interface LessonTemplateService extends IBaseService<LessonTemplate,Integer> {
+
+	DataTableBean<LessonTemplate> findDataTableByCourseTemplateId(QueryParameter parameter, Integer id);
 
 }

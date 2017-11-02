@@ -34,13 +34,8 @@ public class EmployeePostController extends BaseController{
 			return YiwuJson.createByErrorCodeMessage(ReturnCode.ILLEGAL_ARGUMENT.getCode(), getErrorsMessage(result));
 		
 		
-		try {
-			epService.save(ep);
-			return YiwuJson.createBySuccess();
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return YiwuJson.createByErrorMessage(e.getMessage());
-		}
+		epService.save(ep);
+		return YiwuJson.createBySuccess();
 	}
 	
 	@GetMapping(value="/{id}/updateForm")

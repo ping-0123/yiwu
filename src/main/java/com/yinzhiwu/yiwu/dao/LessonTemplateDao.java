@@ -1,6 +1,8 @@
 package com.yinzhiwu.yiwu.dao;
 
 import com.yinzhiwu.yiwu.entity.LessonTemplate;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 
 /**
 * @author 作者 ping
@@ -9,5 +11,7 @@ import com.yinzhiwu.yiwu.entity.LessonTemplate;
 */
 
 public interface LessonTemplateDao extends IBaseDao<LessonTemplate	,Integer> {
+
+	DataTableBean<LessonTemplate> findDataTableByCourseTemplateId(QueryParameter parameter, Integer id);
 
 }

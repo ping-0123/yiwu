@@ -1,7 +1,10 @@
 package com.yinzhiwu.yiwu.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Embedded;
@@ -12,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
@@ -92,6 +96,9 @@ public class CourseTemplate extends BaseEntity {
 	@Embedded
 	private CourseConnotation connotation;
 
+	@OneToMany(mappedBy="courseTemplate", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<LessonTemplate> lessonTemplates = new ArrayList<LessonTemplate>();
+	
 	public String getName() {
 		return name;
 	}
@@ -202,6 +209,14 @@ public class CourseTemplate extends BaseEntity {
 
 	public void setProvider(ConnotationProvider provider) {
 		this.provider = provider;
+	}
+
+	public List<LessonTemplate> getLessonTemplates() {
+		return lessonTemplates;
+	}
+
+	public void setLessonTemplates(List<LessonTemplate> lessonTemplates) {
+		this.lessonTemplates = lessonTemplates;
 	}
 	
 	

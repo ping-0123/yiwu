@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.CourseTemplate;
+import com.yinzhiwu.yiwu.entity.LessonTemplate;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.SubCourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
@@ -28,13 +29,16 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.model.view.CourseTemplateVO;
+import com.yinzhiwu.yiwu.model.view.LessonTemplateVO;
 import com.yinzhiwu.yiwu.model.view.CourseTemplateVO.CourseTemplateVOConverter;
+import com.yinzhiwu.yiwu.model.view.LessonTemplateVO.LessonTemplateVOConverter;
 import com.yinzhiwu.yiwu.service.ConnotationProviderService;
 import com.yinzhiwu.yiwu.service.CourseTemplateService;
 import com.yinzhiwu.yiwu.service.DanceGradeYzwService;
 import com.yinzhiwu.yiwu.service.DanceYzwService;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
 import com.yinzhiwu.yiwu.service.FileService;
+import com.yinzhiwu.yiwu.service.LessonTemplateService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 
 /**
@@ -54,6 +58,7 @@ public class CourseTemplateController extends BaseController{
 	@Autowired private DanceYzwService danceService;
 	@Qualifier("qiniuServiceImpl")
 	@Autowired private FileService qiniuService;
+	@Autowired private LessonTemplateService lessonTemplateService;
 	
 	@GetMapping(value="/list")
 	public String list(){
@@ -112,6 +117,7 @@ public class CourseTemplateController extends BaseController{
 		
 	}
 	
+	
 	@GetMapping("/subCourseTypes")
 	@ResponseBody
 	public YiwuJson<List<SubCourseType>>  getSubCourseTypes(CourseType courseType){
@@ -143,5 +149,46 @@ public class CourseTemplateController extends BaseController{
 		courseTemplateService.delete(id);
 		
 		return YiwuJson.createBySuccess();
+	}
+	
+	//lessonTemplate 模块
+	@PostMapping(value="/{id}/lessonTemplates/datatable")
+	@ResponseBody
+	public DataTableBean<?> findLessonTemplateDatatable(@PathVariable(name="id") Integer courseTemplateId, HttpServletRequest request) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InstantiationException{
+		
+		QueryParameter parameter = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
+		ServletRequestUtils.transferQueryParamter(parameter, LessonTemplateVO.class);
+		
+		DataTableBean<LessonTemplate>  table = lessonTemplateService.findDataTableByCourseTemplateId(parameter,courseTemplateId);
+		List<LessonTemplateVO> vos = new ArrayList<>();
+		for(LessonTemplate lesson: table.getData()){
+			vos.add(LessonTemplateVOConverter.INSTANCE.fromPO(lesson));
+		}
+		
+		return new DataTableBean<>(table.getDraw(), table.getRecordsTotal(), table.getRecordsFiltered(), vos, table.getError());
+	}
+	
+	@GetMapping(value="/{id}/lessonTemplates/list")
+	public String list(@PathVariable(name="id")Integer courseTemplateId, Model model){
+		model.addAttribute("courseTemplateId", courseTemplateId);
+		return "lessonTemplates/list";
+	}
+	
+	@GetMapping(value="/{id}/lessonTemplates/{lessonTemplateId}/updateForm")
+	public String showLessonTemplateUpdateForm(@PathVariable(name="lessonTemplateId") Integer lessonTemplateId , Model model)
+			throws DataNotFoundException{
+		LessonTemplate lesson = lessonTemplateService.get(lessonTemplateId);
+		LessonTemplateVO template =  LessonTemplateVOConverter.INSTANCE.fromPO(lesson);
+		model.addAttribute("template", template);
+		return "courseTemplates/lessonTemplates/updateForm";
+	}
+	
+	@PutMapping(value="/{id}/lessonTemplates/{lessonTemplateId}")
+	@ResponseBody
+	public YiwuJson<?> doUpdate(@PathVariable(name="lessonTemplateId") Integer id, LessonTemplate template) throws IllegalArgumentException, IllegalAccessException, DataNotFoundException
+	{
+		lessonTemplateService.modify(id, template);
+		return YiwuJson.createBySuccess(
+				LessonTemplateVOConverter.INSTANCE.fromPO(lessonTemplateService.get(id)));
 	}
 }

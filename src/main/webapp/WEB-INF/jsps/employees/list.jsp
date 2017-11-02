@@ -316,11 +316,11 @@
 						"title" : "操作",
 						"render" : function(data, type, row, meta) {
 							var html = '';
-							<shiro:hasPermission name="employees:update:*">
+							<shiro:hasPermission name="employeePosts:update:*">
 							html = html
 									+ '<a href="../employeePosts/' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update-post"> <i class="fa fa-pencil" title="修改"></i></a>';
 							</shiro:hasPermission>
-							<shiro:hasPermission name="employees:delete:*">
+							<shiro:hasPermission name="employeePosts:delete:*">
 							html = html
 									+ '<a href="#" onclick="doDeleteEmployeePost('
 									+ row.id
@@ -346,7 +346,7 @@
 		}
 
 		function refreshPostDatatable() {
-			postDatatable.draw();
+			postDatatable.draw(false);
 		}
 	</script>
 
