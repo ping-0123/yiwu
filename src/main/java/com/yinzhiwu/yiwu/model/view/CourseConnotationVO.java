@@ -72,6 +72,7 @@ public class CourseConnotationVO {
 			if(null==po) return null;
 			CourseConnotationVO  vo =  super.fromPO(po);
 			vo.setPictureUrl(qiniuService.generateFileUrl(vo.getPictureUrl()));
+		    vo.setAudioUrl(qiniuService.generateFileUrl(vo.getAudioUrl()));
 			vo.setVideoUrl(qiniuService.generateFileUrl(vo.getVideoUrl()));
 			vo.setVideoPosterUrl(qiniuService.generateFileUrl(vo.getVideoPosterUrl()));
 			return vo;

@@ -29,8 +29,8 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.model.view.CourseTemplateVO;
-import com.yinzhiwu.yiwu.model.view.LessonTemplateVO;
 import com.yinzhiwu.yiwu.model.view.CourseTemplateVO.CourseTemplateVOConverter;
+import com.yinzhiwu.yiwu.model.view.LessonTemplateVO;
 import com.yinzhiwu.yiwu.model.view.LessonTemplateVO.LessonTemplateVOConverter;
 import com.yinzhiwu.yiwu.service.ConnotationProviderService;
 import com.yinzhiwu.yiwu.service.CourseTemplateService;
@@ -91,7 +91,8 @@ public class CourseTemplateController extends BaseController{
 	public String showUpdateForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
 		
 		model.addAttribute("uploadToken", qiniuService.createAccessToken());
-		model.addAttribute("template", courseTemplateService.get(id));
+		model.addAttribute("template", 
+				CourseTemplateVOConverter.INSTANCE.fromPO(courseTemplateService.get(id)));
 //		model.addAttribute("departments", deptmentService.findAll());
 //		model.addAttribute("providers", connotationProviderService.findAll());
 //		model.addAttribute("danceGrades", danceGradeService.findAll());
@@ -149,6 +150,85 @@ public class CourseTemplateController extends BaseController{
 		courseTemplateService.delete(id);
 		
 		return YiwuJson.createBySuccess();
+	}
+	
+	@DeleteMapping("/{id}/connotation/pictureUri")
+	@ResponseBody
+	public YiwuJson<?> deletePictureUri(@PathVariable(name="id") Integer id) throws DataNotFoundException{
+		CourseTemplate template = courseTemplateService.get(id);
+		String pictureUri = template.getConnotation().getPictureUri();
+		qiniuService.delete(pictureUri);
+		
+		template.getConnotation().setPictureUri(null);
+		courseTemplateService.update(template);
+		
+		return YiwuJson.createBySuccess();
+	}
+	
+	@PutMapping("/{id}/connotation/pictureUri")
+	@ResponseBody
+	public YiwuJson<?> updatePictureUri(@PathVariable(name="id") Integer id ,String fileKey) throws DataNotFoundException{
+		CourseTemplate template = courseTemplateService.get(id);
+		template.getConnotation().setPictureUri(fileKey);
+		courseTemplateService.update(template);
+		
+		return YiwuJson.createBySuccess(qiniuService.generateFileUrl(fileKey));
+	}
+	
+	@PutMapping("/{id}/connotation/audioUri")
+	@ResponseBody
+	public YiwuJson<?> updateAudioUri(@PathVariable(name="id") Integer id, String fileKey, String fileName) throws DataNotFoundException{
+		CourseTemplate template = courseTemplateService.get(id);
+		template.getConnotation().setAudioUri(fileKey);
+		template.getConnotation().setAudioName(fileName);
+		courseTemplateService.update(template);
+		
+		return YiwuJson.createBySuccess(qiniuService.generateFileUrl(fileKey));
+	}
+	
+	@DeleteMapping("/{id}/connotation/audioUri")
+	@ResponseBody
+	public YiwuJson<?> deleteAudioUri(@PathVariable(name="id") Integer id) throws DataNotFoundException{
+		CourseTemplate template = courseTemplateService.get(id);
+		template.getConnotation().setAudioName(null);
+		template.getConnotation().setAudioUri(null);
+		courseTemplateService.update(template);
+		
+		return YiwuJson.createBySuccess();
+	}
+	
+	@PutMapping("/{id}/connotation/videoPosterUri")
+	@ResponseBody
+	public YiwuJson<?> updateVideoPosterUri(@PathVariable(name="id") Integer id, String fileKey, String fileName) throws DataNotFoundException{
+		CourseTemplate template = courseTemplateService.get(id);
+		template.getConnotation().setVideoPosterUri(fileKey);
+		courseTemplateService.update(template);
+		
+		return YiwuJson.createBySuccess(qiniuService.generateFileUrl(fileKey));
+	}
+	
+	@PutMapping("/{id}/connotation/videoUri")
+	@ResponseBody
+	public YiwuJson<?> updateVideoUri(@PathVariable(name="id") Integer id, String fileKey, String fileName) throws DataNotFoundException{
+		CourseTemplate template = courseTemplateService.get(id);
+		template.getConnotation().setVideoUri(fileKey);
+		template.getConnotation().setVideoTitle(fileName);
+		courseTemplateService.update(template);
+		
+		return YiwuJson.createBySuccess(qiniuService.generateFileUrl(fileKey));
+	}
+	
+	@DeleteMapping("/{id}/connotation/videoUri")
+	@ResponseBody
+	public YiwuJson<?> deleteVideoUri(@PathVariable(name="id") Integer id) throws DataNotFoundException{
+		CourseTemplate template = courseTemplateService.get(id);
+		template.getConnotation().setVideoPosterUri(null);
+		template.getConnotation().setVideoTitle(null);
+		template.getConnotation().setVideoUri(null);
+		courseTemplateService.update(template);
+		
+		return YiwuJson.createBySuccess();
+		
 	}
 	
 	//lessonTemplate 模块

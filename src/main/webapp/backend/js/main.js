@@ -8,6 +8,7 @@ var DELETE_URL,
 	CLOUMN_CREATE_TIME=(column_index_create_time===undefined)?0:column_index_create_time;
 var QINIU_UPLOAD_URL="http://up-z2.qiniu.com";
 var WEB_BASE_URL="http://192.168.0.115:9090/"
+var BASE_DELETE_FILE_URL="http://192.168.0.115:9090/yiwu/system/qiniu/"
 
 $(document).ready(function(){
 	if($TABLE==undefined) return;;
@@ -155,10 +156,93 @@ function showUpdateFailureModal(message){
 	    type:BootstrapDialog.TYPE_INFO,
 	    title:'更新失败',
 	    size : BootstrapDialog.SIZE_SMALL,
-	    closable:true
+	    closable:true,
+	    draggalbe:true,
+	    
 	});
 }
 
+
+/**
+ * 
+ * @param {Object} fnSuccessCallback
+ * @param {Object} option {token:xxx,}
+ */
+function showQiniuDropzoneModal(token, saveUrl, confirmcallback){
+	var messageHtml = '<div class="dropzone" id="dropzone"><div class="am-text-success dz-message">上传视频<br>将视频文件拖拽到此处<br>或点此打开文件管理器选择视频文件</div></div>'
+	var fileKey;
+	var fileName;
+	var dlg=BootstrapDialog.confirm({
+		message:messageHtml,
+		type:BootstrapDialog.TYPE_DEFAULT,
+	    title:'上传图片视频',
+	    size : BootstrapDialog.SIZE_SMALL,
+	    closable:true,
+	    draggable: true,
+	    btnCancelLabel:'取消',
+	    btnOKLabel:'确认',
+	    btnOKClass:'btn-success',
+	    onshown:function(dialogRef){
+	    	var dropzone = new Dropzone('#dropzone', {
+				url : QINIU_UPLOAD_URL,
+				method : "POST",
+				params : {
+					"token" : token
+				},
+				addRemoveLinks : true,
+				dictRemoveLinks : "x",
+				dictRemoveFile : "删除",
+				dictMaxFilesExceeded : "已超出允许的最大上传文件数量",
+				maxFiles : 1,
+				filesizeBase : 1024,
+				success : function(file, response, e) {
+					fileKey=response.key;
+					fileName=file.name;
+				},
+				init : function() {
+					this.on("removedfile", function(file) {
+						deleteQiniuFile(fileKey);
+					});
+				}
+			});
+	    },
+	    callback:function(result){
+	    	if(result){
+	    		//保存文件
+	    		$.ajax({
+	    			type:"PUT",
+	    			url:saveUrl,
+	    			async:true,
+	    			data:{"fileKey":fileKey, "fileName":fileName},
+	    			success:function(result){
+	    				if(result){
+	    					console.log("result data is " + result.data);
+	    					confirmcallback(result.data);
+	    				}else{
+	    					showSaveFailureModal(result.msg);
+	    				}
+	    			}
+	    		});
+	    	}else{
+	    		//删除在云上的文件
+	    		if(fileKey != null)
+	    			deleteQiniuFile(fileKey);
+	    	}
+	    }
+	});
+}
+
+
+function deleteQiniuFile(fileKey){
+	$.ajax({
+		type : "delete",
+		url : BASE_DELETE_FILE_URL + fileKey,
+		async : true,
+		success : function(data) {
+			console.log("删除成功");
+		}
+	});
+}
 
 /**
  * 发送删除请求
@@ -230,6 +314,11 @@ function translateCourseType(courseType){
 	}
 }
 
+/**
+ * 
+ * @param {Object} subCourseType 
+ * @return {String}
+ */
 function translateSubCourseType(subCourseType){
 	switch (subCourseType) {
 	case "OPEN_A":

@@ -213,7 +213,7 @@
 						</shiro:hasPermission>
 						
 						<shiro:hasPermission name="courseTemplates:update:*">
-							html = html +  '<a href="#" onclick="showLessonTemplate(' + row.id + ')" data-toggle="modal" data-target=".modal-lessonTemplate">  <i class="fa fa-navicon" title="查看标准模板课时"></i></a>';
+							html = html +  '<a href="#" onclick="showLessonTemplate(' + row.id + ')" >  <i class="fa fa-navicon" title="查看标准模板课时"></i></a>';
 						</shiro:hasPermission>
 						
 						<shiro:hasPermission name="courseTemplates:delete:*">

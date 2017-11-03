@@ -20,16 +20,16 @@ import com.yinzhiwu.yiwu.context.QiniuConfig;
  *
  */
 
-@Service
-public class QiniuServiceImpl implements FileService {
+@Service(value="qiniuServiceImpl")
+public class QiniuService implements FileService {
 	
-	private final static Log log = org.apache.commons.logging.LogFactory.getLog(QiniuServiceImpl.class);
+	private final static Log log = org.apache.commons.logging.LogFactory.getLog(QiniuService.class);
 
 	@Autowired private QiniuConfig config;
 	private Auth auth;
 	private BucketManager bucketManager;
 	
-	public QiniuServiceImpl(@Autowired QiniuConfig config){
+	public QiniuService(@Autowired QiniuConfig config){
 		this.config = config;
 		this.auth = Auth.create(config.getAccessKey(), config.getSecretKey());
 		this.bucketManager  = new BucketManager(auth,new Configuration());

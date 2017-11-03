@@ -231,6 +231,14 @@ public class CourseTemplateVO {
 	public void setConnotation(CourseConnotationVO connotation) {
 		this.connotation = connotation;
 	}
+
+	public String getUsableDepartmentName() {
+		return usableDepartmentName;
+	}
+
+	public void setUsableDepartmentName(String usableDepartmentName) {
+		this.usableDepartmentName = usableDepartmentName;
+	}
 	
 	
 	
