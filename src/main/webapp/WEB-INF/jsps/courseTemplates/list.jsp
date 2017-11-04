@@ -182,7 +182,7 @@
 						</shiro:hasPermission>
 						
 						<shiro:hasPermission name="courseTemplates:update:*">
-							html = html +  '<a href="' + data + '/lessonTemplates/list" >  <i class="fa fa-navicon" title="查看标准模板课时"></i></a>';
+							html = html +  '<a href="' + data + '/lessonTemplates/list" >  [课时模板]</a>';
 						</shiro:hasPermission>
 						
 						<shiro:hasPermission name="courseTemplates:delete:*">

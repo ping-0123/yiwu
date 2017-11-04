@@ -136,11 +136,11 @@
 			
 			<!-- practicalVideo tab pane  -->
 			<div class="tab-pane fade" id="practicalVideo">
-				<button id="btn-create-puzzleVideo"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/puzzleVideoUri', updatepuzzleVideoCallback)" class="btn btn-primary">上传视频</button>
-				<button id="btn-create-puzzleVideoPoster"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/puzzleVideoPosterUri',updatepuzzleVideoPosterCallback)" class="btn btn-primary">上传视频封面</button>
-				<button id="btn-delete-puzzleVideo"  onclick="showDeleteModal('../../../lessonTemplates/${template.id}/connotation/puzzleVideoUri',deletepuzzleVideoCallback)" class="btn btn-danger">删除</button>
+				<button id="btn-create-practicalVideo"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/practicalVideoUri', updatepracticalVideoCallback)" class="btn btn-primary">上传视频</button>
+				<button id="btn-create-practicalVideoPoster"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/practicalVideoPosterUri',updatepracticalVideoPosterCallback)" class="btn btn-primary">上传视频封面</button>
+				<button id="btn-delete-practicalVideo"  onclick="showDeleteModal('../../../lessonTemplates/${template.id}/connotation/practicalVideoUri',deletepracticalVideoCallback)" class="btn btn-danger">删除</button>
 				<div>
-					<video id="puzzleVideoUrl" width="320" height="240" controls="controls" poster="${template.connotation.puzzleVideoPosterUrl }" src="${template.connotation.puzzleVideoUrl }">
+					<video id="practicalVideoUrl" width="320" height="240" controls="controls" poster="${template.connotation.practicalVideoPosterUrl }" src="${template.connotation.practicalVideoUrl }">
 					</video>
 				</div>
 			</div>
@@ -203,12 +203,12 @@
 				$('#btn-create-puzzleVideoPoster').css("display", "none");
 			</c:if>	
 			// practical video
-			<c:if test="${empty template.connotation.puzzleVideoUrl}" >
-				$('#btn-delete-puzzleVideo').css("display","none");
+			<c:if test="${empty template.connotation.practicalVideoUrl}" >
+				$('#btn-delete-practicalVideo').css("display","none");
 			</c:if>
-			<c:if test="${not empty template.connotation.puzzleVideoUrl}" >
-				$('#btn-create-puzzleVideo').css("display","none");
-				$('#btn-create-puzzleVideoPoster').css("display", "none");
+			<c:if test="${not empty template.connotation.practicalVideoUrl}" >
+				$('#btn-create-practicalVideo').css("display","none");
+				$('#btn-create-practicalVideoPoster').css("display", "none");
 			</c:if>	
 		});
 		
@@ -267,22 +267,22 @@
 			$('#btn-delete-puzzleVideo').css("display","none");
 		}
 			// practical video
-		function updatepuzzleVideoCallback(url){
-			$('#puzzleVideoUrl').attr('src', url);
-			$('#btn-create-puzzleVideo').css("display","none");
-			$('#btn-delete-puzzleVideo').css("display","inline");
+		function updatepracticalVideoCallback(url){
+			$('#practicalVideoUrl').attr('src', url);
+			$('#btn-create-practicalVideo').css("display","none");
+			$('#btn-delete-practicalVideo').css("display","inline");
 		}
-		function updatepuzzleVideoPosterCallback(url){
-			$('#puzzleVideoUrl').attr('poster', url);
-			$('#btn-create-puzzleVideoPoster').css("display","none");
+		function updatepracticalVideoPosterCallback(url){
+			$('#practicalVideoUrl').attr('poster', url);
+			$('#btn-create-practicalVideoPoster').css("display","none");
 		}
-		function deletepuzzleVideoCallback(){
-			$('#puzzleVideoUrl').attr('poster','');
-			$('#puzzleVideoUrl').attr('src','');
-			$('#btn-create-puzzleVideo').css("display","inline");
-			$('#btn-create-puzzleVideoPoster').css("display","inline");
-			$('#btn-delete-puzzleVideo').css("display","none");
-		}	
+		function deletepracticalVideoCallback(){
+			$('#practicalVideoUrl').attr('poster','');
+			$('#practicalVideoUrl').attr('src','');
+			$('#btn-create-practicalVideo').css("display","inline");
+			$('#btn-create-practicalVideoPoster').css("display","inline");
+			$('#btn-delete-practicalVideo').css("display","none");
+		}
 </script>
 </body>
 </html>
