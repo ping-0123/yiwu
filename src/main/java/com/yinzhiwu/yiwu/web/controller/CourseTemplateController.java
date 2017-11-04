@@ -251,7 +251,7 @@ public class CourseTemplateController extends BaseController{
 	@GetMapping(value="/{id}/lessonTemplates/list")
 	public String list(@PathVariable(name="id")Integer courseTemplateId, Model model){
 		model.addAttribute("courseTemplateId", courseTemplateId);
-		return "lessonTemplates/list";
+		return "courseTemplates/lessonTemplates/list";
 	}
 	
 	@GetMapping(value="/{id}/lessonTemplates/{lessonTemplateId}/updateForm")
@@ -260,6 +260,8 @@ public class CourseTemplateController extends BaseController{
 		LessonTemplate lesson = lessonTemplateService.get(lessonTemplateId);
 		LessonTemplateVO template =  LessonTemplateVOConverter.INSTANCE.fromPO(lesson);
 		model.addAttribute("template", template);
+		//添加七牛云上传token
+		model.addAttribute("uploadToken", qiniuService.createAccessToken());
 		return "courseTemplates/lessonTemplates/updateForm";
 	}
 	

@@ -14,6 +14,14 @@
 <title>标准课时模板</title>
 
 <!--css stylesheet -->
+<link href="../../../../assets/font-awe	some/css/font-awesome.min.css" rel="stylesheet">
+<link href="../../../../assets/datatables/datatables.min.css" rel="stylesheet" > 
+<link href="../../../../assets/datatable-plugins/Select-1.2.3/css/select.bootstrap.min.css" rel="stylesheet">
+<link href="../../../../assets/bootstrap3-dialog/bootstrap-dialog.min.css" rel="stylesheet" >
+<link href="../../../../assets/bootstrap-validator/css/bootstrapValidator.min.css" rel="stylesheet">
+<link href="../../../../assets/dropzone/min/dropzone.min.css" rel="stylesheet">
+<link href="../../../../backend/css/custom.min.css" rel="stylesheet">
+<link href="../../../../backend/css/main.css" rel="stylesheet">
 <style>
 .dataTables_filter{width:100%!important;}
 </style>
@@ -44,13 +52,12 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content table-responsive">
-						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" width="100%">
+						<table id="lessonTemplate-datatable" class="table table-bordered table-hover table-condensed" width="100%">
 
 						</table>
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 	<!-- /page content -->
@@ -68,19 +75,30 @@
 	<!-- / bootstrap modals -->
     
 	<!-- jQuery -->
+	<!-- jquery, bootstrap datatable -->
+	<script src="../../../../assets/datatables/datatables.min.js" type="text/javascript"></script>
+	<script src="../../../../assets/datatable-plugins/Select-1.2.3/js/dataTables.select.min.js" type="text/javascript"></script>
+	<script src="../../../../assets/bootstrap3-dialog/bootstrap-dialog.min.js" type="text/javascript"></script>
+	<script src="../../../../assets/bootstrap-validator/js/bootstrapValidator.min.js" type="text/javascript"></script>
+	<script src="../../../../assets/bootstrap-validator/js/language/zh_CN.js" type="text/javascript"></script>
+	<script src="../../../../assets/dropzone/min/dropzone.min.js" type="text/javascript"></script>
+	<script src="../../../../backend/js/custom.min.js"></script>
+	
    <script type="text/javascript">
    		var column_index_create_time=0;
-   		var setting = 
+   		$(document).ready(function(){
+   			// lessonTemplate_datatable_setting 
+	    	var lessonTemplate_datatable_setting = 
 			{
 				"processing" : false,
 				"serverSide" : true,
 				"select":true,
 				"language" : {
-					"url" : "../../backend/config/i18n/datatable-chinese.json",
-					"searchPlaceholder" : "输入模板名,舞种名"
+					"url" : "../../../../backend/config/i18n/datatable-chinese.json",
+					"searchPlaceholder" : ""
 				},
 				"ajax" : {
-					"url" : "./datatable?courseTempId=${courseTemplateId}" ,
+					"url" : "./datatable",
 					"type" : "POST"
 				},
 				"columns" : [{
@@ -94,17 +112,22 @@
 					"title":"操作",
 					"render": function(data, type, row, meta) {
 						var html =  '';
-						<shiro:hasPermission name="courseTemplates:view:*">
-							html = html + '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i>  </a>';
+						<shiro:hasPermission name="courseTemplates:update:*">
+							html = html + '<a href="' +  row.id + '/updateForm" data-toggle="modal" data-target=".modal-update-lessonTemplate"> <i class="fa fa-pencil" title="修改"></i>  </a>';
 						</shiro:hasPermission>
 						
 						return html;
 					}
 				} ]
-			}; //end datatable setting
+			}; //end lessonTemplate_datatable_setting setting
+			
+			$("#lessonTemplate-datatable").DataTable(lessonTemplate_datatable_setting);
+						
+   		});
 			
   </script>
   
+   <script src="../../../../backend/js/main.js"></script>
   
 </body>
 </html>

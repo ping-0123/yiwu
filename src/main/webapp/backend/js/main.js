@@ -169,13 +169,13 @@ function showUpdateFailureModal(message){
  * @param {Object} option {token:xxx,}
  */
 function showQiniuDropzoneModal(token, saveUrl, confirmcallback){
-	var messageHtml = '<div class="dropzone" id="dropzone"><div class="am-text-success dz-message">上传视频<br>将视频文件拖拽到此处<br>或点此打开文件管理器选择视频文件</div></div>'
+	var messageHtml = '<div class="dropzone" id="dropzone"><div class="am-text-success dz-message">将文件拖拽到此处<br>或点此打开文件管理器选择文件</div></div>'
 	var fileKey;
 	var fileName;
 	var dlg=BootstrapDialog.confirm({
 		message:messageHtml,
 		type:BootstrapDialog.TYPE_DEFAULT,
-	    title:'上传图片视频',
+	    title:'上传',
 	    size : BootstrapDialog.SIZE_SMALL,
 	    closable:true,
 	    draggable: true,

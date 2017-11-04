@@ -54,6 +54,10 @@ public class LessonTemplate extends BaseEntity {
 		this.connotation = connotation;
 	}
 	
-	
+	public LessonConnotation ensureConnotation(){
+		if(null==this.connotation)
+			this.connotation = new LessonConnotation();
+		return this.connotation;
+	}
 	
 }

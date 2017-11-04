@@ -162,7 +162,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-md-2 col-sm-2 col-xs-4">课程内容</label>
+							<label class="control-label col-md-2 col-sm-2 col-xs-4">帮助信息</label>
 							<div class="col-md-10 col-sm-10 col-xs-8">
 								<textarea class="form-control" name="connotation.helpInfomation" rows="2">${template.connotation.helpInfomation }</textarea>
 							</div>

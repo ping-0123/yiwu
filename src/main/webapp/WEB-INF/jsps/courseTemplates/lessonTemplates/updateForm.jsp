@@ -21,335 +21,268 @@
 
 	<!-- modal body -->
 	<div class="modal-body">
-		<form id="form-update" method="POST" action="./${template.id}" class="form-horizontal form-label-left">
-			<input type="hidden" name="_method" value="PUT">
-			<!-- tab nav-->
-			<ul class="nav nav-tabs">
-				<li><a href="#connotation" data-toggle="tab">课程内容</a></li>
-				<li><a href="#picture" data-toggle="tab">上传图片</a></li>
-				<li><a href="#audio" data-toggle="tab">上传音乐</a></li>
-				<li><a href="#video" data-toggle="tab">上传视频</a></li>
-			</ul>
-			<!-- end tab nav -->
+		<!-- tab nav-->
+		<ul class="nav nav-tabs">
+			<li><a href="#connotation" data-toggle="tab">课时内容</a></li>
+			<li><a href="#picture" data-toggle="tab">上传图片</a></li>
+			<li><a href="#audio" data-toggle="tab">上传音乐</a></li>
+			 <li class="dropdown">
+		        <a href="#" id="videoDrop" class="dropdown-toggle"
+		        	data-toggle="dropdown">上传视频
+		            <b class="caret"></b>
+		        </a>
+		        <ul class="dropdown-menu" role="menu" aria-labelledby="videoDrop">
+		            <li><a href="#standardVideo" data-toggle="tab">上传标准视频</a></li>
+					<li><a href="#puzzleVideo" data-toggle="tab">上传疑难点视频</a></li>
+					<li><a href="#practicalVideo" data-toggle="tab">上传实际视频</a></li>
+		        </ul>
+		    </li>
+		</ul>
+		<!-- end tab nav -->
 
-			<br />
+		<br />
 
-			<!-- tab content -->
-			<div class="tab-content container">
-
-				<!-- basic tab pane -->
-				
-				<!-- connotation tab pane  -->
-				<div class="tab-pane fade" id="connotation">
+		<!-- tab content -->
+		<div class="tab-content container">
+			
+			<!-- connotation tab pane  -->
+			<div class="tab-pane fade in active" id="connotation">
+				<form id="form-connotation" method="POST" action="../../../lessonTemplates/${template.id}" class="form-horizontal form-label-left">
+					<input type="hidden" name="_method" value="PUT" />
 					<div class="form-group">
-						<label class="control-label col-md-2 col-sm-2 col-xs-4">课程简介</label>
-						<div class="col-md-10 col-sm-10 col-xs-8">
+						<label class="control-label col-md-2 col-sm-2 col-xs-2">简介</label>
+						<div class="col-md-10 col-sm-10 col-xs-10">
 							<textarea name="connotation.introduction" rows="2" class="form-control">${template.connotation.introduction }</textarea>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-md-2 col-sm-2 col-xs-4">课程内容</label>
-						<div class="col-md-10 col-sm-10 col-xs-8">
+						<label class="control-label col-md-2 col-sm-2 col-xs-2">内容</label>
+						<div class="col-md-10 col-sm-10 col-xs-10">
 							<textarea class="form-control" name="connotation.connotation" rows="2">${template.connotation.connotation }</textarea>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-md-2 col-sm-2 col-xs-4">课程内容</label>
-						<div class="col-md-10 col-sm-10 col-xs-8">
+						<label class="control-label col-md-2 col-sm-2 col-xs-2">帮助信息</label>
+						<div class="col-md-10 col-sm-10 col-xs-10">
 							<textarea class="form-control" name="connotation.helpInfomation" rows="2">${template.connotation.helpInfomation }</textarea>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-md-2 col-sm-2 col-xs-4">舞蹈简介</label>
-						<div class="col-md-10 col-sm-10 col-xs-8">
+						<label class="control-label col-md-2 col-sm-2 col-xs-2">舞蹈简介</label>
+						<div class="col-md-10 col-sm-10 col-xs-10">
 							<textarea class="form-control" name="connotation.danceIntroduction" rows="2">${template.connotation.danceIntroduction }</textarea>
 						</div>
 					</div>
-				</div>
-				<!-- end conotation tab pane -->
-
-				<!-- picture tab pane  -->
-				<div class="tab-pane fade" id="picture">
-					<div class="form-group ">
-						<input type="hidden" name="connotation.pictureUri" id="picture-uri" value=${template.connotation.pictureUri }>
-						<div class="form-control dropzone" id="dropzone-picture">
-							<div class="am-text-success dz-message">
-								上传图片<br>
-								将图片拖拽到此处<br>或点此打开文件管理器选择图片
-							</div>
+				
+					<div class="ln_solid"></div>
+					<div class="form-group">
+						<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-2">
+							<button type="reset" class="btn btn-primary">重置</button>
+							<button type="submit" class="btn btn-success">修改</button>
 						</div>
 					</div>
-				</div>
-				<!-- end picture tab pane -->
-
-				<!-- audio tab pane  -->
-				<div class="tab-pane fade" id="audio">
-					<div class="form-group ">
-						<input type="hidden" name="connotation.audioName" id="audioName" value=${template.connotation.audioName }>
-						<input type="hidden" name="connotation.audioUri" id="audioUri" value=${template.connotation.audioUri }>
-						<div class="form-control dropzone" id="dropzone-audio">
-							<div class="am-text-success dz-message">
-								上传音频<br>
-								将音频文件拖拽到此处<br>或点此打开文件管理器选择音频文件
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- end audio tab pane -->
-
-				<!-- video tab pane  -->
-				<div class="tab-pane fade" id="video">
-					<div class="form-group ">
-						<input type="hidden" name="connotation.videoTitle" id="videoTitle" value=${template.connotation.videoTitle }>
-						<input type="hidden" name="connotation.videoPosterUri" id="videoPosterUri" value=${template.connotation.videoPosterUri }>
-						<div class="form-control dropzone col-md-6 col-sm-6 col-xs-12" id="dropzone-videoPoster">
-							<div class="am-text-success dz-message">
-								上传视频封面图片<br>
-								将图片拖拽到此处M<br>或点此打开文件管理器选择图片
-							</div>
-						</div>
-						<input type="hidden" name="connotation.videoUri" id="videoUri" value=${template.connotation.videoUri }>
-						<div class="form-control dropzone col-md-6 col-sm-6 col-xs-12" id="dropzone-video">
-							<div class="am-text-success dz-message">
-								上传视频<br>
-								将视频文件拖拽到此处M<br>或点此打开文件管理器选择视频文件
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- end video tab pane -->
-
-
-
+				</form>
 			</div>
-			<!--  end tab-content -->
+			<!-- end conotation tab pane -->
 
-			<div class="ln_solid"></div>
-			<div class="form-group">
-				<div class="col-md-9 col-sm-9 col-xs-12">
-					<button type="reset" class="btn btn-primary">重置</button>
-					<button type="submit"  class="btn btn-success">修改</button>
+			<!-- picture tab pane  -->
+			<div class="tab-pane fade" id="picture">
+				<button id="btn-create-picture"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/pictureUri',updatePictureUriCallback)" class="btn btn-primary">上传</button>
+				<button id="btn-delete-picture"  onclick="showDeleteModal('../../../lessonTemplates/${template.id}/connotation/pictureUri',deletePictureUriCallback)" class="btn btn-danger">删除</button>
+				<div>
+					<img id="pictureUrl" alt="" class="img-responsive" src="${template.connotation.pictureUrl }" width="200">
+			</div>
+			</div>
+			<!-- end picture tab pane -->
+
+			<!-- audio tab pane  -->
+			<div class="tab-pane fade" id="audio">
+				<div class="container">
+					<div class="row">
+						<button id="btn-create-audio"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/audioUri',updateAudioUriCallback)" class="btn btn-primary">上传</button>
+						<button id="btn-delete-audio"  onclick="showDeleteModal('../../../lessonTemplates/${template.id}/connotation/audioUri',deleteAudioUriCallback)" class="btn btn-danger">删除</button>
+					</div>
+					
+					<div class="row">
+						<audio  id="audioUrl" alt="" class="img-responsive" src="${template.connotation.audioUrl }"  controls="controls" width="200">
+					</div>
 				</div>
 			</div>
+			<!-- end audio tab pane -->
 
+			<!-- standerdVideo tab pane  -->
+			<div class="tab-pane fade" id="standardVideo">
+				<button id="btn-create-standardVideo"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/standardVideoUri', updateStandardVideoCallback)" class="btn btn-primary">上传视频</button>
+				<button id="btn-create-standardVideoPoster"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/standardVideoPosterUri',updateStandardVideoPosterCallback)" class="btn btn-primary">上传视频封面</button>
+				<button id="btn-delete-standardVideo"  onclick="showDeleteModal('../../../lessonTemplates/${template.id}/connotation/standardVideoUri',deleteStandardVideoCallback)" class="btn btn-danger">删除</button>
+				<div>
+					<video id="standardVideoUrl" width="320" height="240" controls="controls" poster="${template.connotation.standardVideoPosterUrl }" src="${template.connotation.standardVideoUrl }">
+					</video>
+				</div>
+			</div>
+			<!-- end standerdVideo tab pane -->
+			
+			<!-- puzzleVideo tab pane  -->
+			<div class="tab-pane fade" id="puzzleVideo">
+				<button id="btn-create-puzzleVideo"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/puzzleVideoUri', updatepuzzleVideoCallback)" class="btn btn-primary">上传视频</button>
+				<button id="btn-create-puzzleVideoPoster"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/puzzleVideoPosterUri',updatepuzzleVideoPosterCallback)" class="btn btn-primary">上传视频封面</button>
+				<button id="btn-delete-puzzleVideo"  onclick="showDeleteModal('../../../lessonTemplates/${template.id}/connotation/puzzleVideoUri',deletepuzzleVideoCallback)" class="btn btn-danger">删除</button>
+				<div>
+					<video id="puzzleVideoUrl" width="320" height="240" controls="controls" poster="${template.connotation.puzzleVideoPosterUrl }" src="${template.connotation.puzzleVideoUrl }">
+					</video>
+				</div>
+			</div>
+			<!-- end puzzleVideo tab pane -->
+			
+			<!-- practicalVideo tab pane  -->
+			<div class="tab-pane fade" id="practicalVideo">
+				<button id="btn-create-puzzleVideo"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/puzzleVideoUri', updatepuzzleVideoCallback)" class="btn btn-primary">上传视频</button>
+				<button id="btn-create-puzzleVideoPoster"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/puzzleVideoPosterUri',updatepuzzleVideoPosterCallback)" class="btn btn-primary">上传视频封面</button>
+				<button id="btn-delete-puzzleVideo"  onclick="showDeleteModal('../../../lessonTemplates/${template.id}/connotation/puzzleVideoUri',deletepuzzleVideoCallback)" class="btn btn-danger">删除</button>
+				<div>
+					<video id="puzzleVideoUrl" width="320" height="240" controls="controls" poster="${template.connotation.puzzleVideoPosterUrl }" src="${template.connotation.puzzleVideoUrl }">
+					</video>
+				</div>
+			</div>
+			<!-- end practicalVideo tab pane -->
 
-		</form>
+		</div>
+		<!--  end tab-content -->
 	</div>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('#form-update').bootstrapValidator({
-				feedbackIcons : {
-					valid : 'glyphicon glyphicon-ok',
-					invalid : 'glyphicon glyphicon-remove',
-					validating : 'glyphicon glyphicon-refresh'
-				},
-				fields : {
-					name : {
-						validators : {
-							notEmpty : {},
-							stringLength : {
-								min : 2,
-								max : 30
-							}
-						}
-					},
-					times : {
-						validators : {
-							notEmpty : {}
-						}
-					},
-					minStudentCount : {
-						validators : {
-							greaterThan : {
-								value : 4
-							}
-						}
-					}
-
-				}
-
-			}).on('success.form.bv', function(e) {
-				// Prevent form submission
-				e.preventDefault();
-
-				// Get the form instance
-				var $form = $(e.target);
-
-				// Get the BootstrapValidator instance
-				// var bv = $form.data('bootstrapValidator'); 
-
-				// Use Ajax to submit form data
+			
+			//form submit
+			$('#form-connotation').submit(function(){
 				$.ajax({
-					url : $form.attr('action'),
-					type : $form.attr('method'),
-					data : $form.serialize(),
-					dataType : 'json',
-					success : function(data) {
-						if (data.result) {
-							flashUpdateSuccessModal();
-							TABLE.draw(false);
-						} else {
-							showUpdateFailureModal(data.msg);
+					url: $(this).attr('action'),
+						type: $(this).attr('method'),
+						data: $(this).serialize(),
+						dataType: 'json',
+						success: function(data) {
+							if(data.result) {
+								flashUpdateSuccessModal();
+							} else {
+								showUpdateFailureModal(data.msg);
+							}
 						}
-					}
 				});
 			});
-
-			loadHtmlForSubCourseType($('#courseType').val());
-
-			$('#courseType').change(function() {
-				loadHtmlForSubCourseType($(this).val());
-			});
-
-			// upload picture dropzone
-			Dropzone.autoDiscover = false;
-			var pictureDropzone = new Dropzone('#dropzone-picture', {
-				url : QINIU_UPLOAD_URL,
-				method : "POST",
-				params : {
-					"token" : "${uploadToken}"
-				},
-				addRemoveLinks : true,
-				dictRemoveLinks : "x",
-				dictRemoveFile : "删除",
-				dictMaxFilesExceeded : "已超出允许的最大上传文件数量",
-				maxFiles : 1,
-				filesizeBase : 1024,
-				success : function(file, response, e) {
-					$("#picture-uri").val(response.key);
-				},
-				init : function() {
-					this.on("removedfile", function(file) {
-						console.log(file.name);
-						$.ajax({
-							type : "delete",
-							url : "../qiniu/" + $('#picture-uri').val(),
-							async : true,
-							success : function(data) {
-								console.log("删除成功");
-							}
-						});
-					});
-				}
-			});
+			// end form submit
 			
-			//upload audio dropzone
-			var audioDropzone = new Dropzone('#dropzone-audio', {
-				url : QINIU_UPLOAD_URL,
-				method : "POST",
-				params : {
-					"token" : "${uploadToken}"
-				},
-				addRemoveLinks : true,
-				dictRemoveLinks : "x",
-				dictRemoveFile : "删除",
-				dictMaxFilesExceeded : "已超出允许的最大上传文件数量",
-				maxFiles : 1,
-				filesizeBase : 1024,
-				success : function(file, response, e) {
-					$("#audioUri").val(response.key);
-					$("#audioName").val(file.name);
-				},
-				init : function() {
-					this.on("removedfile", function(file) {
-						console.log(file.name);
-						$.ajax({
-							type : "delete",
-							url : "../qiniu/" + $('#audioUri').val(),
-							async : true,
-							success : function(data) {
-								console.log("删除成功");
-							}
-						});
-					});
-				}
-			});
-			
-			//upload video poster dropzone
-			var videoPosterDropzone = new Dropzone('#dropzone-videoPoster', {
-				url : QINIU_UPLOAD_URL,
-				method : "POST",
-				params : {
-					"token" : "${uploadToken}"
-				},
-				addRemoveLinks : true,
-				dictRemoveLinks : "x",
-				dictRemoveFile : "删除",
-				dictMaxFilesExceeded : "已超出允许的最大上传文件数量",
-				maxFiles : 1,
-				filesizeBase : 1024,
-				success : function(file, response, e) {
-					$("#videoPosterUri").val(response.key);
-				},
-				init : function() {
-					this.on("removedfile", function(file) {
-						console.log(file.name);
-						$.ajax({
-							type : "delete",
-							url : "../qiniu/" + $('#videoPosterUri').val(),
-							async : true,
-							success : function(data) {
-								console.log("删除成功");
-							}
-						});
-					});
-				}
-			});
-			
-			
-			//upload video dropzone
-			var videoDropzone = new Dropzone('#dropzone-video', {
-				url : QINIU_UPLOAD_URL,
-				method : "POST",
-				params : {
-					"token" : "${uploadToken}"
-				},
-				addRemoveLinks : true,
-				dictRemoveLinks : "x",
-				dictRemoveFile : "删除",
-				dictMaxFilesExceeded : "已超出允许的最大上传文件数量",
-				maxFiles : 1,
-				filesizeBase : 1024,
-				success : function(file, response, e) {
-					$("#videoUri").val(response.key);
-					$("#videoTitle").val(file.name);
-				},
-				init : function() {
-					this.on("removedfile", function(file) {
-						console.log(file.name);
-						$.ajax({
-							type : "delete",
-							url : "../qiniu/" + $('#videoUri').val(),
-							async : true,
-							success : function(data) {
-								console.log("删除成功");
-							}
-						});
-					});
-				}
-			});
-
+			// control button visable
+				//pictureUri
+			<c:if test="${empty template.connotation.pictureUrl}" >
+				$('#btn-delete-picture').css("display","none");
+			</c:if>
+			<c:if test="${not empty template.connotation.pictureUrl}" >
+				$('#btn-create-picture').css("display","none");
+			</c:if>
+				//audioUri
+			<c:if test="${empty template.connotation.audioUrl}" >
+				$('#btn-delete-audio').css("display","none");
+			</c:if>
+			<c:if test="${not empty template.connotation.audioUrl}" >
+				$('#btn-create-audio').css("display","none");
+			</c:if>
+				// standard video
+			<c:if test="${empty template.connotation.standardVideoUrl}" >
+				$('#btn-delete-standardVideo').css("display","none");
+			</c:if>
+			<c:if test="${not empty template.connotation.standardVideoUrl}" >
+				$('#btn-create-standardVideo').css("display","none");
+				$('#btn-create-standardVideoPoster').css("display", "none");
+			</c:if>
+				// puzzle video
+			<c:if test="${empty template.connotation.puzzleVideoUrl}" >
+				$('#btn-delete-puzzleVideo').css("display","none");
+			</c:if>
+			<c:if test="${not empty template.connotation.puzzleVideoUrl}" >
+				$('#btn-create-puzzleVideo').css("display","none");
+				$('#btn-create-puzzleVideoPoster').css("display", "none");
+			</c:if>	
+			// practical video
+			<c:if test="${empty template.connotation.puzzleVideoUrl}" >
+				$('#btn-delete-puzzleVideo').css("display","none");
+			</c:if>
+			<c:if test="${not empty template.connotation.puzzleVideoUrl}" >
+				$('#btn-create-puzzleVideo').css("display","none");
+				$('#btn-create-puzzleVideoPoster').css("display", "none");
+			</c:if>	
 		});
-
-		function loadHtmlForSubCourseType(v_courseType) {
-			var html;
-			$.ajax({
-				url : "./subCourseTypes?courseType=" + v_courseType,
-				type : "GET",
-				success : function(response) {
-					if (response.result) {
-						var types = response.data;
-						for (var i = 0; i < types.length; i++) {
-							html = html + '<option value="' +types[i] + '">'
-									+ translateSubCourseType(types[i])
-									+ '</option>';
-						}
-						$('#subCourseType').html(html);
-					}
-				}
-			});
+		
+		function updatePictureUriCallback(url){
+			$('#pictureUrl').attr('src',url);
+			$('#btn-create-picture').css("display","none");
+			$('#btn-delete-picture').css("display","inline");
 		}
-	</script>
+		function deletePictureUriCallback(){
+			$('#pictureUrl').attr('src','');
+			$('#btn-create-picture').css("display","inline");
+			$('#btn-delete-picture').css("display","none");
+		}
+		function updateAudioUriCallback(url){
+			$('#audioUrl').attr('src', url);
+			$('#btn-create-audio').css("display","none");
+			$('#btn-delete-audio').css("display","inline");
+		}
+		function deleteAudioUriCallback(){
+			$('#audioUrl').attr('src', '');
+			$('#btn-create-audio').css("display","inline");
+			$('#btn-delete-audio').css("display","none");
+		}
+			//standard video
+		function updateStandardVideoCallback(url){
+			$('#standardVideoUrl').attr('src', url);
+			$('#btn-create-standardVideo').css("display","none");
+			$('#btn-delete-standardVideo').css("display","inline");
+		}
+		function updateStandardVideoPosterCallback(url){
+			$('#standardVideoUrl').attr('poster', url);
+			$('#btn-create-standardVideoPoster').css("display","none");
+		}
+		function deleteStandardVideoCallback(){
+			$('#standardVideoUrl').attr('poster','');
+			$('#standardVideoUrl').attr('src','');
+			$('#btn-create-standardVideo').css("display","inline");
+			$('#btn-create-standardVideoPoster').css("display","inline");
+			$('#btn-delete-standardVideo').css("display","none");
+		}
+			// puzzle video
+		function updatepuzzleVideoCallback(url){
+			$('#puzzleVideoUrl').attr('src', url);
+			$('#btn-create-puzzleVideo').css("display","none");
+			$('#btn-delete-puzzleVideo').css("display","inline");
+		}
+		function updatepuzzleVideoPosterCallback(url){
+			$('#puzzleVideoUrl').attr('poster', url);
+			$('#btn-create-puzzleVideoPoster').css("display","none");
+		}
+		function deletepuzzleVideoCallback(){
+			$('#puzzleVideoUrl').attr('poster','');
+			$('#puzzleVideoUrl').attr('src','');
+			$('#btn-create-puzzleVideo').css("display","inline");
+			$('#btn-create-puzzleVideoPoster').css("display","inline");
+			$('#btn-delete-puzzleVideo').css("display","none");
+		}
+			// practical video
+		function updatepuzzleVideoCallback(url){
+			$('#puzzleVideoUrl').attr('src', url);
+			$('#btn-create-puzzleVideo').css("display","none");
+			$('#btn-delete-puzzleVideo').css("display","inline");
+		}
+		function updatepuzzleVideoPosterCallback(url){
+			$('#puzzleVideoUrl').attr('poster', url);
+			$('#btn-create-puzzleVideoPoster').css("display","none");
+		}
+		function deletepuzzleVideoCallback(){
+			$('#puzzleVideoUrl').attr('poster','');
+			$('#puzzleVideoUrl').attr('src','');
+			$('#btn-create-puzzleVideo').css("display","inline");
+			$('#btn-create-puzzleVideoPoster').css("display","inline");
+			$('#btn-delete-puzzleVideo').css("display","none");
+		}	
+</script>
 </body>
 </html>
