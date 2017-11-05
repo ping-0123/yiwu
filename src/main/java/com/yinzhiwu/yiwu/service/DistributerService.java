@@ -58,5 +58,5 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 	float getExpWinRate(Distributer distributer);
 
 	YiwuJson<StoreApiView> findDefaultStoreApiView(Integer distributerId);
-
+	
 }

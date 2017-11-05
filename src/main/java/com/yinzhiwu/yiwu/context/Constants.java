@@ -6,9 +6,10 @@ package com.yinzhiwu.yiwu.context;
 *
 */
 
-public class Constants {
+public abstract class Constants {
 	 public static final String CURRENT_USER = "current_user";
 	 public static final String CURRENT_DISTRIBUTER = "current_distributer";
+	 public static final String CURRENT_DISTRIBUTER_VO = "current_distributer_vo";
 	 public static final String	CURRENT_DISTRIBUTER_ID = "currentDistributerId";
 	 public static final String CURRENT_DISTRIBUTER_VIWE = "current_distributer_view";
 	 public static final String CURRENT_CUSTOMER = "current_customer";

@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping(value="/api")
 @RestController
 @Api("微信端客户登录模块")
-public class CustomerLoginController {
+public class AccountApiController {
 	
 	@Autowired private DistributerService distributerService;
 	
@@ -49,14 +49,19 @@ public class CustomerLoginController {
 		}
 		
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.SECOND, (int) JJWTConfig.lifeCycleInSeconds);
+		calendar.add(Calendar.SECOND, (int) JJWTConfig.LIFE_CYCLE_IN_SECONDS);
 		String token = Jwts.builder().setExpiration(calendar.getTime())
 			.setSubject(distributer.getName())
 			.claim(Constants.CURRENT_DISTRIBUTER_ID, distributer.getId())
-			.signWith(SignatureAlgorithm.HS256,JJWTConfig.secretKey)
+			.signWith(SignatureAlgorithm.HS256,JJWTConfig.SECRET_KEY)
 			.compact();
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("token", token);
 		return YiwuJson.createBySuccess(map);
 	}
+	
+	@PostMapping(value="/register")
+	 public YiwuJson<?> register(){
+		 return null;
+	 }
 }

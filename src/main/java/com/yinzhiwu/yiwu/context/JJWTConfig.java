@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.context;
 
 import java.security.Key;
 
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 
 /**
@@ -13,6 +14,8 @@ import io.jsonwebtoken.impl.crypto.MacProvider;
 public abstract class JJWTConfig {
 	
 	public static final String AUTHORIZATION_HEADER_PREFIX = "Yiwu ";
-	public static final Key secretKey = MacProvider.generateKey();
-	public static final long lifeCycleInSeconds = 7200; //两小时
+	public static final Key SECRET_KEY = MacProvider.generateKey();
+	public static final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
+	public static final long  LIFE_CYCLE_IN_SECONDS = 7200; //两小时
+	
 }

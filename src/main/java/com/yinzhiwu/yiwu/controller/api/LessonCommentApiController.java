@@ -1,4 +1,4 @@
-package com.yinzhiwu.yiwu.controller;
+package com.yinzhiwu.yiwu.controller.api;
 
 import javax.validation.Valid;
 
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.context.UserContext;
+import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.LessonCommentVO;

@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
-import com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
@@ -23,6 +23,7 @@ import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.dao.EmployeeDepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
 import com.yinzhiwu.yiwu.dao.IncomeRecordDao;
+import com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.dao.ShareTweetEventDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
@@ -212,6 +213,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		return customer;
 	}
 
+	@Transactional
 	@Override
 	public YiwuJson<DistributerApiView> findById(int id) {
 		Distributer distributer;

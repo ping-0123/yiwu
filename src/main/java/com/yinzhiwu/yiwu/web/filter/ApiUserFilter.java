@@ -61,7 +61,7 @@ public class ApiUserFilter extends OncePerRequestFilter {
 		}
 		
 		final String token = authHeader.substring(JJWTConfig.AUTHORIZATION_HEADER_PREFIX.length());
-		Claims claims =  Jwts.parser().setSigningKey(JJWTConfig.secretKey)
+		Claims claims =  Jwts.parser().setSigningKey(JJWTConfig.SECRET_KEY)
 			.parseClaimsJws(token)
 			.getBody();
 		//判断凭证是否过期 
