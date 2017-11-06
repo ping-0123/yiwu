@@ -22,7 +22,11 @@ import io.jsonwebtoken.Jwts;
 @Service
 public class JJWTService {
 	
-	
+	/**
+	 * 
+	 * @param distributer
+	 * @return
+	 */
 	public String createDistributerIdToken(Distributer distributer){
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.SECOND, (int) JJWTConfig.LIFE_CYCLE_IN_SECONDS);
