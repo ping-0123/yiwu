@@ -3,15 +3,22 @@ package com.yinzhiwu.yiwu.service;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.context.JpushConfig;
+import com.yinzhiwu.yiwu.entity.WithdrawBrokerage;
+import com.yinzhiwu.yiwu.entity.income.WithdrawEvent;
+import com.yinzhiwu.yiwu.event.PayWithdrawEvent;
+import com.yinzhiwu.yiwu.exception.JSMSException;
 
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
@@ -48,36 +55,42 @@ public class JSMSService {
 		numberFormat = NumberFormat.getCurrencyInstance();
 	}
 	
-	public boolean sendRegisterMessage(String mobieNumber){
-		return sendValidateMessage(mobieNumber,JSMSTemplate.REGISTER);
+	public boolean sendRegisterSMSCode(String mobieNumber) throws JSMSException{
+		return sendSMSCode(mobieNumber,JSMSTemplate.REGISTER);
 	}
 	
-	public boolean sendWithDrawMessage(String mobieNumber){
-		return sendValidateMessage(mobieNumber, JSMSTemplate.WITHDRAW);
+	public boolean sendWithDrawSMSCode(String mobieNumber) throws JSMSException{
+		return sendSMSCode(mobieNumber, JSMSTemplate.WITHDRAW);
 	}
 	
-	public boolean sendPaydepositMessage(String mobieNumber){
-		return sendValidateMessage(mobieNumber, JSMSTemplate.PAYDEPOSIT);
+	public boolean sendPaydepositSMSCode(String mobieNumber) throws JSMSException{
+		return sendSMSCode(mobieNumber, JSMSTemplate.PAYDEPOSIT);
 	}
 	
-	public boolean validateRegisterSMSCode(String mobileNumber, String code){
+	public boolean validateRegisterSMSCode(String mobileNumber, String code) throws JSMSException{
 		return validateSMSCode(JSMSTemplate.REGISTER, mobileNumber, code);
 	}
 	
-	public boolean validateWithDrawSMSCode(String mobileNumber, String code){
+	public boolean validateWithDrawSMSCode(String mobileNumber, String code) throws JSMSException{
 		return validateSMSCode(JSMSTemplate.WITHDRAW, mobileNumber, code);
 	}
 	
-	public boolean validatePaydepositSMSCode(String mobileNumber, String code){
+	public boolean validatePaydepositSMSCode(String mobileNumber, String code) throws JSMSException{
 		return validateSMSCode(JSMSTemplate.PAYDEPOSIT, mobileNumber, code);
 	}
 	
-	public boolean sendPayWithdrawMessage(String mobileNumber, java.util.Date date, Float amount){
+	public boolean sendPayWithdrawMessage(String mobileNumber, java.util.Date date, Float amount) throws JSMSException{
 		String[] params = new String[]{dateFormat.format(date), numberFormat.format(amount)};
 		return sendTemplateMessage(mobileNumber, JSMSTemplate.PAY_WITHDRAW, params);
 	}
 	
-	private boolean sendTemplateMessage(String mobileNumber, JSMSTemplate template, String[] params){
+	public boolean sendDoWithdrawMessage(String mobileNumber, Date date, Float amount) throws JSMSException
+	{
+		String[] params = new String[]{dateFormat.format(date), numberFormat.format(amount)};
+		return sendTemplateMessage(mobileNumber, JSMSTemplate.DO_WITHDRAW, params);
+	}
+	
+	private boolean sendTemplateMessage(String mobileNumber, JSMSTemplate template, String[] params) throws JSMSException{
 		if(template.getParams().length != params.length)
 			throw new IllegalArgumentException("模板参数数量与传入的参数数量不一致");
 		
@@ -97,11 +110,11 @@ public class JSMSService {
 			handleException(e);
 		}
 		
-		return false;
+		return true;
 		
 	}
 	
-	private boolean sendValidateMessage(String mobieNumber, JSMSTemplate template){
+	private boolean sendSMSCode(String mobieNumber, JSMSTemplate template) throws JSMSException{
 		SMSPayload payload = SMSPayload.newBuilder()
 				.setMobileNumber(mobieNumber)
 				.setTempId(template.getId())
@@ -114,15 +127,16 @@ public class JSMSService {
 		} catch (APIConnectionException | APIRequestException e) {
 			handleException(e);
 		}
+		return true;
 		
-		return false;
 	}
 	
-	private boolean validateSMSCode(JSMSTemplate template,String mobileNumber, String code){
+	private boolean validateSMSCode(JSMSTemplate template,String mobileNumber, String code) throws JSMSException{
 		String msgId = msgIdMap.get(template).get(mobileNumber);
 		if(null==msgId){
-			LOG.error(mobileNumber + "未验证");
-			return false;
+			String message = mobileNumber + "未验证, 请先请求验证码";
+			LOG.error(message);
+			throw new JSMSException(message);
 		}
 		
 		try {
@@ -131,24 +145,27 @@ public class JSMSService {
 				msgIdMap.get(template).remove(mobileNumber);
 				return true;
 			}
-			return false;
 		} catch (APIConnectionException | APIRequestException e) {
 			handleException(e);
 		}
 		
-		return false;
+		return true;
 	}
 	
-	private void handleException(Exception e){
+	private void handleException(Exception e) throws JSMSException{
 		if(e instanceof APIConnectionException){
 			LOG.error("Connection error. Should retry later. ", e);
 			LOG.info(e.getMessage());
+			throw new JSMSException(e.getMessage(),e);
 		}else if (e instanceof APIRequestException) {
+			APIRequestException ae = (APIRequestException) e;
 			LOG.error("Error response from JPush server. Should review and fix it. ", e);
             LOG.info("HTTP Status: " + ((APIRequestException) e).getStatus());
             LOG.info("Error Message: " + e.getMessage() + ((APIRequestException)e).getErrorMessage());
+            throw new JSMSException(ae.getErrorCode() + " " + ae.getErrorMessage(), ae);
 		}else {
 			LOG.error("other exception. ",e);
+			throw new JSMSException(e.getMessage(),e);
 		}
 	}
 	
@@ -156,7 +173,8 @@ public class JSMSService {
 		REGISTER(47091, JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		WITHDRAW(82007, JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		PAYDEPOSIT(102276, JSMSTemplateType.VALIDATE,new String[]{"code"}),
-		PAY_WITHDRAW(145602,JSMSTemplateType.NOTIFICATION, new String[]{"date","amount"} );
+		PAY_WITHDRAW(145602,JSMSTemplateType.NOTIFICATION, new String[]{"date","amount"} ),
+		DO_WITHDRAW(145601, JSMSTemplateType.NOTIFICATION, new String[]{"date", "amount"});
 		
 		private final int id;
 		private final JSMSTemplateType type;
@@ -187,5 +205,26 @@ public class JSMSService {
 		VALIDATE,
 		NOTIFICATION,
 		MARKETING
+	}
+	
+	@Async
+	@EventListener(classes={PayWithdrawEvent.class})
+	public void handlePayWithdrawEvent(PayWithdrawEvent event){
+		WithdrawBrokerage withdraw = (WithdrawBrokerage) event.getSource();
+		try {
+			sendPayWithdrawMessage(withdraw.getDistributer().getPhoneNo(), withdraw.getCreateTime(), withdraw.getAmount());
+		} catch (JSMSException e) {
+			LOG.error("发送提现消息失败", e);
+		}
+	}
+	
+	@Async
+	@EventListener(classes={WithdrawEvent.class})
+	public void handleWithdrawEvent(WithdrawEvent event){
+		try {
+			sendDoWithdrawMessage(event.getDistributer().getPhoneNo(), event.getOccurTime(),event.getParam());
+		} catch (JSMSException e) {
+			LOG.error("发送提现消息失败", e);
+		}
 	}
 }

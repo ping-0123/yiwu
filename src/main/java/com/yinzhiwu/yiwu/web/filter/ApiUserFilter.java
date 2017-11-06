@@ -1,7 +1,9 @@
 package com.yinzhiwu.yiwu.web.filter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -36,7 +38,24 @@ public class ApiUserFilter extends OncePerRequestFilter {
 	private static final String ERROR_API_URL = "/api/error";
 	@SuppressWarnings("unused")
 	private static final String ERROR_UNLOGIN_API_URL = "/api/error/unlogin";
-
+	
+	private final List<String> throughUrls = new ArrayList<>();
+	
+	public ApiUserFilter() {
+		throughUrls.add("/api/login");
+		throughUrls.add("/api/jsms");
+		throughUrls.add("/api/error");
+		throughUrls.add("/api/distributer/register.do");
+	}
+	
+	private boolean isThrough(String path){
+		for (String url : throughUrls) {
+			if(path.contains(url))
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -49,11 +68,15 @@ public class ApiUserFilter extends OncePerRequestFilter {
 		
 		//通过  login error url
 		final String path = request.getServletPath();
-		if(path.contains(LOGIN_API_URL) || path.contains(ERROR_API_URL) || path.contains(REGISTER_API_URL))
-		{
+		if(isThrough(path)){
 			filterChain.doFilter(request, response);
 			return;
 		}
+		/*if(path.contains(LOGIN_API_URL) || path.contains(ERROR_API_URL) || path.contains(REGISTER_API_URL))
+		{
+			filterChain.doFilter(request, response);
+			return;
+		}*/
 		
 		final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if(authHeader==null || !authHeader.startsWith(JJWTConfig.AUTHORIZATION_HEADER_PREFIX)){

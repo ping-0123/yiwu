@@ -8,6 +8,7 @@ import com.yinzhiwu.yiwu.dao.WithdrawBrokerageDao;
 import com.yinzhiwu.yiwu.entity.WithdrawBrokerage;
 import com.yinzhiwu.yiwu.entity.income.WithdrawEvent;
 import com.yinzhiwu.yiwu.event.PayWithdrawEvent;
+import com.yinzhiwu.yiwu.service.JSMSService;
 import com.yinzhiwu.yiwu.service.WithdrawBrokerageService;
 
 /**
@@ -38,6 +39,7 @@ public class WithdrawBrokerageServiceImpl extends BaseServiceImpl<WithdrawBroker
 
 	/**
 	 * listened by {@link MessageServiceImpl#handlePayWithdrawEvent(PayWithdrawEvent)}
+	 * and {@link JSMSService#handlePayWithdrawEvent(PayWithdrawEvent)}
 	 */
 	@Override
 	public WithdrawBrokerage doPayWithdraw(WithdrawBrokerage withdraw) {
