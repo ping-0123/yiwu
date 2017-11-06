@@ -103,7 +103,11 @@
 				},
 				"columns" : [{
 					"title" :"课程模板Id",
-					"data":"courseTemplateId"
+					"data":"courseTemplateId",
+					"visible":false
+				},{
+					"title":"课程模板",
+					"data":"courseTemplateName"
 				},{
 					"data" : "ordinalNo",
 					"title": "课时序号"

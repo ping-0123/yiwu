@@ -168,6 +168,7 @@
 							}
 						}
 				});
+				return false;
 			});
 			// end form submit
 			

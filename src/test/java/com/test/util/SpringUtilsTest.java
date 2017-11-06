@@ -21,7 +21,6 @@ public class SpringUtilsTest  extends BaseSpringTest{
 		try {
 			System.err.println(bean.get(1));
 		} catch (DataNotFoundException e) {
-			e.printStackTrace();
 		}
 	}
 }

@@ -21,8 +21,8 @@ public class LisiListener implements ApplicationListener<ApplicationEvent> {
 	public void onApplicationEvent(ApplicationEvent event) {
 		if(event instanceof ContentEvent){
 			System.out.println("Lisi listener execute in thread " + Thread.currentThread());
-			throw new RuntimeException("中断 Lisi listner 执行");
-//			System.out.println("李四收到了新的内容: " + event.getSource());
+//			throw new RuntimeException("中断 Lisi listner 执行");
+			System.out.println("李四收到了新的内容: " + event.getSource());
 		}
 	}
 	

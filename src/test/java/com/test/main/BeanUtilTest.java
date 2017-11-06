@@ -37,7 +37,7 @@ public class BeanUtilTest extends BaseSpringTest{
 		System.err.println(courseVO.getConnotation().getHelpInfomation());
 	}	
 	
-	@Test
+//	@Test
 	public void testMapedClassRatio(){
 		String courseId = "20170826004";
 		List<LessonYzw> lessons;

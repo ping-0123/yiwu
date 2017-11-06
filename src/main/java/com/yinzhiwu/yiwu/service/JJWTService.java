@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.context.Constants;
 import com.yinzhiwu.yiwu.context.JJWTConfig;
-import com.yinzhiwu.yiwu.model.view.DistributerVO;
+import com.yinzhiwu.yiwu.entity.Distributer;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -23,13 +23,13 @@ import io.jsonwebtoken.Jwts;
 public class JJWTService {
 	
 	
-	public String createDistributerVOToken(DistributerVO distributerVO){
+	public String createDistributerIdToken(Distributer distributer){
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.SECOND, (int) JJWTConfig.LIFE_CYCLE_IN_SECONDS);
 		return Jwts.builder().setExpiration(calendar.getTime())
-			.setSubject(distributerVO.getName())
-			.setId(distributerVO.getId().toString())
-			.claim(Constants.CURRENT_DISTRIBUTER_VO, distributerVO)
+			.setSubject(distributer.getName())
+			.setId(distributer.getId().toString())
+			.claim(Constants.CURRENT_DISTRIBUTER_ID, distributer.getId())
 			.signWith(JJWTConfig.SIGNATURE_ALGORITHM,JJWTConfig.SECRET_KEY)
 			.compact();
 	}
@@ -37,9 +37,9 @@ public class JJWTService {
 	/**
 	 * 
 	 * @param token
-	 * @return distributer 
+	 * @return distributerId
 	 */
-	public DistributerVO parseDistributerVOToken(String token){
+	public Integer parseDistributerIdToken(String token){
 		Claims claims =  Jwts.parser().setSigningKey(JJWTConfig.SECRET_KEY)
 				.parseClaimsJws(token)
 				.getBody();
@@ -47,6 +47,6 @@ public class JJWTService {
 		if(claims.getExpiration().before(new Date()))
 			throw new ExpiredJwtException(null, claims, "token 已过期");
 		
-		return claims.get(Constants.CURRENT_DISTRIBUTER_VO,DistributerVO.class);
+		return claims.get(Constants.CURRENT_DISTRIBUTER_ID,Integer.class);
 	}
 }

@@ -3,12 +3,9 @@ package com.test.service;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.gson.Gson;
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
-import com.yinzhiwu.yiwu.model.view.DistributerVO;
-import com.yinzhiwu.yiwu.model.view.DistributerVO.DistributerVOConverter;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.JJWTService;
 
@@ -28,10 +25,10 @@ public class JJWTServiceTest extends BaseSpringTest{
 		Integer distributerId = 3000116;
 		try {
 			Distributer distributer = distributerService.get(distributerId);
-			String token = jjwtService.createDistributerVOToken(DistributerVOConverter.INSTANCE.fromPO(distributer));
+			String token = jjwtService.createDistributerIdToken(distributer);
 			System.err.println("token is ...." + token);
-			DistributerVO vo = jjwtService.parseDistributerVOToken(token);
-			System.err.println("distributer is ....." + new Gson().toJson(vo));
+			Integer id = jjwtService.parseDistributerIdToken(token);
+			System.err.println("distributer is ....." + id);
 		} catch (DataNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -181,13 +181,14 @@
 							html = html + '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> <i class="fa fa-pencil" title="修改"></i>  </a>';
 						</shiro:hasPermission>
 						
+						<shiro:hasPermission name="courseTemplates:delete:*">
+							html = html +  '<a onclick="showDeleteModal(' + row.id + ',refreshDataTable)"> <small> <i class="fa fa-trash" title="删除"> </i> </small></a>';
+						</shiro:hasPermission>
+						
 						<shiro:hasPermission name="courseTemplates:update:*">
 							html = html +  '<a href="' + data + '/lessonTemplates/list" >  [课时模板]</a>';
 						</shiro:hasPermission>
 						
-						<shiro:hasPermission name="courseTemplates:delete:*">
-							html = html +  '<a onclick="showDeleteModal(' + row.id + ',refreshDataTable)"> <small> <i class="fa fa-trash" title="删除"> </i> </small></a>';
-						</shiro:hasPermission>
 						return html;
 					}
 				} ]

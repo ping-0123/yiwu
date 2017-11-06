@@ -86,7 +86,7 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT count(1)");
-		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" FROM LessonCheckInYzw t1");
 		hql.append(" WHERE t1.lesson.id=:lessonId");
 		hql.append(" AND t1.contractNo IN");
 		hql.append(
@@ -106,7 +106,7 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 		
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT t1.createTime");
-		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" FROM LessonCheckInYzw t1");
 		hql.append(" WHERE t1.lesson.id =:lessonId");
 		hql.append(" AND t1.teacher.id =:teacherId");
 		return  getSession().createQuery(hql.toString(), Date.class)
@@ -187,7 +187,7 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 		hql.append(",t1.lesson.actualTeacherName");
 		hql.append(",t1.lesson.storeName");
 		hql.append(")");
-		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" FROM LessonCheckInYzw t1");
 		hql.append(" WHERE t1.contractNo = :contractNo");
 		//老师也已签到
 		hql.append(" AND t1.lesson.actualTeacher.id IS NOT NULL");
@@ -202,7 +202,7 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 	public int findCheckedInLessonsCountByMemeberCard(String memberCard) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT COUNT(1)");
-		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" FROM LessonCheckInYzw t1");
 		hql.append(" WHERE t1.memberCard = :memberCard");
 		hql.append(" AND t1.lesson.actualTeacher.id IS NOT NULL");
 		hql.append(" AND t1.lesson.actualTeacher.id <>  0");
@@ -218,7 +218,7 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 		hql.append(",t1.lesson.store.name");
 		hql.append(",t1.lesson.store.parent.id");
 		hql.append(")");
-		hql.append(" FROM CheckInsYzw t1");
+		hql.append(" FROM LessonCheckInYzw t1");
 		hql.append(" WHERE t1.memberCard = :memberCard");
 		hql.append(" AND t1.lesson.courseType= :courseType");
 		hql.append(" ORDER BY t1.createTime DESC");
