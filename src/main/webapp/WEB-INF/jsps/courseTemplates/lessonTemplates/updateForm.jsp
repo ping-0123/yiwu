@@ -91,7 +91,7 @@
 				<button id="btn-delete-picture"  onclick="showDeleteModal('../../../lessonTemplates/${template.id}/connotation/pictureUri',deletePictureUriCallback)" class="btn btn-danger">删除</button>
 				<div>
 					<img id="pictureUrl" alt="" class="img-responsive" src="${template.connotation.pictureUrl }" width="200">
-			</div>
+				</div>
 			</div>
 			<!-- end picture tab pane -->
 
@@ -112,9 +112,14 @@
 
 			<!-- standerdVideo tab pane  -->
 			<div class="tab-pane fade" id="standardVideo">
-				<button id="btn-create-standardVideo"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/standardVideoUri', updateStandardVideoCallback)" class="btn btn-primary">上传视频</button>
+				<button id="btn-create-standardVideo"   class="btn btn-primary">上传视频</button>
+				<!-- onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/standardVideoUri', updateStandardVideoCallback)" -->
 				<button id="btn-create-standardVideoPoster"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/standardVideoPosterUri',updateStandardVideoPosterCallback)" class="btn btn-primary">上传视频封面</button>
 				<button id="btn-delete-standardVideo"  onclick="showDeleteModal('../../../lessonTemplates/${template.id}/connotation/standardVideoUri',deleteStandardVideoCallback)" class="btn btn-danger">删除</button>
+				<div id="upload-picture-container">
+				</div>
+				<div id="dragdrop-picture-container">
+				</div>
 				<div>
 					<video id="standardVideoUrl" width="320" height="240" controls="controls" poster="${template.connotation.standardVideoPosterUrl }" src="${template.connotation.standardVideoUrl }">
 					</video>
@@ -172,6 +177,48 @@
 			});
 			// end form submit
 			
+			// qiniu uploader
+			var uploader = Qiniu.uploader({
+				runtimes:'html5,flash,html4',
+				browse_button: 'btn-create-standardVideo',
+				uptoken_url:'../../../qiniu/uptoken',
+				get_new_uptoken: false,
+				domain:'http://oq3hegvvd.bkt.clouddn.com/',
+				container:'upload-picture-container',
+				max_file_size : '200mb',
+				max_retries: 3,
+				dragdrop: true,
+				drop_element: 'dragdrop-picture-container',
+				chunk_size: '4mb',
+				auto_start: true,
+				init:{
+					'FilesAdded':function(up,files){
+						plupload.each(files,function(file){
+							
+						});
+					},
+					'BeforeUpload':function(up, file){
+						
+					},
+					'UploadProgress':function(up, file){
+						
+					},
+					'FileUploaded':function(up, file, info){
+						
+					},
+					'Error':function(up, err, errTip){
+						
+					},
+					'UploadComplete':function(){
+						
+					},
+					'Key':function(up, file){
+						
+					}
+				}
+			});
+			//end qiniu uploader
+			
 			// control button visable
 				//pictureUri
 			<c:if test="${empty template.connotation.pictureUrl}" >
@@ -211,6 +258,7 @@
 				$('#btn-create-practicalVideo').css("display","none");
 				$('#btn-create-practicalVideoPoster').css("display", "none");
 			</c:if>	
+			// end control button visable
 		});
 		
 		function updatePictureUriCallback(url){

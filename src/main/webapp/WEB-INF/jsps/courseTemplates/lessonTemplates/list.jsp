@@ -81,6 +81,8 @@
 	<script src="../../../../assets/bootstrap-validator/js/bootstrapValidator.min.js" type="text/javascript"></script>
 	<script src="../../../../assets/bootstrap-validator/js/language/zh_CN.js" type="text/javascript"></script>
 	<script src="../../../../assets/dropzone/min/dropzone.min.js" type="text/javascript"></script>
+	<script src="../../../../backend/js/plupload.full.min.js"></script>
+	<script src="../../../../backend/js/qiniu.min.js"></script>
 	<script src="../../../../backend/js/custom.min.js"></script>
 	
    <script type="text/javascript">
@@ -136,4 +138,5 @@
    <script src="../../../../backend/js/main.js"></script>
   
 </body>
+</html>
 </html>
