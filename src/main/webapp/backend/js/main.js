@@ -210,10 +210,10 @@ function showQiniuDropzoneModal(token, saveUrl, confirmcallback){
 	    	if(result){
 	    		//保存文件
 	    		$.ajax({
-	    			type:"PUT",
+	    			type:"POST",
 	    			url:saveUrl,
 	    			async:true,
-	    			data:{"fileKey":fileKey, "fileName":fileName},
+	    			data:{"_method":"PUT","fileKey":fileKey, "fileName":fileName},
 	    			success:function(result){
 	    				if(result){
 	    					console.log("result data is " + result.data);

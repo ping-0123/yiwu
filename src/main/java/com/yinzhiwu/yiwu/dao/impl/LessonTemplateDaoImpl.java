@@ -26,4 +26,14 @@ public class LessonTemplateDaoImpl extends BaseDaoImpl<LessonTemplate,Integer> i
 		}
 	}
 
+	@Override
+	public Integer save(LessonTemplate template) {
+		if(logger.isDebugEnabled()){
+			String pictureUri = template.getConnotation()==null?null:template.getConnotation().getPictureUri();
+			logger.debug("template.connotation.pictureUri is " + pictureUri);
+		}
+		return super.save(template);
+	}
+	
+	
 }

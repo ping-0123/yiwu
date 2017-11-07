@@ -36,6 +36,17 @@ public class QiniuController extends BaseController{
 		return map;
 	}
 	
+	/**
+	 * special format needed by qiniu-js-sdk
+	 * @return
+	 */
+	@GetMapping("/uptoken")
+	public Map<String, String> getUptoken(){
+		Map<String, String> map = new HashMap<>();
+		map.put("uptoken", qiniuService.createAccessToken());
+		return map;
+	}
+	
 	@SuppressWarnings("rawtypes")
 	@DeleteMapping(value="/{key}")
 	public Map deleteFile(@PathVariable(name="key") String key){

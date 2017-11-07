@@ -119,7 +119,8 @@
 					}
 				} ]
 			}; //end datatable setting
-			
+		
+		
   </script>
   
    <script src="../../backend/js/main.js"></script>

@@ -27,7 +27,6 @@
 </style>
 <!-- end css stylesheet -->
 
-
 </head>
 
 <body class="">
@@ -125,8 +124,11 @@
 				} ]
 			}; //end lessonTemplate_datatable_setting setting
 			
-			$("#lessonTemplate-datatable").DataTable(lessonTemplate_datatable_setting);
-						
+			var table = $("#lessonTemplate-datatable").DataTable(lessonTemplate_datatable_setting);
+			
+			$(".modal-update-lessonTemplate").on("hidden.bs.modal", function(){
+				$("#lessonTemplate-datatable").DataTable().draw(false);
+			});
    		});
 			
   </script>

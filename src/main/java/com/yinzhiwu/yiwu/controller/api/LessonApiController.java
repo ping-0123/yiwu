@@ -154,7 +154,7 @@ public class LessonApiController extends BaseController {
 			List<LessonApiView> views = lessonService.findApiViewByCourseId(courseId);
 			return new YiwuJson<>(views);
 		} catch (Exception e) {
-			logger.error(e);
+			logger.error(e.getMessage(),e);
 			return new YiwuJson<>(e.getMessage());
 		}
 	}

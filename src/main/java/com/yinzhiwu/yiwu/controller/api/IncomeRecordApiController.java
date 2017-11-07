@@ -210,7 +210,7 @@ public class IncomeRecordApiController extends BaseController {
 			return new YiwuJson<>(
 					new Integer(incomeRecordService.findCountByIncomeTypesByBeneficiary(distributerId, incomeTypeIds)));
 		} catch (Exception e) {
-			logger.warn(e);
+			logger.warn(e.getMessage(),e);
 			return new YiwuJson<>(e.getMessage());
 		}
 	}

@@ -76,7 +76,7 @@ public class CheckInsApiController extends BaseController {
 			PageBean<LessonApiView> page = checkInsYzwService.findPageViewByCustomer(customerId, pageNo, pageSize);
 			return YiwuJson.createBySuccess(page);
 		} catch (Exception e) {
-			logger.error(e);
+			logger.error(e.getMessage(),e);
 			return YiwuJson.createByErrorMessage(e.getMessage());
 		}
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
@@ -85,8 +86,16 @@ public class LessonTemplateController extends BaseController
 	
 	@PutMapping(value="/{id}/connotation/pictureUri")
 	@ResponseBody
-	public YiwuJson<?> updatePictureUri(@PathVariable(name="id") Integer id, String fileKey, String fileName) throws DataNotFoundException{
+	public YiwuJson<?> updatePictureUri(
+			@PathVariable(name="id") Integer id, 
+			@RequestParam(name="fileKey", required=true) String fileKey, 
+			@RequestParam(name="fileName") String fileName)
+					throws DataNotFoundException
+	{
 		LessonTemplate template = lessonTemplateService.get(id);
+		if(logger.isDebugEnabled()){
+			logger.debug("set pictureUri to " + fileKey);
+		}
 		template.ensureConnotation().setPictureUri(fileKey);
 		lessonTemplateService.update(template);
 		

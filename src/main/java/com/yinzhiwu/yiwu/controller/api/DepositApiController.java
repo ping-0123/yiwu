@@ -33,7 +33,7 @@ public class DepositApiController extends BaseController {
 				throw new YiwuException("提现金额不能少于零");
 			depositService.saveDeposit(distributerId, amount, fundsFirst);
 		} catch (Exception e) {
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 			return new YiwuJson<>(e.getMessage());
 		}
 
