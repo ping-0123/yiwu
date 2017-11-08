@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping(value = "/api/tweet")
+@RequestMapping(value = "/api/tweets")
 public class TweetApiController extends BaseController {
 
 	@Autowired
@@ -56,8 +56,9 @@ public class TweetApiController extends BaseController {
 	public YiwuJson<List<TweetAbbrApiView>> findAbbrlist(
 			@ApiParam(name="type", value="推文类型, 不传则搜索所有类型", defaultValue="null"  , 
 			allowableValues="{PRODUCT,MARKET_ACTIVITY,PROMOTION,PERFORMACE,NEWS,CHILDREN,ADULT,OTHER}") 
-			@RequestParam(name="type") TweetType type,
-			@ApiParam(name="title") @RequestParam(name="title") String title)
+			@RequestParam(name="type", required=false) TweetType type,
+			@ApiParam(name="title", required=false) 
+			@RequestParam(name="title", required=false) String title)
 	{
 		List<Tweet> tweets = tweetService.findByTypeAndFunzzyTitle(type, title);
 		

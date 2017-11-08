@@ -81,7 +81,7 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 			}
 			return new YiwuJson<>(views);
 		} catch (Exception e) {
-			logger.debug(e);
+			logger.debug(e.getMessage(),e);
 			return new YiwuJson<>(e.getMessage());
 		}
 	}

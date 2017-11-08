@@ -5,11 +5,11 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-
-import com.yinzhiwu.yiwu.entity.type.TweetType;
 
 @SuppressWarnings("serial")
 @Entity
@@ -29,7 +29,9 @@ public class Tweet extends BaseEntity {
 
 	private Date editDate;
 
-	private TweetType type;
+	@Column(length=32)
+	@Enumerated(EnumType.STRING)
+	private com.yinzhiwu.yiwu.enums.TweetType type;
 	
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
@@ -83,20 +85,20 @@ public class Tweet extends BaseEntity {
 		this.coverImage = coverIconUrl;
 	}
 
-	public TweetType getType() {
-		return type;
-	}
-
-	public void setType(TweetType type) {
-		this.type = type;
-	}
-
 	public byte[] getContent() {
 		return content;
 	}
 
 	public void setContent(byte[] content) {
 		this.content = content;
+	}
+
+	public com.yinzhiwu.yiwu.enums.TweetType getType() {
+		return type;
+	}
+
+	public void setType(com.yinzhiwu.yiwu.enums.TweetType type) {
+		this.type = type;
 	}
 
 }

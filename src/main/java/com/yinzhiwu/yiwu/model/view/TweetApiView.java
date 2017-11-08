@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.Tweet;
-import com.yinzhiwu.yiwu.entity.type.TweetType;
+import com.yinzhiwu.yiwu.enums.TweetType;
 import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
@@ -43,7 +43,7 @@ public class TweetApiView {
 		public TweetApiView fromPO(Tweet po) {
 			TweetApiView view =  super.fromPO(po);
 			view.setCoverIconUrl(fileService.generateFileUrl(view.getCoverIconUrl()));
-			view.setContentHtml(po.getContent().toString());
+			view.setContentHtml(new String(po.getContent()));
 			return view;
 		}
 

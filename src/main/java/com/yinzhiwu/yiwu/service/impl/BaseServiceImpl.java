@@ -3,8 +3,8 @@ package com.yinzhiwu.yiwu.service.impl;
 import java.io.Serializable;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.yinzhiwu.yiwu.dao.IBaseDao;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
@@ -15,7 +15,7 @@ import com.yinzhiwu.yiwu.service.IBaseService;
 
 public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBaseService<T, PK> {
 
-	protected Log logger = LogFactory.getLog(getClass());
+	protected Logger logger = LoggerFactory.getLogger(getClass());
 
 	private IBaseDao<T, PK> baseDao;
 

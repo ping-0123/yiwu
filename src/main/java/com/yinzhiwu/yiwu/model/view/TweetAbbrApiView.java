@@ -1,7 +1,7 @@
 package com.yinzhiwu.yiwu.model.view;
 
 import com.yinzhiwu.yiwu.entity.Tweet;
-import com.yinzhiwu.yiwu.entity.type.TweetType;
+import com.yinzhiwu.yiwu.enums.TweetType;
 import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;

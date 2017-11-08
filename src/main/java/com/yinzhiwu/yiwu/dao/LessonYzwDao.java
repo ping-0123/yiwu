@@ -33,4 +33,8 @@ public interface LessonYzwDao extends IBaseDao<LessonYzw, Integer> {
 	LessonYzw findByCourseIdAndStartDateTime(String courseId, Date start, Date end);
 
 	LessonYzw findByCourseIdAndOrdinalNo(String courseId, Integer ordinalNo) throws DataNotFoundException;
+
+	List<LessonYzw> findNullOrdinalLessons();
+
+	LessonYzw findOneNullOrdinalLessons();
 }

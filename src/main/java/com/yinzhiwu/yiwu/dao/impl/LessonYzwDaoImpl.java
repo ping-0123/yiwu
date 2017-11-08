@@ -162,13 +162,22 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		Assert.notNull(lesson, "findOrderInCourse参数lesson不能为空");
 		
 		StringBuilder hql = new StringBuilder();
-		hql.append("SELECT COUNT(*)");
+		hql.append("SELECT COUNT(1)");
 		hql.append(" FROM LessonYzw t1");
 		hql.append(" WHERE t1.lessonDate <= :lessonDate");
 		hql.append(" AND t1.course.id =:courseId");
+		
+		String courseId;
+		try{
+			courseId = lesson.getCourse().getId();
+		}catch (RuntimeException e) {
+			lesson.setCourse(null);
+			return null;
+		}
+		
 		return getSession().createQuery(hql.toString(), Long.class)
 				.setParameter("lessonDate", lesson.getLessonDate())
-				.setParameter("courseId", lesson.getCourse().getId())
+				.setParameter("courseId",courseId)
 				.getSingleResult()
 				.intValue();
 	}
@@ -294,6 +303,24 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		return findOneByProperties(
 				new String[]{"course.id", "ordinalNo"},
 				new Object[]{courseId, ordinalNo} );
+	}
+
+	@Override
+	public List<LessonYzw> findNullOrdinalLessons() {
+		String hql = "FROM LessonYzw WHERE ordinalNo is null AND course.id is not null and course.id <> ''"; 
+		return getSession().createQuery(hql, LessonYzw.class)
+				.getResultList();
+	}
+
+	@Override
+	public LessonYzw findOneNullOrdinalLessons() {
+		String hql = "FROM LessonYzw WHERE ordinalNo is null AND course.id is not null and course.id <> ''";
+		List<LessonYzw> lessons =  getSession().createQuery(hql, LessonYzw.class)
+					.setMaxResults(1)
+					.getResultList();
+		if(lessons.size()==0)
+			return null;
+		return lessons.get(0);
 	}
 
 }

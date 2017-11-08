@@ -346,7 +346,6 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Override
 	public List<TopThreeApiView> getBrokerageTopThree() {
 		List<DistributerIncome> distributerIncomes = distributerIncomeDao.getTopN(IncomeType.BROKERAGE.getId(), 3);
-		logger.debug(distributerIncomes == null ? 0 : distributerIncomes.size());
 		List<TopThreeApiView> views = new ArrayList<>();
 		for (DistributerIncome income : distributerIncomes) {
 			TopThreeApiView v = new TopThreeApiView();
@@ -364,7 +363,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 						.intValue());
 				v.setHeadIconUrl(fileService.getImageUrl((income.getDistributer().getHeadIconName())));
 			} catch (Exception e) {
-				logger.error(e);
+				logger.error(e.getMessage(),e);
 			}
 			views.add(v);
 		}
@@ -380,7 +379,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 				fileName = fileService.upload(model.getImage());
 				distributer.setHeadIconName(fileName);
 			} catch (IllegalStateException e) {
-				logger.error(e);
+				logger.error(e.getMessage(),e);
 				return new YiwuJson<>("服务器内部原因，头像保存失败");
 			} catch (IOException e) {
 				logger.error(e.getMessage());
@@ -391,7 +390,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		try {
 			super.modify(distributerId, distributer);
 		} catch (IllegalArgumentException | IllegalAccessException | DataNotFoundException e) {
-			logger.error(e);
+			logger.error(e.getMessage(),e);
 			return new YiwuJson<>("服务器内部原因， 修改会员资料失败");
 		}
 

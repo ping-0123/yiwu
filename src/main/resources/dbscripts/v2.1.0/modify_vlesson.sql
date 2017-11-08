@@ -65,3 +65,6 @@ VIEW  yiwu.vlesson AS
         `chenkuserdb1`.`skt7`.`SF_Last_Change_Timestamp` AS `sf_last_change_timeStamp`
     FROM
         `chenkuserdb1`.`skt7`;
+        
+update vlesson set courseType= null where courseType = '所有课程类型';
+UPDATE vlesson set courseType = null where courseType = '';

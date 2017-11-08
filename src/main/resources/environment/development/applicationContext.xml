@@ -92,6 +92,7 @@
 				<prop key="hibernate.format_sql">${hibernate.formatSql}</prop>
 				<prop key="hibernate.use_sql_commants">${hibernate.useSqlComments}</prop>
 				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.current_session_context_class">${hibernate.current_session_context_class}</prop>
 				<!-- 开启二级缓存 -->
 				<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
 				<!-- 启用查询缓存 -->
@@ -104,7 +105,6 @@
 		</property>
 	</bean>
 
-	<tx:annotation-driven transaction-manager="transactionManager" />
 	<!-- 配置Hibernate 的事物管理器 -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
@@ -113,6 +113,7 @@
 	<!-- 配置事务异常封装 -->
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	<!-- 启动@Transaction -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	<!-- 拦截器方式配置事物 -->
 	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
@@ -147,6 +148,6 @@
         												execution(* com.yinzhiwu.yiwu..*ServiceImpl.*(..))" />
 		<aop:advisor pointcut-ref="transactionPointcut"
 			advice-ref="transactionAdvice" />
-	</aop:config>
+	</aop:config>  
 
 </beans>

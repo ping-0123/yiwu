@@ -8,7 +8,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
@@ -249,6 +251,8 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		return lessonDao.findByCourseIdAndOrdinalNo(courseId, ordinalNo);
 	}
 	
+	
+	
 	@EventListener(classes={LessonAppointmentYzw.class})
 	public void handleLessonAppointment(LessonAppointmentYzw appointment){
 		LessonYzw lesson = appointment.getLesson();
@@ -265,5 +269,29 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		LessonYzw lesson = checkIn.getLesson();
 		lesson.setCheckedInStudentCount(lesson.getCheckedInStudentCount()+1);
 		lessonDao.update(lesson);
+	}
+	
+	
+	@Transactional
+	private boolean setOneLessonOrdinalNo(){
+		if(logger.isInfoEnabled())
+			logger.info("Scheduled task setLessonOrdinalNo start executing......");
+		
+		LessonYzw lesson = lessonDao.findOneNullOrdinalLessons();
+		if(logger.isInfoEnabled())
+			logger.info("start set lesson " + lesson.getId() + " ");
+		lesson.setOrdinalNo(lessonDao.findOrderInCourse(lesson));
+		lessonDao.update(lesson);
+		
+		logger.info("end set ordianl of lesson " + lesson.getId());
+		
+		return true;
+	}
+
+	
+	@Scheduled(fixedRate=525600000, initialDelay=10000)
+	public void changeAllLessonOrdinalNo(){
+		while(setOneLessonOrdinalNo())
+			continue;
 	}
 }
