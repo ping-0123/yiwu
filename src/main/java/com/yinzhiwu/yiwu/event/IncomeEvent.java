@@ -11,5 +11,7 @@ public interface IncomeEvent {
 	
 	public IncomeEventType getType();
 	
+	public Object getSource();
 	
+	public String getSourceId();
 }

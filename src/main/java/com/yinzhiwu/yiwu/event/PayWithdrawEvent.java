@@ -17,5 +17,4 @@ public class PayWithdrawEvent extends ApplicationEvent{
 		super(withdraw);
 	}
 
-
 }
