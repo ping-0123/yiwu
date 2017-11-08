@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -274,25 +273,20 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	}
 	
 	
-	@Async
-	@Scheduled(fixedRate=1000, initialDelay=10000)
+	@Scheduled(fixedRate=10, initialDelay=10000)
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public boolean setOneLessonOrdinalNo(){
 		if(logger.isInfoEnabled())
-			logger.info("Scheduled task setLessonOrdinalNo start executing......");
+			logger.info("Scheduled task setLessonOrdinalNo start executing...... in thread  + " + Thread.currentThread());
 		
 		LessonYzw lesson = lessonDao.findOneNullOrdinalLessons();
-		if(logger.isInfoEnabled())
-			logger.info("start set lesson " + lesson.getId() + " ");
 		lesson.setOrdinalNo(lessonDao.findOrderInCourse(lesson));
 		lessonDao.update(lesson);
-		
-		logger.info("end set ordianl of lesson " + lesson.getId());
 		
 		return true;
 	}
 	
-	@Scheduled(fixedRate=10000000, initialDelay=10000)
+//	@Scheduled(fixedRate=10000000, initialDelay=10000)
 	public void setAllLessonOrdinalNo(){
 		while(setOneLessonOrdinalNo())
 			;
