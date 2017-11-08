@@ -1,32 +1,47 @@
 package com.yinzhiwu.yiwu.model.view;
 
 import com.yinzhiwu.yiwu.entity.Tweet;
+import com.yinzhiwu.yiwu.entity.type.TweetType;
+import com.yinzhiwu.yiwu.service.FileService;
+import com.yinzhiwu.yiwu.util.SpringUtils;
+import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
+@MapedClass(Tweet.class)
 public class TweetAbbrApiView {
+	
+	@MapedProperty("id")
+	private Integer tweetId;
 
-	private int tweetId;
-
+	@MapedProperty("coverImage")
 	private String coverIconUrl;
 
 	private String title;
 
 	private String digest;
 
-	private String tweetTypeName;
+	private TweetType type;
+	
+	public static final class TweetAbbrApiViewConverter extends AbstractConverter<Tweet, TweetAbbrApiView>{
+		public static final TweetAbbrApiViewConverter INSTANCE = new TweetAbbrApiViewConverter();
+		
+		private final FileService fileService = SpringUtils.getBean("fileServiceImpl");
 
+		@Override
+		public TweetAbbrApiView fromPO(Tweet po) {
+			TweetAbbrApiView vo =  super.fromPO(po);
+			vo.setCoverIconUrl(fileService.generateFileUrl(vo.getCoverIconUrl()));
+			return vo;
+		}
+		
+		
+	}
+	
 	public TweetAbbrApiView() {
 	};
 
-	public TweetAbbrApiView(Tweet t) {
-		if(t== null) throw new IllegalArgumentException();
-		this.tweetId = t.getId();
-		this.title = t.getTitle();
-		this.digest = t.getDigest();
-		if(t.getTweetType() != null)
-			this.tweetTypeName = t.getTweetType().getName();
-	}
-
-	public int getTweetId() {
+	public Integer getTweetId() {
 		return tweetId;
 	}
 
@@ -40,10 +55,6 @@ public class TweetAbbrApiView {
 
 	public String getDigest() {
 		return digest;
-	}
-
-	public String getTweetTypeName() {
-		return tweetTypeName;
 	}
 
 	public void setTweetId(int tweetId) {
@@ -62,8 +73,16 @@ public class TweetAbbrApiView {
 		this.digest = digest;
 	}
 
-	public void setTweetTypeName(String tweetTypeName) {
-		this.tweetTypeName = tweetTypeName;
+	public TweetType getType() {
+		return type;
+	}
+
+	public void setTweetId(Integer tweetId) {
+		this.tweetId = tweetId;
+	}
+
+	public void setType(TweetType type) {
+		this.type = type;
 	}
 
 }

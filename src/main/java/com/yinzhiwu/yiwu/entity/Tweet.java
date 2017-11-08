@@ -2,34 +2,19 @@ package com.yinzhiwu.yiwu.entity;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import com.yinzhiwu.yiwu.entity.type.TweetType;
-import com.yinzhiwu.yiwu.model.TweetModel;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "yiwu_tweet")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type", length = 32)
-@DiscriminatorValue("tweet")
 public class Tweet extends BaseEntity {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3058523074677494452L;
 
 	@Column(length = 50)
 	private String title;
@@ -44,31 +29,17 @@ public class Tweet extends BaseEntity {
 
 	private Date editDate;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_Tweet_tweetContent_id"))
-	private TweetContent tweetContent;
-
-	@ManyToOne
-	@JoinColumn(name = "tweetType_id", foreignKey = @ForeignKey(name = "fk_tweet_tweetType_id"))
-	private TweetType tweetType;
-
-	public Tweet() {
-	}
-
-	public Tweet(TweetModel m) {
-		super();
-		this.editDate = super.getCreateTime();
-		this.title = m.getTitle();
-		this.author = m.getAuthor();
-		this.digest = m.getDigest();
-		this.coverImage = m.getCoverIconUrl();
-		this.tweetContent = new TweetContent(m.getContent().getBytes());
-	}
-
+	private TweetType type;
+	
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	@Column(name = "content", columnDefinition = "MediumBlob")
+	private byte[] content;
+	
 	@Override
 	public void init() {
 		super.init();
-		if(this.editDate == null)
+		if(null == this.editDate)
 			this.editDate = super.getCreateTime();
 	}
 
@@ -86,22 +57,6 @@ public class Tweet extends BaseEntity {
 
 	public void setAuthor(String author) {
 		this.author = author;
-	}
-
-	public TweetContent getTweetContent() {
-		return tweetContent;
-	}
-
-	public TweetType getTweetType() {
-		return tweetType;
-	}
-
-	public void setTweetContent(TweetContent tweetContent) {
-		this.tweetContent = tweetContent;
-	}
-
-	public void setTweetType(TweetType tweetType) {
-		this.tweetType = tweetType;
 	}
 
 	public Date getEditDate() {
@@ -126,6 +81,22 @@ public class Tweet extends BaseEntity {
 
 	public void setCoverImage(String coverIconUrl) {
 		this.coverImage = coverIconUrl;
+	}
+
+	public TweetType getType() {
+		return type;
+	}
+
+	public void setType(TweetType type) {
+		this.type = type;
+	}
+
+	public byte[] getContent() {
+		return content;
+	}
+
+	public void setContent(byte[] content) {
+		this.content = content;
 	}
 
 }

@@ -53,7 +53,7 @@ public class LessonAppointmentYzwDaoImpl extends BaseDaoImpl<LessonAppointmentYz
 	public String getAppointedContractNo(Integer distributerId, Integer lessonId) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT t1.contractNo");
-		hql.append(" FROM AppointmentYzw t1");
+		hql.append(" FROM LessonAppointmentYzw t1");
 		hql.append(" WHERE t1.lesson.id = :lessonId");
 		hql.append(" AND t1.distributer.id = :distributerId");
 		hql.append(" AND t1.status =:status");

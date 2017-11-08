@@ -3,12 +3,13 @@ package com.yinzhiwu.yiwu.model.view;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.entity.income.ShareTweetEvent;
+import com.yinzhiwu.yiwu.enums.TweetType;
 
 public class ShareTweetIncomeRecordApiView implements Serializable {
 
@@ -17,16 +18,16 @@ public class ShareTweetIncomeRecordApiView implements Serializable {
 	 */
 	private static final long serialVersionUID = 3765087348892278100L;
 
-	private static Log LOG = LogFactory.getLog(ShareTweetIncomeRecordApiView.class);
+	private static Logger LOG = LoggerFactory.getLogger(ShareTweetIncomeRecordApiView.class);
 
 	private int id;
 
 	private String sharer;
 
-	@JsonFormat(pattern = "yyyy/MM/dd")
+	@JsonFormat(pattern = "yyyy/MM/dd", timezone="GMT+8")
 	private Date shareDate;
 
-	private String tweetType;
+	private TweetType tweetType;
 
 	private String tweetTitle;
 
@@ -41,7 +42,6 @@ public class ShareTweetIncomeRecordApiView implements Serializable {
 			this.sharer = record.getContributor().getName();
 			this.shareDate = record.getRecordTimestamp();
 			ShareTweetEvent event = (ShareTweetEvent) record.getIncomeEvent();
-			this.tweetType = event.getTweet().getTweetType().getName();
 			this.tweetTitle = event.getTweet().getTitle();
 			this.exp = record.getIncomeValue();
 
@@ -61,10 +61,6 @@ public class ShareTweetIncomeRecordApiView implements Serializable {
 
 	public Date getShareDate() {
 		return shareDate;
-	}
-
-	public String getTweetType() {
-		return tweetType;
 	}
 
 	public String getTweetTitle() {
@@ -87,9 +83,6 @@ public class ShareTweetIncomeRecordApiView implements Serializable {
 		this.shareDate = shareDate;
 	}
 
-	public void setTweetType(String tweetType) {
-		this.tweetType = tweetType;
-	}
 
 	public void setTweetTitle(String tweetTitle) {
 		this.tweetTitle = tweetTitle;
@@ -105,7 +98,6 @@ public class ShareTweetIncomeRecordApiView implements Serializable {
 		this.id = id;
 		this.sharer = sharer;
 		this.shareDate = shareDate;
-		this.tweetType = tweetType;
 		this.tweetTitle = tweetTitle;
 		this.exp = exp;
 	}
@@ -113,5 +105,13 @@ public class ShareTweetIncomeRecordApiView implements Serializable {
 	public ShareTweetIncomeRecordApiView(int id, String sharer) {
 		this.id = id;
 		this.sharer = sharer;
+	}
+
+	public void setTweetType(TweetType tweetType) {
+		this.tweetType = tweetType;
+	}
+
+	public TweetType getTweetType() {
+		return tweetType;
 	}
 }

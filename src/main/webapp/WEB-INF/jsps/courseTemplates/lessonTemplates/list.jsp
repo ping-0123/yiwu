@@ -129,6 +129,7 @@
 			var table = $("#lessonTemplate-datatable").DataTable(lessonTemplate_datatable_setting);
 			
 			$(".modal-update-lessonTemplate").on("hidden.bs.modal", function(){
+				console.log("modal-update-lessonTemplate was hidden");
 				$("#lessonTemplate-datatable").DataTable().draw(false);
 			});
    		});
