@@ -3,6 +3,8 @@ package com.yinzhiwu.yiwu.service;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
@@ -10,15 +12,22 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 
 public interface IBaseService<T, PK extends Serializable> {
 
+	@Transactional
 	public PK save(T entity);
 
+	@Transactional
 	public void delete(T entit);
+	@Transactional
 	public void delete(PK id);
+	@Transactional
 	public void deleteLogic(T entity);
+	@Transactional
 	public void deleteLogic(PK id);
 	
 	
+	@Transactional
 	public void update(T entity);
+	@Transactional
 	public void saveOrUpdate(T entity);
 	
 	/**
@@ -36,16 +45,24 @@ public interface IBaseService<T, PK extends Serializable> {
 	 * @throws IllegalAccessException
 	 * 
 	 */
+	@Transactional
 	public void modify(PK id, T entity) throws DataNotFoundException, IllegalArgumentException, IllegalAccessException;
 	
+	@Transactional
 	public void modify(T source, T target) throws IllegalArgumentException, IllegalAccessException;
 	
+	@Transactional
 	public T get(PK id) throws DataNotFoundException;
+	@Transactional
 	public List<T> findAll() ;
+	@Transactional
 	public List<T> findByExample(T entity);
 
+	@Transactional
 	public PageBean<T> findPageOfAll(int pageNum, int pageSize);
+	@Transactional
 	public PageBean<T> findPageByExample(T example, Integer pageNum, Integer pageSize);
 	
+	@Transactional
 	public DataTableBean<T> findDataTable(QueryParameter parameter);
 }

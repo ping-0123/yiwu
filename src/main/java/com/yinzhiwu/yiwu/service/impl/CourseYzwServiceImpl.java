@@ -1,34 +1,55 @@
 package com.yinzhiwu.yiwu.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.yiwu.dao.CourseYzwDao;
-import com.yinzhiwu.yiwu.entity.yzw.CourseConnotation;
+import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
-import com.yinzhiwu.yiwu.service.FileService;
+
 
 @Service
 public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> implements CourseYzwService {
-	@SuppressWarnings("unused")
+	
 	@Autowired private CourseYzwDao courseDao;
-	@Qualifier("fileServiceImpl")
-	@Autowired private FileService fileService;
-
+	@Autowired private OrderYzwDao orderDao;
+	
 	@Autowired
 	public void setBaseDao(CourseYzwDao courseYzwDao) {
 		super.setBaseDao(courseYzwDao);
 	}
 	
 	@Override
-	public  void setConnatationUrls(CourseConnotation con){
-		Assert.notNull(con);
-		con.setAudioUri(fileService.getFileUrl(con.getAudioUri()));
-		con.setPictureUri(fileService.getFileUrl(con.getPictureUri()));
-		con.setVideoUri(fileService.getFileUrl(con.getVideoUri()));
+	public void scheduledSetOne_StudentCount_SumLessonTimesAndLessonOrdialNo(){
+		CourseYzw course;
+		try {
+			course = courseDao.findOneUnSetSumLessonTimes();
+		} catch (DataNotFoundException e) {
+			return;
+		}
+		setSumLessonTimesAndLessonOrdialNo(course);
+		setStudentCount(course);
+		update(course);
 	}
-
+	
+	@Transactional
+	private void setSumLessonTimesAndLessonOrdialNo(CourseYzw course){
+		java.util.List<LessonYzw> lessons = course.getLessons();
+		course.setSumLessonTimes(lessons.size());
+		
+		for (LessonYzw lesson : lessons) {
+			lesson.setOrdinalNo(lessons.indexOf(lesson) +1 );
+		}
+		
+	}
+	
+	@Transactional
+	private void setStudentCount(CourseYzw course){
+		course.setStudentCount(orderDao.findCountByCourseId(course.getId()));
+	}
 }

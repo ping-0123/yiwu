@@ -2,35 +2,44 @@ package com.yinzhiwu.yiwu.entity.income;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.aspectj.weaver.AjAttribute.PrivilegedAttribute;
+
 import com.yinzhiwu.yiwu.entity.BaseEntity;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Message;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.type.RelationType;
+import com.yinzhiwu.yiwu.enums.ContributerBenificiaryRelation;
+import com.yinzhiwu.yiwu.event.IncomeEventType;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "yiwu_income_record")
 public class IncomeRecord extends BaseEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4478053780652759400L;
+	@Enumerated(EnumType.STRING)
+	@Column(length=64)
+	private IncomeEventType eventType;
+	
+	@Column(length=32)
+	private String eventSourceClass;
+	
+	@Column(length=32)
+	private String eventSourceId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_event_id", value=ConstraintMode.NO_CONSTRAINT))
-	private IncomeEvent incomeEvent;
-
-	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_incomeRecord_incomeType_id", value = ConstraintMode.NO_CONSTRAINT))
+	@Enumerated(EnumType.STRING)
+	@Column(length=32)
 	private IncomeType incomeType;
 
 	private Date recordTimestamp;
@@ -51,21 +60,21 @@ public class IncomeRecord extends BaseEntity {
 
 	private Float currentValue;
 
-	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeRecord_relationType_id", value = ConstraintMode.NO_CONSTRAINT))
-	private RelationType con_ben_relation;
+	@Enumerated(EnumType.STRING)
+	@Column(length=32)
+	private ContributerBenificiaryRelation con_ben_relation;
 
 	public IncomeRecord(IncomeEvent event2, IncomeFactor factor, Distributer benificiary) {
 		super.init();
-		this.incomeEvent = event2;
-		this.incomeType = factor.getIncomeType();
+//		this.incomeEvent = event2;
+//		this.incomeType = factor.getIncomeType();
 		this.recordTimestamp = super.getCreateTime();
 		this.contributor = event2.getDistributer();
 		this.contributedValue = event2.getParam();
 		this.benificiary = benificiary;
 		this.incomeFactor = factor.getFactor();
 		this.incomeValue = this.incomeFactor * this.contributedValue;
-		this.con_ben_relation = factor.getRelation();
+//		this.con_ben_relation = factor.getRelation();
 	}
 
 	public IncomeRecord() {
@@ -73,82 +82,91 @@ public class IncomeRecord extends BaseEntity {
 
 	public Message generateMessage() {
 		try {
-			return this.incomeEvent.generateMessage(this);
+//			return this.incomeEvent.generateMessage(this);
+			return null;
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public IncomeEventType getEventType() {
+		return eventType;
+	}
+
+	public void setEventType(IncomeEventType eventType) {
+		this.eventType = eventType;
+	}
+
+	public String getEventSourceClass() {
+		return eventSourceClass;
+	}
+
+	public void setEventSourceClass(String eventSourceClass) {
+		this.eventSourceClass = eventSourceClass;
+	}
+
+	public String getEventSourceId() {
+		return eventSourceId;
+	}
+
+	public void setEventSourceId(String eventSourceId) {
+		this.eventSourceId = eventSourceId;
 	}
 
 	public IncomeType getIncomeType() {
 		return incomeType;
 	}
 
-	public Date getRecordTimestamp() {
-		return recordTimestamp;
-	}
-
-	public Distributer getContributor() {
-		return contributor;
-	}
-
-	public Float getContributedValue() {
-		return contributedValue;
-	}
-
-	public Distributer getBenificiary() {
-		return benificiary;
-	}
-
-	public Float getIncomeFactor() {
-		return incomeFactor;
-	}
-
-	public Float getIncomeValue() {
-		return incomeValue;
-	}
-
-	public RelationType getCon_ben_relation() {
-		return con_ben_relation;
-	}
-
 	public void setIncomeType(IncomeType incomeType) {
 		this.incomeType = incomeType;
+	}
+
+	public Date getRecordTimestamp() {
+		return recordTimestamp;
 	}
 
 	public void setRecordTimestamp(Date recordTimestamp) {
 		this.recordTimestamp = recordTimestamp;
 	}
 
+	public Distributer getContributor() {
+		return contributor;
+	}
+
 	public void setContributor(Distributer contributor) {
 		this.contributor = contributor;
+	}
+
+	public Float getContributedValue() {
+		return contributedValue;
 	}
 
 	public void setContributedValue(Float contributedValue) {
 		this.contributedValue = contributedValue;
 	}
 
+	public Distributer getBenificiary() {
+		return benificiary;
+	}
+
 	public void setBenificiary(Distributer benificiary) {
 		this.benificiary = benificiary;
+	}
+
+	public Float getIncomeFactor() {
+		return incomeFactor;
 	}
 
 	public void setIncomeFactor(Float incomeFactor) {
 		this.incomeFactor = incomeFactor;
 	}
 
+	public Float getIncomeValue() {
+		return incomeValue;
+	}
+
 	public void setIncomeValue(Float incomeValue) {
 		this.incomeValue = incomeValue;
-	}
-
-	public void setCon_ben_relation(RelationType con_ben_relation) {
-		this.con_ben_relation = con_ben_relation;
-	}
-
-	public IncomeEvent getIncomeEvent() {
-		return incomeEvent;
-	}
-
-	public void setIncomeEvent(IncomeEvent incomeEvent) {
-		this.incomeEvent = incomeEvent;
 	}
 
 	public Float getCurrentValue() {
@@ -158,5 +176,15 @@ public class IncomeRecord extends BaseEntity {
 	public void setCurrentValue(Float currentValue) {
 		this.currentValue = currentValue;
 	}
+
+	public ContributerBenificiaryRelation getCon_ben_relation() {
+		return con_ben_relation;
+	}
+
+	public void setCon_ben_relation(ContributerBenificiaryRelation con_ben_relation) {
+		this.con_ben_relation = con_ben_relation;
+	}
+
+	
 
 }

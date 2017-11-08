@@ -9,6 +9,4 @@ public class LessonInteractiveEvent extends ApplicationEvent {
 		super(source);
 	}
 	
-	
-
 }

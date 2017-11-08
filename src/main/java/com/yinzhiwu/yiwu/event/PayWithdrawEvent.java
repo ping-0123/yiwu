@@ -11,10 +11,11 @@ import com.yinzhiwu.yiwu.entity.WithdrawBrokerage;
 */
 
 @SuppressWarnings("serial")
-public class PayWithdrawEvent extends ApplicationEvent {
+public class PayWithdrawEvent extends ApplicationEvent{
 
 	public PayWithdrawEvent(WithdrawBrokerage withdraw) {
 		super(withdraw);
 	}
+
 
 }

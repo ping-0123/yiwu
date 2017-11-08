@@ -25,89 +25,7 @@ import com.yinzhiwu.yiwu.enums.SubCourseType.SubCourseTypeConverter;
 @Embeddable
 public class Contract {
 	public static final String STORE_ID_SEPARATION = ";";
-	public enum ContractStatus {
-		UN_PAYED("未付款"),
-		UN_VERIFIED("未确认"),
-		VERIFIED("已确认"),
-		UN_CHECKED("未审核"), 
-		CHECKED("已审核"), 
-		UN_PASSED("未通过"), 
-		LEFT("请假"), 
-		RETURNED_PREMIUM("退费"), 
-		FORBIDDEN("禁用"), 
-		EXPIRED("到期"),
-		UN_KNOWN("");
-
-		
-		private final String status;
-
-		public String getStatus() {
-			return status;
-		}
-
-		private ContractStatus(String status) {
-			this.status = status;
-		}
-		
-		public static List<ContractStatus> getUnExpiredStatus(){
-			List<ContractStatus> status = new ArrayList<Contract.ContractStatus>();
-			status.add(ContractStatus.UN_VERIFIED);
-			status.add(ContractStatus.VERIFIED);
-			status.add(ContractStatus.UN_CHECKED);
-			status.add(ContractStatus.CHECKED);
-			
-			return status;
-			
-		}
-
-		public static ContractStatus fromStatus(String status) {
-			switch (status) {
-			case "未付款":
-				return ContractStatus.UN_PAYED;
-			case "未确认":
-				return ContractStatus.UN_VERIFIED;
-			case "已确认":
-				return ContractStatus.VERIFIED;
-			case "未审核":
-				return ContractStatus.UN_CHECKED;
-			case "已审核":
-				return ContractStatus.CHECKED;
-			case "未通过":
-				return ContractStatus.UN_PASSED;
-			case "请假":
-				return ContractStatus.LEFT;
-			case "退费":
-				return ContractStatus.RETURNED_PREMIUM;
-			case "禁用":
-				return ContractStatus.FORBIDDEN;
-			case "到期":
-				return ContractStatus.EXPIRED;
-			case "":
-				return ContractStatus.UN_KNOWN;
-			default:
-				throw new UnsupportedOperationException(status + "is not supported");
-			}
-		}
-	}
-
-	@Converter
-	public static class ContractStatusConverter implements AttributeConverter<ContractStatus, String> {
-
-		@Override
-		public String convertToDatabaseColumn(ContractStatus arg0) {
-			if (arg0 == null)
-				return null;
-			return arg0.getStatus();
-		}
-
-		@Override
-		public ContractStatus convertToEntityAttribute(String arg0) {
-			if (arg0 == null || "".equals(arg0.trim()))
-				return null;
-			return ContractStatus.fromStatus(arg0);
-		}
-
-	}
+	
 
 	private String contractNo;
 
@@ -256,5 +174,89 @@ public class Contract {
 		this.course = course;
 	}
 
+	
+	
+	public enum ContractStatus {
+		UN_PAYED("未付款"),
+		UN_VERIFIED("未确认"),
+		VERIFIED("已确认"),
+		UN_CHECKED("未审核"), 
+		CHECKED("已审核"), 
+		UN_PASSED("未通过"), 
+		LEFT("请假"), 
+		RETURNED_PREMIUM("退费"), 
+		FORBIDDEN("禁用"), 
+		EXPIRED("到期"),
+		UN_KNOWN("");
 
+		
+		private final String status;
+
+		public String getStatus() {
+			return status;
+		}
+
+		private ContractStatus(String status) {
+			this.status = status;
+		}
+		
+		public static List<ContractStatus> getUnExpiredStatus(){
+			List<ContractStatus> status = new ArrayList<Contract.ContractStatus>();
+			status.add(ContractStatus.UN_VERIFIED);
+			status.add(ContractStatus.VERIFIED);
+			status.add(ContractStatus.UN_CHECKED);
+			status.add(ContractStatus.CHECKED);
+			
+			return status;
+			
+		}
+
+		public static ContractStatus fromStatus(String status) {
+			switch (status) {
+			case "未付款":
+				return ContractStatus.UN_PAYED;
+			case "未确认":
+				return ContractStatus.UN_VERIFIED;
+			case "已确认":
+				return ContractStatus.VERIFIED;
+			case "未审核":
+				return ContractStatus.UN_CHECKED;
+			case "已审核":
+				return ContractStatus.CHECKED;
+			case "未通过":
+				return ContractStatus.UN_PASSED;
+			case "请假":
+				return ContractStatus.LEFT;
+			case "退费":
+				return ContractStatus.RETURNED_PREMIUM;
+			case "禁用":
+				return ContractStatus.FORBIDDEN;
+			case "到期":
+				return ContractStatus.EXPIRED;
+			case "":
+				return ContractStatus.UN_KNOWN;
+			default:
+				throw new UnsupportedOperationException(status + "is not supported");
+			}
+		}
+	}
+
+	@Converter
+	public static class ContractStatusConverter implements AttributeConverter<ContractStatus, String> {
+
+		@Override
+		public String convertToDatabaseColumn(ContractStatus arg0) {
+			if (arg0 == null)
+				return null;
+			return arg0.getStatus();
+		}
+
+		@Override
+		public ContractStatus convertToEntityAttribute(String arg0) {
+			if (arg0 == null || "".equals(arg0.trim()))
+				return null;
+			return ContractStatus.fromStatus(arg0);
+		}
+
+	}
 }

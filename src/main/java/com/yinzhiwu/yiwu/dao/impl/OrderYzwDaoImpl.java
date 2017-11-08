@@ -461,5 +461,10 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 				.setParameter("courseType", courseType)
 				.getResultList();
 	}
+
+	@Override
+	public Integer findCountByCourseId(String courseId) {
+		return findCountByProperty("contract.course.id", courseId).intValue();
+	}
 	
 }

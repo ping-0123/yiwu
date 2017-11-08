@@ -68,3 +68,6 @@ VIEW `vcourse` AS
         `chenkuserdb1`.`skt6`.`SKF1034` AS `subCourseType`
     FROM
         `chenkuserdb1`.`skt6`;
+        
+update vcourse set courseType= null where courseType = '所有课程类型';
+UPDATE vcourse set courseType = null where courseType = '';

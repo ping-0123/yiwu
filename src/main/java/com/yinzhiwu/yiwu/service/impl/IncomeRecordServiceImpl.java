@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -10,10 +11,14 @@ import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.dao.IncomeFactorDao;
 import com.yinzhiwu.yiwu.dao.IncomeRecordDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.income.AppointmentEvent;
 import com.yinzhiwu.yiwu.entity.income.IncomeEvent;
 import com.yinzhiwu.yiwu.entity.income.IncomeFactor;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
+import com.yinzhiwu.yiwu.entity.income.UnAppointmentEvent;
 import com.yinzhiwu.yiwu.entity.type.IncomeType;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.IncomeRecordApiView;
 import com.yinzhiwu.yiwu.model.view.ShareTweetIncomeRecordApiView;
@@ -95,5 +100,15 @@ public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integ
 			List<Integer> eventTypeIds, List<Integer> relationTypeIds, List<Integer> incomeTypeIds) {
 		Long count = incomeRecordDao.findCountBy_incomeTypes_relationTypes_eventTypes_benificiary(observerId, eventTypeIds, relationTypeIds, incomeTypeIds);
 		return YiwuJson.createBySuccess(count);
+	}
+	
+	@EventListener(classes={LessonAppointmentYzw.class})
+	public void handleLessonAppointment(LessonAppointmentYzw appointment){
+		IncomeEvent event;
+		if(AppointStatus.APPONTED == appointment.getStatus())
+			event = new AppointmentEvent(appointment.getDistributer(),  appointment.getLesson());
+		else
+			event = new UnAppointmentEvent(appointment.getDistributer(),  appointment.getLesson());
+//		this.save(event);
 	}
 }

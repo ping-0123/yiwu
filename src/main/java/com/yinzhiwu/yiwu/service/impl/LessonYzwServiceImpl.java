@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -273,7 +272,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	}
 	
 	
-	@Scheduled(fixedRate=10, initialDelay=10000)
+//	@Scheduled(fixedRate=10, initialDelay=10000)
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public boolean setOneLessonOrdinalNo(){
 		if(logger.isInfoEnabled())

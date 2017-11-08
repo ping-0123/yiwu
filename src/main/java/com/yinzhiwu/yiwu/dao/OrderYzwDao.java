@@ -57,4 +57,6 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 
 	public List<CourseYzw> findCoursesByCustomerIdAndCourseType(Integer customerId, CourseType courseType);
 
+	public Integer findCountByCourseId(String id);
+
 }

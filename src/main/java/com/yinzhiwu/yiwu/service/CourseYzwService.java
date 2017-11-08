@@ -1,8 +1,12 @@
 package com.yinzhiwu.yiwu.service;
 
-import com.yinzhiwu.yiwu.entity.yzw.CourseConnotation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 
 public interface CourseYzwService extends IBaseService<CourseYzw, String> {
-	public  void setConnatationUrls(CourseConnotation con);
+
+	@Transactional
+	public void scheduledSetOne_StudentCount_SumLessonTimesAndLessonOrdialNo();
+
 }

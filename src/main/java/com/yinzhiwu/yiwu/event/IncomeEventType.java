@@ -1,4 +1,4 @@
-package com.yinzhiwu.yiwu.enums;
+package com.yinzhiwu.yiwu.event;
 
 /**
  * 
@@ -6,7 +6,7 @@ package com.yinzhiwu.yiwu.enums;
  * @Date 2017年10月29日 下午5:16:03
  *
  */
-public enum EventType {
+public enum IncomeEventType {
 	
 	REGISTER_WITHOUT_INVATATION_CODE,
 	REGISTER_WITH_INVATATION_CODE,
