@@ -314,7 +314,7 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 
 	@Override
 	public LessonYzw findOneNullOrdinalLessons() {
-		String hql = "FROM LessonYzw WHERE ordinalNo is null AND course.id is not null and course.id <> ''";
+		String hql = "FROM LessonYzw WHERE ordinalNo is null AND course.id is not null and course.id <> '' ORDER BY lessonDate desc";
 		List<LessonYzw> lessons =  getSession().createQuery(hql, LessonYzw.class)
 					.setMaxResults(1)
 					.getResultList();

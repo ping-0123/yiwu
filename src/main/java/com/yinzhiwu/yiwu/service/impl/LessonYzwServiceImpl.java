@@ -8,8 +8,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -272,8 +274,10 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	}
 	
 	
-	@Transactional
-	private boolean setOneLessonOrdinalNo(){
+	@Async
+	@Scheduled(fixedRate=1000, initialDelay=10000)
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public boolean setOneLessonOrdinalNo(){
 		if(logger.isInfoEnabled())
 			logger.info("Scheduled task setLessonOrdinalNo start executing......");
 		
@@ -287,11 +291,11 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		
 		return true;
 	}
-
 	
-	@Scheduled(fixedRate=525600000, initialDelay=10000)
-	public void changeAllLessonOrdinalNo(){
+	@Scheduled(fixedRate=10000000, initialDelay=10000)
+	public void setAllLessonOrdinalNo(){
 		while(setOneLessonOrdinalNo())
-			continue;
+			;
 	}
+	
 }
