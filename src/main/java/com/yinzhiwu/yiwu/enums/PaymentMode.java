@@ -11,14 +11,16 @@ import javax.persistence.Converter;
  */
 public enum PaymentMode {
 	
-	WECHAT_PAY(10001),
-	ALI_PAY(10002);
+	WECHAT_PAY(10001,"微信支付"),
+	ALI_PAY(10002,"支付宝");
 	
 	private final int id;
+	
+	private final String name;
 
-
-	private PaymentMode(int id) {
+	private PaymentMode(int id, String name) {
 		this.id = id;
+		this.name = name;
 	}
 
 	/**
@@ -26,6 +28,10 @@ public enum PaymentMode {
 	 */
 	public int getId() {
 		return id;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public static PaymentMode fromId(int id){
@@ -53,4 +59,5 @@ public enum PaymentMode {
 		}
 		
 	}
+
 }
