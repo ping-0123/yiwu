@@ -6,75 +6,57 @@ import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.dao.IncomeGradeDao;
-import com.yinzhiwu.yiwu.dao.MessageDao;
 import com.yinzhiwu.yiwu.entity.Message;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.service.DistributerIncomeService;
+import com.yinzhiwu.yiwu.service.MessageService;
 import com.yinzhiwu.yiwu.util.MessageTemplate;
 
 @Service
 public class DistributerIncomeServiceImpl extends BaseServiceImpl<DistributerIncome, Integer>
 		implements DistributerIncomeService {
 
-	@Autowired
-	private DistributerIncomeDao dIncomeDao;
-	@Autowired private MessageDao messageDao;
+	@Autowired private MessageService messageService;
 
-	@Autowired
-	private IncomeGradeDao incomeGradeDao;
+	@Autowired private IncomeGradeDao incomeGradeDao;
 
 	@Autowired
 	public void setBaseDao(DistributerIncomeDao distributerIncomeDao) {
 		super.setBaseDao(distributerIncomeDao);
 	}
 
+
 	@Override
-	public void update_by_record(IncomeRecord record) {
+	public void updateIncome(IncomeRecord record) {
 		Assert.notNull(record);
-
-		/**
-		 * get the influenced distributer's income by the record
-		 */
-		DistributerIncome dIncome  = dIncomeDao.find_by_distributer_by_income_type(record.getBenificiary().getId(),
-				record.getIncomeType().getId());
-		if(dIncome == null ){
-			dIncome = new DistributerIncome(record.getBenificiary(), record.getIncomeType(),
-					incomeGradeDao.find_lowest_grade_by_income_type(record.getIncomeType().getId()));
+		
+		DistributerIncome income = record.getBenificiary().getDistributerIncome(record.getIncomeType());
+		if(null == income){
+			income = new DistributerIncome();
+			income.init();
+			income.setDistributer(record.getBenificiary());
+			income.setType(record.getIncomeType());
+			income.setGrade(incomeGradeDao.findLowestGradeByIncomeType(record.getIncomeType()));
 		}
-
-		/**
-		 * update distributer's income value
-		 */
-		dIncome.setIncome(dIncome.getIncome() + record.getIncomeValue());
-
-		/**
-		 * update distributer's income grade
-		 */
-		try {
-			if (dIncome.getIncome() >= dIncome.getIncomeGrade().getUpgradeNeededValue()){
-				dIncome.setIncomeGrade(dIncome.getIncomeGrade().getNextGrade());
-				//产生升级消息
-				messageDao.save(new Message(dIncome.getDistributer(),
-						MessageTemplate.generate_update_grade_message(
-								dIncome.getIncomeType().getChineseName(), 
-								dIncome.getIncomeGrade().getName())));
-			}
-		} catch (NullPointerException e) {
-			logger.info("distributer: " + dIncome.getDistributer().getId() + "'s " + dIncome.getIncomeType().getName()
-					+ " income grade is the upest grade");
+		
+		//设置收益
+		income.setValue(income.getValue() + record.getIncomeValue());
+		//升级
+		if(income.getValue() >= income.getGrade().getUpgradeNeededValue()
+				&& !income.getGrade().getHighesGrade()){
+			income.setGrade(income.getGrade().getNextGrade());
+			//  升级产生消息
+			messageService.save(new Message(income.getDistributer(), 
+					MessageTemplate.generate_update_grade_message(
+							income.getType().getName(),income.getGrade().getName() )));
 		}
-
-		/**
-		 * update distributer's accumulative income value
-		 */
-		if (record.getIncomeValue() > 0)
-			dIncome.setAccumulativeIncome(dIncome.getAccumulativeIncome() + record.getIncomeValue());
-
-		/**
-		 * persistent the distributer's income
-		 */
-		dIncomeDao.saveOrUpdate(dIncome);
+		//设置累积收益
+		if(record.getIncomeValue()>0)
+			income.setAccumulativeValue(income.getAccumulativeValue() + record.getIncomeValue());
+		
+		//保存
+		saveOrUpdate(income);
 	}
 
 }

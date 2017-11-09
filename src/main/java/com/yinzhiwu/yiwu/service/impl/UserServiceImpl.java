@@ -59,7 +59,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements U
 	public Set<Role> findObjectRoles(String username){
 		Assert.hasText(username);
 		
-		return findObjectRoles(findByUsername(username));
+		try {
+			return findObjectRoles(findByUsername(username));
+		} catch (DataNotFoundException e) {
+			logger.error(e.getMessage(),e);
+			return new HashSet<>();
+		}
 	}
 	
 	@Override
@@ -77,13 +82,23 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements U
 	@Override
 	public Set<String> findRoles(String username) {
 		Assert.hasText(username);
-		return findRoles(findByUsername(username));
+		try {
+			return findRoles(findByUsername(username));
+		} catch (DataNotFoundException e) {
+			logger.error(e.getMessage(),e);
+			return new HashSet<>();
+		}
 	}
 
 	@Override
 	public Set<String> findPermissions(String username) {
 		Assert.hasText(username);
-		return findPermissions(findByUsername(username));
+		try {
+			return findPermissions(findByUsername(username));
+		} catch (DataNotFoundException e) {
+			logger.error(e.getMessage(),e);
+			return new HashSet<>();
+		}
 	}
 
 
@@ -109,7 +124,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements U
 	
 	@Override
 	@Cacheable(value="service", key="#username" /**keyGenerator="keyGenerator"*/)
-	public User findByUsername(String username) {
+	public User findByUsername(String username) throws DataNotFoundException {
 		return userDao.findByUsername(username);
 	}
 

@@ -7,7 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import com.yinzhiwu.yiwu.entity.BaseEntity;
-import com.yinzhiwu.yiwu.enums.ContributerBenificiaryRelation;
+import com.yinzhiwu.yiwu.enums.Relation;
 import com.yinzhiwu.yiwu.enums.IncomeType;
 import com.yinzhiwu.yiwu.event.IncomeEventType;
 
@@ -29,7 +29,7 @@ public class IncomeFactor extends BaseEntity {
 
 	@Column(length=32)
 	@Enumerated(EnumType.STRING)
-	private ContributerBenificiaryRelation relation;
+	private Relation relation;
 
 	private Float factor;
 
@@ -65,11 +65,11 @@ public class IncomeFactor extends BaseEntity {
 		this.incomeType = incomeType;
 	}
 
-	public ContributerBenificiaryRelation getRelation() {
+	public Relation getRelation() {
 		return relation;
 	}
 
-	public void setRelation(ContributerBenificiaryRelation relation) {
+	public void setRelation(Relation relation) {
 		this.relation = relation;
 	}
 

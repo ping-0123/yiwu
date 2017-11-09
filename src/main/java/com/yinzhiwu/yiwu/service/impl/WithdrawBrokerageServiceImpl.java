@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.WithdrawBrokerageDao;
 import com.yinzhiwu.yiwu.entity.WithdrawBrokerage;
-import com.yinzhiwu.yiwu.entity.income.WithdrawEvent;
 import com.yinzhiwu.yiwu.event.PayWithdrawEvent;
+import com.yinzhiwu.yiwu.event.WithdrawEvent;
 import com.yinzhiwu.yiwu.service.JSMSService;
 import com.yinzhiwu.yiwu.service.WithdrawBrokerageService;
 

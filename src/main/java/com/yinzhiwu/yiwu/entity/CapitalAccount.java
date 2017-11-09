@@ -13,7 +13,8 @@ import com.yinzhiwu.yiwu.enums.PaymentMode;
 import com.yinzhiwu.yiwu.enums.PaymentMode.PaymentModeConverter;
 
 @Entity
-@Table(name = "yiwu_capital_account", uniqueConstraints = @UniqueConstraint(name = "uk_CapitalAccount_accont", columnNames = "account"))
+@Table(name = "yiwu_capital_account", uniqueConstraints = 
+	@UniqueConstraint(name = "uk_CapitalAccount_accont", columnNames = "account"))
 public class CapitalAccount extends BaseEntity {
 
 	/**

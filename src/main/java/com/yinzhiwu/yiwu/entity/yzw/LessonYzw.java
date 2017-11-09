@@ -28,6 +28,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.yinzhiwu.yiwu.entity.LessonComment;
+import com.yinzhiwu.yiwu.entity.LessonInteractive;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.CourseType.CourseTypeConverter;
@@ -157,6 +158,10 @@ public class LessonYzw extends BaseYzwEntity {
 	@OneToMany(mappedBy="lesson")
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private List<LessonComment> comments = new ArrayList<>();
+	
+	@OneToMany(mappedBy="lesson")
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+	private List<LessonInteractive> interactives = new ArrayList<>();
 	
 	public LessonYzw() {
 		super();
@@ -478,6 +483,14 @@ public class LessonYzw extends BaseYzwEntity {
 
 	public void setComments(List<LessonComment> comments) {
 		this.comments = comments;
+	}
+
+	public List<LessonInteractive> getInteractives() {
+		return interactives;
+	}
+
+	public void setInteractives(List<LessonInteractive> interactives) {
+		this.interactives = interactives;
 	}
 
 	

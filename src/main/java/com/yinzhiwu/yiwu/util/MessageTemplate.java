@@ -1,7 +1,10 @@
 package com.yinzhiwu.yiwu.util;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 
 public class MessageTemplate {
 
@@ -39,5 +42,12 @@ public class MessageTemplate {
 	
 	public static String generate_register_message() {
 		return "欢迎您加入音之舞";
+	}
+	
+	public static String generate_brokerage_income_message(IncomeRecord record){
+		String message = "您的客户：" + record.getContributor().getName() 
+				+ "在音之舞消费了" + NumberFormat.getCurrencyInstance().format(record.getContributedValue()) + "元， " 
+				+ "您获得了" + NumberFormat.getCurrencyInstance().format(record.getIncomeValue()) + "收益";
+		return message;
 	}
 }

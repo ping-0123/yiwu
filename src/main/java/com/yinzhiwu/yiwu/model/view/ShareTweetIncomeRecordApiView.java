@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
-import com.yinzhiwu.yiwu.entity.income.ShareTweetEvent;
 import com.yinzhiwu.yiwu.enums.TweetType;
 
 public class ShareTweetIncomeRecordApiView implements Serializable {
@@ -41,8 +40,8 @@ public class ShareTweetIncomeRecordApiView implements Serializable {
 			this.id = record.getId();
 			this.sharer = record.getContributor().getName();
 			this.shareDate = record.getRecordTimestamp();
-			ShareTweetEvent event = (ShareTweetEvent) record.getIncomeEvent();
-			this.tweetTitle = event.getTweet().getTitle();
+//			ShareTweetEvent event = (ShareTweetEvent) record.getIncomeEvent();
+//			this.tweetTitle = event.getTweet().getTitle();
 			this.exp = record.getIncomeValue();
 
 		} catch (Exception e) {

@@ -110,7 +110,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		
 	}
 	
-	protected T findOneByProperty(String propertyName, Object value) {
+	protected T findOneByProperty(String propertyName, Object value) throws DataNotFoundException {
 		Assert.hasText(propertyName, "属性名不能为空");
 		
 		String hql = "FROM " + entityClass.getSimpleName() + " t1 WHERE  t1." + propertyName + " =:property";
@@ -119,7 +119,9 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 				.setMaxResults(1)
 				.getResultList();
 		
-		return list.size()>0?list.get(0):null;
+		if(list.size()==0)
+			throw new  DataNotFoundException(entityClass,propertyName,value);
+		return list.get(0);
 	}
 	
 	protected T findOneByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException{

@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -14,8 +13,9 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.yinzhiwu.yiwu.entity.BaseEntity;
-import com.yinzhiwu.yiwu.entity.type.IncomeType;
+import com.yinzhiwu.yiwu.enums.IncomeType;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "yiwu_income_grade", uniqueConstraints = {
 		// @UniqueConstraint(name="uk_incomeGrade_gradeNo",
@@ -25,13 +25,7 @@ import com.yinzhiwu.yiwu.entity.type.IncomeType;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class IncomeGrade extends BaseEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6432236461203601711L;
 
-	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_incomeGrade_incomeType_id"))
 	private IncomeType incomeType;
 
 	@Column(nullable = false) // uk
@@ -51,6 +45,8 @@ public class IncomeGrade extends BaseEntity {
 	private Boolean lowestGrade;
 
 	private Boolean highesGrade;
+	
+	
 
 	public IncomeGrade() {
 		super();

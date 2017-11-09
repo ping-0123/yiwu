@@ -3,7 +3,7 @@ package com.yinzhiwu.yiwu.enums;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-public enum ContributerBenificiaryRelation {
+public enum Relation {
 	
 	SELF_WITH_SELF(10015),
 	SELF_WITH_SUPERIOR(10016),
@@ -11,7 +11,7 @@ public enum ContributerBenificiaryRelation {
 	
 	private final int id;
 
-	private ContributerBenificiaryRelation(int id) {
+	private Relation(int id) {
 		this.id = id;
 	}
 
@@ -22,7 +22,7 @@ public enum ContributerBenificiaryRelation {
 		return id;
 	}
 	
-	public static ContributerBenificiaryRelation fromId(Integer id){
+	public static Relation fromId(Integer id){
 		switch (id) {
 		case 10015:
 			return SELF_WITH_SELF;
@@ -36,16 +36,16 @@ public enum ContributerBenificiaryRelation {
 	}
 	
 	@Converter
-	public static class ContributerBenificiaryRelationConverter implements AttributeConverter<ContributerBenificiaryRelation, Integer>{
+	public static class ContributerBenificiaryRelationConverter implements AttributeConverter<Relation, Integer>{
 
 		@Override
-		public Integer convertToDatabaseColumn(ContributerBenificiaryRelation relation) {
+		public Integer convertToDatabaseColumn(Relation relation) {
 			return relation==null?null:relation.getId();
 		}
 
 		@Override
-		public ContributerBenificiaryRelation convertToEntityAttribute(Integer dbData) {
-			return (null == dbData)?ContributerBenificiaryRelation.fromId(dbData):null;
+		public Relation convertToEntityAttribute(Integer dbData) {
+			return (null == dbData)?Relation.fromId(dbData):null;
 		}
 		
 	}

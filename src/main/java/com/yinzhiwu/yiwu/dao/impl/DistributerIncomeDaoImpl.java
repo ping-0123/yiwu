@@ -72,4 +72,16 @@ public class DistributerIncomeDaoImpl extends BaseDaoImpl<DistributerIncome, Int
 		return findByProperty("incomeType。id",brokerage.getId());
 	}
 
+	@Override
+	public Float get_beat_rate(com.yinzhiwu.yiwu.enums.IncomeType incomeType, float expValue) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DistributerIncome> findByIncomeType(com.yinzhiwu.yiwu.enums.IncomeType brokerage) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

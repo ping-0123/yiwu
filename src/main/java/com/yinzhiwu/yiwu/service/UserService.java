@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.yinzhiwu.yiwu.entity.sys.Role;
 import com.yinzhiwu.yiwu.entity.sys.User;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 public interface UserService extends IBaseService<User, Integer>{
 
@@ -15,7 +16,7 @@ public interface UserService extends IBaseService<User, Integer>{
 	Set<String> findPermissions(String username);
 	Set<String> findPermissions(User user);
 
-	User findByUsername(String username);
+	User findByUsername(String username) throws DataNotFoundException;
 	
 	void modifyPassword(Integer userId, String newPasswords);
 

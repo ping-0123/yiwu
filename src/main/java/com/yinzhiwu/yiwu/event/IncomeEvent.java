@@ -14,4 +14,8 @@ public interface IncomeEvent {
 	public Object getSource();
 	
 	public String getSourceId();
+	
+	public Object getSubject();
+	
+	public Float getValue();
 }

@@ -1,5 +1,7 @@
 package com.yinzhiwu.yiwu.service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
@@ -14,8 +16,10 @@ import com.yinzhiwu.yiwu.exception.business.LessonAppointmentException;
 
 public interface LessonAppointmentYzwService extends IBaseService<LessonAppointmentYzw,Integer>{
 
+	@Transactional
 	LessonAppointmentYzw doAppoint(Distributer distributer, LessonYzw lesson) throws LessonAppointmentException, DataNotFoundException;
 
+	@Transactional
 	LessonAppointmentYzw cancelAppoint(Distributer distributer, LessonYzw lesson) throws LessonAppointmentException;
 
 }

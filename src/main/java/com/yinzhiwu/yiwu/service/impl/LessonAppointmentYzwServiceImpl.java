@@ -2,12 +2,16 @@ package com.yinzhiwu.yiwu.service.impl;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
+import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonInteractive;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
@@ -19,6 +23,7 @@ import com.yinzhiwu.yiwu.exception.business.LessonAppointmentException;
 import com.yinzhiwu.yiwu.exception.business.LessonInteractiveException;
 import com.yinzhiwu.yiwu.service.LessonAppointmentYzwService;
 import com.yinzhiwu.yiwu.service.LessonInteractiveService;
+import com.yinzhiwu.yiwu.service.LessonYzwService;
 
 import io.jsonwebtoken.lang.Assert;
 
@@ -32,12 +37,21 @@ import io.jsonwebtoken.lang.Assert;
 public class LessonAppointmentYzwServiceImpl extends BaseServiceImpl<LessonAppointmentYzw,Integer> implements LessonAppointmentYzwService {
 
 	@Autowired private LessonAppointmentYzwDao lessonAppointmentDao;
+	@Autowired private OrderYzwDao orderDao;
+	
 	@Autowired private LessonInteractiveService lessonInteractiveService;
+	@Autowired private LessonYzwService lessonService;
 	@Autowired private ApplicationContext applicationContext;
+	
 	
 	@Autowired
 	public void setBaseDao(LessonAppointmentYzwDao dao){super.setBaseDao(dao);}
 	
+	
+	/**
+	 * listened by {@link OrderYzwServiceImpl#handleLessonAppointment(LessonAppointmentYzw)}
+	 * 		and {@link IncomeRecordServiceImpl#handleLessonAppointment(LessonAppointmentYzw)}
+	 */
 	@Override
 	public LessonAppointmentYzw doAppoint(Distributer distributer, LessonYzw lesson) 
 			throws LessonAppointmentException
@@ -80,6 +94,11 @@ public class LessonAppointmentYzwServiceImpl extends BaseServiceImpl<LessonAppoi
 		return appointment;
 	}
 	
+	
+	/**
+	 * listened by {@link OrderYzwServiceImpl#handleLessonAppointment(LessonAppointmentYzw)}
+	 * 		and {@link IncomeRecordServiceImpl#handleLessonAppointment(LessonAppointmentYzw)}
+	 */
 	@Override
 	public LessonAppointmentYzw cancelAppoint(Distributer distributer, LessonYzw lesson) throws LessonAppointmentException{
 		
@@ -106,6 +125,32 @@ public class LessonAppointmentYzwServiceImpl extends BaseServiceImpl<LessonAppoi
 		return appointment;
 	}
 	
-	
+	/**
+	 * listened by {@link OrderYzwServiceImpl#handleLessonAppointment(LessonAppointmentYzw)}
+	 * 		and {@link IncomeRecordServiceImpl#handleLessonAppointment(LessonAppointmentYzw)}
+	 */
+	@Transactional
+	@Scheduled(cron="0 0 5 * * ? *") //每日5点执行
+	public void handeLastDayBreakAppointments(){
+		List<LessonYzw> lessons = lessonService.findYesterdyOpenedLessons();
+		for (LessonYzw lesson : lessons) {
+			for(LessonInteractive interactive: lesson.getInteractives())
+			{
+				if(interactive.getAppointed() && !interactive.getCheckedIn())
+				{
+					LessonAppointmentYzw appointment = lessonAppointmentDao.findAppointedOne(
+							interactive.getDistributer().getId(), lesson.getId());
+					appointment.setStatus(AppointStatus.BREAKED);
+					
+					update(appointment);
+					
+					applicationContext.publishEvent(appointment);
+				}
+			}
+		}
+		
+		// TODO 存在逻辑漏洞，如果顾客预约了明天的课程，是不能把待扣次数清零的
+		orderDao.cleanWithHoldTimes();
+	}
 }
 	

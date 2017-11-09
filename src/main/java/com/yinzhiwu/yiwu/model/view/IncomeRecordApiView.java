@@ -50,7 +50,7 @@ public class IncomeRecordApiView {
 		this.id = r.getId();
 		this.date = r.getRecordTimestamp();
 		try {
-			this.eventTypeName = r.getIncomeEvent().getType().getName();
+//			this.eventTypeName = r.getIncomeEvent().getType().getName();
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
 		}

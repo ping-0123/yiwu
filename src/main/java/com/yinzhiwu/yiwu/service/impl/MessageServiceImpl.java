@@ -7,19 +7,20 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.yinzhiwu.yiwu.dao.MessageDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Message;
 import com.yinzhiwu.yiwu.entity.WithdrawBrokerage;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
+import com.yinzhiwu.yiwu.enums.IncomeType;
 import com.yinzhiwu.yiwu.event.PayWithdrawEvent;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.MessageApiView;
 import com.yinzhiwu.yiwu.service.MessageService;
+import com.yinzhiwu.yiwu.util.MessageTemplate;
 
 @Service
 public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implements MessageService {
@@ -99,16 +100,21 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer> implem
 		messageDao.save(message);
 	}
 
-	@Override
-	public void save_by_record(IncomeRecord incomeRecord) {
-		Assert.notNull(incomeRecord);
-		Message m = incomeRecord.generateMessage();
-		if (m != null)
-			super.save(m);
+	
+	//TODO 好好研究spel
+	@TransactionalEventListener(classes={IncomeRecord.class}
+//		, condition="#{record.incomeType == BROKERAGE}"
+	)
+	public void handleBrokerageRecord(IncomeRecord record){
+		if(IncomeType.BROKERAGE == record.getIncomeType()){
+			Message message = new Message(record.getBenificiary(),
+					MessageTemplate.generate_brokerage_income_message(record));
+			save(message);
+		}
 	}
 
 	//TODO test @TransactionalEventListener  or reference http://www.jdon.com/dl/best/springevent.html
-	@EventListener(classes={PayWithdrawEvent.class})
+	@TransactionalEventListener(classes={PayWithdrawEvent.class})
 	public void handlePayWithdrawEvent(PayWithdrawEvent event){
 		WithdrawBrokerage withdraw = (WithdrawBrokerage) event.getSource();
 		String msg = "您于" + format.format(withdraw.getCreateTime())

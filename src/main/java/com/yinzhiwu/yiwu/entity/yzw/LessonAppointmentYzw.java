@@ -197,7 +197,7 @@ public class LessonAppointmentYzw {
 
 	
 	public enum AppointStatus {
-		APPONTED("预约"), UN_APOINTED("取消");
+		APPONTED("预约"), UN_APOINTED("取消"), BREAKED("爽约"); 
 		private final String status;
 
 		public static AppointStatus fromStatus(String status) {
@@ -206,6 +206,8 @@ public class LessonAppointmentYzw {
 				return AppointStatus.APPONTED;
 			case "取消":
 				return AppointStatus.UN_APOINTED;
+			case "爽约":
+				return AppointStatus.BREAKED;
 			default:
 				throw new UnsupportedOperationException(status + "is not supported for enum AppointStatus");
 			}

@@ -30,12 +30,13 @@ import org.springframework.util.StringUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
-import com.yinzhiwu.yiwu.entity.type.IncomeType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.enums.Gender;
+import com.yinzhiwu.yiwu.enums.IncomeType;
+import com.yinzhiwu.yiwu.enums.Relation;
 import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
 
@@ -191,7 +192,7 @@ public class Distributer extends BaseEntity {
 	private List<Message> messages = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "distributer",fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "distributer",fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<DistributerIncome> distributerIncomes = new ArrayList<>();
 
@@ -238,30 +239,6 @@ public class Distributer extends BaseEntity {
 			return true;
 		else
 			return false;
-	}
-
-	public Float getIncomeValue(IncomeType type) {
-		List<DistributerIncome> incomes = this.getDistributerIncomes();
-		if (null == incomes || incomes.size() == 0)
-			return 0f;
-
-		for (DistributerIncome income : incomes) {
-			if (type.equals(income.getIncomeType()))
-				return income.getIncome();
-		}
-		return 0f;
-	}
-
-	public DistributerIncome getDistributerIncome(IncomeType type) {
-		List<DistributerIncome> incomes = this.getDistributerIncomes();
-		if (null == incomes || incomes.size() == 0)
-			return null;
-
-		for (DistributerIncome income : incomes) {
-			if (type.equals(income.getIncomeType()))
-				return income;
-		}
-		return null;
 	}
 
 	public String getShareCode() {
@@ -482,6 +459,52 @@ public class Distributer extends BaseEntity {
 		return null;
 	}
 
+	
+	
+	//功能性的方法
+	/**
+	 * 
+	 * @param selfToRelative
+	 * @return
+	 */
+	public Distributer getRelatives(Relation selfToRelative){
+		switch (selfToRelative) {
+		case SELF_WITH_SELF:
+			return this;
+		case SELF_WITH_SUPERIOR:
+			return this.getSuperDistributer();
+		case SELF_WITH_GRAND:
+			if(null != this.getSuperDistributer())
+				return this.getSuperDistributer().getSuperDistributer();
+			else 
+				return null;
+		default:
+			return null;
+		}
+	}
 
+	public Float getIncomeValue(IncomeType type) {
+		List<DistributerIncome> incomes = this.getDistributerIncomes();
+		if (incomes.size() == 0)
+			return 0f;
+
+		for (DistributerIncome income : incomes) {
+			if (type == income.getType())
+				return income.getValue();
+		}
+		return 0f;
+	}
+
+	public DistributerIncome getDistributerIncome(IncomeType type) {
+		List<DistributerIncome> incomes = this.getDistributerIncomes();
+		if (incomes.size() == 0)
+			return null;
+
+		for (DistributerIncome income : incomes) {
+			if (type == income.getType())
+				return income;
+		}
+		return null;
+	}
 	
 }

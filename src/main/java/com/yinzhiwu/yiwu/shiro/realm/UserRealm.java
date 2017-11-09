@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.enums.DataStatus;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.UserService;
 
 /**
@@ -48,11 +49,12 @@ public class UserRealm extends AuthorizingRealm {
 
         String username = (String)token.getPrincipal();
 
-        User user = userService.findByUsername(username);
-
-        if(user == null) {
-            throw new UnknownAccountException();//没找到帐号
-        }
+        User user;
+		try {
+			user = userService.findByUsername(username);
+		} catch (DataNotFoundException e) {
+			throw new UnknownAccountException(e);//没找到帐号
+		}
 
         if(DataStatus.FORBID == user.getDataStatus()) {
             throw new LockedAccountException(); //帐号锁定

@@ -7,20 +7,17 @@ import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.aspectj.weaver.AjAttribute.PrivilegedAttribute;
-
 import com.yinzhiwu.yiwu.entity.BaseEntity;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Message;
-import com.yinzhiwu.yiwu.entity.type.IncomeType;
-import com.yinzhiwu.yiwu.entity.type.RelationType;
-import com.yinzhiwu.yiwu.enums.ContributerBenificiaryRelation;
+import com.yinzhiwu.yiwu.enums.IncomeType;
+import com.yinzhiwu.yiwu.enums.Relation;
+import com.yinzhiwu.yiwu.event.IncomeEvent;
 import com.yinzhiwu.yiwu.event.IncomeEventType;
 
 @SuppressWarnings("serial")
@@ -62,15 +59,22 @@ public class IncomeRecord extends BaseEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(length=32)
-	private ContributerBenificiaryRelation con_ben_relation;
+	private Relation con_ben_relation;
+	
+	@Override
+	public void init() {
+		super.init();
+		if(null == recordTimestamp)
+			this.setRecordTimestamp(super.getCreateTime());
+	}
 
 	public IncomeRecord(IncomeEvent event2, IncomeFactor factor, Distributer benificiary) {
-		super.init();
+		init();
 //		this.incomeEvent = event2;
 //		this.incomeType = factor.getIncomeType();
 		this.recordTimestamp = super.getCreateTime();
-		this.contributor = event2.getDistributer();
-		this.contributedValue = event2.getParam();
+//		this.contributor = event2.getDistributer();
+//		this.contributedValue = event2.getParam();
 		this.benificiary = benificiary;
 		this.incomeFactor = factor.getFactor();
 		this.incomeValue = this.incomeFactor * this.contributedValue;
@@ -177,11 +181,11 @@ public class IncomeRecord extends BaseEntity {
 		this.currentValue = currentValue;
 	}
 
-	public ContributerBenificiaryRelation getCon_ben_relation() {
+	public Relation getCon_ben_relation() {
 		return con_ben_relation;
 	}
 
-	public void setCon_ben_relation(ContributerBenificiaryRelation con_ben_relation) {
+	public void setCon_ben_relation(Relation con_ben_relation) {
 		this.con_ben_relation = con_ben_relation;
 	}
 

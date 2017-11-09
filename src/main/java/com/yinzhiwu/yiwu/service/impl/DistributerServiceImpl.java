@@ -483,4 +483,9 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		return YiwuJson.createBySuccess(view);
 	}
 
+	@Override
+	public Distributer findbyCustomer(CustomerYzw customer) throws DataNotFoundException {
+		return distributerDao.findByCustomerId(customer.getId());
+	}
+
 }

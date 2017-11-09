@@ -62,14 +62,22 @@ public class LessonInteractive extends BaseEntity{
 	public void init() {
 		super.init();
 		
-		this.appointed=false;
-		this.checkedIn=false;
-		this.storemanCalled=false;
-		this.coachCalled=false;
-		this.praised=false;
-		this.firstCommented=false;
-		this.appendCommented=false;
-		this.workFinished=false;
+		if(null == appointed)
+			this.appointed=false;
+		if(null == checkedIn)
+			this.checkedIn=false;
+		if(null == storemanCalled)
+			this.storemanCalled=false;
+		if(null == coachCalled)
+			this.coachCalled=false;
+		if(null == praised)
+			this.praised=false;
+		if(null == firstCommented)
+			this.firstCommented=false;
+		if(null == appendCommented)
+			this.appendCommented=false;
+		if(null == workFinished)
+			this.workFinished=false;
 	}
 	
 	public LessonYzw getLesson() {

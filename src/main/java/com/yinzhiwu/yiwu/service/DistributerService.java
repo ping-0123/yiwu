@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.DistributerModifyModel;
@@ -58,5 +59,7 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 	float getExpWinRate(Distributer distributer);
 
 	YiwuJson<StoreApiView> findDefaultStoreApiView(Integer distributerId);
+
+	Distributer findbyCustomer(CustomerYzw customer) throws DataNotFoundException;
 	
 }

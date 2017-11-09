@@ -33,7 +33,7 @@ public interface DistributerDao extends IBaseDao<Distributer, Integer> {
 
 	public int findCountByWechatNo(String wechatNo);
 
-	public Distributer findByCustomerId(Integer customerId);
+	public Distributer findByCustomerId(Integer customerId) throws DataNotFoundException;
 
 	public PageBean<CustomerDto> findDtoPageByDistributerByKey(List<Integer> storeIds, List<Integer> employeeIds,
 			List<Integer> distributerIds, String key, int pageNo, int pageSize);

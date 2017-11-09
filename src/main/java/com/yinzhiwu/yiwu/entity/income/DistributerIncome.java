@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.entity.income;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -13,41 +14,38 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.yinzhiwu.yiwu.entity.BaseEntity;
 import com.yinzhiwu.yiwu.entity.Distributer;
-import com.yinzhiwu.yiwu.entity.type.IncomeType;
+import com.yinzhiwu.yiwu.enums.IncomeType;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "yiwu_distributer_income", uniqueConstraints = {
-		@UniqueConstraint(name = "cuk_dIncome_distributer_incomeType", columnNames = { "distributer_id",
-				"incomeType_id" }) })
+		@UniqueConstraint(name = "cuk_dIncome_distributer_type", columnNames = { "distributer_id","type" }) 
+})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DistributerIncome extends BaseEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1220405621432715846L;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributerIncome_distributer_id"))
 	private Distributer distributer;
 
+	private IncomeType type;
+
+	@Column(name="income")
+	private Float value;
+
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributerIncome_incomeType_id"))
-	private IncomeType incomeType;
+	@JoinColumn(name="incomeGrade_id",foreignKey = @ForeignKey(name = "fk_dIncome_incomeGrade_id"))
+	private IncomeGrade grade;
 
-	private Float income;
+	@Column(name="accumulativeValue")
+	private Float accumulativeValue;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_dIncome_incomeGrade_id"))
-	private IncomeGrade incomeGrade;
-
-	private Float accumulativeIncome;
-
-	public DistributerIncome(Distributer benificiary, IncomeType incomeType2, IncomeGrade incomeGrade) {
+	public DistributerIncome(Distributer benificiary, IncomeType type, IncomeGrade grade) {
 		init();
 		this.distributer = benificiary;
-		this.incomeType = incomeType2;
-		this.incomeGrade = incomeGrade;
+		this.type = type;
+		this.grade = grade;
 	}
 
 	public DistributerIncome() {
@@ -56,47 +54,51 @@ public class DistributerIncome extends BaseEntity {
 	@Override
 	public void init() {
 		super.init();
-		this.income = 0f;
-		this.accumulativeIncome = 0f;
+		if(null == value)
+			this.value = 0f;
+		if(null == accumulativeValue)
+			this.accumulativeValue = 0f;
 	}
 
 	public Distributer getDistributer() {
 		return distributer;
 	}
 
-	public IncomeType getIncomeType() {
-		return incomeType;
+	public IncomeType getType() {
+		return type;
 	}
 
-	public Float getIncome() {
-		return income;
+	public Float getValue() {
+		return value;
 	}
 
-	public IncomeGrade getIncomeGrade() {
-		return incomeGrade;
+	public IncomeGrade getGrade() {
+		return grade;
 	}
 
-	public Float getAccumulativeIncome() {
-		return accumulativeIncome;
+	public Float getAccumulativeValue() {
+		return accumulativeValue;
 	}
 
 	public void setDistributer(Distributer distributer) {
 		this.distributer = distributer;
 	}
 
-	public void setIncomeType(IncomeType incomeType) {
-		this.incomeType = incomeType;
+	public void setType(IncomeType type) {
+		this.type = type;
 	}
 
-	public void setIncome(Float income) {
-		this.income = income;
+	public void setValue(Float value) {
+		this.value = value;
 	}
 
-	public void setIncomeGrade(IncomeGrade incomeGrade) {
-		this.incomeGrade = incomeGrade;
+	public void setGrade(IncomeGrade grade) {
+		this.grade = grade;
 	}
 
-	public void setAccumulativeIncome(Float accumulativeIncome) {
-		this.accumulativeIncome = accumulativeIncome;
+	public void setAccumulativeValue(Float accumulativeValue) {
+		this.accumulativeValue = accumulativeValue;
 	}
+
+	
 }

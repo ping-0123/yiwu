@@ -2,7 +2,8 @@ package com.yinzhiwu.yiwu.service;
 
 import java.util.List;
 
-import com.yinzhiwu.yiwu.entity.income.IncomeEvent;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.IncomeRecordApiView;
@@ -10,7 +11,6 @@ import com.yinzhiwu.yiwu.model.view.ShareTweetIncomeRecordApiView;
 
 public interface IncomeRecordService extends IBaseService<IncomeRecord, Integer> {
 
-	void save_records_produced_by_event(IncomeEvent event);
 
 	int findCountByIncomeTypesByBeneficiary(int distributerId, int[] incomeTypeIds);
 
@@ -38,5 +38,8 @@ public interface IncomeRecordService extends IBaseService<IncomeRecord, Integer>
 	 */
 	YiwuJson<Long> findCountBy_incomeTypes_relationTypes_eventTypes_benificiary(int observerId,
 			List<Integer> eventTypeIds, List<Integer> relationTypeIds, List<Integer> incomeTypeIds);
+
+	@Transactional
+	void produceIncomes(com.yinzhiwu.yiwu.event.IncomeEvent event);
 
 }

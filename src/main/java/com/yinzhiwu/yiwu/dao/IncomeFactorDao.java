@@ -3,18 +3,15 @@ package com.yinzhiwu.yiwu.dao;
 import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.income.IncomeFactor;
-import com.yinzhiwu.yiwu.entity.type.EventType;
+import com.yinzhiwu.yiwu.event.IncomeEventType;
 
 public interface IncomeFactorDao extends IBaseDao<IncomeFactor, Integer> {
 
 	/**
-	 * 查询能产生incomeTypeId收益类型的事件类型
-	 * 
-	 * @param incomeTypeId
+	 * 根据收益事件类型查询收益系数列表
+	 * @param type
 	 * @return
 	 */
-	List<EventType> findEventTypes(int incomeTypeId);
-
-	List<IncomeFactor> findByEventType(EventType type);
+	List<IncomeFactor> findByEventType(IncomeEventType type);
 
 }

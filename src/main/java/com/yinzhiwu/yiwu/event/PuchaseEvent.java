@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.event;
 
 import org.springframework.context.ApplicationEvent;
 
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 
 /**
@@ -25,6 +26,16 @@ public class PuchaseEvent extends ApplicationEvent implements IncomeEvent {
 	@Override
 	public String getSourceId() {
 		return ((OrderYzw) getSource()).getId();
+	}
+
+	@Override
+	public CustomerYzw getSubject() {
+		return ((OrderYzw) getSource()).getCustomer();
+	}
+
+	@Override
+	public Float getValue() {
+		return ((OrderYzw) getSource()).getPayedAmount();
 	}
 	
 }

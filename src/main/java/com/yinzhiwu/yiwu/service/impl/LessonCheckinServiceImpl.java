@@ -42,10 +42,7 @@ public class LessonCheckinServiceImpl extends BaseServiceImpl<LessonCheckInYzw, 
 
 	@Autowired
 	private LessonCheckInYzwDao lessonCheckInDao;
-	@Autowired
-	private CheckInEventDao checkInEventDao;
-	@Autowired
-	private OrderYzwDao orderDao;
+	@Autowired private OrderYzwDao orderDao;
 	@Autowired
 	private LessonAppointmentYzwDao appointmentDao;
 	@Autowired

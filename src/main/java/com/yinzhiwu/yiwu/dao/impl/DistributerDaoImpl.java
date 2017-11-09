@@ -145,12 +145,8 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	}
 
 	@Override
-	public Distributer findByCustomerId(Integer customerId) {
-		List<Distributer> ds =  findByProperty("customer.id", customerId);
-		if(ds.size() > 0)
-			return ds.get(0);
-		else
-			return null;
+	public Distributer findByCustomerId(Integer customerId) throws DataNotFoundException {
+		return findOneByProperty("customer.id", customerId);
 	}
 
 	@Override

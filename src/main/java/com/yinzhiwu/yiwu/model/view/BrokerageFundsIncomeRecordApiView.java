@@ -29,7 +29,7 @@ public class BrokerageFundsIncomeRecordApiView {
 	public BrokerageFundsIncomeRecordApiView(IncomeRecord r) {
 		this.date = r.getRecordTimestamp();
 		try {
-			this.category = r.getIncomeEvent().getType().getName();
+//			this.category = r.getIncomeEvent().getType().getName();
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
 		}

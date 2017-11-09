@@ -33,12 +33,6 @@ import io.jsonwebtoken.Jwts;
 
 public class ApiUserFilter extends OncePerRequestFilter {
 	
-	private static final String LOGIN_API_URL = "/api/login";
-	private static final String REGISTER_API_URL = "/api/distributer/register.do";
-	private static final String ERROR_API_URL = "/api/error";
-	@SuppressWarnings("unused")
-	private static final String ERROR_UNLOGIN_API_URL = "/api/error/unlogin";
-	
 	private final List<String> throughUrls = new ArrayList<>();
 	
 	public ApiUserFilter() {

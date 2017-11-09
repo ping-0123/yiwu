@@ -3,79 +3,108 @@ package com.yinzhiwu.yiwu.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.util.Assert;
 
-import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.dao.IncomeFactorDao;
 import com.yinzhiwu.yiwu.dao.IncomeRecordDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
-import com.yinzhiwu.yiwu.entity.income.AppointmentEvent;
-import com.yinzhiwu.yiwu.entity.income.IncomeEvent;
 import com.yinzhiwu.yiwu.entity.income.IncomeFactor;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
-import com.yinzhiwu.yiwu.entity.income.UnAppointmentEvent;
-import com.yinzhiwu.yiwu.entity.type.IncomeType;
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
-import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
+import com.yinzhiwu.yiwu.event.IncomeEvent;
+import com.yinzhiwu.yiwu.event.LessonAppointmentEvent;
+import com.yinzhiwu.yiwu.event.LessonCheckInEvent;
+import com.yinzhiwu.yiwu.event.WithdrawEvent;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.IncomeRecordApiView;
 import com.yinzhiwu.yiwu.model.view.ShareTweetIncomeRecordApiView;
 import com.yinzhiwu.yiwu.service.DistributerIncomeService;
+import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.IncomeRecordService;
-import com.yinzhiwu.yiwu.service.MessageService;
 
 @Service
 public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integer> implements IncomeRecordService {
 
-	@Autowired
-	private DistributerIncomeService dIncomeService;
+	@Autowired private IncomeRecordDao incomeRecordDao;
+	@Autowired private IncomeFactorDao incomeFactorDao;
+	
+	@Autowired private DistributerIncomeService distributerIncomeService;
+	@Autowired private DistributerService distributerService;
 
-	@Autowired
-	DistributerIncomeDao dIncomeDao;
+	@Autowired private ApplicationContext applicationContext;
 
-	@Autowired
-	IncomeRecordDao incomeRecordDao;
-
-	@Autowired
-	private MessageService messageService;
-
-	@Autowired
-	private IncomeFactorDao incomeFactorDao;
 
 	@Autowired
 	public void setBaseDao(IncomeRecordDao incomeRecordDao) {
 		super.setBaseDao(incomeRecordDao);
 	}
 
+	/**
+	 * {@link MessageServiceImpl#handleBrokerageRecord(IncomeRecord)}
+	 */
 	@Override
-	public Integer save(IncomeRecord incomeRecord) {
-		Assert.notNull(incomeRecord);
-		Assert.notNull(incomeRecord.getBenificiary());
-		Assert.notNull(incomeRecord.getIncomeType());
+	public Integer save(IncomeRecord record) {
+		Assert.notNull(record);
 
-		incomeRecord.setCurrentValue(incomeRecord.getIncomeValue() 
-				+ dIncomeDao.findCurrentValue(
-						incomeRecord.getBenificiary().getId(), 
-						incomeRecord.getIncomeType().getId()));
-		super.save(incomeRecord);
-		dIncomeService.update_by_record(incomeRecord);
-		if (IncomeType.BROKERAGE.equals(incomeRecord.getIncomeType()))
-			messageService.save_by_record(incomeRecord);
-		return incomeRecord.getId();
+		super.save(record);
+		distributerIncomeService.updateIncome(record);
+		
+		applicationContext.publishEvent(record);
+
+		return record.getId();
 	}
 
+	
 	@Override
-	public void save_records_produced_by_event(IncomeEvent event) {
-		List<IncomeFactor> factors =  incomeFactorDao.findByEventType(event.getType());
+	public void produceIncomes(IncomeEvent event){
+		List<IncomeFactor> factors = incomeFactorDao.findByEventType(event.getType());
 		for (IncomeFactor factor : factors) {
-			Distributer benificiary = factor.getRelation().getRelativeDistributer(event.getDistributer());
-			if (benificiary != null && factor.getFactor() != 0f && event.getParam() != 0) {
-				IncomeRecord record = new IncomeRecord(event, factor, benificiary);
-				this.save(record);
+			IncomeRecord record = createIncomeRecord(event, factor);
+			if(null != record)
+				save(record);
+		}
+	}
+
+	private IncomeRecord createIncomeRecord(IncomeEvent event, IncomeFactor factor) {
+		Distributer subject =null;
+		if(event.getSubject() instanceof Distributer)
+			subject = (Distributer) event.getSubject();
+		else if(event.getSubject() instanceof CustomerYzw){
+			CustomerYzw customer = (CustomerYzw) event.getSubject();
+			try {
+				subject = distributerService.findbyCustomer(customer);
+			} catch (DataNotFoundException e) {
+				logger.error("customer " + customer.getId() +  "未注册");
+				return null;
 			}
 		}
+		
+		Distributer benificiary = subject.getRelatives(factor.getRelation());
+		if(null != benificiary && 0 != factor.getFactor() && 0 != event.getValue()){
+			IncomeRecord record = new IncomeRecord();
+			record.setEventType(event.getType());
+			record.setEventSourceClass(event.getSource().getClass().getSimpleName());
+			record.setEventSourceId(event.getSourceId());
+			record.setIncomeType(factor.getIncomeType());
+			record.setContributor(subject);
+			record.setContributedValue(event.getValue());
+			record.setBenificiary(benificiary);
+			record.setIncomeFactor(factor.getFactor());
+			record.setIncomeValue(factor.getFactor() * event.getValue());
+			record.setCurrentValue(record.getIncomeValue() + benificiary.getIncomeValue(record.getIncomeType()));
+			record.setCon_ben_relation(factor.getRelation());
+			
+			return record;
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -102,13 +131,20 @@ public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integ
 		return YiwuJson.createBySuccess(count);
 	}
 	
-	@EventListener(classes={LessonAppointmentYzw.class})
+	@TransactionalEventListener(classes={LessonAppointmentYzw.class})
 	public void handleLessonAppointment(LessonAppointmentYzw appointment){
-		IncomeEvent event;
-		if(AppointStatus.APPONTED == appointment.getStatus())
-			event = new AppointmentEvent(appointment.getDistributer(),  appointment.getLesson());
-		else
-			event = new UnAppointmentEvent(appointment.getDistributer(),  appointment.getLesson());
-//		this.save(event);
+		LessonAppointmentEvent event  = new LessonAppointmentEvent(appointment);
+		produceIncomes(event);
+	}
+	
+	@EventListener(classes={LessonCheckInYzw.class})
+	public void handlerLessonCheckIn(LessonCheckInYzw checkIn){
+		IncomeEvent event  = new LessonCheckInEvent(checkIn);
+		produceIncomes(event);
+	}
+	
+	@EventListener(classes={WithdrawEvent.class})
+	public void handleWithdrawBrokerage(WithdrawEvent event){
+		produceIncomes(event);
 	}
 }
