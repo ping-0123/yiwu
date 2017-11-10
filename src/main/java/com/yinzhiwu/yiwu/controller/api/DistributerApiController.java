@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.yinzhiwu.yiwu.context.Constants;
 import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
@@ -29,15 +28,14 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.PaymentMode;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.DistributerModifyModel;
-import com.yinzhiwu.yiwu.model.DistributerRegisterModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
 import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView.DistributerApiViewConverter;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
-import com.yinzhiwu.yiwu.model.view.TopThreeApiView;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.FileService;
@@ -52,10 +50,8 @@ import io.swagger.annotations.ApiParam;
 @Api(value = "distributer")
 public class DistributerApiController extends BaseController {
 
-	@Autowired
-	private DistributerService distributerService;
-	@Autowired
-	private CapitalAccountService capitalAccountService;
+	@Autowired private DistributerService distributerService;
+	@Autowired private CapitalAccountService capitalAccountService;
 	@Qualifier("fileServiceImpl")
 	@Autowired private FileService fileService;
 	@Autowired private OrderYzwService orderService;
@@ -65,42 +61,7 @@ public class DistributerApiController extends BaseController {
 		dataBinder.setDisallowedFields("birthDay");
 	}
 
-	@RequestMapping(value="/register.do", method={RequestMethod.POST})
-	@ApiOperation("注册新用户")
-	public YiwuJson<DistributerRegisterModel> register(@Valid DistributerRegisterModel m, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return new YiwuJson<>(getErrorsMessage(bindingResult));
-		} 
-		try {
-			return distributerService.register(m);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(e.getMessage(),e);
-			return new YiwuJson<>(e.getMessage());
-		}
-	}
-	
-	
-	@RequestMapping(value = "/loginByWechat", method={RequestMethod.GET,RequestMethod.POST})
-	@ApiOperation(value ="使用微信openId登录")
-	public YiwuJson<?> loginByWechat(@RequestParam String wechatNo, HttpSession session) {
-		Distributer distributer = distributerService.findByWechatNo(wechatNo);
-		if(distributer == null)
-			return YiwuJson.createByErrorMessage("您尚未注册");
-		session.setAttribute(Constants.CURRENT_USER, distributer);
-		
-		DistributerApiView view = new DistributerApiView(distributer);
-		view.setHeadIconUrl(fileService.getFileUrl(distributer.getHeadIconName()));
-		view.setBeatRate(distributerService.getExpWinRate(distributer));
-		session.setAttribute(Constants.CURRENT_DISTRIBUTER_VIWE, view);
-		
-		 return YiwuJson.createBySuccess(view);
-	}
 
-	@PostMapping(value = "/loginByAccount")
-	public YiwuJson<DistributerApiView> loginByAccount(String account, String password) {
-		return distributerService.loginByAccount(account, password);
-	}
 
 	@GetMapping(value="/information")
 	@ApiOperation("获取个人信息")
@@ -111,8 +72,9 @@ public class DistributerApiController extends BaseController {
 	}
 	
 	@GetMapping(value = "/{id}")
-	public YiwuJson<DistributerApiView> doGet(@PathVariable int id, HttpSession session) {
-		return distributerService.findById(id);
+	public YiwuJson<DistributerApiView> doGet(@PathVariable int id, HttpSession session) throws DataNotFoundException {
+		Distributer distributer =  distributerService.get(id);
+		return YiwuJson.createBySuccess( DistributerApiViewConverter.instance.fromPO(distributer));
 	}
 
 	@GetMapping(value="/myClosedCourses")
@@ -224,13 +186,6 @@ public class DistributerApiController extends BaseController {
 	}
 
 
-	@GetMapping(value = "validatyPhoneNo")
-	public YiwuJson<Boolean> validatyIsRegister(String phoneNo) {
-		if (!phoneNo.matches("^1\\d{10}$"))
-			return new YiwuJson<>("请输入合法的11位数手机号码");
-		return distributerService.judgePhoneNoIsRegistered(phoneNo);
-	}
-
 	@GetMapping(value = "/editform")
 	public ModelAndView getModifyForm(Model model) {
 		DistributerModifyModel distributer = new DistributerModifyModel();
@@ -250,11 +205,6 @@ public class DistributerApiController extends BaseController {
 
 	}
 
-	@GetMapping("/getTopThree")
-	@ApiOperation(value = "获取收入前三名的分销者")
-	public YiwuJson<List<TopThreeApiView>> getTopThree() {
-		return new YiwuJson<>(distributerService.getBrokerageTopThree());
-	}
 	
 	@GetMapping("/{distributerId}/defaultStore")
 	@ApiOperation(value="返回客户默认的上课门店")

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 /**
 *@Author ping
@@ -18,14 +19,19 @@ public class CustomerYzwDaoTest extends BaseSpringTest {
 	
 	@Test
 	public void testMatchCustomer(){
-		System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
-		System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
-		System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
-		System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
-		System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
-		System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
-		System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
-		System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
-		System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
+		try {
+			System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
+			System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
+			System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
+			System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
+			System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
+			System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
+			System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
+			System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
+			System.err.println("matched customer is " + customerDao.findByPhoneNo("13396557928").getMemberCard());
+		} catch (DataNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

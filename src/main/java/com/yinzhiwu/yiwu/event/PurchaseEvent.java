@@ -12,9 +12,9 @@ import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 */
 
 @SuppressWarnings("serial")
-public class PuchaseEvent extends ApplicationEvent implements IncomeEvent {
+public class PurchaseEvent extends ApplicationEvent implements IncomeEvent {
 
-	public PuchaseEvent(OrderYzw order) {
+	public PurchaseEvent(OrderYzw order) {
 		super(order);
 	}
 

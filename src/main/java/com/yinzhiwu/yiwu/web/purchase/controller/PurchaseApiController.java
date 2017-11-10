@@ -31,7 +31,6 @@ import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 import com.yinzhiwu.yiwu.service.ProductYzwService;
 import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
-import com.yinzhiwu.yiwu.web.purchase.dto.EmpDistributerDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderSaveDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.ProductDto;
@@ -62,16 +61,6 @@ public class PurchaseApiController  extends BaseController{
 		return new YiwuJson<>(orderSerivice.findPageByCustomer(customerId, isPayed, pageNo, pageSize));
 	}
 	
-	@PostMapping(value="/login")
-	@ApiOperation(value="内部员工使用微信登录登录")
-	public YiwuJson<EmpDistributerDto>  employeeLoginByWechat(String wechatNo){
-		try {
-			EmpDistributerDto view = distributerService.employeeLoginByWechat(wechatNo);
-			return new YiwuJson<>(view);
-		} catch (YiwuException e) {
-			return new YiwuJson<>(e.getMessage());
-		}
-	}
 	
 	/**
 	 * 可见性说明:ditributer有三个归属属性：

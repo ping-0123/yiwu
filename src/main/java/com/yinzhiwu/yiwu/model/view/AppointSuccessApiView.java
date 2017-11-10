@@ -5,10 +5,6 @@ import java.sql.Time;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.entity.income.AbstractAppointmentEvent;
-import com.yinzhiwu.yiwu.entity.yzw.Contract;
-import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
-import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.enums.SubCourseType;
 
 public class AppointSuccessApiView {
@@ -39,36 +35,6 @@ public class AppointSuccessApiView {
 	private Integer validityTimes;
 	private Integer remainTimes;
 	private Integer withHoldTimes;
-
-	public AppointSuccessApiView(AbstractAppointmentEvent event, Contract contract, float exp) {
-		if (event != null && contract != null) {
-			this.times = (int) event.getParam().floatValue();
-			this.exp = exp;
-			LessonYzw lesson = event.getLesson();
-			if (lesson != null) {
-				DepartmentYzw store = lesson.getStore();
-				if (store != null) {
-					this.city = store.getOfficialAddress().getCity();
-					this.storeName = store.getName();
-				}
-				this.lessonName = lesson.getName();
-				if (lesson.getCourse() != null)
-					this.danceName = lesson.getCourse().getDanceDesc();
-				this.subCourseType = lesson.getSubCourseType();
-				this.coachName = lesson.getDueTeacherName();
-				this.lessonDate = lesson.getLessonDate();
-				this.startTime = lesson.getStartTime();
-				this.endTime = lesson.getEndTime();
-				this.contractNo = contract.getContractNo();
-				this.contractStartDate = contract.getStart();
-				this.contractEndDate = contract.getEnd();
-				this.remainDays = (int) ((this.contractEndDate.getTime() - System.currentTimeMillis())
-						/ (24 * 1000 * 3600));
-				this.validityTimes = contract.getValidityTimes();
-				this.remainTimes =  contract.getRemainTimes().intValue();
-			}
-		}
-	}
 
 	public AppointSuccessApiView() {
 		super();

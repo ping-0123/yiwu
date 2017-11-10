@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.ProductTypeDao;
-import com.yinzhiwu.yiwu.entity.type.ProductType;
+import com.yinzhiwu.yiwu.entity.ProductType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.ProductTypeService;
 

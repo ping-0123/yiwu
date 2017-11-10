@@ -138,8 +138,15 @@ public class LessonAppointmentYzwServiceImpl extends BaseServiceImpl<LessonAppoi
 			{
 				if(interactive.getAppointed() && !interactive.getCheckedIn())
 				{
-					LessonAppointmentYzw appointment = lessonAppointmentDao.findAppointedOne(
-							interactive.getDistributer().getId(), lesson.getId());
+					LessonAppointmentYzw appointment;
+					try {
+						appointment = lessonAppointmentDao.findAppointedOne(
+								interactive.getDistributer().getId(), lesson.getId());
+					} catch (DataNotFoundException e) {
+						logger.error("不符合预约刷卡的业务逻辑，检查哪里出现了问题",e);
+						continue;
+					}
+					
 					appointment.setStatus(AppointStatus.BREAKED);
 					
 					update(appointment);

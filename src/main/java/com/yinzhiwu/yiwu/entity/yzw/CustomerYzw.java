@@ -154,6 +154,11 @@ public class CustomerYzw extends BaseYzwEntity {
 			this.earnest=0f;
 		if(this.credit == null)
 			this.credit=0;
+		if(null == isMember)
+			isMember = MemberStatus.MEMBER;
+		if(null == sourceOfCustomer)
+			sourceOfCustomer = "微信";
+		
 	}
 	
 	public Integer getId() {

@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.controller.api;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,15 +8,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yinzhiwu.yiwu.context.Constants;
-import com.yinzhiwu.yiwu.context.JJWTConfig;
+import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.JSMSException;
+import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
+import com.yinzhiwu.yiwu.model.view.CustomerVO;
+import com.yinzhiwu.yiwu.model.view.CustomerVO.CustomerVOConverter;
+import com.yinzhiwu.yiwu.service.CustomerYzwService;
 import com.yinzhiwu.yiwu.service.DistributerService;
+import com.yinzhiwu.yiwu.service.JJWTService;
+import com.yinzhiwu.yiwu.service.JSMSService;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 /**
@@ -30,12 +36,16 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping(value="/api")
 @RestController
 @Api("微信端客户登录模块")
-public class AccountApiController {
+public class AccountApiController extends BaseController {
 	
 	@Autowired private DistributerService distributerService;
+	@Autowired private JSMSService jsmsService;
+	@Autowired private JJWTService jjwtService;
+	@Autowired private CustomerYzwService customerService;
 	
 	@SuppressWarnings("rawtypes")
 	@PostMapping(value="/login")
+	@ApiOperation("用户微信登录")
 	public YiwuJson login(
 			@ApiParam(name="openId", value="微信openId", required=true) String openId){
 		
@@ -43,25 +53,76 @@ public class AccountApiController {
 			return YiwuJson.createByErrorMessage("请传入openId");
 		}
 		
-		Distributer distributer = distributerService.findByWechatNo(openId);
-		if(distributer==null){
+		Distributer distributer;
+		try {
+			distributer = distributerService.findByWechatNo(openId);
+		} catch (DataNotFoundException e) {
 			return YiwuJson.createByErrorMessage("用户尚未注册");
 		}
 		
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.SECOND, (int) JJWTConfig.LIFE_CYCLE_IN_SECONDS);
-		String token = Jwts.builder().setExpiration(calendar.getTime())
-			.setSubject(distributer.getName())
-			.claim(Constants.CURRENT_DISTRIBUTER_ID, distributer.getId())
-			.signWith(SignatureAlgorithm.HS256,JJWTConfig.SECRET_KEY)
-			.compact();
 		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("token", token);
+		map.put("token", jjwtService.createDistributerIdToken(distributer));
 		return YiwuJson.createBySuccess(map);
 	}
 	
+	
 	@PostMapping(value="/register")
-	 public YiwuJson<?> register(){
-		 return null;
+	@ApiOperation("用户注册")
+	 public YiwuJson<?> register(
+			 String mobileNumber, String openId, String memberCard, String invitationCode,String code) throws JSMSException, YiwuException{
+		
+		if(!jsmsService.validateRegisterSMSCode(mobileNumber, code))
+			throw new JSMSException("短信验证码不正确");
+		if(!mobileNumber.matches("^1\\d{10}$"))
+			throw new YiwuException("手机号码不合法");
+		if(!distributerService.validateMobileNumberBeforeRegister(mobileNumber)){
+			throw new YiwuException("该手机号码已注册");
+		}
+		if(!distributerService.validateOpenIdBeforeRegister(openId)){
+			throw new YiwuException("该微信号已注册");
+		}
+		
+		Distributer distributer = distributerService.doRegister(mobileNumber, openId, memberCard, invitationCode);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("token", jjwtService.createDistributerIdToken(distributer));
+		return YiwuJson.createBySuccess(map);
 	 }
+	
+	@PostMapping(value="/register/validate/MobileNumber")
+	@ApiOperation("注册前验证手机号码")
+	public YiwuJson<?> validateMobileNumber(String mobileNumber)
+	{
+		if (!mobileNumber.matches("^1\\d{10}$"))
+			return YiwuJson.createByErrorMessage("请输入合法的11位数手机号码");
+		
+		try {
+			distributerService.findByPhoneNo(mobileNumber);
+			return YiwuJson.createByErrorMessage("该号码已注册");
+		} catch (DataNotFoundException e) {
+			return YiwuJson.createBySuccessMessage("该号码未注册");
+		}
+	}
+	
+	@PostMapping(value="/register/validate/openId")
+	@ApiOperation("注册前验证微信号")
+	public YiwuJson<?> valiateOpenId(String openId){
+		try {
+			distributerService.findByWechatNo(openId);
+			return YiwuJson.createByErrorMessage("该微信号已注册");
+		} catch (DataNotFoundException e) {
+			return YiwuJson.createBySuccess();
+		}
+	}
+	
+	@PostMapping(value="/register/validate/memberCard")
+	@ApiOperation("注册前验证会员卡号")
+	public YiwuJson<CustomerVO> validateMemberCard(String memberCard){
+		try {
+			CustomerYzw customer =  customerService.findByMemberCard(memberCard);
+			return YiwuJson.createBySuccess(CustomerVOConverter.INSTANCE.fromPO(customer));
+		} catch (DataNotFoundException e) {
+			return YiwuJson.createByErrorMessage("会员卡号无效");
+		}
+	}
 }

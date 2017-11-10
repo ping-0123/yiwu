@@ -135,17 +135,17 @@ public class Distributer extends BaseEntity {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date registedTime;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "followedByStore_id", foreignKey = @ForeignKey(name = "fk_distributer_followedByStore_id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw followedByStore;
 
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="server_id", 
 		foreignKey=@ForeignKey(name="fk_distributer_server_id" , value=ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw server;
 	
 	// unique
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributer_defaultCapitalAccount_id"))
 	private CapitalAccount defaultCapitalAccount;
 
@@ -159,7 +159,7 @@ public class Distributer extends BaseEntity {
 	/**
 	 * 如果是内部员工  与 employee关联
 	 */
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributer_employee_id", value = ConstraintMode.NO_CONSTRAINT))
 	private EmployeeYzw employee;
 

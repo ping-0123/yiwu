@@ -10,14 +10,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.yinzhiwu.yiwu.context.JpushConfig;
 import com.yinzhiwu.yiwu.entity.WithdrawBrokerage;
-import com.yinzhiwu.yiwu.entity.income.WithdrawEvent;
 import com.yinzhiwu.yiwu.event.PayWithdrawEvent;
+import com.yinzhiwu.yiwu.event.WithdrawEvent;
 import com.yinzhiwu.yiwu.exception.JSMSException;
 
 import cn.jiguang.common.resp.APIConnectionException;
@@ -208,7 +208,7 @@ public class JSMSService {
 	}
 	
 	@Async
-	@EventListener(classes={PayWithdrawEvent.class})
+	@TransactionalEventListener(classes={PayWithdrawEvent.class})
 	public void handlePayWithdrawEvent(PayWithdrawEvent event){
 		WithdrawBrokerage withdraw = (WithdrawBrokerage) event.getSource();
 		try {
@@ -219,10 +219,11 @@ public class JSMSService {
 	}
 	
 	@Async
-	@EventListener(classes={WithdrawEvent.class})
+	@TransactionalEventListener(classes={WithdrawEvent.class})
 	public void handleWithdrawEvent(WithdrawEvent event){
+		WithdrawBrokerage withdraw = (WithdrawBrokerage) event.getSource();
 		try {
-			sendDoWithdrawMessage(event.getDistributer().getPhoneNo(), event.getOccurTime(),event.getParam());
+			sendDoWithdrawMessage(withdraw.getDistributer().getPhoneNo(), withdraw.getCreateTime(),withdraw.getAmount());
 		} catch (JSMSException e) {
 			LOG.error("发送提现消息失败", e);
 		}

@@ -38,12 +38,9 @@ import io.swagger.annotations.ApiParam;
 public class OrderApiController {
 
 
-	@Autowired
-	private OrderYzwService orderYzwService;
-	@Autowired
-	private DistributerService distributerService;
-	@Autowired
-	private LessonCheckinService checkInsService;
+	@Autowired private OrderYzwService orderYzwService;
+	@Autowired private DistributerService distributerService;
+	@Autowired private LessonCheckinService checkInsService;
 
 	@RequestMapping(value = "/getDailyOrders", method = { RequestMethod.GET })
 	public ReturnedJson getDailyOrdersByStore(@RequestParam int storeId, @RequestParam Date payedDate,

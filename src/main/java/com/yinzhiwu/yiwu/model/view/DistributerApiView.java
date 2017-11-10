@@ -5,20 +5,19 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.Distributer;
-import com.yinzhiwu.yiwu.entity.Distributer.Role;
-import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
-import com.yinzhiwu.yiwu.entity.type.IncomeType;
+import com.yinzhiwu.yiwu.enums.IncomeType;
+import com.yinzhiwu.yiwu.service.DistributerIncomeService;
+import com.yinzhiwu.yiwu.service.FileService;
+import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @SuppressWarnings("serial")
 @MapedClass(Distributer.class)
 public class DistributerApiView  implements Serializable {
-
-	/**
-	 * 
-	 */
 
 	private int id;
 	private String name;
@@ -57,6 +56,7 @@ public class DistributerApiView  implements Serializable {
 	private int empoyeeId;
 	
 	@MapedProperty(ignored=true)
+	@ApiModelProperty("佣金击败率")
 	private float beatRate;
 	
 	public DistributerApiView() {
@@ -64,53 +64,6 @@ public class DistributerApiView  implements Serializable {
 
 	public DistributerApiView(int id) {
 		this.id = id;
-	}
-
-	public DistributerApiView(Distributer d) {
-		this.id = d.getId();
-		this.name = d.getName();
-		this.nickName = d.getNickName();
-		this.phoneNo = d.getPhoneNo();
-		this.memberCard = d.getMemberCard();
-		this.shareCode = d.getShareCode();
-		this.birthday = d.getBirthday();
-		this.registerDate = d.getRegistedTime();
-		this.brokerage = d.getIncomeValue(IncomeType.BROKERAGE);
-		this.funds = d.getIncomeValue(IncomeType.FUNDS);
-		
-		DistributerIncome expIncome =d.getDistributerIncome(IncomeType.EXP);
-		if(expIncome!= null){
-			this.expGradeNo = expIncome.getIncomeGrade().getGradeNo();
-			this.exp = expIncome.getIncome();
-			this.neededExpForUpdate = expIncome.getIncomeGrade().getUpgradeNeededValue() - this.exp;
-		}
-
-		this.customerId = d.getCustomer().getId();
-		if(Role.EMPLOYEE == d.getRole())
-			this.empoyeeId = d.getEmployee().getId();
-	}
-
-	public DistributerApiView(Distributer d, Float rate) {
-		this.id = d.getId();
-		this.name = d.getName();
-		this.nickName = d.getNickName();
-		this.phoneNo = d.getPhoneNo();
-		this.memberCard = d.getMemberCard();
-		this.shareCode = d.getShareCode();
-		this.birthday = d.getBirthday();
-		this.registerDate = d.getRegistedTime();
-		this.beatRate = rate;
-		this.brokerage = d.getIncomeValue(IncomeType.BROKERAGE);
-		this.funds = d.getIncomeValue(IncomeType.FUNDS);
-		
-		DistributerIncome expIncome =d.getDistributerIncome(IncomeType.EXP);
-		if(expIncome!= null){
-			this.expGradeNo = expIncome.getIncomeGrade().getGradeNo();
-			this.exp = expIncome.getIncome();
-			this.neededExpForUpdate = expIncome.getIncomeGrade().getUpgradeNeededValue() - this.exp;
-		}
-
-		this.customerId = d.getCustomer().getId();
 	}
 
 	public float getBeatRate() {
@@ -279,6 +232,23 @@ public class DistributerApiView  implements Serializable {
 
 
 	public final static class DistributerApiViewConverter extends AbstractConverter<Distributer, DistributerApiView>{
-		public final static DistributerApiViewConverter instance = new DistributerApiViewConverter(); 
+		public final static DistributerApiViewConverter instance = new DistributerApiViewConverter();
+
+		private final FileService fileService = SpringUtils.getBean("fileServiceImpl");
+		private final DistributerIncomeService incomeServive= SpringUtils.getBean(DistributerIncomeService.class);
+		@Override
+		public DistributerApiView fromPO(Distributer po) {
+			DistributerApiView vo =  super.fromPO(po);
+			vo.setHeadIconUrl(fileService.generateFileUrl(vo.getHeadIconUrl()));
+			vo.setExp(po.getIncomeValue(IncomeType.EXP));
+			vo.setExpGradeNo(po.getDistributerIncome(IncomeType.EXP).getGrade().getId());
+			vo.setNeededExpForUpdate(po.getDistributerIncome(IncomeType.EXP).getGrade().getUpgradeNeededValue());
+			vo.setFunds(po.getIncomeValue(IncomeType.FUNDS));
+			vo.setBrokerage(po.getIncomeValue(IncomeType.BROKERAGE));
+			vo.setBeatRate(incomeServive.calculateBeatRatio(IncomeType.BROKERAGE, vo.getBrokerage()));
+			return vo;
+		} 
+		
+		
 	}
 }

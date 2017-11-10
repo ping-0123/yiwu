@@ -290,5 +290,11 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		while(setOneLessonOrdinalNo())
 			;
 	}
+
+	@Override
+	public List<LessonYzw> findYesterdyOpenedLessons() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

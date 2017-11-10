@@ -2,7 +2,7 @@ package com.yinzhiwu.yiwu.service;
 
 import java.util.List;
 
-import com.yinzhiwu.yiwu.entity.type.ProductType;
+import com.yinzhiwu.yiwu.entity.ProductType;
 
 public interface ProductTypeService {
 

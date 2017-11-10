@@ -9,6 +9,7 @@ import com.yinzhiwu.yiwu.dao.IncomeGradeDao;
 import com.yinzhiwu.yiwu.entity.Message;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
+import com.yinzhiwu.yiwu.enums.IncomeType;
 import com.yinzhiwu.yiwu.service.DistributerIncomeService;
 import com.yinzhiwu.yiwu.service.MessageService;
 import com.yinzhiwu.yiwu.util.MessageTemplate;
@@ -20,6 +21,7 @@ public class DistributerIncomeServiceImpl extends BaseServiceImpl<DistributerInc
 	@Autowired private MessageService messageService;
 
 	@Autowired private IncomeGradeDao incomeGradeDao;
+	@Autowired private DistributerIncomeDao incomeDao;
 
 	@Autowired
 	public void setBaseDao(DistributerIncomeDao distributerIncomeDao) {
@@ -57,6 +59,12 @@ public class DistributerIncomeServiceImpl extends BaseServiceImpl<DistributerInc
 		
 		//保存
 		saveOrUpdate(income);
+	}
+
+
+	@Override
+	public float calculateBeatRatio(IncomeType type, float value) {
+		return incomeDao.calculateBeatRatio(type, value);
 	}
 
 }

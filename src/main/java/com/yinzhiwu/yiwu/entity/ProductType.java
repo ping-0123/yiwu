@@ -1,4 +1,4 @@
-package com.yinzhiwu.yiwu.entity.type;
+package com.yinzhiwu.yiwu.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

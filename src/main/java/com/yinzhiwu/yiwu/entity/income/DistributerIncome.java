@@ -38,7 +38,7 @@ public class DistributerIncome extends BaseEntity {
 	@JoinColumn(name="incomeGrade_id",foreignKey = @ForeignKey(name = "fk_dIncome_incomeGrade_id"))
 	private IncomeGrade grade;
 
-	@Column(name="accumulativeValue")
+	@Column(name="accumulativeIncome")
 	private Float accumulativeValue;
 
 	public DistributerIncome(Distributer benificiary, IncomeType type, IncomeGrade grade) {

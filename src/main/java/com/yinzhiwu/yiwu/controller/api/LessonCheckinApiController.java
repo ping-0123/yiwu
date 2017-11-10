@@ -55,6 +55,7 @@ public class LessonCheckinApiController extends BaseController{
 				LessonCheckInSuccessApiViewConverter.INSTANCE.fromPO(checkIn));
 	}
 	
+	
 	@GetMapping("lessons/count")
 	@ApiOperation(value="获取用户已上课总节数")
 	public YiwuJson<Integer> getCountOfCheckedInLessons(){
@@ -62,6 +63,7 @@ public class LessonCheckinApiController extends BaseController{
 		Integer count = lessonCheckInService.findCountByCustomerId(distributer.getCustomer().getId());
 		return YiwuJson.createBySuccess(count);
 	}
+	
 	
 	@GetMapping("/lessons")
 	@ApiOperation(value="获取已上课列表")

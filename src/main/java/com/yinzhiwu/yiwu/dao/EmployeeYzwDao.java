@@ -16,4 +16,5 @@ public interface EmployeeYzwDao extends IBaseDao<EmployeeYzw, Integer> {
 
 	EmployeeYzw findByUsername(String username);
 
+
 }

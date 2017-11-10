@@ -49,4 +49,5 @@ public class EmployeeYzwDaoImpl extends BaseDaoImpl<EmployeeYzw,Integer> impleme
 		return emps.get(0);
 	}
 
+
 }

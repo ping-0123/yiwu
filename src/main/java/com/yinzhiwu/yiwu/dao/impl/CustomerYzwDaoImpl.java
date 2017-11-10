@@ -10,6 +10,7 @@ import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 @Repository
 public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implements CustomerYzwDao {
@@ -21,8 +22,10 @@ public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implem
 	}
 
 	@Override
-	public CustomerYzw findByPhoneNo(String phoneNo) {
+	public CustomerYzw findByPhoneNo(String phoneNo) throws DataNotFoundException {
 		List<CustomerYzw> customers =  findByProperty("mobilePhone", phoneNo);
+		if(customers.size() == 0)
+			throw new DataNotFoundException(CustomerYzw.class, "mobiePhone", phoneNo);
 		return choseValidOne(customers);
 	}
 
@@ -86,5 +89,17 @@ public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implem
 		
 		return count> 0;
 
+	}
+
+	@Override
+	public CustomerYzw getByMemberCard(String memberCard) throws DataNotFoundException {
+		return findOneByProperty(
+				"memberCard", memberCard);
+	}
+
+	@Override
+	public CustomerYzw findByMemberCard(String memberCard) throws DataNotFoundException {
+		return findOneByProperty(
+				"memberCard", memberCard);
 	}
 }

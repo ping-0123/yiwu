@@ -51,8 +51,7 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 	@Autowired
 	private OrderYzwDao orderDao;
 
-	@Autowired
-	private DistributerDao distributerDao;
+	@Autowired private DistributerDao distributerDao;
 	@Autowired private EmployeeYzwDao employeeDao;
 	@Autowired private ElectricContractYzwService econtractService;
 	@Autowired private ProductYzwDao productDao;
@@ -167,24 +166,6 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 		ElectricContractYzw econtract = new ElectricContractYzw(order);
 		econtractService.save(econtract);
 		//修改客户资料
-		/**
-		 * 
-		 
-		EmployeeYzw salesman = employeeDao.get(order.getCreateUserId());
-		CustomerYzw customer = order.getCustomer();
-		customer.setSalesman(salesman);
-		customerDao.update(customer);
-		*/
-		//修改distributer资料
-		/**
-		 * 
-		Distributer distributer = distributerDao.findByCustomerId(order.getCustomer().getId());
-		if(distributer == null)
-			throw new RuntimeException("该用户尚未注册到E5系统");
-		distributer.setFollowedByStore(order.getStore());
-		distributer.setServer(salesman);
-		distributerDao.update(distributer);
-		 */
 		return order.getId();
 	}
 

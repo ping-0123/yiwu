@@ -37,4 +37,6 @@ public interface LessonYzwService extends IBaseService<LessonYzw, Integer> {
 	public  void setConnatationUrls(LessonConnotation con);
 
 	LessonYzw findByCourseIdAndOrdinalNo(String id, Integer ordinalNo) throws DataNotFoundException;
+
+	List<LessonYzw> findYesterdyOpenedLessons();
 }

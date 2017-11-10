@@ -27,6 +27,7 @@ public class WithdrawBrokerageServiceImpl extends BaseServiceImpl<WithdrawBroker
 
 	/**
 	 * listened by {@link IncomeEventServiceImpl#handleWithdrawBrokerage(WithdrawEvent)}
+	 * and {@link JSMSService#handleWithdrawEvent(WithdrawEvent)}
 	 */
 	@Override
 	public WithdrawBrokerage doWithdraw(WithdrawBrokerage withdraw) {
