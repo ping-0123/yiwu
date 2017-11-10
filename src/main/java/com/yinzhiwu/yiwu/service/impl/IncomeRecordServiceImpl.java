@@ -11,12 +11,14 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.util.Assert;
 
+import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.dao.IncomeFactorDao;
 import com.yinzhiwu.yiwu.dao.IncomeRecordDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.PayDeposit;
 import com.yinzhiwu.yiwu.entity.ShareTweet;
+import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.income.IncomeFactor;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
@@ -30,6 +32,7 @@ import com.yinzhiwu.yiwu.event.PurchaseEvent;
 import com.yinzhiwu.yiwu.event.RegisterEvent;
 import com.yinzhiwu.yiwu.event.ShareTweetEvent;
 import com.yinzhiwu.yiwu.event.WithdrawEvent;
+import com.yinzhiwu.yiwu.event.YieldInterestEvent;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.IncomeRecordApiView;
@@ -44,6 +47,7 @@ public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integ
 	@Autowired private IncomeRecordDao incomeRecordDao;
 	@Autowired private IncomeFactorDao incomeFactorDao;
 	@Autowired private OrderYzwDao orderDao;
+	@Autowired private DistributerIncomeDao incomedao;
 	
 	@Autowired private DistributerIncomeService distributerIncomeService;
 	@Autowired private DistributerService distributerService;
@@ -177,12 +181,23 @@ public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integ
 	}
 	
 	@Transactional
-	@Scheduled(cron="0 0 4 * * ? *") //每日4点
+	@Scheduled(cron="0 0 4 * * ?") //每日4点
 	public void scheduleHandlePurchases(){
 		logger.info("start execute handle purchase event ");
 		List<OrderYzw> orders = orderDao.findAllLastDayOrders();
 		for (OrderYzw order : orders) {
 			PurchaseEvent event = new PurchaseEvent(order);
+			produceIncomes(event);
+		}
+	}
+	
+	@Transactional
+	@Scheduled(cron="0 0 3 * * ?")  //每日3点
+	public void scheduleYieldInterest(){
+		logger.info("start yield interest");
+		List<DistributerIncome> incomes = incomedao.findBrokerageIncomes();
+		for (DistributerIncome income : incomes) {
+			YieldInterestEvent event = new YieldInterestEvent(income);
 			produceIncomes(event);
 		}
 	}

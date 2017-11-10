@@ -49,4 +49,10 @@ public class DistributerIncomeDaoImpl extends BaseDaoImpl<DistributerIncome, Int
 	}
 
 
+	@Override
+	public List<DistributerIncome> findBrokerageIncomes() {
+		return findByProperty("type",IncomeType.BROKERAGE);
+	}
+
+
 }
