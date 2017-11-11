@@ -33,7 +33,7 @@ public class EmployeeYzwDaoImpl extends BaseDaoImpl<EmployeeYzw,Integer> impleme
 	@Override
 	public EmployeeYzw findByTel(String phoneNo) {
 		List<EmployeeYzw> emps =findByProperties(
-				new String[]{"tel", "removed"}, 
+				new String[]{"telephone", "removed"}, 
 				new Object[]{phoneNo, false});
 		if(emps==null || emps.size() ==0)
 			return null;

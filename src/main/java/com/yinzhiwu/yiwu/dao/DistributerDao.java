@@ -14,7 +14,7 @@ public interface DistributerDao extends IBaseDao<Distributer, Integer> {
 
 	public Distributer findByPhoneNo(String phoneNo) throws DataNotFoundException;
 
-	public Distributer findByMemberId(String memeberId) throws DataNotFoundException;
+	public Distributer findByMemberCard(String memberCard) throws DataNotFoundException;
 
 	public float getBeatRate(float exp);
 

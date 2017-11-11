@@ -48,7 +48,7 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "yiwu_distributer", uniqueConstraints = {
-		@UniqueConstraint(name = "uk_distributer_memberId", columnNames = { "memberCard" }),
+		@UniqueConstraint(name = "uk_distributer_memberCard", columnNames = { "memberCard" }),
 		@UniqueConstraint(name = "uk_distributer_account", columnNames = { "username" }),
 		@UniqueConstraint(name = "uk_distributer_wechatNo", columnNames = "wechatNO"),
 		@UniqueConstraint(name = "uk_distributer_phoneNo", columnNames = "phoneNo"),

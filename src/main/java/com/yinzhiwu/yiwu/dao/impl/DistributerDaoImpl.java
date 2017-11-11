@@ -77,12 +77,8 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 	}
 
 	@Override
-	public Distributer findByMemberId(String memeberId) throws DataNotFoundException {
-		List<Distributer> distributers = findByProperty("memeberId", memeberId);
-		if (distributers.size() > 0)
-			return distributers.get(0);
-		else
-			throw new DataNotFoundException(this.getClass(), "memeberId", memeberId);
+	public Distributer findByMemberCard(String memberCard) throws DataNotFoundException {
+		return findOneByProperty("memberCard", memberCard);
 	}
 
 	@SuppressWarnings("unchecked")

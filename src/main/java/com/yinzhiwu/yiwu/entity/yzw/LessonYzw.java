@@ -71,7 +71,9 @@ public class LessonYzw extends BaseYzwEntity {
 	private String storeName;
 
 	@Column
-	private Float lessonTime;
+	private Float hours;  //一节课多少小时
+	
+	private Integer minutes;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "yindaoTeacherId", foreignKey = @ForeignKey(name = "fk_lesson_dueTeacher_id", value = ConstraintMode.NO_CONSTRAINT))
@@ -106,26 +108,21 @@ public class LessonYzw extends BaseYzwEntity {
 	@Convert(converter=SubCourseTypeConverter.class)
 	private SubCourseType subCourseType;
 
-	@Column(name = "flag_delete")
-	private Integer isDelete;
+	private Boolean removed;
 
 	@Column(name = "start_date_time")
 	private Date startDateTime;
 
-	@Column(name = "lessonTime_minutes")
-	private Integer lessonMinutes;
+	private String appointedContracts;
 
-	@Column(name = "appointed_huijiheyue")
-	private String appointedContract;
-
-	@Column(name = "yindaoRenshu")
 	private Integer dueStudentCount;
 
-	@Column(name = "tiyanRenshu")
 	private Integer experienceStudentCount;
 
-	@Column(name = "dianmingRenshu")
-	private Integer rollCalledStudentCount;
+	private Integer rollCalledStudentCountByCoach;
+	
+	@Column
+	private Integer rollCalledStudentCountByStoreman;
 
 	@Column(name = "shidaoRenshu")
 	private Integer actualStudentCount;
@@ -195,10 +192,6 @@ public class LessonYzw extends BaseYzwEntity {
 		return storeName;
 	}
 
-	public Float getLessonTime() {
-		return lessonTime;
-	}
-
 	public EmployeeYzw getDueTeacher() {
 		return dueTeacher;
 	}
@@ -231,20 +224,8 @@ public class LessonYzw extends BaseYzwEntity {
 		return subCourseType;
 	}
 
-	public Integer getIsDelete() {
-		return isDelete;
-	}
-
 	public Date getStartDateTime() {
 		return startDateTime;
-	}
-
-	public Integer getLessonMinutes() {
-		return lessonMinutes;
-	}
-
-	public String getAppointedContract() {
-		return appointedContract;
 	}
 
 	public Integer getDueStudentCount() {
@@ -253,10 +234,6 @@ public class LessonYzw extends BaseYzwEntity {
 
 	public Integer getExperienceStudentCount() {
 		return experienceStudentCount;
-	}
-
-	public Integer getRollCalledStudentCount() {
-		return rollCalledStudentCount;
 	}
 
 	public Integer getActualStudentCount() {
@@ -303,10 +280,6 @@ public class LessonYzw extends BaseYzwEntity {
 		this.storeName = storeName;
 	}
 
-	public void setLessonTime(Float lessonTime) {
-		this.lessonTime = lessonTime;
-	}
-
 	public void setDueTeacher(EmployeeYzw dueTeacher) {
 		this.dueTeacher = dueTeacher;
 	}
@@ -339,20 +312,8 @@ public class LessonYzw extends BaseYzwEntity {
 		this.subCourseType = subCourseType;
 	}
 
-	public void setIsDelete(Integer isDelete) {
-		this.isDelete = isDelete;
-	}
-
 	public void setStartDateTime(Date startDateTime) {
 		this.startDateTime = startDateTime;
-	}
-
-	public void setLessonMinutes(Integer lessonMinutes) {
-		this.lessonMinutes = lessonMinutes;
-	}
-
-	public void setAppointedContract(String appointedContract) {
-		this.appointedContract = appointedContract;
 	}
 
 	public void setDueStudentCount(Integer dueStudentCount) {
@@ -361,10 +322,6 @@ public class LessonYzw extends BaseYzwEntity {
 
 	public void setExperienceStudentCount(Integer experienceStudentCount) {
 		this.experienceStudentCount = experienceStudentCount;
-	}
-
-	public void setRollCalledStudentCount(Integer rollCalledStudentCount) {
-		this.rollCalledStudentCount = rollCalledStudentCount;
 	}
 
 	public void setActualStudentCount(Integer actualStudentCount) {
@@ -405,6 +362,90 @@ public class LessonYzw extends BaseYzwEntity {
 
 	public void setConnotation(LessonConnotation connotation) {
 		this.connotation = connotation;
+	}
+
+	public Integer getOrdinalNo() {
+		return ordinalNo;
+	}
+
+	public void setOrdinalNo(Integer ordinalNo) {
+		this.ordinalNo = ordinalNo;
+	}
+
+	public void setActualTeacher(EmployeeYzw actualTeacher) {
+		this.actualTeacher = actualTeacher;
+	}
+
+	public List<LessonPraise> getPraises() {
+		return praises;
+	}
+
+	public void setPraises(List<LessonPraise> praises) {
+		this.praises = praises;
+	}
+
+	public List<LessonComment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<LessonComment> comments) {
+		this.comments = comments;
+	}
+
+	public List<LessonInteractive> getInteractives() {
+		return interactives;
+	}
+
+	public void setInteractives(List<LessonInteractive> interactives) {
+		this.interactives = interactives;
+	}
+
+	public Boolean getRemoved() {
+		return removed;
+	}
+
+	public void setRemoved(Boolean removed) {
+		this.removed = removed;
+	}
+
+	public Integer getRollCalledStudentCountByCoach() {
+		return rollCalledStudentCountByCoach;
+	}
+
+	public Integer getRollCalledStudentCountByStoreman() {
+		return rollCalledStudentCountByStoreman;
+	}
+
+	public void setRollCalledStudentCountByCoach(Integer rollCalledStudentCountByCoach) {
+		this.rollCalledStudentCountByCoach = rollCalledStudentCountByCoach;
+	}
+
+	public void setRollCalledStudentCountByStoreman(Integer rollCalledStudentCountByStoreman) {
+		this.rollCalledStudentCountByStoreman = rollCalledStudentCountByStoreman;
+	}
+
+	public Float getHours() {
+		return hours;
+	}
+
+	public Integer getMinutes() {
+		return minutes;
+	}
+
+	public String getAppointedContracts() {
+		return appointedContracts;
+	}
+
+	public void setHours(Float hours) {
+		this.hours = hours;
+	}
+
+	public void setMinutes(Integer minutes) {
+		this.minutes = minutes;
+	}
+
+	public void setAppointedContracts(String appointedContracts) {
+		this.appointedContracts = appointedContracts;
 	}
 
 	
@@ -456,42 +497,4 @@ public class LessonYzw extends BaseYzwEntity {
 		}
 		
 	}
-
-	public Integer getOrdinalNo() {
-		return ordinalNo;
-	}
-
-	public void setOrdinalNo(Integer ordinalNo) {
-		this.ordinalNo = ordinalNo;
-	}
-
-	public void setActualTeacher(EmployeeYzw actualTeacher) {
-		this.actualTeacher = actualTeacher;
-	}
-
-	public List<LessonPraise> getPraises() {
-		return praises;
-	}
-
-	public void setPraises(List<LessonPraise> praises) {
-		this.praises = praises;
-	}
-
-	public List<LessonComment> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<LessonComment> comments) {
-		this.comments = comments;
-	}
-
-	public List<LessonInteractive> getInteractives() {
-		return interactives;
-	}
-
-	public void setInteractives(List<LessonInteractive> interactives) {
-		this.interactives = interactives;
-	}
-
-	
 }

@@ -13,7 +13,10 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.SubCourseType;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -22,56 +25,96 @@ import io.swagger.annotations.ApiModelProperty;
 *
 */
 
-public class LessonForWeeklyDto {
+@MapedClass(LessonYzw.class)
+@ApiModel(description="显示在周课表里的课时VO")
+public class LessonForWeeklyVO {
 	
 	
 	public enum CheckedInStatus {
 		UN_KNOWN, UN_CHECKED, CHECKED, PATCHED, NON_CHECKABLE
 	}
+	
 	private Integer id;
 	private String name;
+	
+	@MapedProperty(value="course.dance.name")
 	private String danceName;
+	
+	@MapedProperty(value="course.danceGrade")
 	private String danceGrade;
+	
+	@MapedProperty(value="course.id")
 	private String courseId;
+	
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date lessonDate;
-	private Integer week;
+	
+	@MapedProperty(ignored=true)
+	private Integer weekDay;
 	private Time startTime;
 	private Time endTime;
+	
+	@MapedProperty(value="store.id")
 	private Integer storeId;
+	
+	@MapedProperty(value="store.name")
 	private String storeName;
 	//课程时长
+	@MapedProperty(value="lessonTime")
 	private Float lessonHours;
+	
+	@MapedProperty(value="dueTeacher.id")
 	private Integer dueTeacherId;
+	
+	@MapedProperty(value="dueTeacher.name")
 	private String dueTeacherName;
+	
+	@MapedProperty(value="actualTeacher.id")
 	private Integer actualTeacherId;
+	
+	@MapedProperty(value="actualTeacher.name")
 	private String actualTeacherName;
 	private CourseType courseType;
 	private SubCourseType subCourseType;
 	private LessonStatus lessonStatus;
+	
+	@MapedProperty(ignored=false)
 	@ApiModelProperty(value="预约状态",allowableValues="[APPONTED,UN_APOINTED]")
 	private AppointStatus appointStatus;
+	
+	@MapedProperty(ignored=false)
 	private CheckedInStatus checkedInStatus;
+	
 	@ApiModelProperty(value="可以容纳的最大人数,开放式课程指教室容量, 如果是封闭式课程， 该值为0")
 	private Integer maxStudentCount;		//可容纳人数   封闭课程指班级人数， 开放式课程指教室容量
+	
 	@ApiModelProperty(value="预约人数, 如果是封闭式课程， 该值为0")
 	private Integer appointedStudentCount; //预约人数
+	
+	@MapedProperty(ignored=true)
 	@ApiModelProperty(value="课程班级人数, 如果是开放式课程，该值为0")
 	private Integer attendedStudentCount;	//参加人数, 封闭式课的班级人数 
+	
 	@ApiModelProperty(value="签到人数")
-	private Integer checkedInsStudentCount; //签到人数
+	private Integer checkedInStudentCount; //签到人数
+	
 	@ApiModelProperty(value="店员点名人数")
 	private Integer storeManCallRollCount;  //店员点名人数
+	
 	@ApiModelProperty(value="教师点名人数")
 	private Integer teacherCallRollCount;   //教师点名人数
+	
+	@MapedProperty("ordinalNo")
 	@ApiModelProperty(value="这个课在整套课程中所处的位置")
 	private Integer orderInCourse;
+	
+	@MapedProperty("course.sumLessonTimes")
 	@ApiModelProperty(value="这节课对应的课程所拥有的总课次")
 	private Integer sumTimesOfCourse;
 	
 	
 	
-	public LessonForWeeklyDto(LessonYzw lesson){
+	public LessonForWeeklyVO(LessonYzw lesson){
 		Assert.notNull(lesson,"传入的参数不能为null");
 		
 		this.id = lesson.getId();
@@ -83,14 +126,14 @@ public class LessonForWeeklyDto {
 			this.courseId = course.getId();
 		}
 		this.lessonDate = lesson.getLessonDate();
-		this.week = getWeek(this.lessonDate);
+//		this.week = getWeek(this.lessonDate);
 		this.startTime = lesson.getStartTime();
 		this.endTime = lesson.getEndTime();
 		if(lesson.getStore() != null){
 			this.storeId = lesson.getStore().getId();
 			this.storeName = lesson.getStore().getName();
 		}
-		this.lessonHours = lesson.getLessonTime();
+		this.lessonHours = lesson.getHours();
 		if(lesson.getDueTeacher() != null){
 			this.dueTeacherId = lesson.getDueTeacher().getId();
 			this.dueTeacherName = lesson.getDueTeacher().getName();
@@ -112,14 +155,14 @@ public class LessonForWeeklyDto {
 				&& course != null){
 			this.attendedStudentCount = course.getStudentCount();
 		}
-		 this.checkedInsStudentCount = lesson.getCheckedInStudentCount();
+		 this.checkedInStudentCount = lesson.getCheckedInStudentCount();
 		//TOD storeManCallRollCount
-		 this.teacherCallRollCount = lesson.getRollCalledStudentCount();
+		 this.teacherCallRollCount = lesson.getRollCalledStudentCountByCoach();
 		//TOD  orderInCourse
 		//TOD  sumTimesOfCourse
 		
 	}
-	public LessonForWeeklyDto() {
+	public LessonForWeeklyVO() {
 	}
 	
 	
@@ -145,10 +188,6 @@ public class LessonForWeeklyDto {
 
 	public Date getLessonDate() {
 		return lessonDate;
-	}
-
-	public Integer getWeek() {
-		return week;
 	}
 
 	public Time getStartTime() {
@@ -215,10 +254,6 @@ public class LessonForWeeklyDto {
 		return attendedStudentCount;
 	}
 
-	public Integer getCheckedInsStudentCount() {
-		return checkedInsStudentCount;
-	}
-
 	public Integer getStoreManCallRollCount() {
 		return storeManCallRollCount;
 	}
@@ -257,10 +292,7 @@ public class LessonForWeeklyDto {
 
 	public void setLessonDate(Date lessonDate) {
 		this.lessonDate = lessonDate;
-	}
-
-	public void setWeek(Integer week) {
-		this.week = week;
+		this.weekDay = getWeekDay();
 	}
 
 	public void setStartTime(Time startTime) {
@@ -327,9 +359,6 @@ public class LessonForWeeklyDto {
 		this.attendedStudentCount = attendedStudentCount;
 	}
 
-	public void setCheckedInsStudentCount(Integer checkedInsStudentCount) {
-		this.checkedInsStudentCount = checkedInsStudentCount;
-	}
 
 	public void setStoreManCallRollCount(Integer storeManCallRollCount) {
 		this.storeManCallRollCount = storeManCallRollCount;
@@ -347,19 +376,20 @@ public class LessonForWeeklyDto {
 		this.sumTimesOfCourse = sumTimesOfCourse;
 	}
 
-	
-	private int getWeek(Date date){
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		return calendar.get(Calendar.DAY_OF_WEEK);
-	}
 	public AppointStatus getAppointStatus() {
 		return appointStatus;
 	}
 	public void setAppointStatus(AppointStatus appointStatus) {
 		this.appointStatus = appointStatus;
 	}
-	public LessonForWeeklyDto(Integer id, String name, String danceName, String danceGrade, String courseId,
+	
+	public Integer getWeekDay() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(lessonDate);
+		return calendar.get(Calendar.DAY_OF_WEEK);
+	}
+	
+	public LessonForWeeklyVO(Integer id, String name, String danceName, String danceGrade, String courseId,
 			Date lessonDate, Integer week, Time startTime, Time endTime, Integer storeId, String storeName,
 			Float lessonHours, Integer dueTeacherId, String dueTeacherName, Integer actualTeacherId,
 			String actualTeacherName, CourseType courseType, SubCourseType subCourseType, LessonStatus lessonStatus,
@@ -391,11 +421,18 @@ public class LessonForWeeklyDto {
 		this.maxStudentCount = maxStudentCount;
 		this.appointedStudentCount = appointedStudentCount;
 		this.attendedStudentCount = attendedStudentCount;
-		this.checkedInsStudentCount = checkedInsStudentCount;
+		this.checkedInStudentCount = checkedInsStudentCount;
 		this.storeManCallRollCount = storeManCallRollCount;
 		this.teacherCallRollCount = teacherCallRollCount;
 		this.orderInCourse = orderInCourse;
 		this.sumTimesOfCourse = sumTimesOfCourse;
 	}
+	public Integer getCheckedInStudentCount() {
+		return checkedInStudentCount;
+	}
+	public void setCheckedInStudentCount(Integer checkedInStudentCount) {
+		this.checkedInStudentCount = checkedInStudentCount;
+	}
+
 	
 }

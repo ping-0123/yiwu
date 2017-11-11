@@ -3,6 +3,8 @@ package com.yinzhiwu.yiwu.entity.income;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
@@ -26,6 +28,8 @@ import com.yinzhiwu.yiwu.enums.IncomeType;
 public class IncomeGrade extends BaseEntity {
 
 
+	@Column(length=32)
+	@Enumerated(EnumType.STRING)
 	private IncomeType incomeType;
 
 	@Column(nullable = false) // uk

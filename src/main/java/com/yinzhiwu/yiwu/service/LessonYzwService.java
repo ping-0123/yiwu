@@ -38,5 +38,6 @@ public interface LessonYzwService extends IBaseService<LessonYzw, Integer> {
 
 	LessonYzw findByCourseIdAndOrdinalNo(String id, Integer ordinalNo) throws DataNotFoundException;
 
-	List<LessonYzw> findYesterdyOpenedLessons();
+	List<LessonYzw> findOpenedLessonsOfYesterday();
+
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler;
 
 import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
@@ -56,9 +57,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@Autowired private CapitalAccountDao capitalAccountDao;
 	@Autowired private EmployeeYzwDao employeeDao;
 	@Autowired private EmployeeDepartmentYzwDao empDeptDao;
-	@Qualifier("fileServiceImpl")
-	@Autowired private FileService fileService;
-//	@Autowired private EmployeePostYzwDao empPostDao;
+	@Qualifier("fileServiceImpl") @Autowired private FileService fileService;
 	@Autowired private LessonCheckInYzwDao checkInsDao;
 	@Autowired private OrderYzwDao orderDao;
 	
@@ -133,24 +132,12 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			distributer.setGender(customer.getGender());
 		}else{
 			CustomerYzw customer;
-			try {
-				customer = customerDao.findByPhoneNo(mobileNumber);
-				distributer.setCustomer(customer);
-				distributer.setMemberCard(memberCard);
-				
-				distributer.setServer(customer.getSalesman());
-				distributer.setBirthday(customer.getBirthday());
-				distributer.setName(customer.getName());
-				distributer.setCustomerAgeType(customer.getCustomerAgeType());
-				distributer.setGender(customer.getGender());
-			} catch (DataNotFoundException e) {
-				customer = new CustomerYzw();
-				customer.setSalesman(distributer.getServer());
-				customer.setMobilePhone(mobileNumber);
-				customer.init();
-				
-				distributer.setCustomer(customer);
-			}
+			customer = new CustomerYzw();
+			customer.setSalesman(distributer.getServer());
+			customer.setMobilePhone(mobileNumber);
+			customer.init();
+			
+			distributer.setCustomer(customer);
 		}
 		
 		//保存
@@ -361,6 +348,20 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		} catch (DataNotFoundException e) {
 			return true;
 		}
+	}
+
+	@Override
+	public boolean validateMembercardBeforeRegister(String memberCard) {
+		try {
+			return null == distributerDao.findByMemberCard(memberCard);
+		} catch (DataNotFoundException e) {
+			return true;
+		}
+	}
+
+	@Override
+	public Distributer findByMemberCard(String memberCard) throws DataNotFoundException {
+		return distributerDao.findByMemberCard(memberCard);
 	}
 
 }

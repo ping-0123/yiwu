@@ -57,7 +57,7 @@ public class JsmsApiController extends BaseController{
 	private void validateMobileNumber(String mobileNumber) throws FormatException{
 		if(null == mobileNumber)
 			throw new FormatException("手机号码为空");
-		if(!mobileNumber.trim().matches( "^1\\d{10}$"));
+		if(!mobileNumber.trim().matches( "^1\\d{10}$"))
 			throw new FormatException("手机号码格式不对");
 	}
 }

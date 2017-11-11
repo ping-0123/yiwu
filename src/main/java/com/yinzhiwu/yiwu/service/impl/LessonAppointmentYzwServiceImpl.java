@@ -132,7 +132,7 @@ public class LessonAppointmentYzwServiceImpl extends BaseServiceImpl<LessonAppoi
 	@Transactional
 	@Scheduled(cron="0 0 5 * * ?") //每日5点执行
 	public void handeLastDayBreakAppointments(){
-		List<LessonYzw> lessons = lessonService.findYesterdyOpenedLessons();
+		List<LessonYzw> lessons = lessonService.findOpenedLessonsOfYesterday();
 		for (LessonYzw lesson : lessons) {
 			for(LessonInteractive interactive: lesson.getInteractives())
 			{

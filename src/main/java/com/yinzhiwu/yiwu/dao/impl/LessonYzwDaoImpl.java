@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -201,8 +202,8 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 			lesson.setDueStudentCount(0);
 		if(null==lesson.getExperienceStudentCount())
 			lesson.setExperienceStudentCount(0);
-		if(null==lesson.getRollCalledStudentCount())
-			lesson.setRollCalledStudentCount(0);
+		if(null==lesson.getRollCalledStudentCountByCoach())
+			lesson.setRollCalledStudentCountByCoach(0);
 		if(null==lesson.getActualStudentCount())
 			lesson.setActualStudentCount(0);
 		if(null==lesson.getCheckedInStudentCount())
@@ -314,13 +315,33 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 
 	@Override
 	public LessonYzw findOneNullOrdinalLessons() {
-		String hql = "FROM LessonYzw WHERE ordinalNo is null AND course.id is not null and course.id <> '' ORDER BY lessonDate desc";
+		String hql = "FROM LessonYzw WHERE ordinalNo is null AND course.id is not null and course.id <> ''"
+				+ " ORDER BY lessonDate desc";
 		List<LessonYzw> lessons =  getSession().createQuery(hql, LessonYzw.class)
 					.setMaxResults(1)
 					.getResultList();
 		if(lessons.size()==0)
 			return null;
 		return lessons.get(0);
+	}
+
+	@Override
+	public List<LessonYzw> findOpenedLessonsOfYesterday() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, -1);
+		Date start = CalendarUtil.getDayBegin(calendar).getTime();
+		Date end = CalendarUtil.getDayEnd(calendar).getTime();
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("From LessonYzw");
+		hql.append(" WHERE lessonDate BETWEEN :start AND :end");
+		hql.append(" AND courseType = :opened");
+		
+		return getSession().createQuery(hql.toString(), LessonYzw.class)
+				.setParameter("start", start)
+				.setParameter("end", end)
+				.setParameter("opened", CourseType.OPENED)
+				.getResultList();
 	}
 
 }

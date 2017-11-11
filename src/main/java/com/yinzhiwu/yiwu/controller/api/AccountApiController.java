@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
@@ -69,7 +70,16 @@ public class AccountApiController extends BaseController {
 	@PostMapping(value="/register")
 	@ApiOperation("用户注册")
 	 public YiwuJson<?> register(
-			 String mobileNumber, String openId, String memberCard, String invitationCode,String code) throws JSMSException, YiwuException{
+			 @ApiParam(value="手机号码", required=true) String mobileNumber, 
+			 @ApiParam(value="微信OpenId", required = true) String openId, 
+			 @RequestParam(name="memberCard", required=false)
+			 @ApiParam(name="memeberCard", value="老用户的会员卡号", required=false)
+			 String memberCard,
+			 @RequestParam(name="invitationCode", required=false) 
+			 @ApiParam(value="邀请码", required=false)
+			 String invitationCode,
+			 @ApiParam(value="注册短信验证码", required=true)
+			 String code) throws JSMSException, YiwuException{
 		
 		if(!jsmsService.validateRegisterSMSCode(mobileNumber, code))
 			throw new JSMSException("短信验证码不正确");
@@ -80,6 +90,10 @@ public class AccountApiController extends BaseController {
 		}
 		if(!distributerService.validateOpenIdBeforeRegister(openId)){
 			throw new YiwuException("该微信号已注册");
+		}
+		if(null != memberCard){
+			if(!distributerService.validateMembercardBeforeRegister(memberCard))
+				throw new YiwuException("输入的会员卡号已被注册");
 		}
 		
 		Distributer distributer = distributerService.doRegister(mobileNumber, openId, memberCard, invitationCode);
@@ -118,6 +132,13 @@ public class AccountApiController extends BaseController {
 	@PostMapping(value="/register/validate/memberCard")
 	@ApiOperation("注册前验证会员卡号")
 	public YiwuJson<CustomerVO> validateMemberCard(String memberCard){
+		try {
+			distributerService.findByMemberCard(memberCard);
+			return YiwuJson.createByErrorMessage("该会员已注册");
+		} catch (DataNotFoundException e1) {
+			;
+		}
+		
 		try {
 			CustomerYzw customer =  customerService.findByMemberCard(memberCard);
 			return YiwuJson.createBySuccess(CustomerVOConverter.INSTANCE.fromPO(customer));

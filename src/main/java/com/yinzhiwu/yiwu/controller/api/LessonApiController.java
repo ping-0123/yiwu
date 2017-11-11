@@ -121,7 +121,7 @@ public class LessonApiController extends BaseController {
 		return new YiwuJson<>("不存在前" + lastN + "课时");
 	}
 
-	@RequestMapping(value = "/weeklist",method={RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/weeklist",method={RequestMethod.GET})
 	@ApiOperation(value="获取一周课表")
 	public Object getLessonWeekList(
 			 int storeId,  String courseType,

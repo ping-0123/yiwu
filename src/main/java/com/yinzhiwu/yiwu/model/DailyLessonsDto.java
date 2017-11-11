@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto;
+import com.yinzhiwu.yiwu.model.view.LessonForWeeklyVO;
 
 /**
 *@Author ping
@@ -18,14 +18,14 @@ public class DailyLessonsDto {
 	private Date date;
 
 	private int weekday;
-	private List<LessonForWeeklyDto> list;
+	private List<LessonForWeeklyVO> list;
 	public Date getDate() {
 		return date;
 	}
 	public int getWeekday() {
 		return weekday;
 	}
-	public List<LessonForWeeklyDto> getList() {
+	public List<LessonForWeeklyVO> getList() {
 		return list;
 	}
 	public void setDate(Date date) {
@@ -34,11 +34,11 @@ public class DailyLessonsDto {
 	public void setWeekday(int weekday) {
 		this.weekday = weekday;
 	}
-	public void setList(List<LessonForWeeklyDto> list) {
+	public void setList(List<LessonForWeeklyVO> list) {
 		this.list = list;
 	}
 	
-	public DailyLessonsDto(Date date, int weekday, List<LessonForWeeklyDto> list) {
+	public DailyLessonsDto(Date date, int weekday, List<LessonForWeeklyVO> list) {
 		super();
 		this.date = date;
 		this.weekday = weekday;

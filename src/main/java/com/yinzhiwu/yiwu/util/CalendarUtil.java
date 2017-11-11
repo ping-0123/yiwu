@@ -35,31 +35,15 @@ public class CalendarUtil {
 	}
 
 	public static Calendar getTodayBegin() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		return calendar;
+		return getDayBegin(Calendar.getInstance());
 	}
 
 	public static Calendar getTodayEnd() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
-		calendar.set(Calendar.MINUTE, 59);
-		calendar.set(Calendar.SECOND, 59);
-		calendar.set(Calendar.MILLISECOND, 999);
-		return calendar;
+		return getDayEnd(Calendar.getInstance());
 	}
 
 	public static Calendar getDayBegin(final Calendar calendar) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(calendar.getTime());
-		c.set(Calendar.HOUR_OF_DAY, 0);
-		c.set(Calendar.MINUTE, 0);
-		c.set(Calendar.SECOND, 0);
-		c.set(Calendar.MILLISECOND, 0);
-		return c;
+		return getDayBegin(calendar.getTime());
 	}
 
 	public static Calendar getDayEnd(final Calendar calendar) {
@@ -85,5 +69,5 @@ public class CalendarUtil {
 		calendar.set(Calendar.MILLISECOND, 999);
 		return calendar;
 	}
-
+	
 }

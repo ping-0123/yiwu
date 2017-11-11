@@ -39,7 +39,7 @@ public class ApiUserFilter extends OncePerRequestFilter {
 		throughUrls.add("/api/login");
 		throughUrls.add("/api/jsms");
 		throughUrls.add("/api/error");
-		throughUrls.add("/api/distributer/register.do");
+		throughUrls.add("/api/register");
 	}
 	
 	private boolean isThrough(String path){

@@ -94,7 +94,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	public Contract findCheckableContractOfCustomerAndLesson(CustomerYzw customer, LessonYzw lesson) throws DataNotFoundException{
 		Assert.notNull(customer);
 		Assert.notNull(lesson);
-		String[] appointedContractNos =  lesson.getAppointedContract().split(";");
+		String[] appointedContractNos =  lesson.getAppointedContracts().split(";");
 		
 		updateLingLingContractDates();
 		StringBuilder hql = new StringBuilder();

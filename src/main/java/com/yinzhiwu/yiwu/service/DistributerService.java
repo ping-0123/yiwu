@@ -60,5 +60,9 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 	@Transactional
 	boolean validateOpenIdBeforeRegister(String openId);
 
+	boolean validateMembercardBeforeRegister(String memberCard);
+
+	Distributer findByMemberCard(String memberCard) throws DataNotFoundException;
+
 
 }

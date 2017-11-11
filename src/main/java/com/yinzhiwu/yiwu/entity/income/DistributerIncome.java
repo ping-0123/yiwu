@@ -2,6 +2,8 @@ package com.yinzhiwu.yiwu.entity.income;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
@@ -29,6 +31,8 @@ public class DistributerIncome extends BaseEntity {
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_distributerIncome_distributer_id"))
 	private Distributer distributer;
 
+	@Column(length=32)
+	@Enumerated(EnumType.STRING)
 	private IncomeType type;
 
 	@Column(name="income")

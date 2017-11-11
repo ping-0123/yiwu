@@ -31,8 +31,8 @@ import com.yinzhiwu.yiwu.model.DailyLessonsDto;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
-import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto;
-import com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto.CheckedInStatus;
+import com.yinzhiwu.yiwu.model.view.LessonForWeeklyVO;
+import com.yinzhiwu.yiwu.model.view.LessonForWeeklyVO.CheckedInStatus;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
@@ -107,7 +107,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		calendar.add(Calendar.DAY_OF_WEEK, 6);
 		end = calendar.getTime();
 		
-		List<LessonForWeeklyDto> dtos = new ArrayList<>();
+		List<LessonForWeeklyVO> dtos = new ArrayList<>();
 //		dtos = lessonDao.findWeeklyLessons(storeId, courseType, teacherName, danceCatagory, start, end);
 		List<LessonYzw> lessons = lessonDao.findWeeklyLessons(storeId, courseType, teacherName,
 				danceCatagory,start, end);
@@ -118,7 +118,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		return _wrapToWeeklyLessons(dtos,start);
 	}
 
-	private List<DailyLessonsDto> _wrapToWeeklyLessons(List<LessonForWeeklyDto> dtos, Date start){
+	private List<DailyLessonsDto> _wrapToWeeklyLessons(List<LessonForWeeklyVO> dtos, Date start){
 		List<DailyLessonsDto> list = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(start);
@@ -130,9 +130,9 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 			calendar.add(Calendar.DAY_OF_WEEK, 1);
 		}
 		
-		for(LessonForWeeklyDto dto: dtos){
+		for(LessonForWeeklyVO dto: dtos){
 			for(int j =0; j<dtos.size(); j++){
-				if(dto.getWeek() == list.get(j).getWeekday()){
+				if(dto.getWeekDay() == list.get(j).getWeekday()){
 					list.get(j).getList().add(dto);
 					break;
 				}
@@ -141,10 +141,10 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		
 		return list;
 	}
-	private LessonForWeeklyDto _wrapToLessonForWeeklyDto(LessonYzw lesson, CustomerYzw customer) {
+	private LessonForWeeklyVO _wrapToLessonForWeeklyDto(LessonYzw lesson, CustomerYzw customer) {
 		Assert.notNull(lesson, "_wrapToLessonForWeeklyTableDto 中 lesson 不能为null");
 		
-		LessonForWeeklyDto dto = new LessonForWeeklyDto(lesson);
+		LessonForWeeklyVO dto = new LessonForWeeklyVO(lesson);
 		if(customer != null){
 			//TOD this.appointStatus
 			if(CourseType.OPENED == lesson.getCourseType()){
@@ -292,9 +292,8 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	}
 
 	@Override
-	public List<LessonYzw> findYesterdyOpenedLessons() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<LessonYzw> findOpenedLessonsOfYesterday() {
+		return lessonDao.findOpenedLessonsOfYesterday();
 	}
 	
 }

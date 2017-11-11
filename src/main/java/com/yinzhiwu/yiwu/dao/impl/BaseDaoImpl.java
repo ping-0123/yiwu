@@ -124,6 +124,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return list.get(0);
 	}
 	
+	
 	protected T findOneByProperties(String[] propertyNames, Object[] values) throws DataNotFoundException{
 		if(propertyNames.length != values.length){
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");

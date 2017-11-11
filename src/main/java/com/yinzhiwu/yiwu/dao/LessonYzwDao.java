@@ -12,6 +12,8 @@ import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 
 
 public interface LessonYzwDao extends IBaseDao<LessonYzw, Integer> {
+	
+	
 	List<LessonYzw> findByCourseId(String courseId);
 
 	public LessonYzw findLastNLesson(LessonYzw thisLesson, int lastN);
@@ -37,4 +39,7 @@ public interface LessonYzwDao extends IBaseDao<LessonYzw, Integer> {
 	List<LessonYzw> findNullOrdinalLessons();
 
 	LessonYzw findOneNullOrdinalLessons();
+
+	List<LessonYzw> findOpenedLessonsOfYesterday();
+
 }

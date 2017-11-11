@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -48,9 +50,13 @@ public class DepartmentYzw extends BaseYzwEntity{
 	@Column(length = 50, name = "Name")
 	private String name;
 
+	@Column(length=32)
+	@Enumerated(EnumType.STRING)
+	private OrgnizationType type;
+	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "superiorId", foreignKey = @ForeignKey(name = "fk_department_superior_Id", value = ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "superiorId", foreignKey = @ForeignKey(name = "fk_department_parent_Id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw parent;
 
 	@JsonIgnore
@@ -92,7 +98,10 @@ public class DepartmentYzw extends BaseYzwEntity{
 
 	@Column(length = 16)
 	private String officialAccount;
-
+	
+	@Column(length=32)
+	private String telePhone;
+	
 	@Column
 	private String logo;
 	
@@ -300,6 +309,21 @@ public class DepartmentYzw extends BaseYzwEntity{
 		this.children = children;
 	}
 	
+	public String getTelePhone() {
+		return telePhone;
+	}
+
+	public void setTelePhone(String telePhone) {
+		this.telePhone = telePhone;
+	}
+	
+	public OrgnizationType getType() {
+		return type;
+	}
+
+	public void setType(OrgnizationType type) {
+		this.type = type;
+	}
 	
 	public static enum OrgnizationType{
 		STORE,
@@ -311,4 +335,6 @@ public class DepartmentYzw extends BaseYzwEntity{
 		SUBCOMPANY,
 		COMPANY
 	}
+
+
 }
