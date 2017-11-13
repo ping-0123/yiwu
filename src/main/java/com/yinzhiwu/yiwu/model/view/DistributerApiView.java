@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.enums.IncomeType;
 import com.yinzhiwu.yiwu.service.DistributerIncomeService;
 import com.yinzhiwu.yiwu.service.FileService;
@@ -237,14 +238,28 @@ public class DistributerApiView  implements Serializable {
 		private final FileService fileService = SpringUtils.getBean("fileServiceImpl");
 		private final DistributerIncomeService incomeServive= SpringUtils.getBean(DistributerIncomeService.class);
 		@Override
-		public DistributerApiView fromPO(Distributer po) {
-			DistributerApiView vo =  super.fromPO(po);
+		public DistributerApiView fromPO(Distributer distributer) {
+			DistributerIncome exp = incomeServive.getIncome(distributer, IncomeType.EXP);
+			DistributerIncome brokerage = incomeServive.getIncome(distributer, IncomeType.BROKERAGE);
+			DistributerIncome funds = incomeServive.getIncome(distributer, IncomeType.FUNDS);
+			
+			DistributerApiView vo =  super.fromPO(distributer);
 			vo.setHeadIconUrl(fileService.generateFileUrl(vo.getHeadIconUrl()));
-			vo.setExp(po.getIncomeValue(IncomeType.EXP));
-			vo.setExpGradeNo(po.getDistributerIncome(IncomeType.EXP).getGrade().getId());
-			vo.setNeededExpForUpdate(po.getDistributerIncome(IncomeType.EXP).getGrade().getUpgradeNeededValue());
-			vo.setFunds(po.getIncomeValue(IncomeType.FUNDS));
-			vo.setBrokerage(po.getIncomeValue(IncomeType.BROKERAGE));
+			if(null != exp){
+				vo.setExp(exp.getValue());
+				vo.setExpGradeNo(exp.getGrade().getId());
+				vo.setNeededExpForUpdate(exp.getGrade().getUpgradeNeededValue());
+			}else{
+				vo.setExp(0f);
+			}
+			if(null !=funds)
+				vo.setFunds(distributer.getIncomeValue(IncomeType.FUNDS));
+			else
+				vo.setFunds(0f);
+			if(null != brokerage)
+				vo.setBrokerage(distributer.getIncomeValue(IncomeType.BROKERAGE));
+			else
+				vo.setBeatRate(0f);
 			vo.setBeatRate(incomeServive.calculateBeatRatio(IncomeType.BROKERAGE, vo.getBrokerage()));
 			return vo;
 		} 

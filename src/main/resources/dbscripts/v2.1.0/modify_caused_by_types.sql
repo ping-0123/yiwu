@@ -30,3 +30,4 @@ update yiwu_income_record t1
 set t1.incomeType = t3.name,
 t1.con_ben_relation = t2.name,
 t1.eventType = t5.name;
+alter table yiwu_income_record modify colu

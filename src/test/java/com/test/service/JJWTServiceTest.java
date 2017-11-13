@@ -25,10 +25,10 @@ public class JJWTServiceTest extends BaseSpringTest{
 		Integer distributerId = 3000116;
 		try {
 			Distributer distributer = distributerService.get(distributerId);
-			String token = jjwtService.createDistributerIdToken(distributer);
+			String token = jjwtService.createDistributerToken(distributer);
 			System.err.println("token is ...." + token);
-			Integer id = jjwtService.parseDistributerIdToken(token);
-			System.err.println("distributer is ....." + id);
+			Distributer distributer2 = jjwtService.parseDistributerToken(token);
+			System.err.println("distributer2 is ....." + distributer2.getName());
 		} catch (DataNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -62,7 +62,7 @@ public class AccountApiController extends BaseController {
 		}
 		
 		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("token", jjwtService.createDistributerIdToken(distributer));
+		map.put("token", jjwtService.createDistributerToken(distributer));
 		return YiwuJson.createBySuccess(map);
 	}
 	
@@ -99,7 +99,7 @@ public class AccountApiController extends BaseController {
 		Distributer distributer = distributerService.doRegister(mobileNumber, openId, memberCard, invitationCode);
 		
 		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("token", jjwtService.createDistributerIdToken(distributer));
+		map.put("token", jjwtService.createDistributerToken(distributer));
 		return YiwuJson.createBySuccess(map);
 	 }
 	

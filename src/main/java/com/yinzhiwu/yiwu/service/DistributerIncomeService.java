@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.service;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.enums.IncomeType;
@@ -16,6 +17,7 @@ public interface DistributerIncomeService extends IBaseService<DistributerIncome
 	void updateIncome(IncomeRecord record);
 
 	@Transactional
-	float calculateBeatRatio(IncomeType brokerage, float brokerage2);
+	float calculateBeatRatio(IncomeType type, float value);
 
+	DistributerIncome getIncome(Distributer distributer , IncomeType type);
 }

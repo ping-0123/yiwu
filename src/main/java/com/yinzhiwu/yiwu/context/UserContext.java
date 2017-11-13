@@ -15,7 +15,7 @@ import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 
 public abstract class UserContext {
 
-	private static ThreadLocal<Map<String, Object>> map = new ThreadLocal<>();
+	private static ThreadLocal<Map<String, Object>> threadLocal = new ThreadLocal<>();
 	
 	public static void setUser(User user){
 		getSureMap().put(Constants.CURRENT_USER, user);
@@ -42,8 +42,8 @@ public abstract class UserContext {
 	}
 	
 	private static Map<String, Object> getSureMap(){
-		if(map.get() == null)
-			map.set(new HashMap<>());
-		return map.get();
+		if(threadLocal.get() == null)
+			threadLocal.set(new HashMap<>());
+		return threadLocal.get();
 	}
 }

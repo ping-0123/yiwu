@@ -54,6 +54,14 @@ public class JsmsApiController extends BaseController{
 		return YiwuJson.createBySuccess();
 	}
 	
+	@PostMapping("/send_setAccount_code")
+	@ApiOperation("发送设置提现帐号验证码")
+	public YiwuJson<?> sendSetAccountSMSCode(@RequestParam(name="mobileNumber") String mobileNumber) throws FormatException, JSMSException{
+		validateMobileNumber(mobileNumber);
+		jsmsService.sendSetAccountSMSCode(mobileNumber);
+		return YiwuJson.createBySuccess();
+	}
+	
 	private void validateMobileNumber(String mobileNumber) throws FormatException{
 		if(null == mobileNumber)
 			throw new FormatException("手机号码为空");

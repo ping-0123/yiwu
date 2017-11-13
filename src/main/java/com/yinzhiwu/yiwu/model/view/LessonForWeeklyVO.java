@@ -4,15 +4,19 @@ import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
+import com.yinzhiwu.yiwu.context.UserContext;
+import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.LessonInteractive;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.SubCourseType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.service.LessonInteractiveService;
+import com.yinzhiwu.yiwu.util.SpringUtils;
+import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
@@ -78,20 +82,14 @@ public class LessonForWeeklyVO {
 	private SubCourseType subCourseType;
 	private LessonStatus lessonStatus;
 	
-	@MapedProperty(ignored=false)
-	@ApiModelProperty(value="预约状态",allowableValues="[APPONTED,UN_APOINTED]")
-	private AppointStatus appointStatus;
-	
-	@MapedProperty(ignored=false)
-	private CheckedInStatus checkedInStatus;
-	
+	@MapedProperty(value="classRoom.maxStudentCount")
 	@ApiModelProperty(value="可以容纳的最大人数,开放式课程指教室容量, 如果是封闭式课程， 该值为0")
 	private Integer maxStudentCount;		//可容纳人数   封闭课程指班级人数， 开放式课程指教室容量
 	
 	@ApiModelProperty(value="预约人数, 如果是封闭式课程， 该值为0")
 	private Integer appointedStudentCount; //预约人数
 	
-	@MapedProperty(ignored=true)
+	@MapedProperty(value="actualStudentCount")
 	@ApiModelProperty(value="课程班级人数, 如果是开放式课程，该值为0")
 	private Integer attendedStudentCount;	//参加人数, 封闭式课的班级人数 
 	
@@ -99,70 +97,49 @@ public class LessonForWeeklyVO {
 	private Integer checkedInStudentCount; //签到人数
 	
 	@ApiModelProperty(value="店员点名人数")
-	private Integer storeManCallRollCount;  //店员点名人数
+	private Integer rollCalledStudentCountByStoreman;  //店员点名人数
 	
 	@ApiModelProperty(value="教师点名人数")
-	private Integer teacherCallRollCount;   //教师点名人数
+	private Integer rollCalledStudentCountByCoach;   //教师点名人数
 	
-	@MapedProperty("ordinalNo")
 	@ApiModelProperty(value="这个课在整套课程中所处的位置")
-	private Integer orderInCourse;
+	private Integer ordinalNo;
 	
 	@MapedProperty("course.sumLessonTimes")
 	@ApiModelProperty(value="这节课对应的课程所拥有的总课次")
 	private Integer sumTimesOfCourse;
 	
 	
+	@MapedProperty(ignored=true)
+	@ApiModelProperty(value="预约状态",allowableValues="[APPONTED,UN_APOINTED]")
+	private AppointStatus appointStatus;
 	
-	public LessonForWeeklyVO(LessonYzw lesson){
-		Assert.notNull(lesson,"传入的参数不能为null");
+	@MapedProperty(ignored=true)
+	private CheckedInStatus checkedInStatus;
+	
+	public static final class LessonForWeeklyVOConverter extends AbstractConverter<LessonYzw, LessonForWeeklyVO>
+	{
+		public static final LessonForWeeklyVOConverter INSTANCE = new LessonForWeeklyVOConverter();
+		private final LessonInteractiveService interactiveService = SpringUtils.getBean(LessonInteractiveService.class);
 		
-		this.id = lesson.getId();
-		this.name = lesson.getName();
-		CourseYzw course = lesson.getCourse();
-		if(course != null){
-			this.danceName = course.getDanceDesc();
-			this.danceGrade = course.getDanceGrade();
-			this.courseId = course.getId();
+		@Override
+		public LessonForWeeklyVO fromPO(LessonYzw po) {
+			LessonForWeeklyVO vo =  super.fromPO(po);
+			vo.setWeekDay();
+			Distributer distributer = UserContext.getDistributer();
+			if(null != distributer){
+				try {
+					LessonInteractive li = interactiveService.findByDistributerIdAndLessonId(distributer.getId(), po.getId());
+					vo.setAppointStatus(li.getAppointed()?AppointStatus.APPONTED:AppointStatus.UN_APOINTED);
+					vo.setCheckedInStatus(li.getCheckedIn()?CheckedInStatus.CHECKED:CheckedInStatus.UN_CHECKED);
+				} catch (DataNotFoundException e) {
+					vo.setAppointStatus(AppointStatus.UN_APOINTED);
+					vo.setCheckedInStatus(CheckedInStatus.UN_CHECKED);
+				}
+			}
+			return vo;
 		}
-		this.lessonDate = lesson.getLessonDate();
-//		this.week = getWeek(this.lessonDate);
-		this.startTime = lesson.getStartTime();
-		this.endTime = lesson.getEndTime();
-		if(lesson.getStore() != null){
-			this.storeId = lesson.getStore().getId();
-			this.storeName = lesson.getStore().getName();
-		}
-		this.lessonHours = lesson.getHours();
-		if(lesson.getDueTeacher() != null){
-			this.dueTeacherId = lesson.getDueTeacher().getId();
-			this.dueTeacherName = lesson.getDueTeacher().getName();
-		}
-		if(lesson.getActualTeacher() != null){
-			this.actualTeacherId = lesson.getActualTeacher().getId();
-			this.actualTeacherName = lesson.getActualTeacher().getName();
-		}
-		this.courseType = lesson.getCourseType();
-		this.subCourseType = lesson.getSubCourseType();
-		this.lessonStatus = lesson.getLessonStatus();
-		//TOD this.attendedStatus
-		//TOD this.checkedInStatus
-		if(lesson.getCourseType() == CourseType.OPENED
-				&& lesson.getClassRoom() != null)
-			this.maxStudentCount = lesson.getClassRoom().getMaxStudentCount();
-		//TODO this.appointedStudentCount = lesson.getAppointedStudentCount();
-		if(CourseType.CLOSED == lesson.getCourseType()
-				&& course != null){
-			this.attendedStudentCount = course.getStudentCount();
-		}
-		 this.checkedInStudentCount = lesson.getCheckedInStudentCount();
-		//TOD storeManCallRollCount
-		 this.teacherCallRollCount = lesson.getRollCalledStudentCountByCoach();
-		//TOD  orderInCourse
-		//TOD  sumTimesOfCourse
 		
-	}
-	public LessonForWeeklyVO() {
 	}
 	
 	
@@ -252,18 +229,6 @@ public class LessonForWeeklyVO {
 
 	public Integer getAttendedStudentCount() {
 		return attendedStudentCount;
-	}
-
-	public Integer getStoreManCallRollCount() {
-		return storeManCallRollCount;
-	}
-
-	public Integer getTeacherCallRollCount() {
-		return teacherCallRollCount;
-	}
-
-	public Integer getOrderInCourse() {
-		return orderInCourse;
 	}
 
 	public Integer getSumTimesOfCourse() {
@@ -360,18 +325,6 @@ public class LessonForWeeklyVO {
 	}
 
 
-	public void setStoreManCallRollCount(Integer storeManCallRollCount) {
-		this.storeManCallRollCount = storeManCallRollCount;
-	}
-
-	public void setTeacherCallRollCount(Integer teacherCallRollCount) {
-		this.teacherCallRollCount = teacherCallRollCount;
-	}
-
-	public void setOrderInCourse(Integer orderInCourse) {
-		this.orderInCourse = orderInCourse;
-	}
-
 	public void setSumTimesOfCourse(Integer sumTimesOfCourse) {
 		this.sumTimesOfCourse = sumTimesOfCourse;
 	}
@@ -389,49 +342,32 @@ public class LessonForWeeklyVO {
 		return calendar.get(Calendar.DAY_OF_WEEK);
 	}
 	
-	public LessonForWeeklyVO(Integer id, String name, String danceName, String danceGrade, String courseId,
-			Date lessonDate, Integer week, Time startTime, Time endTime, Integer storeId, String storeName,
-			Float lessonHours, Integer dueTeacherId, String dueTeacherName, Integer actualTeacherId,
-			String actualTeacherName, CourseType courseType, SubCourseType subCourseType, LessonStatus lessonStatus,
-			AppointStatus appointStatus, CheckedInStatus checkedInStatus, Integer maxStudentCount,
-			Integer appointedStudentCount, Integer attendedStudentCount, Integer checkedInsStudentCount,
-			Integer storeManCallRollCount, Integer teacherCallRollCount, Integer orderInCourse,
-			Integer sumTimesOfCourse) {
-		this.id = id;
-		this.name = name;
-		this.danceName = danceName;
-		this.danceGrade = danceGrade;
-		this.courseId = courseId;
-		this.lessonDate = lessonDate;
-//		this.week = week;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.storeId = storeId;
-		this.storeName = storeName;
-		this.lessonHours = lessonHours;
-		this.dueTeacherId = dueTeacherId;
-		this.dueTeacherName = dueTeacherName;
-		this.actualTeacherId = actualTeacherId;
-		this.actualTeacherName = actualTeacherName;
-		this.courseType = courseType;
-		this.subCourseType = subCourseType;
-		this.lessonStatus = lessonStatus;
-		this.appointStatus = appointStatus;
-		this.checkedInStatus = checkedInStatus;
-		this.maxStudentCount = maxStudentCount;
-		this.appointedStudentCount = appointedStudentCount;
-		this.attendedStudentCount = attendedStudentCount;
-		this.checkedInStudentCount = checkedInsStudentCount;
-		this.storeManCallRollCount = storeManCallRollCount;
-		this.teacherCallRollCount = teacherCallRollCount;
-		this.orderInCourse = orderInCourse;
-		this.sumTimesOfCourse = sumTimesOfCourse;
-	}
 	public Integer getCheckedInStudentCount() {
 		return checkedInStudentCount;
 	}
 	public void setCheckedInStudentCount(Integer checkedInStudentCount) {
 		this.checkedInStudentCount = checkedInStudentCount;
+	}
+	public Integer getRollCalledStudentCountByStoreman() {
+		return rollCalledStudentCountByStoreman;
+	}
+	public Integer getRollCalledStudentCountByCoach() {
+		return rollCalledStudentCountByCoach;
+	}
+	public Integer getOrdinalNo() {
+		return ordinalNo;
+	}
+	public void setWeekDay() {
+		this.weekDay = getWeekDay();
+	}
+	public void setRollCalledStudentCountByStoreman(Integer rollCalledStudentCountByStoreman) {
+		this.rollCalledStudentCountByStoreman = rollCalledStudentCountByStoreman;
+	}
+	public void setRollCalledStudentCountByCoach(Integer rollCalledStudentCountByCoach) {
+		this.rollCalledStudentCountByCoach = rollCalledStudentCountByCoach;
+	}
+	public void setOrdinalNo(Integer ordinalNo) {
+		this.ordinalNo = ordinalNo;
 	}
 
 	

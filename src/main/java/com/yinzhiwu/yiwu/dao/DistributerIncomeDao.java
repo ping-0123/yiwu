@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.enums.IncomeType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 public interface DistributerIncomeDao extends IBaseDao<DistributerIncome, Integer> {
 
@@ -12,5 +13,7 @@ public interface DistributerIncomeDao extends IBaseDao<DistributerIncome, Intege
 	List<DistributerIncome> getTopN(IncomeType type, int topN);
 
 	List<DistributerIncome> findBrokerageIncomes();
+
+	DistributerIncome findbyDistributerIdAndIncomeType(Integer distributerId, IncomeType type) throws DataNotFoundException;
 
 }

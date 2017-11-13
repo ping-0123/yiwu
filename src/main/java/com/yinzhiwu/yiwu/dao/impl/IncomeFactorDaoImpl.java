@@ -14,7 +14,7 @@ public class IncomeFactorDaoImpl extends BaseDaoImpl<IncomeFactor, Integer> impl
 
 	@Override
 	public List<IncomeFactor> findByEventType(IncomeEventType type) {
-		return findByProperty("incomeType",type);
+		return findByProperty("eventType",type);
 	}
 
 }

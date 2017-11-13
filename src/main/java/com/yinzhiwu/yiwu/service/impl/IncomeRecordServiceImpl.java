@@ -4,11 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
@@ -147,36 +146,37 @@ public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integ
 		return YiwuJson.createBySuccess(count);
 	}
 	
-	@TransactionalEventListener(classes={LessonAppointmentYzw.class})
+	@EventListener(classes={LessonAppointmentYzw.class})
 	public void handleLessonAppointment(LessonAppointmentYzw appointment){
 		LessonAppointmentEvent event  = new LessonAppointmentEvent(appointment);
 		produceIncomes(event);
 	}
 	
-	@TransactionalEventListener(classes={LessonCheckInYzw.class})
+	@EventListener(classes={LessonCheckInYzw.class})
 	public void handlerLessonCheckIn(LessonCheckInYzw checkIn){
 		IncomeEvent event  = new LessonCheckInEvent(checkIn);
 		produceIncomes(event);
 	}
 	
-	@TransactionalEventListener(classes={WithdrawEvent.class})
+	@EventListener(classes={WithdrawEvent.class})
 	public void handleWithdrawBrokerage(WithdrawEvent event){
 		produceIncomes(event);
 	}
 	
-	@TransactionalEventListener(classes={ShareTweet.class})
+	@EventListener(classes={ShareTweet.class})
 	public void handleShareTweet(ShareTweet shareTweet){
 		IncomeEvent event = new ShareTweetEvent(shareTweet);
 		produceIncomes(event);
 	}
 	
-	@TransactionalEventListener(classes={PayDeposit.class}, phase= TransactionPhase.BEFORE_COMMIT)
+	@EventListener(classes={PayDeposit.class})
 	public void handlePayDeposit(PayDeposit deposit){
 		produceIncomes(deposit);
 	}
 	
-	@TransactionalEventListener(classes={RegisterEvent.class})
+	@EventListener(classes={RegisterEvent.class})
 	public void handleRegisterEvent(RegisterEvent event){
+		logger.info("start handle register event");
 		produceIncomes(event);
 	}
 	

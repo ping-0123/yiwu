@@ -6,10 +6,12 @@ import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.dao.IncomeGradeDao;
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Message;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.enums.IncomeType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.DistributerIncomeService;
 import com.yinzhiwu.yiwu.service.MessageService;
 import com.yinzhiwu.yiwu.util.MessageTemplate;
@@ -65,6 +67,16 @@ public class DistributerIncomeServiceImpl extends BaseServiceImpl<DistributerInc
 	@Override
 	public float calculateBeatRatio(IncomeType type, float value) {
 		return incomeDao.calculateBeatRatio(type, value);
+	}
+
+
+	@Override
+	public DistributerIncome getIncome(Distributer distributer, IncomeType type) {
+		try {
+			return incomeDao.findbyDistributerIdAndIncomeType(distributer.getId(), type);
+		} catch (DataNotFoundException e) {
+			return null;
+		}
 	}
 
 }
