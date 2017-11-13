@@ -143,8 +143,14 @@ public class DistributerApiController extends BaseController {
 		}
 	}
 
+	/**
+	 * @deprecated {@link CapitalAccountApiController#doGet(Boolean, PaymentMode)}
+	 * @param paymentMode
+	 * @return
+	 */
+	@Deprecated
 	@GetMapping(value = "/capitalAccounts")
-	@ApiOperation(value = "获取资金帐号")
+	@ApiOperation(value = "获取资金帐号,已启用， 请使用 /api/capitalAccounts")
 	public YiwuJson<List<CapitalAccountApiView>> getCapitalAccount(
 			@ApiParam(value = "支付类型, 默认全部", required=false, allowableValues="{WECHAT_PAY,ALI_PAY}") 
 			PaymentMode paymentMode) {

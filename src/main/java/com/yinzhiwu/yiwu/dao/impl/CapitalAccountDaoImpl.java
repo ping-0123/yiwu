@@ -22,5 +22,47 @@ public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> 
 				new String[]{"distributer.id","paymentMode"}, 
 				new Object[]{distributerId,paymentMode});
 	}
+	
+	
+
+	private void cancelDefaultAccount(Integer distributerId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("UPDATE CapitalAccount");
+		hql.append(" SET isDefault = false");
+		hql.append(" WHERE distributer.id =:distributerId");
+		
+		getSession().createQuery(hql.toString())
+			.setParameter("distributerId", distributerId)
+			.executeUpdate();
+	}
+
+	@Override
+	public Integer save(CapitalAccount account) {
+		if(null != account.getIsDefault() && account.getIsDefault())
+			cancelDefaultAccount(account.getDistributer().getId());
+		return super.save(account);
+	}
+
+	@Override
+	public void update(CapitalAccount account) {
+		if(null != account.getIsDefault() && account.getIsDefault())
+			cancelDefaultAccount(account.getDistributer().getId());
+		super.update(account);
+	}
+
+	@Override
+	public void saveOrUpdate(CapitalAccount account) {
+		if(null != account.getIsDefault() && account.getIsDefault())
+			cancelDefaultAccount(account.getDistributer().getId());
+		super.saveOrUpdate(account);
+	}
+
+	@Override
+	public void modify(CapitalAccount source, CapitalAccount target) throws IllegalArgumentException, IllegalAccessException {
+		if(target.getIsDefault())
+			cancelDefaultAccount(source.getDistributer().getId());
+		super.modify(source, target);
+	}
+
 
 }

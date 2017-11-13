@@ -17,9 +17,6 @@ import com.yinzhiwu.yiwu.enums.PaymentMode;
 	@UniqueConstraint(name = "uk_CapitalAccount_accont", columnNames = "account"))
 public class CapitalAccount extends BaseEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7664170465208216472L;
 
 	@Column(length = 50, nullable = false) // uk
@@ -33,8 +30,19 @@ public class CapitalAccount extends BaseEntity {
 	@JoinColumn(name = "distributer_id", foreignKey = @ForeignKey(name = "fk_CapitalAccount_distributer_id"))
 	private Distributer distributer;
 
+	@Column(columnDefinition="boolean not null default false")
+	private Boolean isDefault;
+	
+	
 	public CapitalAccount() {
 		super();
+	}
+
+	@Override
+	public void init() {
+		super.init();
+		if(null == isDefault)
+			isDefault=false;
 	}
 
 	public String getAccount() {
@@ -65,6 +73,14 @@ public class CapitalAccount extends BaseEntity {
 	 */
 	public void setPaymentMode(PaymentMode paymentMode) {
 		this.paymentMode = paymentMode;
+	}
+
+	public Boolean getIsDefault() {
+		return isDefault;
+	}
+
+	public void setIsDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
 	}
 	
 	

@@ -67,10 +67,6 @@ public class JSMSService {
 		return sendSMSCode(mobieNumber, JSMSTemplate.PAYDEPOSIT);
 	}
 	
-	public boolean sendSetAccountSMSCode(String mobileNumber) throws JSMSException{
-		return sendSMSCode(mobileNumber, JSMSTemplate.SET_ACCOUNT);
-	}
-	
 	public boolean validateRegisterSMSCode(String mobileNumber, String code) throws JSMSException{
 		return validateSMSCode(JSMSTemplate.REGISTER, mobileNumber, code);
 	}
@@ -83,9 +79,23 @@ public class JSMSService {
 		return validateSMSCode(JSMSTemplate.PAYDEPOSIT, mobileNumber, code);
 	}
 	
-	public boolean validateSetAccountSMSCode(String mobileNumber, String code) throws JSMSException{
-		return validateSMSCode(JSMSTemplate.SET_ACCOUNT, mobileNumber, code);
+	public boolean sendSetDefaultCapitalAccountSMSCode(String mobileNumber) throws JSMSException{
+		return sendSMSCode(mobileNumber, JSMSTemplate.SET_DEFAULT_CAPITAL_ACCOUNT);
 	}
+	
+	public boolean validateSetDefaultCapitalAccountSMSCode(String mobileNumber, String code) throws JSMSException{
+		return validateSMSCode(JSMSTemplate.SET_DEFAULT_CAPITAL_ACCOUNT, mobileNumber, code);
+	}
+	
+	
+	public boolean sendAddNewCapitalAccountSMSCode(String mobileNumber) throws JSMSException{
+		return sendSMSCode(mobileNumber, JSMSTemplate.ADD_NEW_CAPITAL_ACCOUNT);
+	}
+	
+	public boolean validateAddNewCapitalAccountSMSCode(String moibileNumber,String code) throws JSMSException{
+		return validateSMSCode(JSMSTemplate.ADD_NEW_CAPITAL_ACCOUNT, moibileNumber, code);
+	}
+	
 	
 	public boolean sendPayWithdrawMessage(String mobileNumber, java.util.Date date, Float amount) throws JSMSException{
 		String[] params = new String[]{dateFormat.format(date), numberFormat.format(amount)};
@@ -181,7 +191,8 @@ public class JSMSService {
 		REGISTER(47091, JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		WITHDRAW(82007, JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		PAYDEPOSIT(102276, JSMSTemplateType.VALIDATE,new String[]{"code"}),
-		SET_ACCOUNT(81956,JSMSTemplateType.VALIDATE, new String[]{"code"}),
+		SET_DEFAULT_CAPITAL_ACCOUNT(145906,JSMSTemplateType.VALIDATE, new String[]{"code"}),
+		ADD_NEW_CAPITAL_ACCOUNT(145907,JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		PAY_WITHDRAW(145602,JSMSTemplateType.NOTIFICATION, new String[]{"date","amount"} ),
 		DO_WITHDRAW(145601, JSMSTemplateType.NOTIFICATION, new String[]{"date", "amount"});
 		

@@ -54,12 +54,22 @@ public class JsmsApiController extends BaseController{
 		return YiwuJson.createBySuccess();
 	}
 	
-	@PostMapping("/send_setAccount_code")
-	@ApiOperation("发送设置提现帐号验证码")
+	@PostMapping("/send_set_default_capital_account_code")
+	@ApiOperation("发送设置提现帐号的短信验证码")
 	public YiwuJson<?> sendSetAccountSMSCode(@RequestParam(name="mobileNumber") String mobileNumber) throws FormatException, JSMSException{
 		validateMobileNumber(mobileNumber);
-		jsmsService.sendSetAccountSMSCode(mobileNumber);
+		jsmsService.sendSetDefaultCapitalAccountSMSCode(mobileNumber);
 		return YiwuJson.createBySuccess();
+	}
+	
+	@PostMapping("/send_add_new_capital_account_code")
+	@ApiOperation("发送新增提现账号的短信验证码")
+	public YiwuJson<?> sendAddNewCaptialAccountSMSCode(@RequestParam(name="mobileNumber") String mobileNumber) 
+			throws FormatException, JSMSException{
+		
+		validateMobileNumber(mobileNumber);
+		return YiwuJson.createBySuccess(
+				jsmsService.sendAddNewCapitalAccountSMSCode(mobileNumber));
 	}
 	
 	private void validateMobileNumber(String mobileNumber) throws FormatException{

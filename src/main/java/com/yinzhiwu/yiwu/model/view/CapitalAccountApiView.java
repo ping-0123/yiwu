@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.model.view;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -17,17 +18,24 @@ import io.swagger.annotations.ApiModelProperty;
 @MapedClass(CapitalAccount.class)
 public class CapitalAccountApiView {
 
+	@ApiModelProperty(required=false)
 	private Integer id;
 	
+	@NotNull
+	@ApiModelProperty(required=true)
 	@Length(min = 6, max = 50)
 	private String account;
 	
-	@ApiModelProperty(value = "分销者Id", required = true)
+	@ApiModelProperty(value = "分销者Id", required = false)
 	@Min(value = 1, message = "请输入正确的分销者Id")
 	@MapedProperty("distributer.id")
 	private Integer distributerId;
 
+	@ApiModelProperty()
+	@NotNull
 	private PaymentMode paymentMode;
+	
+	private Boolean isDefault;
 
 	public CapitalAccountApiView() {
 	}
@@ -68,6 +76,13 @@ public class CapitalAccountApiView {
 		this.paymentMode = paymentMode;
 	}
 	
+	public Boolean getIsDefault() {
+		return isDefault;
+	}
+
+	public void setIsDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
+	}
 	
 	public final static class CapitalAccountApiViewConverter extends AbstractConverter<CapitalAccount, CapitalAccountApiView>{
 		public final static CapitalAccountApiViewConverter INSTANCE = new CapitalAccountApiViewConverter();

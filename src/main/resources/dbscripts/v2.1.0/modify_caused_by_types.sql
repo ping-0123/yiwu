@@ -1,4 +1,7 @@
 -- 先修改 yiwu_type
+update yiwu_type set name='LESSON_APPOINTMENT' where id = 10027;
+update yiwu_type set name='CANCEL_LESSON_APPOINTMENT' where id = 10030;
+update yiwu_type set name='BREAK_LESSON_APPOINTMENT' where id = 10031;
 
 -- 修改 yiwu_income_factor
 update yiwu_income_factor t1 
