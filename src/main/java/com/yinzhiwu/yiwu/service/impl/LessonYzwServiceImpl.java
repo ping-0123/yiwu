@@ -13,26 +13,20 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
-import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
-import com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
-import com.yinzhiwu.yiwu.dao.StoreManCallRollYzwDao;
-import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
-import com.yinzhiwu.yiwu.model.DailyLessonsDto;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.LessonForWeeklyVO;
-import com.yinzhiwu.yiwu.model.view.LessonForWeeklyVO.CheckedInStatus;
+import com.yinzhiwu.yiwu.model.view.LessonForWeeklyVO.LessonForWeeklyVOConverter;
+import com.yinzhiwu.yiwu.model.view.OneDayLessonsVO;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
@@ -42,13 +36,8 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> implements LessonYzwService {
 
 	@Autowired private LessonYzwDao lessonDao;
-	@Autowired private LessonAppointmentYzwDao appointmentYzwDao;
-	@Autowired private CustomerYzwDao customerYzwDao;
-	@Autowired private StoreManCallRollYzwDao storeManCallRollYzwDao;
-	@Autowired private LessonCheckInYzwDao checkInsYzwDao;
-	@Autowired 
 	@Qualifier(value="fileServiceImpl")
-	private FileService fileService;
+	@Autowired private FileService fileService;
 	
 	@Autowired
 	public void setBaseDao(LessonYzwDao lessonDao) {
@@ -87,12 +76,8 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	}
 
 	@Override
-	public List<DailyLessonsDto> findWeeklyLessons(int storeId, CourseType courseType, String teacherName, String danceCatagory,
-			Date date, String weChat) {
-		CustomerYzw customer = null;
-		if(weChat != null){
-			customer = customerYzwDao.findByWeChat(weChat);
-		}
+	public List<OneDayLessonsVO> findWeeklyLessons(Integer storeId, CourseType courseType, String teacherName, String danceCatagory,
+			Date date) {
 		//获取一周的开始时间和结束时间   星期一为一周开始
 		Date start, end;
 		Calendar calendar = Calendar.getInstance();
@@ -107,94 +92,45 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		calendar.add(Calendar.DAY_OF_WEEK, 6);
 		end = calendar.getTime();
 		
-		List<LessonForWeeklyVO> dtos = new ArrayList<>();
-//		dtos = lessonDao.findWeeklyLessons(storeId, courseType, teacherName, danceCatagory, start, end);
+		List<LessonForWeeklyVO> vos = new ArrayList<>();
 		List<LessonYzw> lessons = lessonDao.findWeeklyLessons(storeId, courseType, teacherName,
 				danceCatagory,start, end);
 		for (LessonYzw lesson : lessons) {
-			dtos.add(_wrapToLessonForWeeklyDto(lesson, customer));
+			LessonForWeeklyVO vo = LessonForWeeklyVOConverter.INSTANCE.fromPO(lesson);
+			// TODO vo.setCoachCheckedInStatus();
+			vos.add(vo);
 		}
 		
-		return _wrapToWeeklyLessons(dtos,start);
+		return _wrapToOneDayLessonsVOs(vos,start);
 	}
 
-	private List<DailyLessonsDto> _wrapToWeeklyLessons(List<LessonForWeeklyVO> dtos, Date start){
-		List<DailyLessonsDto> list = new ArrayList<>();
+	private List<OneDayLessonsVO> _wrapToOneDayLessonsVOs(List<LessonForWeeklyVO> vos, Date start){
+		List<OneDayLessonsVO> oneDays = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(start);
 		for(int i=2; i<=8; i++){
-			list.add(new DailyLessonsDto(
-					calendar.getTime(),
-					i<=7?i:i%7, 
-					new ArrayList<>()));
+			oneDays.add(new OneDayLessonsVO(calendar.getTime()));
 			calendar.add(Calendar.DAY_OF_WEEK, 1);
 		}
 		
-		for(LessonForWeeklyVO dto: dtos){
-			for(int j =0; j<dtos.size(); j++){
-				if(dto.getWeekDay() == list.get(j).getWeekday()){
-					list.get(j).getList().add(dto);
+		for(LessonForWeeklyVO vo: vos){
+			for(int j =0; j<vos.size(); j++){
+				if(vo.getWeekDay() == oneDays.get(j).getWeekday()){
+					oneDays.get(j).getList().add(vo);
 					break;
 				}
 			}
 		}
 		
-		return list;
+		return oneDays;
 	}
-	private LessonForWeeklyVO _wrapToLessonForWeeklyDto(LessonYzw lesson, CustomerYzw customer) {
-		Assert.notNull(lesson, "_wrapToLessonForWeeklyTableDto 中 lesson 不能为null");
-		
-		LessonForWeeklyVO dto = new LessonForWeeklyVO(lesson);
-		if(customer != null){
-			//TOD this.appointStatus
-			if(CourseType.OPENED == lesson.getCourseType()){
-				Long count = appointmentYzwDao.findCountByLessonIdByCustomerIdByAppointStatus(
-						lesson.getId(),
-						customer.getId(),
-						AppointStatus.APPONTED);
-				if(count > 0)
-					dto.setAppointStatus(AppointStatus.APPONTED);
-				else
-					dto.setAppointStatus(AppointStatus.UN_APOINTED);
-			}
-			//TOD  老师的签到状态 this.checkedInStatus
-			//1.如果上课时间大于或等于当天， 则未知其刷卡状态
-			if(lesson.getActualTeacher() == null)
-			{
-				if(LessonStatus.UN_CHECKED == lesson.getLessonStatus())
-					dto.setCheckedInStatus(CheckedInStatus.NON_CHECKABLE);
-				else
-					dto.setCheckedInStatus(CheckedInStatus.UN_CHECKED);
-			}else {
-				//2.如果刷卡时间大于课程开始时间则是补刷卡
-				Date checkedInDate = checkInsYzwDao.findCheckInTimeByProperties(lesson.getId(), lesson.getActualTeacher().getId());
-				Date lessonStart = lesson.getStartDateTime();
-				if(checkedInDate.compareTo(lessonStart) >0)
-					dto.setCheckedInStatus(CheckedInStatus.PATCHED);
-				else
-					dto.setCheckedInStatus(CheckedInStatus.CHECKED);
-			}
-			
-				
-		}
-		//TOD this.appointedStudentCount = lesson.getAppointedStudentCount();
-		if(CourseType.OPENED == lesson.getCourseType())
-			dto.setAppointedStudentCount(
-					appointmentYzwDao.findCountByLessonIdByAppointStatus(lesson.getId(), AppointStatus.APPONTED).intValue());
-//					new String[]{"lesson.id", "status"}, 
-//					new Object[]{lesson.getId(), AppointStatus.APPONTED})
-		//TOD storeManCallRollCount
-		dto.setStoreManCallRollCount(storeManCallRollYzwDao.findCountByLessonIdAndCallRolledFlag(lesson.getId().toString(),true).intValue());
-//				new String[]{"lessonId", "callRolled"}, 
-//				new Object[]{lesson.getId().toString(),true})
-		//TOD  sumTimesOfCourse
-		dto.setSumTimesOfCourse(lessonDao.findCountByCourseId(lesson.getCourse().getId()).intValue());
-		//TOD  orderInCourse
-		dto.setOrderInCourse(lessonDao.findOrderInCourse(lesson));
-		
-		return dto;
+	
+	public static void main(String[] args) {
+		Calendar calendar = Calendar.getInstance();
+		System.err.println("current date is " + calendar.getTime());
+		System.err.println(calendar.get(Calendar.DAY_OF_WEEK));
 	}
-
+	
 	@Override
 	public YiwuJson<List<PrivateLessonApiView>> findPrivateLessonApiViewsByContracNo(String contractNo) {
 		List<PrivateLessonApiView> views = lessonDao.findPrivateLessonApiViewsByContracNo(contractNo);
@@ -216,12 +152,6 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		return YiwuJson.createBySuccess(page);
 	}
 
-	@Override
-	public Object findLessonWeekList(int storeId, String courseType, String teacherName, String danceCatagory,
-			Date date, String weChat) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public LessonYzw findComingLessonByCourseId(String courseId) {

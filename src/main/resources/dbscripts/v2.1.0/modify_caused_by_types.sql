@@ -30,4 +30,8 @@ update yiwu_income_record t1
 set t1.incomeType = t3.name,
 t1.con_ben_relation = t2.name,
 t1.eventType = t5.name;
-alter table yiwu_income_record modify colu
+
+-- 修改 yiwu_capital_account
+UPDATE yiwu_capital_account t1
+	JOIN yiwu_type t2 on (t1.capitalAccountType_id=t2.id)
+set paymentMode = t2.name;

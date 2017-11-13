@@ -36,6 +36,7 @@ import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView.DistributerApiViewConverter;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
+import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView.CapitalAccountApiViewConverter;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.FileService;
@@ -142,22 +143,26 @@ public class DistributerApiController extends BaseController {
 		}
 	}
 
-	@GetMapping(value = "/capitalAccount")
+	@GetMapping(value = "/capitalAccounts")
 	@ApiOperation(value = "获取资金帐号")
-	public YiwuJson<List<CapitalAccountApiView>> getCapitalAccount(int distributerId,
-			@ApiParam(value = "帐号类型Id, 10001：微信支付,10002:支付宝支付, -1：全部支付类型") int accountTypeId) {
-		List<CapitalAccountApiView> views = new ArrayList<>();
+	public YiwuJson<List<CapitalAccountApiView>> getCapitalAccount(
+			@ApiParam(value = "支付类型, 默认全部", required=false, allowableValues="{WECHAT_PAY,ALI_PAY}") 
+			PaymentMode paymentMode) {
+		Distributer distributer = UserContext.getDistributer();
+		
 		List<CapitalAccount> accounts = new ArrayList<>();
-		if (accountTypeId == -1) {
-			accounts = capitalAccountService.findByDistributerId( distributerId);
+		if (null == paymentMode) {
+			accounts = capitalAccountService.findByDistributerId(distributer.getId());
 		} else {
-			accounts = capitalAccountService.findByTypeAndDistributerId(accountTypeId, distributerId);
+			accounts = capitalAccountService.findByDistributerAndPaymentMode(distributer,paymentMode);
 		}
+		
+		List<CapitalAccountApiView> vos = new ArrayList<>();
 		for (CapitalAccount capitalAccount : accounts) {
-			views.add(new CapitalAccountApiView(capitalAccount));
+			vos.add(CapitalAccountApiViewConverter.INSTANCE.fromPO(capitalAccount));
 		}
 
-		return new YiwuJson<>(views);
+		return new YiwuJson<>(vos);
 	}
 
 	@PostMapping(value = "/capitalAccount")
@@ -170,16 +175,17 @@ public class DistributerApiController extends BaseController {
 		}
 		try {
 			CapitalAccount capitalAccount = new CapitalAccount();
-			capitalAccount.setAccount(capitalAcountModel.getAccountName());
+//			capitalAccount.setAccount(capitalAcountModel.getAccountName());
 			Distributer distributer = new Distributer();
 			distributer.setId(capitalAcountModel.getDistributerId());
-			PaymentMode type = PaymentMode.fromId(capitalAcountModel.getAccountTypeId());
+//			PaymentMode type = PaymentMode.fromId(capitalAcountModel.getAccountTypeId());
 			capitalAccount.setDistributer(distributer);
-			capitalAccount.setPaymentMode(type);
+//			capitalAccount.setPaymentMode(type);
 			logger.debug("begin save the new capitalAccount");
 			capitalAccountService.save(capitalAccount);
 			logger.debug("save the new capitalAccount successfully");
-			return new YiwuJson<>(new CapitalAccountApiView(capitalAccount));
+//			return new YiwuJson<>(new CapitalAccountApiView(capitalAccount));
+			return null;
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}

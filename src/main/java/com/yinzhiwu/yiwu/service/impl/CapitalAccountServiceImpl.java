@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
+import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.enums.PaymentMode;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 
 @Service
@@ -26,8 +28,8 @@ public class CapitalAccountServiceImpl extends BaseServiceImpl<CapitalAccount, I
 	}
 
 	@Override
-	public List<CapitalAccount> findByTypeAndDistributerId(int accountTypeId, int distributerId) {
-		return capitalAccountDao.findByTypeAndDistributerId(accountTypeId, distributerId);
+	public List<CapitalAccount> findByDistributerAndPaymentMode(Distributer distributer, PaymentMode paymentMode) {
+		return capitalAccountDao.findByDistributerIdAndPaymentMode(distributer.getId(),paymentMode);
 	}
 
 }

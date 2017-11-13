@@ -18,6 +18,7 @@ import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -25,6 +26,7 @@ import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.LessonCommentVO;
 import com.yinzhiwu.yiwu.model.view.LessonCommentVO.LessonCommentVOConverter;
 import com.yinzhiwu.yiwu.model.view.LessonVO;
+import com.yinzhiwu.yiwu.model.view.OneDayLessonsVO;
 import com.yinzhiwu.yiwu.model.view.LessonVO.LessonVOConverter;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 import com.yinzhiwu.yiwu.service.LessonYzwService;
@@ -123,15 +125,22 @@ public class LessonApiController extends BaseController {
 
 	@RequestMapping(value = "/weeklist",method={RequestMethod.GET})
 	@ApiOperation(value="获取一周课表")
-	public Object getLessonWeekList(
-			 int storeId,  String courseType,
-			 String teacherName,  String danceCatagory,  Date date,
-			 String weChat) {
+	public YiwuJson<List<OneDayLessonsVO>> getLessonWeekList(
+			@ApiParam(value="门店Id,默认为所有门店", required=false)
+			 Integer storeId, 
+			 @ApiParam(value="课程类型，默认所有类型", allowableValues="{CLOSED,OPENED,PRIVATE}",required=false)
+			 CourseType courseType,
+			 @ApiParam(value="教师姓名", required=false)
+			 String teacherName,  
+			 @ApiParam(value="舞种", required=false)
+			 String danceCatagory, 
+			 Date date) {
 		
 		if (date == null) {
 			date = new Date();
 		}
-		return lessonService.findLessonWeekList(storeId, courseType, teacherName, danceCatagory, date, weChat);
+		List<OneDayLessonsVO> list =  lessonService.findWeeklyLessons(storeId, courseType, teacherName, danceCatagory, date); 
+		return YiwuJson.createBySuccess(list);
 	}
 
 

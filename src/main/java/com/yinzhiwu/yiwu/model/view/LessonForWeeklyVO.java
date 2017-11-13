@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonInteractive;
-import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.enums.CourseType;
@@ -112,10 +111,13 @@ public class LessonForWeeklyVO {
 	
 	@MapedProperty(ignored=true)
 	@ApiModelProperty(value="预约状态",allowableValues="[APPONTED,UN_APOINTED]")
-	private AppointStatus appointStatus;
+	private Boolean appointed;
 	
 	@MapedProperty(ignored=true)
-	private CheckedInStatus checkedInStatus;
+	private Boolean checkedIn;
+	
+	@MapedProperty(ignored=true)
+	private CheckedInStatus coachCheckedInStatus;
 	
 	public static final class LessonForWeeklyVOConverter extends AbstractConverter<LessonYzw, LessonForWeeklyVO>
 	{
@@ -130,11 +132,11 @@ public class LessonForWeeklyVO {
 			if(null != distributer){
 				try {
 					LessonInteractive li = interactiveService.findByDistributerIdAndLessonId(distributer.getId(), po.getId());
-					vo.setAppointStatus(li.getAppointed()?AppointStatus.APPONTED:AppointStatus.UN_APOINTED);
-					vo.setCheckedInStatus(li.getCheckedIn()?CheckedInStatus.CHECKED:CheckedInStatus.UN_CHECKED);
+					vo.setAppointed(li.getAppointed());
+					vo.setCheckedIn(li.getCheckedIn());
 				} catch (DataNotFoundException e) {
-					vo.setAppointStatus(AppointStatus.UN_APOINTED);
-					vo.setCheckedInStatus(CheckedInStatus.UN_CHECKED);
+					vo.setAppointed(false);
+					vo.setCheckedIn(false);
 				}
 			}
 			return vo;
@@ -217,10 +219,6 @@ public class LessonForWeeklyVO {
 
 	public Integer getMaxStudentCount() {
 		return maxStudentCount;
-	}
-
-	public CheckedInStatus getCheckedInStatus() {
-		return checkedInStatus;
 	}
 
 	public Integer getAppointedStudentCount() {
@@ -312,9 +310,6 @@ public class LessonForWeeklyVO {
 		this.maxStudentCount = maxStudentCount;
 	}
 
-	public void setCheckedInStatus(CheckedInStatus checkedInStatus) {
-		this.checkedInStatus = checkedInStatus;
-	}
 
 	public void setAppointedStudentCount(Integer appointedStudentCount) {
 		this.appointedStudentCount = appointedStudentCount;
@@ -329,12 +324,6 @@ public class LessonForWeeklyVO {
 		this.sumTimesOfCourse = sumTimesOfCourse;
 	}
 
-	public AppointStatus getAppointStatus() {
-		return appointStatus;
-	}
-	public void setAppointStatus(AppointStatus appointStatus) {
-		this.appointStatus = appointStatus;
-	}
 	
 	public Integer getWeekDay() {
 		Calendar calendar = Calendar.getInstance();
@@ -368,6 +357,30 @@ public class LessonForWeeklyVO {
 	}
 	public void setOrdinalNo(Integer ordinalNo) {
 		this.ordinalNo = ordinalNo;
+	}
+
+	public CheckedInStatus getCoachCheckedInStatus() {
+		return coachCheckedInStatus;
+	}
+
+	public void setCoachCheckedInStatus(CheckedInStatus coachCheckedInStatus) {
+		this.coachCheckedInStatus = coachCheckedInStatus;
+	}
+
+	public Boolean getAppointed() {
+		return appointed;
+	}
+
+	public Boolean getCheckedIn() {
+		return checkedIn;
+	}
+
+	public void setAppointed(Boolean appointed) {
+		this.appointed = appointed;
+	}
+
+	public void setCheckedIn(Boolean checkedIn) {
+		this.checkedIn = checkedIn;
 	}
 
 	

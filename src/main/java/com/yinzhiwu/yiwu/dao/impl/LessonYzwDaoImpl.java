@@ -85,32 +85,6 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		List<Object> values = new ArrayList<>();
 		
 		StringBuilder hql = new StringBuilder();
-//		hql.append("SELECT new com.yinzhiwu.yiwu.model.view.LessonForWeeklyDto");
-//		//开始
-//		hql.append("(");
-//		hql.append("t1.id");
-//		hql.append(",t1.name");
-//		hql.append(",t1.course.danceDesc");
-//		hql.append(",t1.course.danceGrade");
-//		hql.append(",t1.course.id");
-//		hql.append(",t1.lessonDate");
-//		hql.append(",t1.startTime");
-//		hql.append(",t1.endTime");
-//		hql.append(",t1.store.id");
-//		hql.append(",t1.store.name");
-//		hql.append(",t1.lessonTime");
-//		hql.append(",t1.dueTeacher.id");
-//		hql.append(",t1.dueTeacher.name");
-//		hql.append(",t1.actualTeacher.id");
-//		hql.append(",t1.actualTeacher.name");
-//		hql.append(",t1.courseType");
-//		hql.append(",t1.subCourseType");
-//		hql.append(",t1.lessonStatus");
-//		hql.append(",null,null,t1.classRoom.maxStudentCount");
-//		hql.append(",t1.appointedStudentCount, null,null,null");
-//		hql.append(",null, null, null");
-//		//结束
-//		hql.append(")");
 		hql.append("FROM LessonYzw t1");
 		hql.append(" WHERE t1.lessonDate BETWEEN :start and :end" );
 		hql.append(" AND t1.courseType <> :privateCourseType");
@@ -150,10 +124,7 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 			query.setParameter(properties.get(i), values.get(i));
 		}
 		
-		List<LessonYzw> lessons = query.getResultList();
-		if(lessons==null)
-			return new ArrayList<>();
-		return lessons;
+		return query.getResultList();
 		
 		
 	}

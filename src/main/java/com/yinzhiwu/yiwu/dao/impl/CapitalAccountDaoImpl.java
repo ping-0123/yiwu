@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
+import com.yinzhiwu.yiwu.enums.PaymentMode;
 
 @Repository
 public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> implements CapitalAccountDao {
@@ -16,9 +17,10 @@ public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> 
 	}
 
 	@Override
-	public List<CapitalAccount> findByTypeAndDistributerId(int accountTypeId, int distributerId) {
-		return findByProperties(new String[]{"capitalAccountType.id", "distributer.id"}, 
-				new Object[]{accountTypeId, distributerId}) ;
+	public List<CapitalAccount> findByDistributerIdAndPaymentMode(Integer distributerId, PaymentMode paymentMode) {
+		return findByProperties(
+				new String[]{"distributer.id","paymentMode"}, 
+				new Object[]{distributerId,paymentMode});
 	}
 
 }

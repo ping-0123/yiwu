@@ -1,8 +1,9 @@
 package com.yinzhiwu.yiwu.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -10,7 +11,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.yinzhiwu.yiwu.enums.PaymentMode;
-import com.yinzhiwu.yiwu.enums.PaymentMode.PaymentModeConverter;
 
 @Entity
 @Table(name = "yiwu_capital_account", uniqueConstraints = 
@@ -25,7 +25,8 @@ public class CapitalAccount extends BaseEntity {
 	@Column(length = 50, nullable = false) // uk
 	private String account;
 
-	@Convert(converter=PaymentModeConverter.class)
+	@Enumerated(EnumType.STRING)
+	@Column(length=32)
 	private PaymentMode paymentMode;
 
 	@ManyToOne

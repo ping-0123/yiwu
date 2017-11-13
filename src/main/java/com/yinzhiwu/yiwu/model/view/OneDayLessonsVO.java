@@ -1,10 +1,11 @@
-package com.yinzhiwu.yiwu.model;
+package com.yinzhiwu.yiwu.model.view;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yinzhiwu.yiwu.model.view.LessonForWeeklyVO;
 
 /**
 *@Author ping
@@ -12,13 +13,30 @@ import com.yinzhiwu.yiwu.model.view.LessonForWeeklyVO;
 *
 */
 
-public class DailyLessonsDto {
+public class OneDayLessonsVO {
 
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date date;
 
 	private int weekday;
-	private List<LessonForWeeklyVO> list;
+	private List<LessonForWeeklyVO> list  = new ArrayList<>();
+	
+	public OneDayLessonsVO(Date date, int weekday, List<LessonForWeeklyVO> list) {
+		super();
+		this.date = date;
+		this.weekday = weekday;
+		this.list = list;
+	}
+	public OneDayLessonsVO() {}
+	
+	public OneDayLessonsVO(Date time) {
+		this.date = time;
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		this.weekday = calendar.get(Calendar.DAY_OF_WEEK);
+	}
+	
+	
 	public Date getDate() {
 		return date;
 	}
@@ -38,13 +56,6 @@ public class DailyLessonsDto {
 		this.list = list;
 	}
 	
-	public DailyLessonsDto(Date date, int weekday, List<LessonForWeeklyVO> list) {
-		super();
-		this.date = date;
-		this.weekday = weekday;
-		this.list = list;
-	}
-	public DailyLessonsDto() {}
 	
 	
 }

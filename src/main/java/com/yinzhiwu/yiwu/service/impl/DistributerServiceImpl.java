@@ -180,7 +180,8 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			if (defaultAccount == null) {
 				return new YiwuJson<>("该用户尚未设置默认提现账户");
 			}
-			return new YiwuJson<>(new CapitalAccountApiView(defaultAccount));
+//			return new YiwuJson<>(new CapitalAccountApiView(defaultAccount));
+			return null;
 		} catch (Exception e) {
 			return new YiwuJson<>(e.getMessage());
 		}
@@ -198,7 +199,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		Set<CapitalAccount> accounts = d.getCapitalAccounts();
 		for (CapitalAccount a : accounts) {
 			if (typeName.equals(a.getPaymentMode().toString())) {
-				yiwuJson.setData(new CapitalAccountApiView(a));
+//				yiwuJson.setData(new CapitalAccountApiView(a));
 				break;
 			}
 		}

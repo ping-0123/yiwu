@@ -5,76 +5,72 @@ import javax.validation.constraints.Min;
 import org.hibernate.validator.constraints.Length;
 
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
+import com.yinzhiwu.yiwu.enums.PaymentMode;
+import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel
+@MapedClass(CapitalAccount.class)
 public class CapitalAccountApiView {
 
+	private Integer id;
+	
+	@Length(min = 6, max = 50)
+	private String account;
+	
 	@ApiModelProperty(value = "分销者Id", required = true)
 	@Min(value = 1, message = "请输入正确的分销者Id")
-	private int distributerId;
+	@MapedProperty("distributer.id")
+	private Integer distributerId;
 
-	private int accountId;
-
-	@Min(value = 1, message = "请输入正确的资金帐号类型Id: 10001表示微信帐号，10002表示支付宝账号")
-	private int accountTypeId;
-
-	private String accountTypeName;
-
-	@Length(min = 6, max = 50)
-	private String accountName;
+	private PaymentMode paymentMode;
 
 	public CapitalAccountApiView() {
-	}
-
-	public CapitalAccountApiView(CapitalAccount c) {
-		this.distributerId = c.getDistributer().getId();
-		this.accountId = c.getId();
-		this.accountName = c.getAccount();
-		this.accountTypeId = c.getPaymentMode().getId();
-		this.accountTypeName = c.getPaymentMode().toString();
 	}
 
 	public int getDistributerId() {
 		return distributerId;
 	}
 
-	public int getAccountId() {
-		return accountId;
-	}
-
-	public int getAccountTypeId() {
-		return accountTypeId;
-	}
-
-	public String getAccountTypeName() {
-		return accountTypeName;
-	}
-
-	public String getAccountName() {
-		return accountName;
-	}
-
 	public void setDistributerId(int distributerId) {
 		this.distributerId = distributerId;
 	}
 
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setAccountTypeId(int accountTypeId) {
-		this.accountTypeId = accountTypeId;
+	public String getAccount() {
+		return account;
 	}
 
-	public void setAccountTypeName(String accountTypeName) {
-		this.accountTypeName = accountTypeName;
+	public PaymentMode getPaymentMode() {
+		return paymentMode;
 	}
 
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public void setDistributerId(Integer distributerId) {
+		this.distributerId = distributerId;
+	}
+
+	public void setPaymentMode(PaymentMode paymentMode) {
+		this.paymentMode = paymentMode;
+	}
+	
+	
+	public final static class CapitalAccountApiViewConverter extends AbstractConverter<CapitalAccount, CapitalAccountApiView>{
+		public final static CapitalAccountApiViewConverter INSTANCE = new CapitalAccountApiViewConverter();
 	}
 
 }
