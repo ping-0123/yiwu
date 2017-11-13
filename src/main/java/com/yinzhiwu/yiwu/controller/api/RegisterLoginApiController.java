@@ -37,7 +37,7 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping(value="/api")
 @RestController
 @Api("微信端客户登录模块")
-public class AccountApiController extends BaseController {
+public class RegisterLoginApiController extends BaseController {
 	
 	@Autowired private DistributerService distributerService;
 	@Autowired private JSMSService jsmsService;
