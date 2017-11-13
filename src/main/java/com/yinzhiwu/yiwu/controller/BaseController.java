@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,6 +30,6 @@ public class BaseController {
 	@ResponseBody
 	public YiwuJson handlerException(HttpServletRequest request,HttpServletResponse response, Exception e){
 		logger.error(e.getMessage(),e);
-		return YiwuJson.createByErrorCodeMessage(response.getStatus(), e.getLocalizedMessage());
+		return YiwuJson.createByErrorCodeMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getLocalizedMessage());
 	}
 }
