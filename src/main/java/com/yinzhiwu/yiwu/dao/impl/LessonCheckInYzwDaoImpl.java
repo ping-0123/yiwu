@@ -19,6 +19,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
@@ -234,6 +235,25 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 		else
 			return views.get(0);
 		
+	}
+
+
+	@Override
+	public LessonCheckInYzw findByLessonIdAndCoachId(Integer lessonId, Integer coachId) throws DataNotFoundException {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" FROM LessonCheckInYzw");
+		hql.append(" WHERE lesson.id = :lessonId");
+		hql.append(" AND teacher.id = :coachId");
+		hql.append(" ORDER BY createTime");
+		
+		List<LessonCheckInYzw> lessons =  getSession().createQuery(hql.toString(),LessonCheckInYzw.class) 
+					.setParameter("lessonId", lessonId)
+					.setParameter("coachId", coachId)
+					.setMaxResults(1)
+					.getResultList();
+		if(lessons.size()==0)
+			throw  new DataNotFoundException("lesson id: " + lessonId + " 未找到教练: " + coachId + "的签到记录" );
+		return lessons.get(0);
 	}
 
 }

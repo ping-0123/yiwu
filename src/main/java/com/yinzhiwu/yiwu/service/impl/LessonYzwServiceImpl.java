@@ -12,19 +12,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
+import com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.LessonForWeeklyVO;
+import com.yinzhiwu.yiwu.model.view.LessonForWeeklyVO.CheckedInStatus;
 import com.yinzhiwu.yiwu.model.view.LessonForWeeklyVO.LessonForWeeklyVOConverter;
 import com.yinzhiwu.yiwu.model.view.OneDayLessonsVO;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
@@ -38,6 +42,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	@Autowired private LessonYzwDao lessonDao;
 	@Qualifier(value="fileServiceImpl")
 	@Autowired private FileService fileService;
+	@Autowired private LessonCheckInYzwDao lessonCheckinDao;
 	
 	@Autowired
 	public void setBaseDao(LessonYzwDao lessonDao) {
@@ -97,7 +102,9 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 				danceCatagory,start, end);
 		for (LessonYzw lesson : lessons) {
 			LessonForWeeklyVO vo = LessonForWeeklyVOConverter.INSTANCE.fromPO(lesson);
-			// TODO vo.setCoachCheckedInStatus();
+			//必要时记录教练的签到状态
+			if(StringUtils.hasLength(teacherName))
+				vo.setCoachCheckedInStatus(getCoachCheckinStatus(lesson));
 			vos.add(vo);
 		}
 		
@@ -224,6 +231,25 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	@Override
 	public List<LessonYzw> findOpenedLessonsOfYesterday() {
 		return lessonDao.findOpenedLessonsOfYesterday();
+	}
+
+	@Override
+	public CheckedInStatus getCoachCheckinStatus(LessonYzw lesson) {
+		if(LessonStatus.UN_CHECKED == lesson.getLessonStatus() )
+			return CheckedInStatus.NON_CHECKABLE;
+		if(null == lesson.getActualTeacher())
+			return CheckedInStatus.UN_CHECKED;
+		LessonCheckInYzw checkin;
+		try {
+			checkin = lessonCheckinDao.findByLessonIdAndCoachId(lesson.getId(), lesson.getActualTeacher().getId());
+		} catch (DataNotFoundException e) {
+			throw new RuntimeException("数据有误，教练未签到却记录了课时");
+		}
+		if(checkin.getCreateTime().before(lesson.getStartDateTime()))
+			return CheckedInStatus.CHECKED;
+		else {
+			return CheckedInStatus.PATCHED;
+		}
 	}
 	
 }

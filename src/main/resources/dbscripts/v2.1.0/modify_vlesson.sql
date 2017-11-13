@@ -4,7 +4,7 @@ alter table chenkuserdb1.skt7 add column(
 	standardVideoPosterUri varchar(128), standardVideoTitle varchar(128), 
 	puzzleVideoUri varchar(128),puzzleVideoPosterUri varchar(128), puzzleVideoTitle varchar(128),
 	practicalVideoUri varchar(128) ,practicalVideoPosterUri varchar(128),practicalVideoTitle varchar(128) );
-alter table chenkuserdb1.skt7 add column(rollCalledStudentCountByStoreman int default 0)
+alter table chenkuserdb1.skt7 add column(rollCalledStudentCountByStoreman int default 0);
 
 CREATE 
 	or REPLACE

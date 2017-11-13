@@ -134,6 +134,7 @@ public class LessonApiController extends BaseController {
 			 String teacherName,  
 			 @ApiParam(value="舞种", required=false)
 			 String danceCatagory, 
+			 @ApiParam(value="日期  默认为当天", required=false)
 			 Date date) {
 		
 		if (date == null) {

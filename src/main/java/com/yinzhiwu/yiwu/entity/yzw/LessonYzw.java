@@ -124,13 +124,10 @@ public class LessonYzw extends BaseYzwEntity {
 	@Column
 	private Integer rollCalledStudentCountByStoreman;
 
-	@Column(name = "shidaoRenshu")
 	private Integer actualStudentCount;
 
-	@Column(name = "qiandaoRenshu")
 	private Integer checkedInStudentCount;
 
-	@Column(name = "yuyueRenshu")
 	private Integer appointedStudentCount;
 
 	@Embedded
@@ -160,6 +157,26 @@ public class LessonYzw extends BaseYzwEntity {
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private List<LessonInteractive> interactives = new ArrayList<>();
 	
+	
+	@Override
+	public void init() {
+		super.init();
+		if(null == dueStudentCount)
+			dueStudentCount=0;
+		if(null==experienceStudentCount)
+			experienceStudentCount=0;
+		if(null==rollCalledStudentCountByCoach)
+			rollCalledStudentCountByCoach=0;
+		if(null==rollCalledStudentCountByStoreman)
+			rollCalledStudentCountByStoreman=0;
+		if(null==actualStudentCount)
+			actualStudentCount=0;
+		if(null==checkedInStudentCount)
+			checkedInStudentCount=0;
+		if(null==appointedStudentCount)
+			appointedStudentCount=0;
+	}
+
 	public LessonYzw() {
 		super();
 	}

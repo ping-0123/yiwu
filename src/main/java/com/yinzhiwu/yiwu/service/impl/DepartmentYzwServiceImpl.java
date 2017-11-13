@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.EmployeeDepartmentYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw.OrgnizationType;
 import com.yinzhiwu.yiwu.model.view.DepartmentApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
@@ -96,6 +97,11 @@ public class DepartmentYzwServiceImpl extends BaseServiceImpl<DepartmentYzw, Int
 	@Override
 	public List<DepartmentYzw> findByCity(String city) {
 		return departmentDao.findByCity(city);
+	}
+
+	@Override
+	public List<DepartmentYzw> findAllStores() {
+		return departmentDao.findByType(OrgnizationType.STORE);
 	}
 	
 }

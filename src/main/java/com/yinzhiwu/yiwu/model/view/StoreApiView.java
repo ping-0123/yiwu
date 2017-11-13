@@ -5,18 +5,26 @@ import org.springframework.util.Assert;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.StoreInfo;
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
 
 @JsonInclude(value= Include.NON_NULL)
+@MapedClass(DepartmentYzw.class)
 public class StoreApiView {
 
 	private int id;
 
 	private String name;
 
+	@MapedProperty(value="officialAddress.address")
 	private String address;
 
 	private String telePhone;
+	
+	@MapedProperty(value="parent.id")
 	private Integer districtId;
 
 	public StoreApiView() {
@@ -93,6 +101,11 @@ public class StoreApiView {
 		this.id = id;
 		this.name = name;
 		this.districtId = districtId;
+	}
+	
+	public static final class StoreApiViewConverter extends AbstractConverter<DepartmentYzw, StoreApiView>
+	{
+		public static final StoreApiViewConverter INSTANCE = new StoreApiViewConverter();
 	}
 
 }

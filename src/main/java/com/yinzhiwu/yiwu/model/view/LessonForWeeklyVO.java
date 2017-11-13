@@ -63,8 +63,7 @@ public class LessonForWeeklyVO {
 	@MapedProperty(value="store.name")
 	private String storeName;
 	//课程时长
-	@MapedProperty(value="lessonTime")
-	private Float lessonHours;
+	private Float hours;
 	
 	@MapedProperty(value="dueTeacher.id")
 	private Integer dueTeacherId;
@@ -123,15 +122,17 @@ public class LessonForWeeklyVO {
 	{
 		public static final LessonForWeeklyVOConverter INSTANCE = new LessonForWeeklyVOConverter();
 		private final LessonInteractiveService interactiveService = SpringUtils.getBean(LessonInteractiveService.class);
+//		private final LessonCheckinService checkinService = SpringUtils.getBean(LessonCheckinService.class);
+//		private final LessonYzwService lessonService = SpringUtils.getBean(LessonYzwService.class);
 		
 		@Override
-		public LessonForWeeklyVO fromPO(LessonYzw po) {
-			LessonForWeeklyVO vo =  super.fromPO(po);
+		public LessonForWeeklyVO fromPO(LessonYzw lesson) {
+			LessonForWeeklyVO vo =  super.fromPO(lesson);
 			vo.setWeekDay();
 			Distributer distributer = UserContext.getDistributer();
 			if(null != distributer){
 				try {
-					LessonInteractive li = interactiveService.findByDistributerIdAndLessonId(distributer.getId(), po.getId());
+					LessonInteractive li = interactiveService.findByDistributerIdAndLessonId(distributer.getId(), lesson.getId());
 					vo.setAppointed(li.getAppointed());
 					vo.setCheckedIn(li.getCheckedIn());
 				} catch (DataNotFoundException e) {
@@ -185,9 +186,6 @@ public class LessonForWeeklyVO {
 		return storeName;
 	}
 
-	public Float getLessonHours() {
-		return lessonHours;
-	}
 
 	public Integer getDueTeacherId() {
 		return dueTeacherId;
@@ -274,8 +272,13 @@ public class LessonForWeeklyVO {
 		this.storeName = storeName;
 	}
 
-	public void setLessonHours(Float lessonHours) {
-		this.lessonHours = lessonHours;
+
+	public Float getHours() {
+		return hours;
+	}
+
+	public void setHours(Float hours) {
+		this.hours = hours;
 	}
 
 	public void setDueTeacherId(Integer dueTeacherId) {

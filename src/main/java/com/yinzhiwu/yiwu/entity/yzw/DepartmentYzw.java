@@ -37,7 +37,7 @@ import com.yinzhiwu.yiwu.entity.Address;
 @Entity
 @Table(name = "vdepartment")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-@Where(clause="dataStatus <> 2")
+@Where(clause="dataStatus <> 2 AND removed=false")
 public class DepartmentYzw extends BaseYzwEntity{
 
 

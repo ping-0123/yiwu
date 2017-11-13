@@ -8,6 +8,7 @@ import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw.OrgnizationType;
 import com.yinzhiwu.yiwu.model.view.DepartmentApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 
@@ -144,6 +145,11 @@ public class DepartmentYzwDaoImpl extends BaseDaoImpl<DepartmentYzw, Integer> im
 		Assert.hasText(city);
 		
 		return findByProperty("officialAddress.city", city);
+	}
+
+	@Override
+	public List<DepartmentYzw> findByType(OrgnizationType store) {
+		return findByProperty("type", OrgnizationType.STORE);
 	}
 
 	

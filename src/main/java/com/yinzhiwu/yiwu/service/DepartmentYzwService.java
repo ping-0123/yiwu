@@ -16,6 +16,7 @@ import com.yinzhiwu.yiwu.web.purchase.dto.StoreDto;
 public interface DepartmentYzwService extends IBaseService<DepartmentYzw, Integer>{
 
 	List<StoreDto> findAllStores(int employeeId);
+	List<DepartmentYzw> findAllStores();
 
 	List<StoreDto> findVisableStoresByEmployee(int employeeId);
 
@@ -27,5 +28,6 @@ public interface DepartmentYzwService extends IBaseService<DepartmentYzw, Intege
 	List<DepartmentYzw> findAllWithExclude(DepartmentYzw source);
 
 	List<DepartmentYzw> findByCity(String city);
+
 
 }
