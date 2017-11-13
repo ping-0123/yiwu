@@ -1,5 +1,7 @@
 package com.yinzhiwu.yiwu.model.view;
 
+import javax.enterprise.inject.New;
+
 import org.springframework.beans.BeanUtils;
 
 import com.google.common.base.Converter;
@@ -7,7 +9,7 @@ import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.enums.Gender;
 import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
-import com.yinzhiwu.yiwu.util.beanutils.AbstractVO;
+import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
@@ -22,7 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @MapedClass(value=EmployeeYzw.class)
 @ApiModel(description="教练信息")
-public class CoachVO extends AbstractVO<EmployeeYzw, CoachVO>{
+public class CoachVO {
 	
 	@MapedProperty("id")
 	@ApiModelProperty(value="教练在系统中的员工Id")
@@ -137,5 +139,8 @@ public class CoachVO extends AbstractVO<EmployeeYzw, CoachVO>{
 		this.departmentName = departmentName;
 	}
 	
-	
+	public static final class CoachVOConverter extends AbstractConverter<EmployeeYzw, CoachVO>
+	{
+		public final static CoachVOConverter INSTANCE = new CoachVOConverter();
+	}
 }

@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
-import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CoachVO;
+import com.yinzhiwu.yiwu.model.view.CoachVO.CoachVOConverter;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 
 import io.swagger.annotations.ApiOperation;
@@ -28,15 +29,9 @@ public class CoachController extends BaseController {
 
 	@GetMapping(value="/{id}")
 	@ApiOperation(value="获取教练资料")
-	public YiwuJson<CoachVO> get(@PathVariable(name="id") Integer id){
-		
-		try {
-			EmployeeYzw emp = empService.get(id);
-			return YiwuJson.createBySuccess(new CoachVO().fromPO(emp));
-		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
-			return YiwuJson.createByErrorMessage(e.getMessage());
-		}
+	public YiwuJson<CoachVO> get(@PathVariable(name="id") Integer id) throws DataNotFoundException{
+		return YiwuJson.createBySuccess(CoachVOConverter.INSTANCE.fromPO(
+				empService.get(id)));
 	}
 	
 }
