@@ -36,5 +36,33 @@ public class CapitalAccountServiceImpl extends BaseServiceImpl<CapitalAccount, I
 	public CapitalAccount findOneByDistributerAndPaymentMode(Distributer distributer, PaymentMode paymentMode) {
 		return capitalAccountDao.findOneByDistributerIdAndPaymentMode(distributer.getId(),paymentMode);
 	}
+	
+	@Override
+	public Integer save(CapitalAccount account) {
+		if(null != account.getIsDefault() && account.getIsDefault())
+			capitalAccountDao.cancelDefaultAccount(account.getDistributer().getId());
+		return super.save(account);
+	}
+
+	@Override
+	public void update(CapitalAccount account) {
+		if(null != account.getIsDefault() && account.getIsDefault())
+			capitalAccountDao.cancelDefaultAccount(account.getDistributer().getId());
+		super.update(account);
+	}
+
+	@Override
+	public void saveOrUpdate(CapitalAccount account) {
+		if(null != account.getIsDefault() && account.getIsDefault())
+			capitalAccountDao.cancelDefaultAccount(account.getDistributer().getId());
+		super.saveOrUpdate(account);
+	}
+
+	@Override
+	public void modify(CapitalAccount source, CapitalAccount target) throws IllegalArgumentException, IllegalAccessException {
+		if(target.getIsDefault())
+			capitalAccountDao.cancelDefaultAccount(source.getDistributer().getId());
+		super.modify(source, target);
+	}
 
 }

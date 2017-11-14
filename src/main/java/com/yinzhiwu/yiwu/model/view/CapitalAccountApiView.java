@@ -31,10 +31,11 @@ public class CapitalAccountApiView {
 	@MapedProperty("distributer.id")
 	private Integer distributerId;
 
-	@ApiModelProperty()
+	@ApiModelProperty(value="支付方式", required=true, allowableValues="{WECHAT_PAY,ALI_PAY}")
 	@NotNull
 	private PaymentMode paymentMode;
 	
+	@ApiModelProperty(value="是否为默认账号", required=false)
 	private Boolean isDefault;
 
 	public CapitalAccountApiView() {
