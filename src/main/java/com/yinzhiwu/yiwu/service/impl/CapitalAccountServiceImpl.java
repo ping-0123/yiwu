@@ -32,4 +32,9 @@ public class CapitalAccountServiceImpl extends BaseServiceImpl<CapitalAccount, I
 		return capitalAccountDao.findByDistributerIdAndPaymentMode(distributer.getId(),paymentMode);
 	}
 
+	@Override
+	public CapitalAccount findOneByDistributerAndPaymentMode(Distributer distributer, PaymentMode paymentMode) {
+		return capitalAccountDao.findOneByDistributerIdAndPaymentMode(distributer.getId(),paymentMode);
+	}
+
 }

@@ -13,8 +13,10 @@ import javax.persistence.UniqueConstraint;
 import com.yinzhiwu.yiwu.enums.PaymentMode;
 
 @Entity
-@Table(name = "yiwu_capital_account", uniqueConstraints = 
-	@UniqueConstraint(name = "uk_CapitalAccount_accont", columnNames = "account"))
+@Table(name = "yiwu_capital_account", uniqueConstraints = {
+	@UniqueConstraint(name = "uk_CapitalAccount_accont", columnNames = "account"),
+	@UniqueConstraint(name="uk_capitalAccount_distributerId_paymentMode", columnNames={"distributer_id","paymentMode" })
+})
 public class CapitalAccount extends BaseEntity {
 
 	private static final long serialVersionUID = -7664170465208216472L;

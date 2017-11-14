@@ -116,10 +116,30 @@
 				<!-- onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/standardVideoUri', updateStandardVideoCallback)" -->
 				<button id="btn-create-standardVideoPoster"  onclick="showQiniuDropzoneModal('${uploadToken}','../../../lessonTemplates/${template.id}/connotation/standardVideoPosterUri',updateStandardVideoPosterCallback)" class="btn btn-primary">上传视频封面</button>
 				<button id="btn-delete-standardVideo"  onclick="showDeleteModal('../../../lessonTemplates/${template.id}/connotation/standardVideoUri',deleteStandardVideoCallback)" class="btn btn-danger">删除</button>
-				<div id="upload-picture-container">
-				</div>
-				<div id="dragdrop-picture-container">
-				</div>
+				
+				<div id="row">
+					<div id="container">
+					</div>
+					<div style="display:none" id="success" class="col-md-12">
+		                <div class="alert-success">
+		                    	队列全部文件处理完毕
+		                </div>
+	                </div>
+					<div class="col-md-12 ">
+	                    <table class="table table-striped table-hover text-left"   style="margin-top:40px;display:none">
+	                        <thead>
+	                          <tr>
+	                            <th class="col-md-4">Filename</th>
+	                            <th class="col-md-2">Size</th>
+	                            <th class="col-md-6">Detail</th>
+	                          </tr>
+	                        </thead>
+	                        <tbody id="fsUploadProgress">
+	                        </tbody>
+	                    </table>
+	                </div>
+	            </div>
+				
 				<div>
 					<video id="standardVideoUrl" width="320" height="240" controls="controls" poster="${template.connotation.standardVideoPosterUrl }" src="${template.connotation.standardVideoUrl }">
 					</video>

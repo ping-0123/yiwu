@@ -11,5 +11,7 @@ public interface CapitalAccountService extends IBaseService<CapitalAccount, Inte
 	List<CapitalAccount> findByDistributerId(int distributerId);
 
 	List<CapitalAccount> findByDistributerAndPaymentMode(Distributer distributer, PaymentMode paymentMode);
+	
+	CapitalAccount findOneByDistributerAndPaymentMode(Distributer distributer, PaymentMode paymentMode);
 
 }

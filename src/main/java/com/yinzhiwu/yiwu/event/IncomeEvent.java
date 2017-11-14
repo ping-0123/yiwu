@@ -9,6 +9,10 @@ package com.yinzhiwu.yiwu.event;
 
 public interface IncomeEvent {
 	
+	/**
+	 * 事件类型， 不同的类型产生的收益不同
+	 * @return
+	 */
 	public IncomeEventType getType();
 	
 	public Object getSource();

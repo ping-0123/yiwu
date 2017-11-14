@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.enums.PaymentMode;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 @Repository
 public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> implements CapitalAccountDao {
@@ -23,7 +24,16 @@ public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> 
 				new Object[]{distributerId,paymentMode});
 	}
 	
-	
+	@Override
+	public CapitalAccount findOneByDistributerIdAndPaymentMode(Integer distributerId, PaymentMode paymentMode) {
+		try {
+			return findOneByProperties(new String[]{"distributer.id","paymentMode"}, 
+					new Object[]{distributerId,paymentMode});
+		} catch (DataNotFoundException e) {
+			return null;
+		}
+	}
+
 
 	private void cancelDefaultAccount(Integer distributerId) {
 		StringBuilder hql = new StringBuilder();
@@ -63,6 +73,7 @@ public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> 
 			cancelDefaultAccount(source.getDistributer().getId());
 		super.modify(source, target);
 	}
+
 
 
 }

@@ -125,14 +125,29 @@ public class DistributerApiController extends BaseController {
 		}
 	}
 	
+	
+	/**
+	 * @deprecated {@link CapitalAccountApiController#doGet(Boolean, PaymentMode)}
+	 * @param distributerId
+	 * @return
+	 */
+	@Deprecated
 	@GetMapping(value = "/capitalAccount/getDefault")
-	@ApiOperation(value = "获取默认的提现帐号")
+	@ApiOperation(value = "获取默认的提现帐号 已弃用  请使用/api/capitalAccounts?isDefault=true")
 	public YiwuJson<CapitalAccountApiView> getDefaultCapitalAccount(Integer distributerId) {
 		return distributerService.getDefaultCapitalAccount(distributerId);
 	}
 
+	
+	/**
+	 * @deprecated {@link CapitalAccountApiController#setDefaultCapitalAccount(Integer, Boolean, String)}
+	 * @param distributerId
+	 * @param accountId
+	 * @return
+	 */
+	@Deprecated
 	@PostMapping(value = "/capitalAccount/setDefault")
-	@ApiOperation(value = "设置默认提现帐号")
+	@ApiOperation(value = "设置默认提现帐号， 已弃用， 使用/api/capitalAccounts/{id}/isDefault")
 	public YiwuJson<Boolean> setDefaultCapitalAccount(@ApiParam(value = "分销者Id", required = true) int distributerId,
 			@ApiParam(value = "帐号Id", required = true) int accountId) {
 		try {
@@ -171,8 +186,17 @@ public class DistributerApiController extends BaseController {
 		return new YiwuJson<>(vos);
 	}
 
+	
+	/**
+	 * @deprecated {@link CapitalAccountApiController#doCreate(CapitalAccountApiView, String)}
+	 * @param capitalAcountModel
+	 * @param bindingResult
+	 * @return
+	 */
+	
+	@Deprecated
 	@PostMapping(value = "/capitalAccount")
-	@ApiOperation(value = "新增资金账户")
+	@ApiOperation(value = "新增资金账户  已弃用，请使用 POST /api/capitalAccounts")
 	public YiwuJson<CapitalAccountApiView> addCapitalAccount(
 			@ApiParam("distributerId accountTypeId accountName 必须") @Valid CapitalAccountApiView capitalAcountModel,
 			BindingResult bindingResult) {

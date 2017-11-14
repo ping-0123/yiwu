@@ -51,7 +51,7 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content table-responsive">
-						<table id="lessonTemplate-datatable" class="table table-bordered table-hover table-condensed" width="100%">
+						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" width="100%">
 
 						</table>
 					</div>
@@ -89,7 +89,7 @@
    		var column_index_create_time=0;
    		$(document).ready(function(){
    			// lessonTemplate_datatable_setting 
-	    	var lessonTemplate_datatable_setting = 
+	    	var setting = 
 			{
 				"processing" : false,
 				"serverSide" : true,
@@ -126,11 +126,11 @@
 				} ]
 			}; //end lessonTemplate_datatable_setting setting
 			
-			var table = $("#lessonTemplate-datatable").DataTable(lessonTemplate_datatable_setting);
+			$("#yiwuDatatable").DataTable(setting);
 			
 			$(".modal-update-lessonTemplate").on("hidden.bs.modal", function(){
 				console.log("modal-update-lessonTemplate was hidden");
-				$("#lessonTemplate-datatable").DataTable().draw(false);
+				$("#yiwuDatatable").DataTable().draw(false);
 			});
    		});
 			
