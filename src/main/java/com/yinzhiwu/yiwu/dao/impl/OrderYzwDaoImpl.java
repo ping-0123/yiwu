@@ -16,6 +16,7 @@ import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
@@ -24,7 +25,6 @@ import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
-import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
 import com.yinzhiwu.yiwu.util.GeneratorUtil;
 
@@ -391,19 +391,14 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	}
 
 	@Override
-	public StoreApiView findStoreOfValidOpenContractOrder(Integer customerId) {
+	public DepartmentYzw findStoreOfValidOpenContractOrder(Integer customerId) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("SELECT new " + StoreApiView.class.getName());
-		hql.append("(");
-		hql.append("t1.store.id");
-		hql.append(",t1.store.name");
-		hql.append(",t1.store.superior.id");
-		hql.append(")");
+		hql.append("SELECT t1.store");
 		hql.append(" FROM OrderYzw t1");
 		hql.append(" WHERE t1.customer.id = :customerId");
 		hql.append(" AND t1.contract.type =:openCourseType");
 		
-		List<StoreApiView> views = getSession().createQuery(hql.toString(), StoreApiView.class)
+		List<DepartmentYzw> views = getSession().createQuery(hql.toString(), DepartmentYzw.class)
 				.setParameter("customerId", customerId)
 				.setParameter("openCourseType", CourseType.OPENED)
 				.setMaxResults(1)
@@ -415,6 +410,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 			return views.get(0);
 	}
 
+	
 	@Override
 	public PageBean<OrderApiView> findPageOfOrderApiViewByCustomerId(Integer customerId, int pageNo, int pageSize) {
 		StringBuilder hql = new StringBuilder();

@@ -2,16 +2,18 @@ package com.yinzhiwu.yiwu.model.view;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 
+@MapedClass(IncomeRecord.class)
 public class IncomeRecordApiView {
 
-	private static Log LOG = LogFactory.getLog(IncomeRecordApiView.class);
+	private static Logger LOG = LoggerFactory.getLogger(IncomeRecordApiView.class);
 
 	private int id;
 
