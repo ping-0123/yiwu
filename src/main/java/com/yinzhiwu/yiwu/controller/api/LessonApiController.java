@@ -128,7 +128,7 @@ public class LessonApiController extends BaseController {
 	public YiwuJson<List<OneDayLessonsVO>> getLessonWeekList(
 			@ApiParam(value="门店Id,默认为所有门店", required=false)
 			 Integer storeId, 
-			 @ApiParam(value="课程类型，默认所有类型", allowableValues="{CLOSED,OPENED,PRIVATE}",required=false)
+			 @ApiParam(value="课程类型，取值{CLOSED,OPENED,PRIVATE} 默认所有类型", allowableValues="{CLOSED,OPENED,PRIVATE}",required=false)
 			 CourseType courseType,
 			 @ApiParam(value="教师姓名", required=false)
 			 String teacherName,  

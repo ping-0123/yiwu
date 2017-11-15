@@ -16,7 +16,4 @@ public interface CapitalAccountDao extends IBaseDao<CapitalAccount, Integer> {
 
 	CapitalAccount findOneByDistributerIdAndPaymentMode(Integer id, PaymentMode paymentMode);
 
-	@Transactional(propagation=Propagation.REQUIRED)
-	void cancelDefaultAccount(Integer distributerId);
-
 }

@@ -40,12 +40,25 @@ public class CapitalAccount extends BaseEntity {
 		super();
 	}
 
+	
+	
+	public CapitalAccount(String account, PaymentMode paymentMode, Distributer distributer, Boolean isDefault) {
+		this.account = account;
+		this.paymentMode = paymentMode;
+		this.distributer = distributer;
+		this.isDefault = isDefault;
+	}
+
+
+
 	@Override
 	public void init() {
 		super.init();
 		if(null == isDefault)
 			isDefault=false;
 	}
+	
+
 
 	public String getAccount() {
 		return account;

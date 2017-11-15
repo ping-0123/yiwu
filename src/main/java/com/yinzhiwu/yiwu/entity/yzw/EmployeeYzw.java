@@ -37,7 +37,6 @@ import com.yinzhiwu.yiwu.enums.Gender;
 @Table(name = "vemployee")
 @Inheritance(strategy=InheritanceType.JOINED)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Where(clause="dataStatus <> 2") //TODO 逻辑删除导致的关联问题， 如懒加载失败
 public class EmployeeYzw extends BaseYzwEntity {
 
 	/**

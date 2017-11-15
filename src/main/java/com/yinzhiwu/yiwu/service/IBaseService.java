@@ -51,7 +51,6 @@ public interface IBaseService<T, PK extends Serializable> {
 	@Transactional
 	public void modify(T source, T target) throws IllegalArgumentException, IllegalAccessException;
 	
-	@Transactional
 	public T get(PK id) throws DataNotFoundException;
 	@Transactional
 	public List<T> findAll() ;
