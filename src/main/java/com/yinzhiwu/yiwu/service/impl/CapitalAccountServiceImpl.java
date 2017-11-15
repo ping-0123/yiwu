@@ -39,8 +39,8 @@ public class CapitalAccountServiceImpl extends BaseServiceImpl<CapitalAccount, I
 	
 	@Override
 	public Integer save(CapitalAccount account) {
-//		if(null != account.getIsDefault() && account.getIsDefault())
-//			capitalAccountDao.cancelDefaultAccount(account.getDistributer().getId());
+		if(null != account.getIsDefault() && account.getIsDefault())
+			capitalAccountDao.cancelDefaultAccount(account.getDistributer().getId());
 		return super.save(account);
 	}
 
