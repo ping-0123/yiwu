@@ -1,7 +1,5 @@
 package com.yinzhiwu.yiwu.model.view;
 
-import javax.enterprise.inject.New;
-
 import org.springframework.beans.BeanUtils;
 
 import com.google.common.base.Converter;

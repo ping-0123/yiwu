@@ -77,6 +77,7 @@ public class LessonPraiseApiController extends BaseController {
 			return YiwuJson.createBySuccess();
 	}
 	
+	
 	@DeleteMapping(value="/{id}")
 	@ApiOperation(value="删除点赞记录")
 	public YiwuJson<?> delete(@PathVariable(name="id") Integer id){

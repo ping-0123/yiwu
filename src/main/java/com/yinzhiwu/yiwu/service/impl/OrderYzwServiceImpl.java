@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -323,11 +324,13 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 	}
 
 
+	@Transactional
 	@Override
 	public Contract findEnableInteractiveContractByLessonAndDistributer(LessonYzw lesson, Distributer distributer) throws DataNotFoundException {
 		return orderDao.findCheckableContractOfCustomerAndLesson(distributer.getCustomer(), lesson);
 	}
 	
+	@Transactional
 	@EventListener(classes={LessonAppointmentYzw.class})
 	public void handleLessonAppointment(LessonAppointmentYzw appointment){
 		orderDao.updateContractWithHoldTimes(
@@ -335,6 +338,7 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 				appointment.getStatus()==AppointStatus.APPONTED?1:-1);
 	}
 
+	@Transactional
 	@EventListener(classes={LessonCheckInYzw.class})
 	public void hanbleLessonCheckIn(LessonCheckInYzw checkIn){
 		if(!checkIn.getAppointed())

@@ -8,7 +8,10 @@ import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
+import com.yinzhiwu.yiwu.enums.IncomeType;
+import com.yinzhiwu.yiwu.event.IncomeEventType;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
 @MapedClass(IncomeRecord.class)
 public class IncomeRecordApiView {
@@ -17,31 +20,43 @@ public class IncomeRecordApiView {
 
 	private int id;
 
+	@MapedProperty("recordTimestamp")
 	@JsonFormat(pattern = "yyyy/MM/dd")
 	private Date date;
 
-	private String eventTypeName;
+	@MapedProperty("eventType")
+	private IncomeEventType eventTypeName;
 
+	@MapedProperty("contributor.name")
 	private String memberName;
 
+	@MapedProperty("contributer.memberCard")
 	private String memberId;
 
+	@MapedProperty("contributor.phoneNo")
 	private String phoneNo;
 	
+	@MapedProperty("contributor.customer.name")
 	private String customerName;
 
+	@MapedProperty("contributor.superDistributer.name")
 	private String superMemberName;
 
-	private String incomeTypeName;
+	@MapedProperty("incomeType")
+	private IncomeType incomeTypeName;
 
 	private float incomeValue;
 
+	@MapedProperty("contributedValue")
 	private float payedAmount;
 
 	private float currentValue;
 
+	@MapedProperty("incomeFactor")
 	private float factor;
 
+	//分享推文字段
+	
 	public IncomeRecordApiView() {
 	}
 
