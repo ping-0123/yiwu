@@ -9,9 +9,12 @@ import org.springframework.util.Assert;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.enums.IncomeType;
+import com.yinzhiwu.yiwu.enums.TweetType;
 import com.yinzhiwu.yiwu.event.IncomeEventType;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @MapedClass(IncomeRecord.class)
 public class IncomeRecordApiView {
@@ -27,6 +30,7 @@ public class IncomeRecordApiView {
 	@MapedProperty("eventType")
 	private IncomeEventType eventTypeName;
 
+	@ApiModelProperty("即转发记录里的转发人")
 	@MapedProperty("contributor.name")
 	private String memberName;
 
@@ -56,6 +60,14 @@ public class IncomeRecordApiView {
 	private float factor;
 
 	//分享推文字段
+	@ApiModelProperty("分享的推文类型")
+	@MapedProperty(ignored=true)
+	private TweetType tweetType;
+	
+	@ApiModelProperty("推文标题")
+	@MapedProperty(ignored=true)
+	private String tweetTitle;
+	
 	
 	public IncomeRecordApiView() {
 	}
