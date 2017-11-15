@@ -34,4 +34,5 @@ public interface LessonCheckinService extends IBaseService<LessonCheckInYzw, Int
 	 * @throws LessonInteractiveException
 	 */
 	LessonCheckInYzw doCheckIn(Distributer distributer, LessonYzw lesson) throws LessonCheckInException, LessonInteractiveException;
+
 }

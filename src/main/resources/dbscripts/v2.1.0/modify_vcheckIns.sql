@@ -1,4 +1,4 @@
-alter TABLE chenkuserdb1.skt23 add COLUMN(dataStatus int not null DEFAULT 0, appointed boolean not null DEFAULT false);
+alter TABLE chenkuserdb1.skt23 add COLUMN(appointed boolean not null DEFAULT false);
 CREATE 
 	or REPLACE 
 VIEW `vcheck_ins` AS
@@ -15,7 +15,6 @@ VIEW `vcheck_ins` AS
         `chenkuserdb1`.`skt23`.`SKF983` AS `storemanCallroll`,
         `chenkuserdb1`.`skt23`.`SKF984` AS `uncallrollReason`,
         appointed,
-        dataStatus,
         `chenkuserdb1`.`skt23`.`SF_CREATE_USER` AS `sf_create_user`,
         `chenkuserdb1`.`skt23`.`SF_LAST_CHANGE_USER` AS `sf_last_change_user`,
         `chenkuserdb1`.`skt23`.`SF_CREATE_TIME` AS `sf_create_time`,

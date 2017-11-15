@@ -56,11 +56,20 @@ public interface IBaseService<T, PK extends Serializable> {
 	public List<T> findAll() ;
 	@Transactional
 	public List<T> findByExample(T entity);
+	
+	public List<T>  findByProperties(String[] properteis, Object[] values);
+	public List<T>  findByProperty(String property, Object value);
+	public T  findOneByProperties(String[] properties, Object[] values) throws DataNotFoundException;
+	public T  findOneByProperty(String property, Object value) throws DataNotFoundException;
 
 	@Transactional
 	public PageBean<T> findPageOfAll(int pageNum, int pageSize);
+	
 	@Transactional
 	public PageBean<T> findPageByExample(T example, Integer pageNum, Integer pageSize);
+	
+	public PageBean<T> findPageByProperties(String[] properties, Object[] values, Integer pageNo, Integer pageSize);
+	public PageBean<T> findPageByProperty(String property, Object value, Integer pageNo, Integer pageSize);
 	
 	@Transactional
 	public DataTableBean<T> findDataTable(QueryParameter parameter);

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.entity.sys.User;
-import com.yinzhiwu.yiwu.enums.DataStatus;
 
 
 @SuppressWarnings("serial")
@@ -59,8 +58,6 @@ public abstract class BaseYzwEntity implements Serializable {
 	@Column(name = "sf_last_change_timeStamp")
 	private Date lastChangeTimestamp;
 
-	private DataStatus dataStatus;
-	
 	public BaseYzwEntity() {
 	}
 
@@ -70,8 +67,6 @@ public abstract class BaseYzwEntity implements Serializable {
 		this.lastChangeTime = date;
 		this.lastChangeTimestamp = date;
 		this.lastSyncTimeStamp = date;
-		if(dataStatus ==null)
-			dataStatus =DataStatus.NORMAL;
 			
 		User user = UserContext.getUser();
 		if(user != null){
@@ -144,14 +139,6 @@ public abstract class BaseYzwEntity implements Serializable {
 
 	public void setLastChangeUserId(Integer lastChangeUserId) {
 		this.lastChangeUserId = lastChangeUserId;
-	}
-
-	public DataStatus getDataStatus() {
-		return dataStatus;
-	}
-
-	public void setDataStatus(DataStatus dataStatus) {
-		this.dataStatus = dataStatus;
 	}
 
 }

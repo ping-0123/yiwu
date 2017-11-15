@@ -57,6 +57,29 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	public List<T> findByExample(T entity) {
 		return baseDao.findByExample(entity);
 	}
+	
+	
+	@Override
+	public List<T> findByProperties(String[] properteis, Object[] values) {
+		return baseDao.findByProperties(properteis, values);
+	}
+	
+
+	@Override
+	public List<T> findByProperty(String property, Object value) {
+		return baseDao.findByProperty(property, value);
+	}
+
+	@Override
+	public T findOneByProperties(String[] properties, Object[] values) throws DataNotFoundException {
+		return baseDao.findOneByProperties(properties, values);
+	}
+
+	@Override
+	public T findOneByProperty(String property, Object value) throws DataNotFoundException {
+		return baseDao.findOneByProperty(property, value);
+	}
+
 
 	@Override
 	public void delete(T entity) {
@@ -107,6 +130,16 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		return baseDao.findPageByExample(example, pageNum, pageSize);
 	}
 
+	@Override
+	public PageBean<T> findPageByProperties(String[] properties, Object[] values, Integer pageNo, Integer pageSize) {
+		return baseDao.findPageByProperties(properties, values, pageNo, pageSize);
+	}
+	
+	@Override
+	public PageBean<T> findPageByProperty(String property, Object value, Integer pageNo, Integer pageSize) {
+		return baseDao.findPageByProperty(property, value, pageNo, pageSize);
+	}
+	
 	@Override
 	public DataTableBean<T> findDataTable(QueryParameter parameter) {
 		return baseDao.findDataTable(parameter);

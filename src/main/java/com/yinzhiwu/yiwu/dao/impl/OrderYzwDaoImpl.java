@@ -268,13 +268,13 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	}
 
 	@Override
-	protected PageBean<OrderYzw> findPageByProperties(String[] propertyNames, Object[] values, Integer pageNo, Integer pageSize) {
+	public PageBean<OrderYzw> findPageByProperties(String[] propertyNames, Object[] values, Integer pageNo, Integer pageSize) {
 		updateLingLingContractDates();
 		return super.findPageByProperties(propertyNames, values, pageNo, pageSize);
 	}
 
 	@Override
-	protected PageBean<OrderYzw> findPageByProperty(String propertyName, Object value, Integer pageNo, Integer pageSize) {
+	public PageBean<OrderYzw> findPageByProperty(String propertyName, Object value, Integer pageNo, Integer pageSize) {
 		updateLingLingContractDates();
 		return super.findPageByProperty(propertyName, value, pageNo, pageSize);
 	}
