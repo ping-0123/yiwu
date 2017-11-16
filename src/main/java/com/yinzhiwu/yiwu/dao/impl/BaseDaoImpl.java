@@ -7,7 +7,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.persistence.Embedded;
@@ -162,16 +164,6 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		}
 		
 	}
-
-	protected Long findCountByProperty(String propertyName, Object value) {
-		Assert.hasText(propertyName, "属性名不能为空");
-		
-		String hql = "SELECT COUNT(1) FROM " + entityClass.getSimpleName() + " WHERE " + propertyName + " =:property";
-		return getSession().createQuery(hql, Long.class)
-				.setParameter("property", value)
-				.getSingleResult();
-	}
-
 
 	@Override
 	public List<T> findAll(){
@@ -359,7 +351,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 
 	@Override
 	public Long findCount() {
-		String hql = "SELECT COUNT(*) FROM " + entityClass.getSimpleName();
+		String hql = "SELECT COUNT(1) FROM " + entityClass.getSimpleName();
 		return getSession().createQuery(hql, Long.class)
 				.getSingleResult();
 		
@@ -393,7 +385,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	
 	}
 
-	protected Long findCountByProperties(String[] propertyNames, Object[] values) {
+	@Override
+	public  Long findCountByProperties(String[] propertyNames, Object[] values) {
 		if (propertyNames.length != values.length) {
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
@@ -418,7 +411,43 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		 
 		 return query.getSingleResult();
 	}
+	
+	
+	
+	@Override
+	public Long findCountByPropertiesNullValueIsAll(String[] properties, Object[] values) {
+		Map<String, Object> map = filterNullValueProperties(properties, values);
+		String[] filteredProperties = new String[map.size()];
+		return findCountByProperties(map.keySet().toArray(filteredProperties),map.values().toArray());
+	}
+	
+	private Map<String, Object>  filterNullValueProperties(String[] properties, Object[] values){
+		Map<String, Object> map = new HashMap<>();
+		for(int i=0; i< properties.length; i ++ ){
+			if(StringUtils.hasLength(properties[i]) && null != values[i]){
+				map.put(properties[i],values[i]);
+			}
+		}
+		
+		return map;
+	}
 
+	@Override
+	public Long findCountByPropertyNullValueIsAll(String property, Object value) {
+		return findCount();
+	}
+
+	@Override
+	public Long findCountByProperty(String propertyName, Object value) {
+		Assert.hasText(propertyName, "属性名不能为空");
+		
+		String hql = "SELECT COUNT(1) FROM " + entityClass.getSimpleName() + " WHERE " + propertyName + " =:property";
+		return getSession().createQuery(hql, Long.class)
+				.setParameter("property", value)
+				.getSingleResult();
+	}
+
+	
 	protected PageBean<T> findPageByPropertiesThroughCriteria(String[] propertyNames, Object[] values, int pageNo, int pageSize) {
 		if (propertyNames.length != values.length) {
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
@@ -609,6 +638,19 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return findPage(hql.toString(), entityClass, properties, values, pageNum, pageSize);
 	}
 	
+	@Override
+	public PageBean<T> findPageByPropertiesNullValueIsAll(String[] propertyNames, Object[] values, Integer pageNum, Integer pageSize)
+	{
+		Map<String, Object> map = new HashMap<>();
+		for(int i=0; i< propertyNames.length; i++){
+			if(null != values[i]){
+				map.put(propertyNames[i], values[i]);
+			}
+		}
+		
+		String[] properties = new String[map.size()];
+		return findPageByProperties(map.keySet().toArray(properties), map.values().toArray(), pageNum, pageSize);
+	}
 	
 	public PageBean<T> findPageByProperty(String propertyName, Object value, Integer pageNo, Integer pageSize) {
 		Assert.hasText(propertyName);

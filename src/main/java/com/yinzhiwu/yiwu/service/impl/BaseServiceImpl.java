@@ -80,6 +80,32 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		return baseDao.findOneByProperty(property, value);
 	}
 
+	
+
+	@Override
+	public Long findCount() {
+		return baseDao.findCount();
+	}
+
+	@Override
+	public Long findCountByProperties(String[] properties, Object[] values) {
+		return baseDao.findCountByProperties(properties, values);
+	}
+
+	@Override
+	public Long findCountByPropertiesNullValueIsAll(String[] properties, Object[] values) {
+		return baseDao.findCountByPropertiesNullValueIsAll(properties, values);
+	}
+
+	@Override
+	public Long findCountByProperty(String property, Object value) {
+		return baseDao.findCountByProperty(property, value);
+	}
+
+	@Override
+	public Long findCountByPropertyNullValueIsAll(String property, Object value) {
+		return baseDao.findCountByProperty(property, value);
+	}
 
 	@Override
 	public void delete(T entity) {
@@ -135,6 +161,14 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		return baseDao.findPageByProperties(properties, values, pageNo, pageSize);
 	}
 	
+	
+	
+	@Override
+	public PageBean<T> findPageByPropertiesNullValueIsAll(String[] propertyNames, Object[] values, Integer pageNum,
+			Integer pageSize) {
+		return baseDao.findPageByPropertiesNullValueIsAll(propertyNames, values, pageNum, pageSize);
+	}
+
 	@Override
 	public PageBean<T> findPageByProperty(String property, Object value, Integer pageNo, Integer pageSize) {
 		return baseDao.findPageByProperty(property, value, pageNo, pageSize);
