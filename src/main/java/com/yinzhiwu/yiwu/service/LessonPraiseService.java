@@ -1,5 +1,7 @@
 package com.yinzhiwu.yiwu.service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.yinzhiwu.yiwu.entity.LessonPraise;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
@@ -15,7 +17,9 @@ public interface LessonPraiseService extends IBaseService<LessonPraise,Integer>{
 	
 	boolean checkIsPraised(Integer distributerId, Integer lessonId);
 	
+	@Transactional
 	public LessonPraise doLessonPraise(LessonPraise praise);
 	
+	@Transactional
 	public LessonPraise cancelLessonPraise(LessonPraise praise);
 }

@@ -22,10 +22,6 @@ public interface IBaseDao<T, PK extends Serializable> {
 	//查
 	public T get(PK id) throws DataNotFoundException;
 	public List<T> findAll();
-	public Long findCount();
-	public PageBean<T> findPageOfAll(int pageNo, int pageSize);
-	public PageBean<T> findPageByExample(T example, Integer pageNo, Integer pageSize);
-	
 	/**
 	 * 如果T中的某一成员变量的class为@Entity注解, 则查询时忽略该属性， 即查询语句没有表的关联
 	 * 
@@ -33,7 +29,26 @@ public interface IBaseDao<T, PK extends Serializable> {
 	 * @return
 	 * @throws IllegalAccessException 
 	 */
-	public List<T> findByExample(T entity) ;
+	public List<T>  findByExample(T entity) ;
+	public List<T>  findByProperties(String[] properteis, Object[] values);
+	public List<T>  findByPropertiesNullValueIgnore(String[] properties, Object[] values);
+	public List<T>  findByProperty(String property, Object value);
+	public T  findOneByProperties(String[] properties, Object[] values) throws DataNotFoundException;
+	public T  findOneByProperty(String property, Object value) throws DataNotFoundException;
+	
+	
+	public Long findCount();
+	public Long findCountByProperties(String[] properties, Object[] values);
+	public Long findCountByPropertiesNullValueIsAll(String[] properties, Object[] values);
+	public Long findCountByProperty(String property, Object value);
+	public Long findCountByPropertyNullValueIsAll(String property, Object value);
+	
+	
+	public PageBean<T> findPageOfAll(int pageNo, int pageSize);
+	public PageBean<T> findPageByExample(T example, Integer pageNo, Integer pageSize);
+	public PageBean<T> findPageByProperties(String[] properties, Object[] values, Integer pageNo, Integer pageSize);
+	public PageBean<T> findPageByPropertiesNullValueIsAll(String[] propertyNames, Object[] values, Integer pageNum, Integer pageSize);
+	public PageBean<T> findPageByProperty(String property, Object value, Integer pageNo, Integer pageSize);
 	
 	//增
 	public PK save(T entity);

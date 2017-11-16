@@ -38,7 +38,6 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 	PageBean<CustomerDto> findVisableDistributersByEmployee(int distributerId, String key, int pageNo, int pageSize)
 			throws YiwuException;
 
-	@Transactional
 	Distributer findByWechatNo(String wechatNo) throws DataNotFoundException;
 
 	@Transactional

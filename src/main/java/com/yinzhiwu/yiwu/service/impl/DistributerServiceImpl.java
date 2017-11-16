@@ -25,6 +25,7 @@ import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Distributer.Role;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.enums.IncomeType;
 import com.yinzhiwu.yiwu.event.RegisterEvent;
@@ -36,6 +37,7 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
+import com.yinzhiwu.yiwu.model.view.StoreApiView.StoreApiViewConverter;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
@@ -314,10 +316,16 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		
 		StoreApiView view = checkInsDao.findStoreApiViewOfLastCheckedOpenLesson(distributer.getMemberCard());
 		if(view == null){
-			view = orderDao.findStoreOfValidOpenContractOrder(distributer.getCustomer().getId());
+			DepartmentYzw store = orderDao.findStoreOfValidOpenContractOrder(distributer.getCustomer().getId());
+			if(null != store)
+				try {
+					store = departmentYzwDao.get(61);
+				} catch (DataNotFoundException e) {
+					;
+				}
+			view = StoreApiViewConverter.INSTANCE.fromPO(store);
 		}
-		if(view == null)
-			return YiwuJson.createByErrorMessage("");
+		
 		return YiwuJson.createBySuccess(view);
 	}
 

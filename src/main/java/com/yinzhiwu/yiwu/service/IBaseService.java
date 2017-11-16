@@ -51,17 +51,36 @@ public interface IBaseService<T, PK extends Serializable> {
 	@Transactional
 	public void modify(T source, T target) throws IllegalArgumentException, IllegalAccessException;
 	
-	@Transactional
+	
+	
 	public T get(PK id) throws DataNotFoundException;
 	@Transactional
 	public List<T> findAll() ;
 	@Transactional
 	public List<T> findByExample(T entity);
-
+	public List<T>  findByProperties(String[] properteis, Object[] values);
+	public List<T>  findByPropertiesNullValueIgnore(String[] properties, Object[] values);
+	public List<T>  findByProperty(String property, Object value);
+	public T  findOneByProperties(String[] properties, Object[] values) throws DataNotFoundException;
+	public T  findOneByProperty(String property, Object value) throws DataNotFoundException;
+	
+	
+	public Long findCount();
+	public Long findCountByProperties(String[] properties, Object[] values);
+	public Long findCountByPropertiesNullValueIsAll(String[] properties, Object[] values);
+	public Long findCountByProperty(String property, Object value);
+	public Long findCountByPropertyNullValueIsAll(String property, Object value);
+	
+	
 	@Transactional
 	public PageBean<T> findPageOfAll(int pageNum, int pageSize);
+	
 	@Transactional
 	public PageBean<T> findPageByExample(T example, Integer pageNum, Integer pageSize);
+	
+	public PageBean<T> findPageByProperties(String[] properties, Object[] values, Integer pageNo, Integer pageSize);
+	public PageBean<T> findPageByPropertiesNullValueIsAll(String[] propertyNames, Object[] values, Integer pageNum, Integer pageSize);
+	public PageBean<T> findPageByProperty(String property, Object value, Integer pageNo, Integer pageSize);
 	
 	@Transactional
 	public DataTableBean<T> findDataTable(QueryParameter parameter);

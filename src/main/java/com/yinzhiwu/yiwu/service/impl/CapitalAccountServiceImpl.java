@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
@@ -38,38 +37,5 @@ public class CapitalAccountServiceImpl extends BaseServiceImpl<CapitalAccount, I
 		return capitalAccountDao.findOneByDistributerIdAndPaymentMode(distributer.getId(),paymentMode);
 	}
 	
-	@Transactional
-	public Boolean cancelDefaultAccount(Integer distributerId){
-		capitalAccountDao.cancelDefaultAccount(distributerId);
-		return true;
-	}
-	
-	@Override
-	public Integer save(CapitalAccount account) {
-		if(null != account.getIsDefault() && account.getIsDefault())
-			cancelDefaultAccount(account.getDistributer().getId());
-		return super.save(account);
-	}
-
-	@Override
-	public void update(CapitalAccount account) {
-		if(null != account.getIsDefault() && account.getIsDefault())
-			capitalAccountDao.cancelDefaultAccount(account.getDistributer().getId());
-		super.update(account);
-	}
-
-	@Override
-	public void saveOrUpdate(CapitalAccount account) {
-		if(null != account.getIsDefault() && account.getIsDefault())
-			capitalAccountDao.cancelDefaultAccount(account.getDistributer().getId());
-		super.saveOrUpdate(account);
-	}
-
-	@Override
-	public void modify(CapitalAccount source, CapitalAccount target) throws IllegalArgumentException, IllegalAccessException {
-		if(target.getIsDefault())
-			capitalAccountDao.cancelDefaultAccount(source.getDistributer().getId());
-		super.modify(source, target);
-	}
 
 }

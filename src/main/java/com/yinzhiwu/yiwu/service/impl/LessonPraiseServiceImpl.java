@@ -32,6 +32,9 @@ public class LessonPraiseServiceImpl extends BaseServiceImpl<LessonPraise,Intege
 		return lessonPraiseDao.findCountByDistributerIdAndLessonId(distributerId, lessonId) > 0;
 	}
 
+	/**
+	 * listened by {@link LessonInteractiveServiceImpl#handleLessonPraise(LessonPraise)}
+	 */
 	@Override
 	public LessonPraise doLessonPraise(LessonPraise praise) {
 		lessonPraiseDao.save(praise);

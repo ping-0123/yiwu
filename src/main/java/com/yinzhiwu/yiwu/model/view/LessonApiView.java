@@ -16,27 +16,53 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
+import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
 
 @JsonInclude(value= Include.NON_NULL)
+@MapedClass(LessonYzw.class)
 public class LessonApiView implements DtoCriteria<LessonYzw> {
 
 	private static final Log logger = LogFactory.getLog(LessonApiView.class);
 
 	private Integer id;
 	private String name;
+	
+	@MapedProperty("course.id")
 	private String courseId;
+	
+	@MapedProperty("course.dance.name")
 	private String danceName;
+	
+	@MapedProperty("course.danceGrade")
 	private String danceGrade;
+	
+	@MapedProperty("lessonDate")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
 	private Date date;
+	
+	@MapedProperty("startTime")
 	@JsonFormat(pattern = "HH:mm")
 	private Time start;
+	
+	@MapedProperty("endTime")
 	@JsonFormat(pattern = "HH:mm")
 	private Time end;
+	
+	@MapedProperty("store.id")
 	private Integer storeId;
+	
+	@MapedProperty("store.name")
 	private String storeName;
+	
+	@MapedProperty("dueTeacher.name")
 	private String dueTeacher;
+	
+	@MapedProperty("actualTeacher.name")
 	private String actualTeacher;
+	
+	@MapedProperty(ignored=true)
 	private String pictureUrl;
 
 	public LessonApiView() {
@@ -232,4 +258,8 @@ public class LessonApiView implements DtoCriteria<LessonYzw> {
 	}
 
 	
+	public static final class LessonApiViewConverter extends AbstractConverter<LessonYzw, LessonApiView>
+	{
+		public static final LessonApiViewConverter INSTANCE = new LessonApiViewConverter();
+	}
 }

@@ -20,7 +20,7 @@ public interface LessonYzwDao extends IBaseDao<LessonYzw, Integer> {
 
 	List<LessonApiView> findApiViewsByCourseId(String courseId);
 
-	List<LessonYzw> findWeeklyLessons(int storeId, CourseType courseType, String teacherName, String danceCatagory,
+	List<LessonYzw> findWeeklyLessons(Integer storeId, CourseType courseType, String teacherName, String danceCatagory,
 			Date start, Date end);
 
 	Integer findOrderInCourse(LessonYzw lesson);

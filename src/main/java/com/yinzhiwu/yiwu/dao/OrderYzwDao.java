@@ -5,6 +5,7 @@ import java.util.List;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
@@ -13,7 +14,6 @@ import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
-import com.yinzhiwu.yiwu.model.view.StoreApiView;
 
 public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 	public String find_last_id();
@@ -49,7 +49,7 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 	 */
 	Contract findCheckableContractOfCustomerAndLesson(CustomerYzw customer, LessonYzw lesson) throws DataNotFoundException;
 
-	public StoreApiView findStoreOfValidOpenContractOrder(Integer id);
+	public DepartmentYzw findStoreOfValidOpenContractOrder(Integer customerId);
 
 	public PageBean<OrderApiView> findPageOfOrderApiViewByCustomerId(Integer id, int pageNo, int pageSize);
 

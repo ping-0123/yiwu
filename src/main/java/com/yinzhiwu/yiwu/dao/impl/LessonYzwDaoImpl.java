@@ -78,7 +78,7 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 	}
 
 	@Override
-	public List<LessonYzw> findWeeklyLessons(int storeId, CourseType courseType, String teacherName,
+	public List<LessonYzw> findWeeklyLessons(Integer storeId, CourseType courseType, String teacherName,
 			String danceCatagory, Date start, Date end) {
 		
 		List<String> properties = new ArrayList<>();
@@ -94,7 +94,7 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		values.add(start);
 		values.add(end);
 		values.add(CourseType.PRIVATE);
-		if(storeId > 0){
+		if(null != storeId && storeId > 0){
 			hql.append(" AND t1.store.id = :storeId");
 			properties.add("storeId");
 			values.add(storeId);

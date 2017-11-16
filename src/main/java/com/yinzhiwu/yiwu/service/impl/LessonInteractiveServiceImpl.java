@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.yiwu.dao.LessonInteractiveDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
@@ -40,6 +41,7 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 			return lessonInteractiveDao.findByDistributerIdAndLessonId(distributerId, lessonId);
 	}
 	
+	@Transactional
 	@EventListener(classes={LessonComment.class})
 	public void handlelessonComment(LessonComment comment){
 		LessonInteractive interactive;
@@ -73,9 +75,10 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 		lessonInteractiveDao.saveOrUpdate(interactive);
 	}
 
-	
+	@Transactional
 	@EventListener(classes={LessonPraise.class})
 	public void handleLessonPraise(LessonPraise praise) {
+		logger.info("start handle lesson praise event");
 		LessonInteractive interactive;
 		try {
 			interactive = ensureInteractive(praise.getLesson(), praise.getDistributer());
@@ -101,6 +104,7 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 	}
 
 	
+	@Transactional
 	@EventListener(classes={LessonAppointmentYzw.class})
 	public void handleLessonAppointment(LessonAppointmentYzw appointment){
 		LessonInteractive interactive;
@@ -124,6 +128,7 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 		lessonInteractiveDao.update(interactive);
 	}
 	
+	@Transactional
 	@EventListener(classes={LessonCheckInYzw.class})
 	public void handleLessonCheckIn(LessonCheckInYzw checkIn){
 		LessonInteractive interactive;
