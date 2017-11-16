@@ -385,6 +385,15 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	
 	}
 
+	
+	
+	@Override
+	public List<T> findByPropertiesNullValueIgnore(String[] properties, Object[] values) {
+		Map<String,Object> map = filterNullValueProperties(properties, values);
+		String[] filterdProperties = new String[map.size()];
+		return findByProperties(map.keySet().toArray(filterdProperties),map.values().toArray());
+	}
+
 	@Override
 	public  Long findCountByProperties(String[] propertyNames, Object[] values) {
 		if (propertyNames.length != values.length) {

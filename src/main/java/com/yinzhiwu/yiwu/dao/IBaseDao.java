@@ -31,6 +31,7 @@ public interface IBaseDao<T, PK extends Serializable> {
 	 */
 	public List<T>  findByExample(T entity) ;
 	public List<T>  findByProperties(String[] properteis, Object[] values);
+	public List<T>  findByPropertiesNullValueIgnore(String[] properties, Object[] values);
 	public List<T>  findByProperty(String property, Object value);
 	public T  findOneByProperties(String[] properties, Object[] values) throws DataNotFoundException;
 	public T  findOneByProperty(String property, Object value) throws DataNotFoundException;

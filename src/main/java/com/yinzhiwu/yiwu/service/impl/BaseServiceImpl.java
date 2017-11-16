@@ -64,6 +64,11 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		return baseDao.findByProperties(properteis, values);
 	}
 	
+	
+	@Override
+	public List<T> findByPropertiesNullValueIgnore(String[] properties, Object[] values) {
+		return baseDao.findByPropertiesNullValueIgnore(properties, values);
+	}
 
 	@Override
 	public List<T> findByProperty(String property, Object value) {
