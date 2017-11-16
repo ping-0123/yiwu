@@ -36,7 +36,7 @@ public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> 
 
 
 	@Override
-	public void cancelDefaultAccount(Integer distributerId) {
+	public Boolean cancelDefaultAccount(Integer distributerId) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("UPDATE CapitalAccount");
 		hql.append(" SET isDefault = false");
@@ -45,6 +45,8 @@ public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> 
 		getSession().createQuery(hql.toString())
 			.setParameter("distributerId", distributerId)
 			.executeUpdate();
+		
+		return true;
 	}
 
 	

@@ -2,6 +2,8 @@ package com.yinzhiwu.yiwu.dao;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.enums.PaymentMode;
 
@@ -13,6 +15,7 @@ public interface CapitalAccountDao extends IBaseDao<CapitalAccount, Integer> {
 
 	CapitalAccount findOneByDistributerIdAndPaymentMode(Integer id, PaymentMode paymentMode);
 
-	void cancelDefaultAccount(Integer distributerId);
+	@Transactional
+	Boolean cancelDefaultAccount(Integer distributerId);
 
 }

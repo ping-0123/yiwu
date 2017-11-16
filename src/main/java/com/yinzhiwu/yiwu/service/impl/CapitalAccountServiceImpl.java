@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
@@ -37,10 +38,16 @@ public class CapitalAccountServiceImpl extends BaseServiceImpl<CapitalAccount, I
 		return capitalAccountDao.findOneByDistributerIdAndPaymentMode(distributer.getId(),paymentMode);
 	}
 	
+	@Transactional
+	public Boolean cancelDefaultAccount(Integer distributerId){
+		capitalAccountDao.cancelDefaultAccount(distributerId);
+		return true;
+	}
+	
 	@Override
 	public Integer save(CapitalAccount account) {
-//		if(null != account.getIsDefault() && account.getIsDefault())
-//			capitalAccountDao.cancelDefaultAccount(account.getDistributer().getId());
+		if(null != account.getIsDefault() && account.getIsDefault())
+			cancelDefaultAccount(account.getDistributer().getId());
 		return super.save(account);
 	}
 
