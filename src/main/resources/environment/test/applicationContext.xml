@@ -113,7 +113,6 @@
 	<!-- 配置事务异常封装 -->
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-	<tx:annotation-driven transaction-manager="transactionManager" />
 	<!-- 拦截器方式配置事物 -->
 	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
 		<tx:attributes>

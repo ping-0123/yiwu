@@ -5,6 +5,7 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link href="../../assets/bootstrap/css/bootstrap.min.css" />
 		<title>JSP Page</title>
 	</head>
 
@@ -42,8 +43,10 @@
 		</div>
 		
 		<script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="../../assets/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/qiniu.min.js"></script>
 		<script type="text/javascript" src="../js/plupload/moxie.js"></script>
+		<script type="text/javascript" src="../js/plupload/plupload.dev.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				var uploader = Qiniu.uploader({
@@ -74,19 +77,19 @@
 							});
 						},
 						'BeforeUpload':function(up, file){
-							
+							console.log(file.name + " before upload");
 						},
 						'UploadProgress':function(up, file){
-							
+							console.log(file.name + " is uploading");
 						},
 						'FileUploaded':function(up, file, info){
-							
+							console.log(file.name + " was uploaded");
 						},
 						'Error':function(up, err, errTip){
 							
 						},
 						'UploadComplete':function(){
-							
+							console.log("upload success.");
 						},
 						'Key':function(up, file){
 							

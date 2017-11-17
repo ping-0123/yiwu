@@ -62,7 +62,7 @@ public class LessonYzw extends BaseYzwEntity {
 	@Column(name = "courseDesc")
 	private String name;
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "storeId", foreignKey = @ForeignKey(name = "fk_lesson_store_id", value = ConstraintMode.NO_CONSTRAINT))
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private DepartmentYzw store;
@@ -82,7 +82,7 @@ public class LessonYzw extends BaseYzwEntity {
 	@Column(length = 32, name = "yindaoTeacherName")
 	private String dueTeacherName;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "classRoomId", foreignKey = @ForeignKey(name = "fk_lesson_classRoom_id", value = ConstraintMode.NO_CONSTRAINT))
 	private ClassRoomYzw classRoom;
 

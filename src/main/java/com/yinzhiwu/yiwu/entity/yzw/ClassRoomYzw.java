@@ -24,6 +24,7 @@ public class ClassRoomYzw extends BaseYzwEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = -5491370511452100257L;
+	public static final int DEFAULT_MAX_STUDENT_COUNT = 25;
 
 	@Id
 	@Column(length = 32, name = "id")
