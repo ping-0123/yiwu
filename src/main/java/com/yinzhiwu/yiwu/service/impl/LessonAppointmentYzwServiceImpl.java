@@ -14,6 +14,7 @@ import com.yinzhiwu.yiwu.dao.LessonAppointmentYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonInteractive;
+import com.yinzhiwu.yiwu.entity.yzw.ClassRoomYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
@@ -81,7 +82,8 @@ public class LessonAppointmentYzwServiceImpl extends BaseServiceImpl<LessonAppoi
 		if(new Date().after(twoHoursBeforeLessonStart.getTime()))
 			throw new LessonAppointmentException("请提前2小时预约");
 			//预约人数已满
-		if(lesson.getAppointedStudentCount() >= lesson.getClassRoom().getMachineCode())
+		if(lesson.getAppointedStudentCount() >= (lesson.getClassRoom()==null
+				?ClassRoomYzw.DEFAULT_MAX_STUDENT_COUNT:lesson.getClassRoom().getMaxStudentCount()))
 			throw new LessonAppointmentException("预约人数已满");
 		
 		//保存预约

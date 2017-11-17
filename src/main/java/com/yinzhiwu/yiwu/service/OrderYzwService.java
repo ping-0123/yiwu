@@ -3,6 +3,8 @@ package com.yinzhiwu.yiwu.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
@@ -49,6 +51,7 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 
 	List<CourseYzw> findCoursesByCustomerIdAndCourseType(Integer customerId, CourseType courseType);
 
+	@Transactional
 	Contract findContractByContractNo(String contractNo) throws DataNotFoundException;
 
 	Contract findEnableInteractiveContractByLessonAndDistributer(LessonYzw lesson, Distributer distributer) throws DataNotFoundException;

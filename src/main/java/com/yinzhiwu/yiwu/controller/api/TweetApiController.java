@@ -36,7 +36,7 @@ public class TweetApiController extends BaseController {
 	@Autowired
 	private TweetService tweetService;
 
-	@PostMapping("/save")
+	@PostMapping
 	public YiwuJson<TweetApiView> save(@Valid TweetApiView tweetVO, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			FieldError fieldError = bindingResult.getFieldError();
@@ -54,7 +54,8 @@ public class TweetApiController extends BaseController {
 	@GetMapping
 	@ApiOperation(value="获取推文列表")	
 	public YiwuJson<List<TweetAbbrApiView>> findAbbrlist(
-			@ApiParam(name="type", value="推文类型, 不传则搜索所有类型", defaultValue="null"  , 
+			@ApiParam(name="type", value=
+				"推文类型, 取值范围({PRODUCT,MARKET_ACTIVITY,PROMOTION,PERFORMACE,NEWS,CHILDREN,ADULT,OTHER})不传则搜索所有类型", 
 			allowableValues="{PRODUCT,MARKET_ACTIVITY,PROMOTION,PERFORMACE,NEWS,CHILDREN,ADULT,OTHER}") 
 			@RequestParam(name="type", required=false) TweetType type,
 			@ApiParam(name="title", required=false) 
