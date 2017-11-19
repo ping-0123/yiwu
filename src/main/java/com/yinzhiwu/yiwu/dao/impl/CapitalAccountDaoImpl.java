@@ -60,7 +60,6 @@ public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> 
 			.setParameter("distributerId", distributerId)
 			.executeUpdate();
 		
-		return true;
 	}
 
 	@Override
