@@ -1,4 +1,4 @@
-package com.test.cglib;
+package com.test.proxy.cglib;
 
 /**
 * @author 作者 ping

@@ -1,4 +1,4 @@
-package com.test.proxy;
+package com.test.proxy.jdk;
 
 /**
 *@Author ping

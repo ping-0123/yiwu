@@ -1,4 +1,4 @@
-package com.test.proxy;
+package com.test.proxy.jdk;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -24,6 +24,7 @@ public class ProxyHandler implements InvocationHandler{
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		System.out.println("proxy argment is " + proxy.getClass());
 		System.out.println("before .......");
 		Object result = method.invoke(proxied, args);
 		System.out.println("after ......");
