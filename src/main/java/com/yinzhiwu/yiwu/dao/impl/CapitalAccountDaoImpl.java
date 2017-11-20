@@ -59,6 +59,7 @@ public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> 
 		getSession().createQuery(hql.toString())
 			.setParameter("distributerId", distributerId)
 			.executeUpdate();
+		
 	}
 
 	@Override
