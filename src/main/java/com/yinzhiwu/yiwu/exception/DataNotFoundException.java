@@ -13,6 +13,8 @@ public class DataNotFoundException extends Exception {
 	private String propertyName;
 
 	private Object value;
+	
+	private String sql;
 
 	public DataNotFoundException() {
 		super();
@@ -43,28 +45,5 @@ public class DataNotFoundException extends Exception {
 		this.value = value;
 	}
 
-	public Class<?> getEntity() {
-		return entity;
-	}
-
-	public String getPropertyName() {
-		return propertyName;
-	}
-
-	public Object getValue() {
-		return value;
-	}
-
-	public void setEntity(Class<?> entity) {
-		this.entity = entity;
-	}
-
-	public void setPropertyName(String propertyName) {
-		this.propertyName = propertyName;
-	}
-
-	public void setValue(Object value) {
-		this.value = value;
-	}
 
 }

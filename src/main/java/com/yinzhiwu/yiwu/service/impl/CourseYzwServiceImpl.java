@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +24,12 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 		super.setBaseDao(courseYzwDao);
 	}
 	
-	@Override
+	@Scheduled(cron="0/1 * * * * ?")
+	@Transactional
 	public void scheduledSetOne_StudentCount_SumLessonTimesAndLessonOrdialNo(){
 		CourseYzw course;
 		try {
-			course = courseDao.findOneUnSetSumLessonTimes();
+			course = courseDao.findOneByProperty("sumLessonTimes", null);
 		} catch (DataNotFoundException e) {
 			return;
 		}
@@ -36,7 +38,7 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 		update(course);
 	}
 	
-	@Transactional
+//	@Transactional
 	private void setSumLessonTimesAndLessonOrdialNo(CourseYzw course){
 		java.util.List<LessonYzw> lessons = course.getLessons();
 		course.setSumLessonTimes(lessons.size());
@@ -47,7 +49,7 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 		
 	}
 	
-	@Transactional
+//	@Transactional
 	private void setStudentCount(CourseYzw course){
 		course.setStudentCount(orderDao.findCountByCourseId(course.getId()));
 	}
