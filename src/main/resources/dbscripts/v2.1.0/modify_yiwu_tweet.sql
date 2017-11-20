@@ -2,9 +2,16 @@ update yiwu_tweet t1
 JOIN yiwu_tweet_content t2 on (t1.tweetContent_id = t2.id)
 join yiwu_type t3 on (t1.tweetType_id = t3.id) set t1.type = t3.name, t1.content = t2.content;
 
+
+-- drop table yiwu_tweet_content
+ALTER TABLE `yiwu`.`yiwu_tweet` 
+DROP FOREIGN KEY `fk_tweet_tweetType_id`,
+DROP FOREIGN KEY `fk_Tweet_tweetContent_id`;
+ALTER TABLE `yiwu`.`yiwu_tweet` 
+DROP INDEX `fk_tweet_tweetType_id` ,
+DROP INDEX `fk_Tweet_tweetContent_id` ;
 alter table yiwu_tweet drop column tweetContent_id;
 alter table yiwu_tweet drop column tweetType_id;
-
 drop table yiwu_tweet_content;
 
 -- 修改yiwu_message

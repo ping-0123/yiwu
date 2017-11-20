@@ -1,12 +1,10 @@
 package com.yinzhiwu.yiwu.exception;
 
+
+@SuppressWarnings("unused")
 public class DataNotFoundException extends Exception {
-
-	/**
-	 * 
-	 */
-
 	private static final long serialVersionUID = 973726680731998227L;
+
 
 	private Class<?> entity;
 
@@ -29,8 +27,9 @@ public class DataNotFoundException extends Exception {
 		super(message, cause);
 	}
 
-	public DataNotFoundException(String message) {
-		super(message);
+	public DataNotFoundException(String sql) {
+		super("no rows fetched by hql " + sql);
+		this.sql = sql;
 	}
 
 	public DataNotFoundException(Throwable cause) {

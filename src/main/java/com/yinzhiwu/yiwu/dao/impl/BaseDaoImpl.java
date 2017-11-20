@@ -8,8 +8,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 import javax.persistence.Embedded;
@@ -106,9 +108,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	public List<T> findByProperty(String propertyName, Object value) {
 		Assert.hasText(propertyName, "属性名不能为空");
 		
-		String hql = "FROM " + entityClass.getSimpleName() + " t1 WHERE  t1." + propertyName + " =:property";
-		return getSession().createQuery(hql, entityClass)
-				.setParameter("property", value)
+		return createQuery(new String[]{propertyName}, new Object[]{value})
 				.getResultList();
 		
 	}
@@ -118,14 +118,13 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	public T findOneByProperty(String propertyName, Object value) throws DataNotFoundException {
 		Assert.hasText(propertyName, "属性名不能为空");
 		
-		String hql = "FROM " + entityClass.getSimpleName() + " t1 WHERE  t1." + propertyName + " =:property";
-		List<T> list = getSession().createQuery(hql, entityClass)
-				.setParameter("property", value)
-				.setMaxResults(1)
-				.getResultList();
+		Query<T> query = createQuery(new String[]{propertyName}, new Object[]{value});
+		List<T> list = query.setMaxResults(1).getResultList();
 		
-		if(list.size()==0)
-			throw new  DataNotFoundException(entityClass,propertyName,value);
+		
+		if(list.size()==0){
+			throw new  DataNotFoundException(query.getQueryString());
+		}
 		return list.get(0);
 	}
 	
@@ -362,27 +361,42 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		if(propertyNames.length != values.length){
 			throw new IllegalArgumentException("传入的属性名和属性值数量不一致");
 		}
-		String[] properties = new String[propertyNames.length];
+		Query<T> query = createQuery(propertyNames, values);
+		 
+		 return query.getResultList();
+	
+	}
+
+	private Query<T> createQuery(String[] propertyNames, Object[] values) {
+		Map<String, Object> map = new HashMap<>();
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("FROM " + entityClass.getSimpleName());
 		builder.append(" WHERE 1=1");
 		for(int i = 0; i<propertyNames.length; i++){
 			if(StringUtils.hasLength(propertyNames[i])){
-				properties[i] = propertyNames[i].replace(".", "");
-				builder.append(" AND " + propertyNames[i] + "=:" +properties[i]);
+				if(null == values[i])
+//				properties.add( propertyNames[i].replace(".", ""));
+					builder.append(" AND " + propertyNames[i] + " is null");
+				else{
+					String property = propertyNames[i].replace(".", "");
+					map.put(property, values[i]);
+					builder.append(" AND " + propertyNames[i] + " =:" + property);
+				}
 			}else {
 				throw new IllegalArgumentException("属性名不能为空为null");
 			}
 		}
 		
 		 Query<T> query = getSession().createQuery(builder.toString(), entityClass);
-		 for(int j=0; j<properties.length;j++){
-			 query.setParameter(properties[j], values[j]);
+		 if(map.size()>0){
+			 Iterator<Entry<String, Object>> iterator = map.entrySet().iterator();
+			 while(iterator.hasNext()){
+				 Entry<String, Object> entry = iterator.next();
+				 query.setParameter(entry.getKey(), entry.getValue());
+			 }
 		 }
-		 
-		 return query.getResultList();
-	
+		return query;
 	}
 
 	

@@ -3,7 +3,6 @@ package com.yinzhiwu.yiwu.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.yiwu.dao.CourseYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
@@ -24,21 +23,30 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 		super.setBaseDao(courseYzwDao);
 	}
 	
-	@Scheduled(cron="0/1 * * * * ?")
-	@Transactional
-	public void scheduledSetOne_StudentCount_SumLessonTimesAndLessonOrdialNo(){
+//	@Scheduled(initialDelay=10000,fixedRate=931536000)
+//	public void setAll(){
+//		List<CourseYzw> unsettedCourses = courseDao.findByProperty("sumLessonTimes", null);
+//		for (CourseYzw course : unsettedCourses) {
+//			setOne(course);
+//		}
+//	}
+//	
+	
+//	@Scheduled(initialDelay=10000, fixedRate=10)
+	public void setOne(){
 		CourseYzw course;
 		try {
-			course = courseDao.findOneByProperty("sumLessonTimes", null);
+			course = courseDao.findOneByProperty("sumLessonTimes",null);
 		} catch (DataNotFoundException e) {
+			logger.error(e.getMessage());
 			return;
 		}
+		
 		setSumLessonTimesAndLessonOrdialNo(course);
 		setStudentCount(course);
 		update(course);
 	}
 	
-//	@Transactional
 	private void setSumLessonTimesAndLessonOrdialNo(CourseYzw course){
 		java.util.List<LessonYzw> lessons = course.getLessons();
 		course.setSumLessonTimes(lessons.size());
@@ -49,7 +57,6 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 		
 	}
 	
-//	@Transactional
 	private void setStudentCount(CourseYzw course){
 		course.setStudentCount(orderDao.findCountByCourseId(course.getId()));
 	}
