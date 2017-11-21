@@ -1,7 +1,6 @@
 package com.yinzhiwu.yiwu.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.CourseYzwDao;
