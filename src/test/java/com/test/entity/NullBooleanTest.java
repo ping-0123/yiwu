@@ -16,6 +16,7 @@ public class NullBooleanTest extends BaseBlockJUnitTest {
 	@Test
 	public void testNullBoolean(){
 		CapitalAccount account  = new CapitalAccount();
+		account.init();
 		if(account.getIsDefault())
 			System.err.println("null boolean is true");
 		else {

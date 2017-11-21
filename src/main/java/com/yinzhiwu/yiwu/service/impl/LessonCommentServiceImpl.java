@@ -44,8 +44,10 @@ public class LessonCommentServiceImpl  extends BaseServiceImpl<LessonComment,Int
 		public LessonComment doLessonComment(LessonComment comment) {
 			if(CommentType.FIRST==comment.getType() || CommentType.APPEND==comment.getType())
 				applicationContext.publishEvent(comment);
-			lessonCommentDao.save(comment);
+			save(comment);
+			
 			return comment;
+
 		}
 		
 		

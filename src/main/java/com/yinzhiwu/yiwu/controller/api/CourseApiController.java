@@ -59,7 +59,7 @@ public class CourseApiController extends BaseController {
 	@ApiOperation(value="获取课程{id}的第{ordinalNo}节课")
 	public YiwuJson<LessonVO> findTheOrdinalNoLesson(
 			@ApiParam(value="课程Id") @PathVariable(value="id", required = true) String id,
-			@ApiParam(value="课时序号， 即第几节课") @PathVariable(value="id", required=true) Integer ordinalNo ) throws DataNotFoundException
+			@ApiParam(value="课时序号， 即第几节课") @PathVariable(value="ordinalNo", required=true) Integer ordinalNo ) throws DataNotFoundException
 	{
 		LessonYzw lesson = lessonService.findByCourseIdAndOrdinalNo(id, ordinalNo);
 		return YiwuJson.createBySuccess(LessonVOConverter.instance.fromPO(lesson));

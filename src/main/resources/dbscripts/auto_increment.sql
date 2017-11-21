@@ -1,10 +1,10 @@
 ALTER TABLE SYS_USER AUTO_INCREMENT = 1000000;
 alter table yiwu_capital_account AUTO_INCREMENT = 2000000;
 alter table yiwu_distributer AUTO_INCREMENT = 3000000;
-alter table yiwu_exp_grade AUTO_INCREMENT = 4000000;
-alter table yiwu_exp_record AUTO_INCREMENT = 5000000;
+-- alter table yiwu_exp_grade AUTO_INCREMENT = 4000000;
+-- alter table yiwu_exp_record AUTO_INCREMENT = 5000000;
 alter table yiwu_message AUTO_INCREMENT = 6000000;
-alter table yiwu_money_record AUTO_INCREMENT = 7000000;
+-- alter table yiwu_money_record AUTO_INCREMENT = 7000000;
 alter table yiwu_plan_revenue AUTO_INCREMENT = 8000000;
 alter table yiwu_product_type AUTO_INCREMENT = 9000000;
 alter table yiwu_product_type_relation AUTO_INCREMENT = 10000000;

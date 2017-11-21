@@ -104,6 +104,7 @@
 		</property>
 	</bean>
 
+	<!-- 启用@Transaction -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	<!-- 配置Hibernate 的事物管理器 -->
 	<bean id="transactionManager"
@@ -127,6 +128,7 @@
 			<tx:method name="deleteAndRepair" />
 			<tx:method name="judge*" />
 
+			<tx:method name="setOne" propagation="REQUIRES_NEW" />
 			<tx:method name="set*" />
 			<tx:method name="get*" propagation="REQUIRED" />
 			<tx:method name="find*" propagation="REQUIRED" />

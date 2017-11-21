@@ -37,7 +37,7 @@ public class LessonPraise extends BaseEntity {
 	
 	@NotNull
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_distributer_id", value=ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(foreignKey=@ForeignKey(name="fk_praise_distributer_id"))
 	private Distributer distributer;
 	
 	@Column(columnDefinition="boolean default false")

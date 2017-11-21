@@ -1,18 +1,18 @@
 package com.yinzhiwu.yiwu.exception;
 
+
+@SuppressWarnings("unused")
 public class DataNotFoundException extends Exception {
-
-	/**
-	 * 
-	 */
-
 	private static final long serialVersionUID = 973726680731998227L;
+
 
 	private Class<?> entity;
 
 	private String propertyName;
 
 	private Object value;
+	
+	private String sql;
 
 	public DataNotFoundException() {
 		super();
@@ -27,8 +27,9 @@ public class DataNotFoundException extends Exception {
 		super(message, cause);
 	}
 
-	public DataNotFoundException(String message) {
-		super(message);
+	public DataNotFoundException(String sql) {
+		super("no rows fetched by hql " + sql);
+		this.sql = sql;
 	}
 
 	public DataNotFoundException(Throwable cause) {
@@ -43,28 +44,5 @@ public class DataNotFoundException extends Exception {
 		this.value = value;
 	}
 
-	public Class<?> getEntity() {
-		return entity;
-	}
-
-	public String getPropertyName() {
-		return propertyName;
-	}
-
-	public Object getValue() {
-		return value;
-	}
-
-	public void setEntity(Class<?> entity) {
-		this.entity = entity;
-	}
-
-	public void setPropertyName(String propertyName) {
-		this.propertyName = propertyName;
-	}
-
-	public void setValue(Object value) {
-		this.value = value;
-	}
 
 }

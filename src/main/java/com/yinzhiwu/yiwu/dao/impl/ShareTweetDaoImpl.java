@@ -21,7 +21,7 @@ public class ShareTweetDaoImpl extends BaseDaoImpl<ShareTweet,Integer> implement
 	@Override
 	public int getSumSharedTimesOfCurrentDay(Integer distributerId) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_MONTH, -1);
+//		calendar.add(Calendar.DAY_OF_MONTH, -1);
 		Date start = CalendarUtil.getDayBegin(calendar).getTime();
 		Date end = CalendarUtil.getDayEnd(calendar).getTime();
 		

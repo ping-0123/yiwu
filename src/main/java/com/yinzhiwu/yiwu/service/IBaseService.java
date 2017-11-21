@@ -54,9 +54,8 @@ public interface IBaseService<T, PK extends Serializable> {
 	
 	
 	public T get(PK id) throws DataNotFoundException;
-	@Transactional
+	
 	public List<T> findAll() ;
-	@Transactional
 	public List<T> findByExample(T entity);
 	public List<T>  findByProperties(String[] properteis, Object[] values);
 	public List<T>  findByPropertiesNullValueIgnore(String[] properties, Object[] values);
