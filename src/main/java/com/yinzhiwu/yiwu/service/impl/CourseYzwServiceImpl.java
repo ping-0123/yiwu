@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.yiwu.dao.CourseYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
 
 
@@ -34,7 +35,7 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 	/**
 	 * {@link CourseYzwServiceImpl#setAllSumLessonTimes()}
 	 */
-	@Scheduled(cron="0 0 22 * * ?")
+	@Scheduled(cron="0 30 22 * * ?")
 	public void setAllSumLessonTimes(){
 		List<CourseYzw> courses = courseDao.find100UnSetSumLessonTimes();
 		if(logger.isInfoEnabled())
@@ -45,6 +46,17 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 			update(course);
 		}
 //		setStudentCount(course);
+	}
+	
+//	@Scheduled(initialDelay=10000, fixedRate=10)
+	public void setOneSumLessonTimes(){
+		try {
+			CourseYzw course = courseDao.findOneByProperty("sumLessonTimes", 0);
+			setOne(course);
+			update(course);
+		} catch (DataNotFoundException e) {
+			return;
+		}
 	}
 	
 	private void setOne(CourseYzw course){

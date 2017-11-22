@@ -12,7 +12,7 @@ public class CourseYzwDaoImpl extends BaseDaoImpl<CourseYzw, String> implements 
 
 	@Override
 	public List<CourseYzw> find100UnSetSumLessonTimes(){
-		String hql = "FROM CourseYzw WHERE sumLessonTimes is null ORDER BY createTime DESC";
+		String hql = "FROM CourseYzw WHERE sumLessonTimes is null OR sumLessonTimes=0 ORDER BY createTime DESC";
 		return getSession().createQuery(hql, CourseYzw.class)
 				.setMaxResults(100)
 				.getResultList();
