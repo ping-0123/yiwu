@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,17 +30,20 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.PaymentMode;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.JSMSException;
 import com.yinzhiwu.yiwu.model.DistributerModifyModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
+import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView.CapitalAccountApiViewConverter;
 import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView.DistributerApiViewConverter;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
-import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView.CapitalAccountApiViewConverter;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.FileService;
+import com.yinzhiwu.yiwu.service.JSMSService;
+import com.yinzhiwu.yiwu.service.JSMSService.JSMSTemplate;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 
 import io.swagger.annotations.Api;
@@ -56,6 +60,7 @@ public class DistributerApiController extends BaseController {
 	@Qualifier("fileServiceImpl")
 	@Autowired private FileService fileService;
 	@Autowired private OrderYzwService orderService;
+	@Autowired private JSMSService jsmsService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
@@ -230,8 +235,9 @@ public class DistributerApiController extends BaseController {
 	}
 
 	@RequestMapping(value = "/{distributerId}", method = { RequestMethod.PUT, RequestMethod.POST })
-	@ApiOperation("修改会员个人资料")
-	public YiwuJson<DistributerModifyModel> modify(DistributerModifyModel model, @PathVariable int distributerId) {
+	@ApiOperation("修改会员个人资料, 修改手机号码使用/api/distributer/{id}/phoneNo")
+	public YiwuJson<DistributerModifyModel> modify(DistributerModifyModel model,
+			@PathVariable(name="distributerId") int distributerId) {
 		if (model == null)
 			return YiwuJson.createByErrorMessage("没有需要修改的项");
 		if (model.getImage() != null && model.getImage().getSize() > 500 * 1024)
@@ -241,6 +247,25 @@ public class DistributerApiController extends BaseController {
 
 	}
 
+	@PutMapping(value="/{id}/phoneNo")
+	@ApiOperation("修改会员手机号码")
+	public YiwuJson<DistributerApiView> updatePhoneNo(@PathVariable(name="id") Integer id,
+			@ApiParam(value="解绑手机验证码") 
+			@RequestParam(name="unbindCode") String unbindCode,
+			@ApiParam(value="绑定的手机号码")
+			@RequestParam(name="bindingMobileNumber") String bindingMobileNumber,
+			@ApiParam(value="绑定的手机验证码")
+			@RequestParam(name="bindingCode") String bindingCode) throws JSMSException
+	{
+		Distributer distributer = UserContext.getDistributer();
+		
+		jsmsService.validateSMSCode(JSMSTemplate.UNBIND_MOBILE_NUMBER, distributer.getPhoneNo(), unbindCode);
+		jsmsService.validateSMSCode(JSMSTemplate.BIND_MOBILE_NUMBER, bindingMobileNumber, bindingCode);
+		distributer.setPhoneNo(bindingMobileNumber);
+		distributerService.update(distributer);
+		
+		return YiwuJson.createBySuccess(DistributerApiViewConverter.instance.fromPO(distributer));
+	}
 	
 	@GetMapping("/{distributerId}/defaultStore")
 	@ApiOperation(value="返回客户默认的上课门店")

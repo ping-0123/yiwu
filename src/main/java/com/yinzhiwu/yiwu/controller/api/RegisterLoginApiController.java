@@ -73,20 +73,17 @@ public class RegisterLoginApiController extends BaseController {
 			 @ApiParam(value="手机号码", required=true) String mobileNumber, 
 			 @ApiParam(value="微信OpenId", required = true) String openId, 
 			 @RequestParam(name="memberCard", required=false)
-			 @ApiParam(name="memeberCard", value="老用户的会员卡号", required=false)
-			 String memberCard,
+			 @ApiParam(value="老用户的会员卡号", required=false)  String memberCard,
 			 @RequestParam(name="invitationCode", required=false) 
-			 @ApiParam(value="邀请码", required=false)
-			 String invitationCode,
-			 @ApiParam(value="注册短信验证码", required=true)
-			 String code) throws JSMSException, YiwuException{
+			 @ApiParam(value="邀请码", required=false) String invitationCode,
+			 @ApiParam(value="注册短信验证码", required=true)  String code) throws JSMSException, YiwuException{
 		
 		if(!jsmsService.validateRegisterSMSCode(mobileNumber, code))
 			throw new JSMSException("短信验证码不正确");
 		if(!mobileNumber.matches("^1\\d{10}$"))
 			throw new YiwuException("手机号码不合法");
 		if(!distributerService.validateMobileNumberBeforeRegister(mobileNumber)){
-			throw new YiwuException("该手机号码已注册");
+			throw new YiwuException("手机号码" + mobileNumber + "已注册");
 		}
 		if(!distributerService.validateOpenIdBeforeRegister(openId)){
 			throw new YiwuException("该微信号已注册");
@@ -96,6 +93,12 @@ public class RegisterLoginApiController extends BaseController {
 				throw new YiwuException("输入的会员卡号已被注册");
 		}
 		
+		if(logger.isDebugEnabled()){
+			logger.debug("register mobile number is " + mobileNumber);
+			logger.debug("register wechat openId is " + openId);
+			logger.debug("register memberCard is  " + memberCard);
+		}
+		
 		Distributer distributer = distributerService.doRegister(mobileNumber, openId, memberCard, invitationCode);
 		
 		Map<String,Object> map = new HashMap<String, Object>();
@@ -103,9 +106,26 @@ public class RegisterLoginApiController extends BaseController {
 		return YiwuJson.createBySuccess(map);
 	 }
 	
+	
+	@Deprecated
 	@PostMapping(value="/register/validate/MobileNumber")
-	@ApiOperation("注册前验证手机号码")
+	@ApiOperation("注册前验证手机号码, 即将弃用, 被   \"api/register/validate/mobileNumber\"替代")
 	public YiwuJson<?> validateMobileNumber(String mobileNumber)
+	{
+		if (!mobileNumber.matches("^1\\d{10}$"))
+			return YiwuJson.createByErrorMessage("请输入合法的11位数手机号码");
+		
+		try {
+			distributerService.findByPhoneNo(mobileNumber);
+			return YiwuJson.createByErrorMessage("该号码已注册");
+		} catch (DataNotFoundException e) {
+			return YiwuJson.createBySuccessMessage("该号码未注册");
+		}
+	}
+	
+	@PostMapping(value="/register/validate/mobileNumber")
+	@ApiOperation("注册前验证手机号码")
+	public YiwuJson<?> validateMobileNumber2(String mobileNumber)
 	{
 		if (!mobileNumber.matches("^1\\d{10}$"))
 			return YiwuJson.createByErrorMessage("请输入合法的11位数手机号码");
