@@ -23,3 +23,4 @@ ALTER TABLE SYS_RESOURCE AUTO_INCREMENT = 40000;
 ALTER TABLE SYS_ROLE AUTO_INCREMENT = 50000;
 alter table yiwu_course_template auto_increment =60000;
 alter table yiwu_lesson_template auto_increment = 70000;
+alter table yiwu_connotation_provider auto_increment = 80000;

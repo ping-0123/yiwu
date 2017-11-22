@@ -1,13 +1,14 @@
 package com.yinzhiwu.yiwu.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.CourseYzwDao;
-import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
 
 
@@ -15,7 +16,7 @@ import com.yinzhiwu.yiwu.service.CourseYzwService;
 public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> implements CourseYzwService {
 	
 	@Autowired private CourseYzwDao courseDao;
-	@Autowired private OrderYzwDao orderDao;
+//	@Autowired private OrderYzwDao orderDao;
 	
 	@Autowired
 	public void setBaseDao(CourseYzwDao courseYzwDao) {
@@ -30,23 +31,23 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 //		}
 //	}
 //	
-	
-//	@Scheduled(initialDelay=10000, fixedRate=10)
-	public void setOne(){
-		CourseYzw course;
-		try {
-			course = courseDao.findOneByProperty("sumLessonTimes",null);
-		} catch (DataNotFoundException e) {
-			logger.error(e.getMessage());
-			return;
-		}
+	/**
+	 * {@link CourseYzwServiceImpl#setAllSumLessonTimes()}
+	 */
+	@Scheduled(cron="0 0 22 * * ?")
+	public void setAllSumLessonTimes(){
+		List<CourseYzw> courses = courseDao.find100UnSetSumLessonTimes();
+		if(logger.isInfoEnabled())
+			logger.info(courses.size() + " courses is setting sum lesson times");
 		
-		setSumLessonTimesAndLessonOrdialNo(course);
-		setStudentCount(course);
-		update(course);
+		for (CourseYzw course : courses) {
+			setOne(course);
+			update(course);
+		}
+//		setStudentCount(course);
 	}
 	
-	private void setSumLessonTimesAndLessonOrdialNo(CourseYzw course){
+	private void setOne(CourseYzw course){
 		java.util.List<LessonYzw> lessons = course.getLessons();
 		course.setSumLessonTimes(lessons.size());
 		
@@ -56,7 +57,7 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 		
 	}
 	
-	private void setStudentCount(CourseYzw course){
-		course.setStudentCount(orderDao.findCountByCourseId(course.getId()));
-	}
+//	private void setStudentCount(CourseYzw course){
+//		course.setStudentCount(orderDao.findCountByCourseId(course.getId()));
+//	}
 }

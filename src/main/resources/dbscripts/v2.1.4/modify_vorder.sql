@@ -1,4 +1,3 @@
-alter TABLE chenkuserdb1.skt18 add COLUMN(dataStatus int not null DEFAULT 0);
 
 CREATE 
 	or REPLACE
@@ -37,7 +36,6 @@ VIEW `vorder` AS
         `chenkuserdb1`.`skt18`.`SKF301` AS `current_status`,
         `chenkuserdb1`.`skt18`.`SKF867` AS `remain_hours`,
         `chenkuserdb1`.`skt18`.`SKF963` AS `audit_flag`,
-        dataStatus,
         `chenkuserdb1`.`skt18`.`SKF1037` AS `e_contract_text`,
         `chenkuserdb1`.`skt18`.`SKF1038` AS `e_contract_address`,
         `chenkuserdb1`.`skt18`.`SKF1039` AS `e_contract_picture_flag`,

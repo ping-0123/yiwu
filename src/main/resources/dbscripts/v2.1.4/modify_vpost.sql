@@ -1,4 +1,3 @@
-ALTER TABLE chenkuserdb1.tblpost add COLUMN(dataStatus int not null default 0);
 alter TABLE chenkuserdb1.tblpost MODIFY COLUMN id int not null AUTO_INCREMENT;
 
 CREATE 
@@ -14,7 +13,6 @@ VIEW `vpost` AS
         `chenkuserdb1`.`tblpost`.`LastChanger` AS `sf_last_change_user`,
         `chenkuserdb1`.`tblpost`.`LastChangeTime` AS `sf_last_change_time`,
         `chenkuserdb1`.`tblpost`.`Removed` AS `removed`,
-        dataStatus,
         `chenkuserdb1`.`tblpost`.`flag` AS `flag`,
         `chenkuserdb1`.`tblpost`.`wparam` AS `wparam`,
         `chenkuserdb1`.`tblpost`.`lparam` AS `lparam`,
@@ -25,5 +23,3 @@ VIEW `vpost` AS
     FROM
         `chenkuserdb1`.`tblpost`;
         
-update vpost set dataStatus=2 where removed=TRUE;
-alter table chenkuserdb1.tblpost modify column id int AUTO_INCREMENT;

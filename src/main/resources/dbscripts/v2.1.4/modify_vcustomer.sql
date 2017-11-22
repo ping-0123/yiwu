@@ -1,4 +1,3 @@
-alter table chenkuserdb1.skt1 add COLUMN (dataStatus int not null DEFAULT 0);
 CREATE 
 	or REPLACE
 VIEW `vcustomer` AS
@@ -29,7 +28,6 @@ VIEW `vcustomer` AS
         `chenkuserdb1`.`skt1`.`SKF864` AS `password`,
         `chenkuserdb1`.`skt1`.`SKF930` AS `credit`,
         `chenkuserdb1`.`skt1`.`SKF245` AS `earnest`,
-        dataStatus,
         `chenkuserdb1`.`skt1`.`SF_CREATE_USER` AS `sf_create_user`,
         `chenkuserdb1`.`skt1`.`SF_LAST_CHANGE_USER` AS `sf_last_change_user`,
         `chenkuserdb1`.`skt1`.`SF_CREATE_TIME` AS `sf_create_time`,
@@ -39,5 +37,3 @@ VIEW `vcustomer` AS
         `chenkuserdb1`.`skt1`.`SF_Last_Change_Timestamp` AS `sf_last_change_timestamp`
     FROM
         `chenkuserdb1`.`skt1`;
-
-UPDATE vcustomer set dataStatus=0 where dataStatus is null;

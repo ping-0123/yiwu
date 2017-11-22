@@ -1,5 +1,4 @@
-ALTER table chenkuserdb1.skt6 add COLUMN(dataStatus int not null DEFAULT 0);
-ALTER TABLE chenkuserdb1.skt6 add COLUMN(sumLessonTimes int);
+ALTER TABLE chenkuserdb1.skt6 add COLUMN(sumLessonTimes int default 0);
 alter TABLE chenkuserdb1.skt6 add COLUMN(videoPosterUri VARCHAR(128), videoTitle VARCHAR(128));
 
 CREATE 
@@ -24,7 +23,6 @@ VIEW `vcourse` AS
         `chenkuserdb1`.`skt6`.`SKF64` AS `sumCourseHours`,
         `chenkuserdb1`.`skt6`.`SKF65` AS `classRoom_id`,
         `chenkuserdb1`.`skt6`.`SKF66` AS `classRoomName`,
-        `chenkuserdb1`.`skt6`.`dataStatus` AS `dataStatus`,
         `chenkuserdb1`.`skt6`.`SF_CREATE_USER` AS `sf_create_user`,
         `chenkuserdb1`.`skt6`.`SF_LAST_CHANGE_USER` AS `sf_last_change_user`,
         `chenkuserdb1`.`skt6`.`SF_CREATE_TIME` AS `sf_create_time`,

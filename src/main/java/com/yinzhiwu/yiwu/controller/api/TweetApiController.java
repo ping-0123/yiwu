@@ -56,7 +56,7 @@ public class TweetApiController extends BaseController {
 	public YiwuJson<List<TweetAbbrApiView>> findAbbrlist(
 			@ApiParam(name="type", value=
 				"推文类型, 取值范围({PRODUCT,MARKET_ACTIVITY,PROMOTION,PERFORMACE,NEWS,CHILDREN,ADULT,OTHER})不传则搜索所有类型", 
-			allowableValues="{PRODUCT,MARKET_ACTIVITY,PROMOTION,PERFORMACE,NEWS,CHILDREN,ADULT,OTHER}") 
+				allowableValues="{PRODUCT,MARKET_ACTIVITY,PROMOTION,PERFORMACE,NEWS,CHILDREN,ADULT,OTHER}") 
 			@RequestParam(name="type", required=false) TweetType type,
 			@ApiParam(name="title", required=false) 
 			@RequestParam(name="title", required=false) String title)

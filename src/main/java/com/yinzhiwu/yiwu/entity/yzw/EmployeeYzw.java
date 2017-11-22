@@ -38,9 +38,6 @@ import com.yinzhiwu.yiwu.enums.Gender;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EmployeeYzw extends BaseYzwEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6739017966853748277L;
 
 	@Id

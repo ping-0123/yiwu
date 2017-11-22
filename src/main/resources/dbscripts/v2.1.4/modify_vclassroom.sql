@@ -1,4 +1,3 @@
-alter TABLE chenkuserdb1.skt5 add COLUMN dataStatus tinyint not null default 0;
 update vlesson set classRoomId =null where classRoomId ='';
 CREATE 
 	or REPLACE
@@ -10,7 +9,6 @@ VIEW `vclassroom` AS
         `chenkuserdb1`.`skt5`.`SKF43` AS `storeName`,
         `chenkuserdb1`.`skt5`.`SKF44` AS `maxStudentCount`,
         `chenkuserdb1`.`skt5`.`SKF45` AS `minStudentCount`,
-        dataStatus,
         `chenkuserdb1`.`skt5`.`SF_CREATE_USER` AS `sf_create_user`,
         `chenkuserdb1`.`skt5`.`SF_LAST_CHANGE_USER` AS `sf_last_change_user`,
         `chenkuserdb1`.`skt5`.`SF_CREATE_TIME` AS `sf_create_time`,

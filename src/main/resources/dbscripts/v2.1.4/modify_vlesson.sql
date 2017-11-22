@@ -1,4 +1,3 @@
-ALTER table chenkuserdb1.skt7 add COLUMN(dataStatus int DEFAULT 0);
 alter table chenkuserdb1.skt7 add column(ordinalNo int);
 alter table chenkuserdb1.skt7 add column(
 	standardVideoPosterUri varchar(128), standardVideoTitle varchar(128), 
@@ -57,7 +56,6 @@ VIEW  yiwu.vlesson AS
         `chenkuserdb1`.`skt7`.`SKF861` AS `audio_link`,
         `chenkuserdb1`.`skt7`.`SKF950` AS `dance_introduction`,
         `chenkuserdb1`.`skt7`.`SKF1001` AS `QRcode`,
-        dataStatus,
         `chenkuserdb1`.`skt7`.`SF_CREATE_USER` AS `sf_create_user`,
         `chenkuserdb1`.`skt7`.`SF_LAST_CHANGE_USER` AS `sf_last_change_user`,
         `chenkuserdb1`.`skt7`.`SF_CREATE_TIME` AS `sf_create_time`,

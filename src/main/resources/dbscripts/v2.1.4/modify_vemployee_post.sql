@@ -1,12 +1,10 @@
-alter TABLE chenkuserdb1.tblemployee_post add FOREIGN KEY fk_employeePost_employee_id(EmployeeID) REFERENCES chenkuserdb1.tblemployee(id);
 alter TABLE chenkuserdb1.tblemployee_post add COLUMN
 	(department_id int,
 	start date, 
 	end DATE, 
 	is_default BOOLEAN DEFAULT FALSE,
 	sf_create_user int,
-	sf_create_time DATETIME, 
-	dataStatus int not null default 0);
+	sf_create_time DATETIME);
 alter TABLE chenkuserdb1.tblemployee_post MODIFY COLUMN id int not null auto_increment;
 
 CREATE 
@@ -21,7 +19,6 @@ VIEW `vemployee_post` AS
         end,
         is_default,
 		`chenkuserdb1`.`tblemployee_post`.`Removed` AS `removed`,
-        dataStatus,
         sf_create_user,
         sf_create_time,
         `chenkuserdb1`.`tblemployee_post`.`LastChanger` AS `sf_last_change_user`,
@@ -33,5 +30,3 @@ VIEW `vemployee_post` AS
         `chenkuserdb1`.`tblemployee_post`;
         
 UPDATE vemployee_post set post_id = 1 where post_id = -1;
-update vemployee_post set dataStatus=2 where removed=TRUE;
-UPDATE vemployee_post set datastatus=0 where datastatus is null;
