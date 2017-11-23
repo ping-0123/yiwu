@@ -17,5 +17,5 @@ public class CourseYzwDaoImpl extends BaseDaoImpl<CourseYzw, String> implements 
 				.setMaxResults(100)
 				.getResultList();
 	}
-
+	
 }

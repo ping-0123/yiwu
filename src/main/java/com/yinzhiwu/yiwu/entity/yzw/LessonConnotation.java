@@ -40,19 +40,6 @@ public class LessonConnotation implements Serializable{
 	private String practicalVideoUri;
 	private String practicalVideoPosterUri;
 	private String practicalVideoTitle;
-	
-	public String getPuzzleVideoUri() {
-		return puzzleVideoUri;
-	}
-	public String getPracticalVideoUri() {
-		return practicalVideoUri;
-	}
-	public void setPuzzleVideoUri(String puzzleVideoUri) {
-		this.puzzleVideoUri = puzzleVideoUri;
-	}
-	public void setPracticalVideoUri(String practicalVideoUri) {
-		this.practicalVideoUri = practicalVideoUri;
-	}
 	public String getConnotation() {
 		return connotation;
 	}
@@ -65,6 +52,15 @@ public class LessonConnotation implements Serializable{
 	public String getPictureUri() {
 		return pictureUri;
 	}
+	public String getStandardVideoUri() {
+		return standardVideoUri;
+	}
+	public String getStandardVideoPosterUri() {
+		return standardVideoPosterUri;
+	}
+	public String getStandardVideoTitle() {
+		return standardVideoTitle;
+	}
 	public String getAudioName() {
 		return audioName;
 	}
@@ -73,6 +69,24 @@ public class LessonConnotation implements Serializable{
 	}
 	public String getDanceIntroduction() {
 		return danceIntroduction;
+	}
+	public String getPuzzleVideoUri() {
+		return puzzleVideoUri;
+	}
+	public String getPuzzleVideoPosterUri() {
+		return puzzleVideoPosterUri;
+	}
+	public String getPuzzleVideoTitle() {
+		return puzzleVideoTitle;
+	}
+	public String getPracticalVideoUri() {
+		return practicalVideoUri;
+	}
+	public String getPracticalVideoPosterUri() {
+		return practicalVideoPosterUri;
+	}
+	public String getPracticalVideoTitle() {
+		return practicalVideoTitle;
 	}
 	public void setConnotation(String connotation) {
 		this.connotation = connotation;
@@ -86,6 +100,15 @@ public class LessonConnotation implements Serializable{
 	public void setPictureUri(String pictureUri) {
 		this.pictureUri = pictureUri;
 	}
+	public void setStandardVideoUri(String standardVideoUri) {
+		this.standardVideoUri = standardVideoUri;
+	}
+	public void setStandardVideoPosterUri(String standardVideoPosterUri) {
+		this.standardVideoPosterUri = standardVideoPosterUri;
+	}
+	public void setStandardVideoTitle(String standardVideoTitle) {
+		this.standardVideoTitle = standardVideoTitle;
+	}
 	public void setAudioName(String audioName) {
 		this.audioName = audioName;
 	}
@@ -95,41 +118,17 @@ public class LessonConnotation implements Serializable{
 	public void setDanceIntroduction(String danceIntroduction) {
 		this.danceIntroduction = danceIntroduction;
 	}
-	public String getStandardVideoUri() {
-		return standardVideoUri;
-	}
-	public void setStandardVideoUri(String standardVideoUri) {
-		this.standardVideoUri = standardVideoUri;
-	}
-	public String getStandardVideoPosterUri() {
-		return standardVideoPosterUri;
-	}
-	public String getStandardVideoTitle() {
-		return standardVideoTitle;
-	}
-	public String getPuzzleVideoPosterUri() {
-		return puzzleVideoPosterUri;
-	}
-	public String getPuzzleVideoTitle() {
-		return puzzleVideoTitle;
-	}
-	public String getPracticalVideoPosterUri() {
-		return practicalVideoPosterUri;
-	}
-	public String getPracticalVideoTitle() {
-		return practicalVideoTitle;
-	}
-	public void setStandardVideoPosterUri(String standardVideoPosterUri) {
-		this.standardVideoPosterUri = standardVideoPosterUri;
-	}
-	public void setStandardVideoTitle(String standardVideoTitle) {
-		this.standardVideoTitle = standardVideoTitle;
+	public void setPuzzleVideoUri(String puzzleVideoUri) {
+		this.puzzleVideoUri = puzzleVideoUri;
 	}
 	public void setPuzzleVideoPosterUri(String puzzleVideoPosterUri) {
 		this.puzzleVideoPosterUri = puzzleVideoPosterUri;
 	}
 	public void setPuzzleVideoTitle(String puzzleVideoTitle) {
 		this.puzzleVideoTitle = puzzleVideoTitle;
+	}
+	public void setPracticalVideoUri(String practicalVideoUri) {
+		this.practicalVideoUri = practicalVideoUri;
 	}
 	public void setPracticalVideoPosterUri(String practicalVideoPosterUri) {
 		this.practicalVideoPosterUri = practicalVideoPosterUri;

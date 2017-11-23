@@ -2,6 +2,7 @@ package com.test.dao;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
@@ -49,5 +50,18 @@ public class LessonYzwDaoTest extends BaseSpringTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	@Test
+	@Rollback(false)
+	public void testUpdateBlankCourseId(){
+//		lessonYzwDao.updateBlankCourseId();
+	}
+	
+	@Test
+	@Rollback(false)
+	public void testUpdateBlankClassRoomId(){
+//		lessonYzwDao.updateBlankClassRoomId();
 	}
 }

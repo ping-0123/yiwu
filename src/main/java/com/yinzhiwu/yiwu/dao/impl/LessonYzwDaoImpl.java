@@ -156,18 +156,11 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 
 	@Override
 	public LessonYzw get(Integer id) {
+		updateBlankClassRoomId();
+		updateBlankCourseId();
+		
 		LessonYzw lesson = getSession().get(LessonYzw.class, id);
 		if(lesson == null) return null;
-		
-		StringBuilder hql = new StringBuilder();
-		hql.append("SELECT COUNT(t1.course)");
-		hql.append(" FROM LessonYzw t1");
-		hql.append(" WHERE t1.id = :id");
-		Long count = getSession().createQuery(hql.toString(), Long.class)
-				.setParameter("id", id)
-				.getSingleResult();
-		if(count ==0 )
-			lesson.setCourse(null);
 		
 		if(null ==lesson.getDueStudentCount())
 			lesson.setDueStudentCount(0);
@@ -185,6 +178,25 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		return lesson;
 	}
 
+	public void updateBlankCourseId(){
+//		String hql = "UPDATE LessonYzw SET "
+		StringBuilder hql = new StringBuilder();
+		hql.append("UPDATE ").append(LessonYzw.class.getSimpleName());
+		hql.append(" SET course.id = null");
+		hql.append(" WHERE course.id =''");
+		
+		getSession().createQuery(hql.toString()).executeUpdate();
+	}
+	
+	public void updateBlankClassRoomId(){
+		StringBuilder hql = new StringBuilder();
+		hql.append("UPDATE ").append(LessonYzw.class.getSimpleName());
+		hql.append(" SET classRoom.id = null");
+		hql.append(" WHERE classRoom.id =''");
+		
+		getSession().createQuery(hql.toString()).executeUpdate();
+	}
+	
 	@Override
 	public List<PrivateLessonApiView> findPrivateLessonApiViewsByContracNo(String contractNo) {
 		Assert.hasLength(contractNo);

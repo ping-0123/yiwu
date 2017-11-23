@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.yiwu.dao.CourseTemplateDao;
 import com.yinzhiwu.yiwu.entity.CourseTemplate;
 import com.yinzhiwu.yiwu.entity.LessonTemplate;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.CourseTemplateService;
 
 /**
@@ -34,6 +36,20 @@ public class CourseTemplateServiceImpl extends BaseServiceImpl<CourseTemplate,In
 		}
 		course.setLessonTemplates(lessons);
 		return super.save(course);
+	}
+
+	@Override
+	public CourseTemplate findMapedCourseTemplate(CourseYzw course) {
+		try {	
+			return findOneByProperties(
+					new String[]{"dance.id", "danceGrade.name","courseType"}, 
+					new Object[]{course.getDance().getId(),
+								course.getDanceGrade(),
+								course.getCourseType()});
+			
+		} catch (DataNotFoundException e) {
+			return null;
+		}
 	}
 	
 	

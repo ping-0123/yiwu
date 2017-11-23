@@ -4,5 +4,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 
 public interface CourseYzwService extends IBaseService<CourseYzw, String> {
 
+	void setOneConnotation(CourseYzw course);
+
 
 }
