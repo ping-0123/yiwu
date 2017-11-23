@@ -89,7 +89,7 @@ public class RegisterLoginApiController extends BaseController {
 	@ApiOperation("用户注册")
 	 public YiwuJson<?> register(
 			 @ApiParam(value="手机号码", required=true) String mobileNumber, 
-			 @ApiParam(value="微信OpenId", required = true) String openId, 
+			 @ApiParam(value="微信openId", required = true) String openId, 
 			 @RequestParam(name="memberCard", required=false)
 			 @ApiParam(value="老用户的会员卡号", required=false)  String memberCard,
 			 @RequestParam(name="invitationCode", required=false) 

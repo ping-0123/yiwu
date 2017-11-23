@@ -1,7 +1,5 @@
 package com.yinzhiwu.yiwu.service.impl;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,13 +99,13 @@ public class LessonCheckinServiceImpl extends BaseServiceImpl<LessonCheckInYzw, 
 		if(CourseType.CLOSED == lesson.getCourseType())
 			throw new LessonCheckInException("封闭式课程无须刷卡");
 		//刷卡时间判定
-		Calendar calendar = Calendar.getInstance();
-		Date current = calendar.getTime();
-		calendar.setTime(lesson.getStartDateTime());
-		calendar.add(Calendar.HOUR_OF_DAY, -1);
-		Date checkInStart = calendar.getTime();
-		if(current.before(checkInStart))
-			throw new LessonCheckInException("离上课时间还远,请在上课前1小时内刷卡");
+//		Calendar calendar = Calendar.getInstance();
+//		Date current = calendar.getTime();
+//		calendar.setTime(lesson.getStartDateTime());
+//		calendar.add(Calendar.HOUR_OF_DAY, -1);
+//		Date checkInStart = calendar.getTime();
+//		if(current.before(checkInStart))
+//			throw new LessonCheckInException("离上课时间还远,请在上课前1小时内刷卡");
 		
 /*   TODO 刷卡结束时间暂不做限制
  * 		Calendar checkInEndCalendar = Calendar.getInstance();
