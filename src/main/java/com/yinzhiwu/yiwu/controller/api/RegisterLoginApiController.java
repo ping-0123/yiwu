@@ -22,6 +22,7 @@ import com.yinzhiwu.yiwu.service.CustomerYzwService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.JJWTService;
 import com.yinzhiwu.yiwu.service.JSMSService;
+import com.yinzhiwu.yiwu.service.JSMSService.JSMSTemplate;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,7 +47,7 @@ public class RegisterLoginApiController extends BaseController {
 	
 	@SuppressWarnings("rawtypes")
 	@PostMapping(value="/login")
-	@ApiOperation("用户微信登录")
+	@ApiOperation("用户微信登录,默认的登录方式")
 	public YiwuJson login(
 			@ApiParam(name="openId", value="微信openId", required=true) String openId){
 		
@@ -61,6 +62,23 @@ public class RegisterLoginApiController extends BaseController {
 			return YiwuJson.createByErrorMessage("用户尚未注册");
 		}
 		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("token", jjwtService.createDistributerToken(distributer));
+		return YiwuJson.createBySuccess(map);
+	}
+	
+	
+	@PostMapping(value="loginBymobileNumber")
+	@ApiOperation("使用手机验证码登录")
+	public YiwuJson<?> loginBymobileNumber(
+			@ApiParam(value="手机号码")
+			@RequestParam(name="mobileNumber", required =true) String mobileNumber,
+			@ApiParam(value="登录验证码")
+			@RequestParam(name="code", required=true) String code) throws JSMSException, DataNotFoundException
+	{
+		jsmsService.validateSMSCode(JSMSTemplate.LOGIN, mobileNumber, code);
+		
+		Distributer distributer = distributerService.findByPhoneNo(mobileNumber);
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("token", jjwtService.createDistributerToken(distributer));
 		return YiwuJson.createBySuccess(map);

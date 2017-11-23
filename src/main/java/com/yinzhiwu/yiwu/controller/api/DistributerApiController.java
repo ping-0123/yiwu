@@ -257,6 +257,13 @@ public class DistributerApiController extends BaseController {
 			@ApiParam(value="绑定的手机验证码")
 			@RequestParam(name="bindingCode") String bindingCode) throws JSMSException
 	{
+		try {
+			distributerService.findByPhoneNo(bindingMobileNumber);
+			return YiwuJson.createByErrorMessage(bindingMobileNumber + " 已注册");
+		} catch (DataNotFoundException e) {
+			;
+		}
+		
 		Distributer distributer = UserContext.getDistributer();
 		
 		jsmsService.validateSMSCode(JSMSTemplate.UNBIND_MOBILE_NUMBER, distributer.getPhoneNo(), unbindCode);
@@ -265,6 +272,23 @@ public class DistributerApiController extends BaseController {
 		distributerService.update(distributer);
 		
 		return YiwuJson.createBySuccess(DistributerApiViewConverter.instance.fromPO(distributer));
+	}
+	
+	@PutMapping(value="/{id}/openId")
+	@ApiOperation("修改用户绑定的微信openId")
+	public YiwuJson<?> updateOpenId(@PathVariable(name="id") Integer id,
+			@ApiParam(value="微信openId")
+			@RequestParam(name="openId") String openId)
+	{
+		try {
+			distributerService.findByWechatNo(openId);
+			return YiwuJson.createByErrorMessage("该微信号已注册,不能与本账号绑定");
+		} catch (DataNotFoundException e) {
+			Distributer distributer = UserContext.getDistributer();
+			distributer.setWechatNo(openId);
+			distributerService.update(distributer);
+			return YiwuJson.createBySuccess();
+		}
 	}
 	
 	@GetMapping("/{distributerId}/defaultStore")

@@ -36,6 +36,7 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 	 * {@link CourseYzwServiceImpl#setAllSumLessonTimes()}
 	 */
 	@Scheduled(cron="0 30 22 * * ?")
+//	@Scheduled(initialDelay=10000,fixedRate=10000000)
 	public void setAllSumLessonTimes(){
 		List<CourseYzw> courses = courseDao.find100UnSetSumLessonTimes();
 		if(logger.isInfoEnabled())

@@ -161,6 +161,8 @@ public class LessonYzw extends BaseYzwEntity {
 	@Override
 	public void init() {
 		super.init();
+		if(null == removed)
+			removed = false;
 		if(null == dueStudentCount)
 			dueStudentCount=0;
 		if(null==experienceStudentCount)

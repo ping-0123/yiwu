@@ -27,9 +27,8 @@ public class DataNotFoundException extends Exception {
 		super(message, cause);
 	}
 
-	public DataNotFoundException(String sql) {
-		super("no rows fetched by hql " + sql);
-		this.sql = sql;
+	public DataNotFoundException(String message) {
+		super(message);
 	}
 
 	public DataNotFoundException(Throwable cause) {
@@ -44,5 +43,9 @@ public class DataNotFoundException extends Exception {
 		this.value = value;
 	}
 
+	public DataNotFoundException(String hql, String message){
+		super("no rows fetched by hql " + hql  + ", cause: " + message);
+		this.sql = hql;
+	}
 
 }

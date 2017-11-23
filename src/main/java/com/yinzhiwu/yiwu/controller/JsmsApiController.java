@@ -33,7 +33,7 @@ public class JsmsApiController extends BaseController{
 	public YiwuJson<?> sendSMSCode(
 			@ApiParam(value="有效的11位数手机号码")
 			@RequestParam(name="mobileNumber") String mobileNumber, 
-			@ApiParam(value="验证模板:REGISTER(注册),WITHDRAW(提现操作), PAYDEPOSIT(支付定金),SET_DEFAULT_CAPITAL_ACCOUNT(设置默认帐号)"
+			@ApiParam(value="验证模板:REGISTER(注册), LOGIN(登录),WITHDRAW(提现操作), PAYDEPOSIT(支付定金),SET_DEFAULT_CAPITAL_ACCOUNT(设置默认帐号)"
 					+ ",ADD_NEW_CAPITAL_ACCOUNT(添加新的提现帐号),UNBIND_MOBILE_NUMBER(帐号解绑手机号码), BIND_MOBILE_NUMBER(帐号绑定手机号码)")
 			@RequestParam(name="template") JSMSTemplate template) throws FormatException, JSMSException{
 		

@@ -204,6 +204,7 @@ public class JSMSService {
 	
 	public enum JSMSTemplate{
 		REGISTER(47091, JSMSTemplateType.VALIDATE, new String[]{"code"}),
+		LOGIN(146213, JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		WITHDRAW(82007, JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		PAYDEPOSIT(102276, JSMSTemplateType.VALIDATE,new String[]{"code"}),
 		SET_DEFAULT_CAPITAL_ACCOUNT(145906,JSMSTemplateType.VALIDATE, new String[]{"code"}),
