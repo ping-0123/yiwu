@@ -24,6 +24,7 @@ public class Tweet extends BaseEntity {
 
 	@Column
 	private String digest; // 信息摘要
+	
 	@Column(length=128)
 	private String coverImage;
 

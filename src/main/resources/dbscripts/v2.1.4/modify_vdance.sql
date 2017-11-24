@@ -1,4 +1,3 @@
-alter TABLE chenkuserdb1.skt4 add COLUMN(dataStatus int not null DEFAULT 0);
 CREATE 
    or REPLACE
 VIEW `vdance` AS
@@ -7,7 +6,6 @@ VIEW `vdance` AS
         `chenkuserdb1`.`skt4`.`SKF34` AS `name`,
         `chenkuserdb1`.`skt4`.`SKF35` AS `danceClass`,
         `chenkuserdb1`.`skt4`.`SKF36` AS `remuneration`,
-        dataStatus,
         `chenkuserdb1`.`skt4`.`SF_CREATE_USER` AS `sf_create_user`,
         `chenkuserdb1`.`skt4`.`SF_LAST_CHANGE_USER` AS `sf_last_change_user`,
         `chenkuserdb1`.`skt4`.`SF_CREATE_TIME` AS `sf_create_time`,

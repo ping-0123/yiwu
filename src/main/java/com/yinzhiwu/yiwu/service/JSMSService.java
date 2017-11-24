@@ -96,6 +96,21 @@ public class JSMSService {
 		return validateSMSCode(JSMSTemplate.ADD_NEW_CAPITAL_ACCOUNT, moibileNumber, code);
 	}
 	
+	public boolean sendUnbindMobileNumberSMSCode(String mobileNumber) throws JSMSException{
+		return sendSMSCode(mobileNumber, JSMSTemplate.UNBIND_MOBILE_NUMBER);
+	}
+	
+	public boolean validateUnbindMobileNumberSMSCode(String moibileNumber,String code) throws JSMSException{
+		return validateSMSCode(JSMSTemplate.UNBIND_MOBILE_NUMBER, moibileNumber, code);
+	}
+	
+	public boolean sendBindMobileNumberSMSCode(String mobileNumber) throws JSMSException{
+		return sendSMSCode(mobileNumber, JSMSTemplate.BIND_MOBILE_NUMBER);
+	}
+	
+	public boolean validateBindMobileNumberSMSCode(String moibileNumber,String code) throws JSMSException{
+		return validateSMSCode(JSMSTemplate.BIND_MOBILE_NUMBER, moibileNumber, code);
+	}
 	
 	public boolean sendPayWithdrawMessage(String mobileNumber, java.util.Date date, Float amount) throws JSMSException{
 		String[] params = new String[]{dateFormat.format(date), numberFormat.format(amount)};
@@ -132,7 +147,7 @@ public class JSMSService {
 		
 	}
 	
-	private boolean sendSMSCode(String mobieNumber, JSMSTemplate template) throws JSMSException{
+	public boolean sendSMSCode(String mobieNumber, JSMSTemplate template) throws JSMSException{
 		SMSPayload payload = SMSPayload.newBuilder()
 				.setMobileNumber(mobieNumber)
 				.setTempId(template.getId())
@@ -149,7 +164,7 @@ public class JSMSService {
 		
 	}
 	
-	private boolean validateSMSCode(JSMSTemplate template,String mobileNumber, String code) throws JSMSException{
+	public boolean validateSMSCode(JSMSTemplate template,String mobileNumber, String code) throws JSMSException{
 		String msgId = msgIdMap.get(template).get(mobileNumber);
 		if(null==msgId){
 			String message = mobileNumber + "未验证, 请先请求验证码";
@@ -187,12 +202,15 @@ public class JSMSService {
 		}
 	}
 	
-	private enum JSMSTemplate{
+	public enum JSMSTemplate{
 		REGISTER(47091, JSMSTemplateType.VALIDATE, new String[]{"code"}),
+		LOGIN(146213, JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		WITHDRAW(82007, JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		PAYDEPOSIT(102276, JSMSTemplateType.VALIDATE,new String[]{"code"}),
 		SET_DEFAULT_CAPITAL_ACCOUNT(145906,JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		ADD_NEW_CAPITAL_ACCOUNT(145907,JSMSTemplateType.VALIDATE, new String[]{"code"}),
+		UNBIND_MOBILE_NUMBER(146193,JSMSTemplateType.VALIDATE, new String[]{"code"}),
+		BIND_MOBILE_NUMBER(146194,JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		PAY_WITHDRAW(145602,JSMSTemplateType.NOTIFICATION, new String[]{"date","amount"} ),
 		DO_WITHDRAW(145601, JSMSTemplateType.NOTIFICATION, new String[]{"date", "amount"});
 		
@@ -221,7 +239,7 @@ public class JSMSService {
 		
 	}
 	
-	private enum JSMSTemplateType{
+	public enum JSMSTemplateType{
 		VALIDATE,
 		NOTIFICATION,
 		MARKETING

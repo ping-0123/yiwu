@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.service;
 
 import com.yinzhiwu.yiwu.entity.CourseTemplate;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 
 /**
 *@Author ping
@@ -9,5 +10,7 @@ import com.yinzhiwu.yiwu.entity.CourseTemplate;
 */
 
 public interface CourseTemplateService extends IBaseService<CourseTemplate, Integer>{
+
+	CourseTemplate findMapedCourseTemplate(CourseYzw course);
 
 }

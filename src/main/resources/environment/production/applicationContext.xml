@@ -4,6 +4,7 @@
 	   xmlns:context="http://www.springframework.org/schema/context"
 	   xmlns:aop="http://www.springframework.org/schema/aop"
 	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:task="http://www.springframework.org/schema/task"
 	   xsi:schemaLocation="  
 			http://www.springframework.org/schema/beans   
 			http://www.springframework.org/schema/beans/spring-beans.xsd  
@@ -13,20 +14,38 @@
 			http://www.springframework.org/schema/aop/spring-aop.xsd
 			http://www.springframework.org/schema/tx 
             http://www.springframework.org/schema/tx/spring-tx.xsd 
+            http://www.springframework.org/schema/task
+            http://www.springframework.org/schema/task/spring-task.xsd
 			">  
+	
+	<!--  引入其他配置 文件-->
+	<import resource="classpath:applicationContext-*.xml"/>			
+
 	<!-- 加载配置文件 -->
 	<context:property-placeholder location="
 		classpath:properties/jdbc.properties,
 		classpath:properties/hibernate.properties,
 		classpath:properties/qiniu.properties,
 		classpath:properties/quartz.properties,
-		classpath:properties/system.properties" />
+		classpath:properties/system.properties,
+		classpath:properties/jpush.properties" />
 	
     <context:component-scan base-package="com.yinzhiwu.yiwu">
     	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>  
     
-	<!-- c3p0连接池配置 -->  
+	<!-- ####### 异步支持  ########-->
+	<!-- 开启@AspectJ AOP代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<!-- 任务调度器 -->
+	<task:scheduler id="scheduler" pool-size="10" />
+	<!-- 任务执行器 -->
+	<task:executor id="executor" pool-size="10" />
+	<!--开启注解调度支持 @Async @Scheduled -->
+	<task:annotation-driven executor="executor" scheduler="scheduler" proxy-target-class="true" />
+	
+	
+	<!-- ######### c3p0连接池配置  ########### -->  
      <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">  
           <!-- 用户名-->  
           <property name="user" value="${jdbc.username}"/>  
@@ -65,10 +84,6 @@
         <property name="packagesToScan">  
             <list>  
                 <value>com.yinzhiwu.yiwu.entity</value>
-                <value>com.yinzhiwu.yiwu.entity.yzw</value>
-                <value>com.yinzhiwu.yiwu.entity.type</value>
-                <value>com.yinzhiwu.yiwu.entity.income</value>
-                 <value>com.yinzhiwu.yiwu.entity.yzwOld</value>
             </list>  
         </property>  
         <property name="hibernateProperties">  
@@ -105,34 +120,40 @@
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 	<tx:annotation-driven transaction-manager="transactionManager" />    
     <!-- 拦截器方式配置事物 -->  
-    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">  
-        <tx:attributes>
-            <tx:method name="add*" />  
-            <tx:method name="save*" isolation="DEFAULT" propagation="REQUIRED" />  
-            <tx:method name="update*" propagation="REQUIRED" />  
-            <tx:method name="modify*" propagation="REQUIRED" />  
-            <tx:method name="edit*" propagation="REQUIRED" />  
-            <tx:method name="delete*" propagation="REQUIRED" />  	
-            <tx:method name="remove*" propagation="REQUIRED" />  
-            <tx:method name="repair" />  
-            <tx:method name="deleteAndRepair" />  
-            <tx:method name="judge*"/>
-  
-            <tx:method name="set*" />
-            <tx:method name="get*" propagation="REQUIRED"/>
-            <tx:method name="find*" propagation="REQUIRED" />  
-            <tx:method name="load*" propagation="SUPPORTS" />  
-            <tx:method name="search*" propagation="SUPPORTS" />  
-            <tx:method name="datagrid*" propagation="SUPPORTS" />  
-            <tx:method name="login*" propagation="REQUIRED"/>
-            <tx:method name="register" propagation="REQUIRED"/>
-            <tx:method name="share*" />
-        </tx:attributes>  
-    </tx:advice>  
-    <aop:config>  
-        <aop:pointcut id="transactionPointcut" expression="execution(* com.yinzhiwu.yiwu.service.impl.*Impl*.*(..)) || 
-        												execution(* com.yinzhiwu.yiwu..*ServiceImpl.*(..))" />  
-        <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />  
-    </aop:config>  
-  	<import resource="classpath:applicationContext-*.xml"/>
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" />
+			<tx:method name="save*" isolation="DEFAULT" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="modify*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="repair" />
+			<tx:method name="deleteAndRepair" />
+			<tx:method name="judge*" />
+
+			<tx:method name="set*" />
+			<tx:method name="get*" propagation="REQUIRED" />
+			<tx:method name="find*" propagation="REQUIRED" />
+			<tx:method name="load*" propagation="REQUIRED" />
+			<tx:method name="search*" propagation="REQUIRED" />
+			<tx:method name="datagrid*" propagation="REQUIRED" />
+			<tx:method name="login*" propagation="REQUIRED" />
+			<tx:method name="register" propagation="REQUIRED" />
+			<tx:method name="share*" />
+			<tx:method name="do*" propagation="REQUIRED"/>
+			<tx:method name="cancel*"  propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="transactionPointcut"
+			expression="execution(* com.yinzhiwu.yiwu.service.impl.*Impl*.*(..)) || 
+        					execution(* com.yinzhiwu.yiwu..*ServiceImpl.*(..))" />
+		<aop:advisor pointcut-ref="transactionPointcut"
+			advice-ref="transactionAdvice" />
+	</aop:config>
+			<!-- 启动@Transaction -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
  </beans>

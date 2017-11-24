@@ -54,6 +54,8 @@ public class LessonCheckinApiController extends BaseController{
 		
 		Distributer distributer = UserContext.getDistributer();
 		LessonYzw lesson = lessonService.get(lessonId);
+		if(logger.isInfoEnabled())
+			logger.info("签到的课程为 " + lessonId);
 		
 		LessonCheckInYzw checkIn = lessonCheckInService.doCheckIn(distributer,lesson);
 		

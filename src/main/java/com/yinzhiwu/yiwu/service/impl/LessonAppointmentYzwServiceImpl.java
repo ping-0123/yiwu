@@ -52,6 +52,7 @@ public class LessonAppointmentYzwServiceImpl extends BaseServiceImpl<LessonAppoi
 	/**
 	 * listened by {@link OrderYzwServiceImpl#handleLessonAppointment(LessonAppointmentYzw)}
 	 * 		and {@link IncomeRecordServiceImpl#handleLessonAppointment(LessonAppointmentYzw)}
+	 * 	and {@link LessonYzwServiceImpl#handleLessonAppointment(LessonAppointmentYzw)}
 	 */
 	@Override
 	public LessonAppointmentYzw doAppoint(Distributer distributer, LessonYzw lesson) 
@@ -100,6 +101,7 @@ public class LessonAppointmentYzwServiceImpl extends BaseServiceImpl<LessonAppoi
 	/**
 	 * listened by {@link OrderYzwServiceImpl#handleLessonAppointment(LessonAppointmentYzw)}
 	 * 		and {@link IncomeRecordServiceImpl#handleLessonAppointment(LessonAppointmentYzw)}
+	 * 		and {@link LessonYzwServiceImpl#handleLessonAppointment(LessonAppointmentYzw)}
 	 */
 	@Override
 	public LessonAppointmentYzw cancelAppoint(Distributer distributer, LessonYzw lesson) throws LessonAppointmentException{

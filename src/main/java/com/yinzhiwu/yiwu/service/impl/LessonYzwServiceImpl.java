@@ -9,15 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
-import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
@@ -193,41 +190,31 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	@EventListener(classes={LessonAppointmentYzw.class})
 	public void handleLessonAppointment(LessonAppointmentYzw appointment){
 		LessonYzw lesson = appointment.getLesson();
-		Integer appointedStudentCount = lesson.getAppointedStudentCount()==null? 0:lesson.getActualStudentCount();
-		appointedStudentCount = 
-				appointment.getStatus()==AppointStatus.APPONTED?appointedStudentCount+1:appointedStudentCount-1;
+		int appointedStudentCount = lesson.getAppointedStudentCount()==null? 0:lesson.getAppointedStudentCount();
+		switch (appointment.getStatus()) {
+		case APPONTED:
+			appointedStudentCount++;
+			break;
+		case UN_APOINTED:
+			appointedStudentCount--;
+			break;
+		default:
+			return;
+		}
 		lesson.setAppointedStudentCount(appointedStudentCount);
 		
-		lessonDao.update(lesson);
+		update(lesson);
 	}
 	
 	@EventListener(classes={LessonCheckInYzw.class})
 	public void handleLessonCheckIn(LessonCheckInYzw checkIn){
 		LessonYzw lesson = checkIn.getLesson();
-		lesson.setCheckedInStudentCount(lesson.getCheckedInStudentCount()+1);
-		lessonDao.update(lesson);
+		int currentCount = null==lesson.getCheckedInStudentCount()? 0: lesson.getCheckedInStudentCount();
+		lesson.setCheckedInStudentCount(++currentCount);
+		update(lesson);
 	}
 	
 	
-//	@Scheduled(fixedRate=10, initialDelay=10000)
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public boolean setOneLessonOrdinalNo(){
-		if(logger.isInfoEnabled())
-			logger.info("Scheduled task setLessonOrdinalNo start executing...... in thread  + " + Thread.currentThread());
-		
-		LessonYzw lesson = lessonDao.findOneNullOrdinalLessons();
-		lesson.setOrdinalNo(lessonDao.findOrderInCourse(lesson));
-		lessonDao.update(lesson);
-		
-		return true;
-	}
-	
-//	@Scheduled(fixedRate=10000000, initialDelay=10000)
-	public void setAllLessonOrdinalNo(){
-		while(setOneLessonOrdinalNo())
-			;
-	}
-
 	@Override
 	public List<LessonYzw> findOpenedLessonsOfYesterday() {
 		return lessonDao.findOpenedLessonsOfYesterday();
@@ -251,5 +238,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 			return CheckedInStatus.PATCHED;
 		}
 	}
+	
+	
 	
 }

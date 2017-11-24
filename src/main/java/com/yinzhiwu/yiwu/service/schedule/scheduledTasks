@@ -1,3 +1,4 @@
 LessonAppointmentYzwServiceImpl#handeLastDayBreakAppointments
 IncomeRecordServiceImpl#scheduleHandlePurchases
 IncomeRecordServiceImpl#scheduleYieldInterest
+CourseYzwServiceImpl#setAllSumLessonTimes()

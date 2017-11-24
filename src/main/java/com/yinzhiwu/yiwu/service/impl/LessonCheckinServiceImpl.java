@@ -1,7 +1,5 @@
 package com.yinzhiwu.yiwu.service.impl;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,7 @@ import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonInteractive;
+import com.yinzhiwu.yiwu.entity.yzw.ClassRoomYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
@@ -91,18 +90,22 @@ public class LessonCheckinServiceImpl extends BaseServiceImpl<LessonCheckInYzw, 
 
 	@Override
 	public LessonCheckInYzw doCheckIn(Distributer distributer, LessonYzw lesson) throws LessonCheckInException, LessonInteractiveException {
+		if(null == distributer)
+			throw new LessonCheckInException("签到人不能为空");
+		if(null == lesson)
+			throw new LessonCheckInException("签到的课程不能为空");
 		
 		//封闭式课不需要刷卡
 		if(CourseType.CLOSED == lesson.getCourseType())
 			throw new LessonCheckInException("封闭式课程无须刷卡");
 		//刷卡时间判定
-		Calendar calendar = Calendar.getInstance();
-		Date current = calendar.getTime();
-		calendar.setTime(lesson.getStartDateTime());
-		calendar.add(Calendar.HOUR_OF_DAY, -1);
-		Date checkInStart = calendar.getTime();
-		if(current.before(checkInStart))
-			throw new LessonCheckInException("离上课时间还远,请在上课前1小时内刷卡");
+//		Calendar calendar = Calendar.getInstance();
+//		Date current = calendar.getTime();
+//		calendar.setTime(lesson.getStartDateTime());
+//		calendar.add(Calendar.HOUR_OF_DAY, -1);
+//		Date checkInStart = calendar.getTime();
+//		if(current.before(checkInStart))
+//			throw new LessonCheckInException("离上课时间还远,请在上课前1小时内刷卡");
 		
 /*   TODO 刷卡结束时间暂不做限制
  * 		Calendar checkInEndCalendar = Calendar.getInstance();
@@ -112,13 +115,18 @@ public class LessonCheckinServiceImpl extends BaseServiceImpl<LessonCheckInYzw, 
 		if(current.after(checkInEnd))
 			throw new LessonCheckInException("上课已结束, 请在上课前1小时内刷卡");*/
 		
-		//判断上课人数是否已满
-		if(lesson.getCheckedInStudentCount()> lesson.getClassRoom().getMaxStudentCount())
-			throw new LessonCheckInException("上课人数已满");
 		//判断是否已刷卡
 		LessonInteractive interactive = lessonInteractiveService.ensureInteractive(lesson, distributer);
 		if(interactive.getCheckedIn())
 			throw new LessonCheckInException("已刷卡，无须重复刷卡");
+		
+		//判断上课人数是否已满
+		int checkedCount = lesson.getCheckedInStudentCount()==null?0:lesson.getCheckedInStudentCount();
+		int maxCount = null== lesson.getClassRoom()? ClassRoomYzw.DEFAULT_MAX_STUDENT_COUNT:
+			(null == lesson.getClassRoom().getMaxStudentCount()? ClassRoomYzw.DEFAULT_MAX_STUDENT_COUNT: lesson.getClassRoom().getMaxStudentCount());
+		if(checkedCount>= maxCount)
+			throw new LessonCheckInException("上课人数已满");
+
 		
 		//保存签到
 		LessonCheckInYzw checkIn = new LessonCheckInYzw();

@@ -80,11 +80,12 @@ public class OrderApiController {
 
 	
 	@PutMapping("/{orderId}/contract/status")
-	@ApiOperation(value="确认合同")
+	@ApiOperation(value="确认合同    ?status=VERIFIED")
 	public YiwuJson<Boolean> modifyContractStatus(
-			@ApiParam(name="orderId", required=true) @PathVariable(name="orderId",  required=true) 
-			String id, 
+			@ApiParam(name="orderId", required=true) 
+			@PathVariable(name="orderId",  required=true) String id, 
 			@ApiParam(name="status", value="VERIFIED,CHECKED,LEFT,RETURNED_PREMIUM,FORBIDDEN,EXPIRED", required=true)
+			@RequestParam(name="status", required=true)
 			ContractStatus status) throws DataNotFoundException 
 	{
 		OrderYzw order = orderYzwService.get(id);
@@ -104,6 +105,7 @@ public class OrderApiController {
 			else
 				contract.setStatus(ContractStatus.CHECKED);
 			orderYzwService.update(order);
+			break;
 		case CHECKED:
 		case LEFT:
 		case RETURNED_PREMIUM:
@@ -114,6 +116,7 @@ public class OrderApiController {
 		default:
 			return YiwuJson.createByErrorCodeMessage(ReturnCode.ILLEGAL_ARGUMENT.getCode(), status.toString() + "is not a legal argument") ;
 		}
+		
 		return YiwuJson.createBySuccess(Boolean.TRUE);
 	}
 	

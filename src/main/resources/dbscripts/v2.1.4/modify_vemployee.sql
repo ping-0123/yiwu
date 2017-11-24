@@ -1,4 +1,4 @@
-alter TABLE chenkuserdb1.tblemployee add COLUMN(dataStatus int not null default 0,number varchar(10));
+alter TABLE chenkuserdb1.tblemployee add COLUMN(number varchar(10));
 alter TABLE chenkuserdb1.tblemployee add COLUMN(signature varchar(128), portraitUri varchar(128), resume varchar(2000));
 alter TABLE chenkuserdb1.tblemployee MODIFY COLUMN id int not null AUTO_INCREMENT;
 
@@ -22,7 +22,6 @@ VIEW `vemployee` AS
         portraitUri,
         resume,
         `chenkuserdb1`.`tblemployee`.`Disabled` AS `disabled`,
-        dataStatus,
         `chenkuserdb1`.`tblemployee`.`Creator` AS `sf_create_user`,
         `chenkuserdb1`.`tblemployee`.`LastChanger` AS `sf_last_change_user`,
         `chenkuserdb1`.`tblemployee`.`CreateTime` AS `sf_create_time`,
@@ -49,5 +48,3 @@ VIEW `vemployee` AS
     FROM
         `chenkuserdb1`.`tblemployee`;
         
- update vemployee set dataStatus=2 where removed=TRUE;
-UPDATE vemployee set datastatus=0 where datastatus is null;

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,17 +30,20 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.PaymentMode;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.JSMSException;
 import com.yinzhiwu.yiwu.model.DistributerModifyModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView;
+import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView.CapitalAccountApiViewConverter;
 import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView.DistributerApiViewConverter;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
-import com.yinzhiwu.yiwu.model.view.CapitalAccountApiView.CapitalAccountApiViewConverter;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.FileService;
+import com.yinzhiwu.yiwu.service.JSMSService;
+import com.yinzhiwu.yiwu.service.JSMSService.JSMSTemplate;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 
 import io.swagger.annotations.Api;
@@ -56,6 +60,7 @@ public class DistributerApiController extends BaseController {
 	@Qualifier("fileServiceImpl")
 	@Autowired private FileService fileService;
 	@Autowired private OrderYzwService orderService;
+	@Autowired private JSMSService jsmsService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
@@ -230,8 +235,9 @@ public class DistributerApiController extends BaseController {
 	}
 
 	@RequestMapping(value = "/{distributerId}", method = { RequestMethod.PUT, RequestMethod.POST })
-	@ApiOperation("修改会员个人资料")
-	public YiwuJson<DistributerModifyModel> modify(DistributerModifyModel model, @PathVariable int distributerId) {
+	@ApiOperation("修改会员个人资料, 修改手机号码使用/api/distributer/{id}/phoneNo")
+	public YiwuJson<DistributerModifyModel> modify(DistributerModifyModel model,
+			@PathVariable(name="distributerId") int distributerId) {
 		if (model == null)
 			return YiwuJson.createByErrorMessage("没有需要修改的项");
 		if (model.getImage() != null && model.getImage().getSize() > 500 * 1024)
@@ -241,6 +247,52 @@ public class DistributerApiController extends BaseController {
 
 	}
 
+	@PutMapping(value="/{id}/phoneNo")
+	@ApiOperation("修改会员手机号码, 步骤 "
+			+ "1.发送原手机验证码  -XPOST /api/jsms/codes  -d \"mobileNumber=xxx&template=UNBIND_MOBILE_NUMBER\""
+			+ "2. 验证原手机号码  -XPOST  /api/jsms/valid -d \"mobileNumber=xxx&template=UNBIND_MOBILE_NUMBER&code=xxx\""
+			+ "3. 发送修改手机验证码   -XPOST /api/jsms/codes -d \"mobileNumber=xxx&template=BIND_MOBILE_NUMBER\""
+			+ "4. 发送修改请求 -XPUT /api/distributer/{id}/phoneNo?mobileNumber=xxx&code=xxx")
+	public YiwuJson<DistributerApiView> updatePhoneNo(@PathVariable(name="id") Integer id,
+			@ApiParam(value="绑定的手机号码")
+			@RequestParam(name="mobileNumber") String bindingMobileNumber,
+			@ApiParam(value="绑定的手机验证码")
+			@RequestParam(name="code") String bindingCode) throws JSMSException
+	{
+		try {
+			distributerService.findByPhoneNo(bindingMobileNumber);
+			return YiwuJson.createByErrorMessage(bindingMobileNumber + " 已注册");
+		} catch (DataNotFoundException e) {
+			;
+		}
+		
+		Distributer distributer = UserContext.getDistributer();
+		if(distributer.getPhoneNo().equals(bindingMobileNumber))
+			return YiwuJson.createByErrorMessage("改绑后的手机号码与原手机号码相同");
+		
+		jsmsService.validateSMSCode(JSMSTemplate.BIND_MOBILE_NUMBER, bindingMobileNumber, bindingCode);
+		distributer.setPhoneNo(bindingMobileNumber);
+		distributerService.update(distributer);
+		
+		return YiwuJson.createBySuccess(DistributerApiViewConverter.instance.fromPO(distributer));
+	}
+	
+	@PutMapping(value="/{id}/openId")
+	@ApiOperation("修改用户绑定的微信openId")
+	public YiwuJson<?> updateOpenId(@PathVariable(name="id") Integer id,
+			@ApiParam(value="微信openId")
+			@RequestParam(name="openId") String openId)
+	{
+		try {
+			distributerService.findByWechatNo(openId);
+			return YiwuJson.createByErrorMessage("该微信号已注册,不能与本账号绑定");
+		} catch (DataNotFoundException e) {
+			Distributer distributer = UserContext.getDistributer();
+			distributer.setWechatNo(openId);
+			distributerService.update(distributer);
+			return YiwuJson.createBySuccess();
+		}
+	}
 	
 	@GetMapping("/{distributerId}/defaultStore")
 	@ApiOperation(value="返回客户默认的上课门店")

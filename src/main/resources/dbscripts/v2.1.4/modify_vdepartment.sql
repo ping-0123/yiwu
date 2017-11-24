@@ -1,5 +1,4 @@
 alter TABLE chenkuserdb1.tbldept add COLUMN(nation varchar(32), district varchar(32), address varchar(128), longitude FLOAT, latitude FLOAT);
-alter TABLE chenkuserdb1.tbldept add COLUMN(dataStatus int not null default 0);
 alter table chenkuserdb1.tbldept add COLUMN(type varchar(32));
 alter table chenkuserdb1.tbldept add COLUMN(telePhone varchar(32));
 alter TABLE chenkuserdb1.tbldept MODIFY COLUMN id int not null AUTO_INCREMENT;
@@ -18,7 +17,6 @@ VIEW `vdepartment` AS
         `chenkuserdb1`.`tbldept`.`Manager2` AS `manager2`,
         `chenkuserdb1`.`tbldept`.`Description` AS `description`,
         `chenkuserdb1`.`tbldept`.`Removed` AS `removed`,
-        datastatus,
         `chenkuserdb1`.`tbldept`.`flag` AS `flag`,
         `chenkuserdb1`.`tbldept`.`wparam` AS `wparam`,
         `chenkuserdb1`.`tbldept`.`lparam` AS `lparam`,
@@ -44,8 +42,6 @@ VIEW `vdepartment` AS
         `chenkuserdb1`.`tbldept`;
         
  UPDATE vdepartment set superiorId=null where id = 1;
- update vdepartment set dataStatus=2 where removed=TRUE;
-UPDATE vdepartment set datastatus=0 where datastatus is null;
 
 alter table chenkuserdb1.tbldept add CONSTRAINT fk_department_parent_Id FOREIGN KEY (SuperiorID) REFERENCES chenkuserdb1.tbldept(id);
 UPDATE vdepartment set type = 'STORE' WHERE NAME LIKE '%店';

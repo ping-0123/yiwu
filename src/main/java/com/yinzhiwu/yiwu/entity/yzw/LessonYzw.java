@@ -62,12 +62,11 @@ public class LessonYzw extends BaseYzwEntity {
 	@Column(name = "courseDesc")
 	private String name;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "storeId", foreignKey = @ForeignKey(name = "fk_lesson_store_id", value = ConstraintMode.NO_CONSTRAINT))
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	private DepartmentYzw store;
 
-	@Column(length = 32)
 	private String storeName;
 
 	@Column
@@ -82,7 +81,7 @@ public class LessonYzw extends BaseYzwEntity {
 	@Column(length = 32, name = "yindaoTeacherName")
 	private String dueTeacherName;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "classRoomId", foreignKey = @ForeignKey(name = "fk_lesson_classRoom_id", value = ConstraintMode.NO_CONSTRAINT))
 	private ClassRoomYzw classRoom;
 
@@ -161,6 +160,8 @@ public class LessonYzw extends BaseYzwEntity {
 	@Override
 	public void init() {
 		super.init();
+		if(null == removed)
+			removed = false;
 		if(null == dueStudentCount)
 			dueStudentCount=0;
 		if(null==experienceStudentCount)

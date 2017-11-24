@@ -87,7 +87,9 @@ public class FileServiceImpl implements FileService{
 
 	@Override
 	public String generateFileUrl(String uri) {
-		// TODO Auto-generated method stub
-		return null;
+		if(null==uri || "".equals(uri.trim()))
+			return "";
+		return url + uri;
 	}
+	
 }

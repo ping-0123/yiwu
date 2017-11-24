@@ -34,6 +34,10 @@ public class ApiUserFilter extends OncePerRequestFilter {
 		throughUrls.add("/api/jsms");
 		throughUrls.add("/api/error");
 		throughUrls.add("/api/register");
+		throughUrls.add("/api/store");
+		throughUrls.add("/api/employee");
+		throughUrls.add("/api/temp");
+		throughUrls.add("/api/district");
 		jjwtService = SpringUtils.getBean(JJWTService.class);
 	}
 	

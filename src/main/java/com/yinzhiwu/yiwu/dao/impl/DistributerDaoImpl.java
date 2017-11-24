@@ -31,7 +31,7 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		entity.setId(id);
 		entity.setPassword(SecurityUtil.encryptByMd5(entity.getPassword()));
 		String memberCard = GeneratorUtil.generateMemberId(id);
-		if(entity.getMemberCard() == null || "".equals(entity.getMemberCard().trim())){
+		if(null == entity.getMemberCard() || "".equals(entity.getMemberCard().trim())){
 			entity.setMemberCard(memberCard);
 			entity.getCustomer().setMemberCard(memberCard);
 			if(! StringUtils.hasLength(entity.getCustomer().getName()))

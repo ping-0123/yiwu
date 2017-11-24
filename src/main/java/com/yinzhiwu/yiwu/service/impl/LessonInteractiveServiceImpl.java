@@ -122,7 +122,7 @@ public class LessonInteractiveServiceImpl extends BaseServiceImpl<LessonInteract
 			interactive.setAppointed(false);
 			break;
 		default:
-			break;
+			return;
 		}
 				
 		lessonInteractiveDao.update(interactive);
