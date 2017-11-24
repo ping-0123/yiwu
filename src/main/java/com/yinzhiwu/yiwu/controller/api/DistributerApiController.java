@@ -248,14 +248,16 @@ public class DistributerApiController extends BaseController {
 	}
 
 	@PutMapping(value="/{id}/phoneNo")
-	@ApiOperation("修改会员手机号码")
+	@ApiOperation("修改会员手机号码, 步骤 "
+			+ "1.发送原手机验证码  -XPOST /api/jsms/codes  -d \"mobileNumber=xxx&template=UNBIND_MOBILE_NUMBER\""
+			+ "2. 验证原手机号码  -XPOST  /api/jsms/valid -d \"mobileNumber=xxx&template=UNBIND_MOBILE_NUMBER&code=xxx\""
+			+ "3. 发送修改手机验证码   -XPOST /api/jsms/codes -d \"mobileNumber=xxx&template=BIND_MOBILE_NUMBER\""
+			+ "4. 发送修改请求 -XPUT /api/distributer/{id}/phoneNo?mobileNumber=xxx&code=xxx")
 	public YiwuJson<DistributerApiView> updatePhoneNo(@PathVariable(name="id") Integer id,
-			@ApiParam(value="解绑手机验证码") 
-			@RequestParam(name="unbindCode") String unbindCode,
 			@ApiParam(value="绑定的手机号码")
-			@RequestParam(name="bindingMobileNumber") String bindingMobileNumber,
+			@RequestParam(name="mobileNumber") String bindingMobileNumber,
 			@ApiParam(value="绑定的手机验证码")
-			@RequestParam(name="bindingCode") String bindingCode) throws JSMSException
+			@RequestParam(name="code") String bindingCode) throws JSMSException
 	{
 		try {
 			distributerService.findByPhoneNo(bindingMobileNumber);
@@ -265,8 +267,9 @@ public class DistributerApiController extends BaseController {
 		}
 		
 		Distributer distributer = UserContext.getDistributer();
+		if(distributer.getPhoneNo().equals(bindingMobileNumber))
+			return YiwuJson.createByErrorMessage("改绑后的手机号码与原手机号码相同");
 		
-		jsmsService.validateSMSCode(JSMSTemplate.UNBIND_MOBILE_NUMBER, distributer.getPhoneNo(), unbindCode);
 		jsmsService.validateSMSCode(JSMSTemplate.BIND_MOBILE_NUMBER, bindingMobileNumber, bindingCode);
 		distributer.setPhoneNo(bindingMobileNumber);
 		distributerService.update(distributer);

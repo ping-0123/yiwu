@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -98,15 +99,13 @@ public class RegisterLoginApiController extends BaseController {
 		
 		if(!jsmsService.validateRegisterSMSCode(mobileNumber, code))
 			throw new JSMSException("短信验证码不正确");
-		if(!mobileNumber.matches("^1\\d{10}$"))
-			throw new YiwuException("手机号码不合法");
 		if(!distributerService.validateMobileNumberBeforeRegister(mobileNumber)){
 			throw new YiwuException("手机号码" + mobileNumber + "已注册");
 		}
 		if(!distributerService.validateOpenIdBeforeRegister(openId)){
 			throw new YiwuException("该微信号已注册");
 		}
-		if(null != memberCard){
+		if(StringUtils.hasText(memberCard)){
 			if(!distributerService.validateMembercardBeforeRegister(memberCard))
 				throw new YiwuException("输入的会员卡号已被注册");
 		}

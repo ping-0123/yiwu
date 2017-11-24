@@ -116,7 +116,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		}
 		
 		//set distributer customer
-		if(null != memberCard){
+		if(StringUtils.hasText(memberCard)){
 			CustomerYzw customer = null;
 			try {
 				customer = customerDao.getByMemberCard(memberCard);

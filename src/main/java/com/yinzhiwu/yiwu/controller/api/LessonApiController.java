@@ -124,7 +124,7 @@ public class LessonApiController extends BaseController {
 	}
 
 	@RequestMapping(value = "/weeklist",method={RequestMethod.GET})
-	@ApiOperation(value="获取一周课表")
+	@ApiOperation(value="获取一周课表, 非授权获取课表使用 /api/temp/weekLessons")
 	public YiwuJson<List<OneDayLessonsVO>> getLessonWeekList(
 			@ApiParam(value="门店Id,默认为所有门店", required=false)
 			 Integer storeId, 

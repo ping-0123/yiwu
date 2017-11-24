@@ -19,9 +19,6 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 @Table(name = "vcheck_ins")
 public class LessonCheckInYzw extends BaseYzwEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 925280755246130775L;
 
 	@Id

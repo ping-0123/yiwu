@@ -4,15 +4,21 @@ import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonInteractive;
+import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.SubCourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.business.BusinessDataLogicException;
+import com.yinzhiwu.yiwu.service.LessonCheckinService;
 import com.yinzhiwu.yiwu.service.LessonInteractiveService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
@@ -32,9 +38,10 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description="显示在周课表里的课时VO")
 public class LessonForWeeklyVO {
 	
+	private static final Logger logger = LoggerFactory.getLogger(LessonForWeeklyVO.class);
 	
 	public enum CheckedInStatus {
-		UN_KNOWN, UN_CHECKED, CHECKED, PATCHED, NON_CHECKABLE
+		UN_KNOWN, UN_CHECKED, CHECKED, LATE, PATCHED, NON_CHECKABLE
 	}
 	
 	private Integer id;
@@ -124,6 +131,7 @@ public class LessonForWeeklyVO {
 		private final LessonInteractiveService interactiveService = SpringUtils.getBean(LessonInteractiveService.class);
 //		private final LessonCheckinService checkinService = SpringUtils.getBean(LessonCheckinService.class);
 //		private final LessonYzwService lessonService = SpringUtils.getBean(LessonYzwService.class);
+		private final LessonCheckinService lessonCheckinService = SpringUtils.getBean(LessonCheckinService.class);
 		
 		@Override
 		public LessonForWeeklyVO fromPO(LessonYzw lesson) {
@@ -138,6 +146,47 @@ public class LessonForWeeklyVO {
 				} catch (DataNotFoundException e) {
 					vo.setAppointed(false);
 					vo.setCheckedIn(false);
+				}
+			}else{
+				//设置 coachCheckedInStatus
+				if(null != lesson.getActualTeacher())
+					try {
+						LessonCheckInYzw checkin = lessonCheckinService.findOneByProperties(
+								new String[]{"lesson.id","teacher"}, 
+								new Object[]{lesson.getId(),lesson.getActualTeacher().getId()});
+						
+						Date date = lesson.getLessonDate();
+						Time start = lesson.getStartTime();
+						Time end = lesson.getEndTime();
+						
+						Calendar lessonStart = Calendar.getInstance();
+						lessonStart.setTime(date);
+						lessonStart.set(Calendar.HOUR_OF_DAY, start.getHours());
+						lessonStart.set(Calendar.MINUTE,start.getMinutes());
+						lessonStart.set(Calendar.SECOND, start.getSeconds());
+						
+						Calendar lessonEnd = Calendar.getInstance();
+						lessonEnd.setTime(date);
+						lessonEnd.set(Calendar.HOUR_OF_DAY, end.getHours());
+						lessonEnd.set(Calendar.MINUTE, end.getMinutes());
+						lessonEnd.set(Calendar.SECOND, end.getSeconds());
+						
+						if(checkin.getCreateTime().before(lessonStart.getTime())){
+							vo.setCoachCheckedInStatus(CheckedInStatus.CHECKED);
+						}else if (checkin.getCreateTime().before(lessonEnd.getTime())) {
+							vo.setCoachCheckedInStatus(CheckedInStatus.LATE);
+						}else {
+							vo.setCoachCheckedInStatus(CheckedInStatus.PATCHED);
+						}
+					} catch (DataNotFoundException e) {
+						String message = "教师未签到，却已记录课时";
+						throw new BusinessDataLogicException(message);
+					}
+				else{
+					if(LessonStatus.UN_CHECKED ==lesson.getLessonStatus())
+						vo.setCoachCheckedInStatus(CheckedInStatus.NON_CHECKABLE);
+					else
+						vo.setCoachCheckedInStatus(CheckedInStatus.UN_CHECKED);
 				}
 			}
 			return vo;
