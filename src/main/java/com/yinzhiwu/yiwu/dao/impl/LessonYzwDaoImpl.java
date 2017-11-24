@@ -213,9 +213,9 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		hql.append(",t2.status");
 		hql.append(")");
 		hql.append(" FROM LessonYzw t1");
-		hql.append(" LEFT JOIN AppointmentYzw t2 WITH t1.id = t2.lesson.id AND t2.contractNo=:AppointedContractNo AND t2.status = :AppointmentStatus");
+		hql.append(" LEFT JOIN LessonAppointmentYzw t2 WITH t1.id = t2.lesson.id AND t2.contractNo=:AppointedContractNo AND t2.status = :AppointmentStatus");
 		hql.append(" WHERE t1.courseType = :privateCourseType");
-		hql.append(" AND t1.appointedContract like :contractNo");
+		hql.append(" AND t1.appointedContracts like :contractNo");
 //		hql.append(" AND t2.contractNo=:AppointedContractNo");
 //		hql.append(" AND t2.status = :AppointmentStatus");
 		hql.append(" ORDER BY t1.lessonDate");
