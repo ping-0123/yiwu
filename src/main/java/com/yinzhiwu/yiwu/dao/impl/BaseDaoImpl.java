@@ -61,6 +61,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	
 	private Class<T> entityClass;
 	protected SessionFactory sessionFactory;
+	protected CriteriaBuilder criteriaBuilder;
 
 	@SuppressWarnings("unchecked")
 	public BaseDaoImpl() {
@@ -77,6 +78,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	public void setHibernateSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 		super.setSessionFactory(sessionFactory);
+		this.criteriaBuilder = sessionFactory.getCriteriaBuilder();
 	}
 
 	protected Session getSession() {
