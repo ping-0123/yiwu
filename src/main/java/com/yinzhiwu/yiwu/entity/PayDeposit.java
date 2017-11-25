@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.entity;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
