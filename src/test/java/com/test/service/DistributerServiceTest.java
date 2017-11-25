@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.BaseSpringTest;
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.service.DistributerService;
 
@@ -22,12 +23,13 @@ public class DistributerServiceTest extends BaseSpringTest {
 		try {
 			
 			int distributerId = 3001124;
+			Distributer distributer = distributerService.get(distributerId);
 			System.out.println(((StoreApiView)distributerService.findDefaultStoreApiView(distributerId).getData()).getName());
 		} catch (Exception e) {
 			if(e instanceof NullPointerException)
 				System.err.println(e.getMessage());
 			else {
-				throw e;
+				logger.error(e);
 			}
 		
 		}

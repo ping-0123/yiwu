@@ -3,6 +3,11 @@ package com.yinzhiwu.yiwu.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
@@ -16,10 +21,14 @@ import com.yinzhiwu.yiwu.event.IncomeEventType;
 *
 */
 
+@Entity
+@Table(name="yiwu_pay_deposit")
 @SuppressWarnings("serial")
 public class PayDeposit extends BaseEntity implements IncomeEvent{
 	
 	@NotNull
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="distributer_id", foreignKey=@ForeignKey(name="fk_payDeposit_distributer_id"))
 	private Distributer distributer;
 	
 	@DecimalMin(value="0.01")
