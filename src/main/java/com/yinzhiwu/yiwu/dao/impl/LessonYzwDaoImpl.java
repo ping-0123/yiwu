@@ -40,10 +40,17 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		// CriteriaQuery<LessonApiView> criteria = new
 		// LessonApiView().getDtoCriteria(getSession());
 		Root<?> lesson = criteria.from(LessonYzw.class);
-		criteria.select(builder.construct(LessonApiView.class, lesson.get("id"), lesson.get("name"),
-				lesson.get("course").get("id"), lesson.get("course").get("danceDesc"),
-				lesson.get("course").get("danceGrade"), lesson.get("lessonDate"), lesson.get("startTime"),
-				lesson.get("endTime"), lesson.get("storeName"), lesson.get("dueTeacherName")));
+		criteria.select(builder.construct(LessonApiView.class, 
+				lesson.get("id"), 
+				lesson.get("name"),
+				lesson.get("course").get("id"), 
+				lesson.get("course").get("danceDesc"),
+				lesson.get("course").get("danceGrade"), 
+				lesson.get("lessonDate"),
+				lesson.get("startTime"),
+				lesson.get("endTime"), 
+				lesson.get("storeName"), 
+				lesson.get("dueTeacherName")));
 		Predicate predicate = builder.equal(lesson.get("course").get("id"), courseId);
 		criteria.where(predicate);
 		criteria.orderBy(builder.desc(lesson.get("lessonDate")));
