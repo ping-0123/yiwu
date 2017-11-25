@@ -9,6 +9,18 @@
 	<name>yiwu</name>
 	<url>http://maven.apache.org</url>
 
+	<developers>
+		<developer>
+			<name>yiping</name>
+			<email>wild_ghost@yeah.net</email>
+			<url></url>
+			<roles>
+				<role>software engineer</role>
+			</roles>
+			<timezone>8</timezone>
+		</developer>
+	</developers>
+
 	<profiles>
 		<profile>
 			<id>dev</id>
@@ -45,6 +57,8 @@
 		<qiniu.version>7.2.6</qiniu.version>
 		<swagger.version>2.2.2</swagger.version>
 		<shiro.version>1.3.2</shiro.version>
+		<spring.data.jpa.version>2.0.1.RELEASE</spring.data.jpa.version>
+		<commons-lang3.version>3.7</commons-lang3.version>
 	</properties>
 
 	<dependencies>
@@ -110,11 +124,24 @@
 			<artifactId>spring-websocket</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<!-- spring message -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-messaging</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<!--  spring jpa -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring.data.jpa.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jcl-over-slf4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
 		<!-- #### aspectj 切面编程 #### -->
 		<dependency>
@@ -210,7 +237,12 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.3.2</version>
 		</dependency>
-
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+	
 		<!-- quartz 定时任务 -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
