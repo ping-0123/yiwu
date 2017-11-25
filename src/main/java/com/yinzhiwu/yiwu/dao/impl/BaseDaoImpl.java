@@ -62,6 +62,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	private Class<T> entityClass;
 	protected SessionFactory sessionFactory;
 	protected CriteriaBuilder criteriaBuilder;
+	protected Root<T> root;
+	protected CriteriaQuery<T> criteria;
 
 	@SuppressWarnings("unchecked")
 	public BaseDaoImpl() {
@@ -79,6 +81,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		this.sessionFactory = sessionFactory;
 		super.setSessionFactory(sessionFactory);
 		this.criteriaBuilder = sessionFactory.getCriteriaBuilder();
+		this.criteria = criteriaBuilder.createQuery(entityClass);
+		this.root = criteria.from(entityClass);
 	}
 
 	protected Session getSession() {
@@ -122,7 +126,6 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		
 		Query<T> query = createQuery(new String[]{propertyName}, new Object[]{value});
 		List<T> list = query.setMaxResults(1).getResultList();
-		
 		
 		if(list.size()==0){
 			throw new  DataNotFoundException(query.getQueryString());

@@ -53,12 +53,16 @@
 		<hibernate.validator.version>5.2.5.Final</hibernate.validator.version>
 		<javax.validation.version>2.0.0.Final</javax.validation.version>
 		<jackson.version>2.8.7</jackson.version>
+		<fastjson.version>1.2.41</fastjson.version>
 		<quartz.version>2.3.0</quartz.version>
 		<qiniu.version>7.2.6</qiniu.version>
 		<swagger.version>2.2.2</swagger.version>
 		<shiro.version>1.3.2</shiro.version>
-		<spring.data.jpa.version>2.0.1.RELEASE</spring.data.jpa.version>
+		<spring.data.jpa.version>1.4.1.RELEASE</spring.data.jpa.version>
 		<commons-lang3.version>3.7</commons-lang3.version>
+		<jsoup.version>1.11.2</jsoup.version>
+		<ocpsoft.version>1.0.6</ocpsoft.version>
+		<jcaptcha.version>1.0</jcaptcha.version>
 	</properties>
 
 	<dependencies>
@@ -130,18 +134,18 @@
 			<artifactId>spring-messaging</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<!--  spring jpa -->
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>${spring.data.jpa.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jcl-over-slf4j</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+		<!-- spring jpa -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring.data.jpa.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jcl-over-slf4j</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<!-- #### aspectj 切面编程 #### -->
 		<dependency>
@@ -200,6 +204,11 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
 
 
 		<!-- 极光推送支持 -->
@@ -237,12 +246,12 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.3.2</version>
 		</dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
-        </dependency>
-	
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+
 		<!-- quartz 定时任务 -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
@@ -292,6 +301,28 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.9.0</version>
+		</dependency>
+
+
+		<!-- jsoup -->
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>${jsoup.version}</version>
+		</dependency>
+
+		<!-- ocpsoft -->
+		<dependency>
+			<groupId>com.ocpsoft</groupId>
+			<artifactId>ocpsoft-pretty-time</artifactId>
+			<version>${ocpsoft.version}</version>
+		</dependency>
+
+		<!--  jcaptcha -->
+		<dependency>
+			<groupId>com.octo.captcha</groupId>
+			<artifactId>jcaptcha</artifactId>
+			<version>${jcaptcha.version}</version>
 		</dependency>
 
 	</dependencies>
