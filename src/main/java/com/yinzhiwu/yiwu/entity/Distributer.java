@@ -152,7 +152,7 @@ public class Distributer extends BaseEntity {
 	/**
 	 * 根据手机号码 或者微信号做唯一性关联
 	 */
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "fk_distributer_customer_id", value = ConstraintMode.NO_CONSTRAINT))
 	private CustomerYzw customer;
 

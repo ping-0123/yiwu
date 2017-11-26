@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.annotations.Where;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.ProductYzwDao;
@@ -11,6 +12,8 @@ import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw.ProductCardType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.web.purchase.dto.ProductDto;
 
 @Repository
@@ -54,5 +57,25 @@ public class ProductYzwDaoImpl extends BaseDaoImpl<ProductYzw, Integer> implemen
 		}
 		return dtos;
 	}
+
+	@Override
+	@Where(clause ="obsolete_flag=false")
+	public DataTableBean<ProductYzw> findDataTable(QueryParameter parameter) {
+		return super.findDataTable(parameter);
+	}
+
+	@Override
+	@Where(clause ="obsolete_flag=false")
+	public DataTableBean<ProductYzw> findDataTableByProperties(QueryParameter parameter, String[] properties, Object[] values) {
+		return super.findDataTableByProperties(parameter, properties, values);
+	}
+
+	@Override
+	@Where(clause ="obsolete_flag=false")
+	public DataTableBean<ProductYzw> findDataTableByProperty(QueryParameter parameter, String propertyName, Object value) {
+		return super.findDataTableByProperty(parameter, propertyName, value);
+	}
+	
+	
 
 }

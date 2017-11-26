@@ -1,7 +1,8 @@
-package com.yinzhiwu.yiwu.model.view;
+package com.yinzhiwu.yiwu.web.operating.view;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Distributer.Role;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
@@ -29,6 +30,7 @@ public class DistributerVO {
 	private String password;
 	private String wechatNo;
 	private String phoneNo;
+	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
 	private Date birthday;
 	private Gender gender;
 	private CustomerAgeType customerAgeType;
@@ -39,6 +41,17 @@ public class DistributerVO {
 	private Role role;
 	@MapedProperty("customer.id")
 	private Integer customerId;
+	@MapedProperty("superDistributer.id")
+	private Integer superDistributerId;
+	@MapedProperty("superDistributer.name")
+	private String superDistributerName;
+	@MapedProperty("superDistributer.memberCard")
+	private String superDistributerMemberCard;
+	@MapedProperty("server.id")
+	private Integer serverId;
+	@MapedProperty("server.name")
+	private String serverName;
+	
 	
 	public Integer getId() {
 		return id;
@@ -136,6 +149,41 @@ public class DistributerVO {
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
 	}
+	
+	
+
+	public Integer getSuperDistributerId() {
+		return superDistributerId;
+	}
+	public void setSuperDistributerId(Integer superDistributerId) {
+		this.superDistributerId = superDistributerId;
+	}
+	public String getSuperDistributerName() {
+		return superDistributerName;
+	}
+	public void setSuperDistributerName(String superDistributerName) {
+		this.superDistributerName = superDistributerName;
+	}
+	public String getSuperDistributerMemberCard() {
+		return superDistributerMemberCard;
+	}
+	public void setSuperDistributerMemberCard(String superDistributerMemberCard) {
+		this.superDistributerMemberCard = superDistributerMemberCard;
+	}
+	public Integer getServerId() {
+		return serverId;
+	}
+	public void setServerId(Integer serverId) {
+		this.serverId = serverId;
+	}
+	public String getServerName() {
+		return serverName;
+	}
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
+	}
+
+
 
 	public static final class DistributerVOConverter extends AbstractConverter<Distributer, DistributerVO>{
 		public static final DistributerVOConverter INSTANCE = new DistributerVOConverter();
@@ -145,6 +193,7 @@ public class DistributerVO {
 		@Override
 		public DistributerVO fromPO(Distributer po) {
 			DistributerVO vo =  super.fromPO(po);
+			vo.setPassword(null);
 			vo.setHeadIconUrl(fileService.generateFileUrl(po.getHeadIconName()));
 			return vo;
 		}

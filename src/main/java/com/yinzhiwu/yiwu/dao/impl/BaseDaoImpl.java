@@ -61,9 +61,6 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	
 	private Class<T> entityClass;
 	protected SessionFactory sessionFactory;
-	protected CriteriaBuilder criteriaBuilder;
-	protected Root<T> root;
-	protected CriteriaQuery<T> criteria;
 
 	@SuppressWarnings("unchecked")
 	public BaseDaoImpl() {
@@ -80,9 +77,6 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	public void setHibernateSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 		super.setSessionFactory(sessionFactory);
-		this.criteriaBuilder = sessionFactory.getCriteriaBuilder();
-		this.criteria = criteriaBuilder.createQuery(entityClass);
-		this.root = criteria.from(entityClass);
 	}
 
 	protected Session getSession() {
@@ -807,7 +801,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		return new DataTableBean<>(parameter.getDraw(), findCount().intValue(),  filterdCount.intValue(), list, "");
 	}
 	
-	protected DataTableBean<T> findDataTableByProperties(QueryParameter parameter, String[] properties, Object[] values){
+	@Override
+	public DataTableBean<T> findDataTableByProperties(QueryParameter parameter, String[] properties, Object[] values){
 		//TODO 不支持正则表达式搜索
 		//TODO 只能实现String列 Integer列搜索
 		if(properties.length != values.length){
@@ -915,8 +910,9 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 	
 	
-	protected DataTableBean<T> findDataTableByProperty(QueryParameter parameter, String propertyName, Object value)
-			throws NoSuchFieldException, SecurityException{
+	@Override
+	public DataTableBean<T> findDataTableByProperty(QueryParameter parameter, String propertyName, Object value)
+	{
 		return findDataTableByProperties(parameter, new String[]{propertyName}, new Object[]{value});
 	}
 }

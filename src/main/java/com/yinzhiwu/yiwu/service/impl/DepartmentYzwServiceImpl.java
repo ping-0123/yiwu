@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.EmployeeDepartmentYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw.OrgnizationType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.view.DepartmentApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
@@ -103,5 +105,29 @@ public class DepartmentYzwServiceImpl extends BaseServiceImpl<DepartmentYzw, Int
 	public List<DepartmentYzw> findAllStores() {
 		return departmentDao.findByType(OrgnizationType.STORE);
 	}
+
+	@Override
+	public String translateCommaSeparateIdsToNames(String commaSeparateIds) {
+		if(!StringUtils.hasText(commaSeparateIds))
+			return null;
+		
+		String[] storeIds = commaSeparateIds.split(",");
+		String storeNames = "";
+		for (String id : storeIds) {
+			try {
+				String name = get(Integer.valueOf(id)).getName();
+				if(storeNames == "")
+					storeNames = name;
+				else {
+					storeNames = storeNames + "," + name;
+				}
+			} catch (NumberFormatException | DataNotFoundException e) {
+				continue;
+			}
+		}
+		
+		return storeNames;
+	}
+	
 	
 }

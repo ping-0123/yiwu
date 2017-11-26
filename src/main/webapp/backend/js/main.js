@@ -337,6 +337,77 @@ function translateSubCourseType(subCourseType){
 		return "";
 	}
 }
+
+/**
+ * 
+ * @param contractStatus
+ * @returns
+ */
+function translateContractStatus(contractStatus){
+	switch (contractStatus) {
+	case "UN_PAYED":
+		return "待付款";
+	case "UN_VERIFIED":
+		return "未确认";
+	case "VERIFIED":
+		return "已确认";
+	case "UN_CHECKED":
+		return "未审核";
+	case "UN_CHECKED":
+		return "未开始";
+	case "CHECKED":
+		return "已审核";
+	case "UN_PASSED":
+		return "审核未通过";
+	case "LEFT":
+		return "请假";
+	case "RETURNED_PREMIUM":
+		return "退费";
+	case "FORBIDDEN":
+		return "禁用";
+	case "EXPIRED":
+		return "到期";
+	
+	default:
+		return "";
+	}
+}
+
+/**
+ * 转换产品卡类型
+ * @param type
+ * @returns
+ */
+function translateProductCardType(type){
+	switch (type) {
+	case "ADULT_MEMBER_CARD":
+		return "成人会员卡";
+	case "CHILDREN_MEMBER_CARD":
+		return "少儿会员卡";
+	case "GROUP_MEMEBER_CARD":
+		return "团体会员卡";
+	case "DANCE_SERVICE_CARD":
+		return "舞蹈服务卡";
+	case "COACH_TRAIN_CARD":
+		return "教师培训卡";
+	case "EXAM_TRAIN_CARD":
+		return "考辅培训卡";
+	case "CERTIFICATION_FEE":
+		return "认证费";
+	case "INCIDENTALS":
+		return "杂费";
+	case "GOODS":
+		return "商品";
+	case "DEPOSIT":
+		return "定金";
+
+	default:
+		return "";
+	}
+}
+
+
+
 /**
  * 格式化日期
  * @param time

@@ -184,4 +184,16 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		return baseDao.findDataTable(parameter);
 	}
 
+	@Override
+	public DataTableBean<T> findDataTableByProperties(QueryParameter parameter, String[] propertyNames, Object[] values) {
+		return baseDao.findDataTableByProperties(parameter, propertyNames, values);
+	}
+
+	@Override
+	public DataTableBean<T> findDataTableByProperty(QueryParameter parameter, String property, Object value) {
+		return baseDao.findDataTableByProperty(parameter, property, value);
+	}
+	
+	
+
 }
