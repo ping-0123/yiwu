@@ -113,6 +113,7 @@
    		var column_index_create_time =0;
    		var setting = 
 			{
+   				"scrollX":true,
 				"processing" : false,
 				"serverSide" : true,
 				"select":true,
