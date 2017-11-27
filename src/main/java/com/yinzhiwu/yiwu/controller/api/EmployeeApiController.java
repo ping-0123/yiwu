@@ -33,7 +33,6 @@ public class EmployeeApiController extends BaseController {
 		List<EmployeePostYzw> empPosts = empPostService.findByProperties(
 				new String[]{"post.id","removed"}, 
 				new Object[]{PostYzw.COACH_ID,false});
-		logger.info("empPosts size is " + empPosts.size());
 		
 		List<EmployeeApiView> views = new ArrayList<>();
 		for(EmployeePostYzw empPost: empPosts){
