@@ -1,4 +1,4 @@
-package com.yinzhiwu.yiwu.util;
+package com.yinzhiwu.yiwu.common.entity.utils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -8,9 +8,9 @@ import java.util.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class GeneratorUtil {
+public class IdGeneratorUtil {
 
-	private static Log log = LogFactory.getLog(GeneratorUtil.class);
+	private static Log log = LogFactory.getLog(IdGeneratorUtil.class);
 
 	private static final String PREFIX = "E5";
 	/**

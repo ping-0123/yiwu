@@ -13,6 +13,9 @@ import org.hibernate.annotations.GenericGenerator;
 public class Sequence {
 	
 	public static final String EMPLOYEE_NUMBER = "EMPLOYEE_NUMBER";
+	public static final String ORDER_ID = "ORDER_ID";
+	public static final String CONTRACT_NO = "CONTRACT_NO";
+	
 	
 	@Id
 	@GeneratedValue(generator="sequenceIdGenerator")

@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import com.yinzhiwu.yiwu.common.entity.utils.IdGeneratorUtil;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
@@ -26,7 +27,6 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
-import com.yinzhiwu.yiwu.util.GeneratorUtil;
 
 @Repository
 public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements OrderYzwDao {
@@ -61,9 +61,9 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	@Override
 	public String save(OrderYzw entity) {
 		if(entity.getId() == null)
-			entity.setId(GeneratorUtil.generateYzwId(find_last_id()));
+			entity.setId(IdGeneratorUtil.generateYzwId(find_last_id()));
 		if(entity.getContract().getContractNo() == null)
-			entity.getContract().setContractNo(GeneratorUtil.generateContractNo(entity.getId()));
+			entity.getContract().setContractNo(IdGeneratorUtil.generateContractNo(entity.getId()));
 		super.save(entity);
 		cleanNullCourseIds();
 		return entity.getId();

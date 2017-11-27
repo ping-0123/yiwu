@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.enums.Gender;
 
 public class DistributerModifyModel {
 
@@ -10,6 +11,7 @@ public class DistributerModifyModel {
 
 	private String name;
 
+	private Gender gender;
 //	private String phoneNo;
 
 	private MultipartFile image;
@@ -72,4 +74,13 @@ public class DistributerModifyModel {
 		this.imageUrl = imageUrl;
 	}
 
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	
 }

@@ -1,6 +1,7 @@
 package com.yinzhiwu.yiwu.web.operating.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -15,16 +16,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
+import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
+import com.yinzhiwu.yiwu.service.ProductYzwService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 import com.yinzhiwu.yiwu.web.operating.view.DistributerVO;
 import com.yinzhiwu.yiwu.web.operating.view.OrderView;
@@ -44,7 +48,7 @@ public class DistributerController extends com.yinzhiwu.yiwu.controller.BaseCont
 	
 	@Autowired private DistributerService distributerService;
 	@Autowired private OrderYzwService orderService;
-	
+	@Autowired private ProductYzwService productService;
 	
 	@GetMapping 
 	public String index(){
@@ -138,4 +142,33 @@ public class DistributerController extends com.yinzhiwu.yiwu.controller.BaseCont
 	}
 	
 	
+	@GetMapping("/{id}/orders/createForm")
+	public String showCreateOrderForm(
+			@PathVariable(name="id") int id, Model model) throws DataNotFoundException{
+		Distributer distributer = distributerService.get(id);
+		model.addAttribute("distributer", distributer);
+		model.addAttribute("products",productService.findByProperty("isObsolete", false));
+		return "distributers/orders/createForm";
+	}
+	
+	@PostMapping("/{id}/orders")
+	@ResponseBody
+	public YiwuJson<?> doCreateOrder(
+			Integer productId, Integer count, Float payedAmount, String comments,
+			Integer[] validStoreIds,
+			@RequestParam(name="contractStart", required=false) Date contractStart) throws DataNotFoundException{
+			
+		if(null == contractStart)
+			contractStart = new Date();
+		
+		ProductYzw product = productService.get(productId);
+		OrderYzw order = new OrderYzw();
+		order.setProduct(product);
+		order.setCount(count);
+		order.setPayedAmount(payedAmount);
+		order.setComments(comments);
+		
+		return null;
+		
+	}
 }

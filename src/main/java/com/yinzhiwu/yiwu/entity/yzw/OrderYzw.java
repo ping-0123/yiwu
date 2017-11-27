@@ -29,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
+import com.yinzhiwu.yiwu.util.DateIdGenerator;
 
 @JsonInclude(value= Include.NON_NULL)
 @Entity
@@ -483,4 +484,5 @@ public class OrderYzw extends BaseYzwEntity {
 		UNCONFIRMED,
 		CONFIRMED
 	}
+	
 }

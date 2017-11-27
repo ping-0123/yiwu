@@ -9,7 +9,6 @@ VIEW `vdance` AS
         super_dance_id,
         `chenkuserdb1`.`skt4`.`SKF35` AS `danceClass`,
         `chenkuserdb1`.`skt4`.`SKF36` AS `remuneration`,
-        `chenkuserdb1`.`skt4`.`dataStatus` AS `dataStatus`,
         `chenkuserdb1`.`skt4`.`SF_CREATE_USER` AS `sf_create_user`,
         `chenkuserdb1`.`skt4`.`SF_LAST_CHANGE_USER` AS `sf_last_change_user`,
         `chenkuserdb1`.`skt4`.`SF_CREATE_TIME` AS `sf_create_time`,

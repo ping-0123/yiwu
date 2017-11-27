@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +15,8 @@ import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeePostYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
-import com.yinzhiwu.yiwu.model.view.EmployeeApiView;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 import com.yinzhiwu.yiwu.service.UserService;
-
-import io.swagger.annotations.Authorization;
 
 /**
  * 
