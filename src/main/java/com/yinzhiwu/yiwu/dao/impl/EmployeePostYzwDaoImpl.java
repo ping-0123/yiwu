@@ -106,10 +106,7 @@ public class EmployeePostYzwDaoImpl extends BaseDaoImpl<EmployeePostYzw, Integer
 	@Override
 	@Where(clause="removed=false")
 	public DataTableBean<EmployeePostYzw> findDataTableByPostId(QueryParameter parameter, Integer postId) {
-		try {
 			return findDataTableByProperty(parameter, "post.id", postId);
-		} catch (NoSuchFieldException | SecurityException e) {
-			return null;
-		}
+	
 	}
 }

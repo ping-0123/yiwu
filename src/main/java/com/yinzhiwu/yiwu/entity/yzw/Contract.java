@@ -43,7 +43,7 @@ public class Contract {
 	@Column(name = "remain_times")
 	private BigDecimal remainTimes;
 	@Column(name="with_hold_times")
-	private Short withHoldTimes = 0;
+	private Short withHoldTimes;
 
 	@Column(name = "product_type", length=32)
 	@Convert(converter=CourseTypeConverter.class)
@@ -177,10 +177,11 @@ public class Contract {
 	
 	
 	public enum ContractStatus {
-		UN_PAYED("未付款"),
+		UN_PAYED("待付款"),
 		UN_VERIFIED("未确认"),
 		VERIFIED("已确认"),
 		UN_CHECKED("未审核"), 
+		UN_START("未开始"),
 		CHECKED("已审核"), 
 		UN_PASSED("未通过"), 
 		LEFT("请假"), 
@@ -221,6 +222,8 @@ public class Contract {
 				return ContractStatus.VERIFIED;
 			case "未审核":
 				return ContractStatus.UN_CHECKED;
+			case "未开始":
+				return ContractStatus.UN_START;
 			case "已审核":
 				return ContractStatus.CHECKED;
 			case "未通过":

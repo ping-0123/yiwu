@@ -27,6 +27,7 @@ import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 
 @JsonInclude(value= Include.NON_NULL)
@@ -69,10 +70,14 @@ public class OrderYzw extends BaseYzwEntity {
 	@Column
 	private Float payedAmount;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "fk_order_customer_id", value = ConstraintMode.NO_CONSTRAINT))
 	private CustomerYzw customer;
 
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(foreignKey=@ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+	private Distributer distributer;
+	
 	@Column(name = "payed_date")
 	private Date payedDate;
 
@@ -343,6 +348,20 @@ public class OrderYzw extends BaseYzwEntity {
 	public void setCustomer(CustomerYzw customer) {
 		this.customer = customer;
 	}
+
+	
+	
+	public Distributer getDistributer() {
+		return distributer;
+	}
+
+
+
+	public void setDistributer(Distributer distributer) {
+		this.distributer = distributer;
+	}
+
+
 
 	public float getRemainHours() {
 		return remainHours;

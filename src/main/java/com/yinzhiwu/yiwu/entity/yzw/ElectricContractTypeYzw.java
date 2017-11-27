@@ -23,25 +23,6 @@ import com.yinzhiwu.yiwu.enums.CourseType;
 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 public class ElectricContractTypeYzw {
 	
-	@Converter
-	public static class ContractTypeConverter implements AttributeConverter<CourseType, String>{
-
-		@Override
-		public String convertToDatabaseColumn(CourseType attribute) {
-			if(attribute == null)
-				return null;
-			return attribute.getName();
-		}
-
-		@Override
-		public CourseType convertToEntityAttribute(String dbData) {
-			if(dbData == null)
-				return null;
-			return CourseType.fromName(dbData);
-		}
-		
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -167,6 +148,26 @@ public class ElectricContractTypeYzw {
 
 	public void setMachineCode(Integer machineCode) {
 		this.machineCode = machineCode;
+	}
+
+	
+	@Converter
+	public static class ContractTypeConverter implements AttributeConverter<CourseType, String>{
+
+		@Override
+		public String convertToDatabaseColumn(CourseType attribute) {
+			if(attribute == null)
+				return null;
+			return attribute.getName();
+		}
+
+		@Override
+		public CourseType convertToEntityAttribute(String dbData) {
+			if(dbData == null)
+				return null;
+			return CourseType.fromName(dbData);
+		}
+		
 	}
 
 }

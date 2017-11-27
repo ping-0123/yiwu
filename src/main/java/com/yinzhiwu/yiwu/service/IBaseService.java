@@ -83,4 +83,6 @@ public interface IBaseService<T, PK extends Serializable> {
 	
 	@Transactional
 	public DataTableBean<T> findDataTable(QueryParameter parameter);
+	public DataTableBean<T> findDataTableByProperties(QueryParameter parameter ,String[] propertyNames, Object[] values);
+	public DataTableBean<T> findDataTableByProperty(QueryParameter parameter, String property, Object value);
 }

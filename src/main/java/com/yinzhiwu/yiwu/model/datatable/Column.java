@@ -8,7 +8,8 @@ package com.yinzhiwu.yiwu.model.datatable;
 
 public class Column {
 	
-	private String data;
+	// datatable 引用的列名
+	private String data; 
 	private String name;
 	private boolean searchable;
 	private Search search;
@@ -45,6 +46,5 @@ public class Column {
 	public void setOrderable(boolean orderable) {
 		this.orderable = orderable;
 	}
-	
 	
 }

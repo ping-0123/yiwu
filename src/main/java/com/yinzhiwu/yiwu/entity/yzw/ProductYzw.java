@@ -8,6 +8,8 @@ import javax.persistence.ConstraintMode;
 import javax.persistence.Convert;
 import javax.persistence.Converter;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -21,84 +23,16 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeTypeConverter;
+import com.yinzhiwu.yiwu.enums.CourseType;
+import com.yinzhiwu.yiwu.enums.SubCourseType;
 
 @Entity
 @Table(name = "vproduct")
 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 public class ProductYzw extends BaseYzwEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1893100957719617919L;
-	public enum ProductCardType{
-		ADULT_MEMBER_CARD("成人会员卡"),
-		CHILDREN_MEMBER_CARD("少儿会员卡"),
-		GROUP_MEMEBER_CARD("团体会员卡"),
-		DANCE_SERVICE_CARD("舞蹈服务卡"),
-		COACH_TRAIN_CARD("教师培训卡"),
-		EXAM_TRAIN_CARD("考辅培训卡"),
-		CERTIFICATION_FEE("认证费"),
-		INCIDENTALS("杂费"),
-		GOODS("商品"),
-		DEPOSIT("定金");
-		
-		private final String name;
 
-		public String getName() {
-			return name;
-		}
-		
-		private ProductCardType(String name){
-			this.name = name;
-		}
-		
-		public static ProductCardType fromName(String name){
-			switch (name) {
-			case "成人会员卡":
-				return ProductCardType.ADULT_MEMBER_CARD;
-			case "少儿会员卡":
-				return ProductCardType.CHILDREN_MEMBER_CARD;
-			case "团体会员卡":
-				return ProductCardType.GROUP_MEMEBER_CARD;
-			case "舞蹈服务卡":
-				return ProductCardType.DANCE_SERVICE_CARD;
-			case "教师培训卡":
-				return ProductCardType.COACH_TRAIN_CARD;
-			case "考辅培训卡":
-				return ProductCardType.EXAM_TRAIN_CARD;
-			case "认证费":
-				return ProductCardType.CERTIFICATION_FEE;
-			case "杂费":
-				return ProductCardType.INCIDENTALS;
-			case "商品":
-				return ProductCardType.GOODS;
-			case "定金":
-				return ProductCardType.DEPOSIT;
-			default:
-				throw new UnsupportedOperationException(name + "not supported for enum" + ProductCardType.class.getSimpleName());
-			}
-		}
-	}
-	
-	@Converter
-	public static class ProductCardTypeConverter implements AttributeConverter<ProductCardType, String>{
-
-		@Override
-		public String convertToDatabaseColumn(ProductCardType attribute) {
-			if(attribute == null)
-				return null;
-			return attribute.getName();
-		}
-
-		@Override
-		public ProductCardType convertToEntityAttribute(String dbData) {
-			if(dbData == null || dbData.trim().length() ==0)
-				return null;
-			return ProductCardType.fromName(dbData);
-		}
-		
-	}
 
 	@Id
 	@GeneratedValue
@@ -126,7 +60,7 @@ public class ProductYzw extends BaseYzwEntity {
 	private Short usefulTimes;
 
 	@Column(name = "obsolete_flag")
-	private Boolean isObsolete =Boolean.FALSE;
+	private Boolean isObsolete;
 
 	@Column(name = "DY_RCP", length = 32)
 	private String dyRCP;
@@ -136,6 +70,7 @@ public class ProductYzw extends BaseYzwEntity {
 	
 	@Column(name="organization_code")
 	private String visableDepartmentIds;
+	
 	
 	@Column(name="useful_hours")
 	private Float usefulHours;
@@ -151,6 +86,43 @@ public class ProductYzw extends BaseYzwEntity {
 		foreignKey=@ForeignKey(name="fk_product_econtract_type_id", value=ConstraintMode.NO_CONSTRAINT))
 	private ElectricContractTypeYzw contractType;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	private DanceYzw dance;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	private DanceGradeYzw danceGrade;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(length=32)
+	private CourseType courseType;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(length=32)
+	private SubCourseType subCourseType;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(length=32)
+	private UsableRangeType usableRangeType;
+	
+	@Column(length=128)
+	private String usableDepartments;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	private DepartmentYzw company;
+	
+	
+	
+	
+	@Override
+	public void init() {
+		super.init();
+		if(null ==this.isObsolete)
+			this.isObsolete= false;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -274,4 +246,138 @@ public class ProductYzw extends BaseYzwEntity {
 		this.contractType = contractType;
 	}
 
+	
+	
+	public DanceYzw getDance() {
+		return dance;
+	}
+
+	public void setDance(DanceYzw dance) {
+		this.dance = dance;
+	}
+
+	public DanceGradeYzw getDanceGrade() {
+		return danceGrade;
+	}
+
+	public void setDanceGrade(DanceGradeYzw danceGrade) {
+		this.danceGrade = danceGrade;
+	}
+
+	public CourseType getCourseType() {
+		return courseType;
+	}
+
+	public void setCourseType(CourseType courseType) {
+		this.courseType = courseType;
+	}
+
+	public SubCourseType getSubCourseType() {
+		return subCourseType;
+	}
+
+	public void setSubCourseType(SubCourseType subCourseType) {
+		this.subCourseType = subCourseType;
+	}
+
+	public UsableRangeType getUsableRangeType() {
+		return usableRangeType;
+	}
+
+	public void setUsableRangeType(UsableRangeType usableRangeType) {
+		this.usableRangeType = usableRangeType;
+	}
+
+	public String getUsableDepartments() {
+		return usableDepartments;
+	}
+
+	public void setUsableDepartments(String usableDepartments) {
+		this.usableDepartments = usableDepartments;
+	}
+
+	public DepartmentYzw getCompany() {
+		return company;
+	}
+
+	public void setCompany(DepartmentYzw company) {
+		this.company = company;
+	}
+
+
+
+	public enum ProductCardType{
+		ADULT_MEMBER_CARD("成人会员卡"),
+		CHILDREN_MEMBER_CARD("少儿会员卡"),
+		GROUP_MEMEBER_CARD("团体会员卡"),
+		DANCE_SERVICE_CARD("舞蹈服务卡"),
+		COACH_TRAIN_CARD("教师培训卡"),
+		EXAM_TRAIN_CARD("考辅培训卡"),
+		CERTIFICATION_FEE("认证费"),
+		INCIDENTALS("杂费"),
+		GOODS("商品"),
+		DEPOSIT("定金");
+		
+		private final String name;
+
+		public String getName() {
+			return name;
+		}
+		
+		private ProductCardType(String name){
+			this.name = name;
+		}
+		
+		public static ProductCardType fromName(String name){
+			switch (name) {
+			case "成人会员卡":
+				return ProductCardType.ADULT_MEMBER_CARD;
+			case "少儿会员卡":
+				return ProductCardType.CHILDREN_MEMBER_CARD;
+			case "团体会员卡":
+				return ProductCardType.GROUP_MEMEBER_CARD;
+			case "舞蹈服务卡":
+				return ProductCardType.DANCE_SERVICE_CARD;
+			case "教师培训卡":
+				return ProductCardType.COACH_TRAIN_CARD;
+			case "考辅培训卡":
+				return ProductCardType.EXAM_TRAIN_CARD;
+			case "认证费":
+				return ProductCardType.CERTIFICATION_FEE;
+			case "杂费":
+				return ProductCardType.INCIDENTALS;
+			case "商品":
+				return ProductCardType.GOODS;
+			case "定金":
+				return ProductCardType.DEPOSIT;
+			default:
+				throw new UnsupportedOperationException(name + "not supported for enum" + ProductCardType.class.getSimpleName());
+			}
+		}
+	}
+	
+	@Converter
+	public static class ProductCardTypeConverter implements AttributeConverter<ProductCardType, String>{
+
+		@Override
+		public String convertToDatabaseColumn(ProductCardType attribute) {
+			if(attribute == null)
+				return null;
+			return attribute.getName();
+		}
+
+		@Override
+		public ProductCardType convertToEntityAttribute(String dbData) {
+			if(dbData == null || dbData.trim().length() ==0)
+				return null;
+			return ProductCardType.fromName(dbData);
+		}
+		
+	}
+	
+	public enum UsableRangeType{
+		ONE_STORE,
+		MULTIPLE_STORES,
+		FIX_STORES, //指定门店使用
+	}
 }

@@ -29,5 +29,5 @@ public interface DepartmentYzwService extends IBaseService<DepartmentYzw, Intege
 
 	List<DepartmentYzw> findByCity(String city);
 
-
+	public String translateCommaSeparateIdsToNames(String  commaSeparateIds);
 }

@@ -98,4 +98,6 @@ public interface IBaseDao<T, PK extends Serializable> {
 
 
 	public DataTableBean<T> findDataTable(QueryParameter parameter);
+	public DataTableBean<T> findDataTableByProperty(QueryParameter parameter, String propertyName, Object value);
+	public DataTableBean<T> findDataTableByProperties(QueryParameter parameter, String[] properties, Object[] values);
 }

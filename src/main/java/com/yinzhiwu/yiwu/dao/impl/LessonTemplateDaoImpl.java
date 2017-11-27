@@ -20,7 +20,7 @@ public class LessonTemplateDaoImpl extends BaseDaoImpl<LessonTemplate,Integer> i
 	public DataTableBean<LessonTemplate> findDataTableByCourseTemplateId(QueryParameter parameter, Integer courseTemplateId) {
 		try {
 			return findDataTableByProperty(parameter, "courseTemplate.id", courseTemplateId);
-		} catch (NoSuchFieldException | SecurityException e) {
+		} catch (Exception  e) {
 			logger.error(e.getMessage(),e);
 			throw new RuntimeException(e);
 		}

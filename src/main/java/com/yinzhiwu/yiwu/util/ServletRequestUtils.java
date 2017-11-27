@@ -47,6 +47,10 @@ public class ServletRequestUtils {
 		return para;
 	}
 	
+	public static QueryParameter parseDatatableQuery(HttpServletRequest request) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InstantiationException{
+		return (QueryParameter) parseParameter(request, QueryParameter.class);
+	}
+	
 	private static void setComplexFieldValue(String paraName, String value, Object entity) 
 			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InstantiationException{
 		final String regPrimary = "[_a-zA-Z]+[_\\w]*";

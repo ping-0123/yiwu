@@ -2,10 +2,13 @@ package com.yinzhiwu.yiwu.dao;
 
 import java.util.List;
 
+import org.hibernate.annotations.Where;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.impl.BaseDaoImpl;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 
 /**
 *@Author ping
@@ -49,5 +52,25 @@ public class EmployeeYzwDaoImpl extends BaseDaoImpl<EmployeeYzw,Integer> impleme
 		return emps.get(0);
 	}
 
+	@Override
+	@Where(clause="removed=false")
+	public DataTableBean<EmployeeYzw> findDataTable(QueryParameter parameter) {
+		return super.findDataTable(parameter);
+	}
 
+	@Override
+	@Where(clause="removed=false")
+	public DataTableBean<EmployeeYzw> findDataTableByProperties(QueryParameter parameter, String[] properties, Object[] values) {
+		return super.findDataTableByProperties(parameter, properties, values);
+	}
+
+	@Override
+	@Where(clause="removed=false")
+	public DataTableBean<EmployeeYzw> findDataTableByProperty(QueryParameter parameter, String propertyName, Object value) {
+		return super.findDataTableByProperty(parameter, propertyName, value);
+	}
+
+
+	
+	
 }

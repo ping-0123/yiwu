@@ -1,0 +1,53 @@
+ALTER TABLE chenkuserdb1.skt18 add COLUMN (distributer_id int);
+CREATE 
+	OR REPLACE 
+VIEW `vorder` AS
+    SELECT 
+        `chenkuserdb1`.`skt18`.`SKF254` AS `id`,
+        `chenkuserdb1`.`skt18`.`SKF255` AS `memberCardNo`,
+        `chenkuserdb1`.`skt18`.`SKF256` AS `product_id`,
+        `chenkuserdb1`.`skt18`.`SKF257` AS `markedPrice`,
+        `chenkuserdb1`.`skt18`.`SKF258` AS `preferential`,
+        `chenkuserdb1`.`skt18`.`SKF369` AS `count`,
+        `chenkuserdb1`.`skt18`.`SKF370` AS `discount`,
+        `chenkuserdb1`.`skt18`.`SKF259` AS `payedAmount`,
+        `chenkuserdb1`.`skt18`.`SKF380` AS `customer_id`,
+        distributer_id,
+        `chenkuserdb1`.`skt18`.`SKF706` AS `payed_date`,
+        `chenkuserdb1`.`skt18`.`SKF276` AS `course_id`,
+        `chenkuserdb1`.`skt18`.`SKF277` AS `checked_status`,
+        `chenkuserdb1`.`skt18`.`SKF278` AS `store_id`,
+        `chenkuserdb1`.`skt18`.`SKF293` AS `vip_attr`,
+        `chenkuserdb1`.`skt18`.`SKF294` AS `contractNo`,
+        `chenkuserdb1`.`skt18`.`SKF295` AS `validity`,
+        `chenkuserdb1`.`skt18`.`SKF297` AS `startdate`,
+        `chenkuserdb1`.`skt18`.`SKF298` AS `endDate`,
+        `chenkuserdb1`.`skt18`.`SKF296` AS `validity_times`,
+        `chenkuserdb1`.`skt18`.`SKF299` AS `remain_times`,
+        `chenkuserdb1`.`skt18`.`with_hold_times` AS `with_hold_times`,
+        `chenkuserdb1`.`skt18`.`SKF305` AS `product_type`,
+        `chenkuserdb1`.`skt18`.`SKF1036` AS `product_subType`,
+        `chenkuserdb1`.`skt18`.`SKF306` AS `recommender`,
+        `chenkuserdb1`.`skt18`.`SKF307` AS `valid_storeids`,
+        `chenkuserdb1`.`skt18`.`SKF308` AS `pic`,
+        `chenkuserdb1`.`skt18`.`SKF321` AS `ask_for_leave_flag`,
+        `chenkuserdb1`.`skt18`.`SKF354` AS `comments`,
+        `chenkuserdb1`.`skt18`.`SKF366` AS `relative_SD`,
+        `chenkuserdb1`.`skt18`.`SKF300` AS `check_privilege`,
+        `chenkuserdb1`.`skt18`.`SKF301` AS `current_status`,
+        `chenkuserdb1`.`skt18`.`SKF867` AS `remain_hours`,
+        `chenkuserdb1`.`skt18`.`SKF963` AS `audit_flag`,
+        `chenkuserdb1`.`skt18`.`SKF1037` AS `e_contract_text`,
+        `chenkuserdb1`.`skt18`.`SKF1038` AS `e_contract_address`,
+        `chenkuserdb1`.`skt18`.`SKF1039` AS `e_contract_picture_flag`,
+        `chenkuserdb1`.`skt18`.`SKF1040` AS `e_contract_status`,
+        `chenkuserdb1`.`skt18`.`SF_CREATE_USER` AS `sf_create_user`,
+        `chenkuserdb1`.`skt18`.`SF_LAST_CHANGE_USER` AS `sf_last_change_user`,
+        `chenkuserdb1`.`skt18`.`SF_CREATE_TIME` AS `sf_create_time`,
+        `chenkuserdb1`.`skt18`.`SF_LAST_CHANGE_TIME` AS `sf_last_change_time`,
+        `chenkuserdb1`.`skt18`.`MachineCode` AS `MachineCode`,
+        `chenkuserdb1`.`skt18`.`Sf_Last_Sync_TimeStamp` AS `sf_last_sync_TimeStamp`,
+        `chenkuserdb1`.`skt18`.`SF_Last_Change_Timestamp` AS `sf_last_change_timestamp`
+    FROM
+        `chenkuserdb1`.`skt18`;
+UPDATE vorder t1  JOIN yiwu_distributer t2 on (t1.customer_id = t2.customer_id) set t1.distributer_id = t2.id;
