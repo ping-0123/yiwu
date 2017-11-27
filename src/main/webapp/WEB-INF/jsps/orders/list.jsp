@@ -67,6 +67,17 @@
 							<tfoot>
 								<tr>
 									<th></th>
+									<th>筛选</th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
+								</tr>
+								<tr>
+									<th></th>
 									<th>合计</th>
 									<th></th>
 									<th></th>
