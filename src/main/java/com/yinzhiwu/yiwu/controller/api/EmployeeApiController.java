@@ -8,26 +8,38 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yinzhiwu.yiwu.controller.BaseController;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeePostYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.EmployeeApiView;
+import com.yinzhiwu.yiwu.service.EmployeePostYzwService;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 import com.yinzhiwu.yiwu.service.UserService;
 
 @RestController
 @RequestMapping("/api/employee")
-public class EmployeeApiController {
+public class EmployeeApiController extends BaseController {
 
-	@Autowired
-	private EmployeeYzwService empYzwService;
+	@Autowired private EmployeeYzwService empYzwService;
 	@Autowired private UserService userService;
+	@Autowired private EmployeePostYzwService empPostService;
 
-	@RequestMapping(value = "/getAllCoaches", method = { RequestMethod.GET })
+	@GetMapping(value="/getAllCoaches")
 	public List<EmployeeApiView> getAllCoaches() {
-		return empYzwService.getAllOnJobCoaches();
+		List<EmployeePostYzw> empPosts = empPostService.findByProperties(
+				new String[]{"post.id","removed"}, 
+				new Object[]{PostYzw.COACH_ID,false});
+		
+		List<EmployeeApiView> views = new ArrayList<>();
+		for(EmployeePostYzw empPost: empPosts){
+			views.add(new EmployeeApiView(empPost.getEmployee()));
+		}
+		
+		return views;
 	}
 
 	@GetMapping(value = "/list")

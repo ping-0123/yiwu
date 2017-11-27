@@ -368,7 +368,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		 return query.getResultList();
 	
 	}
-
+	
 	private Query<T> createQuery(String[] propertyNames, Object[] values) {
 		Map<String, Object> map = new HashMap<>();
 		
@@ -490,7 +490,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 			predicate = (predicate == null) ? condition : builder.and(predicate, condition);
 		}
 		criteria.where(predicate);
-
+		
 		int totalSize = findCountByProperties(propertyNames, values).intValue();
 
 		return findPageByCriteria(criteria, pageNo, pageSize, totalSize);

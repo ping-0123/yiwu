@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.annotations.Where;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.EmployeePostYzwDao;
@@ -97,11 +98,13 @@ public class EmployeePostYzwDaoImpl extends BaseDaoImpl<EmployeePostYzw, Integer
 	}
 
 	@Override
+	@Where(clause="removed=false")
 	public DataTableBean<?> findDataTableByEmployeeId(QueryParameter parameter, Integer empId) throws NoSuchFieldException, SecurityException {
 		return findDataTableByProperty(parameter, "employee.id", empId);
 	}
 
 	@Override
+	@Where(clause="removed=false")
 	public DataTableBean<EmployeePostYzw> findDataTableByPostId(QueryParameter parameter, Integer postId) {
 		try {
 			return findDataTableByProperty(parameter, "post.id", postId);
