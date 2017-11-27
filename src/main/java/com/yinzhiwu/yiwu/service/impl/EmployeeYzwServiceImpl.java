@@ -20,6 +20,8 @@ import com.yinzhiwu.yiwu.model.view.EmployeeApiView;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 import com.yinzhiwu.yiwu.service.UserService;
 
+import io.swagger.annotations.Authorization;
+
 /**
  * 
  * @author ping
@@ -29,15 +31,12 @@ import com.yinzhiwu.yiwu.service.UserService;
 @Service
 public class EmployeeYzwServiceImpl extends BaseServiceImpl<EmployeeYzw, Integer> implements EmployeeYzwService {
 
-	@Autowired public void setBaseDao(EmployeeYzwDao dao){super.setBaseDao(dao);}
 	@Autowired private SequenceDao sequenceDao;
 	@Autowired private UserService userService;
+	@Autowired private EmployeeYzwDao empDao;
 	
-	@Override
-	public List<EmployeeApiView> getAllOnJobCoaches() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	@Autowired public void setBaseDao(EmployeeYzwDao dao){super.setBaseDao(dao);}
+	
 
 	/**
 	 * 新员工自动分配工号， 自动创建系统账号

@@ -29,12 +29,12 @@ import com.yinzhiwu.yiwu.entity.sys.Role;
 @Table(name = "vpost")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class PostYzw extends BaseYzwEntity {
-
-	/**
-	 * 
-	 */
+	public static final int COACH_ID = 6;
+	public static final int SALESMAN_ID = 5;
+	public static final int STORE_MANAGER_ID = 12;
+	
 	private static final long serialVersionUID = -7814938629277335258L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
