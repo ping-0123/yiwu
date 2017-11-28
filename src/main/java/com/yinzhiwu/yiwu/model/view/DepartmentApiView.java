@@ -6,6 +6,7 @@ package com.yinzhiwu.yiwu.model.view;
 *
 */
 
+
 public class DepartmentApiView {
 	
 	private int id;

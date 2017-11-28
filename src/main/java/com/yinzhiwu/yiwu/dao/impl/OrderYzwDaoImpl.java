@@ -8,11 +8,13 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaQuery;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.common.entity.IdGeneratorUtil;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
+import com.yinzhiwu.yiwu.dao.SequenceDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
@@ -31,7 +33,8 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 @Repository
 public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements OrderYzwDao {
 
-
+	@Autowired private SequenceDao sequence;
+	
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public String find_last_id() {

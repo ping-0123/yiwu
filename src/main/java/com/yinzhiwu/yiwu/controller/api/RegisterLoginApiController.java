@@ -1,9 +1,11 @@
 package com.yinzhiwu.yiwu.controller.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,15 +14,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.Distributer;
+import com.yinzhiwu.yiwu.entity.Distributer.Role;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw.OrgnizationType;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeDepartmentYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.JSMSException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CustomerVO;
 import com.yinzhiwu.yiwu.model.view.CustomerVO.CustomerVOConverter;
+import com.yinzhiwu.yiwu.model.view.StoreApiView.StoreApiViewConverter;
 import com.yinzhiwu.yiwu.service.CustomerYzwService;
 import com.yinzhiwu.yiwu.service.DistributerService;
+import com.yinzhiwu.yiwu.service.EmployeeDepartmentYzwService;
 import com.yinzhiwu.yiwu.service.JJWTService;
 import com.yinzhiwu.yiwu.service.JSMSService;
 import com.yinzhiwu.yiwu.service.JSMSService.JSMSTemplate;
@@ -45,6 +53,7 @@ public class RegisterLoginApiController extends BaseController {
 	@Autowired private JSMSService jsmsService;
 	@Autowired private JJWTService jjwtService;
 	@Autowired private CustomerYzwService customerService;
+	@Autowired private EmployeeDepartmentYzwService empDeptService;
 	
 	@SuppressWarnings("rawtypes")
 	@PostMapping(value="/login")
@@ -151,8 +160,15 @@ public class RegisterLoginApiController extends BaseController {
 			distributerService.findByPhoneNo(mobileNumber);
 			return YiwuJson.createByErrorMessage("该号码已注册");
 		} catch (DataNotFoundException e) {
-			return YiwuJson.createBySuccessMessage("该号码未注册");
+			;
 		}
+		
+		java.util.List<CustomerYzw> customers = customerService.findAllByMobilePhone(mobileNumber);
+		java.util.List<CustomerVO> vos = new ArrayList<>();
+		for (CustomerYzw cust : customers) {
+			vos.add(CustomerVOConverter.INSTANCE.fromPO(cust));
+		}
+		return YiwuJson.createBySuccess(vos);
 	}
 	
 	@PostMapping(value="/register/validate/openId")
@@ -182,5 +198,28 @@ public class RegisterLoginApiController extends BaseController {
 		} catch (DataNotFoundException e) {
 			return YiwuJson.createByErrorMessage("会员卡号无效");
 		}
+	}
+	
+	@PostMapping(value="/register/validate/invatationCode")
+	@ApiOperation("注册前验证邀请码")
+	public YiwuJson<?> validateInvatationCode(String invatationCode) throws DataNotFoundException{
+		Assert.hasText(invatationCode);
+		
+		DepartmentYzw store;
+		Distributer distributer = distributerService.findOneByProperty("shareCode",invatationCode);
+		if(Role.COMPANY == distributer.getRole()
+				&& null != distributer.getDepartment() 
+				&& OrgnizationType.STORE == distributer.getDepartment().getType())
+			store = distributer.getDepartment();
+		else if (Role.EMPLOYEE == distributer.getRole()) {
+			EmployeeDepartmentYzw ed = empDeptService.findOneByProperties(
+					new String[]{"employee.id","department.type", "removed"}, 
+					new Object[]{distributer.getEmployee().getId(),OrgnizationType.STORE,false});
+			store = ed.getDepartment();
+		}else {
+			return YiwuJson.createByError();
+		}
+		
+		return YiwuJson.createBySuccess(StoreApiViewConverter.INSTANCE.fromPO(store));
 	}
 }

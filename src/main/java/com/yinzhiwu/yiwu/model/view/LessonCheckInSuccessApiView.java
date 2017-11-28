@@ -5,8 +5,12 @@ import java.sql.Time;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
+import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.service.OrderYzwService;
+import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedProperty;
@@ -101,6 +105,28 @@ public class LessonCheckInSuccessApiView {
 	
 	public static final class LessonCheckInSuccessApiViewConverter extends AbstractConverter<LessonCheckInYzw, LessonCheckInSuccessApiView>{
 		public static final LessonCheckInSuccessApiViewConverter INSTANCE = new LessonCheckInSuccessApiViewConverter();
+		private static final OrderYzwService orderService = SpringUtils.getBean(OrderYzwService.class);
+		
+		@Override
+		public LessonCheckInSuccessApiView fromPO(LessonCheckInYzw po) {
+			LessonCheckInSuccessApiView view =  super.fromPO(po);
+			view.setTimes(1);
+			view.setExp(20f);
+			try {
+				Contract contract = orderService.findContractByContractNo(po.getContractNo());
+				view.setContractStartDate(contract.getStart());
+				view.setContractEndDate(contract.getEnd());
+				view.setValidityTimes(contract.getValidityTimes());
+				view.setRemainTimes(contract.getRemainTimes().intValue());
+				view.setWithHoldTimes(Integer.valueOf(contract.getWithHoldTimes()));
+			} catch (DataNotFoundException e) {
+				;
+			}
+			
+			return view;
+		}
+		
+		
 	}
 	
 	public LessonCheckInSuccessApiView() {
@@ -267,5 +293,4 @@ public class LessonCheckInSuccessApiView {
 		this.withHoldTimes = withHoldTimes.intValue();
 	}
 
-	
 }

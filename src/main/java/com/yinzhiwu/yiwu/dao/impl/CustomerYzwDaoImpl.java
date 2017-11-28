@@ -4,7 +4,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
@@ -22,13 +27,43 @@ public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implem
 	}
 
 	@Override
-	public CustomerYzw findByPhoneNo(String phoneNo) throws DataNotFoundException {
-		List<CustomerYzw> customers =  findByProperty("mobilePhone", phoneNo);
-		if(customers.size() == 0)
-			throw new DataNotFoundException(CustomerYzw.class, "mobiePhone", phoneNo);
-		return choseValidOne(customers);
+	public CustomerYzw findByPhoneNo(String phoneNo)  {
+		Assert.hasText(phoneNo);
+		
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<CustomerYzw> criteria = builder.createQuery(CustomerYzw.class);
+		Root<CustomerYzw> root = 
+		criteria.from(CustomerYzw.class);
+		criteria.where(
+				builder.equal(root.get("mobilePhone"), phoneNo));
+		criteria.orderBy(
+				builder.desc(root.get("createTime")));
+		
+		try{
+			return getSession().createQuery(criteria)
+					.setMaxResults(1)
+					.getSingleResult();
+		}catch (Exception e) {
+			return null;
+		}
+		
 	}
 
+	@Override
+	public List<CustomerYzw> findAllByMobilePhone(String mobileNumber) {
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<CustomerYzw> criteria = builder.createQuery(CustomerYzw.class);
+		Root<CustomerYzw> root = 
+		criteria.from(CustomerYzw.class);
+		criteria.where(
+				builder.equal(root.get("mobilePhone"), mobileNumber));
+		criteria.orderBy(
+				builder.desc(root.get("createTime")));
+		
+		return getSession().createQuery(criteria).getResultList();
+
+	}
+	
 	@Override
 	public CustomerYzw findByPhoneByWechat(String phoneNo, String wechatNo) {
 		List<CustomerYzw> customers = findByProperties(
@@ -102,4 +137,6 @@ public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implem
 		return findOneByProperty(
 				"memberCard", memberCard);
 	}
+
+
 }
