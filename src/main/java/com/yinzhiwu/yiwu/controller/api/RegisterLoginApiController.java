@@ -104,7 +104,8 @@ public class RegisterLoginApiController extends BaseController {
 			 @ApiParam(value="老用户的会员卡号", required=false)  String memberCard,
 			 @RequestParam(name="invitationCode", required=false) 
 			 @ApiParam(value="邀请码", required=false) String invitationCode,
-			 @ApiParam(value="注册短信验证码", required=true)  String code) throws JSMSException, YiwuException{
+			 @ApiParam(value="注册短信验证码", required=true)  String code,
+			 @ApiParam(value="门店Id", required=false) Integer storeId) throws JSMSException, YiwuException{
 		
 		if(!jsmsService.validateRegisterSMSCode(mobileNumber, code))
 			throw new JSMSException("短信验证码不正确");
@@ -125,7 +126,7 @@ public class RegisterLoginApiController extends BaseController {
 			logger.debug("register memberCard is  " + memberCard);
 		}
 		
-		Distributer distributer = distributerService.doRegister(mobileNumber, openId, memberCard, invitationCode);
+		Distributer distributer = distributerService.doRegister(mobileNumber, openId, memberCard, invitationCode, storeId);
 		
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("token", jjwtService.createDistributerToken(distributer));

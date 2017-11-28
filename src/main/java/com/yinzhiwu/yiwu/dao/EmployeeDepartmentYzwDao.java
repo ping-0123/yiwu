@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeDepartmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 
 /**
 *@Author ping
@@ -19,5 +20,9 @@ public interface EmployeeDepartmentYzwDao extends IBaseDao<EmployeeDepartmentYzw
 	List<Integer> findEmployeesUnderDepts(List<Integer> storeIds);
 
 	DepartmentYzw findOneDepartmentByEmployee(Integer id);
+
+	EmployeeYzw findStoreManager(Integer storeId);
+
+	EmployeeYzw findOneSalesman(Integer storeId);
 	
 }

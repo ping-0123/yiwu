@@ -3,11 +3,16 @@ package com.yinzhiwu.yiwu.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.EmployeeDepartmentYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeDepartmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 
 /**
 *@Author ping
@@ -90,6 +95,23 @@ public class EmployeeDepartmentYzwDaoImpl extends BaseDaoImpl<EmployeeDepartment
 				.setParameter("removed", false)
 				.setMaxResults(1)
 				.getSingleResult();
+	}
+
+	@Override
+	public EmployeeYzw findStoreManager(Integer storeId) {
+		
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<EmployeeDepartmentYzw> criteria = builder.createQuery(EmployeeDepartmentYzw.class);
+		Root<EmployeeDepartmentYzw> root = criteria.from(EmployeeDepartmentYzw.class);
+//		criteria.select(root.join())
+		
+		return null;
+	}
+
+	@Override
+	public EmployeeYzw findOneSalesman(Integer storeId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

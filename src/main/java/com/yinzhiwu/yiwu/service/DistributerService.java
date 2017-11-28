@@ -47,7 +47,7 @@ public interface DistributerService extends IBaseService<Distributer, Integer> {
 	Distributer findbyCustomer(CustomerYzw customer) throws DataNotFoundException;
 
 	@Transactional
-	Distributer doRegister(String mobileNumber, String openId, String memberCard, String invitationCode)
+	Distributer doRegister(String mobileNumber, String openId, String memberCard, String invitationCode, Integer storeId)
 			throws YiwuException;
 
 	@Transactional

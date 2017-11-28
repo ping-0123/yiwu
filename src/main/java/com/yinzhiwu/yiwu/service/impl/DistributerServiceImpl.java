@@ -26,6 +26,7 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Distributer.Role;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeDepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.enums.IncomeType;
 import com.yinzhiwu.yiwu.event.RegisterEvent;
@@ -69,7 +70,7 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 
 	
 	@Override
-	public Distributer doRegister(String mobileNumber, String openId, String memberCard, String invitationCode) throws YiwuException
+	public Distributer doRegister(String mobileNumber, String openId, String memberCard, String invitationCode, Integer storeId) throws YiwuException
 	{
 		
 		Distributer distributer = new Distributer();
@@ -139,6 +140,28 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 			customer.init();
 			
 			distributer.setCustomer(customer);
+		}
+		
+		if(null != storeId){
+			try {
+				DepartmentYzw store = departmentYzwDao.get(storeId);
+				distributer.setFollowedByStore(store);
+				EmployeeDepartmentYzw ed = empDeptDao.findOneByProperties(
+						new String[]{"department.id", "removed"}, 
+						new Object[]{storeId,false});
+				EmployeeYzw salesman = empDeptDao.findStoreManager(storeId);
+				if(null == salesman)
+					salesman = empDeptDao.findOneSalesman(storeId);
+				if(null == salesman)
+					salesman = ed.getEmployee();
+				
+				if(null == distributer.getServer())
+					distributer.setServer(salesman);
+				if(null == distributer.getCustomer().getSalesman())
+					distributer.getCustomer().setSalesman(salesman);
+			} catch (DataNotFoundException e) {
+				;
+			}
 		}
 		
 		//保存
