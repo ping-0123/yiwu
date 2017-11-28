@@ -26,7 +26,6 @@ import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CustomerVO;
 import com.yinzhiwu.yiwu.model.view.CustomerVO.CustomerVOConverter;
 import com.yinzhiwu.yiwu.model.view.StoreApiView.StoreApiViewConverter;
-import com.yinzhiwu.yiwu.model.view.DepartmentApiView;
 import com.yinzhiwu.yiwu.service.CustomerYzwService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.EmployeeDepartmentYzwService;
