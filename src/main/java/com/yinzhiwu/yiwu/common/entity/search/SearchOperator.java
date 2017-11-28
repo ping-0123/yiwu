@@ -21,6 +21,7 @@ public enum SearchOperator {
     gte("大于等于", ">="),
     lt("小于", "<"), 
     lte("小于等于", "<="),
+    between("在..之间", "between..and.."),
     prefixLike("前缀模糊匹配", "like"),
     prefixNotLike("前缀模糊不匹配", "not like"),
     suffixLike("后缀模糊匹配", "like"),

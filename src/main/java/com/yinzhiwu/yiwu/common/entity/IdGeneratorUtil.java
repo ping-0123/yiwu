@@ -1,4 +1,4 @@
-package com.yinzhiwu.yiwu.common.entity.utils;
+package com.yinzhiwu.yiwu.common.entity;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,10 +13,9 @@ public class IdGeneratorUtil {
 	private static Log log = LogFactory.getLog(IdGeneratorUtil.class);
 
 	private static final String PREFIX = "E5";
-	/**
-	 * 合约号前缀
-	 */
+
 	private static final String CONTRACT_NO_PREFIX ="E5";
+	
 	private static final int LENGTH = 8;
 
 	private static final char PADDING_CHAR = '0';

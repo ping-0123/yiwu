@@ -11,7 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import com.yinzhiwu.yiwu.common.entity.utils.IdGeneratorUtil;
+import com.yinzhiwu.yiwu.common.entity.IdGeneratorUtil;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
