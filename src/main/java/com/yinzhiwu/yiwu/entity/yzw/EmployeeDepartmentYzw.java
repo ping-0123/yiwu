@@ -39,7 +39,7 @@ public class EmployeeDepartmentYzw {
 	
 	private Integer sf_last_changer_user;
 	private Date sf_last_change_time;
-	private Boolean removed= Boolean.FALSE;
+	private Boolean removed;
 	private Integer machineCode;
 	private Integer pos;
 	private Integer wparam;
@@ -53,6 +53,8 @@ public class EmployeeDepartmentYzw {
 		this.sf_last_change_time = date;
 		this.sf_last_sync_timestamp = date;
 		this.sf_last_change_timestamp = date;
+		if(null == removed)
+			removed = false;
 	}
 	
 	public void beforeUpdate(){

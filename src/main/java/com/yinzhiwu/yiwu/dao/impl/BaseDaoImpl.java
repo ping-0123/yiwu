@@ -123,7 +123,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		
 		
 		if(list.size()==0){
-			throw new  DataNotFoundException(query.getQueryString());
+			throw new  DataNotFoundException(query.getQueryString(), new Object[]{value});
 		}
 		return list.get(0);
 	}
@@ -157,7 +157,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		 List<T> list = query.getResultList();
 		if(list == null || list.size()==0) 
 			//TODO 
-			throw new DataNotFoundException();
+			throw new DataNotFoundException(builder.toString(),values);
 		else {
 			return list.get(0);
 		}

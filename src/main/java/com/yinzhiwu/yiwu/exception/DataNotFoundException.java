@@ -14,8 +14,16 @@ public class DataNotFoundException extends Exception {
 	
 	private String sql;
 
+	private Object[] values;
+	
 	public DataNotFoundException() {
 		super();
+	}
+
+	public DataNotFoundException(String sql, Object[] values) {
+		super("no rows fetched by hql " + sql  + " with query args " + values);
+		this.sql = sql;
+		this.values = values;
 	}
 
 	public DataNotFoundException(String message, Throwable cause, boolean enableSuppression,

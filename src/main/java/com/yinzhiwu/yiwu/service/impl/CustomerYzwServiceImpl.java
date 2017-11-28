@@ -1,5 +1,7 @@
 package com.yinzhiwu.yiwu.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionPhase;
@@ -32,6 +34,12 @@ public class CustomerYzwServiceImpl extends BaseServiceImpl<CustomerYzw, Integer
 		return customerDao.findByMemberCard(memberCard);
 	}
 
+	@Override
+	public CustomerYzw findByMobilePhone(String mobileNumber){
+		return customerDao.findByPhoneNo(mobileNumber);
+	}
+
+	
 	@TransactionalEventListener(classes={PayDeposit.class}, phase=TransactionPhase.BEFORE_COMMIT)
 	public void handlePayDeposit(PayDeposit deposit){
 		CustomerYzw customer = deposit.getDistributer().getCustomer();
@@ -41,6 +49,14 @@ public class CustomerYzwServiceImpl extends BaseServiceImpl<CustomerYzw, Integer
 		
 		update(customer);
 	}
+
+
+	@Override
+	public List<CustomerYzw> findAllByMobilePhone(String mobileNumber) {
+		return customerDao.findAllByMobilePhone(mobileNumber);
+	}
+
+
 
 	
 }

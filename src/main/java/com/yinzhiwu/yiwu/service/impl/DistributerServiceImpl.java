@@ -153,13 +153,10 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 	@SuppressWarnings("unused")
 	private CustomerYzw _matchCustomer(DistributerRegisterModel registerModel) {
 		CustomerYzw customer = customerDao.findByPhoneByWechat(registerModel.getPhoneNo(), registerModel.getWechatNo());
-		if(customer == null){
-			try {
-				customer = customerDao.findByPhoneNo(registerModel.getPhoneNo());
-			} catch (DataNotFoundException e) {
-				customer = customerDao.findByWeChat(registerModel.getWechatNo());
-			}
-		}
+		if(customer == null)
+			customer = customerDao.findByPhoneNo(registerModel.getPhoneNo());
+		if(null == customer)
+			customer = customerDao.findByWeChat(registerModel.getWechatNo());
 		return customer;
 	}
 
