@@ -4,7 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.yinzhiwu.yiwu.zhangkaitao.common.entity.IdGenerator;
+import com.yinzhiwu.yiwu.common.entity.IdGenerator;
+
 
 public class EmployeeNumberGenerator implements IdGenerator<String>{
 	

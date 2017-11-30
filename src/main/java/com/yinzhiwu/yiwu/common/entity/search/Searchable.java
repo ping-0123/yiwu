@@ -17,7 +17,7 @@ public interface Searchable<T> {
 	
 	public Specification<T> getSpecification();
 	
-	public Pageable getPage();
+	public Pageable getPage();		
 	
 	public List<Order> getOrders();
 }

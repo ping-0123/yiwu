@@ -1,6 +1,6 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
-import com.yinzhiwu.yiwu.zhangkaitao.common.entity.DateIdGenerator;
+import com.yinzhiwu.yiwu.common.entity.DateIdGenerator;
 
 public class ContractNoGenerator extends DateIdGenerator {
 
