@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.yinzhiwu.yiwu.common.entity.search.exception.SearchException;
+import com.yinzhiwu.yiwu.zhangkaitao.common.entity.search.exception.SearchException;
 
 /**
  * <p>查询操作符</p>

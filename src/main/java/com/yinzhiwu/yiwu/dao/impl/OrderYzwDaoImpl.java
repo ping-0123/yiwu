@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import com.yinzhiwu.yiwu.common.entity.IdGeneratorUtil;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.dao.SequenceDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
@@ -29,6 +28,7 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
+import com.yinzhiwu.yiwu.zhangkaitao.common.entity.IdGeneratorUtil;
 
 @Repository
 public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements OrderYzwDao {

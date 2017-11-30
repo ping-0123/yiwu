@@ -32,6 +32,7 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.yinzhiwu.yiwu.common.entity.search.Searchable;
 import com.yinzhiwu.yiwu.dao.IBaseDao;
 import com.yinzhiwu.yiwu.entity.BaseEntity;
 import com.yinzhiwu.yiwu.entity.yzw.BaseYzwEntity;
@@ -171,6 +172,20 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 		
 	}
 
+	@Override
+	public List<T> findAll(Searchable<T> search){
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
+		Root<T> root = criteria.from(entityClass);
+		criteria.where(search.getSpecification().toPredicate(root, criteria, builder));
+		criteria.orderBy(search.getOrders());
+		
+		return getSession().createQuery(criteria)
+				.setFirstResult(search.getPage().getOffset())
+				.setMaxResults(search.getPage().getPageSize())
+				.getResultList();
+	}
+	
 	@Override
 	public PageBean<T> findPageOfAll(int pageNo, int pageSize) {
 			

@@ -2,7 +2,12 @@ package com.yinzhiwu.yiwu.dao;
 
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.impl.BaseDaoImpl;
@@ -81,6 +86,15 @@ public class EmployeeYzwDaoImpl extends BaseDaoImpl<EmployeeYzw,Integer> impleme
 	}
 
 
-	
+	@Override
+	public List<EmployeeYzw> findAll(Specification<EmployeeYzw> spec){
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<EmployeeYzw> criteria = builder.createQuery(EmployeeYzw.class);
+		Root<EmployeeYzw> root = criteria.from(EmployeeYzw.class);
+		criteria.where(spec.toPredicate(root, criteria, builder));
+		
+		return getSession().createQuery(criteria)
+				.getResultList();
+	}
 	
 }

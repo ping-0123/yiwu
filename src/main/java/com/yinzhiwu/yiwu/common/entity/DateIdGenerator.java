@@ -7,9 +7,7 @@ import java.util.Date;
 public class DateIdGenerator implements IdGenerator<String> {
 	
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
-	/**
-	 * 默认的随机数位数
-	 */
+	 // 默认的随机数位数
 	private static final int DEFAULT_RANDOM_DIGIT = 3;
 	
 	private String prefix;
@@ -48,7 +46,8 @@ public class DateIdGenerator implements IdGenerator<String> {
 
 	@Override
 	public String generateId() {
-		return prefix + DATE_FORMAT.format(date)+ String.format("%0" +randomDigit +"d", randomValue);
+		return prefix + DATE_FORMAT.format(date)+ 
+				String.format("%0" +randomDigit +"d", (randomValue%Math.pow(10, randomDigit-1)));
 	}
 	
 }

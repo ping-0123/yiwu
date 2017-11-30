@@ -7,7 +7,6 @@ import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import com.yinzhiwu.yiwu.common.entity.IdGeneratorUtil;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
@@ -16,6 +15,7 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.util.SecurityUtil;
 import com.yinzhiwu.yiwu.util.ShareCodeUtil;
 import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
+import com.yinzhiwu.yiwu.zhangkaitao.common.entity.IdGeneratorUtil;
 
 @Repository
 public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implements DistributerDao {

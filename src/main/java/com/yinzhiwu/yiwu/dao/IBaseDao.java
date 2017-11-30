@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import com.yinzhiwu.yiwu.common.entity.search.Searchable;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
@@ -22,6 +23,7 @@ public interface IBaseDao<T, PK extends Serializable> {
 	//查
 	public T get(PK id) throws DataNotFoundException;
 	public List<T> findAll();
+	public List<T> findAll(Searchable<T> search);
 	/**
 	 * 如果T中的某一成员变量的class为@Entity注解, 则查询时忽略该属性， 即查询语句没有表的关联
 	 * 

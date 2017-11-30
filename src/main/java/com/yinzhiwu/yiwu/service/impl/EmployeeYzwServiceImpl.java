@@ -47,7 +47,8 @@ public class EmployeeYzwServiceImpl extends BaseServiceImpl<EmployeeYzw, Integer
 	 */
 	@Override
 	public Integer save(EmployeeYzw employee) {
-		String empNumber = new EmployeeNumberGenerator(sequenceDao.getValue(EmployeeNumberGenerator.SEQUENCE_KEY)).generateId();
+		String empNumber = new EmployeeNumberGenerator(
+				sequenceDao.getValue(EmployeeNumberGenerator.SEQUENCE_KEY)).generateId();
 		employee.setNumber(empNumber);
 		Integer id =  super.save(employee);
 		
@@ -78,8 +79,17 @@ public class EmployeeYzwServiceImpl extends BaseServiceImpl<EmployeeYzw, Integer
 	}
 	
 	@Transactional
-//	@Scheduled(initialDelay=10000, fixedRate=9999999999l)
-	public void updateAllOldEmployees(){
+	@Scheduled(initialDelay=10000, fixedRate=9999999999l)
+	public void initAllEmployeeNumber(){
+		List<EmployeeYzw> emps = empDao.findByNullNumber();
+		for (EmployeeYzw emp : emps) {
+			updateNumberOfOldEmployee(emp);
+		}
+	}
+	
+	@Transactional
+	@Scheduled(cron="0 0 1 * * ?")
+	public void setNewEmployeeNumberEveryNigth(){
 		List<EmployeeYzw> emps = empDao.findByNullNumber();
 		for (EmployeeYzw emp : emps) {
 			updateNumberOfOldEmployee(emp);
@@ -87,11 +97,13 @@ public class EmployeeYzwServiceImpl extends BaseServiceImpl<EmployeeYzw, Integer
 	}
 	
 	
+	
 	@Transactional(propagation=Propagation.REQUIRED)
 //	@Scheduled(initialDelay=10000, fixedRate=9999999999l)
 	private void updateNumberOfOldEmployee(EmployeeYzw emp){
 		Assert.notNull(emp);
 		
+		//已有工号的不需要再设置工号
 		if(null != emp.getNumber())
 			return;
 		

@@ -49,7 +49,7 @@ public class EmployeeYzw extends BaseYzwEntity {
 	private String seegleUserId;
 	
 	//工号
-	@Column(length=10, updatable=false)
+	@Column(length=10, updatable=true)
 	private String number;
 	
 	@Column(length = 128)

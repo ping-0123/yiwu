@@ -4,7 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.yinzhiwu.yiwu.common.entity.IdGenerator;
+import com.yinzhiwu.yiwu.zhangkaitao.common.entity.IdGenerator;
 
 public class EmployeeNumberGenerator implements IdGenerator<String>{
 	
@@ -32,7 +32,7 @@ public class EmployeeNumberGenerator implements IdGenerator<String>{
 	
 	@Override
 	public String generateId() {
-		return DATE_FORMAT.format(date)+ String.format("%02d", value);
+		return DATE_FORMAT.format(date)+ String.format("%02d", (value%100));
 	}
 
 }

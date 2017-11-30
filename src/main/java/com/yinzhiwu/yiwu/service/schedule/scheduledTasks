@@ -2,3 +2,5 @@ LessonAppointmentYzwServiceImpl#handeLastDayBreakAppointments
 IncomeRecordServiceImpl#scheduleHandlePurchases
 IncomeRecordServiceImpl#scheduleYieldInterest
 CourseYzwServiceImpl#setAllSumLessonTimes()
+#设置新员工工号
+EmployeeYzwServiceImpl#setNewEmployeeNumberEveryNigth()
