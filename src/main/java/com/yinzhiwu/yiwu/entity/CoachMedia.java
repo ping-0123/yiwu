@@ -62,6 +62,15 @@ public class CoachMedia extends BaseEntity {
 		DANCE;
 	}
 
+	
+	
+	@Override
+	public void init() {
+		super.init();
+		if(null== coverage)
+			coverage=false;
+	}
+
 	public EmployeeYzw getCoach() {
 		return coach;
 	}

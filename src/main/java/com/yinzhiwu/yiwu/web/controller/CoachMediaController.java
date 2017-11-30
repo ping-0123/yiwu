@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -61,7 +62,7 @@ public class CoachMediaController extends BaseController{
 		return "coachMedia/list";
 	}
 	
-	@GetMapping(value="details")
+	@GetMapping(value="/details")
 	public String getMediaDetails(Integer coachId, Model model){
 		model.addAttribute("coachId", coachId);
 		model.addAttribute("uploadToken", qiniuService.createAccessToken());
@@ -128,7 +129,20 @@ public class CoachMediaController extends BaseController{
 		
 		coachMediaService.save(coachMedia);
 		
-		return YiwuJson.createBySuccess();
+		return YiwuJson.createBySuccess(CoachMediaVOConverter.instance.fromPO(coachMedia));
+	}
+	
+	
+	@PutMapping("/{id}/videoPosterUri")
+	@ResponseBody
+	public YiwuJson<?> updateVideoPostUri(@PathVariable(name="id") int id, String videoPosterUri) throws DataNotFoundException{
+		CoachMedia media = coachMediaService.get(id);
+		if(MediaType.VIDEO != media.getType())
+			return YiwuJson.createByErrorMessage("非视频资料无须上传视频封面图片");
+		media.setVideoPosterUri(videoPosterUri);
+		coachMediaService.update(media);
+		
+		return YiwuJson.createBySuccess(CoachMediaVOConverter.instance.fromPO(media));
 	}
 	
 	@ResponseBody

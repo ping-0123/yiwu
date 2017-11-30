@@ -21,6 +21,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.entity.sys.Role;
@@ -28,6 +29,7 @@ import com.yinzhiwu.yiwu.entity.sys.Role;
 @Entity
 @Table(name = "vpost")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+@Where(clause="removed=false")
 public class PostYzw extends BaseYzwEntity {
 	public static final int COACH_ID = 6;
 	public static final int SALESMAN_ID = 5;

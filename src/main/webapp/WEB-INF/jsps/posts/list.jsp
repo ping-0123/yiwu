@@ -165,12 +165,6 @@
 				}, {
 					"data" : "name",
 					"title": "职位名"
-				}, {
-					"data" : "dataStatus",
-					"title": "状态",
-					"render" : function(data, type, row, meta) {
-						return translateDataStatus(data);
-					}
 				},{
 					"data":"createTime",
 					"title":"操作",

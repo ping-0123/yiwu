@@ -43,8 +43,8 @@ public class CoachMediaVO {
 		@Override
 		public CoachMediaVO fromPO(CoachMedia po){
 			CoachMediaVO vo = super.fromPO(po);
-			vo.setUrl(fileService.getFileUrl(vo.getUri()));
-			vo.setVideoPosterUrl(fileService.getFileUrl(vo.getVideoPosterUri()));
+			vo.setUrl(fileService.generateFileUrl(vo.getUri()));
+			vo.setVideoPosterUrl(fileService.generateFileUrl(vo.getVideoPosterUri()));
 			return vo;
 		}
 		

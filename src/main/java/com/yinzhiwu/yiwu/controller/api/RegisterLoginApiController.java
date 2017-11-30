@@ -2,6 +2,7 @@ package com.yinzhiwu.yiwu.controller.api;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.CustomerVO;
 import com.yinzhiwu.yiwu.model.view.CustomerVO.CustomerVOConverter;
+import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView.StoreApiViewConverter;
 import com.yinzhiwu.yiwu.service.CustomerYzwService;
 import com.yinzhiwu.yiwu.service.DistributerService;
@@ -104,11 +106,11 @@ public class RegisterLoginApiController extends BaseController {
 			 @ApiParam(value="老用户的会员卡号", required=false)  String memberCard,
 			 @RequestParam(name="invitationCode", required=false) 
 			 @ApiParam(value="邀请码", required=false) String invitationCode,
-			 @ApiParam(value="注册短信验证码", required=true)  String code,
+//			 @ApiParam(value="注册短信验证码", required=true)  String code,
 			 @ApiParam(value="门店Id", required=false) Integer storeId) throws JSMSException, YiwuException{
 		
-		if(!jsmsService.validateRegisterSMSCode(mobileNumber, code))
-			throw new JSMSException("短信验证码不正确");
+//		if(!jsmsService.validateRegisterSMSCode(mobileNumber, code))
+//			throw new JSMSException("短信验证码不正确");
 		if(!distributerService.validateMobileNumberBeforeRegister(mobileNumber)){
 			throw new YiwuException("手机号码" + mobileNumber + "已注册");
 		}
@@ -152,7 +154,7 @@ public class RegisterLoginApiController extends BaseController {
 	
 	@PostMapping(value="/register/validate/mobileNumber")
 	@ApiOperation("注册前验证手机号码")
-	public YiwuJson<?> validateMobileNumber2(String mobileNumber)
+	public YiwuJson<List<CustomerVO>> validateMobileNumber2(String mobileNumber)
 	{
 		if (!mobileNumber.matches("^1\\d{10}$"))
 			return YiwuJson.createByErrorMessage("请输入合法的11位数手机号码");
@@ -203,7 +205,7 @@ public class RegisterLoginApiController extends BaseController {
 	
 	@PostMapping(value="/register/validate/invatationCode")
 	@ApiOperation("注册前验证邀请码")
-	public YiwuJson<?> validateInvatationCode(String invatationCode) throws DataNotFoundException{
+	public YiwuJson<StoreApiView> validateInvatationCode(String invatationCode) throws DataNotFoundException{
 		Assert.hasText(invatationCode);
 		
 		DepartmentYzw store;

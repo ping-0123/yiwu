@@ -11,7 +11,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>岗位设置</title>
+<title>教师资料</title>
 
 <!-- Font Awesome -->
 <link href="../../assets/font-awe	some/css/font-awesome.min.css" rel="stylesheet">
@@ -112,7 +112,7 @@
 				"select":true,
 				"language" : {
 					"url" : "../../backend/config/i18n/datatable-chinese.json",
-					"searchPlaceholder" : "输入职位名"
+					"searchPlaceholder" : "教师姓名"
 				},
 				"ajax" : {
 					"url" : "./datatable",

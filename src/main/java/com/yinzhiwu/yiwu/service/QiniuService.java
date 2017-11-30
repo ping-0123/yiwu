@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.qiniu.common.QiniuException;
@@ -82,7 +83,7 @@ public class QiniuService implements FileService {
 
 	@Override
 	public String generateFileUrl(String uri) {
-		return uri==null?null:(config.getCdnUrl()+uri);
+		return StringUtils.hasText(uri)?(config.getCdnUrl()+uri):null;
 	}
 
 }

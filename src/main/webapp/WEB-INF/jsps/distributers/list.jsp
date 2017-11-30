@@ -124,10 +124,6 @@
 					"title" : "会员卡号",
 					"visible" : true
 				},{
-					"title": "呢称",
-					"data" : "nickName",
-					"name" : ""
-				}, {
 					"title" :"姓名",
 					"data":"name"
 				},{
@@ -150,9 +146,6 @@
 						return row.superDistributerName;
 					}
 				},{
-					"data" : "superDistributerMemberCard",
-					"title": "分销归属人会员卡号"
-				},{
 					"data": "serverId",
 					"title": "销售归属",
 					"render": function(data, type, row, meta){
@@ -164,7 +157,7 @@
 					"render": function(data, type, row, meta) {
 						var html =  '';
 						<shiro:hasPermission name="distributers:update:*">
-							html = html +  '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> [修改]</a>';
+							html = html +  '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"><i class="fa fa-pencil" title="修改"></i></a>';
 						</shiro:hasPermission>	
 						<shiro:hasPermission name="orders:view:*">
 							html = html + '<a href="' + row.id + '/orders/list" > [查看订单]  </a>';

@@ -55,7 +55,7 @@ public class EmployeeYzwDaoImpl extends BaseDaoImpl<EmployeeYzw,Integer> impleme
 	@Override
 	@Where(clause="removed=false")
 	public DataTableBean<EmployeeYzw> findDataTable(QueryParameter parameter) {
-		return super.findDataTable(parameter);
+		return super.findDataTableByProperty(parameter, "removed", false);
 	}
 
 	@Override

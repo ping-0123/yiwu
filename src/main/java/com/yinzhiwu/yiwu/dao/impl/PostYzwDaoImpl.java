@@ -14,5 +14,5 @@ import com.yinzhiwu.yiwu.entity.yzw.PostYzw;
 @Repository
 public class PostYzwDaoImpl  extends BaseDaoImpl<PostYzw,Integer> implements PostYzwDao{
 
-
+	
 }

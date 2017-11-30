@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
@@ -174,7 +176,9 @@ public class IncomeRecordServiceImpl extends BaseServiceImpl<IncomeRecord, Integ
 		produceIncomes(deposit);
 	}
 	
-	@EventListener(classes={RegisterEvent.class})
+
+//	@Async //TODO 报 can not obtain transaction-synchronized session
+	@TransactionalEventListener(classes={RegisterEvent.class})
 	public void handleRegisterEvent(RegisterEvent event){
 		logger.info("start handle register event");
 		produceIncomes(event);
