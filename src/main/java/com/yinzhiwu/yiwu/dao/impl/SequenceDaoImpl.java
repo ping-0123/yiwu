@@ -18,7 +18,8 @@ public class SequenceDaoImpl implements SequenceDao {
 		return sessionFactory.getCurrentSession();
 	}
 
-	private Integer getValue(String sequenceName) {
+	@Override
+	public Integer getValue(String sequenceName) {
 		Assert.hasText(sequenceName);
 		
 		Sequence sequence  = getSession().get(Sequence.class, sequenceName);

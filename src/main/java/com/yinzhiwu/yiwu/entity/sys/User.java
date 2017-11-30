@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.entity.sys;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -24,15 +25,13 @@ import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 
 @Entity
 @Table(name="sys_user", uniqueConstraints={
-		@UniqueConstraint(name="uk_user_username", columnNames={"username"})
+		@UniqueConstraint(name="uk_user_username", columnNames={"username"}),
+		@UniqueConstraint(name="fuk_user_employee_id", columnNames={"employee_id"})
 })
 @Where(clause="dataStatus<>2")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class User extends BaseEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2447505510450864096L;
 
 	@Column(length=32, updatable=false)
@@ -44,7 +43,7 @@ public class User extends BaseEntity {
 	@Column(length=32)
 	private String salt;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
 	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT, name="fk_user_employee_id"))
 	private EmployeeYzw employee;
 	

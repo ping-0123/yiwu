@@ -156,6 +156,7 @@ public class Distributer extends BaseEntity {
 	@JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "fk_distributer_customer_id", value = ConstraintMode.NO_CONSTRAINT))
 	private CustomerYzw customer;
 
+	private Boolean bindChangable;
 	/**
 	 * 如果是内部员工  与 employee关联
 	 */
@@ -202,6 +203,8 @@ public class Distributer extends BaseEntity {
 		if (!StringUtils.hasLength(getPassword()))
 			this.password = "yzw123456";
 		this.registedTime = super.getCreateTime();
+		if(null == bindChangable)
+			bindChangable = true;
 
 	}
 
@@ -461,6 +464,14 @@ public class Distributer extends BaseEntity {
 
 	
 	
+	
+	public Boolean getBindChangable() {
+		return bindChangable;
+	}
+	public void setBindChangable(Boolean bindChangable) {
+		this.bindChangable = bindChangable;
+	}
+
 	//功能性的方法
 	/**
 	 * 

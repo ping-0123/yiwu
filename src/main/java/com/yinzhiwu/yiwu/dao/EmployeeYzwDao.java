@@ -1,5 +1,7 @@
 package com.yinzhiwu.yiwu.dao;
 
+import java.util.List;
+
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 
 /**
@@ -8,13 +10,15 @@ import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 *
 */
 
-public interface EmployeeYzwDao extends IBaseDao<EmployeeYzw, Integer> {
+public interface EmployeeYzwDao extends IBaseDao<EmployeeYzw, Integer>  {
 
 	EmployeeYzw findByPhoneNo(String phoneNo) throws Exception;
 
 	EmployeeYzw findByTel(String phoneNo);
 
 	EmployeeYzw findByUsername(String username);
+
+	List<EmployeeYzw> findByNullNumber();
 
 
 }

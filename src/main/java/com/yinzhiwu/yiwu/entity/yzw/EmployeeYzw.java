@@ -21,11 +21,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.Email;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -70,14 +68,14 @@ public class EmployeeYzw extends BaseYzwEntity {
 	@Column(length = 20)
 	private String telephone;
 
-	@Pattern(regexp = "^1\\d{10}$", message="请输入有效的11位手机号码")
+//	@Pattern(regexp = "^1\\d{10}$", message="请输入有效的11位手机号码")
 	@Column(length = 20, nullable=false)
 	private String cellphone;
 
 	@Column(length = 20)
 	private String fax;
 
-	@Email
+//	@Email
 	@Column(length = 50)
 	private String email;
 

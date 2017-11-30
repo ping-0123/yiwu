@@ -1,4 +1,4 @@
-package com.yinzhiwu.yiwu.util;
+package com.yinzhiwu.yiwu.common.entity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -47,7 +47,7 @@ public class DateIdGenerator implements IdGenerator<String> {
 
 
 	@Override
-	public String generate() {
+	public String generateId() {
 		return prefix + DATE_FORMAT.format(date)+ String.format("%0" +randomDigit +"d", randomValue);
 	}
 	

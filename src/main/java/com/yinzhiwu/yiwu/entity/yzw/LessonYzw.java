@@ -14,6 +14,8 @@ import javax.persistence.Convert;
 import javax.persistence.Converter;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -94,6 +96,10 @@ public class LessonYzw extends BaseYzwEntity {
 
 	@Column(name = "shidaoTeacherName", length = 32)
 	private String actualTeacherName;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(length=32)
+	private CheckedInStatus coachCheckedinStatus;
 
 	@Column(length = 32)
 	@Convert(converter=LessonStatusConverter.class)
@@ -161,21 +167,23 @@ public class LessonYzw extends BaseYzwEntity {
 	public void init() {
 		super.init();
 		if(null == removed)
-			removed = false;
+			this.removed = false;
 		if(null == dueStudentCount)
-			dueStudentCount=0;
+			this.dueStudentCount=0;
 		if(null==experienceStudentCount)
-			experienceStudentCount=0;
+			this.experienceStudentCount=0;
 		if(null==rollCalledStudentCountByCoach)
-			rollCalledStudentCountByCoach=0;
+			this.rollCalledStudentCountByCoach=0;
 		if(null==rollCalledStudentCountByStoreman)
-			rollCalledStudentCountByStoreman=0;
+			this.rollCalledStudentCountByStoreman=0;
 		if(null==actualStudentCount)
-			actualStudentCount=0;
+			this.actualStudentCount=0;
 		if(null==checkedInStudentCount)
-			checkedInStudentCount=0;
+			this.checkedInStudentCount=0;
 		if(null==appointedStudentCount)
-			appointedStudentCount=0;
+			this.appointedStudentCount=0;
+		if(null == coachCheckedinStatus)
+			this.coachCheckedinStatus=CheckedInStatus.UN_CHECKED;
 	}
 
 	public LessonYzw() {
@@ -468,6 +476,18 @@ public class LessonYzw extends BaseYzwEntity {
 
 	
 	
+	public CheckedInStatus getCoachCheckedinStatus() {
+		return coachCheckedinStatus;
+	}
+
+	public void setCoachCheckedinStatus(CheckedInStatus coachCheckedinStatus) {
+		this.coachCheckedinStatus = coachCheckedinStatus;
+	}
+
+
+
+
+
 	public enum LessonStatus{
 		UN_CHECKED("未审核"),
 		ARRANGED("已排课"),
@@ -514,5 +534,9 @@ public class LessonYzw extends BaseYzwEntity {
 			return LessonStatus.fromStatus(dbData);
 		}
 		
+	}
+	
+	public enum CheckedInStatus {
+		UN_CHECKED, CHECKED, LATE, PATCHED, NON_CHECKABLE
 	}
 }

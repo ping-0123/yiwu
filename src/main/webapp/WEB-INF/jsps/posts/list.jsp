@@ -103,7 +103,7 @@
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">×</span>
 					</button>
-					<h4 class="modal-title" >设置用户角色</h4>
+					<h4 class="modal-title" >设置职位的系统角色</h4>
 				</div>
 				<div class="modal-body">
 					&nbsp&nbsp&nbsp

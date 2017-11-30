@@ -10,7 +10,6 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
-import com.yinzhiwu.yiwu.model.view.LessonForWeeklyVO.CheckedInStatus;
 import com.yinzhiwu.yiwu.model.view.OneDayLessonsVO;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
 
@@ -40,6 +39,6 @@ public interface LessonYzwService extends IBaseService<LessonYzw, Integer> {
 	List<OneDayLessonsVO> findWeeklyLessons(Integer storeId, CourseType courseType, String teacherName,
 			String danceCatagory, Date date);
 
-	CheckedInStatus getCoachCheckinStatus(LessonYzw lesson);
+	com.yinzhiwu.yiwu.entity.yzw.LessonYzw.CheckedInStatus getCoachCheckinStatus(LessonYzw lesson);
 
 }

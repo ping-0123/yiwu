@@ -30,6 +30,10 @@ public class DistributerApiView  implements Serializable {
 	private String headIconUrl;
 	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
 	private Date birthday;
+	@MapedProperty("followedByStore.id")
+	private Integer storeId;
+	@MapedProperty("followedByStore.name")
+	private	String	storeName;
 	
 	@MapedProperty("registedTime")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
@@ -59,6 +63,9 @@ public class DistributerApiView  implements Serializable {
 	@MapedProperty(ignored=true)
 	@ApiModelProperty("佣金击败率")
 	private float beatRate;
+	
+	@MapedProperty
+	private Boolean bindChangable;
 	
 	public DistributerApiView() {
 	}
@@ -229,6 +236,38 @@ public class DistributerApiView  implements Serializable {
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
+
+	
+
+	public Integer getStoreId() {
+		return storeId;
+	}
+
+	public String getStoreName() {
+		return storeName;
+	}
+
+	public void setStoreId(Integer storeId) {
+		this.storeId = storeId;
+	}
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+
+	
+	
+
+
+	public Boolean getBindChangable() {
+		return bindChangable;
+	}
+
+	public void setBindChangable(Boolean bindChangable) {
+		this.bindChangable = bindChangable;
+	}
+
+
 
 
 

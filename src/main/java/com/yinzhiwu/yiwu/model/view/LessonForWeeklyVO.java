@@ -13,6 +13,7 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.LessonInteractive;
 import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.CheckedInStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.SubCourseType;
@@ -39,10 +40,6 @@ import io.swagger.annotations.ApiModelProperty;
 public class LessonForWeeklyVO {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LessonForWeeklyVO.class);
-	
-	public enum CheckedInStatus {
-		UN_KNOWN, UN_CHECKED, CHECKED, LATE, PATCHED, NON_CHECKABLE
-	}
 	
 	private Integer id;
 	private String name;
@@ -149,47 +146,51 @@ public class LessonForWeeklyVO {
 				}
 			}else{
 				//设置 coachCheckedInStatus
-				if(null != lesson.getActualTeacher())
-					try {
-						LessonCheckInYzw checkin = lessonCheckinService.findOneByProperties(
-								new String[]{"lesson.id","teacher"}, 
-								new Object[]{lesson.getId(),lesson.getActualTeacher().getId()});
-						
-						Date date = lesson.getLessonDate();
-						Time start = lesson.getStartTime();
-						Time end = lesson.getEndTime();
-						
-						Calendar lessonStart = Calendar.getInstance();
-						lessonStart.setTime(date);
-						lessonStart.set(Calendar.HOUR_OF_DAY, start.getHours());
-						lessonStart.set(Calendar.MINUTE,start.getMinutes());
-						lessonStart.set(Calendar.SECOND, start.getSeconds());
-						
-						Calendar lessonEnd = Calendar.getInstance();
-						lessonEnd.setTime(date);
-						lessonEnd.set(Calendar.HOUR_OF_DAY, end.getHours());
-						lessonEnd.set(Calendar.MINUTE, end.getMinutes());
-						lessonEnd.set(Calendar.SECOND, end.getSeconds());
-						
-						if(checkin.getCreateTime().before(lessonStart.getTime())){
-							vo.setCoachCheckedInStatus(CheckedInStatus.CHECKED);
-						}else if (checkin.getCreateTime().before(lessonEnd.getTime())) {
-							vo.setCoachCheckedInStatus(CheckedInStatus.LATE);
-						}else {
-							vo.setCoachCheckedInStatus(CheckedInStatus.PATCHED);
-						}
-					} catch (DataNotFoundException e) {
-						String message = "教师未签到，却已记录课时";
-						throw new BusinessDataLogicException(message);
-					}
-				else{
-					if(LessonStatus.UN_CHECKED ==lesson.getLessonStatus())
-						vo.setCoachCheckedInStatus(CheckedInStatus.NON_CHECKABLE);
-					else
-						vo.setCoachCheckedInStatus(CheckedInStatus.UN_CHECKED);
-				}
+				vo.setCoachCheckedInStatus(getCoachCheckedStatus(lesson));
 			}
 			return vo;
+		}
+
+		private CheckedInStatus getCoachCheckedStatus(LessonYzw lesson) {
+			if(null != lesson.getActualTeacher()){
+				try {
+					LessonCheckInYzw checkin = lessonCheckinService.findOneByProperties(
+							new String[]{"lesson.id","teacher"}, 
+							new Object[]{lesson.getId(),lesson.getActualTeacher().getId()});
+					
+					Date date = lesson.getLessonDate();
+					Time start = lesson.getStartTime();
+					Time end = lesson.getEndTime();
+					
+					Calendar lessonStart = Calendar.getInstance();
+					lessonStart.setTime(date);
+					lessonStart.set(Calendar.HOUR_OF_DAY, start.getHours());
+					lessonStart.set(Calendar.MINUTE,start.getMinutes());
+					lessonStart.set(Calendar.SECOND, start.getSeconds());
+					
+					Calendar lessonEnd = Calendar.getInstance();
+					lessonEnd.setTime(date);
+					lessonEnd.set(Calendar.HOUR_OF_DAY, end.getHours());
+					lessonEnd.set(Calendar.MINUTE, end.getMinutes());
+					lessonEnd.set(Calendar.SECOND, end.getSeconds());
+					
+					if(checkin.getCreateTime().before(lessonStart.getTime())){
+						return CheckedInStatus.CHECKED;
+					}else if (checkin.getCreateTime().before(lessonEnd.getTime())) {
+						return CheckedInStatus.LATE;
+					}else {
+						return CheckedInStatus.PATCHED;
+					}
+				} catch (DataNotFoundException e) {
+					String message = "教师未签到，却已记录课时";
+					throw new BusinessDataLogicException(message);
+				}
+			}else{
+				if(LessonStatus.UN_CHECKED ==lesson.getLessonStatus())
+					return CheckedInStatus.NON_CHECKABLE;
+				else
+					return CheckedInStatus.UN_CHECKED;
+			}
 		}
 		
 	}

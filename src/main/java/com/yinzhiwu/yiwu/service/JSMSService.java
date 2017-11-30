@@ -211,6 +211,7 @@ public class JSMSService {
 		ADD_NEW_CAPITAL_ACCOUNT(145907,JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		UNBIND_MOBILE_NUMBER(146193,JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		BIND_MOBILE_NUMBER(146194,JSMSTemplateType.VALIDATE, new String[]{"code"}),
+		GENERAL(146445,JSMSTemplateType.VALIDATE, new String[]{"code"}),
 		PAY_WITHDRAW(145602,JSMSTemplateType.NOTIFICATION, new String[]{"date","amount"} ),
 		DO_WITHDRAW(145601, JSMSTemplateType.NOTIFICATION, new String[]{"date", "amount"});
 		

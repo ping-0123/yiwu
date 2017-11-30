@@ -27,6 +27,7 @@ import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.PaymentMode;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
@@ -40,6 +41,7 @@ import com.yinzhiwu.yiwu.model.view.DistributerApiView;
 import com.yinzhiwu.yiwu.model.view.DistributerApiView.DistributerApiViewConverter;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
+import com.yinzhiwu.yiwu.service.CustomerYzwService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.JSMSService;
@@ -61,7 +63,8 @@ public class DistributerApiController extends BaseController {
 	@Autowired private FileService fileService;
 	@Autowired private OrderYzwService orderService;
 	@Autowired private JSMSService jsmsService;
-
+	@Autowired private CustomerYzwService customerService;
+	
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("birthDay");
@@ -280,7 +283,7 @@ public class DistributerApiController extends BaseController {
 	@PutMapping(value="/{id}/openId")
 	@ApiOperation("修改用户绑定的微信openId")
 	public YiwuJson<?> updateOpenId(@PathVariable(name="id") Integer id,
-			@ApiParam(value="微信openId")
+			@ApiParam(value="微信openId", required=true)
 			@RequestParam(name="openId") String openId)
 	{
 		try {
@@ -292,6 +295,37 @@ public class DistributerApiController extends BaseController {
 			distributerService.update(distributer);
 			return YiwuJson.createBySuccess();
 		}
+	}
+	
+	@PutMapping(value="/{id}/memberCard")
+	@ApiOperation("修改绑定的会员卡号，改变与customer的绑定关系")
+	public YiwuJson<?> updateMembercard(@PathVariable(name="id") Integer id,
+			@ApiParam(value="会员卡号", required=true) @RequestParam(name="memberCard") String memberCard)
+	{
+		Distributer distributer = UserContext.getDistributer();
+		if(!distributer.getBindChangable())
+			return YiwuJson.createByErrorMessage("不能再次修改绑定关系");
+		CustomerYzw customer;
+		try {
+			customer = customerService.findByMemberCard(memberCard);
+		} catch (DataNotFoundException e) {
+			return YiwuJson.createByErrorMessage(memberCard + " 会员卡号不存在");
+		}
+		
+		CustomerYzw oldCustomer = distributer.getCustomer();
+		if(null !=oldCustomer){
+			oldCustomer.setWeChat(null);
+			customerService.update(oldCustomer);
+		}
+		
+		distributer.setMemberCard(memberCard);
+		distributer.setCustomer(customer);
+		distributer.setBindChangable(false);
+		customer.setMobilePhone(distributer.getPhoneNo());
+		customer.setWeChat(distributer.getWechatNo());
+		distributerService.update(distributer);
+		
+		return YiwuJson.createBySuccess();
 	}
 	
 	@GetMapping("/{distributerId}/defaultStore")

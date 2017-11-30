@@ -225,4 +225,26 @@ public class RegisterLoginApiController extends BaseController {
 		
 		return YiwuJson.createBySuccess(StoreApiViewConverter.INSTANCE.fromPO(store));
 	}
+	
+	
+	@PostMapping(value="/bind/validate/memberCard")
+	@ApiOperation("修改绑定前验证会员卡号和客户姓名")
+	public YiwuJson<CustomerVO> validateMemberCardBeforeBinding(String memberCard,String name){
+		try {
+			distributerService.findByMemberCard(memberCard);
+			return YiwuJson.createByErrorMessage("该会员已注册");
+		} catch (DataNotFoundException e1) {
+			;
+		}
+		
+		try {
+			CustomerYzw customer =  customerService.findByMemberCard(memberCard);
+			if(name.equals(customer.getName()))
+				return YiwuJson.createBySuccess(CustomerVOConverter.INSTANCE.fromPO(customer));
+			else
+				return YiwuJson.createByErrorMessage("会员卡号和姓名不匹配");
+		} catch (DataNotFoundException e) {
+			return YiwuJson.createByErrorMessage("会员卡号无效");
+		}
+	}
 }

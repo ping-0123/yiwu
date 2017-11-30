@@ -70,6 +70,16 @@ public class EmployeeYzwDaoImpl extends BaseDaoImpl<EmployeeYzw,Integer> impleme
 		return super.findDataTableByProperty(parameter, propertyName, value);
 	}
 
+	@Override
+	public List<EmployeeYzw> findByNullNumber() {
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("FROM EmployeeYzw");
+		hql.append(" WHERE number is null or number = ''"); 
+		return getSession().createQuery(hql.toString(), EmployeeYzw.class)
+				.getResultList();
+	}
+
 
 	
 	

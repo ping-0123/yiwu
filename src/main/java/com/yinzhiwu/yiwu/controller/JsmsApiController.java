@@ -34,9 +34,9 @@ public class JsmsApiController extends BaseController{
 	public YiwuJson<?> sendSMSCode(
 			@ApiParam(value="有效的11位数手机号码")
 			@RequestParam(name="mobileNumber", required=true) String mobileNumber, 
-			@ApiParam(value="验证模板:REGISTER(注册), LOGIN(登录),WITHDRAW(提现操作), PAYDEPOSIT(支付定金),SET_DEFAULT_CAPITAL_ACCOUNT(设置默认帐号)"
+			@ApiParam(value="验证模板:GENERAL(通用),REGISTER(注册), LOGIN(登录),WITHDRAW(提现操作), PAYDEPOSIT(支付定金),SET_DEFAULT_CAPITAL_ACCOUNT(设置默认帐号)"
 					+ ",ADD_NEW_CAPITAL_ACCOUNT(添加新的提现帐号),UNBIND_MOBILE_NUMBER(帐号解绑手机号码), BIND_MOBILE_NUMBER(帐号绑定手机号码)")
-			@RequestParam(name="template", required=true) JSMSTemplate template) throws FormatException, JSMSException{
+			@RequestParam(name="template", required=false , defaultValue="GENERAL") JSMSTemplate template) throws FormatException, JSMSException{
 		
 		validateMobileNumber(mobileNumber);
 		jsmsService.sendSMSCode(mobileNumber, template);
@@ -49,9 +49,9 @@ public class JsmsApiController extends BaseController{
 			@ApiParam(value="有效的11位数手机号码")
 			@RequestParam(name="mobileNumber", required =true) 
 			String mobileNumber, 
-			@ApiParam(value="验证模板:REGISTER(注册), LOGIN(登录),WITHDRAW(提现操作), PAYDEPOSIT(支付定金),SET_DEFAULT_CAPITAL_ACCOUNT(设置默认帐号)"
+			@ApiParam(value="验证模板:GENERAL(通用),REGISTER(注册), LOGIN(登录),WITHDRAW(提现操作), PAYDEPOSIT(支付定金),SET_DEFAULT_CAPITAL_ACCOUNT(设置默认帐号)"
 					+ ",ADD_NEW_CAPITAL_ACCOUNT(添加新的提现帐号),UNBIND_MOBILE_NUMBER(帐号解绑手机号码), BIND_MOBILE_NUMBER(帐号绑定手机号码)")
-			@RequestParam(name="template", required =true) 
+			@RequestParam(name="template", required =false, defaultValue="GENERAL") 
 			JSMSTemplate template,
 			@ApiParam(value="code,手机接收到的验证码") @RequestParam(name="code",required=true) 
 			String code) throws JSMSException{
