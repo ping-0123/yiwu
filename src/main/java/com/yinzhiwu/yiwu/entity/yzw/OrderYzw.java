@@ -29,12 +29,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
-import com.yinzhiwu.yiwu.zhangkaitao.common.entity.DateIdGenerator;
 
 @JsonInclude(value= Include.NON_NULL)
 @Entity
 @Table(name = "vorder")
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)	
 public class OrderYzw extends BaseYzwEntity {
 
 	/**

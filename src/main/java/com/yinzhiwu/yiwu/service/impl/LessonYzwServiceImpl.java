@@ -8,9 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -131,11 +129,6 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		return oneDays;
 	}
 	
-	public static void main(String[] args) {
-		Calendar calendar = Calendar.getInstance();
-		System.err.println("current date is " + calendar.getTime());
-		System.err.println(calendar.get(Calendar.DAY_OF_WEEK));
-	}
 	
 	@Override
 	public YiwuJson<List<PrivateLessonApiView>> findPrivateLessonApiViewsByContracNo(String contractNo) {
@@ -214,13 +207,6 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		int currentCount = null==lesson.getCheckedInStudentCount()? 0: lesson.getCheckedInStudentCount();
 		lesson.setCheckedInStudentCount(++currentCount);
 		update(lesson);
-	}
-	
-	@Override
-//	@Transactional(value="transactionManager")
-	@Scheduled(fixedRate=99999999999l)
-	public void updateZeroLessons(){
-		lessonDao.updateZeroActualTeacher();
 	}
 	
 	@Override

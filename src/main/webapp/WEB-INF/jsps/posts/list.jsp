@@ -227,10 +227,11 @@
           
           function requestSavePostRoles(_postId,_roleIds){
         	  $.ajax({
-          		"type":"PUT",
+          		"type":"POST",
           		"url":_postId+ "/roles",
           		"data":{
           			"roleIds":_roleIds
+          			"_method":"PUT"
           		},
           		traditional: true,
           		"success":function(data){

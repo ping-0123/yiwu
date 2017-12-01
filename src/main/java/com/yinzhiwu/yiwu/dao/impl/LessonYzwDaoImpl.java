@@ -340,16 +340,16 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 	
 	@Override
 	@Transactional
-//	@Scheduled(fixedRate=10000)
+	@Scheduled(cron="0 20 1 * * ?")
 	public void updateZeroActualTeacher(){
 		StringBuilder hql = new StringBuilder();
-		hql.append("UPDATE LessonYzw set dueTeacher.id = null, dueTeacherName=null WHERE dueTeacher.id = 0");
+		hql.append("UPDATE LessonYzw set actualTeacher.id = null, actualTeacherName=null WHERE actualTeacher.id = 0");
 		getSession().createQuery(hql.toString()).executeUpdate();
 	}
 	
 	
 	@Transactional
-	@Scheduled(fixedRate=9999999l, initialDelay=10000)
+	@Scheduled(cron="0 10 1 * * ?")
 	public void updateCheckedinLessonsStatus(){
 		StringBuilder hql = new StringBuilder();
 		hql.append("UPDATE LessonYzw SET lessonStatus = :status");
@@ -358,7 +358,8 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		hql.append(" AND lessonStatus = :unchecked");
 		
 		getSession().createQuery(hql.toString())
-			.setParameter("current", CalendarUtil.getDayBegin(Calendar.getInstance()))
+			.setParameter("status", LessonStatus.FINISHED)
+			.setParameter("current", CalendarUtil.getDayBegin(Calendar.getInstance()).getTime())
 			.setParameter("unchecked", LessonStatus.UN_CHECKED)
 			.executeUpdate();
 		

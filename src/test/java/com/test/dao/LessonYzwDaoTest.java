@@ -64,4 +64,12 @@ public class LessonYzwDaoTest extends BaseSpringTest {
 	public void testUpdateBlankClassRoomId(){
 //		lessonYzwDao.updateBlankClassRoomId();
 	}
+	
+	
+	@Test
+	public void testUpdateZeroActualTeacher(){
+		lessonYzwDao.updateZeroActualTeacher();
+	}
 }
+
+

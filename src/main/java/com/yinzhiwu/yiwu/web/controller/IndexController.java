@@ -42,6 +42,7 @@ public class IndexController extends BaseController {
        List<Resource> menus = resourceService.findRootMenus();
         logger.info("menus size is " + menus.size() );
         model.addAttribute("menus", menus);
+        model.addAttribute("employee", user.getEmployee());
         return "index";
     }
     

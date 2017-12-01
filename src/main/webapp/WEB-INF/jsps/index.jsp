@@ -47,7 +47,7 @@
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2><shiro:principal/></h2>
+                <h2>${employee.name }</h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
