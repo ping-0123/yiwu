@@ -3,6 +3,11 @@ package com.yinzhiwu.yiwu.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.jpa.domain.Specification;
+
 import com.yinzhiwu.yiwu.common.entity.search.Searchable;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
@@ -23,7 +28,13 @@ public interface IBaseDao<T, PK extends Serializable> {
 	//查
 	public T get(PK id) throws DataNotFoundException;
 	public List<T> findAll();
-	public List<T> findAll(Searchable<T> search);
+	public List<T> findAll(List<Order> orders);
+	public List<T> findAll(Order order);
+	public List<T> findAll(Order...orders);
+	public Page<T> findAll(Pageable page);
+	public Page<T> findAll(Pageable page, Order...orders);
+ 	public List<T> findAll(Specification<T> spec);
+	public Page<T> findAll(Searchable<T> search);
 	/**
 	 * 如果T中的某一成员变量的class为@Entity注解, 则查询时忽略该属性， 即查询语句没有表的关联
 	 * 
@@ -38,7 +49,9 @@ public interface IBaseDao<T, PK extends Serializable> {
 	public T  findOneByProperties(String[] properties, Object[] values) throws DataNotFoundException;
 	public T  findOneByProperty(String property, Object value) throws DataNotFoundException;
 	
-	
+	public long count();
+	public long count(Searchable<T> search);
+	public long count(Specification<T> spec);
 	public Long findCount();
 	public Long findCountByProperties(String[] properties, Object[] values);
 	public Long findCountByPropertiesNullValueIsAll(String[] properties, Object[] values);
@@ -102,4 +115,5 @@ public interface IBaseDao<T, PK extends Serializable> {
 	public DataTableBean<T> findDataTable(QueryParameter parameter);
 	public DataTableBean<T> findDataTableByProperty(QueryParameter parameter, String propertyName, Object value);
 	public DataTableBean<T> findDataTableByProperties(QueryParameter parameter, String[] properties, Object[] values);
+	
 }
