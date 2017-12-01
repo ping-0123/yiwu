@@ -99,7 +99,6 @@ public class EmployeeYzwServiceImpl extends BaseServiceImpl<EmployeeYzw, Integer
 	
 	
 	@Transactional(propagation=Propagation.REQUIRED)
-//	@Scheduled(initialDelay=10000, fixedRate=9999999999l)
 	private void updateNumberOfOldEmployee(EmployeeYzw emp){
 		Assert.notNull(emp);
 		

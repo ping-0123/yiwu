@@ -41,4 +41,6 @@ public interface LessonYzwService extends IBaseService<LessonYzw, Integer> {
 
 	com.yinzhiwu.yiwu.entity.yzw.LessonYzw.CheckedInStatus getCoachCheckinStatus(LessonYzw lesson);
 
+	void updateZeroLessons();
+
 }

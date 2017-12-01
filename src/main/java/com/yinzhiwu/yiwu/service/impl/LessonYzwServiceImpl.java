@@ -8,7 +8,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -214,6 +216,12 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		update(lesson);
 	}
 	
+	@Override
+//	@Transactional(value="transactionManager")
+	@Scheduled(fixedRate=99999999999l)
+	public void updateZeroLessons(){
+		lessonDao.updateZeroActualTeacher();
+	}
 	
 	@Override
 	public List<LessonYzw> findOpenedLessonsOfYesterday() {

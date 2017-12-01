@@ -155,7 +155,7 @@ public class LessonForWeeklyVO {
 			if(null != lesson.getActualTeacher()){
 				try {
 					LessonCheckInYzw checkin = lessonCheckinService.findOneByProperties(
-							new String[]{"lesson.id","teacher"}, 
+							new String[]{"lesson.id","teacher.id"}, 
 							new Object[]{lesson.getId(),lesson.getActualTeacher().getId()});
 					
 					Date date = lesson.getLessonDate();
@@ -182,7 +182,8 @@ public class LessonForWeeklyVO {
 						return CheckedInStatus.PATCHED;
 					}
 				} catch (DataNotFoundException e) {
-					String message = "教师未签到，却已记录课时";
+					String message = "课程#" + lesson.getId()  + "数据异常 教师未签到，却已记录课时";
+					logger.error(message);
 					throw new BusinessDataLogicException(message);
 				}
 			}else{

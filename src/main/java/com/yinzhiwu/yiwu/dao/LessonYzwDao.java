@@ -42,4 +42,6 @@ public interface LessonYzwDao extends IBaseDao<LessonYzw, Integer> {
 
 	List<LessonYzw> findOpenedLessonsOfYesterday();
 
+	void updateZeroActualTeacher();
+
 }

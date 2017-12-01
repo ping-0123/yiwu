@@ -11,11 +11,14 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.query.Query;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
@@ -334,4 +337,30 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 				.getResultList();
 	}
 
+	
+	@Override
+	@Transactional
+//	@Scheduled(fixedRate=10000)
+	public void updateZeroActualTeacher(){
+		StringBuilder hql = new StringBuilder();
+		hql.append("UPDATE LessonYzw set dueTeacher.id = null, dueTeacherName=null WHERE dueTeacher.id = 0");
+		getSession().createQuery(hql.toString()).executeUpdate();
+	}
+	
+	
+	@Transactional
+	@Scheduled(fixedRate=9999999l, initialDelay=10000)
+	public void updateCheckedinLessonsStatus(){
+		StringBuilder hql = new StringBuilder();
+		hql.append("UPDATE LessonYzw SET lessonStatus = :status");
+		hql.append(" WHERE lessonDate < :current");
+		hql.append(" AND dueTeacher.id IS NOT NULL");
+		hql.append(" AND lessonStatus = :unchecked");
+		
+		getSession().createQuery(hql.toString())
+			.setParameter("current", CalendarUtil.getDayBegin(Calendar.getInstance()))
+			.setParameter("unchecked", LessonStatus.UN_CHECKED)
+			.executeUpdate();
+		
+	}
 }

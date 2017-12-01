@@ -29,7 +29,7 @@ public class BaseController {
 	@ExceptionHandler
 	@ResponseBody
 	public YiwuJson handlerException(HttpServletRequest request,HttpServletResponse response, Exception e){
-		logger.error(e.getMessage(),e);
+		logger.info(e.getMessage(),e);
 		return YiwuJson.createByErrorCodeMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getLocalizedMessage());
 	}
 }
