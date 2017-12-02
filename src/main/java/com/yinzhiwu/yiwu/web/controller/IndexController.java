@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,8 @@ import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.sys.Resource;
 import com.yinzhiwu.yiwu.entity.sys.User;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.service.FileService;
 import com.yinzhiwu.yiwu.service.ResourceService;
 import com.yinzhiwu.yiwu.service.UserService;
 
@@ -27,22 +30,25 @@ import com.yinzhiwu.yiwu.service.UserService;
 @Controller
 public class IndexController extends BaseController {
 
-    @Autowired
-    private ResourceService resourceService;
-    @Autowired
-    private UserService userService;
+    @Autowired private ResourceService resourceService;
+//    @Autowired private UserService userService;
+    @Qualifier("qiniuServiceImpl")
+    @Autowired private FileService fileService;
     
 
     @RequestMapping(value="/system/index", method={RequestMethod.GET})
     public String index(Model model) {
     	User user = UserContext.getUser();
-        Set<String> permissions = userService.findPermissions(user);
-        logger.info("permissions is " + permissions);
-//        List<Resource> menus = resourceService.findMenus(permissions);
-       List<Resource> menus = resourceService.findRootMenus();
-        logger.info("menus size is " + menus.size() );
+//        Set<String> permissions = userService.findPermissions(user.getUsername());
+
+        List<Resource> menus = resourceService.findRootMenus();
         model.addAttribute("menus", menus);
-        model.addAttribute("employee", user.getEmployee());
+        
+        EmployeeYzw employee = user.getEmployee();
+        if(null != employee){
+	        model.addAttribute("employee", employee);
+	        model.addAttribute("headImageUrl", fileService.generateFileUrl(employee.getPortraitUri()));
+        }
         return "index";
     }
     

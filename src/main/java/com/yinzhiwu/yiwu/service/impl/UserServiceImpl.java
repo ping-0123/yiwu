@@ -34,8 +34,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements U
 	@Autowired private RoleService roleService;
 	@Autowired private PasswordHelper passwordHelper;
 
-	@Override
-	public Set<Role> findObjectRoles(User user){
+	private Set<Role> findObjectRoles(User user){
 		Assert.notNull(user);
 		Set<Role> roles = new HashSet<>();
 		if("Admin".equals(user.getUsername())){
@@ -67,8 +66,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements U
 		}
 	}
 	
-	@Override
-	public Set<String> findRoles(User user){
+	protected Set<String> findRoles(User user){
 		Assert.notNull(user);
 		
 		Set<String> roles = new HashSet<>();
@@ -102,8 +100,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements U
 	}
 
 
-	@Override
-	public Set<String> findPermissions(User user) {
+	protected Set<String> findPermissions(User user) {
 		Assert.notNull(user);
 		
 		Set<String> permissions = new HashSet<>();

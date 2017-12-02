@@ -35,6 +35,8 @@ public interface IBaseDao<T, PK extends Serializable> {
 	public Page<T> findAll(Pageable page, Order...orders);
  	public List<T> findAll(Specification<T> spec);
 	public Page<T> findAll(Searchable<T> search);
+	public T findOne(Specification<T> spec);
+	public T findOne(Searchable<T> search);
 	/**
 	 * 如果T中的某一成员变量的class为@Entity注解, 则查询时忽略该属性， 即查询语句没有表的关联
 	 * 
@@ -76,9 +78,9 @@ public interface IBaseDao<T, PK extends Serializable> {
 	public void saveOrUpdate(T entity);
 
 	//删
-	void delete(T entity);
-
-	void delete(PK id);
+	public void delete(T entity);
+	public void delete(PK id);
+	public void delete(Specification<T> spec);
 	public void deleteLogic(T entity);
 	public void deleteLogic(PK id);
 	

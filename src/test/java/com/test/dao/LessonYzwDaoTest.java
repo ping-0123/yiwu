@@ -1,10 +1,15 @@
 package com.test.dao;
 
+import java.util.List;
+
+import javax.enterprise.inject.New;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import com.test.BaseSpringTest;
+import com.yinzhiwu.yiwu.common.entity.search.SearchOperator;
 import com.yinzhiwu.yiwu.common.entity.search.SearchRequest;
 import com.yinzhiwu.yiwu.common.entity.search.Searchable;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
@@ -76,7 +81,9 @@ public class LessonYzwDaoTest extends BaseSpringTest {
 	@Test
 	public void testFindAll(){
 		Searchable<LessonYzw> search = new SearchRequest<>();
-		search.a
+		search.and("id", SearchOperator.in, new Integer[]{1208,1209,1210});
+		List<LessonYzw> content = lessonYzwDao.findAll(search).getContent();
+		System.out.println("content size is " + content.size());
 	}
 }
 

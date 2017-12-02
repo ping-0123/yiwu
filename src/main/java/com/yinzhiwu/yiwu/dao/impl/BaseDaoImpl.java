@@ -20,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -255,6 +256,35 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 
 	
+	
+	@Override
+	public T findOne(Specification<T> spec) {
+		Searchable<T> search = new com.yinzhiwu.yiwu.common.entity.search.SearchRequest<>();
+		search.and(spec);
+		return findOne(search);
+	}
+
+	@Override
+	public T findOne(Searchable<T> search) {
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
+		Root<T> root = criteria.from(entityClass);
+		if(null != search){
+			Specification<T> spec = search.getSpecification();
+			if(null != spec)
+				criteria.where(spec.toPredicate(root, criteria, builder));
+			/** add orders **/
+			List<javax.persistence.criteria.Order> orders = new ArrayList<>();
+			for (Sort.Order order : search.getOrders()) {
+				orders.add(new OrderImpl(root.get(order.getProperty()), 
+						Direction.DESC == order.getDirection()?false:true));
+			}
+		}
+		
+		List<T> list = getSession().createQuery(criteria).setMaxResults(1).getResultList();
+		return 0==list.size()? null: list.get(0);
+	}
+
 	@Override
 	public long count(Searchable<T> search){
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
@@ -348,6 +378,18 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 
 	
 	
+	@Override
+	public void delete(Specification<T> spec) {
+		if(null == spec)
+			return;
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaDelete<T> criteria = builder.createCriteriaDelete(entityClass);
+		Root<T> root = criteria.from(entityClass);
+		criteria.where(spec.toPredicate(root, null, builder));
+		
+		getSession().createQuery(criteria).executeUpdate();
+	}
+
 	@Override
 	public void deleteLogic(T entity) {
 		Assert.notNull(entity, "id is required");

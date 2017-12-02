@@ -104,6 +104,8 @@
 		</property>
 	</bean>
 
+	<!-- 开启@Transaction 注解 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 	<!-- 配置Hibernate 的事物管理器 -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
@@ -146,6 +148,4 @@
 		<aop:advisor pointcut-ref="transactionPointcut"
 			advice-ref="transactionAdvice" />
 	</aop:config>
-			<!-- 启动@Transaction -->
-	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 </beans>

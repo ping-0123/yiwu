@@ -5,7 +5,10 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 
+import com.yinzhiwu.yiwu.common.entity.search.Searchable;
 import com.yinzhiwu.yiwu.dao.IBaseDao;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
@@ -44,6 +47,18 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	@Override
 	public void saveOrUpdate(T entity) {
 		baseDao.saveOrUpdate(entity);
+	}
+
+	
+	
+	@Override
+	public Page<T> findAll(Searchable<T> seach) {
+		return baseDao.findAll(seach);
+	}
+
+	@Override
+	public List<T> findAll(Specification<T> spec) {
+		return baseDao.findAll(spec);
 	}
 
 	@Override
@@ -85,7 +100,25 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 		return baseDao.findOneByProperty(property, value);
 	}
 
-	
+	@Override
+	public T findOne(Specification<T> spec) {
+		return baseDao.findOne(spec);
+	}
+
+	@Override
+	public T findOne(Searchable<T> search) {
+		return baseDao.findOne(search);
+	}
+
+	@Override
+	public long count() {
+		return baseDao.count();
+	}
+
+	@Override
+	public long count(Searchable<T> search) {
+		return baseDao.count(search);
+	}
 
 	@Override
 	public Long findCount() {
@@ -123,7 +156,11 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements IBa
 	}
 
 	
-	
+	@Override
+	public void delete(Specification<T> spec) {
+		baseDao.delete(spec);
+	}
+
 	@Override
 	public void deleteLogic(T entity) {
 		baseDao.deleteLogic(entity);

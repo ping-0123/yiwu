@@ -43,11 +43,16 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="../backend/images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="${headImageUrl} " alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <span>Welcome,</span>
-                <h2>${employee.name }</h2>
+                <span>Welcome</span>
+                <c:if test="${empty employee }" >
+	                <h2><shiro:principal></shiro:principal></h2>
+                </c:if>
+                <c:if test="${not empty employee }">
+                	<h2>${employee.name }</h2>
+                </c:if>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -59,12 +64,6 @@
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                   <ul class="nav side-menu">
-                  <!-- <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="https://www.baidu.com" target = "content">百度</a></li>
-                      <li><a href="https://www.taobao.com" target = "content">淘宝</a></li>
-                    </ul>
-                  </li> -->
                   
                   <c:forEach items="${menus}" var="m">
                   	 <shiro:hasPermission name="${m.permission}">
@@ -113,7 +112,7 @@
               <div class="nav toggle">
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
-
+			<!--  
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -198,6 +197,8 @@
                   </ul>
                 </li>
               </ul>
+          
+            -->
             </nav>
           </div>
         </div>

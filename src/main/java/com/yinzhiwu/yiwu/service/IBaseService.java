@@ -3,8 +3,11 @@ package com.yinzhiwu.yiwu.service;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yinzhiwu.yiwu.common.entity.search.Searchable;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
@@ -19,7 +22,7 @@ public interface IBaseService<T, PK extends Serializable> {
 	public void delete(T entit);
 	@Transactional
 	public void delete(PK id);
-	@Transactional
+	public void delete(Specification<T> spec);
 	public void deleteLogic(T entity);
 	@Transactional
 	public void deleteLogic(PK id);
@@ -56,6 +59,15 @@ public interface IBaseService<T, PK extends Serializable> {
 	public T get(PK id) throws DataNotFoundException;
 	
 	public List<T> findAll() ;
+	public Page<T> findAll(Searchable<T> seach);
+	public List<T> findAll(Specification<T> spec);
+	public T findOne(Specification<T> spec);
+	/**
+	 * 通过排序，选择满足条件的记录中理想的一个
+	 * @param search
+	 * @return
+	 */
+	public T findOne(Searchable<T> search);
 	public List<T> findByExample(T entity);
 	public List<T>  findByProperties(String[] properteis, Object[] values);
 	public List<T>  findByPropertiesNullValueIgnore(String[] properties, Object[] values);
@@ -63,11 +75,17 @@ public interface IBaseService<T, PK extends Serializable> {
 	public T  findOneByProperties(String[] properties, Object[] values) throws DataNotFoundException;
 	public T  findOneByProperty(String property, Object value) throws DataNotFoundException;
 	
-	
+	public long count();
+	public long count(Searchable<T> search);
+	@Deprecated
 	public Long findCount();
+	@Deprecated
 	public Long findCountByProperties(String[] properties, Object[] values);
+	@Deprecated
 	public Long findCountByPropertiesNullValueIsAll(String[] properties, Object[] values);
+	@Deprecated
 	public Long findCountByProperty(String property, Object value);
+	@Deprecated
 	public Long findCountByPropertyNullValueIsAll(String property, Object value);
 	
 	

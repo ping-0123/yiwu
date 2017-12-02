@@ -230,7 +230,7 @@
           		"type":"POST",
           		"url":_postId+ "/roles",
           		"data":{
-          			"roleIds":_roleIds
+          			"roleIds":_roleIds  ,
           			"_method":"PUT"
           		},
           		traditional: true,
