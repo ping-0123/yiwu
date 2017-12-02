@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import com.test.BaseSpringTest;
+import com.yinzhiwu.yiwu.common.entity.search.SearchRequest;
+import com.yinzhiwu.yiwu.common.entity.search.Searchable;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
@@ -69,6 +71,11 @@ public class LessonYzwDaoTest extends BaseSpringTest {
 	@Test
 	public void testUpdateZeroActualTeacher(){
 		lessonYzwDao.updateZeroActualTeacher();
+	}
+	
+	@Test
+	public void testFindAll(){
+		Searchable<LessonYzw> search = new SearchRequest<>();
 	}
 }
 
