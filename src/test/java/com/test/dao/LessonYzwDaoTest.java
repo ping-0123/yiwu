@@ -76,6 +76,7 @@ public class LessonYzwDaoTest extends BaseSpringTest {
 	@Test
 	public void testFindAll(){
 		Searchable<LessonYzw> search = new SearchRequest<>();
+		search.a
 	}
 }
 
