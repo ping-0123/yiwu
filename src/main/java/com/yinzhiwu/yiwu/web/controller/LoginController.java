@@ -37,10 +37,5 @@ public class LoginController extends BaseController {
         return "login";
     }
     
-//    @PostMapping(value="/login")
-//    public String loginSuccess(HttpServletRequest req){
-//  
-//    	return "index";
-//    }
-
+    
 }

@@ -47,13 +47,21 @@
               </div>
               <div class="profile_info">
                 <span>Welcome</span>
-                <c:if test="${empty employee }" >
-	                <h2><shiro:principal></shiro:principal></h2>
-                </c:if>
-                <c:if test="${not empty employee }">
-                	<h2>${employee.name }</h2>
-                </c:if>
-              </div>
+                
+                <div class="dropdown">
+	                <c:if test="${empty employee }" >
+		                <h2 class="dropdown-toggle" data-toggle="dropdown"><shiro:principal /></h2>
+	                </c:if>
+	                <c:if test="${not empty employee }">
+	                	<h2 class="dropdown-toggle" data-toggle="dropdown">${employee.name }</h2>
+	                </c:if>
+	                
+	                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+					      <li role="presentation"><a role="menuitem" tabindex="-1" href="changePassword" data-toggle="modal" data-target=".model-change-password">修改秘密</a></li>
+					      <li role="presentation"><a role="menuitem" tabindex="-1" href="logout">安全退出</a></li>
+				    </ul>
+				  </div> <!-- end dropdown -->
+              </div> <!-- end profile_info -->
             </div>
             <!-- /menu profile quick info -->
 
@@ -218,7 +226,17 @@
 				</div>
 			</div>
 		</div>
-		<!-- index modal -->     
+		<!-- index modal -->  
+		
+		<!-- change password model -->  
+		<div class="modal fade bs-example-modal-lg model-change-password" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					
+				</div>
+			</div>
+		</div> <!-- end change password model -->
+		 
       </div>
     </div>
 	

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.sys.Role;
 import com.yinzhiwu.yiwu.entity.sys.User;
@@ -49,7 +50,7 @@ public class UserController extends BaseController {
 
 	
     @Autowired
-    private UserService service;
+    private UserService userService;
     @Autowired private RoleService roleService;
 
     @GetMapping
@@ -70,7 +71,7 @@ public class UserController extends BaseController {
     
     @GetMapping(value="/{id}/form")
     public String showUpdateForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
-    	model.addAttribute("user", service.get(id));
+    	model.addAttribute("user", userService.get(id));
     	return "users/updateForm";
     }
 
@@ -79,7 +80,7 @@ public class UserController extends BaseController {
     public YiwuJson<?> get(@PathVariable(name="id") Integer id){
     	
     	try {
-    		return YiwuJson.createBySuccess(service.get(id));
+    		return YiwuJson.createBySuccess(userService.get(id));
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return YiwuJson.createByErrorMessage(e.getMessage());
@@ -90,7 +91,7 @@ public class UserController extends BaseController {
     @GetMapping(value="/{id}/roleZtree")
     public YiwuJson<?> getRoleZtree(@PathVariable(name="id") Integer id){
     	try {
-			User user = service.get(id);
+			User user = userService.get(id);
 			Set<Role> hasRoles = user.getRoles();
 			List<Role> allRoles = roleService.findAll();
 			List<RoleZtreeApiView> view = new ArrayList<>();
@@ -117,7 +118,7 @@ public class UserController extends BaseController {
     	}
     	
     	try {
-    		service.save(user);
+    		userService.save(user);
     		return YiwuJson.createBySuccess(user);
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
@@ -135,10 +136,10 @@ public class UserController extends BaseController {
     	}
     	
         try {
-        	User source = service.get(id);
+        	User source = userService.get(id);
         	if("Admin".equals(source.getUsername()) && DataStatus.NORMAL != user.getDataStatus())
         		throw new UnsupportedOperationException("超级管理员账号不能被禁用");
-			service.modify(source, user);
+			userService.modify(source, user);
 			return YiwuJson.createBySuccess();
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			logger.error(e.getMessage(),e);
@@ -147,18 +148,27 @@ public class UserController extends BaseController {
         
     }
 
+    @PutMapping(value="/{username}/password")
+    @ResponseBody
+    public YiwuJson<?> updatePassword(@PathVariable(name="username") String username, String password)
+    {
+    	userService.modifyPassword(UserContext.getUser().getId(), password);
+    	
+    	return YiwuJson.createBySuccessMessage("修改密码成功");
+    }
+    
     @PutMapping(value="/{id}/roles")
     @ResponseBody
     public YiwuJson<?> updateUserRoles(@PathVariable(name="id") Integer id, Integer[] roleIds){
     	try {
-			User user = service.get(id);
+			User user = userService.get(id);
 			Set<com.yinzhiwu.yiwu.entity.sys.Role> roles = new HashSet<>();
 			if(roleIds!=null && roleIds.length>0)
 				for (Integer roleId : roleIds) {
 					roles.add(roleService.get(roleId));
 				}
 			user.setRoles(roles);
-			service.update(user);
+			userService.update(user);
 			
 			return YiwuJson.createBySuccess();
 		} catch (Exception e) {
@@ -172,17 +182,18 @@ public class UserController extends BaseController {
     public YiwuJson<?> delete(@PathVariable(name="id") Integer id) {
     	
     	try {
-    		User user = service.get(id);
+    		User user = userService.get(id);
     		if("Admin".equals(user.getUsername()))
     			throw new UnsupportedOperationException("不能删除超级管理员帐号");
-    		service.delete(user);
+    		userService.delete(user);
     		return YiwuJson.createBySuccess();
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return YiwuJson.createByErrorMessage(e.getMessage());
 		}
     }
-
+    
+    
 	@PostMapping(value="/datatable")
 	@ResponseBody
 	public DataTableBean<?> findDatatable(HttpServletRequest request){
@@ -190,7 +201,7 @@ public class UserController extends BaseController {
 		try {
 			QueryParameter parameter = (QueryParameter) ServletRequestUtils.parseParameter(request, QueryParameter.class);
 			ServletRequestUtils.transferQueryParamter(parameter, UserVO.class);
-			DataTableBean<User> dtb =  service.findDataTable(parameter);
+			DataTableBean<User> dtb =  userService.findDataTable(parameter);
 			List<User> users = (List<User>) dtb.getData();
 			List<UserVO> vos = new ArrayList<>();
 			for (User user : users) {

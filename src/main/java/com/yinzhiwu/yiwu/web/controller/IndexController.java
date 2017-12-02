@@ -1,13 +1,13 @@
 package com.yinzhiwu.yiwu.web.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -31,7 +31,7 @@ import com.yinzhiwu.yiwu.service.UserService;
 public class IndexController extends BaseController {
 
     @Autowired private ResourceService resourceService;
-//    @Autowired private UserService userService;
+    @Autowired private UserService userService;
     @Qualifier("qiniuServiceImpl")
     @Autowired private FileService fileService;
     
@@ -68,5 +68,9 @@ public class IndexController extends BaseController {
         return "welcome";
     }
 
-
+    @GetMapping("/system/changePassword")
+    public String showChangePasswordForm(){
+    	return "changePassword";
+    }
+    
 }

@@ -305,13 +305,6 @@
 						}
 					},
 					{
-						"title" : "状态",
-						"data" : "dataStatus",
-						"render" : function(data, type, row, meta) {
-							return translateDataStatus(data);
-						}
-					},
-					{
 						"data" : "createTime",
 						"title" : "操作",
 						"render" : function(data, type, row, meta) {
