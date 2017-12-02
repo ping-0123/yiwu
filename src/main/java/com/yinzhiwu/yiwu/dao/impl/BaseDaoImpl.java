@@ -28,6 +28,13 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.hibernate.query.criteria.internal.OrderImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -173,19 +180,125 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	}
 
 	@Override
-	public List<T> findAll(Searchable<T> search){
+	public Page<T> findAll(Searchable<T> search){
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
 		Root<T> root = criteria.from(entityClass);
-		criteria.where(search.getSpecification().toPredicate(root, criteria, builder));
-		criteria.orderBy(search.getOrders());
 		
-		return getSession().createQuery(criteria)
-				.setFirstResult(search.getPage().getOffset())
-				.setMaxResults(search.getPage().getPageSize())
-				.getResultList();
+		if(null != search.getSpecification())
+			criteria.where(search.getSpecification().toPredicate(root, criteria, builder));
+		
+		List<javax.persistence.criteria.Order> orders = new ArrayList<>();
+		for (Sort.Order order : search.getOrders()) {
+			orders.add(new OrderImpl(root.get(order.getProperty()), 
+					Direction.DESC == order.getDirection()?false:true));
+		}
+		criteria.orderBy(orders);
+		
+		if(null != search.getPageable()){
+			return new PageImpl<>(getSession().createQuery(criteria)
+					.setFirstResult(search.getPageable().getOffset())
+					.setMaxResults(search.getPageable().getPageSize())
+					.getResultList(),
+					search.getPageable(), 
+					count(search));
+		}else{
+			return new PageImpl<>(getSession().createQuery(criteria).getResultList());
+		}
 	}
 	
+	
+	
+	@Override
+	public List<T> findAll(List<org.springframework.data.domain.Sort.Order> ords) {
+		Searchable<T> search = new com.yinzhiwu.yiwu.common.entity.search.SearchRequest<>();
+		return findAll(search.addOrders(ords)).getContent();
+	}
+
+	@Override
+	public List<T> findAll(org.springframework.data.domain.Sort.Order order) {
+		Searchable<T> search = new com.yinzhiwu.yiwu.common.entity.search.SearchRequest<>();
+		return findAll(search.addOrder(order)).getContent();
+	}
+
+	@Override
+	public List<T> findAll(org.springframework.data.domain.Sort.Order... ords) {
+		Searchable<T> search = new com.yinzhiwu.yiwu.common.entity.search.SearchRequest<>();
+		return findAll(search.addOrders(ords)).getContent();
+	}
+
+	@Override
+	public Page<T> findAll(Pageable page) {
+		Searchable<T> search = new com.yinzhiwu.yiwu.common.entity.search.SearchRequest<>();
+		return findAll(search.setPageable(page));
+	}
+	
+	
+
+	@Override
+	public Page<T> findAll(Pageable page, org.springframework.data.domain.Sort.Order... orders) {
+		Searchable<T> search = new com.yinzhiwu.yiwu.common.entity.search.SearchRequest<>();
+		return findAll(search.setPageable(page).addOrders(orders));
+	}
+
+	@Override
+	public List<T> findAll(Specification<T> spec) {
+		if(null == spec)
+			return findAll();
+		
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
+		Root<T> root = criteria.from(entityClass);
+		criteria.where(spec.toPredicate(root, criteria, builder));
+		
+		return getSession().createQuery(criteria).getResultList();
+	}
+
+	
+	@Override
+	public long count(Searchable<T> search){
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		Root<T> root = criteria.from(entityClass);
+		
+		if(null != search.getSpecification())
+			criteria.where(search.getSpecification().toPredicate(root, criteria, builder));
+		
+		if(criteria.isDistinct()){
+			criteria.select(builder.countDistinct(root));
+		}else {
+			criteria.select(builder.count(root));
+		}
+		
+		return getSession().createQuery(criteria).getSingleResult();
+	}
+	
+	@Override
+	public long count(){
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		Root<T> root = criteria.from(entityClass);
+		criteria.select(builder.count(root));
+		
+		return getSession().createQuery(criteria).getSingleResult();
+	}
+	
+	
+	
+	@Override
+	public long count(Specification<T> spec) {
+		if(null == spec)
+			return count();
+		
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		Root<T> root = criteria.from(entityClass);
+		criteria.select(builder.count(root));
+		criteria.where(spec.toPredicate(root, criteria, builder));
+		
+		return getSession().createQuery(criteria).getSingleResult();
+	}
+
 	@Override
 	public PageBean<T> findPageOfAll(int pageNo, int pageSize) {
 			
