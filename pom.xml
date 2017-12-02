@@ -32,6 +32,12 @@
 			</activation>
 		</profile>
 		<profile>
+			<id>local</id>
+			<properties>
+				<environment>local</environment>
+			</properties>
+		</profile>
+		<profile>
 			<id>test</id>
 			<properties>
 				<environment>test</environment>
@@ -340,7 +346,7 @@
 				<directory>src/main/resources</directory>
 				<excludes>
 					<exclude>environment/development/**</exclude>
-					<exclude>environment/test/**</exclude>
+					<exclude>environment/**</exclude>
 					<exclude>environment/production/**</exclude>
 					<exclude>dbscripts/**</exclude>
 					<exclude>examples/*</exclude>
