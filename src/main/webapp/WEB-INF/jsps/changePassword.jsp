@@ -36,13 +36,13 @@
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">新密码 <span class="required">*</span></label>
 					<div class="col-md-9 col-sm-9 col-xs-12">
-						<input name="newPassword" type="password" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
+						<input name="password" type="password" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
 					</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">确认新密码 <span class="required">*</span></label>
 					<div class="col-md-9 col-sm-9 col-xs-12">
-						<input name="password" type="password" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
+						<input name="confirmPassword" type="password" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" required="required" type="text">
 					</div>
 			</div>
 			
@@ -62,17 +62,64 @@
 <script src="../assets/bootstrap-validator/js/bootstrapValidator.min.js" type="text/javascript"></script>
 <script src="../backend/main.js" type="text/javascript"></script>
 <script type="text/javascript">
-	$('#changePassword').submit(function(){
-		$.ajax({
-			url: $(this).attr("action"),
-			type: $(this).attr("method"),
-			data: $(this).serialize(),
-			success:function(data){
-				window.history.back(-1);
-			}
+	$(document).ready(function(){
+		$('#changePassword').bootstrapValidator({
+			message: 'This value is not valid',
+//	        live: 'disabled',
+	        feedbackIcons: {
+	            valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        fields:{
+	        	password:{
+	        		validators:{
+	        			different:{
+	        				field: 'oldPassword',
+	                        message: '新密码不能和原始密码相同'
+	        			},
+	        			stringLength:{
+	        				min:6,
+	        				max:30
+	        			}
+	        		}
+	        	},
+	        	confirmPassword:{
+	        		validators:{
+	        			notEmpty:{},
+	        			identical:{
+	        				field: 'password',
+	                        message: '两次输入的密码不一致'
+	        			}
+	        		}
+	        	}
+
+
+	        }
+		}).on('success.form.bv', function(e) {
+			// Prevent form submission
+			e.preventDefault();
+
+			// Get the form instance
+			var $form = $(e.target);
+
+			// Use Ajax to submit form data
+			$.ajax({
+				url: $form.attr('action'),
+				type: $form.attr('method'),
+				data: $form.serialize(),
+				dataType: 'json',
+				success: function(data) {
+					if(data.result) {
+						flashUpdateSuccessModal();
+					} else {
+						showUpdateFailureModal(data.msg);
+					}
+				}
+			});
 		});
-		return false;
 	});
+	
 </script>
 </body>
 </html>

@@ -26,7 +26,6 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 
 	YiwuJson<OrderApiView> findById(String id);
 
-
 	String save(OrderSaveDto order) throws Exception;
 
 	PageBean<OrderDto> findPageByCustomer(int customerId, boolean isPayed, int pageNo, int pageSize);
@@ -56,4 +55,5 @@ public interface OrderYzwService extends IBaseService<OrderYzw, String> {
 
 	Contract findEnableInteractiveContractByLessonAndDistributer(LessonYzw lesson, Distributer distributer) throws DataNotFoundException;
 
+	
 }

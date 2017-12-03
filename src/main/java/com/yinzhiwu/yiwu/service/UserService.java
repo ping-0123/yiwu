@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.yinzhiwu.yiwu.entity.sys.Role;
 import com.yinzhiwu.yiwu.entity.sys.User;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 public interface UserService extends IBaseService<User, Integer>{
@@ -16,6 +17,7 @@ public interface UserService extends IBaseService<User, Integer>{
 	User findByUsername(String username) throws DataNotFoundException;
 	
 	void modifyPassword(Integer userId, String newPasswords);
+	EmployeeYzw findEmployeeByUserId(Integer id);
 
 
 }

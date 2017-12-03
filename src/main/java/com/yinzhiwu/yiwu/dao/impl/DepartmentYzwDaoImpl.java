@@ -148,8 +148,8 @@ public class DepartmentYzwDaoImpl extends BaseDaoImpl<DepartmentYzw, Integer> im
 	}
 
 	@Override
-	public List<DepartmentYzw> findByType(OrgnizationType store) {
-		return findByProperty("type", OrgnizationType.STORE);
+	public List<DepartmentYzw> findByType(OrgnizationType type) {
+		return findByProperty("type", type);
 	}
 
 	

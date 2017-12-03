@@ -1,8 +1,10 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.CascadeType;
@@ -18,7 +20,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -51,7 +57,8 @@ public class OrderYzw extends BaseYzwEntity {
 	@Column(length = 32)
 	private String memberCardNo;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_order_product_id", value = ConstraintMode.NO_CONSTRAINT))
 	private ProductYzw product;
 
@@ -61,9 +68,12 @@ public class OrderYzw extends BaseYzwEntity {
 	@Column
 	private Float preferential;
 
+	@NotNull
 	@Column
 	private Integer count;
 
+	@Min(0)
+	@Max(1)
 	@Column
 	private Float discount;
 
@@ -74,6 +84,7 @@ public class OrderYzw extends BaseYzwEntity {
 	@JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "fk_order_customer_id", value = ConstraintMode.NO_CONSTRAINT))
 	private CustomerYzw customer;
 
+	@NotNull
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private Distributer distributer;
@@ -81,7 +92,7 @@ public class OrderYzw extends BaseYzwEntity {
 	@Column(name = "payed_date")
 	private Date payedDate;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "store_id", foreignKey = @ForeignKey(name = "fk_order_store_id", value = ConstraintMode.NO_CONSTRAINT))
 	private DepartmentYzw store;
 
@@ -134,9 +145,9 @@ public class OrderYzw extends BaseYzwEntity {
 	@Column(name = "e_contract_status")
 	private Boolean eContractStatus;
 	
-//	@OneToMany(mappedBy="order")
-//	private List<OrderPayedMethodYzw> orderPayedMethods = new ArrayList<>();
-//	
+	@OneToMany(mappedBy="order", cascade=CascadeType.ALL)
+	private List<OrderPayedMethodYzw> payes = new ArrayList<>();
+	
 
 	public OrderYzw() {
 	}
@@ -414,6 +425,19 @@ public class OrderYzw extends BaseYzwEntity {
 	public void seteContractStatus(Boolean eContractStatus) {
 		this.eContractStatus = eContractStatus;
 	}
+
+	
+
+	public List<OrderPayedMethodYzw> getPayes() {
+		return payes;
+	}
+
+
+
+	public void setPayes(List<OrderPayedMethodYzw> payes) {
+		this.payes = payes;
+	}
+
 
 
 	public OrderYzw(String id, int productId, String productName, Date payedDate, Contract contract) {

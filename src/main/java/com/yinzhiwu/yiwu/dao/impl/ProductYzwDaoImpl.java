@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.Where;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Repository;
 
+import com.yinzhiwu.yiwu.common.entity.search.PropertySpecification;
+import com.yinzhiwu.yiwu.common.entity.search.SearchOperator;
+import com.yinzhiwu.yiwu.common.entity.search.SearchRequest;
+import com.yinzhiwu.yiwu.common.entity.search.Searchable;
 import com.yinzhiwu.yiwu.dao.ProductYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
@@ -37,6 +43,31 @@ public class ProductYzwDaoImpl extends BaseDaoImpl<ProductYzw, Integer> implemen
 			}
 	}
 
+	
+	
+	@Override
+	public List<ProductYzw> findAll() {
+		return super.findAll( Specifications
+				.where(new PropertySpecification<ProductYzw>("isObsolete", SearchOperator.eq, false)));
+	}
+	
+	
+
+	@Override
+	public Page<ProductYzw> findAll(Searchable<ProductYzw> search) {
+		Searchable<ProductYzw> newSearch = null==search?new SearchRequest<>():search;
+		newSearch.and("isObsolete", SearchOperator.eq, false);
+		return super.findAll(newSearch);
+	}
+
+	@Override
+	public List<ProductYzw> findAll(Specification<ProductYzw> spec) {
+		Specifications<ProductYzw> newSpec = Specifications
+				.where(new PropertySpecification<ProductYzw>("isObsolete", SearchOperator.eq, false))
+				.and(spec);
+		return super.findAll(newSpec);
+	}
+
 	@Override
 	public List<ProductDto> findByCardTypeByAgeTypeByCompany(int companyId, ProductCardType cardType, CustomerAgeType ageType) {
 		StringBuilder hqlBuilder = new StringBuilder();
@@ -59,22 +90,29 @@ public class ProductYzwDaoImpl extends BaseDaoImpl<ProductYzw, Integer> implemen
 	}
 
 	@Override
-	@Where(clause ="obsolete_flag=false")
 	public DataTableBean<ProductYzw> findDataTable(QueryParameter parameter) {
-		return super.findDataTable(parameter);
+		
+		return super.findDataTableByProperty(parameter, "isObsolete",false);
 	}
 
 	@Override
-	@Where(clause ="obsolete_flag=false")
-	public DataTableBean<ProductYzw> findDataTableByProperties(QueryParameter parameter, String[] properties, Object[] values) {
-		return super.findDataTableByProperties(parameter, properties, values);
-	}
-
-	@Override
-	@Where(clause ="obsolete_flag=false")
+//	@Where(clause ="obsolete_flag=false")
 	public DataTableBean<ProductYzw> findDataTableByProperty(QueryParameter parameter, String propertyName, Object value) {
-		return super.findDataTableByProperty(parameter, propertyName, value);
+		return findDataTableByProperties(parameter, new String[]{propertyName}, new Object[]{value});
 	}
+	
+	@Override
+	public DataTableBean<ProductYzw> findDataTableByProperties(QueryParameter parameter, String[] properties, Object[] values) {
+		String[] newProperties = new String[properties.length + 1];
+		Object[] newValues = new Object[newProperties.length];
+		System.arraycopy(properties, 0, newProperties, 0, properties.length);
+		newProperties[newProperties.length-1] = "isObsolete";
+		System.arraycopy(values, 0, newValues, 0, values.length);
+		newValues[properties.length] = false;
+		return super.findDataTableByProperties(parameter, newProperties, newValues);
+	}
+
+	
 	
 	
 

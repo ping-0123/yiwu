@@ -56,7 +56,7 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content table-responsive">
-						<shiro:hasPermission name="courseTemplates:create:*">
+						<shiro:hasPermission name="orders:create:*">
 							<button type="button" data-remote="./createForm" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
@@ -197,8 +197,8 @@
 					"title":"操作",
 					"render": function(data, type, row, meta) {
 						var html =  '';
-						<shiro:hasPermission name="distributers:update:*">
-							html = html +  '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> [修改]</a>';
+						<shiro:hasPermission name="orders:create:*">
+							html = html +  '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> [付款]</a>';
 						</shiro:hasPermission>	
 						<shiro:hasPermission name="orders:view:*">
 							html = html + '<a href="details?coachId=' + row.id + '" data-toggle="modal" data-target=".modal-detail"> [查看订单]  </a>';

@@ -44,7 +44,7 @@ public class IndexController extends BaseController {
         List<Resource> menus = resourceService.findRootMenus();
         model.addAttribute("menus", menus);
         
-        EmployeeYzw employee = user.getEmployee();
+        EmployeeYzw employee = userService.findEmployeeByUserId(user.getId());
         if(null != employee){
 	        model.addAttribute("employee", employee);
 	        model.addAttribute("headImageUrl", fileService.generateFileUrl(employee.getPortraitUri()));

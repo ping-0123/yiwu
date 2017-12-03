@@ -20,6 +20,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeTypeConverter;
@@ -28,11 +29,10 @@ import com.yinzhiwu.yiwu.enums.SubCourseType;
 
 @Entity
 @Table(name = "vproduct")
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class ProductYzw extends BaseYzwEntity {
 
 	private static final long serialVersionUID = -1893100957719617919L;
-
 
 	@Id
 	@GeneratedValue
@@ -50,6 +50,10 @@ public class ProductYzw extends BaseYzwEntity {
 	@Column(name = "customer_type", length = 32)
 	private CustomerAgeType customerType;
 
+	@Enumerated(EnumType.STRING)
+	@Column(length=32)
+	private PerformanceType performanceType;
+	
 	@Column(name = "marked_price")
 	private Integer markedPrice;
 
@@ -114,13 +118,13 @@ public class ProductYzw extends BaseYzwEntity {
 	private DepartmentYzw company;
 	
 	
-	
-	
 	@Override
 	public void init() {
 		super.init();
 		if(null ==this.isObsolete)
 			this.isObsolete= false;
+		if(StringUtils.isEmpty(this.visableDepartmentIds))
+			this.visableDepartmentIds="48";
 	}
 
 	public Integer getId() {
@@ -304,6 +308,16 @@ public class ProductYzw extends BaseYzwEntity {
 		this.company = company;
 	}
 
+	
+
+	public PerformanceType getPerformanceType() {
+		return performanceType;
+	}
+
+	public void setPerformanceType(PerformanceType performanceType) {
+		this.performanceType = performanceType;
+	}
+
 
 
 	public enum ProductCardType{
@@ -376,8 +390,35 @@ public class ProductYzw extends BaseYzwEntity {
 	}
 	
 	public enum UsableRangeType{
-		ONE_STORE,
-		MULTIPLE_STORES,
-		FIX_STORES, //指定门店使用
+		ONE_STORE("仅一个门店使用"),
+		MULTIPLE_STORES("跨门店使用");
+		
+		private final String name;
+		
+		private UsableRangeType(String name){
+			this.name= name;
+		}
+
+		public String getName() {
+			return name;
+		}
+		
+	}
+	
+	public enum PerformanceType{
+		CHILD("少儿业绩"),
+		ADULT("成人业绩"),
+		PRSENTER("小主持人业绩"),
+		GENERAL("所有");
+		
+		private final String name;
+
+		public String getName() {
+			return name;
+		}
+		
+		private PerformanceType(String name){
+			this.name= name;
+		}
 	}
 }

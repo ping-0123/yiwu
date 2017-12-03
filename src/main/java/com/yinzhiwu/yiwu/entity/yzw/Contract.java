@@ -214,7 +214,7 @@ public class Contract {
 
 		public static ContractStatus fromStatus(String status) {
 			switch (status) {
-			case "未付款":
+			case "待付款":
 				return ContractStatus.UN_PAYED;
 			case "未确认":
 				return ContractStatus.UN_VERIFIED;

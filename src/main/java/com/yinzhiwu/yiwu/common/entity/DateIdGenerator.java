@@ -47,7 +47,7 @@ public class DateIdGenerator implements IdGenerator<String> {
 	@Override
 	public String generateId() {
 		return prefix + DATE_FORMAT.format(date)+ 
-				String.format("%0" +randomDigit +"d", (randomValue%Math.pow(10, randomDigit-1)));
+				String.format("%0" +randomDigit +"d", (randomValue%(int)Math.pow(10, randomDigit-1)));
 	}
 	
 }

@@ -147,6 +147,15 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements U
 		return super.save(user);
 	}
 
+	@Override
+	public EmployeeYzw findEmployeeByUserId(Integer id) {
+		try {
+			return get(id).getEmployee();
+		} catch (DataNotFoundException e) {
+			return null;
+		}
+	}
+
 	
 	
 }

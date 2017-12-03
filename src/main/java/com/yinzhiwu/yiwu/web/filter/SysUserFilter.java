@@ -35,19 +35,19 @@ public class SysUserFilter extends PathMatchingFilter {
 
     @Override
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
-//    	User user = (User) SecurityUtils.getSubject().getSession().getAttribute(Constants.CURRENT_USER);
+    	User user = (User) SecurityUtils.getSubject().getSession().getAttribute(Constants.CURRENT_USER);
     	
-        String username = (String)SecurityUtils.getSubject().getPrincipal();
-        if(! StringUtils.hasText(username)){
-        	logger.error("用户未登录系统");
-        	return false;
-        }
-        User user =userService.findByUsername(username);
-        if(user == null){
-        	logger.error("系统异常， 用户被删除");
-        	return false;
-        }
-//	        SecurityUtils.getSubject().getSession().setAttribute(Constants.CURRENT_USER, user);
+    	if(null == user){
+	        String username = (String)SecurityUtils.getSubject().getPrincipal();
+	        if(! StringUtils.hasText(username)){
+	        	logger.error("用户未登录系统");
+	        	return false;
+	        }
+	        user =userService.findByUsername(username);
+	        if(null == user) return false;
+		    SecurityUtils.getSubject().getSession().setAttribute(Constants.CURRENT_USER, user);
+	        
+    	}
         
         UserContext.setUser(user);
         return true;

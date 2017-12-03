@@ -7,14 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
 import com.yinzhiwu.yiwu.dao.EmployeeDepartmentYzwDao;
+import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw.OrgnizationType;
+import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.view.DepartmentApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
+import com.yinzhiwu.yiwu.service.EmployeeYzwService;
+import com.yinzhiwu.yiwu.service.UserService;
 import com.yinzhiwu.yiwu.web.purchase.dto.StoreDto;
 
 /**
@@ -34,6 +39,8 @@ public class DepartmentYzwServiceImpl extends BaseServiceImpl<DepartmentYzw, Int
 	@Autowired private DepartmentYzwDao departmentDao;
 //	@Autowired private EmployeePostYzwDao empPostDao;
 	@Autowired private EmployeeDepartmentYzwDao empDeptDao;
+	@Autowired private EmployeeYzwService empService;
+	@Autowired private UserService userService;
 
 	@Override
 	public List<StoreDto> findAllStores(int employeeId) {
@@ -46,7 +53,7 @@ public class DepartmentYzwServiceImpl extends BaseServiceImpl<DepartmentYzw, Int
 		}
 		return stores;
 	}
-
+	
 	@Override
 	public List<StoreDto> findVisableStoresByEmployee(int employeeId) {
 		//设置教务部教师可见整个公司的门店
@@ -66,6 +73,35 @@ public class DepartmentYzwServiceImpl extends BaseServiceImpl<DepartmentYzw, Int
 			dtos.add(new StoreDto(store));
 		}
 		return dtos;
+	}
+	
+	@Override
+	public List<DepartmentYzw> findVisableStores() {
+		User user = UserContext.getUser();
+		if("Admin".equals(user.getUsername()))
+			return findAllStores();
+		EmployeeYzw emp = userService.findEmployeeByUserId(user.getId());
+		if(null == emp)
+			return new ArrayList<>();
+		
+		List<DepartmentYzw> stores = new ArrayList<>();
+		List<DepartmentYzw> depts = empDeptDao.findDepartmentsByEmployee(emp.getId());
+		for (DepartmentYzw dept : depts) {
+			stores.addAll(getChildStores(dept));
+		}
+		return stores;
+	}
+
+	private List<DepartmentYzw> getChildStores(DepartmentYzw dept) {
+		List<DepartmentYzw> stores = new ArrayList<>();
+		if(OrgnizationType.STORE == dept.getType())
+			stores.add(dept);
+		else{
+			for (DepartmentYzw child : dept.getChildren()) {
+				stores.addAll(getChildStores(child));
+			}
+		}
+		return stores;
 	}
 
 	@Override
@@ -128,6 +164,11 @@ public class DepartmentYzwServiceImpl extends BaseServiceImpl<DepartmentYzw, Int
 		
 		return storeNames;
 	}
-	
+
+	@Override
+	public List<DepartmentYzw> findCompanies() {
+		return departmentDao.findByType(OrgnizationType.COMPANY);
+	}
+
 	
 }

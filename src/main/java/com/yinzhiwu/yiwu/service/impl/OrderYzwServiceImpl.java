@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -15,13 +17,13 @@ import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.dao.DepartmentYzwDao;
-import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
-import com.yinzhiwu.yiwu.dao.ProductYzwDao;
+import com.yinzhiwu.yiwu.dao.SequenceDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
+import com.yinzhiwu.yiwu.entity.yzw.ContractNoGenerator;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
@@ -31,6 +33,8 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.entity.yzw.OrderIdGenerator;
+import com.yinzhiwu.yiwu.entity.yzw.OrderPayedMethodYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw.VipAttributer;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
@@ -41,8 +45,10 @@ import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderAbbrApiView;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
+import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.ElectricContractYzwService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
+import com.yinzhiwu.yiwu.service.ProductYzwService;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderDto;
 import com.yinzhiwu.yiwu.web.purchase.dto.OrderSaveDto;
 
@@ -52,12 +58,13 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 	@Autowired
 	private OrderYzwDao orderDao;
 
-	@Autowired private DistributerDao distributerDao;
+	@Autowired private DistributerService distributerService;
 	@Autowired private EmployeeYzwDao employeeDao;
 	@Autowired private ElectricContractYzwService econtractService;
-	@Autowired private ProductYzwDao productDao;
+	@Autowired private ProductYzwService productService;
 	@Autowired private CustomerYzwDao customerDao;
 	@Autowired private DepartmentYzwDao deptDao;
+	@Autowired private SequenceDao sequenceDao;
 	
 	@Autowired
 	public void setBaseDao(OrderYzwDao orderYzwDao) {
@@ -68,7 +75,7 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 	@Override
 	public YiwuJson<List<OrderAbbrApiView>> findByDistributerId(int distributerId) {
 		try {
-			Distributer distributer = distributerDao.get(distributerId);
+			Distributer distributer = distributerService.get(distributerId);
 			if (distributer == null)
 				return new YiwuJson<>("no Distributer found by id :" + distributerId);
 			CustomerYzw customer = distributer.getCustomer();
@@ -162,12 +169,87 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 
 	@Override
 	public String save(OrderYzw order){
+		prepareSave(order);
+		
 		orderDao.save(order);
 		//保存合同
 		ElectricContractYzw econtract = new ElectricContractYzw(order);
 		econtractService.save(econtract);
 		//修改客户资料
 		return order.getId();
+	}
+
+
+	private void prepareSave(OrderYzw order) {
+		order.setId(new OrderIdGenerator(
+				sequenceDao.getValue(OrderIdGenerator.SEQUENCE_KEY))
+				.generateId());
+		Distributer distributer = null;
+		try {
+			distributer = distributerService.get(order.getDistributer().getId());
+		} catch (DataNotFoundException e) {
+			throw new RuntimeException(e.getMessage());
+		}
+		
+		order.setMemberCardNo(distributer.getMemberCard());
+		ProductYzw product;
+		try {
+			product = productService.get(order.getProduct().getId());
+		} catch (DataNotFoundException e) {
+			throw new RuntimeException(e.getMessage());
+		}
+		order.setProduct(product);
+		order.setMarkedPrice(product.getMarkedPrice().floatValue());
+		if(null == order.getPayedAmount())
+			order.setPayedAmount(product.getMarkedPrice() * order.getCount() * order.getDiscount());
+		order.setCustomer(distributer.getCustomer());
+		order.setDistributer(distributer);
+		if(null == order.getPayedDate())
+			order.setPayedDate(new Date());
+		order.setVipAttr(VipAttributer.NEW_MEMBER);
+		Contract contract = order.getContract();
+		if(null == contract){
+			contract = new Contract();
+			order.setContract(contract);
+		}
+		contract.setContractNo(new ContractNoGenerator(sequenceDao.getValue(ContractNoGenerator.SEQUENCE_KEY)).generateId());
+		if(null == contract.getStart())
+			contract.setStart(new Date());
+		if(null == contract.getEnd()){
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(contract.getStart());
+			calendar.add(Calendar.MONTH, product.getUsefulLife());
+			contract.setEnd(calendar.getTime());
+		}
+		if(null == contract.getValidityTimes()){
+			contract.setValidityTimes(product.getUsefulTimes() * order.getCount());
+		}
+		contract.setRemainTimes(new BigDecimal(contract.getValidityTimes()));
+		contract.setWithHoldTimes((short)0);
+		contract.setType(product.getCourseType());
+		contract.setSubType(product.getSubCourseType());
+		if(StringUtils.isEmpty(contract.getValidStoreIds()))
+			contract.setValidStoreIds(product.getUsableDepartments());
+		if(StringUtils.isEmpty(contract.getValidStoreIds()))
+			throw new RuntimeException("合约的可使用门店不能为空");
+		if(order.getPayedAmount() !=0){
+			if(null == order.getPayes() || order.getPayes().size()==0)
+				throw new RuntimeException("非0元订单请支付");
+			float payedAmount = 0f;
+			for (OrderPayedMethodYzw pay : order.getPayes()) {
+				if(null == pay.getAmount() || 0f == pay.getAmount())
+					;
+					// order.getPayes().remove(pay);
+				else{
+					payedAmount = payedAmount + pay.getAmount().floatValue();
+					pay.setOrder(order);
+					pay.init();
+				}
+			}
+			if(payedAmount != order.getPayedAmount())
+				throw new RuntimeException("订单应付金额与实付金额不符");
+		}
+		contract.setStatus(ContractStatus.UN_CHECKED);
 	}
 
 	@Override
@@ -178,7 +260,7 @@ public class OrderYzwServiceImpl extends BaseServiceImpl<OrderYzw, String> imple
 
 	private OrderYzw _wrapToOrder(OrderSaveDto dto) throws Exception {
 		OrderYzw order = new OrderYzw();
-		ProductYzw product = productDao.get(dto.getProductId());
+		ProductYzw product = productService.get(dto.getProductId());
 		if(product == null ) throw new Exception("无效的productId" +dto.getProductId());
 		CustomerYzw customer = customerDao.get(dto.getCustomerId());
 		if(customer == null) throw new Exception("无效的客户Id: " + dto.getCustomerId());

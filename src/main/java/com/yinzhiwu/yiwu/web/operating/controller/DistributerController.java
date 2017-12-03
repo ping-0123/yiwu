@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
@@ -26,8 +27,10 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
+import com.yinzhiwu.yiwu.service.DepartmentYzwService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
+import com.yinzhiwu.yiwu.service.PayedMethodService;
 import com.yinzhiwu.yiwu.service.ProductYzwService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 import com.yinzhiwu.yiwu.web.operating.view.DistributerVO;
@@ -49,6 +52,8 @@ public class DistributerController extends com.yinzhiwu.yiwu.controller.BaseCont
 	@Autowired private DistributerService distributerService;
 	@Autowired private OrderYzwService orderService;
 	@Autowired private ProductYzwService productService;
+	@Autowired private DepartmentYzwService deptService;
+	@Autowired private PayedMethodService pmService;
 	
 	@GetMapping 
 	public String index(){
@@ -147,9 +152,13 @@ public class DistributerController extends com.yinzhiwu.yiwu.controller.BaseCont
 			@PathVariable(name="id") int id, Model model) throws DataNotFoundException{
 		Distributer distributer = distributerService.get(id);
 		model.addAttribute("distributer", distributer);
-		model.addAttribute("products",productService.findByProperty("isObsolete", false));
-		return "distributers/orders/createForm";
+		model.addAttribute("products",productService.findAll());
+		model.addAttribute("allStores",deptService.findAllStores());
+		model.addAttribute("stores",deptService.findVisableStores());
+		model.addAttribute("payedMethods", pmService.findAll());
+		return "orders/createForm";
 	}
+	
 	
 	@PostMapping("/{id}/orders")
 	@ResponseBody

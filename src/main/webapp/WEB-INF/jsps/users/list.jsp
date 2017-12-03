@@ -46,7 +46,7 @@
 				<div class="x_panel">
 					<div class="x_title">
 						<shiro:hasPermission name="users:create:*">
-							<button type="button" data-remote="form" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
+							<button type="button" data-remote="./createForm" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
 							</button>
 						</shiro:hasPermission>
@@ -180,9 +180,8 @@
 							</shiro:hasPermission>
 							<shiro:hasPermission name="users:delete:*">
 							html = html
-									+ '<a href="#" onclick="showDeleteModal('
-									+ row.id
-									+ ')"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
+									+ '<a href="#" onclick="showDeleteModal(' + row.id
+									+ ', refreshDataTable)"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
 							</shiro:hasPermission>
 							return html;
 						}

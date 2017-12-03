@@ -45,7 +45,11 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<div>${distributer.name } 的订单</div>
+						<shiro:hasPermission name="products:create:*">
+							<button type="button" data-remote="./createForm" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
+							</button>
+						</shiro:hasPermission>
 						<ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"> <i class="fa fa-chevron-up"></i></a></li>
 							<li><a href=""> <i class="fa fa-refresh"></i></a></li>
@@ -69,7 +73,7 @@
 
 	<!-- bootstrap modals -->
 	<!-- create modal -->
-	<div class="modal fade bs-example-modal-lg modal-detail" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg modal-create" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				
@@ -176,7 +180,10 @@
 					}
 				},{
 					"data": "usableRangeType",
-					"title": "使用范围类型"
+					"title": "使用范围类型",
+					"render": function(data, type, row, meta){
+						return transferUsableRangeType(data);
+					}
 				},{
 					"data": "usableDepartments",
 					"title": "可使用门店"
@@ -185,11 +192,11 @@
 					"title":"操作",
 					"render": function(data, type, row, meta) {
 						var html =  '';
-						<shiro:hasPermission name="distributers:update:*">
-							html = html +  '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> [修改]</a>';
+						<shiro:hasPermission name="products:update:*">
+							html = html +  '<a href="./' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"><i class="fa fa-pencil" title="修改"></i></a>';
 						</shiro:hasPermission>	
-						<shiro:hasPermission name="orders:view:*">
-							html = html + '<a href="details?coachId=' + row.id + '" data-toggle="modal" data-target=".modal-detail"> [查看订单]  </a>';
+						<shiro:hasPermission name="products:delete:*">
+							html = html + '<a onclick="showDeleteModal(' + row.id +',deleteCallback)"><small> <i class="fa fa-trash" title="删除"> </i> </small></a>';
 						</shiro:hasPermission>
 						
 						return html;
@@ -263,6 +270,26 @@
 			default:
 				return "";
 			}
+		}
+		
+		/**
+		 * 转换产品的使用范围类型
+		 * @param type
+		 * @returns
+		 */
+		function transferUsableRangeType(type){
+			switch (type) {
+			case 'ONE_STORE':
+				return '仅一个门店使用';
+			case 'MULTIPLE_STORES':
+				return '跨门店使用';
+			default:
+				return '';
+			}
+		}
+		
+		function deleteCallback(){
+			TABLE.draw(false);
 		}
   </script>
   

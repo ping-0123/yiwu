@@ -20,7 +20,7 @@ $(document).ready(function() {
  */
 $(".modal").on("hidden.bs.modal", function() {
 	$(this).removeData("bs.modal");
-})
+});
 
 /**
  * 
@@ -463,6 +463,22 @@ function translateProductCardType(type) {
 
 		default:
 			return "";
+	}
+}
+
+/**
+ * 转换产品的使用范围类型
+ * @param type
+ * @returns
+ */
+function transferUsableRangeType(type){
+	switch (type) {
+	case 'ONE_STORE':
+		return '仅一个门店使用';
+	case 'MULTIPLE_STORES':
+		return '跨门店使用';
+	default:
+		return '';
 	}
 }
 
