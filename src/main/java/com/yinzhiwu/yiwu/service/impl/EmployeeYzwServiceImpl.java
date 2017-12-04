@@ -79,7 +79,7 @@ public class EmployeeYzwServiceImpl extends BaseServiceImpl<EmployeeYzw, Integer
 	}
 	
 	@Transactional
-	@Scheduled(initialDelay=10000, fixedRate=9999999999l)
+//	@Scheduled(initialDelay=10000, fixedRate=9999999999l)
 	public void initAllEmployeeNumber(){
 		List<EmployeeYzw> emps = empDao.findByNullNumber();
 		for (EmployeeYzw emp : emps) {

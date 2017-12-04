@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -97,36 +98,34 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 		List<LessonForWeeklyVO> vos = new ArrayList<>();
 		List<LessonYzw> lessons = lessonDao.findWeeklyLessons(storeId, courseType, teacherName,
 				danceCatagory,start, end);
-		for (LessonYzw lesson : lessons) {
-			LessonForWeeklyVO vo = LessonForWeeklyVOConverter.INSTANCE.fromPO(lesson);
-			//必要时记录教练的签到状态
-			if(StringUtils.hasLength(teacherName))
-				vo.setCoachCheckedInStatus(getCoachCheckinStatus(lesson));
+ 		for (LessonYzw lesson : lessons) {
+ 			LessonForWeeklyVO vo = LessonForWeeklyVOConverter.INSTANCE.fromPO(lesson);
 			vos.add(vo);
 		}
 		
+		logger.info("vo size is " + vos.size()) ;
 		return _wrapToOneDayLessonsVOs(vos,start);
 	}
 
 	private List<OneDayLessonsVO> _wrapToOneDayLessonsVOs(List<LessonForWeeklyVO> vos, Date start){
-		List<OneDayLessonsVO> oneDays = new ArrayList<>();
+		List<OneDayLessonsVO> weeks = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(start);
 		for(int i=2; i<=8; i++){
-			oneDays.add(new OneDayLessonsVO(calendar.getTime()));
+			weeks.add(new OneDayLessonsVO(calendar.getTime()));
 			calendar.add(Calendar.DAY_OF_WEEK, 1);
 		}
 		
 		for(LessonForWeeklyVO vo: vos){
-			for(int j =0; j<vos.size(); j++){
-				if(vo.getWeekDay() == oneDays.get(j).getWeekday()){
-					oneDays.get(j).getList().add(vo);
+			for(int j =0; j<weeks.size(); j++){
+				if(vo.getWeekDay() == weeks.get(j).getWeekday()){
+					weeks.get(j).getList().add(vo);
 					break;
 				}
 			}
 		}
 		
-		return oneDays;
+		return weeks;
 	}
 	
 	
