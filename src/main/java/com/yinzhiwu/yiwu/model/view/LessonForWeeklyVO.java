@@ -126,8 +126,6 @@ public class LessonForWeeklyVO {
 	{
 		public static final LessonForWeeklyVOConverter INSTANCE = new LessonForWeeklyVOConverter();
 		private final LessonInteractiveService interactiveService = SpringUtils.getBean(LessonInteractiveService.class);
-//		private final LessonCheckinService checkinService = SpringUtils.getBean(LessonCheckinService.class);
-//		private final LessonYzwService lessonService = SpringUtils.getBean(LessonYzwService.class);
 		private final LessonCheckinService lessonCheckinService = SpringUtils.getBean(LessonCheckinService.class);
 		
 		@Override
