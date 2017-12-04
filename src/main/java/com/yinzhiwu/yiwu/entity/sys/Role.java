@@ -18,6 +18,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinzhiwu.yiwu.entity.BaseEntity;
 
 @Entity
@@ -42,6 +43,7 @@ public class Role extends BaseEntity {
 	
 	private String description;
 	
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name="sys_role_resource", 
 		joinColumns=@JoinColumn(name="role_id", foreignKey=@ForeignKey(name="fk_roleResource_role_id")),

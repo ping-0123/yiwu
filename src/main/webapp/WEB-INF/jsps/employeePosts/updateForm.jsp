@@ -40,7 +40,11 @@
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">任职部门 <span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-6">
-					<input   value="${ep.department.name }" class="form-control col-md-7 col-xs-12" disabled="disabled" required="required"  type="text">
+					<select name="department.id">
+						<c:forEach items="${departments}" var="v">
+							<option value="${v.id}" <c:if test="${v.id eq ep.department.id }"></c:if> >${v.name }</option>
+						</c:forEach>
+					</select>
 				</div>
 			</div>
 			
@@ -54,7 +58,7 @@
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">任职开始日期 <span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-6">
-					<input  value="<fmt:formatDate value="${ep.startTime}" pattern="yyyy-MM-dd" />" type="date" disabled="disabled" class="form-control col-md-7 col-xs-12"  required="required" >
+					<input  value="<fmt:formatDate value="${ep.startTime}" pattern="yyyy-MM-dd" />" type="date"  class="form-control col-md-7 col-xs-12"  required="required" >
 				</div>
 			</div>
 			

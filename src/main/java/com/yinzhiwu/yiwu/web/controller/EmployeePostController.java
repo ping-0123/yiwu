@@ -19,6 +19,7 @@ import com.yinzhiwu.yiwu.entity.yzw.EmployeePostYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.YiwuJson.ReturnCode;
+import com.yinzhiwu.yiwu.service.DepartmentYzwService;
 import com.yinzhiwu.yiwu.service.EmployeePostYzwService;
 
 @Controller
@@ -26,6 +27,7 @@ import com.yinzhiwu.yiwu.service.EmployeePostYzwService;
 public class EmployeePostController extends BaseController{
 
 	@Autowired EmployeePostYzwService epService;
+	@Autowired DepartmentYzwService deptService;
 	
 	@PostMapping
 	@ResponseBody
@@ -40,6 +42,7 @@ public class EmployeePostController extends BaseController{
 	
 	@GetMapping(value="/{id}/updateForm")
 	public String showUpdateForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException{
+		model.addAttribute("departments", deptService.findAll());
 		model.addAttribute("ep", epService.get(id));
 		return "employeePosts/updateForm";
 	}

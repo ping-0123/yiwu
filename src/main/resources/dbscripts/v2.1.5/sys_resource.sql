@@ -1,11 +1,9 @@
 /*
--- Query: SELECT * FROM yiwu.sys_resource
-LIMIT 0, 500
+-- Query: SELECT * from sys_resource
+LIMIT 0, 1000
 
--- Date: 2017-12-01 13:29
+-- Date: 2017-12-04 13:27
 */
-set foreign_key_checks=off;
-delete from sys_resource;
 INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40032,'2017-09-14 21:05:25',1,0,'2017-09-14 21:05:25',1,'AUTHORITIES_MANAGER','系统权限','authority:manager',0,NULL,NULL,'fa-key');
 INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40037,'2017-09-14 21:05:25',1,0,'2017-09-14 21:05:25',1,'USERS_MANAGER','用户管理','users:view:*',0,'users/list',40032,NULL);
 INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40038,'2017-09-14 21:05:25',1,0,'2017-09-14 21:05:25',1,'USERS_CREATE','新增','users:create:*',1,NULL,40037,NULL);
@@ -54,3 +52,12 @@ INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastM
 INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40090,'2017-11-26 14:33:09',1000000,0,'2017-11-26 14:33:09',1000000,'DISTRIBUTER_MANAGE','客户资料','distributers:view:*',0,'distributers/list',40089,'');
 INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40091,'2017-11-26 18:34:47',1000000,0,'2017-11-26 18:34:47',1000000,'ORDER_MANAGE','订单管理','order:manage:*',0,'orders/list',40089,'');
 INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40092,'2017-11-26 18:35:34',1000000,0,'2017-11-26 18:35:34',1000000,'PRODUCT_MANAGE','产品维护','product:manage:*',0,'products/list',40089,'');
+INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40093,'2017-12-04 13:00:08',1000000,0,'2017-12-04 13:00:08',1000000,'DISTRIBUTERS_CREATE','新增','distributers:create:*',1,'',40090,'');
+INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40094,'2017-12-04 13:00:50',1000000,0,'2017-12-04 13:00:50',1000000,'DISTRIBUTERS_UPDATE','修改','distributers:update:*',1,'',40090,'');
+INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40095,'2017-12-04 13:01:26',1000000,0,'2017-12-04 13:01:26',1000000,'DISTRIBUTERS_DELETE','删除','distributers:delete:*',1,'',40090,'');
+INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40096,'2017-12-04 13:02:05',1000000,0,'2017-12-04 13:02:05',1000000,'ORDERS_CREATE','新增','orders:create:*',1,'',40091,'');
+INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40097,'2017-12-04 13:02:41',1000000,0,'2017-12-04 13:02:41',1000000,'ORDERS_UPDATE','修改','orders:update:*',1,'',40091,'');
+INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40098,'2017-12-04 13:03:06',1000000,0,'2017-12-04 13:03:06',1000000,'ORDERS_DELETE','删除','orders:delete:*',1,'',40091,'');
+INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40099,'2017-12-04 13:03:36',1000000,0,'2017-12-04 13:03:36',1000000,'PRODUCTS_CREATE','新增','products:create:*',1,'',40092,'');
+INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40100,'2017-12-04 13:04:13',1000000,0,'2017-12-04 13:04:13',1000000,'PRODUCTS_UPDATE','修改','products:update:*',1,'',40092,'');
+INSERT INTO `sys_resource` (`id`,`createDate`,`createUserId`,`dataStatus`,`lastModifiedDate`,`lastModifiedUserId`,`code`,`name`,`permission`,`type`,`url`,`parent_id`,`icon`) VALUES (40101,'2017-12-04 13:04:41',1000000,0,'2017-12-04 13:04:41',1000000,'PRODUCTS_DELETE','products:delete:*','删除',1,'',40092,'');

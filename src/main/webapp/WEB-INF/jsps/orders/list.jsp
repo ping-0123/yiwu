@@ -259,7 +259,7 @@
 						"title" : "操作",
 						"render" : function(data, type, row, meta) {
 							var html = '';
-							<shiro:hasPermission name="distributers:update:*">
+							<shiro:hasPermission name="orders:update:*">
 							html = html
 									+ '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> [修改]</a>';
 							</shiro:hasPermission>

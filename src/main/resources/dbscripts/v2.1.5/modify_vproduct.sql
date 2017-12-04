@@ -1,6 +1,6 @@
 ALTER TABLE chenkuserdb1.skt8 add COLUMN (usableRangeType varchar(32), usableDepartments VARCHAR(128), company_id int);
 ALTER TABLE chenkuserdb1.skt8 add COLUMN (dance_id varchar(32), danceGrade_id int, courseType varchar(32), subCourseType varchar(32));
-ALTER TABLE chenkuserdb1.skt8 add COLUMN(performanceType varchar(32))
+ALTER TABLE chenkuserdb1.skt8 add COLUMN(performanceType varchar(32));
 CREATE 
 	or REPLACE
 VIEW `vproduct` AS
