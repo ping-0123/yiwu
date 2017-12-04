@@ -44,8 +44,8 @@
 						        	 </li>
 						        	 <li class="type">
 						        	 <select>
-									 <option value ="开放式">开放式</option>
-									 <option value ="封闭式">封闭式</option>
+									 <option value ="OPENED">开放式</option>
+									 <option value ="CLOSED">封闭式</option>
 									 <option value="">全部</option>
 									 </select>
 						        	 </li>
@@ -150,26 +150,24 @@
 
 <script>
 
-//    	var ajaxUrl = "http://yzw.chenksoft.com:8080/yiwu/"
+    	var baseApiUrl= "http://yzw.chenksoft.com:8080/yiwu";
       	var ajaxUrl = baseApiUrl;
 
-		var url =  "api/lesson/weeklist";
+		var url =  "/api/temp/weekLessons";
 		var selectDate;
 		var districtId =82;
 		var storeId = 61;
-		var courseType="开放式";
-		var danceCatagory;
-		var teacherName;
+		var courseType="OPENED";
 		var requestDate = new Date
 		var curDate =format(requestDate,'yyyy-MM-dd');
 		
 		var data = {
 				storeId : storeId,
 				courseType: courseType,
-				teacherName: '',
-				danceCatagory: '',
+				//teacherName: '',
+				//danceCatagory: '',
 				date: curDate,
-				weChat: 'oqSnljhna3lMmHtKODoSvWQNfUTc'
+				//weChat: 'oqSnljhna3lMmHtKODoSvWQNfUTc'
 			};
 
 

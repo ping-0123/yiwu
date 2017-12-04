@@ -1,4 +1,4 @@
-
+﻿
 function format(time, format){
     var t = new Date(time);
     var tf = function(i){return (i < 10 ? '0' : '') + i};
@@ -29,7 +29,7 @@ function format(time, format){
 function loadDistrict(){
 	var defaultDistrictId=82;
 	var existDefault=false;
-	var url = ajaxUrl +"api/district/list";
+	var url = ajaxUrl +"/api/district/list";
 	$.ajax({ 
 			type: "Get", 	
 			url: url,
@@ -60,7 +60,7 @@ function loadDistrict(){
 
 
 function loadStores(v_districtId){
-	var url = ajaxUrl + "api/store/list?districtId=" + v_districtId;
+	var url = ajaxUrl + "/api/store/list?districtId=" + v_districtId;
 	var defaulStoreId=61;
 	var existDefault=false;
 	var v_data = data;
@@ -87,7 +87,7 @@ function loadStores(v_districtId){
 					v_data.storeId = data[0].id;
 				}
 				loadStoreAddress(v_data.storeId);
-				loadLessonTable("api/lesson/weeklist",v_data);
+				loadLessonTable("/api/temp/weekLessons",v_data);
 			},
 			error: function(jqXHR){     
 			},  
@@ -96,7 +96,7 @@ function loadStores(v_districtId){
 
 
 	function loadStores_v1_1_0(v_districtId){
-			var url = ajaxUrl + "api/store/list?districtId=" + v_districtId;
+			var url = ajaxUrl + "/api/store/list?districtId=" + v_districtId;
 			var v_data=data;
 			$.ajax({
 				url:url,
@@ -118,7 +118,7 @@ function loadStores(v_districtId){
 				$('.list_store li').click(function(){
   					$('.text_left_store').text(($(this).text())); 
   					v_data.storeId=$(this).attr("store-id");
-  					loadLessonTable("api/lesson/weeklist",v_data);
+  					loadLessonTable("/api/temp/weekLessons",v_data);
   					loadStoreAddress(v_data.storeId);
   													}) 
 				}
@@ -126,7 +126,7 @@ function loadStores(v_districtId){
 	}
 
 	function loadStoreAddress(v_storeId){
-			var url=ajaxUrl+"api/store/id/"+v_storeId;
+			var url=ajaxUrl+"/api/store/"+v_storeId;
 			$.ajax({
 				url:url,
 				type:"GET",
@@ -172,17 +172,17 @@ function loadStores(v_districtId){
 				var len = 0;
 				var class_current="nonCurrent";
 				for(var i=0; i<7; i++){
-					if(v_curDate == data[i].date){
+					if(v_curDate == data.data[i].date){
 						class_current="current";
 					}else{
 						class_current ="nonCurrent";
 					}
 					t=t+"<th class=\"" + class_current + "\">" 
-						+ weekdayNames[data[i].weekday-1] + "<br/>"
-						+weekdayNamesCN[data[i].weekday-1]+"</br> <small>"
-						+ data[i].date + "</small></th>";
-					if(len<data[i].list.length){
-						len=data[i].list.length;
+						+ weekdayNames[data.data[i].weekday-1] + "<br/>"
+						+weekdayNamesCN[data.data[i].weekday-1]+"</br> <small>"
+						+ data.data[i].date + "</small></th>";
+					if(len<data.data[i].list.length){
+						len=data.data[i].list.length;
 					}
 				}
 				t= t+ "</tr></thead>";
@@ -192,39 +192,39 @@ function loadStores(v_districtId){
 					t=t+"<tr>";
 					for (var k=0;k<7;k++) {
 						t=t+"<td>";
-						if (data[k].list.length>j) {
-							var lesson=data[k].list[j];
+						if (data.data[k].list.length>j) {
+							var lesson=data.data[k].list[j];
 						
-							if(lesson.courseType=="封闭式"){
+							if(lesson.courseType=="CLOSED"){
 								t=t+"<ul class=\"close_type\">" ;
 							}
-							else if(lesson.courseType =="开放式"){
-								if(lesson.subCourseType == "开放式A"){
+							else if(lesson.courseType =="OPENED"){
+								if(lesson.subCourseType == "OPEN_A"){
 									t = t +"<ul class=\"open_A_type\">" ;}
-								else if(lesson.subCourseType == "开放式B"){
+								else if(lesson.subCourseType == "OPEN_B"){
 									t = t +"<ul class=\"open_B_type\">" ;}
 							}
 							
-							t = t+ "<li style=\"display:none\">lessonId:" + lesson.lessonId
-								 +"</li><li style=\"display:none\">courseId:" + lesson.courseid + "</li>";
+							t = t+ "<li style=\"display:none\">lessonId:" + lesson.id
+								 +"</li><li style=\"display:none\">courseId:" + lesson.courseId + "</li>";
 							
 							t= t+ "<li><small>" + lesson.danceName.replace("少儿","") + lesson.danceGrade  + "</small>" +"</li><li><small>"
 								+lesson.startTime.substring(0,5)+"-"+lesson.endTime.substring(0,5)+"</small></li><li><small>"
 								+lesson.dueTeacherName+"</small></li>" ;
-							if(lesson.courseType =="开放式"){
+							if(lesson.courseType =="OPENED"){
 							//	开放式的预约： 预约人数/签到人数/容量
-								t= t+ "<li><small>预约:" + lesson.appointedStudentCount 
-									+ "/" +lesson.checkedInsStudentCount
+								t= t+ "<li><small>预约:" + Number(lesson.appointedStudentCount) 
+									+ "/" +Number(lesson.checkedInStudentCount)
 									+ "/" +lesson.maxStudentCount
 									+"</small></li></ul>";
 							}else{
 //								封闭式添加当前课程状态
 //								t = t+ "<li><small>" +  getChineseLessonStatus(lesson.lessonStatus) + "</small></li></ul>";
 //								封闭式添加当前课程进度
-								if(lesson.orderInCourse==lesson.sumTimesOfCourse){
-									t = t+ "<li><small class='complete'>进度:" + lesson.orderInCourse + "/" +  lesson.sumTimesOfCourse + "</small></li></ul>";
+								if(lesson.ordinalNo==lesson.sumTimesOfCourse){
+									t = t+ "<li><small class='complete'>进度:" + lesson.ordinalNo + "/" +  lesson.sumTimesOfCourse + "</small></li></ul>";
 								}else{
-									t = t+ "<li><small>进度:" + lesson.orderInCourse + "/" +  lesson.sumTimesOfCourse + "</small></li></ul>";
+									t = t+ "<li><small>进度:" + lesson.ordinalNo + "/" +  lesson.sumTimesOfCourse + "</small></li></ul>";
 								}
 							}
 						}
@@ -238,7 +238,7 @@ function loadStores(v_districtId){
   				$('.text_left_type').text(($(this).text())); 
   				v_data.courseType=$(this).val();
   				alert(v_data.courseType);
-  				loadLessonTable("api/lesson/weeklist",v_data);
+  				loadLessonTable("/api/temp/weekLessons",v_data);
   								}) 
 			},
 			error: function(jqXHR){     

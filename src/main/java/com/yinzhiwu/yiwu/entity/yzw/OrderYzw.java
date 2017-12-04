@@ -84,7 +84,7 @@ public class OrderYzw extends BaseYzwEntity {
 	@JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "fk_order_customer_id", value = ConstraintMode.NO_CONSTRAINT))
 	private CustomerYzw customer;
 
-	@NotNull
+//	@NotNull
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private Distributer distributer;

@@ -1,4 +1,4 @@
-//var baseApiUrl="http://192.168.0.115:8080/yiwu/";
+var baseApiUrl="http://yzw.chenksoft.com:8080/yiwu/";
 //var baseApiUrl="http://www.yinzhiwu.com:9090/yiwu/";
 var baseApiUrl="";
 
