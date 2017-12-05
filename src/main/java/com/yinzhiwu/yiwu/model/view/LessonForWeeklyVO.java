@@ -143,9 +143,10 @@ public class LessonForWeeklyVO {
 					vo.setCheckedIn(false);
 				}
 			}else{
-				//设置 coachCheckedInStatus
-				vo.setCoachCheckedInStatus(getCoachCheckedStatus(lesson));
+				;
 			}
+			//设置 coachCheckedInStatus
+			vo.setCoachCheckedInStatus(getCoachCheckedStatus(lesson));
 			return vo;
 		}
 
