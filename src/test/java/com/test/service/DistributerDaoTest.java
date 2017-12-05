@@ -12,7 +12,7 @@ public class DistributerDaoTest extends BaseSpringTest{
 	@Autowired DistributerDaoImpl distributerDaoImpl;
 	
 	@Test
-//	@Rollback(false)
+	@Rollback(false)
 	public void testUdateBingable(){
 		distributerDaoImpl.setUnBindChangable();
 	}

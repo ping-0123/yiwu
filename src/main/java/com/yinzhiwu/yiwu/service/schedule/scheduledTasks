@@ -8,3 +8,5 @@ EmployeeYzwServiceImpl#setNewEmployeeNumberEveryNigth()
 LessonYzwDaoImpl#updateCheckedinLessonsStatus()
 #将课时表中实到教师Id为0 改为null
 LessonYzwDaoImpl#updateZeroActualTeacher()
+# 七天前注册的客户不能修改绑定关系
+DistributerDaoImpl#setUnBindChangable()
