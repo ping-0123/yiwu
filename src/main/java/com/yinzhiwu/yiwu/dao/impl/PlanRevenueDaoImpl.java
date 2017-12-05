@@ -23,8 +23,11 @@ public class PlanRevenueDaoImpl extends BaseDaoImpl<PlanRevenue, Integer> implem
 		}
 		
 		List<PlanRevenue> revenues = findByProperties(properties, values);
-		if(revenues.size() == 0)
-			return new PlanRevenue(storeId, year, month, 0.0);
+		if(revenues.size() == 0){
+			// return new PlanRevenue(storeId, year, month, 0.0);
+			//TODO
+			return new PlanRevenue();
+		}
 		else if (revenues.size() ==1) {
 			return revenues.get(0);
 		}else {
@@ -32,7 +35,9 @@ public class PlanRevenueDaoImpl extends BaseDaoImpl<PlanRevenue, Integer> implem
 			for (PlanRevenue r : revenues) {
 				sum = sum + r.getAmount();
 			}
-			return new PlanRevenue(storeId, year, month, sum);
+//			return new PlanRevenue(storeId, year, month, sum);
+			//TODO
+			return new PlanRevenue();
 		}
 		
 	}

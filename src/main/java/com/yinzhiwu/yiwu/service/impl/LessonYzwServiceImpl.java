@@ -101,7 +101,6 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 			vos.add(vo);
 		}
 		
-		logger.info("vo size is " + vos.size()) ;
 		return _wrapToOneDayLessonsVOs(vos,start);
 	}
 

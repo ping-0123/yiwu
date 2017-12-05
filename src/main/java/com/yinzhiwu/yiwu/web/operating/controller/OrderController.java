@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
@@ -28,7 +27,6 @@ import com.yinzhiwu.yiwu.service.ProductYzwService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 import com.yinzhiwu.yiwu.web.operating.view.OrderView;
 import com.yinzhiwu.yiwu.web.operating.view.OrderView.OrderViewConverter;
-import com.yinzhiwu.yiwu.zhangkaitao.common.web.interceptor.SetCommonDataFilter;
 
 /**
 * @author 作者 ping

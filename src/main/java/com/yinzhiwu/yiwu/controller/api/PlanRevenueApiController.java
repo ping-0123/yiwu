@@ -111,11 +111,9 @@ public class PlanRevenueApiController {
 	public String doPut(@ModelAttribute PlanRevenue plan, Model model) {
 		PlanRevenue p = new PlanRevenue();
 		p.setId(plan.getId());
-		p.setStoreId(plan.getStoreId());
+//		p.setStoreId(plan.getStoreId());
 		p.setYear(plan.getYear());
 		p.setMonth(plan.getMonth());
-		p.setProductType(new ProductType());
-		p.getProductType().setId(plan.getProductType().getId());
 		p.setAmount(plan.getAmount());
 		planService.saveOrUpdate(p);
 
