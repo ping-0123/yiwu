@@ -1,10 +1,17 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.type.IntegerType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.dao.DistributerDao;
@@ -12,6 +19,7 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
+import com.yinzhiwu.yiwu.util.CalendarUtil;
 import com.yinzhiwu.yiwu.util.SecurityUtil;
 import com.yinzhiwu.yiwu.util.ShareCodeUtil;
 import com.yinzhiwu.yiwu.web.purchase.dto.CustomerDto;
@@ -225,4 +233,22 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		return (customers.size()> 0)?customers.get(0):null;
 	}
 
+	
+	@Transactional
+	@Scheduled(cron="0 20 0 * * ?")
+	public void setUnBindChangable(){
+		
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaUpdate<Distributer> criteriaUpdate = builder.createCriteriaUpdate(Distributer.class);
+		Root<Distributer> root = criteriaUpdate.from(Distributer.class);
+		criteriaUpdate.set(root.get("bindChangable"), false);
+		
+		//一周之前的不能再变了
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH,-7);
+		criteriaUpdate.where(
+				builder.and(builder.or(builder.equal(root.get("bindChangable"), true),builder.isNull(root.get("bindChangable"))),
+							builder.lessThan(root.get("createTime"), CalendarUtil.getDayBegin(calendar).getTime())));
+		getSession().createQuery(criteriaUpdate).executeUpdate();
+	}
 }
