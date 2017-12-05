@@ -117,30 +117,34 @@ public class DistributerServiceImpl extends BaseServiceImpl<Distributer, Integer
 		}
 		
 		//set distributer customer
+		CustomerYzw customer = null;
 		if(StringUtils.hasText(memberCard)){
-			CustomerYzw customer = null;
 			try {
 				customer = customerDao.getByMemberCard(memberCard);
 			} catch (DataNotFoundException e) {
 				throw new YiwuException("输入的会员卡号在系统中不存在");
 			}
-			distributer.setCustomer(customer);
-			distributer.setMemberCard(memberCard);
-			
+		}
+		if(null == customer){
+			customer = customerDao.findOneByPhoneNoForRegister(mobileNumber);
+		}
+		
+		if(null != customer){
+			distributer.setMemberCard(customer.getMemberCard());
 			distributer.setServer(customer.getSalesman());
 			distributer.setBirthday(customer.getBirthday());
 			distributer.setName(customer.getName());
 			distributer.setCustomerAgeType(customer.getCustomerAgeType());
 			distributer.setGender(customer.getGender());
 		}else{
-			CustomerYzw customer;
 			customer = new CustomerYzw();
 			customer.setSalesman(distributer.getServer());
 			customer.setMobilePhone(mobileNumber);
 			customer.init();
-			
-			distributer.setCustomer(customer);
 		}
+		
+		distributer.setCustomer(customer);
+			
 		
 		if(null != storeId){
 			try {

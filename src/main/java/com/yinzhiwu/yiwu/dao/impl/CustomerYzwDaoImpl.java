@@ -6,12 +6,15 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
+import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
@@ -32,12 +35,15 @@ public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implem
 		
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<CustomerYzw> criteria = builder.createQuery(CustomerYzw.class);
-		Root<CustomerYzw> root = 
-		criteria.from(CustomerYzw.class);
+		Root<CustomerYzw> root = criteria.from(CustomerYzw.class);
+//		Join<CustomerYzw, Distributer> join = root.join("distributer", JoinType.LEFT);
 		criteria.where(
-				builder.equal(root.get("mobilePhone"), phoneNo));
+				builder.and(
+				builder.equal(root.get("mobilePhone"), phoneNo),
+				builder.isNull(root.get("distributer"))
+						));
 		criteria.orderBy(
-				builder.desc(root.get("createTime")));
+				builder.desc(root.get("lastChangeTime")));
 		
 		try{
 			return getSession().createQuery(criteria)
@@ -47,6 +53,33 @@ public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implem
 			return null;
 		}
 		
+	}
+	
+	@Override
+	public CustomerYzw findOneByPhoneNoForRegister(String mobileNumber) {
+		Assert.hasText(mobileNumber);
+		
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<CustomerYzw> criteria = builder.createQuery(CustomerYzw.class);
+		Root<CustomerYzw> root = criteria.from(CustomerYzw.class);
+//		Root<Distributer> distributerRoot = criteria.from(Distributer.class);
+		Join<CustomerYzw, Distributer> distributerJoin = root.join("distributer", JoinType.LEFT);
+		criteria.where(
+				builder.and(
+				builder.equal(root.get("mobilePhone"), mobileNumber),
+//				builder.equal(root.get("id"), distributerRoot.get("customer").get("id"))
+				builder.isNull(distributerJoin.get("id"))
+						));
+		criteria.orderBy(
+				builder.desc(root.get("lastChangeTime")));
+		
+		try{
+			return getSession().createQuery(criteria)
+					.setMaxResults(1)
+					.getSingleResult();
+		}catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
@@ -137,6 +170,8 @@ public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implem
 		return findOneByProperty(
 				"memberCard", memberCard);
 	}
+
+
 
 
 }

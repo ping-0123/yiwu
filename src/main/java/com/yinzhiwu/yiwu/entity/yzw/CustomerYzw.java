@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -118,8 +119,8 @@ public class CustomerYzw extends BaseYzwEntity {
 	//定金
 	private Float earnest;
 
-	// @OneToOne(mappedBy="customer",fetch=FetchType.LAZY)
-	// private Distributer distributer;
+	 @OneToOne(mappedBy="customer",fetch=FetchType.LAZY)
+	 private Distributer distributer;
 	//
 	public CustomerYzw() {
 		super();
@@ -371,7 +372,16 @@ public class CustomerYzw extends BaseYzwEntity {
 	}
 
 	
-	
+	public Distributer getDistributer() {
+		return distributer;
+	}
+
+	public void setDistributer(Distributer distributer) {
+		this.distributer = distributer;
+	}
+
+
+
 	public enum CustomerAgeType{
 		
 		CHILDREN("少儿"),

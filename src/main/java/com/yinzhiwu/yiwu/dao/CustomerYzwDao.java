@@ -18,4 +18,6 @@ public interface CustomerYzwDao extends IBaseDao<CustomerYzw, Integer> {
 
 	public List<CustomerYzw> findAllByMobilePhone(String mobileNumber);
 
+	public CustomerYzw findOneByPhoneNoForRegister(String mobileNumber);
+
 }
