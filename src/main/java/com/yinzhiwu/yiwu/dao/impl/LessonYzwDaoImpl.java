@@ -97,13 +97,13 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		StringBuilder hql = new StringBuilder();
 		hql.append("FROM LessonYzw t1");
 		hql.append(" WHERE t1.lessonDate BETWEEN :start and :end" );
-		hql.append(" AND t1.courseType <> :privateCourseType");
+//		hql.append(" AND t1.courseType <> :privateCourseType");
 		properties.add("start");
 		properties.add("end");
-		properties.add("privateCourseType");
+//		properties.add("privateCourseType");
 		values.add(start);
 		values.add(end);
-		values.add(CourseType.PRIVATE);
+//		values.add(CourseType.PRIVATE);
 		if(null != storeId && storeId > 0){
 			hql.append(" AND t1.store.id = :storeId");
 			properties.add("storeId");
