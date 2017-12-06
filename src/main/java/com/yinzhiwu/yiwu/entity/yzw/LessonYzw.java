@@ -477,6 +477,8 @@ public class LessonYzw extends BaseYzwEntity {
 	
 	
 	public CheckedInStatus getCoachCheckedinStatus() {
+		if(this.coachCheckedinStatus == null)
+			this.coachCheckedinStatus = CheckedInStatus.UN_CHECKED;
 		return coachCheckedinStatus;
 	}
 
