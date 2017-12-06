@@ -119,7 +119,7 @@ public class LessonForWeeklyVO {
 	@MapedProperty(ignored=true)
 	private Boolean checkedIn;
 	
-	@MapedProperty(ignored=true)
+	@MapedProperty(value="coachCheckedinStatus")
 	private CheckedInStatus coachCheckedInStatus;
 	
 	public static final class LessonForWeeklyVOConverter extends AbstractConverter<LessonYzw, LessonForWeeklyVO>
@@ -143,13 +143,15 @@ public class LessonForWeeklyVO {
 					vo.setCheckedIn(false);
 				}
 			}else{
+				//设置 coachCheckedInStatus
+//				vo.setCoachCheckedInStatus(getCoachCheckedStatus(lesson));
 				;
 			}
 			//设置 coachCheckedInStatus
-			vo.setCoachCheckedInStatus(getCoachCheckedStatus(lesson));
 			return vo;
 		}
 
+		@SuppressWarnings("unused")
 		private CheckedInStatus getCoachCheckedStatus(LessonYzw lesson) {
 			if(null != lesson.getActualTeacher()){
 				try {

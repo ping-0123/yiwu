@@ -61,13 +61,16 @@ VIEW `vlesson` AS
     FROM
         `chenkuserdb1`.`skt7`;
         
-	UPDATE vlesson set coachCheckedinStatus = 'UN_CHECKED'  WHERE shidaoTeacherId IS NULL;
+UPDATE vlesson set coachCheckedinStatus = 'UN_CHECKED'  WHERE shidaoTeacherId IS NULL;
     
-    update vlesson t1 
+
+update vlesson t1 
 		join vcheck_ins t2 on (t1.id = t2.lesson_id and t1.shidaoTeacherId = t2.teacher_id)
-	set t1.coachCheckedinStatus = 
-		(case 1 when t1.start_date_time >= t2.sf_create_time then 'CHECKED'
-				when datediff(t2.sf_create_time, t1.start_date_time) =0 then 'LATE'
-				ELSE 'PATCHED' 
-				END)
-	where t1.coachCheckedinStatus is null and t1.yindaoTeacherId is not NULL;
+set t1.coachCheckedinStatus = 
+	(case 1 when t1.start_date_time >= t2.sf_create_time then 'CHECKED'
+			when datediff(t2.sf_create_time, t1.start_date_time) =0 then 'LATE'
+			ELSE 'PATCHED' 
+			END)
+where t1.coachCheckedinStatus ='UN_CHECKED' OR T1.coachCheckedinStatus IS NULL
+	and t1.yindaoTeacherId is not NULL;
+    

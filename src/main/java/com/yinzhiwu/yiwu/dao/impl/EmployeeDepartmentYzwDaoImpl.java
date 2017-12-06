@@ -90,11 +90,16 @@ public class EmployeeDepartmentYzwDaoImpl extends BaseDaoImpl<EmployeeDepartment
 		hql.append(" FROM EmployeeDepartmentYzw t1");
 		hql.append(" WHERE t1.employee.id=:employeeId");
 		hql.append(" AND t1.removed =:removed");
-		return getSession().createQuery(hql.toString(), DepartmentYzw.class)
-				.setParameter("employeeId", id)
-				.setParameter("removed", false)
-				.setMaxResults(1)
-				.getSingleResult();
+		
+		try{
+			return getSession().createQuery(hql.toString(), DepartmentYzw.class)
+					.setParameter("employeeId", id)
+					.setParameter("removed", false)
+					.setMaxResults(1)
+					.getSingleResult();
+		}catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
