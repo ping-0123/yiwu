@@ -10,13 +10,14 @@ var WEB_BASE_URL = "http://192.168.0.115:9090/"
 var BASE_DELETE_FILE_URL = "http://192.168.0.115:9090/yiwu/system/qiniu/"
 
 $(document).ready(function() {
-	if($TABLE == undefined)
-		return;;
+	if($TABLE == undefined) {
+        return;
+    }
 	TABLE = $TABLE.DataTable(setting);
 });
 
 /**
- * 关闭模态框自动清除数据
+ * 关闭模态框是清除数据
  */
 $(".modal").on("hidden.bs.modal", function() {
 	$(this).removeData("bs.modal");
@@ -28,8 +29,9 @@ $(".modal").on("hidden.bs.modal", function() {
  * @returns
  */
 function refreshDataTable(table) {
-	if(table == null)
+	if(table == null){
 		TABLE.draw(false);
+	}
 	table.draw(false);
 }
 
@@ -283,8 +285,9 @@ function showQiniuDropzoneModal(token, saveUrl, confirmcallback) {
 				});
 			} else {
 				// 删除在云上的文件
-				if(fileKey != null)
-					deleteQiniuFile(fileKey);
+				if(fileKey != null) {
+                    deleteQiniuFile(fileKey);
+                }
 			}
 		}
 	});
@@ -471,7 +474,8 @@ function translateProductCardType(type) {
  * @param type
  * @returns
  */
-function transferUsableRangeType(type){
+function  transferUsableRangeType(type){
+
 	switch (type) {
 	case 'ONE_STORE':
 		return '仅一个门店使用';
@@ -480,6 +484,26 @@ function transferUsableRangeType(type){
 	default:
 		return '';
 	}
+}
+
+/**
+ * 转换业务类型为中文
+ * @param type
+ * @returns {*}
+ */
+function  translatePerformaceType(type) {
+    switch (type) {
+        case 'CHILD':
+            return '少儿业绩';
+        case 'ADULT':
+            return '成人业绩';
+        case 'PRESENTER':
+            return '小主持人业绩';
+        case 'GENERAL':
+            return '其他'
+        default:
+            return '';
+    }
 }
 
 /**

@@ -408,7 +408,7 @@ public class ProductYzw extends BaseYzwEntity {
 	public enum PerformanceType{
 		CHILD("少儿业绩"),
 		ADULT("成人业绩"),
-		PRSENTER("小主持人业绩"),
+		PRESENTER("小主持人业绩"),
 		GENERAL("所有");
 		
 		private final String name;

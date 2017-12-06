@@ -11,7 +11,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>岗位设置</title>
+<title>产品列表</title>
 
 <!-- Font Awesome -->
 <link href="../../assets/font-awe	some/css/font-awesome.min.css" rel="stylesheet">

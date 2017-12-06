@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+    <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="ping" uri="http://yinzhiwu.com/yiwu/tags/ping"%>
@@ -47,7 +47,12 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<div>${distributer.name }的订单</div>
+                        <shiro:hasPermission name="operatingPlans:create:*">
+                            <button type="button" data-remote="./createForm" class="btn btn-primary" data-toggle="modal" data-target=".modal-create">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
+                            </button>
+                        </shiro:hasPermission>
+
 						<ul class="nav navbar-right panel_toolbox">
 							<li><a class="collapse-link"> <i class="fa fa-chevron-up"></i></a></li>
 							<li><a href=""> <i class="fa fa-refresh"></i></a></li>
@@ -58,34 +63,21 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content table-responsive">
-						<table id="orderDatatable" class="table table-bordered table-hover table-condensed" width="100%">
+						<table id="yiwuDatatable" class="table table-bordered table-hover table-condensed" width="100%">
 							<thead>
 								<tr>
 								</tr>
 							</thead>
-							
+
 							<tfoot>
 								<tr>
-									<th></th>
-									<th>合计</th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-								</tr>
+                                    <th></th>
+                                    <th>合计</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    </tr>
 							</tfoot>
 						</table>
 					</div>
@@ -98,13 +90,12 @@
 
 	<!-- bootstrap modals -->
 	<!-- create modal -->
-	<div class="modal fade bs-example-modal-lg modal-detail" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg modal-create" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content"></div>
 		</div>
 	</div>
-
-	<!-- create modal -->
+	<!-- end create modal -->
 
 	<!-- update modal -->
 	<div class="modal fade bs-example-modal-lg modal-update" tabindex="-1" role="dialog" aria-hidden="true">
@@ -140,7 +131,7 @@
 			"select" : true,
 			"language" : {
 				"url" : "../../backend/config/i18n/datatable-chinese.json",
-				"searchPlaceholder" : "会员卡号,呢称,姓名,手机号码"
+				"searchPlaceholder" : "门店名"
 			},
 			"dom" : "<'row'<'col-sm-4 col-md-4' l><'col-sm-8 col-md-8' f>>tip",
 			"ajax" : {
@@ -148,163 +139,67 @@
 				"type" : "POST"
 			},
 			"footerCallback" : function(tfoot, data, start, end, display) {
-				if(null !=data && data.length> 0){
-					var api = this.api();
-					$(api.column(5).footer()).html(
-
-							api.column(5).data().reduce(function(a, b) {
-								return a + b;
-							}));
-				}
-			},
+                if(null !=data && data.length> 0){
+                    var api = this.api();
+                    $(api.column(4).footer()).html(
+                                api.column(4).data().reduce(function(a, b) {
+                                    return a + b;
+                                }));
+                }
+            },
 			"fixedHeader" : {
 				"header" : true,
 				"footer" : true
 			},
 			"columns" : [
 					{
-						"data" : "productId",
-						"title" : "产品Id",
+						"data" : "id",
+						"title" : "id",
 						"visible" : false
 					},
 					{
-						"title" : "产品名",
-						"data" : "productName",
+						"title" : "门店",
+						"data" : "storeName",
 						"name" : ""
 					},
 					{
-						"title" : "标价",
-						"data" : "markedPrice"
+						"title" : "月份",
+						"data" : "month",
+                        "render": function(data,type,row,meta){
+                            return formatDate(data,'yyyy年MM月');
+                         }
 					},
 					{
-						"data" : "count",
-						"title" : "购买数量"
+						"data" : "type",
+						"title" : "类型",
+						"render":function(data, type, row, meta){
+							return translatePerformaceType(data);
+						}
 					},
 					{
-						"data" : "discount",
-						"title" : "折扣"
-					},
-					{
-						"data" : "payedAmount",
+						"data" : "amount",
 						"title" : "金额"
-					},
-					{
-						"data" : "payedDate",
-						"title" : "成交日期",
-						"searchable" : false
-					},
-					{
-						"data" : "storeName",
-						"title" : "门店"
-					},
-					{
-						"data" : "contract.contractNo",
-						"title" : "合约编号"
-					},
-					{
-						"data" : "contract.start",
-						"title" : "开始日期"
-					},
-					{
-						"data" : "contract.end",
-						"title" : "结束日期"
-					},
-					{
-						"data" : "contract.validityTimes",
-						"title" : "有效次数"
-					},
-					{
-						"data" : "contract.remainTimes",
-						"title" : "剩余次数"
-					},
-					{
-						"data" : "contract.withHoldTimes",
-						"title" : "待结算次数"
-					},
-					{
-						"data" : "contract.type",
-						"title" : "合约类型",
-						"render" : function(data, type, row, meta) {
-							return translateCourseType(data);
-						}
-					},
-					{
-						"data" : "contract.subType",
-						"title" : "合约中类",
-						"render" : function(data, type, row, meta) {
-							return translateSubCourseType(data);
-						}
-					},
-					{
-						"data" : "contract.validStoreIds",
-						"title" : "有效门店"
-					},
-					{
-						"data" : "contract.status",
-						"title" : "合约状态",
-						"render" : function(data, type, row, meta) {
-							return translateContractStatus(data);
-						}
 					},
 					{
 						"data" : "id",
 						"title" : "操作",
 						"render" : function(data, type, row, meta) {
 							var html = '';
-							<shiro:hasPermission name="orders:update:*">
-							html = html
-									+ '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"> [修改]</a>';
+							<shiro:hasPermission name="operatingPlans:update:*">
+							    html = html+ '<a href="' + row.id + '/updateForm" data-toggle="modal" data-target=".modal-update"><i class="fa fa-pencil" title="修改"></i></a>';
 							</shiro:hasPermission>
-							<shiro:hasPermission name="orders:view:*">
-							html = html
-									+ '<a href="details?coachId='
-									+ row.id
-									+ '" data-toggle="modal" data-target=".modal-detail"> [查看订单]  </a>';
+							<shiro:hasPermission name="operatingPlans:delete:*">
+							    html = html+ '<a href="#" onclick="showDeleteModal(' + row.id + ',deleteCallback)"> <small> <i class="fa fa-trash" title="删除"> </i> </small> </a>';
 							</shiro:hasPermission>
 
 							return html;
 						}
 					} ]
 		}; //end datatable setting
-		$(document).ready(function() {
-			table = $('#orderDatatable').DataTable(setting);
 
-		});
-
-		/**
-		 * 
-		 * @param contractStatus
-		 * @returns
-		 */
-		function translateContractStatus(contractStatus) {
-			switch (contractStatus) {
-			case "UN_PAYED":
-				return "待付款";
-			case "UN_VERIFIED":
-				return "未确认";
-			case "VERIFIED":
-				return "已确认";
-			case "UN_CHECKED":
-				return "未审核";
-			case "UN_CHECKED":
-				return "未开始";
-			case "CHECKED":
-				return "已审核";
-			case "UN_PASSED":
-				return "审核未通过";
-			case "LEFT":
-				return "请假";
-			case "RETURNED_PREMIUM":
-				return "退费";
-			case "FORBIDDEN":
-				return "禁用";
-			case "EXPIRED":
-				return "到期";
-
-			default:
-				return "";
-			}
-		}
+        function deleteCallback(){
+           TABLE.draw(false);
+        }
 	</script>
 
 	<script src="../../backend/js/main.js"></script>
