@@ -72,8 +72,8 @@ public class OrderYzw extends BaseYzwEntity {
 	@Column
 	private Integer count;
 
-	@Min(0)
-	@Max(1)
+//	@Min(0)
+//	@Max(1)
 	@Column
 	private Float discount;
 

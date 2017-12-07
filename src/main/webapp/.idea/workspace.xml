@@ -17,8 +17,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1179">
-              <caret line="485" column="8" lean-forward="false" selection-start-line="485" selection-start-column="8" selection-end-line="485" selection-end-column="8" />
+            <state relative-caret-position="399">
+              <caret line="21" column="35" lean-forward="true" selection-start-line="21" selection-start-column="35" selection-end-line="21" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -29,50 +29,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="570">
               <caret line="30" column="7" lean-forward="false" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="7" />
-              <folding>
-                <marker date="1512626113962" expanded="true" signature="4733:4738" ph="{...}" />
-                <marker date="1512626113962" expanded="true" signature="4733:7080" ph="{&quot;dom&quot;: &quot;&lt;'row'&lt;'col-sm-4 col-md-4' l&gt;&lt;'col-sm-8 col-md-8' f&gt;&gt;tip&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="4733:7813" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="4759:4806" ph="{...}" />
-                <marker date="1512626113962" expanded="true" signature="4823:7076" ph="[...]" />
-                <marker date="1512626113962" expanded="true" signature="4830:4914" ph="{&quot;data&quot;: &quot;productId&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="4921:5000" ph="{&quot;name&quot;: &quot;&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5007:5066" ph="{&quot;title&quot;: &quot;标价&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5073:5128" ph="{&quot;data&quot;: &quot;count&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5135:5191" ph="{&quot;data&quot;: &quot;discount&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5198:5257" ph="{&quot;data&quot;: &quot;payedAmount&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5264:5351" ph="{&quot;data&quot;: &quot;payedDate&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5358:5415" ph="{&quot;data&quot;: &quot;storeName&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5422:5491" ph="{&quot;data&quot;: &quot;contract.contractNo&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5498:5562" ph="{&quot;data&quot;: &quot;contract.start&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5569:5631" ph="{&quot;data&quot;: &quot;contract.end&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5638:5710" ph="{&quot;data&quot;: &quot;contract.validityTimes&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5717:5787" ph="{&quot;data&quot;: &quot;contract.remainTimes&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5794:5867" ph="{&quot;data&quot;: &quot;contract.withHoldTimes&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5874:6038" ph="{&quot;data&quot;: &quot;contract.type&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="5981:6031" ph="{...}" />
-                <marker date="1512626113962" expanded="true" signature="6045:6215" ph="{&quot;data&quot;: &quot;contract.subType&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="6222:6294" ph="{&quot;data&quot;: &quot;contract.validStoreIds&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="6301:6471" ph="{&quot;data&quot;: &quot;contract.status&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="6410:6464" ph="{...}" />
-                <marker date="1512626113962" expanded="true" signature="6478:7074" ph="{&quot;data&quot;: &quot;id&quot;...}" />
-                <marker date="1512626113962" expanded="true" signature="6572:7067" ph="{...}" />
-                <marker date="1512626113962" expanded="true" signature="6646:6803" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="6853:7037" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="7137:7195" ph="{...}" />
-                <marker date="1512626113962" expanded="true" signature="7201:7257" ph="/** @param contractStatus ...*/" />
-                <marker date="1512626113962" expanded="true" signature="7359:7377" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="7400:7418" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="7438:7456" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="7478:7496" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="7518:7536" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="7555:7573" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="7594:7614" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="7630:7647" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="7675:7692" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="7713:7730" ph="..." />
-                <marker date="1512626113962" expanded="true" signature="7749:7766" ph="..." />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -93,6 +50,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/WEB-INF/jsps/courseTemplates/createForm.jsp" />
+        <option value="$PROJECT_DIR$/backend/js/main.js" />
       </list>
     </option>
   </component>
@@ -102,7 +60,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
@@ -213,10 +171,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2307000" />
+    <option name="totallyTimeSpent" value="2701000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14895834" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -421,65 +379,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/orders/list.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="30" column="7" lean-forward="false" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="7" />
-          <folding>
-            <marker date="1512626113962" expanded="true" signature="4733:4738" ph="{...}" />
-            <marker date="1512626113962" expanded="true" signature="4733:7080" ph="{&quot;dom&quot;: &quot;&lt;'row'&lt;'col-sm-4 col-md-4' l&gt;&lt;'col-sm-8 col-md-8' f&gt;&gt;tip&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="4733:7813" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="4759:4806" ph="{...}" />
-            <marker date="1512626113962" expanded="true" signature="4823:7076" ph="[...]" />
-            <marker date="1512626113962" expanded="true" signature="4830:4914" ph="{&quot;data&quot;: &quot;productId&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="4921:5000" ph="{&quot;name&quot;: &quot;&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5007:5066" ph="{&quot;title&quot;: &quot;标价&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5073:5128" ph="{&quot;data&quot;: &quot;count&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5135:5191" ph="{&quot;data&quot;: &quot;discount&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5198:5257" ph="{&quot;data&quot;: &quot;payedAmount&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5264:5351" ph="{&quot;data&quot;: &quot;payedDate&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5358:5415" ph="{&quot;data&quot;: &quot;storeName&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5422:5491" ph="{&quot;data&quot;: &quot;contract.contractNo&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5498:5562" ph="{&quot;data&quot;: &quot;contract.start&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5569:5631" ph="{&quot;data&quot;: &quot;contract.end&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5638:5710" ph="{&quot;data&quot;: &quot;contract.validityTimes&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5717:5787" ph="{&quot;data&quot;: &quot;contract.remainTimes&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5794:5867" ph="{&quot;data&quot;: &quot;contract.withHoldTimes&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5874:6038" ph="{&quot;data&quot;: &quot;contract.type&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5981:6031" ph="{...}" />
-            <marker date="1512626113962" expanded="true" signature="6045:6215" ph="{&quot;data&quot;: &quot;contract.subType&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="6222:6294" ph="{&quot;data&quot;: &quot;contract.validStoreIds&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="6301:6471" ph="{&quot;data&quot;: &quot;contract.status&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="6410:6464" ph="{...}" />
-            <marker date="1512626113962" expanded="true" signature="6478:7074" ph="{&quot;data&quot;: &quot;id&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="6572:7067" ph="{...}" />
-            <marker date="1512626113962" expanded="true" signature="6646:6803" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="6853:7037" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7137:7195" ph="{...}" />
-            <marker date="1512626113962" expanded="true" signature="7201:7257" ph="/** @param contractStatus ...*/" />
-            <marker date="1512626113962" expanded="true" signature="7359:7377" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7400:7418" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7438:7456" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7478:7496" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7518:7536" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7555:7573" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7594:7614" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7630:7647" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7675:7692" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7713:7730" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7749:7766" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/products/list.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
-          <caret line="61" column="60" lean-forward="false" selection-start-line="61" selection-start-column="60" selection-end-line="61" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/posts/list.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="418">
@@ -642,10 +541,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/products/list.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="61" column="60" lean-forward="false" selection-start-line="61" selection-start-column="60" selection-end-line="61" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/orders/list.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="30" column="7" lean-forward="false" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/backend/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1179">
-          <caret line="485" column="8" lean-forward="false" selection-start-line="485" selection-start-column="8" selection-end-line="485" selection-end-column="8" />
+        <state relative-caret-position="399">
+          <caret line="21" column="35" lean-forward="true" selection-start-line="21" selection-start-column="35" selection-end-line="21" selection-end-column="35" />
           <folding />
         </state>
       </provider>

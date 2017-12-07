@@ -11,7 +11,7 @@ var BASE_DELETE_FILE_URL = "http://192.168.0.115:9090/yiwu/system/qiniu/"
 
 $(document).ready(function() {
 	if($TABLE == undefined)
-		return;;
+		return;
 	TABLE = $TABLE.DataTable(setting);
 });
 
