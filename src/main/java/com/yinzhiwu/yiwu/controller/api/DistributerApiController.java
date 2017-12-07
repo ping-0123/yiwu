@@ -275,6 +275,7 @@ public class DistributerApiController extends BaseController {
 		
 		jsmsService.validateSMSCode(JSMSTemplate.BIND_MOBILE_NUMBER, bindingMobileNumber, bindingCode);
 		distributer.setPhoneNo(bindingMobileNumber);
+		distributer.getCustomer().setMobilePhone(bindingMobileNumber);
 		distributerService.update(distributer);
 		
 		return YiwuJson.createBySuccess(DistributerApiViewConverter.instance.fromPO(distributer));
