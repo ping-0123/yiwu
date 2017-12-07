@@ -1,3 +1,5 @@
+"use strict":
+
 /**
  * 约定：$开头表示选择器
  */
@@ -10,8 +12,8 @@ var WEB_BASE_URL = "http://192.168.0.115:9090/"
 var BASE_DELETE_FILE_URL = "http://192.168.0.115:9090/yiwu/system/qiniu/"
 
 $(document).ready(function() {
-	if($TABLE == undefined)
-		return;
+	if ($TABLE === undefined){
+		return;}
 	TABLE = $TABLE.DataTable(setting);
 });
 
@@ -28,8 +30,9 @@ $(".modal").on("hidden.bs.modal", function() {
  * @returns
  */
 function refreshDataTable(table) {
-	if(table == null)
-		TABLE.draw(false);
+	if(table === null) {
+        TABLE.draw(false);
+    }
 	table.draw(false);
 }
 
