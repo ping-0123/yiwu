@@ -251,7 +251,14 @@ function showQiniuDropzoneModal(token, saveUrl, confirmcallback) {
 				dictMaxFilesExceeded: "已超出允许的最大上传文件数量",
 				maxFiles: 1,
 				filesizeBase: 1024,
+                timeout : 1000000,
+                chunking: true,
+                chunkSize: 4194304,
+                parallelChunkUploads: false,
+                retryChunks: true,
+                retryChunksLimit:5,
 				success: function(file, response, e) {
+					console.log(file.name + " upload success");
 					fileKey = response.key;
 					fileName = file.name;
 				},
@@ -259,6 +266,9 @@ function showQiniuDropzoneModal(token, saveUrl, confirmcallback) {
 					this.on("removedfile", function(file) {
 						deleteQiniuFile(fileKey);
 					});
+				},
+                chunksUploaded:function(file){
+					console.log('all chunks of the file:' + file.name +' uploaded');
 				}
 			});
 		},
