@@ -1,5 +1,6 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
+import java.beans.Expression;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -18,6 +20,7 @@ import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.CheckedInStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
@@ -362,6 +365,28 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 			.setParameter("current", CalendarUtil.getDayBegin(Calendar.getInstance()).getTime())
 			.setParameter("unchecked", LessonStatus.UN_CHECKED)
 			.executeUpdate();
+		
+	}
+	
+	@Transactional
+	@Scheduled(cron="0 30 1 * * ?")
+	public void updateCoachCheckedinStatus(){
+		updateUnchecked();
+	}
+	
+	private void updateUnchecked(){
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaUpdate<LessonYzw> update1 = builder.createCriteriaUpdate(LessonYzw.class);
+		Root<LessonYzw> root = update1.from(LessonYzw.class);
+//		update1.set(root.get("coachCheckedinStatus"), CheckedInStatus.UN_CHECKED);
+		javax.persistence.criteria.Expression<CheckedInStatus> selectCase =(javax.persistence.criteria.Expression<CheckedInStatus>) builder.selectCase(root.<LessonStatus>get("lessonStatus"))
+		.when( LessonStatus.UN_CHECKED, CheckedInStatus.NON_CHECKABLE) 
+		.otherwise(CheckedInStatus.UN_CHECKED);
+		update1.set(root.<CheckedInStatus>get("coachCheckedinStatus"), 
+				selectCase )
+			.where(builder.isNull(root.get("dueTeacher").get("id")));
+		
+		getSession().createQuery(update1).executeUpdate();
 		
 	}
 }
