@@ -258,7 +258,7 @@ function showQiniuDropzoneModal(token, saveUrl, confirmcallback) {
                 retryChunks: true,
                 retryChunksLimit:5,
 				success: function(file, response, e) {
-					console.log(file.name + " upload success");
+					console.log(file.name + " upload success, its file key is " + response.key);
 					fileKey = response.key;
 					fileName = file.name;
 				},
@@ -267,8 +267,9 @@ function showQiniuDropzoneModal(token, saveUrl, confirmcallback) {
 						deleteQiniuFile(fileKey);
 					});
 				},
-                chunksUploaded:function(file){
+                chunksUploaded:function(file,done){
 					console.log('all chunks of the file:' + file.name +' uploaded');
+					done();
 				}
 			});
 		},
