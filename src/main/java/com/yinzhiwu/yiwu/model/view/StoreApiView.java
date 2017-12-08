@@ -4,7 +4,6 @@ import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.yinzhiwu.yiwu.entity.StoreInfo;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;
 import com.yinzhiwu.yiwu.util.beanutils.annotation.MapedClass;
@@ -45,17 +44,6 @@ public class StoreApiView {
 	}
 	
 	
-
-	public StoreApiView(StoreInfo si) {
-		Assert.notNull(si);
-
-		this.id = si.getId();
-		this.name = si.getName();
-		if(si.getAddress() != null)
-			this.address = si.getAddress().getAddress();
-		this.telePhone = si.getTelePhone();
-	}
-
 
 	public final int getId() {
 		return id;

@@ -1,6 +1,5 @@
 package com.yinzhiwu.yiwu.dao.impl;
 
-import java.beans.Expression;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,7 +7,6 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -20,9 +18,8 @@ import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
-import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.CheckedInStatus;
-import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -369,24 +366,31 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 	}
 	
 	@Transactional
-	@Scheduled(cron="0 30 1 * * ?")
+	@Scheduled(cron="0 30 5 * * ?")
 	public void updateCoachCheckedinStatus(){
 		updateUnchecked();
+		updateChecked();
 	}
 	
 	private void updateUnchecked(){
-		CriteriaBuilder builder = getSession().getCriteriaBuilder();
-		CriteriaUpdate<LessonYzw> update1 = builder.createCriteriaUpdate(LessonYzw.class);
-		Root<LessonYzw> root = update1.from(LessonYzw.class);
-//		update1.set(root.get("coachCheckedinStatus"), CheckedInStatus.UN_CHECKED);
-		javax.persistence.criteria.Expression<CheckedInStatus> selectCase =(javax.persistence.criteria.Expression<CheckedInStatus>) builder.selectCase(root.<LessonStatus>get("lessonStatus"))
-		.when( LessonStatus.UN_CHECKED, CheckedInStatus.NON_CHECKABLE) 
-		.otherwise(CheckedInStatus.UN_CHECKED);
-		update1.set(root.<CheckedInStatus>get("coachCheckedinStatus"), 
-				selectCase )
-			.where(builder.isNull(root.get("dueTeacher").get("id")));
-		
-		getSession().createQuery(update1).executeUpdate();
-		
+		String sql = "UPDATE vlesson set coachCheckedinStatus = (CASE lessonStatus WHEN 'UN_CHECKED' THEN 'NON_CHECKABLE' ELSE 'UN_CHECKED' END)  WHERE shidaoTeacherId IS NULL;";
+		getSession().createNativeQuery(sql).executeUpdate();
 	}
+	
+	private void updateChecked(){
+		String sql = "update vlesson t1"
+			+ " join vcheck_ins t2 on (t1.id = t2.lesson_id and t1.shidaoTeacherId = t2.teacher_id)"
+			+ "	set t1.coachCheckedinStatus = "
+			+ "		(case 1 when t1.start_date_time >= t2.sf_create_time then 'CHECKED'"
+			+ "				when datediff(t2.sf_create_time, t1.start_date_time) =0 then 'LATE'"
+			+ "				ELSE 'PATCHED' "
+			+ "				END)"
+			+ "	where (t1.coachCheckedinStatus ='UN_CHECKED' OR T1.coachCheckedinStatus IS NULL"
+			+ "			OR t1.coachCheckedinStatus = 'NON_CHECKABLE')"
+			+ "		and t1.yindaoTeacherId is not NULL;";
+		
+		getSession().createNativeQuery(sql).executeUpdate();
+	}
+	
+	
 }

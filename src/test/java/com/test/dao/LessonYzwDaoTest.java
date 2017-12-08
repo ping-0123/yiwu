@@ -87,7 +87,7 @@ public class LessonYzwDaoTest extends BaseSpringTest {
 	}
 	
 	@Test
-	@Rollback(false)
+//	@Rollback(false)
 	public void testUpdateCoachCheckedinStatus(){
 		lessonDaoImpl.updateCoachCheckedinStatus();
 	}
