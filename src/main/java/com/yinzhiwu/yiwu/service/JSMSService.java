@@ -189,13 +189,13 @@ public class JSMSService {
 		if(e instanceof APIConnectionException){
 			LOG.error("Connection error. Should retry later. ", e);
 			LOG.info(e.getMessage());
-			throw new JSMSException(e.getMessage(),e);
+			throw new JSMSException("连接极光服务器失败",e);
 		}else if (e instanceof APIRequestException) {
 			APIRequestException ae = (APIRequestException) e;
 			LOG.error("Error response from JPush server. Should review and fix it. ", e);
             LOG.info("HTTP Status: " + ((APIRequestException) e).getStatus());
             LOG.info("Error Message: " + e.getMessage() + ((APIRequestException)e).getErrorMessage());
-            throw new JSMSException(ae.getErrorCode() + " " + ae.getErrorMessage(), ae);
+            throw new JSMSException(ae.getErrorCode() + " " +   ae.getLocalizedMessage(), ae);
 		}else {
 			LOG.error("other exception. ",e);
 			throw new JSMSException(e.getMessage(),e);

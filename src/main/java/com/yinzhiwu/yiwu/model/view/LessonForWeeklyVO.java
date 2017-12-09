@@ -147,6 +147,7 @@ public class LessonForWeeklyVO {
 //				vo.setCoachCheckedInStatus(getCoachCheckedStatus(lesson));
 				;
 			}
+			//设置 coachCheckedInStatus
 			return vo;
 		}
 

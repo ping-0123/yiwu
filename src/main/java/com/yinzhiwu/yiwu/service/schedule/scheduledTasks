@@ -4,8 +4,10 @@ IncomeRecordServiceImpl#scheduleYieldInterest
 CourseYzwServiceImpl#setAllSumLessonTimes()
 #设置新员工工号及系统帐号
 EmployeeYzwServiceImpl#setNewEmployeeNumberEveryNigth()
-#修改已签到课程的签到状态
+#修改已签到课程的课程状态
 LessonYzwDaoImpl#updateCheckedinLessonsStatus()
+#设置课时的教师签到状态
+LessonYzwDaoImpl#updateCoachCheckedinStatus()
 #将课时表中实到教师Id为0 改为null
 LessonYzwDaoImpl#updateZeroActualTeacher()
 # 七天前注册的客户不能修改绑定关系

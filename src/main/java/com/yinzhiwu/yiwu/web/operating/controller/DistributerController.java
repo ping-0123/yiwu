@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
@@ -34,8 +33,8 @@ import com.yinzhiwu.yiwu.service.PayedMethodService;
 import com.yinzhiwu.yiwu.service.ProductYzwService;
 import com.yinzhiwu.yiwu.util.ServletRequestUtils;
 import com.yinzhiwu.yiwu.web.operating.view.DistributerVO;
-import com.yinzhiwu.yiwu.web.operating.view.OrderView;
 import com.yinzhiwu.yiwu.web.operating.view.DistributerVO.DistributerVOConverter;
+import com.yinzhiwu.yiwu.web.operating.view.OrderView;
 import com.yinzhiwu.yiwu.web.operating.view.OrderView.OrderViewConverter;
 
 /**

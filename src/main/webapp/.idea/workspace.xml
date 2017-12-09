@@ -15,7 +15,16 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
+<<<<<<< HEAD
+    <leaf>
+      <file leaf-file-name="createForm.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/courseTemplates/createForm.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+=======
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
 <<<<<<< HEAD
       <file leaf-file-name="createForm.jsp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/plans/createForm.jsp">
@@ -39,11 +48,26 @@
             <state relative-caret-position="1179">
               <caret line="485" column="8" lean-forward="false" selection-start-line="485" selection-start-column="8" selection-end-line="485" selection-end-column="8" />
 >>>>>>> v2.1.8
+=======
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/backend/js/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="380">
+              <caret line="20" column="14" lean-forward="true" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+>>>>>>> v2.1.9
+>>>>>>> master
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file leaf-file-name="updateForm.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/courseTemplates/lessonTemplates/updateForm.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="494">
+              <caret line="95" column="41" lean-forward="false" selection-start-line="95" selection-start-column="41" selection-end-line="95" selection-end-column="41" />
+=======
       <file leaf-file-name="list.jsp" pinned="false" current-in-tab="false">
 <<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/plans/list.jsp">
@@ -56,6 +80,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="570">
               <caret line="30" column="7" lean-forward="false" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="7" />
+<<<<<<< HEAD
               <folding>
                 <marker date="1512626113962" expanded="true" signature="4733:4738" ph="{...}" />
                 <marker date="1512626113962" expanded="true" signature="4733:7080" ph="{&quot;dom&quot;: &quot;&lt;'row'&lt;'col-sm-4 col-md-4' l&gt;&lt;'col-sm-8 col-md-8' f&gt;&gt;tip&quot;...}" />
@@ -121,12 +146,22 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="570">
               <caret line="30" column="7" lean-forward="true" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="7" />
+=======
+>>>>>>> v2.1.9
+>>>>>>> master
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="list.jsp" pinned="false" current-in-tab="false">
+<<<<<<< HEAD
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/backend/js/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1988">
+              <caret line="273" column="22" lean-forward="true" selection-start-line="273" selection-start-column="22" selection-end-line="273" selection-end-column="22" />
+=======
+      <file leaf-file-name="list.jsp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/products/list.jsp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="532">
@@ -137,7 +172,11 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="532">
               <caret line="61" column="60" lean-forward="false" selection-start-line="61" selection-start-column="60" selection-end-line="61" selection-end-column="60" />
+<<<<<<< HEAD
 >>>>>>> v2.1.8
+=======
+>>>>>>> v2.1.9
+>>>>>>> master
               <folding />
             </state>
           </provider>
@@ -145,6 +184,7 @@
       </file>
     </leaf>
   </component>
+<<<<<<< HEAD
   <component name="FindInProjectRecents">
     <findStrings>
       <find>translatePerformaceType</find>
@@ -152,6 +192,8 @@
       <find>create</find>
     </findStrings>
   </component>
+=======
+>>>>>>> master
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
@@ -159,6 +201,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/WEB-INF/jsps/courseTemplates/createForm.jsp" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/vendors/bootstrapvalidator/src/js/validator/greaterThan.js" />
         <option value="$PROJECT_DIR$/WEB-INF/jsps/products/list.jsp" />
         <option value="$PROJECT_DIR$/WEB-INF/jsps/orders/list.jsp" />
@@ -166,6 +209,9 @@
         <option value="$PROJECT_DIR$/WEB-INF/jsps/plans/list.jsp" />
         <option value="$PROJECT_DIR$/backend/js/main.js" />
         <option value="$PROJECT_DIR$/WEB-INF/jsps/plans/createForm.jsp" />
+=======
+        <option value="$PROJECT_DIR$/backend/js/main.js" />
+>>>>>>> master
       </list>
     </option>
   </component>
@@ -175,7 +221,14 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+<<<<<<< HEAD
   <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="131" />
+    <option name="y" value="324" />
+    <option name="width" value="1440" />
+    <option name="height" value="765" />
+=======
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
@@ -183,6 +236,7 @@
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
+>>>>>>> v2.1.9
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -199,6 +253,21 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+<<<<<<< HEAD
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <expand>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="webapp" type="cbb8eebc:String" user="webapp" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+=======
+>>>>>>> v2.1.9
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -206,6 +275,8 @@
               <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
               <item name="webapp" type="462c0819:PsiDirectoryNode" />
             </path>
+<<<<<<< HEAD
+=======
             <path>
               <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
               <item name="webapp" type="462c0819:PsiDirectoryNode" />
@@ -255,6 +326,7 @@
               <item name="jsps" type="462c0819:PsiDirectoryNode" />
               <item name="products" type="462c0819:PsiDirectoryNode" />
             </path>
+>>>>>>> v2.1.9
           </expand>
           <select />
         </subPane>
@@ -313,12 +385,30 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="16511000" />
+=======
+<<<<<<< HEAD
+    <option name="totallyTimeSpent" value="2355000" />
+=======
+    <option name="totallyTimeSpent" value="3843000" />
+>>>>>>> v2.1.9
+>>>>>>> master
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
-    <editor active="true" />
     <layout>
+<<<<<<< HEAD
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18229167" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+=======
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14895834" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23536737" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -332,6 +422,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+>>>>>>> v2.1.9
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -361,7 +452,11 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/courseTemplates/createForm.jsp">
+=======
     <entry file="file://$PROJECT_DIR$/vendors/bootstrapvalidator/src/js/validator/greaterThan.js">
+>>>>>>> v2.1.9
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -369,30 +464,50 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/courseTemplates/lessonTemplates/updateForm.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="494">
+          <caret line="95" column="41" lean-forward="false" selection-start-line="95" selection-start-column="41" selection-end-line="95" selection-end-column="41" />
+=======
     <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/courseTemplates/list.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2033">
           <caret line="107" column="58" lean-forward="true" selection-start-line="107" selection-start-column="58" selection-end-line="107" selection-end-column="58" />
+<<<<<<< HEAD
 <<<<<<< HEAD
           <folding>
             <marker date="1511580129603" expanded="true" signature="6379:6389" ph="..." />
             <marker date="1511580129603" expanded="true" signature="6379:6451" ph="..." />
           </folding>
 =======
+=======
+>>>>>>> v2.1.9
+>>>>>>> master
           <folding />
 >>>>>>> v2.1.8
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/backend/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1988">
+          <caret line="273" column="22" lean-forward="true" selection-start-line="273" selection-start-column="22" selection-end-line="273" selection-end-column="22" />
+=======
     <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/courseTemplates/createForm.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1767">
           <caret line="93" column="22" lean-forward="true" selection-start-line="93" selection-start-column="22" selection-end-line="93" selection-end-column="22" />
 <<<<<<< HEAD
+<<<<<<< HEAD
           <folding>
             <marker date="1511580129601" expanded="true" signature="6801:6900" ph="{...}" />
           </folding>
 =======
+=======
+>>>>>>> v2.1.9
+>>>>>>> master
           <folding />
 >>>>>>> v2.1.8
         </state>
@@ -424,7 +539,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1311">
           <caret line="69" column="9" lean-forward="true" selection-start-line="69" selection-start-column="9" selection-end-line="69" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -456,7 +570,11 @@
         <state relative-caret-position="228">
           <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding />
+<<<<<<< HEAD
 >>>>>>> v2.1.8
+=======
+>>>>>>> v2.1.9
+>>>>>>> master
         </state>
       </provider>
     </entry>
@@ -543,70 +661,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/orders/list.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="30" column="7" lean-forward="false" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="7" />
-          <folding>
-            <marker date="1512626113962" expanded="true" signature="4733:4738" ph="{...}" />
-            <marker date="1512626113962" expanded="true" signature="4733:7080" ph="{&quot;dom&quot;: &quot;&lt;'row'&lt;'col-sm-4 col-md-4' l&gt;&lt;'col-sm-8 col-md-8' f&gt;&gt;tip&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="4733:7813" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="4759:4806" ph="{...}" />
-            <marker date="1512626113962" expanded="true" signature="4823:7076" ph="[...]" />
-            <marker date="1512626113962" expanded="true" signature="4830:4914" ph="{&quot;data&quot;: &quot;productId&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="4921:5000" ph="{&quot;name&quot;: &quot;&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5007:5066" ph="{&quot;title&quot;: &quot;标价&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5073:5128" ph="{&quot;data&quot;: &quot;count&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5135:5191" ph="{&quot;data&quot;: &quot;discount&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5198:5257" ph="{&quot;data&quot;: &quot;payedAmount&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5264:5351" ph="{&quot;data&quot;: &quot;payedDate&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5358:5415" ph="{&quot;data&quot;: &quot;storeName&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5422:5491" ph="{&quot;data&quot;: &quot;contract.contractNo&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5498:5562" ph="{&quot;data&quot;: &quot;contract.start&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5569:5631" ph="{&quot;data&quot;: &quot;contract.end&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5638:5710" ph="{&quot;data&quot;: &quot;contract.validityTimes&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5717:5787" ph="{&quot;data&quot;: &quot;contract.remainTimes&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5794:5867" ph="{&quot;data&quot;: &quot;contract.withHoldTimes&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5874:6038" ph="{&quot;data&quot;: &quot;contract.type&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="5981:6031" ph="{...}" />
-            <marker date="1512626113962" expanded="true" signature="6045:6215" ph="{&quot;data&quot;: &quot;contract.subType&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="6222:6294" ph="{&quot;data&quot;: &quot;contract.validStoreIds&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="6301:6471" ph="{&quot;data&quot;: &quot;contract.status&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="6410:6464" ph="{...}" />
-            <marker date="1512626113962" expanded="true" signature="6478:7074" ph="{&quot;data&quot;: &quot;id&quot;...}" />
-            <marker date="1512626113962" expanded="true" signature="6572:7067" ph="{...}" />
-            <marker date="1512626113962" expanded="true" signature="6646:6803" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="6853:7037" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7137:7195" ph="{...}" />
-            <marker date="1512626113962" expanded="true" signature="7201:7257" ph="/** @param contractStatus ...*/" />
-            <marker date="1512626113962" expanded="true" signature="7359:7377" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7400:7418" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7438:7456" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7478:7496" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7518:7536" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7555:7573" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7594:7614" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7630:7647" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7675:7692" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7713:7730" ph="..." />
-            <marker date="1512626113962" expanded="true" signature="7749:7766" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/products/list.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
-          <caret line="61" column="60" lean-forward="false" selection-start-line="61" selection-start-column="60" selection-end-line="61" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/posts/list.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="418">
           <caret line="174" column="105" lean-forward="false" selection-start-line="174" selection-start-column="104" selection-end-line="174" selection-end-column="105" />
           <folding />
+>>>>>>> v2.1.9
         </state>
       </provider>
     </entry>
@@ -762,14 +822,20 @@
     <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/courseTemplates/createForm.jsp">
       <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
+<<<<<<< HEAD
         <state relative-caret-position="1634">
           <caret line="86" column="22" lean-forward="false" selection-start-line="86" selection-start-column="22" selection-end-line="86" selection-end-column="22" />
           <folding>
             <marker date="1511580129601" expanded="true" signature="6801:6900" ph="{...}" />
           </folding>
 =======
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+>>>>>>> master
+=======
         <state relative-caret-position="399">
           <caret line="93" column="22" lean-forward="true" selection-start-line="93" selection-start-column="22" selection-end-line="93" selection-end-column="22" />
+>>>>>>> v2.1.9
           <folding />
 >>>>>>> v2.1.8
         </state>
@@ -832,19 +898,30 @@
 =======
         <state relative-caret-position="171">
           <caret line="9" column="25" lean-forward="false" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="25" />
+<<<<<<< HEAD
 >>>>>>> v2.1.8
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> master
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="1179">
 <<<<<<< HEAD
           <caret line="509" column="8" lean-forward="true" selection-start-line="509" selection-start-column="8" selection-end-line="509" selection-end-column="8" />
+=======
+        <state relative-caret-position="380">
+          <caret line="20" column="14" lean-forward="true" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+>>>>>>> master
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/plans/createForm.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="646">
@@ -852,7 +929,22 @@
 =======
           <caret line="485" column="8" lean-forward="false" selection-start-line="485" selection-start-column="8" selection-end-line="485" selection-end-column="8" />
 >>>>>>> v2.1.8
+=======
+    <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/orders/list.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="30" column="7" lean-forward="false" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="7" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/jsps/products/list.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="61" column="60" lean-forward="false" selection-start-line="61" selection-start-column="60" selection-end-line="61" selection-end-column="60" />
+>>>>>>> master
+          <folding />
+>>>>>>> v2.1.9
         </state>
       </provider>
     </entry>

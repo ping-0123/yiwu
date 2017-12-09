@@ -2,8 +2,6 @@ package com.test.dao;
 
 import java.util.List;
 
-import javax.enterprise.inject.New;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -13,6 +11,7 @@ import com.yinzhiwu.yiwu.common.entity.search.SearchOperator;
 import com.yinzhiwu.yiwu.common.entity.search.SearchRequest;
 import com.yinzhiwu.yiwu.common.entity.search.Searchable;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
+import com.yinzhiwu.yiwu.dao.impl.LessonYzwDaoImpl;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
@@ -25,6 +24,7 @@ import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 public class LessonYzwDaoTest extends BaseSpringTest {
 	
 	@Autowired private LessonYzwDao lessonYzwDao;
+	@Autowired private LessonYzwDaoImpl lessonDaoImpl;
 	
 	@Test
 	public void testFindPrivateLessonApiViewsByContractNo(){
@@ -84,6 +84,12 @@ public class LessonYzwDaoTest extends BaseSpringTest {
 		search.and("id", SearchOperator.in, new Integer[]{1208,1209,1210});
 		List<LessonYzw> content = lessonYzwDao.findAll(search).getContent();
 		System.out.println("content size is " + content.size());
+	}
+	
+	@Test
+//	@Rollback(false)
+	public void testUpdateCoachCheckedinStatus(){
+		lessonDaoImpl.updateCoachCheckedinStatus();
 	}
 }
 
