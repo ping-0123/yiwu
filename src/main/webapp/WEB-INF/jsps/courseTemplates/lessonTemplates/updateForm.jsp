@@ -176,6 +176,8 @@
 	</div>
 
 	<script type="text/javascript">
+
+		var setting;
 		$(document).ready(function() {
 			
 			//form submit
@@ -213,12 +215,13 @@
 				auto_start: true,
 				init:{
 					'FilesAdded':function(up,files){
+						console.log('file is added');
 						plupload.each(files,function(file){
 							
 						});
 					},
 					'BeforeUpload':function(up, file){
-						
+						console.log('file before uploade');
 					},
 					'UploadProgress':function(up, file){
 						

@@ -61,7 +61,7 @@ VIEW `vlesson` AS
     FROM
         `chenkuserdb1`.`skt7`;
         
-UPDATE vlesson set coachCheckedinStatus = (case lessonStatus when 'UN_CHECKED' THEN 'NON_CHECKABLE' ELSE 'UN_CHECKED' END)  WHERE shidaoTeacherId IS NULL;;
+UPDATE vlesson set coachCheckedinStatus = (case lessonStatus when 'UN_CHECKED' THEN 'NON_CHECKABLE' ELSE 'UN_CHECKED' END)  WHERE shidaoTeacherId IS NULL;
     
 
 update vlesson t1 

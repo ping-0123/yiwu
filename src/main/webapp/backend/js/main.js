@@ -1,4 +1,4 @@
-"use strict":
+
 
 /**
  * 约定：$开头表示选择器
@@ -12,7 +12,7 @@ var WEB_BASE_URL = "http://192.168.0.115:9090/"
 var BASE_DELETE_FILE_URL = "http://192.168.0.115:9090/yiwu/system/qiniu/"
 
 $(document).ready(function() {
-	if($TABLE == undefined) {
+	if($TABLE === undefined || undefined === setting) {
         return;
     }
 	TABLE = $TABLE.DataTable(setting);
@@ -31,7 +31,7 @@ $(".modal").on("hidden.bs.modal", function() {
  * @returns
  */
 function refreshDataTable(table) {
-	if(table == null){
+	if(table === null){
 		TABLE.draw(false);
 	}
 	table.draw(false);
@@ -136,7 +136,7 @@ function showDeleteFailureModal(message) {
  */
 function flashUpdateSuccessModal(msg) {
 	var dlg = BootstrapDialog.show({
-		message: msg == null ? '修改成功' : msg,
+		message: msg === null ? '修改成功' : msg,
 		type: BootstrapDialog.TYPE_SUCCESS,
 		title: '提示',
 		size: BootstrapDialog.SIZE_SMALL
@@ -169,7 +169,7 @@ function showUpdateFailureModal(message) {
  * @param {Object} token
  * @param {Object} fnconfirmcallback
  */
-function showDeopzoneModel(token, fnconfirmcallback) {
+function showDropzoneModel(token, fnconfirmcallback) {
 	var messageHtml = '<div class="dropzone" id="dropzone"><div class="am-text-success dz-message">将文件拖拽到此处<br>或点此打开文件管理器选择文件</div></div>'
 	var fileKey;
 	var fileName;
@@ -228,8 +228,8 @@ function showDeopzoneModel(token, fnconfirmcallback) {
  */
 function showQiniuDropzoneModal(token, saveUrl, confirmcallback) {
 	var messageHtml = '<div class="dropzone" id="dropzone"><div class="am-text-success dz-message">将文件拖拽到此处<br>或点此打开文件管理器选择文件</div></div>'
-	var fileKey;
-	var fileName;
+	var v_fileKey;
+	var v_fileName;
 	var dlg = BootstrapDialog.confirm({
 		message: messageHtml,
 		type: BootstrapDialog.TYPE_DEFAULT,
@@ -261,17 +261,17 @@ function showQiniuDropzoneModal(token, saveUrl, confirmcallback) {
                 retryChunksLimit:5,
 				success: function(file, response, e) {
 					console.log(file.name + " upload success, its file key is " + response.key);
-					fileKey = response.key;
-					fileName = file.name;
+					v_fileKey = response.key;
+					v_fileName = file.name;
 				},
 				init: function() {
 					this.on("removedfile", function(file) {
-						deleteQiniuFile(fileKey);
+						deleteQiniuFile(v_fileKey);
 					});
 				},
                 chunksUploaded:function(file,done){
 					console.log('all chunks of the file:' + file.name +' uploaded');
-					done();
+					done("Naha, you don't");
 				}
 			});
 		},
@@ -284,8 +284,8 @@ function showQiniuDropzoneModal(token, saveUrl, confirmcallback) {
 					async: true,
 					data: {
 						"_method": "PUT",
-						"fileKey": fileKey,
-						"fileName": fileName
+						"fileKey": v_fileKey,
+						"fileName": v_fileName
 					},
 					success: function(result) {
 						if(result) {
@@ -298,8 +298,8 @@ function showQiniuDropzoneModal(token, saveUrl, confirmcallback) {
 				});
 			} else {
 				// 删除在云上的文件
-				if(fileKey != null) {
-                    deleteQiniuFile(fileKey);
+				if(v_fileKey != null) {
+                    deleteQiniuFile(v_fileKey);
                 }
 			}
 		}

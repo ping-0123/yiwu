@@ -156,10 +156,10 @@ public class CourseTemplateController extends BaseController{
 	@ResponseBody
 	public YiwuJson<?> deletePictureUri(@PathVariable(name="id") Integer id) throws DataNotFoundException{
 		CourseTemplate template = courseTemplateService.get(id);
-		String pictureUri = template.getConnotation().getPictureUri();
+		String pictureUri = template.ensureConnotation().getPictureUri();
 		qiniuService.delete(pictureUri);
 		
-		template.getConnotation().setPictureUri(null);
+		template.ensureConnotation().setPictureUri(null);
 		courseTemplateService.update(template);
 		
 		return YiwuJson.createBySuccess();
@@ -169,7 +169,7 @@ public class CourseTemplateController extends BaseController{
 	@ResponseBody
 	public YiwuJson<?> updatePictureUri(@PathVariable(name="id") Integer id ,String fileKey) throws DataNotFoundException{
 		CourseTemplate template = courseTemplateService.get(id);
-		template.getConnotation().setPictureUri(fileKey);
+		template.ensureConnotation().setPictureUri(fileKey);
 		courseTemplateService.update(template);
 		
 		return YiwuJson.createBySuccess(qiniuService.generateFileUrl(fileKey));
@@ -179,8 +179,8 @@ public class CourseTemplateController extends BaseController{
 	@ResponseBody
 	public YiwuJson<?> updateAudioUri(@PathVariable(name="id") Integer id, String fileKey, String fileName) throws DataNotFoundException{
 		CourseTemplate template = courseTemplateService.get(id);
-		template.getConnotation().setAudioUri(fileKey);
-		template.getConnotation().setAudioName(fileName);
+		template.ensureConnotation().setAudioUri(fileKey);
+		template.ensureConnotation().setAudioName(fileName);
 		courseTemplateService.update(template);
 		
 		return YiwuJson.createBySuccess(qiniuService.generateFileUrl(fileKey));
@@ -190,8 +190,8 @@ public class CourseTemplateController extends BaseController{
 	@ResponseBody
 	public YiwuJson<?> deleteAudioUri(@PathVariable(name="id") Integer id) throws DataNotFoundException{
 		CourseTemplate template = courseTemplateService.get(id);
-		template.getConnotation().setAudioName(null);
-		template.getConnotation().setAudioUri(null);
+		template.ensureConnotation().setAudioName(null);
+		template.ensureConnotation().setAudioUri(null);
 		courseTemplateService.update(template);
 		
 		return YiwuJson.createBySuccess();
@@ -201,7 +201,7 @@ public class CourseTemplateController extends BaseController{
 	@ResponseBody
 	public YiwuJson<?> updateVideoPosterUri(@PathVariable(name="id") Integer id, String fileKey, String fileName) throws DataNotFoundException{
 		CourseTemplate template = courseTemplateService.get(id);
-		template.getConnotation().setVideoPosterUri(fileKey);
+		template.ensureConnotation().setVideoPosterUri(fileKey);
 		courseTemplateService.update(template);
 		
 		return YiwuJson.createBySuccess(qiniuService.generateFileUrl(fileKey));
@@ -211,8 +211,8 @@ public class CourseTemplateController extends BaseController{
 	@ResponseBody
 	public YiwuJson<?> updateVideoUri(@PathVariable(name="id") Integer id, String fileKey, String fileName) throws DataNotFoundException{
 		CourseTemplate template = courseTemplateService.get(id);
-		template.getConnotation().setVideoUri(fileKey);
-		template.getConnotation().setVideoTitle(fileName);
+		template.ensureConnotation().setVideoUri(fileKey);
+		template.ensureConnotation().setVideoTitle(fileName);
 		courseTemplateService.update(template);
 		
 		return YiwuJson.createBySuccess(qiniuService.generateFileUrl(fileKey));
@@ -222,9 +222,9 @@ public class CourseTemplateController extends BaseController{
 	@ResponseBody
 	public YiwuJson<?> deleteVideoUri(@PathVariable(name="id") Integer id) throws DataNotFoundException{
 		CourseTemplate template = courseTemplateService.get(id);
-		template.getConnotation().setVideoPosterUri(null);
-		template.getConnotation().setVideoTitle(null);
-		template.getConnotation().setVideoUri(null);
+		template.ensureConnotation().setVideoPosterUri(null);
+		template.ensureConnotation().setVideoTitle(null);
+		template.ensureConnotation().setVideoUri(null);
 		courseTemplateService.update(template);
 		
 		return YiwuJson.createBySuccess();

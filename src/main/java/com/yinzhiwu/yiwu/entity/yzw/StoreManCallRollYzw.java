@@ -1,141 +1,89 @@
 package com.yinzhiwu.yiwu.entity.yzw;
 
-import java.util.Date;
-
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "vstore_callroll")
-public class StoreManCallRollYzw {
+public class StoreManCallRollYzw extends BaseYzwEntity {
+
+	private static final long serialVersionUID = -4834495028899986109L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(length = 32)
-	//TODO 转化为实体
-	private String lessonId;
+	@ManyToOne
+	@JoinColumn(foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
+	private LessonYzw lesson;
 
 	@Column(length = 32)
 	private String memberCard;
 
-	@Column(name="flagCallroll")
-	private Boolean callRolled;
+	@Column(name="called")
+	private Boolean called;
 
 	@Column
-	private String unCallrollReason;
+	private String unCalledrollReason;
 
-	@Column
-	private Integer createUserId;
-
-	@Column
-	private Integer lastChangeUserId;
-
-	@Column
-	private Date createTime;
-
-	@Column
-	private Date lastChangeTime;
-
-	@Column
-	private Integer machineCode;
-
-	@Column
-	private Date lastSyncTimeStamp;
+	
+	
+	@Override
+	public void init() {
+		super.init();
+		if(null ==called)
+			called =true;
+	}
 
 	public Integer getId() {
 		return id;
 	}
 
-	public String getLessonId() {
-		return lessonId;
+	public LessonYzw getLesson() {
+		return lesson;
 	}
 
 	public String getMemberCard() {
 		return memberCard;
 	}
 
-	public Boolean getCallRolled() {
-		return callRolled;
-	}
-
-	public String getUnCallrollReason() {
-		return unCallrollReason;
-	}
-
-	public Integer getCreateUserId() {
-		return createUserId;
-	}
-
-	public Integer getLastChangeUserId() {
-		return lastChangeUserId;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public Date getLastChangeTime() {
-		return lastChangeTime;
-	}
-
-	public Integer getMachineCode() {
-		return machineCode;
-	}
-
-	public Date getLastSyncTimeStamp() {
-		return lastSyncTimeStamp;
+	public Boolean getCalled() {
+		return called;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public void setLessonId(String lessonId) {
-		this.lessonId = lessonId;
+	public void setLesson(LessonYzw lesson) {
+		this.lesson = lesson;
 	}
 
 	public void setMemberCard(String memberCard) {
 		this.memberCard = memberCard;
 	}
 
-	public void setCallRolled(Boolean callRolled) {
-		this.callRolled = callRolled;
+	public void setCalled(Boolean called) {
+		this.called = called;
 	}
 
-	public void setUnCallrollReason(String unCallrollReason) {
-		this.unCallrollReason = unCallrollReason;
+	public String getUnCalledrollReason() {
+		return unCalledrollReason;
 	}
 
-	public void setCreateUserId(Integer createUserId) {
-		this.createUserId = createUserId;
-	}
-
-	public void setLastChangeUserId(Integer lastChangeUserId) {
-		this.lastChangeUserId = lastChangeUserId;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public void setLastChangeTime(Date lastChangeTime) {
-		this.lastChangeTime = lastChangeTime;
-	}
-
-	public void setMachineCode(Integer machineCode) {
-		this.machineCode = machineCode;
-	}
-
-	public void setLastSyncTimeStamp(Date lastSyncTimeStamp) {
-		this.lastSyncTimeStamp = lastSyncTimeStamp;
+	public void setUnCalledrollReason(String unCalledrollReason) {
+		this.unCalledrollReason = unCalledrollReason;
 	}
 
 	
+
 	
 }

@@ -219,5 +219,12 @@ public class CourseTemplate extends BaseEntity {
 		this.lessonTemplates = lessonTemplates;
 	}
 	
-	
+	public CourseConnotation ensureConnotation(){
+		if(null == connotation){
+			CourseConnotation connotation = new CourseConnotation();
+			this.setConnotation(connotation);
+		}else
+			;
+		return this.connotation;
+	}
 }
