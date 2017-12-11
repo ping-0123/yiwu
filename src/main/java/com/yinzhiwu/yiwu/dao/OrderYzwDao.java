@@ -59,4 +59,10 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 
 	public Integer findCountByCourseId(String id);
 
+
+	/**
+	 * @param id
+	 */
+	public List<OrderYzw> findByCourseId(String courseId);
+
 }

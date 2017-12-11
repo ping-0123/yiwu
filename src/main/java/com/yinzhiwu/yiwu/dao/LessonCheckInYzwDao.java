@@ -42,4 +42,41 @@ public interface LessonCheckInYzwDao extends IBaseDao<LessonCheckInYzw, Integer>
 
 	LessonCheckInYzw findByLessonIdAndCoachId(Integer lessonId, Integer coachId) throws DataNotFoundException;
 
+	/**
+	 * @param id
+	 * @return
+	 */
+	public List<LessonCheckInYzw> findStudentCheckedinsByLessonId(Integer id);
+
+	/**
+	 * @param id
+	 */
+	public void setNoSettled(Integer id);
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	public LessonCheckInYzw findEffictiveCoachCheckinByLessonId(Integer id);
+
+
+	/**
+	 * @param id
+	 * @param contractNos
+	 * @return
+	 */
+	List<LessonCheckInYzw> findStudentCheckedinsByLessonIdContractNos(Integer id, String[] contractNos);
+
+	/**
+	 * @param id
+	 * @param contractNo
+	 * @return
+	 */
+	public LessonCheckInYzw findByLessonIdAndContractNo(Integer id, String contractNo);
+
+	/**
+	 * @return
+	 */
+	public List<LessonYzw> findNeedSettledLessons();
+
 }

@@ -8,12 +8,14 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaQuery;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import com.yinzhiwu.yiwu.common.entity.search.PropertySpecification;
+import com.yinzhiwu.yiwu.common.entity.search.SearchOperator;
+import com.yinzhiwu.yiwu.common.entity.search.Searchable;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
-import com.yinzhiwu.yiwu.dao.SequenceDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
@@ -32,7 +34,6 @@ import com.yinzhiwu.yiwu.util.CalendarUtil;
 @Repository
 public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements OrderYzwDao {
 
-	@Autowired private SequenceDao sequence;
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
@@ -463,6 +464,14 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	@Override
 	public Integer findCountByCourseId(String courseId) {
 		return findCountByProperty("contract.course.id", courseId).intValue();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.yinzhiwu.yiwu.dao.OrderYzwDao#findByCourseId(java.lang.String)
+	 */
+	@Override
+	public List<OrderYzw> findByCourseId(String courseId) {
+		return findAll(Specifications.where(new PropertySpecification<>("contract.course.id", SearchOperator.eq, courseId)));
 	}
 	
 }

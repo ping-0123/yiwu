@@ -22,8 +22,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
@@ -68,7 +66,7 @@ public class OrderYzw extends BaseYzwEntity {
 	@Column
 	private Float preferential;
 
-	@NotNull
+//	@NotNull
 	@Column
 	private Integer count;
 
@@ -221,6 +219,8 @@ public class OrderYzw extends BaseYzwEntity {
 	}
 
 	public Integer getCount() {
+		if(null == count)
+			count = 1;
 		return count;
 	}
 

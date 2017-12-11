@@ -3,6 +3,8 @@ package com.yinzhiwu.yiwu.entity.yzw;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -50,6 +52,10 @@ public class LessonCheckInYzw extends BaseYzwEntity {
 	@Column
 	private Boolean flag;
 
+	@Enumerated(EnumType.STRING)
+	@Column(length=32)
+	private SettleStatus settleStatus;
+	
 	@Column
 	private String isRetroactive;
 
@@ -84,9 +90,14 @@ public class LessonCheckInYzw extends BaseYzwEntity {
 	@Override
 	public void init() {
 		super.init();
-		appointed=false;
-		storemanCallroll=false;
-		flag=false;
+		if(null == appointed)
+			appointed=false;
+		if(null == storemanCallroll)
+			storemanCallroll=false;
+		if(null == flag)
+			flag=false;
+		if(null == settleStatus)
+			settleStatus = SettleStatus.UN_SETTLED;
 	}
 
 	public Integer getId() {
@@ -191,12 +202,23 @@ public class LessonCheckInYzw extends BaseYzwEntity {
 		this.appointed = appointed;
 	}
 
-//	public CheckInEvent getEvent() {
-//		return event;
-//	}
-//
-//	public void setEvent(CheckInEvent event) {
-//		this.event = event;
-//	}
+	
+	
+	public SettleStatus getSettleStatus() {
+		return settleStatus;
+	}
+
+	public void setSettleStatus(SettleStatus settleStatus) {
+		this.settleStatus = settleStatus;
+	}
+
+
+
+
+	public  enum SettleStatus{
+		UN_SETTLED, /** 未结算 **/
+		NO_SETTLE,	/** 不结算  比如教师重复刷卡， 其中一条是不结算的**/
+		SETTLED 	/** 已结算 **/
+	}
 
 }
