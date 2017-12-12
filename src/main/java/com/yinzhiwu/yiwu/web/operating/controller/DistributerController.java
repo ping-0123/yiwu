@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;

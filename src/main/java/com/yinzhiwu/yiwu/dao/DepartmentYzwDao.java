@@ -23,5 +23,22 @@ public interface DepartmentYzwDao extends IBaseDao<DepartmentYzw, Integer> {
 
 	List<DepartmentYzw> findByType(OrgnizationType store);
 
+	/**
+	 * @return
+	 */
+	public List<String> findCities();
+
+	/**
+	 * @param city
+	 * @return
+	 */
+	public List<String> findDistrictsByCity(String city);
+
+	/**
+	 * @param disctrict
+	 * @return
+	 */
+	Object findStoresByAdministrativeDistrict(String disctrict);
+
 
 }

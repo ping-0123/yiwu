@@ -1,7 +1,7 @@
 package com.yinzhiwu.yiwu.dao;
 
 import com.yinzhiwu.yiwu.entity.LessonInteractive;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 /**
 *@Author ping

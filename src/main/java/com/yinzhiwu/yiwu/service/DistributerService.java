@@ -4,8 +4,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.DistributerModifyModel;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;

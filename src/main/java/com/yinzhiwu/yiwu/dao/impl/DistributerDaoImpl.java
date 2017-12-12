@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.util.CalendarUtil;
 import com.yinzhiwu.yiwu.util.SecurityUtil;

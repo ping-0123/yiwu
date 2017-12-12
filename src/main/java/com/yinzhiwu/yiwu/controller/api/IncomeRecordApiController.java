@@ -15,7 +15,7 @@ import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.enums.IncomeType;
 import com.yinzhiwu.yiwu.enums.Relation;
 import com.yinzhiwu.yiwu.event.IncomeEventType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.IncomeRecordApiView;

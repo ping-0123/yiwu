@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.entity.Distributer;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.DistributerService;
 import com.yinzhiwu.yiwu.service.JJWTService;
 

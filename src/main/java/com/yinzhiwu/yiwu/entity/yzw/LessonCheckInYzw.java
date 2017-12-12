@@ -15,10 +15,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Where;
+
 import com.yinzhiwu.yiwu.entity.Distributer;
 
 @Entity
 @Table(name = "vcheck_ins")
+@Where(clause="settleStatus <> 'NO_SETTLE'")
 public class LessonCheckInYzw extends BaseYzwEntity {
 
 	private static final long serialVersionUID = 925280755246130775L;

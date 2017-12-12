@@ -14,7 +14,7 @@ import com.yinzhiwu.yiwu.common.entity.search.PropertySpecification;
 import com.yinzhiwu.yiwu.common.entity.search.SearchOperator;
 import com.yinzhiwu.yiwu.dao.EmployeeYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 
 public class EmployeeYzwServiceTest extends BaseSpringTest {

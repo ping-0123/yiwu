@@ -45,7 +45,7 @@ import com.yinzhiwu.yiwu.dao.IBaseDao;
 import com.yinzhiwu.yiwu.entity.BaseEntity;
 import com.yinzhiwu.yiwu.entity.yzw.BaseYzwEntity;
 import com.yinzhiwu.yiwu.enums.DataStatus;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.datatable.Column;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.Order;

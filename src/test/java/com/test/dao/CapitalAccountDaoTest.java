@@ -9,7 +9,7 @@ import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.enums.PaymentMode;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.CapitalAccountService;
 import com.yinzhiwu.yiwu.service.DistributerService;
 

@@ -1,4 +1,4 @@
-package com.yinzhiwu.yiwu.exception;
+package com.yinzhiwu.yiwu.exception.data;
 
 
 @SuppressWarnings("unused")
@@ -44,7 +44,7 @@ public class DataNotFoundException extends Exception {
 	}
 
 	public DataNotFoundException(Class<?> entity, String propertyName, Object value) {
-		super("can not found data from  database's table " + "yiwu_" + entity.getSimpleName().toLowerCase() + " by "
+		super("can not found data from  entity " + entity.getSimpleName().toLowerCase() + " by "
 				+ propertyName + "=" + value.toString());
 		this.entity = entity;
 		this.propertyName = propertyName;

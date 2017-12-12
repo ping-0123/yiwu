@@ -3,7 +3,7 @@ package com.yinzhiwu.yiwu.service;
 import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 public interface CustomerYzwService extends IBaseService<CustomerYzw, Integer> {
 

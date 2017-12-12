@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository;
 import com.yinzhiwu.yiwu.dao.LessonCommentDao;
 import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.entity.LessonComment.CommentType;
-import com.yinzhiwu.yiwu.exception.DataConsistencyException;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataConsistencyException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 /**
 *@Author ping

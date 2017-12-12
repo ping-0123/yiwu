@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.impl.BaseDaoImpl;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 /**
 *@Author ping

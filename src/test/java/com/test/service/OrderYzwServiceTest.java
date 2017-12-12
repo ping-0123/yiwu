@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.gson.Gson;
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.entity.Distributer;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;

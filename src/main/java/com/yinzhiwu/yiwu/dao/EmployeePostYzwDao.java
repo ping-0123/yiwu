@@ -3,7 +3,7 @@ package com.yinzhiwu.yiwu.dao;
 import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.yzw.EmployeePostYzw;
-import com.yinzhiwu.yiwu.exception.DataConsistencyException;
+import com.yinzhiwu.yiwu.exception.data.DataConsistencyException;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 

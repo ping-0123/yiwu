@@ -10,7 +10,7 @@ import com.yinzhiwu.yiwu.dao.CourseTemplateDao;
 import com.yinzhiwu.yiwu.entity.CourseTemplate;
 import com.yinzhiwu.yiwu.entity.LessonTemplate;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.CourseTemplateService;
 
 /**

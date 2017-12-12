@@ -14,11 +14,10 @@ import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw.OrgnizationType;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.view.DepartmentApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
-import com.yinzhiwu.yiwu.service.EmployeeYzwService;
 import com.yinzhiwu.yiwu.service.UserService;
 import com.yinzhiwu.yiwu.web.purchase.dto.StoreDto;
 
@@ -39,7 +38,6 @@ public class DepartmentYzwServiceImpl extends BaseServiceImpl<DepartmentYzw, Int
 	@Autowired private DepartmentYzwDao departmentDao;
 //	@Autowired private EmployeePostYzwDao empPostDao;
 	@Autowired private EmployeeDepartmentYzwDao empDeptDao;
-	@Autowired private EmployeeYzwService empService;
 	@Autowired private UserService userService;
 
 	@Override

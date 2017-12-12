@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.yinzhiwu.yiwu.dao.DistributerIncomeDao;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.enums.IncomeType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 @Repository
 public class DistributerIncomeDaoImpl extends BaseDaoImpl<DistributerIncome, Integer> implements DistributerIncomeDao {

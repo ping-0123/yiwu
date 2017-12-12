@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import com.yinzhiwu.yiwu.dao.IncomeGradeDao;
 import com.yinzhiwu.yiwu.entity.income.IncomeGrade;
 import com.yinzhiwu.yiwu.enums.IncomeType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 @Repository
 public class IncomeGradeDaoImpl extends BaseDaoImpl<IncomeGrade, Integer> implements IncomeGradeDao {

@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.business.LessonAppointmentException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 /**
 *@Author ping

@@ -12,7 +12,7 @@ import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.enums.IncomeType;
 import com.yinzhiwu.yiwu.enums.TweetType;
 import com.yinzhiwu.yiwu.event.IncomeEventType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.ShareTweetService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 import com.yinzhiwu.yiwu.util.beanutils.AbstractConverter;

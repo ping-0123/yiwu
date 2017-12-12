@@ -10,7 +10,7 @@ import com.yinzhiwu.yiwu.context.UserContext;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.Tweet;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.service.ShareTweetService;
 import com.yinzhiwu.yiwu.service.TweetService;

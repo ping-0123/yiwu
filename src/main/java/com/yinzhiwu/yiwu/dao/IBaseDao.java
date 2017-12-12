@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.yinzhiwu.yiwu.common.entity.search.Searchable;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.model.page.PageBean;

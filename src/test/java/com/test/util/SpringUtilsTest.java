@@ -3,7 +3,7 @@ package com.test.util;
 import org.junit.Test;
 
 import com.test.BaseSpringTest;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.UserService;
 import com.yinzhiwu.yiwu.util.SpringUtils;
 

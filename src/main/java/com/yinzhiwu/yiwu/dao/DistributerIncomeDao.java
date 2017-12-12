@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.enums.IncomeType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 public interface DistributerIncomeDao extends IBaseDao<DistributerIncome, Integer> {
 

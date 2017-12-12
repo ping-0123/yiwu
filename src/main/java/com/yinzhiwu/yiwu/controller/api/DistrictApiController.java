@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.view.DepartmentApiView;
 import com.yinzhiwu.yiwu.service.DepartmentYzwService;
 

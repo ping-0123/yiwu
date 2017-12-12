@@ -13,7 +13,7 @@ import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.util.ReflectUtils;

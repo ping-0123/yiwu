@@ -14,10 +14,10 @@ import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.business.LessonCommentException;
 import com.yinzhiwu.yiwu.exception.business.LessonInteractiveException;
 import com.yinzhiwu.yiwu.exception.business.LessonPraiseException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.LessonInteractiveService;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 

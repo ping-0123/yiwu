@@ -9,8 +9,9 @@ import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DuplicateContractNoException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
@@ -24,7 +25,7 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 
 	public List<OrderYzw> findByCustomerId(int customerId);
 
-	public OrderYzw findByContractNO(String contractNo) throws YiwuException;
+	public OrderYzw findByContractNO(String contractNo) throws DataNotFoundException, DuplicateContractNoException;
 
 	public List<OrderYzw> findAllLastDayOrders();
 
@@ -64,5 +65,20 @@ public interface OrderYzwDao extends IBaseDao<OrderYzw, String> {
 	 * @param id
 	 */
 	public List<OrderYzw> findByCourseId(String courseId);
+	
+	/**
+	 * @param id
+	 * @return
+	 */
+	public List<OrderYzw> findCheckedOrdersByCourseId(String id);
 
+
+	/**
+	 * @param constractNo
+	 * @return
+	 * @throws DataNotFoundException 
+	 */
+	public OrderYzw findCheckedOrderByContractNo(String constractNo) throws DataNotFoundException;
+
+	
 }

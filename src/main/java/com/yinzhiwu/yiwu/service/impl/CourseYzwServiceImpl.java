@@ -1,10 +1,12 @@
 package com.yinzhiwu.yiwu.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.yinzhiwu.yiwu.dao.CourseYzwDao;
@@ -12,9 +14,11 @@ import com.yinzhiwu.yiwu.entity.CourseTemplate;
 import com.yinzhiwu.yiwu.entity.LessonTemplate;
 import com.yinzhiwu.yiwu.entity.yzw.CourseConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
+import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.CourseTemplateService;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
 
@@ -23,6 +27,7 @@ import com.yinzhiwu.yiwu.service.CourseYzwService;
 public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> implements CourseYzwService {
 	
 	@Autowired private CourseYzwDao courseDao;
+//	@Autowired private LessonYzwDao lessonDao;
 	@Autowired private CourseTemplateService courseTemplateService;
 	
 	@Autowired
@@ -30,6 +35,25 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 		super.setBaseDao(courseYzwDao);
 	}
 	
+	
+	
+	@Override
+	public void updateCourseStatus(CourseYzw course) {
+		Assert.notNull(course);
+		
+		course.setCourseStatus(CourseStatus.UN_CHECKED);
+		/** 未来的课时的状态设为未审核 **/
+		Date current = new Date();
+		for (LessonYzw lesson : course.getLessons()) {
+			if(lesson.getStartDateTime().after(current)){
+				lesson.setLessonStatus(LessonStatus.UN_CHECKED);
+			}
+		}
+		update(course);
+		
+	}
+
+
 	/**
 	 * {@link CourseYzwServiceImpl#setAllSumLessonTimes()}
 	 */

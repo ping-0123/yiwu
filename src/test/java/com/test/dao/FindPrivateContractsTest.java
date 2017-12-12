@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 /**
 *@Author ping

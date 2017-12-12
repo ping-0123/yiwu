@@ -1,4 +1,4 @@
-package com.yinzhiwu.yiwu.exception;
+package com.yinzhiwu.yiwu.exception.data;
 
 /**
 *@Author ping

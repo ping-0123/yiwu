@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yinzhiwu.yiwu.entity.WithdrawBrokerage;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
-import com.yinzhiwu.yiwu.exception.WithdrawBrokerageException;
+import com.yinzhiwu.yiwu.exception.business.WithdrawBrokerageException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;

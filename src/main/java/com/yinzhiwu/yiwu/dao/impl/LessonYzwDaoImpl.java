@@ -21,7 +21,7 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
 import com.yinzhiwu.yiwu.enums.CourseType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateLessonApiView;
@@ -366,7 +366,7 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 	}
 	
 	@Transactional
-	@Scheduled(cron="0 30 5 * * ?")
+//	@Scheduled(cron="0 30 5 * * ?")
 	public void updateCoachCheckedinStatus(){
 		updateUnchecked();
 		updateChecked();

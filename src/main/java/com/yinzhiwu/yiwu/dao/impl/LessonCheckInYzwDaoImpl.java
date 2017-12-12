@@ -13,11 +13,9 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import com.yinzhiwu.yiwu.common.entity.search.PropertySpecification;
 import com.yinzhiwu.yiwu.common.entity.search.SearchOperator;
 import com.yinzhiwu.yiwu.common.entity.search.SearchRequest;
 import com.yinzhiwu.yiwu.common.entity.search.Searchable;
@@ -28,7 +26,7 @@ import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw.SettleStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.LessonApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
@@ -301,12 +299,13 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 	 * @see com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao#findStudentCheckedinsByLessonId(java.lang.Integer)
 	 */
 	@Override
-	public List<LessonCheckInYzw> findStudentCheckedinsByLessonId(Integer lessinId) {
+	public List<LessonCheckInYzw> findEffictiveStudentCheckins(Integer lessinId) {
 		
 		Searchable<LessonCheckInYzw> search = new SearchRequest<>();
 		search.and("lesson.id", SearchOperator.eq, lessinId)
 			.and("contractNo", SearchOperator.isNotNull, null)
-			.and("contractNo", SearchOperator.ne, "");
+			.and("contractNo", SearchOperator.ne, "")
+			.and("settleStatus",SearchOperator.ne, SettleStatus.NO_SETTLE);
 		return findAll(search).getContent();
 	}
 
@@ -348,6 +347,7 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 		Searchable<LessonCheckInYzw> search = new SearchRequest<>();
 		return  findOne(search.and("lesson.id", SearchOperator.eq,lessonId)
 							  .and("teacher.id", SearchOperator.isNotNull, null)
+							  .and("settleStatus", SearchOperator.ne,SettleStatus.NO_SETTLE)
 							  .addOrder(Direction.DESC,"createTime"));
 	}
 

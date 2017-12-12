@@ -18,7 +18,7 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 @Repository
 public class CustomerYzwDaoImpl extends BaseDaoImpl<CustomerYzw, Integer> implements CustomerYzwDao {

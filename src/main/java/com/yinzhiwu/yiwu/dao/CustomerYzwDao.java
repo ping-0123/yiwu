@@ -3,7 +3,7 @@ package com.yinzhiwu.yiwu.dao;
 import java.util.List;
 
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 public interface CustomerYzwDao extends IBaseDao<CustomerYzw, Integer> {
 	public CustomerYzw findByWeChat(String weChatNo);

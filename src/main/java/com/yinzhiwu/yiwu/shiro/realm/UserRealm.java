@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.enums.DataStatus;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.UserService;
 
 /**

@@ -1,6 +1,4 @@
-package com.yinzhiwu.yiwu.exception;
-
-import com.yinzhiwu.yiwu.exception.business.BusinessException;
+package com.yinzhiwu.yiwu.exception.business;
 
 /**
 * @author 作者 ping

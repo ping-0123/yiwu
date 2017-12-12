@@ -5,7 +5,7 @@ import java.util.Set;
 import com.yinzhiwu.yiwu.entity.sys.Role;
 import com.yinzhiwu.yiwu.entity.sys.User;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 public interface UserService extends IBaseService<User, Integer>{
 

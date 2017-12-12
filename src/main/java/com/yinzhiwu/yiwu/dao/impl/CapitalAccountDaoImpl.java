@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.yinzhiwu.yiwu.dao.CapitalAccountDao;
 import com.yinzhiwu.yiwu.entity.CapitalAccount;
 import com.yinzhiwu.yiwu.enums.PaymentMode;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 @Repository
 public class CapitalAccountDaoImpl extends BaseDaoImpl<CapitalAccount, Integer> implements CapitalAccountDao {

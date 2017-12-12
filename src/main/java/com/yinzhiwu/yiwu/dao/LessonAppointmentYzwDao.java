@@ -5,8 +5,8 @@ import java.util.List;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonAppointmentYzw.AppointStatus;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 
 public interface LessonAppointmentYzwDao extends IBaseDao<LessonAppointmentYzw, Integer> {
 

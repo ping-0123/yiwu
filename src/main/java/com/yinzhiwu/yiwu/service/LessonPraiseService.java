@@ -3,7 +3,7 @@ package com.yinzhiwu.yiwu.service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yinzhiwu.yiwu.entity.LessonPraise;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 /**
 *@Author ping

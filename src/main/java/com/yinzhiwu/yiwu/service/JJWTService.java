@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import com.yinzhiwu.yiwu.context.Constants;
 import com.yinzhiwu.yiwu.context.JJWTConfig;
 import com.yinzhiwu.yiwu.entity.Distributer;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.JJWTException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

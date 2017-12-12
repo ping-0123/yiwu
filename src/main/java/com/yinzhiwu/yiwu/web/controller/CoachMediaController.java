@@ -24,7 +24,7 @@ import com.yinzhiwu.yiwu.entity.CoachMedia;
 import com.yinzhiwu.yiwu.entity.CoachMedia.MediaTag;
 import com.yinzhiwu.yiwu.entity.CoachMedia.MediaType;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeePostYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;

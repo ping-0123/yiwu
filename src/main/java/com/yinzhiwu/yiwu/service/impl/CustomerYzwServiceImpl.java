@@ -10,7 +10,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import com.yinzhiwu.yiwu.dao.CustomerYzwDao;
 import com.yinzhiwu.yiwu.entity.PayDeposit;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.CustomerYzwService;
 
 @Service

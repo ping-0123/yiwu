@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.EmployeePostYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeePostYzw;
-import com.yinzhiwu.yiwu.exception.DataConsistencyException;
+import com.yinzhiwu.yiwu.exception.data.DataConsistencyException;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 

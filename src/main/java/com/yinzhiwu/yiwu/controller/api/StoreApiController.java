@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.StoreApiView;
 import com.yinzhiwu.yiwu.model.view.StoreApiView.StoreApiViewConverter;
@@ -26,7 +26,7 @@ public class StoreApiController {
 	@Autowired private DepartmentYzwService departmentService;
 
 	@GetMapping(value = "/list")
-	@ApiOperation("获取区域{distributerId}下的门店列表")
+	@ApiOperation("获取区域{districtId}下的门店列表")
 	public List<StoreApiView> getStoreList(@RequestParam Integer districtId) {
 		return departmentService.findStoreApiViewsUnderOrganization(districtId);
 	}

@@ -24,7 +24,7 @@ import com.yinzhiwu.yiwu.entity.CourseTemplate;
 import com.yinzhiwu.yiwu.entity.LessonTemplate;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.SubCourseType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;

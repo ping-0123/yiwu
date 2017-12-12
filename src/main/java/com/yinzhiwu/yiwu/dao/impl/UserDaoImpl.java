@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yinzhiwu.yiwu.dao.UserDao;
 import com.yinzhiwu.yiwu.entity.sys.User;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 @Repository
 public class UserDaoImpl extends BaseDaoImpl<User, Integer> implements UserDao {

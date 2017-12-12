@@ -8,8 +8,8 @@ import com.yinzhiwu.yiwu.dao.ElectricContractYzwDao;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
-import com.yinzhiwu.yiwu.exception.YiwuException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DuplicateContractNoException;
 import com.yinzhiwu.yiwu.service.ElectricContractYzwService;
 
 @Service
@@ -34,7 +34,8 @@ public class ElectricContractYzwServiceImpl extends BaseServiceImpl<ElectricCont
 			OrderYzw order;
 			try {
 				order = orderYzwDao.findByContractNO(contractNo);
-			} catch (YiwuException e) {
+			} catch (DataNotFoundException | DuplicateContractNoException e) {
+				logger.error(e.getMessage(),e);
 				return null;
 			}
 			econtract = new ElectricContractYzw(order);

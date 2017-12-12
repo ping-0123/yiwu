@@ -15,7 +15,7 @@ import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.CourseConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.CourseVO;

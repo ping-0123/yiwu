@@ -11,7 +11,7 @@ import com.yinzhiwu.yiwu.entity.Message;
 import com.yinzhiwu.yiwu.entity.income.DistributerIncome;
 import com.yinzhiwu.yiwu.entity.income.IncomeRecord;
 import com.yinzhiwu.yiwu.enums.IncomeType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.DistributerIncomeService;
 import com.yinzhiwu.yiwu.service.MessageService;
 import com.yinzhiwu.yiwu.util.MessageTemplate;

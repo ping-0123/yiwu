@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.yinzhiwu.yiwu.dao.LessonPraiseDao;
 import com.yinzhiwu.yiwu.entity.LessonPraise;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.LessonPraiseService;
 
 /**

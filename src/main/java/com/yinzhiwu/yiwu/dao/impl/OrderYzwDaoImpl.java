@@ -24,8 +24,9 @@ import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.YiwuException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DuplicateContractNoException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
 import com.yinzhiwu.yiwu.model.view.PrivateContractApiView;
@@ -158,17 +159,24 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	
 
 	@Override
-	public OrderYzw findByContractNO(String contractNo) throws YiwuException{
+	public OrderYzw findByContractNO(String contractNo) throws DataNotFoundException, DuplicateContractNoException{
 		List<OrderYzw> orders = findByProperty("contract.contractNo", contractNo);
 		switch (orders.size()) {
 		case 0:
-			return null;
+			throw new DataNotFoundException(OrderYzw.class, "contract.contractNo" , contractNo);
 		case 1:
 			return orders.get(0);
 		default:
-			logger.error("会籍合约：" + contractNo + "重复");
-			throw new YiwuException("会籍合约：" + contractNo + "重复");
+			throw new DuplicateContractNoException(contractNo);
 		}
+	}
+	
+	
+
+	@Override
+	public OrderYzw findCheckedOrderByContractNo(String contractNo) throws DataNotFoundException{
+		return findOneByProperties(new String[]{"contract.contractNo", "contract.status"},
+				new Object[]{contractNo, ContractStatus.CHECKED});
 	}
 
 	@Override
@@ -473,5 +481,13 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	public List<OrderYzw> findByCourseId(String courseId) {
 		return findAll(Specifications.where(new PropertySpecification<>("contract.course.id", SearchOperator.eq, courseId)));
 	}
+
+	@Override
+	public List<OrderYzw> findCheckedOrdersByCourseId(String courseId) {
+		return findAll(Specifications.where(new PropertySpecification<OrderYzw>("contract.course.id", SearchOperator.eq, courseId))
+									.and(new PropertySpecification<OrderYzw>("contract.status", SearchOperator.eq, ContractStatus.CHECKED)));
+	}
+	
+	
 	
 }

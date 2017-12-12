@@ -2,7 +2,7 @@ package com.yinzhiwu.yiwu.dao;
 
 import com.yinzhiwu.yiwu.entity.LessonComment;
 import com.yinzhiwu.yiwu.entity.LessonComment.CommentType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 /**
 *@Author ping

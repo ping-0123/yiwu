@@ -7,7 +7,7 @@ import org.springframework.test.annotation.Rollback;
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.entity.CourseTemplate;
 import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.CourseTemplateService;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
 

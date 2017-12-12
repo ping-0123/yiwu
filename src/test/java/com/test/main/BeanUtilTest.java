@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.view.CourseConnotationVO;
 import com.yinzhiwu.yiwu.model.view.CourseVO;
 import com.yinzhiwu.yiwu.model.view.LessonVO;

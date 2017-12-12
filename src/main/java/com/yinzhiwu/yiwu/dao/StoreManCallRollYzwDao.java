@@ -12,4 +12,10 @@ public interface StoreManCallRollYzwDao  extends IBaseDao<StoreManCallRollYzw, I
 
 	Long findCountByLessonIdAndCallRolledFlag(String string, boolean b);
 
+	/**
+	 * @param lessonId
+	 * @return
+	 */
+	public long countOfCalled(Integer lessonId);
+
 }

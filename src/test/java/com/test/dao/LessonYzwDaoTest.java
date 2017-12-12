@@ -13,7 +13,7 @@ import com.yinzhiwu.yiwu.common.entity.search.Searchable;
 import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.dao.impl.LessonYzwDaoImpl;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 /**
 *@Author ping

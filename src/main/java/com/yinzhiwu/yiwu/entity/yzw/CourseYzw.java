@@ -206,7 +206,7 @@ public class CourseYzw extends BaseYzwEntity {
 			@AttributeOverride(name = "danceIntroduction", column = @Column(name = "danceIntroduction")) })
 	private CourseConnotation connotation;
 
-	 @OneToMany(cascade=CascadeType.ALL)
+	 @OneToMany(cascade={CascadeType.ALL})
 	 @JoinColumn(name="course_id", foreignKey=@ForeignKey(value=ConstraintMode.NO_CONSTRAINT))
 	 @OrderBy(value="lessonDate ASC")
 	 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)

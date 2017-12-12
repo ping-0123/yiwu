@@ -2,9 +2,9 @@
 <ehcache>
 	<diskStore path="C:/cache/" />
 	<defaultCache
-		maxElementsInMemory="10000" 
+		maxElementsInMemory="100000" 
 		eternal="false"
-		timeToIdleSeconds="300" 
+		timeToIdleSeconds="3600" 
 		overflowToDisk="true"
 		diskPersistent="false"
 		diskExpiryThreadIntervalSeconds="60" />

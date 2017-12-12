@@ -3,6 +3,10 @@ package com.yinzhiwu.yiwu.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -150,6 +154,54 @@ public class DepartmentYzwDaoImpl extends BaseDaoImpl<DepartmentYzw, Integer> im
 	@Override
 	public List<DepartmentYzw> findByType(OrgnizationType type) {
 		return findByProperty("type", type);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.yinzhiwu.yiwu.dao.DepartmentYzwDao#findCities()
+	 */
+	@Override
+	public List<String> findCities() {
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<String> query = builder.createQuery(String.class);
+		Root<DepartmentYzw> root = query.from(DepartmentYzw.class);
+		query.distinct(true)
+			.select(root.get("officialAddress").get("city"))
+			.where(builder.isFalse(root.get("removed")));
+		
+		return getSession().createQuery(query).getResultList();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.yinzhiwu.yiwu.dao.DepartmentYzwDao#findDistrictsByCity(java.lang.String)
+	 */
+	@Override
+	public List<String> findDistrictsByCity(String city) {
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<String> query = builder.createQuery(String.class);
+		Root<DepartmentYzw> root = query.from(DepartmentYzw.class);
+		query.distinct(true)
+			.select(root.get("officialAddress").get("district"))
+			.where(builder.and(builder.isFalse(root.get("removed"))
+						, builder.equal(root.get("officialAddress").get("city"), city)));
+		
+		return getSession().createQuery(query).getResultList();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.yinzhiwu.yiwu.dao.DepartmentYzwDao#findStoresByAdministrativeDistrict(java.lang.String)
+	 */
+	@Override
+	public List<StoreApiView> findStoresByAdministrativeDistrict(String disctrict) {
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<StoreApiView> query = builder.createQuery(StoreApiView.class);
+		Root<DepartmentYzw> root = query.from(DepartmentYzw.class);
+		query.distinct(true)
+			.select(builder.construct(StoreApiView.class, root.get("id"), root.get("name")))
+			.where(builder.and(builder.isFalse(root.get("removed"))
+						, builder.equal(root.get("officialAddress").get("district"), disctrict)
+						, builder.equal(root.get("type"), OrgnizationType.STORE)));
+		
+		return getSession().createQuery(query).getResultList();
 	}
 
 	

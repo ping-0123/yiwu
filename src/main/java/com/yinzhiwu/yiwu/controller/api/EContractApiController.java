@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.ElectricContractYzw;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.view.EContractDetailApiView;
 import com.yinzhiwu.yiwu.service.ElectricContractYzwService;

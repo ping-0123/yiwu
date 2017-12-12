@@ -17,7 +17,7 @@ import com.yinzhiwu.yiwu.dao.ProductYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw.CustomerAgeType;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw;
 import com.yinzhiwu.yiwu.entity.yzw.ProductYzw.ProductCardType;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.web.purchase.dto.ProductDto;

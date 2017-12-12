@@ -1,7 +1,7 @@
 package com.yinzhiwu.yiwu.dao;
 
 import com.yinzhiwu.yiwu.entity.sys.User;
-import com.yinzhiwu.yiwu.exception.DataNotFoundException;
+import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 
 public interface UserDao extends IBaseDao<User, Integer>{
 
