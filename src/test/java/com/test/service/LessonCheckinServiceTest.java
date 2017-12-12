@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import com.test.BaseSpringTest;
+import com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao;
+import com.yinzhiwu.yiwu.dao.LessonYzwDao;
+import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.exception.business.SettleLessonException;
 import com.yinzhiwu.yiwu.exception.data.DataConsistencyException;
@@ -23,7 +26,7 @@ public class LessonCheckinServiceTest extends BaseSpringTest {
 	
 	@Autowired private SettleLessonService settleLessonService;
 	@Autowired private LessonYzwService lessonService;
-	
+	@Autowired private LessonCheckInYzwDao checkinDao;
 	
 	@Test
 	@Rollback(false)
@@ -49,5 +52,12 @@ public class LessonCheckinServiceTest extends BaseSpringTest {
 	public void testSettleClosedLesson(){
  		settleLessonService.settleLessons();
 
+	}
+	
+	@Test
+	public void testFindEffictiveCheckin(){
+		int lessonId = 224422;
+		LessonCheckInYzw checkin = checkinDao.findEffictiveCoachCheckinByLessonId(lessonId);
+		System.err.println( checkin.getTeacher().getId());
 	}
 }

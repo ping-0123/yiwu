@@ -279,6 +279,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 				orders.add(new OrderImpl(root.get(order.getProperty()), 
 						Direction.DESC == order.getDirection()?false:true));
 			}
+			criteria.orderBy(orders);
 		}
 		
 		List<T> list = getSession().createQuery(criteria).setMaxResults(1).getResultList();
