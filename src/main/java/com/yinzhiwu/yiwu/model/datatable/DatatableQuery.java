@@ -1,5 +1,8 @@
 package com.yinzhiwu.yiwu.model.datatable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
 *@Author ping
 *@Time  创建时间:2017年9月22日下午7:40:02
@@ -9,49 +12,49 @@ package com.yinzhiwu.yiwu.model.datatable;
 public class DatatableQuery {
 	
 	private int draw;
-	private Column[] columns = new Column[50];
+	private List<ColumnMap> columns = new ArrayList<>();
 	private int start;
 	private int length;
-	private Search search;
-	private Order[] order = new Order[50];
+	private SearchMap search;
+	private List<OrderMap> orders = new ArrayList<>();
 	
-	public Integer getDraw() {
+	
+	public int getDraw() {
 		return draw;
 	}
-	public Column[] getColumns() {
+	public List<ColumnMap> getColumns() {
 		return columns;
 	}
-	public Integer getStart() {
+	public int getStart() {
 		return start;
 	}
-	public Integer getLength() {
+	public int getLength() {
 		return length;
 	}
-	public Search getSearch() {
+	public SearchMap getSearch() {
 		return search;
 	}
-	public Order[] getOrder() {
-		return order;
+	public List<OrderMap> getOrders() {
+		return orders;
 	}
-	public void setDraw(Integer draw) {
+	public void setDraw(int draw) {
 		this.draw = draw;
 	}
-	public void setColumns(Column[] columns) {
+	public void setColumns(List<ColumnMap> columns) {
 		this.columns = columns;
 	}
-	public void setStart(Integer start) {
+	public void setStart(int start) {
 		this.start = start;
 	}
-	public void setLength(Integer length) {
+	public void setLength(int length) {
 		this.length = length;
 	}
-	public void setSearch(Search search) {
+	public void setSearch(SearchMap search) {
 		this.search = search;
 	}
-	public void setOrder(Order[] order) {
-		this.order = order;
+	public void setOrders(List<OrderMap> orders) {
+		this.orders = orders;
 	}
-	
 	
 	
 	

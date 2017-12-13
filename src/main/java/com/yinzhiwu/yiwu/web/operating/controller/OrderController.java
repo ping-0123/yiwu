@@ -3,6 +3,7 @@ package com.yinzhiwu.yiwu.web.operating.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.enterprise.inject.New;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.yinzhiwu.yiwu.controller.BaseController;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.YiwuJson;
 import com.yinzhiwu.yiwu.model.datatable.DataTableBean;
+import com.yinzhiwu.yiwu.model.datatable.DatatableQuery;
 import com.yinzhiwu.yiwu.model.datatable.QueryParameter;
 import com.yinzhiwu.yiwu.service.OrderYzwService;
 import com.yinzhiwu.yiwu.service.ProductYzwService;
@@ -69,7 +72,9 @@ public class OrderController extends BaseController {
 	
 	@PostMapping(value="/datatable")
 	@ResponseBody
-	public DataTableBean<?> findDatatable(HttpServletRequest request) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InstantiationException{
+	public DataTableBean<?> findDatatable(HttpServletRequest request, DatatableQuery query) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InstantiationException{
+		System.err.println(new Gson().toJson(query));
+		
 		QueryParameter arg = ServletRequestUtils.parseDatatableQuery(request);
 		ServletRequestUtils.transferQueryParamter(arg, OrderView.class);
 		
@@ -82,6 +87,7 @@ public class OrderController extends BaseController {
 		return new DataTableBean<>(
 				table.getDraw(),table.getRecordsTotal(),table.getRecordsFiltered(),views,table.getError());
 	}
+	
 	
 	@PostMapping
 	@ResponseBody

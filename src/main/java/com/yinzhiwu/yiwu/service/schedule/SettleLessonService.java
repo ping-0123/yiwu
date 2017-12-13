@@ -57,7 +57,7 @@ public class SettleLessonService {
 	@Autowired private CourseYzwService courseService;
 	@Autowired private LessonYzwService lessonService;
 	
-	@Scheduled(fixedRate=9999999, initialDelay=10000)
+//	@Scheduled(fixedRate=9999999, initialDelay=10000)
 	@Transactional
 	public void tempSettleLessons(){
 		settleLessons();
