@@ -14,7 +14,6 @@ import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.common.entity.search.PropertySpecification;
 import com.yinzhiwu.yiwu.common.entity.search.SearchOperator;
-import com.yinzhiwu.yiwu.common.entity.search.Searchable;
 import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
@@ -24,7 +23,6 @@ import com.yinzhiwu.yiwu.entity.yzw.DepartmentYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
-import com.yinzhiwu.yiwu.exception.YiwuException;
 import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.exception.data.DuplicateContractNoException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
@@ -236,8 +234,8 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	private  int cleanNullCourseIds(){
 		StringBuilder hql = new StringBuilder();
 		hql.append("UPDATE OrderYzw t1");
-		hql.append(" SET t1.contract.course.id = ''");
-		hql.append(" WHERE t1.contract.course.id IS NULL");
+		hql.append(" SET t1.contract.courseId = ''");
+		hql.append(" WHERE t1.contract.courseId IS NULL");
 		return getSession().createQuery(hql.toString()).executeUpdate();
 	}
 	
@@ -441,7 +439,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		hql.append(",t1.contract.start");
 		hql.append(",t1.contract.end");
 		hql.append(",t1.contract.status");
-		hql.append(",t1.contract.course.id");
+		hql.append(",t1.contract.courseId");
 		hql.append(")");
 		hql.append(" FROM OrderYzw t1");
 		hql.append(" WHERE t1.customer.id = :customerId");
@@ -471,7 +469,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 
 	@Override
 	public Integer findCountByCourseId(String courseId) {
-		return findCountByProperty("contract.course.id", courseId).intValue();
+		return findCountByProperty("contract.courseId", courseId).intValue();
 	}
 
 	/* (non-Javadoc)
@@ -479,12 +477,12 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	 */
 	@Override
 	public List<OrderYzw> findByCourseId(String courseId) {
-		return findAll(Specifications.where(new PropertySpecification<>("contract.course.id", SearchOperator.eq, courseId)));
+		return findAll(Specifications.where(new PropertySpecification<>("contract.courseId", SearchOperator.eq, courseId)));
 	}
 
 	@Override
 	public List<OrderYzw> findCheckedOrdersByCourseId(String courseId) {
-		return findAll(Specifications.where(new PropertySpecification<OrderYzw>("contract.course.id", SearchOperator.eq, courseId))
+		return findAll(Specifications.where(new PropertySpecification<OrderYzw>("contract.courseId", SearchOperator.eq, courseId))
 									.and(new PropertySpecification<OrderYzw>("contract.status", SearchOperator.eq, ContractStatus.CHECKED)));
 	}
 	

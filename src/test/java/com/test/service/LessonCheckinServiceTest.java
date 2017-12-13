@@ -1,13 +1,14 @@
 
 package com.test.service;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.dao.LessonCheckInYzwDao;
-import com.yinzhiwu.yiwu.dao.LessonYzwDao;
 import com.yinzhiwu.yiwu.entity.yzw.LessonCheckInYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.exception.business.SettleLessonException;
@@ -31,7 +32,7 @@ public class LessonCheckinServiceTest extends BaseSpringTest {
 	@Test
 	@Rollback(false)
 	public void testSettleOneLesson(){
-		int lessonId = 245136;
+		int lessonId = 244314;
 		try {
 			LessonYzw lesson = lessonService.get(lessonId);
 			settleLessonService.settleOneLesson(lesson);
@@ -47,10 +48,14 @@ public class LessonCheckinServiceTest extends BaseSpringTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	@Rollback(false)
 	public void testSettleClosedLesson(){
- 		settleLessonService.settleLessons();
+		try{
+ 			settleLessonService.settleLessons();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 	
@@ -59,5 +64,12 @@ public class LessonCheckinServiceTest extends BaseSpringTest {
 		int lessonId = 224422;
 		LessonCheckInYzw checkin = checkinDao.findEffictiveCoachCheckinByLessonId(lessonId);
 		System.err.println( checkin.getTeacher().getId());
+	}
+	
+	
+	@Test
+	public void testFindNeedSettledLessons(){
+		List<LessonYzw> lessons = checkinDao.findNeedSettledLessons();
+		System.out.println(lessons.size());
 	}
 }

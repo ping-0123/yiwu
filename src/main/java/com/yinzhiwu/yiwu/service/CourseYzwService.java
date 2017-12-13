@@ -7,9 +7,10 @@ public interface CourseYzwService extends IBaseService<CourseYzw, String> {
 	public void setOneConnotation(CourseYzw course);
 
 	/**
-	 * @param course
+	 * @param courseId
 	 */
+	public void updateCourseStatus(String id);
+	
 	public void updateCourseStatus(CourseYzw course);
-
 
 }

@@ -51,6 +51,8 @@ import com.yinzhiwu.yiwu.service.OrderYzwService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.Authorization;
+import io.swagger.annotations.ResponseHeader;
 
 @RestController
 @RequestMapping("/api/distributer")
@@ -81,7 +83,8 @@ public class DistributerApiController extends BaseController {
 	}
 	
 	@GetMapping(value = "/{id}")
-	public YiwuJson<DistributerApiView> doGet(@PathVariable int id, HttpSession session) throws DataNotFoundException {
+	@ApiOperation(value="/获取个人信息", authorizations={@Authorization(value="token")}, responseHeaders={@ResponseHeader(name="Authorization")})
+	public YiwuJson<DistributerApiView> doGet(@PathVariable(name="id") int id) throws DataNotFoundException {
 		Distributer distributer =  distributerService.get(id);
 		return YiwuJson.createBySuccess( DistributerApiViewConverter.instance.fromPO(distributer));
 	}

@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.yinzhiwu.yiwu.entity.yzw.Contract;
 import com.yinzhiwu.yiwu.entity.yzw.Contract.ContractStatus;
-import com.yinzhiwu.yiwu.entity.yzw.CourseYzw;
 import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.enums.CourseType;
 import com.yinzhiwu.yiwu.enums.SubCourseType;
@@ -63,19 +62,9 @@ public class OrderApiView {
 			this.contractEnd = contract.getEnd();
 			this.productType = contract.getType();
 			this.checkedStatus = contract.getStatus();
+			this.courseId = contract.getCourseId();
 		}
 
-		CourseYzw course = contract.getCourse();
-		try {
-			if (course != null) {
-				this.courseId = course.getId();
-				this.courseName = course.getName();
-				this.courseStore = course.getStoreName();
-				this.courseStartDate = course.getStartDate();
-			}
-		} catch (Exception e) {
-			logger.warn(e.getMessage());
-		}
 		this.eContractStatus = o.geteContractStatus();
 	}
 

@@ -77,11 +77,11 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 			builder.append("FROM LessonYzw WHERE startDateTime >:startDateTime and courseid = :courseId");
 			builder.append(" order by startDateTime");
 		}
-		getHibernateTemplate().setMaxResults(lastN);
-		@SuppressWarnings("unchecked")
-		List<LessonYzw> lessons = (List<LessonYzw>) getHibernateTemplate().findByNamedParam(builder.toString(),
-				new String[] { "startDateTime", "courseId" },
-				new Object[] { thisLesson.getStartDateTime(), thisLesson.getCourse().getId() });
+		List<LessonYzw> lessons = (List<LessonYzw>) getSession().createQuery(builder.toString(),LessonYzw.class)
+				.setParameter("courseId", thisLesson.getCourse().getId())
+				.setParameter("startDateTime", thisLesson.getStartDateTime())
+				.getResultList();
+		
 		if (lessons != null && lessons.size() == lastN)
 			return lessons.get(lastN - 1);
 		return null;
@@ -366,10 +366,10 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 	}
 	
 	@Transactional
-//	@Scheduled(cron="0 30 5 * * ?")
+	@Scheduled(cron="0 30 5 * * ?")
 	public void updateCoachCheckedinStatus(){
 		updateUnchecked();
-		updateChecked();
+//		updateChecked();
 	}
 	
 	private void updateUnchecked(){

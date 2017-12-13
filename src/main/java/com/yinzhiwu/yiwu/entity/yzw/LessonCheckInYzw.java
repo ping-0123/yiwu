@@ -21,7 +21,7 @@ import com.yinzhiwu.yiwu.entity.Distributer;
 
 @Entity
 @Table(name = "vcheck_ins")
-@Where(clause="settleStatus <> 'NO_SETTLE'")
+//@Where(clause="settleStatus IS NULL or settleStatus <> 'NO_SETTLE'")
 public class LessonCheckInYzw extends BaseYzwEntity {
 
 	private static final long serialVersionUID = 925280755246130775L;

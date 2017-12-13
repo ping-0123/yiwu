@@ -8,7 +8,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -58,25 +57,35 @@ public class SettleLessonService {
 	@Autowired private CourseYzwService courseService;
 	@Autowired private LessonYzwService lessonService;
 	
+	@Scheduled(fixedRate=9999999, initialDelay=10000)
+	@Transactional
+	public void tempSettleLessons(){
+		settleLessons();
+	}
+	
+	
 	@Scheduled(cron="0 0 4 * * ?")
 	@Transactional
 	public void settleLessons(){
 		List<LessonYzw> lessons = lessonCheckInDao.findNeedSettledLessons();
 		logger.info(lessons.size() + "课时待结算");
 		for (LessonYzw lesson : lessons) {
-			try {
-				settleOneLesson(lesson);
-			} catch (Exception e) {
-				logger.info(e.getMessage(),e);
-				SettleLessonException ex = new SettleLessonException(lesson.getId(), e.getMessage());
-				logger.info(ex.getMessage());
-			}
+				try {
+					settleOneLesson(lesson);
+				} catch (DataConsistencyException e) {
+					SettleLessonException ex = new SettleLessonException(lesson.getId(), e);
+					logger.info(ex.getMessage());
+				} catch (SettleLessonException e) {
+					logger.info(e.getMessage());
+				}catch(Exception e){
+					logger.info(e.getMessage(),e);
+				}
 		}
 		
 	}
 
 	
-	@Async		
+//	@Async		
 	@Transactional(propagation=Propagation.NESTED)
 	public void settleOneLesson(LessonYzw lesson) throws DataConsistencyException, SettleLessonException{
 		logger.debug("current thread is " + Thread.currentThread().getId() + "  " + Thread.currentThread().getName());
@@ -85,7 +94,7 @@ public class SettleLessonService {
 		} catch (DataNotFoundException e) {
 			return;
 		}
-		logger.debug("start settle lesson#" + lesson.getId());
+		logger.info("start settle lesson#" + lesson.getId());
 		
 		switch (lesson.getCourseType()) {
 		case OPENED:
@@ -362,10 +371,10 @@ public class SettleLessonService {
 			if(remainTimes.compareTo(BigDecimal.valueOf(0)) <=0){
 				contract.setStatus(ContractStatus.EXPIRED);
 				/** 踢出班级 **/
-				if(CourseType.CLOSED == contract.getType()){
+				if(CourseType.CLOSED == contract.getType() && StringUtils.hasLength(contract.getCourseId())){
 					/** 踢学员出班级后 需要重新审核 **/
-					courseService.updateCourseStatus(contract.getCourse());
-					contract.setCourse(null);
+					courseService.updateCourseStatus(contract.getCourseId());
+					contract.setCourseId(null);;
 				}
 			}
 			contract.setRemainTimes(remainTimes);

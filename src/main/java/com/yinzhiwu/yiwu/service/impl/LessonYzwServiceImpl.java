@@ -181,7 +181,7 @@ public class LessonYzwServiceImpl extends BaseServiceImpl<LessonYzw, Integer> im
 	@EventListener(classes={LessonAppointmentYzw.class})
 	public void handleLessonAppointment(LessonAppointmentYzw appointment){
 		LessonYzw lesson = appointment.getLesson();
-		int appointedStudentCount = lesson.getAppointedStudentCount()==null? 0:lesson.getAppointedStudentCount();
+		int appointedStudentCount = (lesson.getAppointedStudentCount()==null || lesson.getAppointedStudentCount() <0)? 0:lesson.getAppointedStudentCount();
 		switch (appointment.getStatus()) {
 		case APPONTED:
 			appointedStudentCount++;

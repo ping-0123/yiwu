@@ -100,13 +100,14 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 		hql.append(
 				"(select t1.contract.contractNo from OrderYzw t1 where t1.contract.status='已审核' and t1.contract.subType=:subCourseType");
 		hql.append(" and t1.contract.remainTimes>=1 and t1.contract.end >= :currdate)");
-		@SuppressWarnings("unchecked")
-		List<Long> counts = (List<Long>) getHibernateTemplate().findByNamedParam(hql.toString(),
-				new String[] { "lessonId", "subCourseType", "currdate" },
-				new Object[] { lesson.getId(), lesson.getSubCourseType(), new Date() });
-		if (counts.get(0) > 0)
-			return true;
-		return false;
+		
+		 Long count = getSession().createQuery(hql.toString(), Long.class)
+				.setParameter("lessonId", lesson.getId())
+				.setParameter("subCourseType", lesson.getSubCourseType())
+				.setParameter("currdate", Calendar.getInstance().getTime())
+				.getSingleResult();
+		 
+		 return count> 0;
 	}
 
 	@Override
@@ -172,7 +173,7 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 		Predicate condition = builder.or(builder.equal(root.get("settleStatus"), SettleStatus.UN_SETTLED),
 						builder.isNull(root.get("settleStatus")));
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.MONTH, -1);
+		calendar.add(Calendar.DAY_OF_MONTH, -5);
 		condition = builder.and(condition, builder.greaterThan(root.<Date>get("createTime"), calendar.getTime()));
 		query.distinct(true)
 			.select(root.get("lesson"))

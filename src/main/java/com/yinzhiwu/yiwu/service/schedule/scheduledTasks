@@ -12,6 +12,8 @@ EmployeeYzwServiceImpl#setNewEmployeeNumberEveryNigth()
 LessonYzwDaoImpl#updateCheckedinLessonsStatus()
 #将课时表中实到教师Id为0 改为null
 LessonYzwDaoImpl#updateZeroActualTeacher()
+#设置新排课程的coachCheckinStatus
+LessonYzwDaoImpl#updateUnchecked() 	@Scheduled(cron="0 30 5 * * ?")
 # 七天前注册的客户不能修改绑定关系
 DistributerDaoImpl#setUnBindChangable()
 #结算课时

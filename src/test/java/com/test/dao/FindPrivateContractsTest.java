@@ -27,7 +27,7 @@ public class FindPrivateContractsTest  extends BaseSpringTest{
 			System.err.println("hash code is ...." + order.hashCode());
 			System.err.println("the customer name of order is .." + order.getCustomer().getName());
 			System.err.println("the contract of order is .." + order.getContract());
-			System.err.println("the coruse of the order is .. " + order.getContract().getCourse());
+			System.err.println("the coruse of the order is .. " + order.getContract().getCourseId());
 		} catch (DataNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

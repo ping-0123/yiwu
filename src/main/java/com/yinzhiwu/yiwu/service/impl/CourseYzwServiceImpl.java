@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.yinzhiwu.yiwu.common.entity.search.PropertySpecification;
+import com.yinzhiwu.yiwu.common.entity.search.SearchOperator;
 import com.yinzhiwu.yiwu.dao.CourseYzwDao;
+import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.CourseTemplate;
 import com.yinzhiwu.yiwu.entity.LessonTemplate;
 import com.yinzhiwu.yiwu.entity.yzw.CourseConnotation;
@@ -18,6 +21,7 @@ import com.yinzhiwu.yiwu.entity.yzw.CourseYzw.CourseStatus;
 import com.yinzhiwu.yiwu.entity.yzw.LessonConnotation;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw;
 import com.yinzhiwu.yiwu.entity.yzw.LessonYzw.LessonStatus;
+import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.service.CourseTemplateService;
 import com.yinzhiwu.yiwu.service.CourseYzwService;
@@ -29,6 +33,7 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 	@Autowired private CourseYzwDao courseDao;
 //	@Autowired private LessonYzwDao lessonDao;
 	@Autowired private CourseTemplateService courseTemplateService;
+	@Autowired private OrderYzwDao orderDao;
 	
 	@Autowired
 	public void setBaseDao(CourseYzwDao courseYzwDao) {
@@ -39,9 +44,11 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 	
 	@Override
 	public void updateCourseStatus(CourseYzw course) {
-		Assert.notNull(course);
+		if(null == course) return;
 		
 		course.setCourseStatus(CourseStatus.UN_CHECKED);
+		course.setStudentCount((int)
+				orderDao.count(Specifications.where(new PropertySpecification<OrderYzw>("contract.courseId", SearchOperator.eq, course.getId()))));
 		/** 未来的课时的状态设为未审核 **/
 		Date current = new Date();
 		for (LessonYzw lesson : course.getLessons()) {
@@ -52,6 +59,20 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 		update(course);
 		
 	}
+
+	
+
+	@Override
+	public void updateCourseStatus(String courseId) {
+		try {
+			CourseYzw course = get(courseId);
+			updateCourseStatus(course);
+		} catch (DataNotFoundException e) {
+			return;
+		}
+		
+	}
+
 
 
 	/**

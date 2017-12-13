@@ -32,7 +32,7 @@ public class CityApiController {
 	
 	@GetMapping(value="/{cityname}/districts/{districtname}/stores")
 	@ApiOperation(value="返回位于行政区{districtname}的门店")
-	public YiwuJson<?> findStores(@PathVariable(name="districtname") String disctrict){
+	public YiwuJson<?> findStores(@PathVariable(name="cityname") String cityname, @PathVariable(name="districtname") String disctrict){
 		return YiwuJson.createBySuccess(cityService.findStoresByDistrict(disctrict));
 	}
 }

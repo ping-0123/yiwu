@@ -89,19 +89,14 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 		return findOneByProperty("memberCard", memberCard);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public float getBeatRate(float exp) {
 		String hql = "select count(*) from Distributer d where d.exp < :exp";
-		logger.debug("传入的经验值是：" + exp);
-		List<Long> counts = (List<Long>) getHibernateTemplate().findByNamedParam(hql, "exp", exp);
-		logger.debug(exp + "击败的数量：" + counts.get(0).intValue());
+		int count =  findCount(hql, "exp", exp).intValue();
 		int sum = findCount().intValue();
-		logger.debug("分销人数总数：" + sum);
-		if (sum == 0)
-			return 0;
-		else
-			return counts.get(0).intValue() / (float) sum;
+		
+		return sum==0? 0: count/(float)sum;
+		
 	}
 
 	@Override
@@ -126,12 +121,12 @@ public class DistributerDaoImpl extends BaseDaoImpl<Distributer, Integer> implem
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Distributer> findTopThree() {
 		String hql = "from Distributer order by accumulativeBrokerage desc";
-		getHibernateTemplate().setMaxResults(3);
-		return (List<Distributer>) getHibernateTemplate().find(hql);
+		return getSession().createQuery(hql, Distributer.class)
+				.setMaxResults(3)
+				.getResultList();
 	}
 
 	@Override

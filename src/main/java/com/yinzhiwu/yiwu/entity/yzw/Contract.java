@@ -7,14 +7,9 @@ import java.util.List;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
 import javax.persistence.Convert;
 import javax.persistence.Converter;
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yinzhiwu.yiwu.enums.CourseType;
@@ -40,7 +35,7 @@ public class Contract {
 	
 	@Column(name = "validity_times")
 	private Integer validityTimes;
-	@Column(name = "remain_times")
+	@Column(name = "remain_times") 
 	private BigDecimal remainTimes;
 	@Column(name="with_hold_times")
 	private Short withHoldTimes;
@@ -60,9 +55,10 @@ public class Contract {
 	@Convert(converter = ContractStatusConverter.class)
 	private ContractStatus status;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "course_id", foreignKey = @ForeignKey(name = "fk_order_course_id", value = ConstraintMode.NO_CONSTRAINT))
-	private CourseYzw course;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "course_id", foreignKey = @ForeignKey(name = "fk_order_course_id", value = ConstraintMode.NO_CONSTRAINT))
+	@Column(name="course_id", length=32)
+	private String courseId;
 	
 	public Contract() {
 	}
@@ -165,17 +161,20 @@ public class Contract {
 	public void setWithHoldTimes(Short withHoldTimes) {
 		this.withHoldTimes = withHoldTimes;
 	}
-
-	public CourseYzw getCourse() {
-		return course;
-	}
-
-	public void setCourse(CourseYzw course) {
-		this.course = course;
-	}
-
 	
 	
+	
+	public String getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
+
+
+
+
 	public enum ContractStatus {
 		UN_PAYED("待付款"),
 		UN_VERIFIED("未确认"),

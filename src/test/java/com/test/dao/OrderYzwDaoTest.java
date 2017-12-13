@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
 import com.test.BaseSpringTest;
 import com.yinzhiwu.yiwu.dao.DistributerDao;
@@ -13,6 +14,7 @@ import com.yinzhiwu.yiwu.dao.OrderYzwDao;
 import com.yinzhiwu.yiwu.entity.Distributer;
 import com.yinzhiwu.yiwu.entity.yzw.CustomerYzw;
 import com.yinzhiwu.yiwu.entity.yzw.EmployeeYzw;
+import com.yinzhiwu.yiwu.entity.yzw.OrderYzw;
 import com.yinzhiwu.yiwu.exception.data.DataNotFoundException;
 import com.yinzhiwu.yiwu.model.page.PageBean;
 import com.yinzhiwu.yiwu.model.view.OrderApiView;
@@ -56,6 +58,20 @@ public class OrderYzwDaoTest  extends BaseSpringTest{
 		String contractNo = "YZW20170822153";
 		try {
 			System.out.println(orderYzwDao.findContractByContractNo(contractNo));
+		} catch (DataNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	@Rollback(false)
+	public void testUpdate(){
+		String orderId = "20171211075";
+		try {
+			OrderYzw order = orderYzwDao.get(orderId);
+			order.setPayedAmount(3000f);
+			orderYzwDao.update(order);
 		} catch (DataNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

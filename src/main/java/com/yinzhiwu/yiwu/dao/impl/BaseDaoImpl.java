@@ -30,13 +30,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.hibernate.query.criteria.internal.OrderImpl;
+import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -64,13 +64,14 @@ import com.yinzhiwu.yiwu.util.reflect.FieldUtils;
  * @param <PK>
  *            the entity's primary key type
  */
-public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements IBaseDao<T, PK> {
+public abstract class BaseDaoImpl<T, PK extends Serializable>  implements IBaseDao<T, PK> {
 
 	private static final char NESTED        = '.';
 	
 	private Class<T> entityClass;
 	protected SessionFactory sessionFactory;
-
+	protected final Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
+		
 	@SuppressWarnings("unchecked")
 	public BaseDaoImpl() {
 		this.entityClass = null;
@@ -85,7 +86,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	@Resource(name="sessionFactory")
 	public void setHibernateSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
-		super.setSessionFactory(sessionFactory);
+//		super.setSessionFactory(sessionFactory);
 	}
 
 	protected Session getSession() {
@@ -495,7 +496,7 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 				if(field.getDeclaredAnnotation(Id.class) != null && fieldValue !=null )
 					break;
 			} catch (IllegalArgumentException | IllegalAccessException e) {
-				logger.error(e);
+				logger.error(e.getMessage(),e);
 				throw new RuntimeException(e);
 			}
 		}
@@ -506,16 +507,13 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> extends HibernateD
 	@Override
 	public void update(T entity) {
 		Assert.notNull(entity, "entity is required");
-		try {
-			if (entity instanceof BaseEntity)
-				((BaseEntity) entity).beforeUpdate();
-			;
-			if (entity instanceof BaseYzwEntity)
-				((BaseYzwEntity) entity).beforeUpdate();
-			getHibernateTemplate().update(entity);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
+		
+		if (entity instanceof BaseEntity)
+			((BaseEntity) entity).beforeUpdate();
+		;
+		if (entity instanceof BaseYzwEntity)
+			((BaseYzwEntity) entity).beforeUpdate();
+		getSession().update(entity);
 	}
 
 	@Override
