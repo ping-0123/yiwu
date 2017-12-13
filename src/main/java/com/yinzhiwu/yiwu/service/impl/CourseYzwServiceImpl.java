@@ -43,7 +43,7 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 	
 	
 	@Override
-	public void updateCourseStatus(CourseYzw course) {
+	public void updateCourseStatusToUnChecked(CourseYzw course) {
 		if(null == course) return;
 		
 		course.setCourseStatus(CourseStatus.UN_CHECKED);
@@ -63,10 +63,10 @@ public class CourseYzwServiceImpl extends BaseServiceImpl<CourseYzw, String> imp
 	
 
 	@Override
-	public void updateCourseStatus(String courseId) {
+	public void updateCourseStatusToUnChecked(String courseId) {
 		try {
 			CourseYzw course = get(courseId);
-			updateCourseStatus(course);
+			updateCourseStatusToUnChecked(course);
 		} catch (DataNotFoundException e) {
 			return;
 		}

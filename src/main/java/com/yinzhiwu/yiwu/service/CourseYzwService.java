@@ -9,8 +9,8 @@ public interface CourseYzwService extends IBaseService<CourseYzw, String> {
 	/**
 	 * @param courseId
 	 */
-	public void updateCourseStatus(String id);
+	public void updateCourseStatusToUnChecked(String id);
 	
-	public void updateCourseStatus(CourseYzw course);
+	public void updateCourseStatusToUnChecked(CourseYzw course);
 
 }

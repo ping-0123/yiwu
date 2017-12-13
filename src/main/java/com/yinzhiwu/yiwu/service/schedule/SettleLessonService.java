@@ -58,12 +58,6 @@ public class SettleLessonService {
 	@Autowired private CourseYzwService courseService;
 	@Autowired private LessonYzwService lessonService;
 	
-	@Scheduled(fixedRate=9999999, initialDelay=10000)
-	@Transactional
-	public void tempSettleLessons(){
-		settleLessons();
-	}
-	
 	
 	@Scheduled(cron="0 30 4 * * ?")
 	@Transactional
@@ -178,6 +172,9 @@ public class SettleLessonService {
 		
 		List<LessonCheckInYzw> studentsCheckedins = createStudentCheckedins(lesson);
 		if(studentsCheckedins.size() == 0){
+			/** 班级里没有学员， 状态设置未未审核状态 **/
+			courseService.updateCourseStatusToUnChecked(lesson.getCourse());
+			
 			throw new SettleLessonException(lesson.getId(),lesson.getCourse().getId()+ "班级里没有学员");
 		}
 		
@@ -376,7 +373,7 @@ public class SettleLessonService {
 				/** 踢出班级 **/
 				if(CourseType.CLOSED == contract.getType() && StringUtils.hasLength(contract.getCourseId())){
 					/** 踢学员出班级后 需要重新审核 **/
-					courseService.updateCourseStatus(contract.getCourseId());
+					courseService.updateCourseStatusToUnChecked(contract.getCourseId());
 					contract.setCourseId(null);;
 				}
 			}
