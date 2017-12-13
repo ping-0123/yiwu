@@ -23,6 +23,11 @@ public class ColumnMap extends HashMap<String, Object> {
 	private static final String keyOrderable = "orderable";
 	private static final String keySearch = "search";
 	
+	public ColumnMap() {
+		super(8);
+		this.put(keySearch, new SearchMap());
+	}
+	
 	
 	
 }

@@ -18,3 +18,7 @@ LessonYzwDaoImpl#updateUnchecked() 	@Scheduled(cron="0 30 5 * * ?")
 DistributerDaoImpl#setUnBindChangable()
 #结算课时
 SettleLessonService#settleLessons() cron="0 0 4 * * ?"
+
+#清除订单的异常数据
+OrderYzwDaoImpl#cleanNullCourseIds  fixedRate=1800000
+OrderYzwDaoImpl#updateLingLingContractDates  fixedRate=1800000

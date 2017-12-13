@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -57,14 +58,14 @@ public class SettleLessonService {
 	@Autowired private CourseYzwService courseService;
 	@Autowired private LessonYzwService lessonService;
 	
-//	@Scheduled(fixedRate=9999999, initialDelay=10000)
+	@Scheduled(fixedRate=9999999, initialDelay=10000)
 	@Transactional
 	public void tempSettleLessons(){
 		settleLessons();
 	}
 	
 	
-	@Scheduled(cron="0 0 4 * * ?")
+	@Scheduled(cron="0 30 4 * * ?")
 	@Transactional
 	public void settleLessons(){
 		List<LessonYzw> lessons = lessonCheckInDao.findNeedSettledLessons();
@@ -85,7 +86,7 @@ public class SettleLessonService {
 	}
 
 	
-//	@Async		
+	@Async		
 	@Transactional(propagation=Propagation.NESTED)
 	public void settleOneLesson(LessonYzw lesson) throws DataConsistencyException, SettleLessonException{
 		logger.debug("current thread is " + Thread.currentThread().getId() + "  " + Thread.currentThread().getName());
@@ -151,7 +152,7 @@ public class SettleLessonService {
 		String[] contractNos = lesson.getAppointedContracts().split(";");
 		for (String contractNo : contractNos) {
 			LessonCheckInYzw checkin = lessonCheckInDao.findByLessonIdAndContractNo(lesson.getId(), contractNo);
-			if(null == checkin ){
+			if(null == checkin || checkin.getSettleStatus() == SettleStatus.NO_SETTLE){
 				throw new SettleLessonException(lesson.getId(), contractNo + "未签到");
 			}
 			studentsCheckedins.add(checkin);
@@ -342,6 +343,8 @@ public class SettleLessonService {
 	 * @throws DataConsistencyException 
 	 * @throws SettleLessonException 
 	 */
+	
+	@SuppressWarnings("unused")
 	private List<LessonCheckInYzw> getPrivateLessonEffictiveStudentCheckins(LessonYzw lesson) throws  SettleLessonException {
 		Assert.notNull(lesson);
 		

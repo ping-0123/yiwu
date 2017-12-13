@@ -13,9 +13,12 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import com.yinzhiwu.yiwu.common.entity.search.PropertySpecification;
 import com.yinzhiwu.yiwu.common.entity.search.SearchOperator;
 import com.yinzhiwu.yiwu.common.entity.search.SearchRequest;
 import com.yinzhiwu.yiwu.common.entity.search.Searchable;
@@ -170,11 +173,14 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();
 		CriteriaQuery<LessonYzw> query = builder.createQuery(LessonYzw.class);
 		Root<LessonCheckInYzw> root = query.from(LessonCheckInYzw.class);
-		Predicate condition = builder.or(builder.equal(root.get("settleStatus"), SettleStatus.UN_SETTLED),
-						builder.isNull(root.get("settleStatus")));
+		Predicate condition =
+				builder.or(builder.equal(root.get("settleStatus"), SettleStatus.UN_SETTLED),
+						   builder.isNull(root.get("settleStatus")));
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_MONTH, -5);
-		condition = builder.and(condition, builder.greaterThan(root.<Date>get("createTime"), calendar.getTime()));
+		calendar.add(Calendar.DAY_OF_YEAR, -2);
+		condition = builder.and(condition, 
+								builder.greaterThan(root.<Date>get("createTime"), calendar.getTime()));
+		
 		query.distinct(true)
 			.select(root.get("lesson"))
 			.where(condition);
@@ -306,7 +312,8 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 		search.and("lesson.id", SearchOperator.eq, lessinId)
 			.and("contractNo", SearchOperator.isNotNull, null)
 			.and("contractNo", SearchOperator.ne, "")
-			.and("settleStatus",SearchOperator.ne, SettleStatus.NO_SETTLE);
+			.and(Specifications.where(new PropertySpecification<LessonCheckInYzw>("settleStatus", SearchOperator.isNull)) 
+					.or(new PropertySpecification<LessonCheckInYzw>("settleStatus",SearchOperator.ne, SettleStatus.NO_SETTLE)));
 		return findAll(search).getContent();
 	}
 
@@ -348,7 +355,8 @@ public class LessonCheckInYzwDaoImpl extends BaseDaoImpl<LessonCheckInYzw, Integ
 		Searchable<LessonCheckInYzw> search = new SearchRequest<>();
 		return  findOne(search.and("lesson.id", SearchOperator.eq,lessonId)
 							  .and("teacher.id", SearchOperator.isNotNull, null)
-							  .and("settleStatus", SearchOperator.ne,SettleStatus.NO_SETTLE)
+							  .and(Specifications.where(new PropertySpecification<LessonCheckInYzw>("settleStatus", SearchOperator.isNull))
+									  .or(new PropertySpecification<LessonCheckInYzw>("settleStatus", SearchOperator.ne,SettleStatus.NO_SETTLE)))
 							  .addOrder(Direction.DESC,"createTime"));
 	}
 

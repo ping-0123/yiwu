@@ -3,11 +3,10 @@ SELECT * from vlesson t1
 join vcheck_ins t2 on (t1.id = t2.lesson_id)
 where t1.shidaoTeacherId is null 
  and t1.lessonDate BETWEEN '2017-12-01' and curdate()
-and t2.teacher_id is not null and t2.sf_create_time <curdate()
+and t2.teacher_id is not null
 and t1.lessonStatus <> '未审核'
 and t1.courseType = '封闭式'
 ;
-
 
 -- 私教课结算有问题
 SELECT DISTINCT t1.* from vlesson t1 
@@ -17,7 +16,7 @@ where t1.shidaoTeacherId is null
  and t1.lessonDate BETWEEN '2017-12-01' and curdate()
 and t1.lessonStatus <> '未审核'
 and t1.courseType = '私教课'
-and t2.teacher_id is not null and t2.sf_create_time <=curdate()
+and t2.teacher_id is not null 
 and (t3.contractNo is not null and t3.contractNo <> '')
 and find_in_set(t3.contractNo, replace(t1.appointedContracts, ';',','))
 ;
@@ -35,7 +34,7 @@ where t1.shidaoTeacherId is null
  and t1.lessonDate BETWEEN '2017-12-01' and curdate()
 and t1.lessonStatus <> '未审核'
 and t1.courseType = '开放式'
-and t2.teacher_id is not null and t2.sf_create_time <=curdate();
+and t2.teacher_id is not null ;
 
 SELECT t1.lesson_id, group_concat(t1.contractNo) count from vcheck_ins t1 
 where t1.teacher_id is  null and (contractNo is not null and contractNo <> '')

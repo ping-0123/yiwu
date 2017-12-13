@@ -9,7 +9,9 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaQuery;
 
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.yinzhiwu.yiwu.common.entity.search.PropertySpecification;
@@ -60,16 +62,6 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		return count>0;
 	}
 
-	@Override
-	public String save(OrderYzw entity) {
-//		if(entity.getId() == null)
-//			entity.setId(IdGeneratorUtil.generateYzwId(find_last_id()));
-//		if(entity.getContract().getContractNo() == null)
-//			entity.getContract().setContractNo(IdGeneratorUtil.generateContractNo(entity.getId()));
-		super.save(entity);
-		cleanNullCourseIds();
-		return entity.getId();
-	}
 
 	@Override
 	public List<OrderYzw> findByCustomer(CustomerYzw customer) {
@@ -79,17 +71,6 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	@Override
 	public List<OrderYzw> findByCustomerId(int customerId) {
 		return findByProperty("customer.id", customerId);
-	}
-
-	@Override
-	public OrderYzw get(String id) {
-		updateLingLingContractDates();
-		try {
-			return super.get(id);
-		} catch (DataNotFoundException e) {
-			logger.error(e.getMessage(),e);
-			return null;
-		}
 	}
 
 	@Override
@@ -226,12 +207,16 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 				pageNo, pageSize);
 	}
 	
-	private void updateLingLingContractDates(){
+	@Scheduled(fixedRate=1800000, initialDelay=10800000)
+	@Transactional
+	public void updateLingLingContractDates(){
 		String sql= "UPDATE vorder SET startdate = payed_date, endDate = payed_date WHERE startdate = '0000-00-00' OR endDate = '0000-00-00'";
 		getSession().createNativeQuery(sql).executeUpdate();
 	}
 
-	private  int cleanNullCourseIds(){
+	@Scheduled(fixedRate=1800000, initialDelay=10800000)
+	@Transactional
+	public  int cleanNullCourseIds(){
 		StringBuilder hql = new StringBuilder();
 		hql.append("UPDATE OrderYzw t1");
 		hql.append(" SET t1.contract.courseId = ''");
@@ -240,11 +225,6 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 	}
 	
 	
-	@Override
- 	public List<OrderYzw> findByProperty(String propertyName, Object value) {
-		updateLingLingContractDates();
-		return super.findByProperty(propertyName, value);
-	}
 
 	@Override
 	public List<OrderYzw> findAll() {
@@ -317,7 +297,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 
 	@Override
 	public Contract findContractByContractNo(String contractNo) throws DataNotFoundException {
-		cleanNullCourseIds();
+//		cleanNullCourseIds();
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT t1.contract");
 		hql.append(" FROM OrderYzw t1");
@@ -374,30 +354,7 @@ public class OrderYzwDaoImpl extends BaseDaoImpl<OrderYzw, String> implements Or
 		
 	}
 
-	@Override
-	public void modify(OrderYzw source, OrderYzw target) throws IllegalArgumentException, IllegalAccessException {
-		super.modify(source, target);
-		cleanNullCourseIds();
-	}
 
-	@Override
-	public void modify(String id, OrderYzw target)
-			throws DataNotFoundException, IllegalArgumentException, IllegalAccessException {
-		super.modify(id, target);
-		cleanNullCourseIds();
-	}
-
-	@Override
-	public void saveOrUpdate(OrderYzw entity) {
-		super.saveOrUpdate(entity);
-		cleanNullCourseIds();
-	}
-
-	@Override
-	public void update(OrderYzw entity) {
-		super.update(entity);
-		cleanNullCourseIds();
-	}
 
 	@Override
 	public DepartmentYzw findStoreOfValidOpenContractOrder(Integer customerId) {

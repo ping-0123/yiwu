@@ -166,8 +166,6 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 
 	@Override
 	public LessonYzw get(Integer id) {
-		updateBlankClassRoomId();
-		updateBlankCourseId();
 		
 		LessonYzw lesson = getSession().get(LessonYzw.class, id);
 		if(lesson == null) return null;
@@ -188,6 +186,8 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		return lesson;
 	}
 
+	@Scheduled(fixedRate=3600000, initialDelay=10800000)
+	@Transactional
 	public void updateBlankCourseId(){
 //		String hql = "UPDATE LessonYzw SET "
 		StringBuilder hql = new StringBuilder();
@@ -198,6 +198,9 @@ public class LessonYzwDaoImpl extends BaseDaoImpl<LessonYzw, Integer> implements
 		getSession().createQuery(hql.toString()).executeUpdate();
 	}
 	
+	
+	@Scheduled(fixedRate=3600000, initialDelay=10800000)
+	@Transactional
 	public void updateBlankClassRoomId(){
 		StringBuilder hql = new StringBuilder();
 		hql.append("UPDATE ").append(LessonYzw.class.getSimpleName());

@@ -48,7 +48,7 @@ public class LessonCheckinServiceTest extends BaseSpringTest {
 		}
 	}
 	
-//	@Test
+	@Test
 	@Rollback(false)
 	public void testSettleClosedLesson(){
 		try{
@@ -61,9 +61,10 @@ public class LessonCheckinServiceTest extends BaseSpringTest {
 	
 	@Test
 	public void testFindEffictiveCheckin(){
-		int lessonId = 224422;
+		int lessonId = 245153;
 		LessonCheckInYzw checkin = checkinDao.findEffictiveCoachCheckinByLessonId(lessonId);
-		System.err.println( checkin.getTeacher().getId());
+		System.err.println("checkin id is " + checkin.getId());
+		System.err.println( "checked in coach is " +  checkin.getTeacher().getId());
 	}
 	
 	
