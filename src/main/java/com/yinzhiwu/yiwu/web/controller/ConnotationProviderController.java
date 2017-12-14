@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -36,27 +37,27 @@ public class ConnotationProviderController extends BaseController{
 	
 	@Autowired private ConnotationProviderService connotationProviderService;
 	
-	@RequestMapping("/list")
+	@GetMapping("/list")
 	public String list(){
 		return "connotationProviders/list";
 	}
 	
-	@RequestMapping("/index")
+	@GetMapping("/index")
 	public String index(){
 		return "redirect:list";
 	}
 	
-	@RequestMapping
+	@GetMapping
 	public String home(){
 		return "redirect:connotationProviders/list";
 	}
 	
-	@RequestMapping("/createForm")
+	@GetMapping("/createForm")
 	public String showCreateForm(){
 		return "connotationProviders/createForm";
 	}
 	
-	@RequestMapping("/{id}/updateForm")
+	@GetMapping("/{id}/updateForm")
 	public String showUpdateForm(@PathVariable(name="id") Integer id, Model model) throws DataNotFoundException
 	{
 		model.addAttribute("provider", connotationProviderService.get(id));
