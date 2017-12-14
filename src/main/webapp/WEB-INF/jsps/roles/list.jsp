@@ -284,9 +284,10 @@
          */
         function requestSaveRoleResources(roleId, resourceIds){
         	$.ajax({
-        		"type":"PUT",
+        		"type":"POST",
         		"url":roleId + "/resources",
         		"data":{
+					'_method' : 'PUT',
         			"resourceIds":resourceIds
         		},
         		traditional: true,
