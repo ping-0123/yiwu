@@ -45,7 +45,7 @@
 				<div class="tab-pane fade in active" id="header">
 					<c:if test="${empty headerMedia}">
 						<shiro:hasPermission name="coachMedia:create:*">
-							<button onclick="showDeopzoneModel('${uploadToken}',uploadHeader)" id="btn-create-header" class="btn btn-primary">新增</button>
+							<button onclick="showDropzoneModel('${uploadToken}',uploadHeader)" id="btn-create-header" class="btn btn-primary">新增</button>
 						</shiro:hasPermission>
 					</c:if>
 					<c:if test="${not empty headerMedia }">
@@ -155,7 +155,7 @@
 				<div class="tab-pane fade " id="dance">
 					<div>
 						<shiro:hasPermission name="coachMedia:create:*">
-							<button onclick="showDeopzoneModel('${uploadToken}',uploadDanceVideo)" class="btn btn-primary">新增</button>
+							<button onclick="showDropzoneModel('${uploadToken}',uploadDanceVideo)" class="btn btn-primary">新增</button>
 						</shiro:hasPermission>
 					</div>
 
@@ -226,7 +226,7 @@
 				 * 上传教师证书
 				 */
 				function uploadCertificate() {
-					showDeopzoneModel('${uploadToken}', function(fileKey) {
+					showDropzoneModel('${uploadToken}', function(fileKey) {
 						$.ajax({
 							type: "post",
 							url: "./",
@@ -248,7 +248,7 @@
 				 * 上传教师日常图片
 				 */
 				function uploadDaily() {
-					showDeopzoneModel('${uploadToken}', function(fileKey) {
+					showDropzoneModel('${uploadToken}', function(fileKey) {
 						$.ajax({
 							type: "post",
 							url: "./",
@@ -316,7 +316,7 @@
 				 * @param {Object} id
 				 */
 				function uploadVideoPoster(id) {
-					showDeopzoneModel('${uploadToken}', function(fileKey) {
+					showDropzoneModel('${uploadToken}', function(fileKey) {
 						$.ajax({
 							type: "PUT",
 							url: id + "/videoPosterUri",
