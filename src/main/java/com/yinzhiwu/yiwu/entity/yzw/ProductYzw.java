@@ -409,7 +409,7 @@ public class ProductYzw extends BaseYzwEntity {
 		CHILD("少儿业绩"),
 		ADULT("成人业绩"),
 		PRESENTER("小主持人业绩"),
-		GENERAL("所有");
+		GENERAL("其他");
 		
 		private final String name;
 

@@ -26,9 +26,18 @@ public class DistrictApiController extends BaseController {
 	@Autowired
 	private DepartmentYzwService departmentYzwService;
 
+	@Deprecated
 	@GetMapping(value = "/list")
 	@ResponseBody
+	@ApiOperation(value="获取运营区域列表,   已弃用，@See /api/district")
 	public List<DepartmentApiView> getDistrictList() {
+		return departmentYzwService.findAllOperationDistricts();
+	}
+	
+	@GetMapping
+	@ResponseBody
+	@ApiOperation(value="获取运营区域列表")
+	public List<DepartmentApiView> findAll() {
 		return departmentYzwService.findAllOperationDistricts();
 	}
 
