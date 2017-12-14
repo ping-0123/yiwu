@@ -3,6 +3,8 @@ package com.yinzhiwu.yiwu.model.datatable;
 
 import java.util.HashMap;
 
+import com.yinzhiwu.yiwu.common.entity.search.SearchOperator;
+
 /**
  * @author ping
  * @date 2017年12月13日下午5:28:26
@@ -26,6 +28,7 @@ public class ColumnMap extends HashMap<String, Object> {
 	public ColumnMap() {
 		super(8);
 		this.put(keySearch, new SearchMap());
+		this.put(keyOperator, SearchOperator.eq);
 	}
 	
 	
